@@ -185,6 +185,7 @@ public class PushFrgment extends LazyFragment {
                 } else if (deleSelect.size() == 0) {
                     Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }

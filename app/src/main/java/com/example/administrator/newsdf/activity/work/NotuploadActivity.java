@@ -7,15 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.administrator.newsdf.adapter.Adapter;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplyActivity;
+import com.example.administrator.newsdf.adapter.Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +116,6 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
         queryDate();
     }
 
-
     /**
      * item的左滑设置
      *
@@ -128,7 +126,6 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
     public void onSetBtnCilck(View view, int position) {
 
     }
-
 
     /**
      * item的左滑删除
@@ -144,7 +141,6 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
     //点击条目跳转界面
     public void getInt(int position) {
         pos = position;
-        Log.i("pos", pos + "");
         Intent intent = new Intent(this, ReplyActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("content", list.get(position).getContent());

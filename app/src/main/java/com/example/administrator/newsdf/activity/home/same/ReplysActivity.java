@@ -489,7 +489,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //检查点
             checkId = data.getStringExtra("id");
             reply_check_item.setText(data.getStringExtra("name"));
-
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //相册
             if (data != null && requestCode == IMAGE_PICKER) {
@@ -703,7 +702,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {
-
             finish();
         }
         return false;

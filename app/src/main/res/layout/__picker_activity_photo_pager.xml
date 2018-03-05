@@ -6,12 +6,6 @@
 
     <include layout="@layout/__picker_toolbar" />
 
-    <TextView
-        android:id="@+id/photoPagertext"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:text="" />
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

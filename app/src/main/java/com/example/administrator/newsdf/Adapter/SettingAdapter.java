@@ -244,7 +244,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
                         .load(url)
                         .transition(new DrawableTransitionOptions().crossFade(2000))
                         .thumbnail(Glide.with(context)
-                                .load(R.mipmap.image_loading))
+                                .load(R.mipmap.mine_avatar))
                         .into((ImageView) view);
 
             }

@@ -235,21 +235,22 @@ public class Dates {
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
         // 返回路径展示图片
         return appDir + "/" + fileName;
-
     }
 
-    /**
-     * 保存添加水印的 图片
-     */
     public static String downloadPhoto(Context context, Bitmap bmp, String result) {
         // 首先保存图片
-        String str = "/storage/emulated/0/";
+        String str = "/storage/emulated/0/Android/data/";
         File appDir = new File(str, "picker");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
         //设置系统时间为文件名
         String fileName = result + ".jpg";
+        Shop shop = new Shop();
+        shop.setType(Shop.TYPE_CART);
+        shop.setImage_url(appDir + "/" + fileName);
+        shop.setName(result);
+        LoveDao.insertLove(shop);
         //文件夹和文件名
         File file = new File(appDir, fileName);
         try {
@@ -264,20 +265,7 @@ public class Dates {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Shop shop = new Shop();
-        shop.setType(Shop.TYPE_CART);
-        shop.setImage_url(str + fileName);
-        shop.setName(result);
-        LoveDao.insertLove(shop);
         ToastUtils.showShortToast("保存成功");
-        /**
-         * 其次把文件插入到系统图库
-         * 注：下面这段代码会保存一张缩略图片；
-         *
-         */
-        // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-        // 返回路径展示图片
         return appDir + "/" + fileName;
 
     }

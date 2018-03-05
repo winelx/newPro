@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -338,10 +339,81 @@ public class MissionpushActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 单选数据存储和删除
+     *
+     * @param id
+     * @param lean
+     */
     public void getpush(String id, boolean lean) {
-        if (lean == true) {
-            int str = mViewPager.getCurrentItem();
-//            pushMap.put(str+"",list.add())
+        //拿到当前的Viewpager的页数
+        String type = String.valueOf(mViewPager.getCurrentItem());
+        //判断map是否存在
+        Log.i("pushMap", pushMap.size() + "");
+        if (pushMap.size() != 0) {
+            //判断是否有当前页数的数据
+            boolean flag = pushMap.containsKey(type);
+            if (flag) {
+                if (lean) {
+                    List<String> Value = new ArrayList<>();
+                    //根据key取value
+                    Value = pushMap.get(type);
+                    //添加数据
+                    Log.i("Value", id);
+                    Value.add(id);
+                    //清除数据
+                    pushMap.remove(type);
+                    //重新添加数据
+                    pushMap.put(type, Value);
+
+                } else {
+                    List<String> Value1 = new ArrayList<>();
+                    //拿到当前界面存的数据集合
+                    Value1 = pushMap.get(type);
+                    pushMap.remove(type);
+                    Log.i("Value1", Value1.size() + "");
+                    for (int i = 0; i < Value1.size(); i++) {
+                        //判断要删除的是哪个数据
+                        if (Value1.get(i) == id) {
+                            //删除数据
+                            Value1.remove(i);
+                            for (int j = 0; j < Value1.size(); j++) {
+                                Log.i("Value1", Value1.get(j));
+                            }
+//                            //重新存入删除后的数据
+                            pushMap.put(type, Value1);
+                        }
+                    }
+                }
+            } else {
+                List<String> Value = new ArrayList<>();
+                Value.add(id);
+                pushMap.put(type + "", Value);
+            }
+
+        } else {
+            List<String> Value = new ArrayList<>();
+            Value.add(id);
+            pushMap.put(type + "", Value);
+        }
+
+    }
+    
+    /**
+     * 全选数据的存储和删除
+     */
+    public void getAllPush(ArrayList<String> ListId, boolean lean) {
+        //拿到当前的Viewpager的页数
+        String type = String.valueOf(mViewPager.getCurrentItem());
+
+        if (lean) {
+            //删除之前的所有数据
+            pushMap.remove(type);
+            //存储全部数据
+            pushMap.put(type, ListId);
+        } else {
+            //全部取消
+            pushMap.remove(type);
         }
     }
 }

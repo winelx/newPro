@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.work;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +34,13 @@ public class PchooseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pchoose);
         mContext = PchooseActivity.this;
-        drawable = new ArrayList<>();
+
         listPath = new ArrayList<>();
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("图纸查看");
-        listPath = LoveDao.queryCart();
+
         image = (ImageView) findViewById(R.id.image);
+
         findViewById(R.id.pchoose_atlas).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,18 +66,18 @@ public class PchooseActivity extends AppCompatActivity {
         findViewById(R.id.uploading_photo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getImg(mContext, "/storage/emulated/0/a3f304c2e56847be81b78a8393a21eb3.jpg", image);
-//                if (listPath.size()!=0){
-//                    for (int i = 0; i < listPath.size(); i++) {
-////                        drawable.add(listPath.get(i).getImage_url());
-//                        Log.i("111",listPath.get(i).getImage_url());
-//                    }
-////                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).setShowDeleteButton(false)
-////                            .start((Activity) mContext);
-//                }else {
-//                    ToastUtils.showShortToast("没有下载图片");
-//                }
-
+                listPath = LoveDao.queryCart();
+                if (listPath.size() != 0) {
+                    drawable = new ArrayList<>();
+                    for (int i = 0; i < listPath.size(); i++) {
+                        drawable.add(listPath.get(i).getImage_url());
+                    }
+                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).setShowDeleteButton(true)
+                            .start((Activity) mContext);
+//                    Dates.getImg(mContext, drawable.get(0), image);
+                } else {
+                    ToastUtils.showShortToast("没有下载图片");
+                }
             }
         });
     }

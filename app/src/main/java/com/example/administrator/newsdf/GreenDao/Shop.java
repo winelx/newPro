@@ -17,17 +17,25 @@ public class Shop {
     //不能用int
     @Id(autoincrement = true)
     private Long id;
-
     @Property(nameInDb = "price")
-    private String user; //用户
-    private String project;//项目
-    private String name;//保存名字
-    private String timme;//时间
-    private String image_url; //图片
-    private String content;//内容
-    private String websid;//wbsID
-    private String checkname;//检查点ID
-    private String checkid;//检查点
+    //用户
+    private String user;
+    //项目
+    private String project;
+    //保存名字
+    private String name;
+    //时间
+    private String timme;
+    //图片
+    private String image_url;
+    //内容
+    private String content;
+    //wbsID
+    private String websid;
+    //检查点ID
+    private String checkname;
+    //检查点
+    private String checkid;
     private int type;
 
     @Generated(hash = 1546035254)

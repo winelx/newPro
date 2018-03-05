@@ -48,4 +48,5 @@ public class LoveDao {
     public static List<Shop> queryCart() {
         return baseActivity.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
     }
+
 }

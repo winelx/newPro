@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,29 +120,36 @@ public class PushfragmentAdapter extends BaseAdapter {
                     notifyDataSetChanged();
                 } else {
                     data.get(position).setChecked(true);
+                    Log.i("Value1",data.get(position).getId());
                     MissionpushActivity missionpush = (MissionpushActivity) context;
-                    missionpush.getpush(data.get(position).getId(),false);
+                    missionpush.getpush(data.get(position).getId(),true);
                     notifyDataSetChanged();
                 }
             }
         });
 
-        viewHodler.ch_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//       viewHodler.ch_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//           @Override
+//           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//               MissionpushActivity missionpush = (MissionpushActivity) context;
+//               missionpush.getpush(data.get(position).getId(),isChecked);
+//               notifyDataSetChanged();
+//               Log.i("pushMap",isChecked+"");
+//           }
+//       });
 
         viewHodler.recycler_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PushdialogActivity.class);
-                intent.putExtra("content", data.get(position).getLabel());//内容
-                intent.putExtra("requirements", data.get(position).getContent());//要求
+                //内容
+                intent.putExtra("content", data.get(position).getLabel());
+                //要求
+                intent.putExtra("requirements", data.get(position).getContent());
                 intent.putExtra("title", data.get(position).getPreconditionsCurid());
                 intent.putExtra("user", data.get(position).getLeaderName());
-                intent.putExtra("number", data.get(position).getSendTimes());//推送次数
+                //推送次数
+                intent.putExtra("number", data.get(position).getSendTimes());
                 context.startActivity(intent);
 
             }
