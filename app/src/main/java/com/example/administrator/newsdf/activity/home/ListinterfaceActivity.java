@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.Bean.List_interface;
-import com.example.administrator.newsdf.Bean.PhotoBean;
+import com.example.administrator.newsdf.bean.List_interface;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;

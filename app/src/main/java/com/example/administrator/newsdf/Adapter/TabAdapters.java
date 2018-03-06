@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.Tab_fragment_item;
+import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.Inface_all_item;
+import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.SlantedTextView;

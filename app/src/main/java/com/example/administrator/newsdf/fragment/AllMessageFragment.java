@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.adapter.AllMessageAdapter;
-import com.example.administrator.newsdf.Bean.Home_item;
+import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;

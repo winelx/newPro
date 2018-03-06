@@ -27,7 +27,7 @@ import com.baidu.location.LocationClientOption;
 import com.example.administrator.newsdf.adapter.PhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
-import com.example.administrator.newsdf.baseActivity;
+import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
@@ -111,7 +111,7 @@ public class CheckActivity extends AppCompatActivity implements View.OnClickList
     //定位
     private void location() {
         //定位初始化
-        locationService = ((baseActivity) getApplication()).locationService;
+        locationService = ((baseApplication) getApplication()).locationService;
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
         //注册监听

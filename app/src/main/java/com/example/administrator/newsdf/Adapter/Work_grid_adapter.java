@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.View.PieChartBeans;
+import com.example.administrator.newsdf.view.PieChartBeans;
 
 import java.util.ArrayList;
 import java.util.List;

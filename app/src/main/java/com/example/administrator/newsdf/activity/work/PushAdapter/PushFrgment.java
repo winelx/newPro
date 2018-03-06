@@ -2,10 +2,12 @@ package com.example.administrator.newsdf.activity.work.PushAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -15,14 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.Bean.Push_item;
+import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.MissionpushActivity;
+import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
 import com.example.administrator.newsdf.utils.Request;
-import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -41,9 +43,9 @@ import okhttp3.Response;
 
 
 /**
- * 作者：winelx
- * 时间：2017/12/2 0002:下午 16:49
- * 说明：
+ * @author ：winelx
+ *         时间：2017/12/2 0002:下午 16:49
+ *         说明：
  */
 @SuppressLint("ValidFragment")
 public class PushFrgment extends LazyFragment {
@@ -54,20 +56,16 @@ public class PushFrgment extends LazyFragment {
     private ListView mContentRlv;
     private RelativeLayout push_img;
     //定义控件
-    private Button btn_delete;
-    private CheckBox che_all;
     private TextView push_img_text;
-    boolean status = false;
     private ImageView push_img_nonew;
     /**
-     *   定义自定义适配器
+     * 定义自定义适配器
      */
     private PushfragmentAdapter myAdapter;
-    private WbsDialog selfDialog;
     /**
      * 存放选中项的集合
      */
-    private   List<String> deleSelect;
+    private List<String> deleSelect;
     String
             //内容
             content,
@@ -85,12 +83,17 @@ public class PushFrgment extends LazyFragment {
     preconditionsName;
     private View mEmptyView;
     private TextView push_jing;
+    private Button head_modify;
+    private CheckBox che_all;
 
-    //获取当前是第几个界面
+    /**
+     * 获取当前是第几个界面
+     */
     @SuppressLint("ValidFragment")
     public PushFrgment(int pos) {
         this.pos = pos;
     }
+
     private int mPage = 1;
     private int mIndex = 1;
     private SmartRefreshLayout refreshLayout;
@@ -105,6 +108,8 @@ public class PushFrgment extends LazyFragment {
         push_img = view.findViewById(R.id.push_img);
         push_img_text = view.findViewById(R.id.push_img_text);
         mContentRlv = (ListView) view.findViewById(R.id.lv_data);
+        head_modify = view.findViewById(R.id.head_modify);
+        che_all = view.findViewById(R.id.che_all);
         myAdapter = new PushfragmentAdapter(mContext);
         mContentRlv.setAdapter(myAdapter);
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
@@ -117,10 +122,13 @@ public class PushFrgment extends LazyFragment {
                 refreshlayout.finishRefresh(1500);
             }
         });
+        head_modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                get();
+            }
+        });
 
-        //获取控件
-        btn_delete = (Button) view.findViewById(R.id.btn_delete);
-        che_all = (CheckBox) view.findViewById(R.id.che_all);
         push_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,14 +138,45 @@ public class PushFrgment extends LazyFragment {
 
             }
         });
+        che_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (che_all.isChecked()) {
+                    ArrayList<String> list = new ArrayList<String>();
+                    MissionpushActivity missionpush = (MissionpushActivity) mContext;
+                    for (int i = 0; i < data.size(); i++) {
+                        list.add(data.get(i).getId());
+                    }
+                    missionpush.getAllPush(list, true);
+                } else {
+                    ArrayList<String> list = new ArrayList<String>();
+                    MissionpushActivity missionpush = (MissionpushActivity) mContext;
+
+                    missionpush.getAllPush(list, false);
+                }
+
+            }
+        });
         initlistener();
+        mContentRlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(mContext, PushdialogActivity.class);
+                //内容
+                intent.putExtra("content", data.get(position).getLabel());
+                //要求
+                intent.putExtra("requirements", data.get(position).getContent());
+                intent.putExtra("title", data.get(position).getPreconditionsCurid());
+                intent.putExtra("user", data.get(position).getLeaderName());
+                //推送次数
+                intent.putExtra("number", data.get(position).getSendTimes());
+                startActivity(intent);
+            }
+        });
         okgo();
         return view;
     }
 
-    public void checkbox() {
-        che_all.setChecked(false);
-    }
 
     private void initlistener() {
         /**
@@ -164,37 +203,14 @@ public class PushFrgment extends LazyFragment {
                 }
             }
         });
-        //推送按钮点击事件
-        btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //创建一个要推送内容的集合，不能直接在数据源data集合中直接进行操作，否则会报异常
-                deleSelect = new ArrayList<String>();
-                //把选中的条目要推送的条目放在deleSelect这个集合中
-                for (int i = 0; i < data.size(); i++) {
-                    if (data.get(i).getChecked()) {
-                        deleSelect.add(data.get(i).getId());
-                    }
-                }
-                //判断用户是否选中要推送的数据及是否有数据
-                if (deleSelect.size() != 0 && data.size() != 0) {
-                    String strids = Dates.listToString(deleSelect);
-                    pushOkgo(strids);
-                } else if (data.size() == 0) {
-                    Toast.makeText(getActivity(), "没有要推送的数据", Toast.LENGTH_SHORT).show();
-                } else if (deleSelect.size() == 0) {
-                    Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Dates.disDialog();
-        che_all.setChecked(false);
+
     }
 
     //请求界面
@@ -283,84 +299,32 @@ public class PushFrgment extends LazyFragment {
                 });
     }
 
-    //推送请求
-    void pushOkgo(String str) {
-        OkGo.post(Request.pushOKgo)
-                .params("ids", str)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String msg = jsonObject.getString("msg");
-                            int ret = jsonObject.getInt("ret");
-                            ToastUtils.showShortToast(msg);
-                            if (ret == 0) {
-                                //把deleSelect集合中的数据清空
-                                deleSelect.clear();
-                                //把全选复选框设置为false
-                                che_all.setChecked(false);
-                                //通知适配器更新UI
-                                okgo();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //把全选复选框设置为false
-        che_all.setChecked(false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        che_all.setChecked(false);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        che_all.setChecked(false);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //把全选复选框设置为false
-        che_all.setChecked(false);
-    }
-
     @Override
     public void LazyLoad() {
 
     }
 
-//    public  void  get(){
-//        //创建一个要推送内容的集合，不能直接在数据源data集合中直接进行操作，否则会报异常
-//        deleSelect = new ArrayList<String>();
-//        //把选中的条目要推送的条目放在deleSelect这个集合中
-//        for (int i = 0; i < data.size(); i++) {
-//            if (data.get(i).getChecked()) {
-//                deleSelect.add(data.get(i).getLeaderName());
-//            }
-//        }
-//        //判断用户是否选中要推送的数据及是否有数据
-//        if (deleSelect.size() != 0 && data.size() != 0) {
-//            String strids = Dates.listToString(deleSelect);
-////            pushOkgo(strids);
-//            for (int i = 0; i <deleSelect.size() ; i++) {
-//                Log.i("sds", deleSelect.get(i));
-//            }
-//        } else if (data.size() == 0) {
-//            Toast.makeText(getActivity(), "没有要推送的数据", Toast.LENGTH_SHORT).show();
-//        } else if (deleSelect.size() == 0) {
-//            Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    /**
+     * 批量修改负责人
+     */
+    public void get() {
+        //创建一个要推送内容的集合，不能直接在数据源data集合中直接进行操作，否则会报异常
+        deleSelect = new ArrayList<String>();
+        //把选中的条目要推送的条目放在deleSelect这个集合中
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getChecked()) {
+                deleSelect.add(data.get(i).getLeaderName());
+            }
+        }
+        //查看集合是否有数据
+        if (deleSelect.size() != 0 && data.size() != 0) {
+            String strids = Dates.listToString(deleSelect);
+            //批量修改数据
+
+        } else if (data.size() == 0) {
+            Toast.makeText(getActivity(), "没有选项数据", Toast.LENGTH_SHORT).show();
+        } else if (deleSelect.size() == 0) {
+            Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

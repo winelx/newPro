@@ -30,8 +30,8 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.adapter.PopAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.Bean.Audio;
-import com.example.administrator.newsdf.Bean.PhotoBean;
+import com.example.administrator.newsdf.bean.Audio;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;

@@ -5,8 +5,6 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.baseActivity;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

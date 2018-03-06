@@ -7,14 +7,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.adapter.SettingAdapter;
-import com.example.administrator.newsdf.Bean.Icon;
+import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -52,6 +54,8 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
     private SPUtils spUtils;
     private CheckPermission checkPermission;
     private LinearLayout backgroud;
+    private EditText search_editext;
+    String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,52 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
                 .permissions(permissonItems)
                 .checkMutiPermission(null);
 
+        search_editext = (EditText) findViewById(R.id.search_editext);
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
+
+        findViewById(R.id.search_linear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result = search_editext.getText().toString();
+                ArrayList<Icon> icon = new ArrayList<Icon>();
+                for (int i = 0; i < mData.size(); i++) {
+                    String str = mData.get(i).getName();
+                    if (result.equals(str)) {
+                        icon.add(mData.get(i));
+                    }
+                }
+                if (icon.size() != 0) {
+                    mAdapter.getData(icon);
+                }
+            }
+        });
+
+        search_editext.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //是否是回车键
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    //隐藏键盘
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(MemberActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    result = search_editext.getText().toString();
+
+                    ArrayList<Icon> icon = new ArrayList<Icon>();
+                    for (int i = 0; i < mData.size(); i++) {
+                        String str = mData.get(i).getName();
+                        if (result.equals(str)) {
+                            icon.add(mData.get(i));
+                        }
+                    }
+                    if (icon.size() != 0) {
+                        mAdapter.getData(icon);
+                    }
+                }
+                return false;
+            }
+        });
         uslistView.setPullRefreshEnable(true);
         uslistView.setPullLoadEnable(false);
         uslistView.setAutoLoadEnable(false);
@@ -78,15 +126,18 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.member_item) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final Icon obj) {
-                holder.setImage(R.id.circleImageView, obj.getImageUrl()); //头像
-                holder.setText(R.id.member_name, obj.getName()); //名字
+                //头像
+                holder.setImage(R.id.circleImageView, obj.getImageUrl());
+                //名字
+                holder.setText(R.id.member_name, obj.getName());
                 holder.setOnClickListener(R.id.member, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent newpush = new Intent();
                         newpush.putExtra("name", obj.getName());
                         newpush.putExtra("userId", obj.getId());
-                        setResult(2, newpush);//回传数据到主Activity
+                        //回传数据到主Activity
+                        setResult(2, newpush);
                         finish(); //此方法后才能返回主Activity
                     }
                 });
@@ -106,7 +157,7 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
     //网络请求
     void okgo() {
         OkGo.post(Request.Members)
-                .params("orgId", spUtils.getString(mContext, "orgId", ""))
+                .params("orgId", SPUtils.getString(mContext, "orgId", ""))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -149,8 +200,9 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
                 //进行是否登录判断
                 onLoad();
                 return false;
+                //表示延迟3秒发送任务
             }
-        }).sendEmptyMessageDelayed(0, 2500);//表示延迟3秒发送任务
+        }).sendEmptyMessageDelayed(0, 2500);
 
     }
 

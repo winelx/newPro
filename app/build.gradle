@@ -11,6 +11,10 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters 'armeabi-v7a','x86'//or armeabi、arm64-v8a、x86
+        }
+
     }
 
     aaptOptions {
@@ -76,5 +80,6 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     //相册选图
     compile 'com.lzy.widget:imagepicker:0.5.5'
+    compile 'com.zxy.android:tiny:0.1.0'
     testCompile 'junit:junit:4.12'
 }

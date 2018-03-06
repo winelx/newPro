@@ -1,6 +1,6 @@
 package com.example.administrator.newsdf.GreenDao;
 
-import com.example.administrator.newsdf.baseActivity;
+import com.example.administrator.newsdf.baseApplication;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class LoveDao {
      * @param shop
      */
     public static void insertLove(Shop shop) {
-        baseActivity.getDaoInstant().getShopDao().insert(shop);
+        baseApplication.getDaoInstant().getShopDao().insert(shop);
     }
 
     /**
@@ -24,7 +24,7 @@ public class LoveDao {
      * @param id
      */
     public static void deleteLove(long id) {
-        baseActivity.getDaoInstant().getShopDao().deleteByKey(id);
+        baseApplication.getDaoInstant().getShopDao().deleteByKey(id);
     }
 
     /**
@@ -33,7 +33,7 @@ public class LoveDao {
      * @param shop
      */
     public static void updateLove(Shop shop) {
-        baseActivity.getDaoInstant().getShopDao().update(shop);
+        baseApplication.getDaoInstant().getShopDao().update(shop);
     }
 
     /**
@@ -42,11 +42,11 @@ public class LoveDao {
      * @return
      */
     public static List<Shop> queryLove() {
-        return baseActivity.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_LOVE)).list();
+        return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_LOVE)).list();
     }
 
     public static List<Shop> queryCart() {
-        return baseActivity.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
+        return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
     }
 
 }

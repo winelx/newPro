@@ -29,7 +29,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="15dp"
         android:layout_toRightOf="@id/image_ll"
-        android:scrollbarSize="0.5dp">
+        android:scrollbarSize="0.2dp">
 
         <LinearLayout
             android:id="@+id/dialog_mine"

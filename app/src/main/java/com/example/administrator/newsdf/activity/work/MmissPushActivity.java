@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.OrganizationEntity;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.TreeView.PushListviewAdapter;
-import com.example.administrator.newsdf.TreeView.TreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.PushListviewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -345,7 +345,7 @@ public class MmissPushActivity extends AppCompatActivity {
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
-            public void onClick(com.example.administrator.newsdf.TreeView.Node node, int position) {
+            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
                 if (node.isLeaf()) {
                 } else {
                     if (node.getChildren().size() == 0) {
@@ -369,7 +369,7 @@ public class MmissPushActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public void switchAct(com.example.administrator.newsdf.TreeView.Node node) {
+    public void switchAct(com.example.administrator.newsdf.treeView.Node node) {
         if (node.iswbs() != false) {
             switch (org_status) {
                 case "push":

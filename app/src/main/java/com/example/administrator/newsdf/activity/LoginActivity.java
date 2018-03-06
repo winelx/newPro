@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.baseActivity;
+import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mContext = baseActivity.getInstance();
+        mContext = baseApplication.getInstance();
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);

@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.DetailsBean;
+import com.example.administrator.newsdf.bean.DetailsBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.utils.Request;

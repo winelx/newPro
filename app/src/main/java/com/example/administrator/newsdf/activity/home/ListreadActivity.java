@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.adapter.Imageloaders;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.Bean.Inface_all_item;
-import com.example.administrator.newsdf.Bean.PhotoBean;
+import com.example.administrator.newsdf.bean.Inface_all_item;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -286,7 +286,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 //加载第一页
                 page = 1;
                 //请求数据时清除之前的
-                drew=true;
+                drew = true;
                 //网络请求
                 photoAdm(wbsid);
                 drawer_layout.openDrawer(GravityCompat.START);
@@ -452,6 +452,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     /**
      * 搜索
      */
@@ -473,6 +474,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     /**
      * 全部
      */

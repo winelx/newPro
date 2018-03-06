@@ -59,7 +59,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Comment" parent="android:TextAppearance">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     //网络请求dialog
@@ -124,7 +124,6 @@
     </style>
 
     //推送pop
-
     <style name="menu_item_text_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/popupwindow_menu_item_height</item>

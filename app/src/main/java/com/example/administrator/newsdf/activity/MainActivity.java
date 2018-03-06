@@ -12,7 +12,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.Bean.Tab;
+import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;

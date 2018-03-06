@@ -14,45 +14,31 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/head_modify"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/btn_delete"
-            android:layout_toStartOf="@+id/btn_delete"
+            android:layout_toLeftOf="@+id/che_all"
+            android:layout_toStartOf="@+id/che_all"
             android:background="@color/back"
             android:drawableLeft="@mipmap/write_areview"
             android:gravity="center"
             android:text="批量修改负责人"
             android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="19dp"
-            android:layout_marginRight="19dp"
-            android:layout_toLeftOf="@+id/che_all"
-            android:layout_toStartOf="@+id/che_all"
-            android:background="@color/back"
-            android:gravity="center"
-            android:padding="0dp"
-            android:text="推送"
-            android:textSize="15sp" />
 
         <CheckBox
             android:id="@+id/che_all"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:text="全选" />
+            android:text="全选"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 

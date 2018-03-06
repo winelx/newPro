@@ -6,38 +6,38 @@
 
     <RelativeLayout
         android:id="@+id/recycler_view"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/tab_str"
             android:layout_width="220dp"
             android:layout_height="20dp"
+            android:layout_above="@+id/tab_checkBox"
+            android:layout_alignLeft="@+id/tab_usr_img"
+            android:layout_alignStart="@+id/tab_usr_img"
             android:ellipsize="end"
             android:maxLines="1"
+            android:padding="0dp"
             android:text="请及时上传安装盖板的相关请及时上传安装盖板的相关资料资料"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:padding="0dp"
-            android:layout_above="@+id/tab_checkBox"
-            android:layout_alignLeft="@+id/tab_usr_img"
-            android:layout_alignStart="@+id/tab_usr_img" />
+            android:textStyle="bold" />
 
 
         <TextView
-            android:padding="0dp"
             android:id="@+id/tab_content"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tab_str"
+            android:layout_alignStart="@+id/tab_str"
+            android:layout_below="@+id/tab_str"
             android:ellipsize="end"
             android:maxLines="1"
+            android:padding="0dp"
             android:text="请及时上传安装盖板的相关请及时上传安装盖板的相关资料资料"
-            android:textSize="13sp"
-            android:layout_below="@+id/tab_str"
-            android:layout_alignLeft="@+id/tab_str"
-            android:layout_alignStart="@+id/tab_str" />
+            android:textSize="13sp" />
 
         <ImageView
             android:id="@+id/tab_usr_img"
@@ -69,26 +69,27 @@
             android:id="@+id/tab_fixed_tiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="推送次数"
-            android:textColor="#999999"
-            android:textSize="12sp"
-            android:drawableLeft="@mipmap/time"
-            android:drawablePadding="5dp"
             android:layout_alignBaseline="@+id/tab_fixed_number"
             android:layout_alignBottom="@+id/tab_fixed_number"
-            android:layout_alignRight="@+id/tab_content"
             android:layout_alignEnd="@+id/tab_content"
+            android:layout_alignRight="@+id/tab_content"
+            android:layout_marginEnd="48dp"
             android:layout_marginRight="48dp"
-            android:layout_marginEnd="48dp" />
+            android:drawableLeft="@mipmap/time"
+            android:drawablePadding="5dp"
+            android:text="推送次数"
+            android:textColor="#999999"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tab_fixed_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tab_usr_img"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/tab_fixed_tiem"
-            android:layout_toRightOf="@+id/tab_fixed_tiem"
+            android:layout_marginEnd="74dp"
+            android:layout_marginRight="74dp"
+            android:layout_toLeftOf="@+id/tab_checkBox"
+            android:layout_toStartOf="@+id/tab_checkBox"
             android:text="推送次数"
             android:textColor="#999999"
             android:textSize="12sp" />

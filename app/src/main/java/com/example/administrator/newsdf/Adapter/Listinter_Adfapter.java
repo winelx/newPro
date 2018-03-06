@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.List_interface;
+import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 

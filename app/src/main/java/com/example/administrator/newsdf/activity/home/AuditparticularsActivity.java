@@ -24,7 +24,7 @@ import com.example.administrator.newsdf.adapter.Aduio_content;
 import com.example.administrator.newsdf.adapter.Aduio_data;
 import com.example.administrator.newsdf.adapter.AudioAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.Bean.PhotoBean;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.utils.Dates;

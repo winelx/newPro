@@ -2,8 +2,6 @@ package com.example.administrator.newsdf.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +11,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.Push_item;
+import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
-import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 
 import java.util.ArrayList;
 
@@ -26,18 +23,16 @@ import java.util.ArrayList;
 
 public class PushfragmentAdapter extends BaseAdapter {
     private Dialog mCameraDialog;
-
     //定义一个数据源的引用
     private ArrayList<Push_item> data;
-    private Context context;
+    private Context mContext;
     private PopupWindow mPopWindow;
 
     public PushfragmentAdapter(Context context) {
-        this.context = context;
+        this.mContext = context;
 
         data = new ArrayList<>();
     }
-
 
     /**
      * 获取当前子view的id（就是listview中的每一个条目的位置）
@@ -73,7 +68,7 @@ public class PushfragmentAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         //布局生成器(抽象类)
-        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.mContext);
         //声明缓存
         ViewHodler viewHodler = null;
         //重新创建布局及缓存
@@ -115,45 +110,20 @@ public class PushfragmentAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (data.get(position).getChecked()) {
                     data.get(position).setChecked(false);
-                    MissionpushActivity missionpush = (MissionpushActivity) context;
-                    missionpush.getpush(data.get(position).getId(),false);
+                    MissionpushActivity missionpush = (MissionpushActivity) mContext;
+                    missionpush.getpush(data.get(position).getId(), false);
                     notifyDataSetChanged();
                 } else {
                     data.get(position).setChecked(true);
-                    Log.i("Value1",data.get(position).getId());
-                    MissionpushActivity missionpush = (MissionpushActivity) context;
-                    missionpush.getpush(data.get(position).getId(),true);
+                    MissionpushActivity missionpush = (MissionpushActivity) mContext;
+                    missionpush.getpush(data.get(position).getId(), true);
                     notifyDataSetChanged();
                 }
             }
         });
 
-//       viewHodler.ch_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//           @Override
-//           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//               MissionpushActivity missionpush = (MissionpushActivity) context;
-//               missionpush.getpush(data.get(position).getId(),isChecked);
-//               notifyDataSetChanged();
-//               Log.i("pushMap",isChecked+"");
-//           }
-//       });
 
-        viewHodler.recycler_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, PushdialogActivity.class);
-                //内容
-                intent.putExtra("content", data.get(position).getLabel());
-                //要求
-                intent.putExtra("requirements", data.get(position).getContent());
-                intent.putExtra("title", data.get(position).getPreconditionsCurid());
-                intent.putExtra("user", data.get(position).getLeaderName());
-                //推送次数
-                intent.putExtra("number", data.get(position).getSendTimes());
-                context.startActivity(intent);
 
-            }
-        });
         return convertView;
     }
 

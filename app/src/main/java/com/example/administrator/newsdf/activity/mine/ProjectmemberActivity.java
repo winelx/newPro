@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.adapter.SettingAdapter;
-import com.example.administrator.newsdf.Bean.Icon;
+import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.utils.Dates;

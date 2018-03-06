@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.Audio;
+import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.R;
 
 import java.util.ArrayList;

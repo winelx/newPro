@@ -16,7 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.example.administrator.newsdf.Bean.Inface_all_item;
+import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.SlantedTextView;

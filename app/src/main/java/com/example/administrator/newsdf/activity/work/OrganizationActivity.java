@@ -13,11 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.administrator.newsdf.Bean.OrganizationEntity;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.TreeView.Node;
-import com.example.administrator.newsdf.TreeView.SimpleTreeListViewAdapter;
-import com.example.administrator.newsdf.TreeView.TreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;

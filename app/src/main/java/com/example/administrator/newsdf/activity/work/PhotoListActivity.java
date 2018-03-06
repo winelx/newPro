@@ -5,17 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Bean.OrganizationEntity;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.TreeView.Node;
-import com.example.administrator.newsdf.TreeView.PhotolistViewAdapter;
-import com.example.administrator.newsdf.TreeView.TreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -35,17 +34,22 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
-
+/** 
+ * description: 
+ * @author lx
+ * date: 2018/3/6 0006 下午 4:54
+ * update: 2018/3/6 0006
+ * version: 
+*/
 public class PhotoListActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private ListView mTree;
-    private PhotolistViewAdapter<OrganizationEntity> mTreeAdapter;
+    private PhotolistViewAdapter mTreeAdapter;
     private TextView com_title;
     private int addPosition;
     private Context mContext;
-    String wbsname;
     private SmartRefreshLayout refreshLayout;
 
     @Override
@@ -57,7 +61,8 @@ public class PhotoListActivity extends AppCompatActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 okgo();
-                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                //传入false表示刷新失败
+                refreshlayout.finishRefresh(2000);
             }
         });
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
@@ -80,7 +85,6 @@ public class PhotoListActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private void okgo() {
@@ -88,7 +92,6 @@ public class PhotoListActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("OKGo", s);
                         mTreeDatas.clear();
                         getWorkOrganizationList(s);
                     }
@@ -144,68 +147,81 @@ public class PhotoListActivity extends AppCompatActivity {
                     JSONObject obj = jsonArray.getJSONObject(i);
                     OrganizationEntity organization = new OrganizationEntity();
                     try {
-                        organization.setId(obj.getString("id")); //节点id
+                        //节点id
+                        organization.setId(obj.getString("id"));
                     } catch (JSONException e) {
                         organization.setId("");
                     }
                     try {
-                        organization.setDepartname(obj.getString("name")); //节点名称
+                        //节点名称
+                        organization.setDepartname(obj.getString("name"));
                     } catch (JSONException e) {
                         organization.setDepartname("");
                     }
                     try {
-                        organization.setTypes(obj.getString("type")); //组织类型
+                        //组织类型
+                        organization.setTypes(obj.getString("type"));
                     } catch (JSONException e) {
                         organization.setTypes("");
                     }
                     try {
-                        organization.setIswbs(obj.getBoolean("iswbs")); //是否swbs
+                        //是否swbs
+                        organization.setIswbs(obj.getBoolean("iswbs"));
                     } catch (JSONException e) {
                         organization.setIswbs(false);
                     }
                     try {
-                        organization.setIsparent(obj.getBoolean("isParent")); //是否是父节点
+                        //是否是父节点
+                        organization.setIsparent(obj.getBoolean("isParent"));
                     } catch (JSONException e) {
                         organization.setIsparent(false);
                     }
                     try {
                         boolean isParentFlag = obj.getBoolean("isParent");
                         if (isParentFlag) {
-                            organization.setIsleaf("0"); //不是叶子节点
+                            //不是叶子节点
+                            organization.setIsleaf("0");
                         } else {
-                            organization.setIsleaf("1"); //是叶子节点
+                            //是叶子节点
+                            organization.setIsleaf("1");
                         }
                     } catch (JSONException e) {
                         organization.setIsleaf("");
                     }
                     try {
-                        organization.setParentId(obj.getString("parentId")); //组织机构父级节点
+                        //组织机构父级节点
+                        organization.setParentId(obj.getString("parentId"));
                     } catch (JSONException e) {
                         organization.setParentId("");
                     }
                     try {
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName")); //负责人 //进度
+                        //负责人 //进度
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
                     } catch (JSONException e) {
                         organization.setUsername("");
                     }
 
                     try {
-                        organization.setNumber(obj.getJSONObject("extend").getString("finish")); //进度
+                        //进度
+                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
                     } catch (JSONException e) {
                         organization.setNumber("");
                     }
                     try {
-                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId")); //负责热ID
+                        //负责热ID
+                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
                     } catch (JSONException e) {
                         organization.setUserId("");
                     }
                     try {
-                        organization.setTitle(obj.getString("title")); //节点层级
+                        //节点层级
+                        organization.setTitle(obj.getString("title"));
                     } catch (JSONException e) {
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getString("title")); //节点层级
+                        //节点层级
+                        organization.setPhone(obj.getString("title"));
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
@@ -247,7 +263,6 @@ public class PhotoListActivity extends AppCompatActivity {
             }
             Dates.disDialog();
         } else {
-            Log.i("ss", "不包含");
             Dates.disDialog();
         }
     }
@@ -277,7 +292,7 @@ public class PhotoListActivity extends AppCompatActivity {
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
-            public void onClick(com.example.administrator.newsdf.TreeView.Node node, int position) {
+            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
                 if (node.isLeaf()) {
                 } else {
                     if (node.getChildren().size() == 0) {
@@ -301,7 +316,6 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     public void switchAct(Node node) {
-        Log.i("sss", node.isDrawingGroup() + "");
         if (node.isDrawingGroup() == true) {
             Intent intent1 = new Intent(mContext, ListPhActivity.class);
             intent1.putExtra("groupId", node.getId());

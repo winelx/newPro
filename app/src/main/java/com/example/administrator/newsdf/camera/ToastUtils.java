@@ -3,7 +3,7 @@ package com.example.administrator.newsdf.camera;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.baseActivity;
+import com.example.administrator.newsdf.baseApplication;
 
 /**
  * Created by solexit04 on 2016/12/20.
@@ -18,10 +18,10 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showLongToast(String message) {
-        if (baseActivity.getInstance() == null)
+        if (baseApplication.getInstance() == null)
             return;
         if (toast == null) {
-            toast = Toast.makeText(baseActivity.getInstance(), message, Toast.LENGTH_LONG);
+            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.BOTTOM, 0, 100);
             toast.show();
         } else {
@@ -38,10 +38,10 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showShortToast(String message) {
-        if (baseActivity.getInstance() == null)
+        if (baseApplication.getInstance() == null)
             return;
         if (toast == null) {
-            toast = Toast.makeText(baseActivity.getInstance(), message, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.BOTTOM, 0, 100);
             toast.show();
         } else {

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.administrator.newsdf.adapter.SettingAdapter;
-import com.example.administrator.newsdf.Bean.Makeup;
+import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;

@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.adapter.TabAdapters;
-import com.example.administrator.newsdf.Bean.Tab_fragment_item;
+import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AuditparticularsActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;

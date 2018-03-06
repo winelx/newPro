@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.activity.work;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -11,22 +10,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.administrator.newsdf.Bean.PhotoBean;
-import com.example.administrator.newsdf.Bean.Push_item;
+import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PushAdapter.PushAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -54,7 +50,8 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
  * 任务推送
  */
 public class MissionpushActivity extends AppCompatActivity {
-    private TextView title, button;
+    private TextView title;
+    private LinearLayout button;
     private LinearLayout com_img;
     private RelativeLayout tabulation;
     private ViewPager mViewPager;
@@ -74,8 +71,6 @@ public class MissionpushActivity extends AppCompatActivity {
     private ListView drawer_layout_list;
     private TaskPhotoAdapter taskAdapter;
     private boolean drew = true;
-    private boolean popwind = true;
-    private PopupWindow mPopupWindow;
     //保存每个节目推送的ID
     private Map<String, List<String>> pushMap;
 
@@ -98,12 +93,11 @@ public class MissionpushActivity extends AppCompatActivity {
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer_layout.setScrimColor(Color.TRANSPARENT);
         title = (TextView) findViewById(R.id.com_title);
-        button = (TextView) findViewById(R.id.com_button);
+        button = (LinearLayout) findViewById(R.id.com_button);
         com_img = (LinearLayout) findViewById(R.id.com_img);
         com_img.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
         title.setText("任务下发");
-        button.setBackgroundResource(R.mipmap.toolbar_push);
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
         Intent intent = getIntent();
         //获取到intent传过来得集合
@@ -134,18 +128,13 @@ public class MissionpushActivity extends AppCompatActivity {
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View contentView = getPopupWindowContentView();
-                mPopupWindow = new PopupWindow(contentView,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-                mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+                Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
+                intent.putExtra("wbsname", wbsname);
+                intent.putExtra("wbsID", id);
+                //节点名称
+                intent.putExtra("title", "下发任务");
+                startActivity(intent);
 
-                // 设置好参数之后再show
-                // 默认在mButton2的左下角显示
-                mPopupWindow.showAsDropDown(com_img);
-                backgroundAlpha(0.5f);
-                //添加pop窗口关闭事件
-                mPopupWindow.setOnDismissListener(new poponDismissListener());
 
             }
         });
@@ -181,10 +170,16 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//
-//                View view = mViewPager.findViewWithTag(mViewPager.getCurrentItem());
-
+                //拿到当前的Viewpager的页数
+                String type = String.valueOf(mViewPager.getCurrentItem());
+                List<String> list = new ArrayList<String>();
+                list = pushMap.get(type);
+                String strids = Dates.listToString(list);
+                if (strids != null) {
+                    pushOkgo(strids);
+                } else {
+                    ToastUtils.showShortToast("请选择推送项");
+                }
 
             }
         });
@@ -203,7 +198,7 @@ public class MissionpushActivity extends AppCompatActivity {
         mViewPager.setAdapter(mAdapter);
         mAdapter.getID(id);
         mTabLayout.setupWithViewPager(mViewPager);
-//  那我们如果真的需要监听tab的点击或者ViewPager的切换,则需要手动配置ViewPager的切换,例如:
+        //那我们如果真的需要监听tab的点击或者ViewPager的切换,则需要手动配置ViewPager的切换,例如:
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -223,7 +218,9 @@ public class MissionpushActivity extends AppCompatActivity {
         });
     }
 
-    //接受activity返回的数据
+    /**
+     * 接受activity返回的数据
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -283,61 +280,6 @@ public class MissionpushActivity extends AppCompatActivity {
                 });
     }
 
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        // 布局ID
-        int layoutId = R.layout.popup_content_layout;
-        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Click " + ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
-                switch (v.getId()) {
-                    case R.id.menu_item1:
-                        Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
-                        intent.putExtra("wbsname", wbsname);
-                        intent.putExtra("wbsID", id);
-                        //节点名称
-                        intent.putExtra("title", "下发任务");
-                        startActivity(intent);
-                        break;
-                    case R.id.menu_item2:
-
-                        break;
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-        contentView.findViewById(R.id.menu_item1).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.menu_item2).setOnClickListener(menuItemOnClickListener);
-        return contentView;
-    }
-
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        //0.0-1.0
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
-    }
-
-    /**
-     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
-     *
-     * @author cg
-     */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-
-        @Override
-        public void onDismiss() {
-            // TODO Auto-generated method stub
-            backgroundAlpha(1f);
-        }
-
-    }
 
     /**
      * 单选数据存储和删除
@@ -371,17 +313,17 @@ public class MissionpushActivity extends AppCompatActivity {
                     //拿到当前界面存的数据集合
                     Value1 = pushMap.get(type);
                     pushMap.remove(type);
-                    Log.i("Value1", Value1.size() + "");
-                    for (int i = 0; i < Value1.size(); i++) {
-                        //判断要删除的是哪个数据
-                        if (Value1.get(i) == id) {
-                            //删除数据
-                            Value1.remove(i);
-                            for (int j = 0; j < Value1.size(); j++) {
-                                Log.i("Value1", Value1.get(j));
-                            }
+                    if (Value1.size() == 1) {
+
+                    } else {
+                        for (int i = 0; i < Value1.size(); i++) {
+                            //判断要删除的是哪个数据
+                            if (Value1.get(i) == id) {
+                                //删除数据
+                                Value1.remove(i);
 //                            //重新存入删除后的数据
-                            pushMap.put(type, Value1);
+                                pushMap.put(type, Value1);
+                            }
                         }
                     }
                 }
@@ -390,22 +332,19 @@ public class MissionpushActivity extends AppCompatActivity {
                 Value.add(id);
                 pushMap.put(type + "", Value);
             }
-
         } else {
             List<String> Value = new ArrayList<>();
             Value.add(id);
             pushMap.put(type + "", Value);
         }
-
     }
-    
+
     /**
      * 全选数据的存储和删除
      */
     public void getAllPush(ArrayList<String> ListId, boolean lean) {
         //拿到当前的Viewpager的页数
         String type = String.valueOf(mViewPager.getCurrentItem());
-
         if (lean) {
             //删除之前的所有数据
             pushMap.remove(type);
@@ -416,4 +355,25 @@ public class MissionpushActivity extends AppCompatActivity {
             pushMap.remove(type);
         }
     }
+
+    /**
+     *推送请求
+     */
+    void pushOkgo(String str) {
+        OkGo.post(Request.pushOKgo)
+                .params("ids", str)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String msg = jsonObject.getString("msg");
+                            ToastUtils.showShortToast(msg);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
 }

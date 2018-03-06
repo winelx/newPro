@@ -3,152 +3,226 @@
     android:id="@+id/lin_push_pop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#66000000"
+    android:background="@color/back"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_style"
-        android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryDark">
+
+        <LinearLayout
+            android:id="@+id/com_back"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|start"
+                android:gravity="center"
+                android:text="{fa-angle-left}"
+                android:textColor="@color/writer"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="修改配置"
+                android:textColor="@color/writer"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/com_title"
+            android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:layout_margin="0dp"
-            android:background="@drawable/push_dialog"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="详细内容"
-            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/writer"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/com_button"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|end"
+            android:gravity="center|end"
+            android:paddingRight="20dp"
+            android:text="保存"
+            android:textColor="@color/writer"
+            android:textSize="18sp" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:id="@+id/pushdialog_task_context"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="任务内容"
+            android:textColor="@color/editext_text"
             android:textSize="15sp" />
 
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/pushdialog_item_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="检查内容："
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/poop_blen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="请及时上传“路基工程”资料"
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="要求："
-                android:textSize="13sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/pop_requirements"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="13sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="前置项目名称 ："
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/pop_conditions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="负责人："
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/pop_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推送次数："
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/pop_pushnumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="2017-12-10"
-                android:textSize="13sp"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:background="@null"
+            android:text="路基填料"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/push_duty"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/pushdialog_task_context"
+        android:layout_marginTop="0.5dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:text="负责人"
+            android:textColor="@color/editext_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/push_item_duty"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@+id/textView1"
+            android:layout_toRightOf="@+id/textView1"
+            android:gravity="center"
+            android:text="刘小"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/push_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/push_duty"
+        android:layout_marginTop="0.5dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:text="前置条件"
+            android:textColor="@color/editext_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/push_item_conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_toRightOf="@+id/textView2"
+            android:gravity="center"
+            android:text="路基条件"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/push_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/push_conditions"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="推送内容"
+            android:textColor="@color/editext_text" />
+
+        <TextView
+            android:id="@+id/push_item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginStart="36dp"
+            android:layout_toRightOf="@+id/textView3"
+            android:gravity="center"
+            android:text="符合条件符合条件符合条件符合条件符合条件符合条件"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

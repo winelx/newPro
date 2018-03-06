@@ -58,22 +58,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:background="@mipmap/toolbar_add"
                         android:textSize="18sp" />
 
                 </LinearLayout>
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/com_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_marginRight="15dp"
-                    android:background="@mipmap/alone_push"
-                    android:textColor="@color/writer"
-                    android:textSize="18sp" />
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|end">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/toolbar_push"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
             </android.support.v7.widget.Toolbar>
 
             <LinearLayout
@@ -88,20 +97,19 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="9"
-                    app:tabIndicatorColor="@color/colorAccent"
                     android:background="@color/writer"
-                    app:tabMode="fixed"
                     app:tabBackground="@color/writer"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabMode="fixed"
                     app:tabSelectedTextColor="@color/colorPrimaryDark"
                     app:tabTextColor="@color/colorPrimary" />
-
 
                 <RelativeLayout
                     android:id="@+id/tabulation"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:background="@color/writer"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:background="@color/writer">
 
                     <ImageView
                         android:layout_width="25dp"
