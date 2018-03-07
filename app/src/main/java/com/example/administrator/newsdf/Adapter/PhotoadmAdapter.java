@@ -17,15 +17,14 @@ import com.example.administrator.newsdf.utils.Dates;
 import java.util.ArrayList;
 
 
-
-
 /**
  * description: 图册查看适配器
+ *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:40
  * update: 2018/2/6 0006
  * version:
-*/
+ */
 public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<PhotoBean> mData;
@@ -61,7 +60,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 for (int i = 0; i < mData.size(); i++) {
                     path.add(mData.get(i).getFilePath());
                 }
-                PhotoPreview.builder().setPhotos(path).setCurrentItem(position).setShowDeleteButton(false)
+                PhotoPreview.builder().setPhotos(path).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(true)
                         .start((Activity) mContext);
             }
         });

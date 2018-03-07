@@ -16,15 +16,14 @@ import com.example.administrator.newsdf.utils.Dates;
 import java.util.ArrayList;
 
 
-
-
 /**
  * description:
+ *
  * @author winelx
- * date:2017/11/30 0030:下午 14:46
- * update: 2018/3/1 0001
- * version:
-*/
+ *         date:2017/11/30 0030:下午 14:46
+ *         update: 2018/3/1 0001
+ *         version:
+ */
 
 public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
@@ -56,7 +55,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).setShowDeleteButton(false)
+                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false)
                         .start((Activity) mContext);
             }
         });

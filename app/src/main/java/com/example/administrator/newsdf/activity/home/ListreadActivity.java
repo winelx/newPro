@@ -126,7 +126,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         drawerLayout_smart.setEnableRefresh(false);
         listerad_nonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
         search_editext = (EditText) findViewById(R.id.search_editext);
-        //下拉刷新
+        /**
+         *   下拉刷新
+         */
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -176,6 +178,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 refreshlayout.finishLoadmore(2000);
             }
         });
+        /**
+         * editext回车键搜索
+         */
         search_editext.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -313,6 +318,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -412,7 +418,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //组织id查询
+    /**
+     * 组织id查询
+     */
     private void okgo(String wbsId, String msgStatus, String content, int i) {
         post(Request.CascadeList)
                 .params("orgId", id)
@@ -456,7 +464,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     /**
      * 搜索
      */
-
     private void searchokgo1(String wbsId, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
@@ -478,7 +485,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     /**
      * 全部
      */
-
     private void okgoall(String wbsId, String content, int i) {
         post(Request.CascadeList)
                 .params("orgId", id)
@@ -490,7 +496,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("search", "search2");
                         parsingjson(s);
                     }
                 });
@@ -519,12 +524,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
             finish();
         }
         return true;
     }
-
 
     @Override
     protected void onStop() {
@@ -536,14 +539,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
-
     private void parsingjson(String s) {
-
         String wbsPath;
         String updateDate;
         String content;
@@ -557,7 +553,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             Alldata.clear();
         }
         if (s.indexOf("data") != -1) {
-            System.out.println("有数据");
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
@@ -636,9 +631,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                         content = "";
                     }
-
                     String userId = "", protrait = "", upload_addr = "", upload_content = "", upload_time = "", uploador = "";
-//                //个人信息
+                    //个人信息
                     try {
                         userId = json1.getString("id");
                     } catch (JSONException e) {

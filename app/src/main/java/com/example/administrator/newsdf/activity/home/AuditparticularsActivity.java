@@ -16,17 +16,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.adapter.Aduio_comm;
 import com.example.administrator.newsdf.adapter.Aduio_content;
 import com.example.administrator.newsdf.adapter.Aduio_data;
 import com.example.administrator.newsdf.adapter.AudioAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -47,7 +46,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
-import static com.example.administrator.newsdf.R.id.drawer_layout;
 
 
 /**
@@ -68,8 +66,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private ArrayList<Aduio_comm> aduio_comms;
     private Context mContext;
     private TextView wbsnam, com_title, wbspath, com_button;
-    private SPUtils spUtils;
-    private PopupWindow popupWindow;
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     private SwipeRefreshLayout mSwipeLayout;
@@ -100,7 +96,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         }
 
 
-        drawerLayout = (DrawerLayout) findViewById(drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
@@ -139,7 +135,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
             default:
                 break;
         }
-
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, AuditparticularsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
         com_button.setOnClickListener(new View.OnClickListener() {
@@ -332,7 +327,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("audio", s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);

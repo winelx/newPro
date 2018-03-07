@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -116,14 +117,19 @@ public class Dates {
     public static void getImg(Context context, String imageUrl, ImageView view) {
         Glide.with(context)
                 .load(imageUrl)
-                .transition(new DrawableTransitionOptions().crossFade(2000))
+                .transition(new DrawableTransitionOptions().crossFade(1000))
                 .thumbnail(Glide.with(context)
                         .load(R.mipmap.mine_avatar))
                 .into(view);
     }
 
     public static void setback(Context context, String imageUrl, ImageView view) {
-        Glide.with(context).load(imageUrl).into((ImageView) view);
+        Glide.with(context)
+                .load(imageUrl)
+                .transition(new DrawableTransitionOptions().crossFade(1000))
+                .thumbnail(Glide.with(context)
+                        .load(R.mipmap.mine_avatar))
+                .into(view);
     }
 
     //判断权限是否开启
@@ -198,20 +204,16 @@ public class Dates {
     }
 
 
-    /**
-     * 保存添加水印的 图片
-     */
+    //保存添加水印的 图片
     public static String saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
-        String str = "/storage/emulated/0/";
-        // Environment.getExternalStorageDirectory()==   Boohee：为指定的文件夹
-        File appDir = new File(str, "Boohee");
+        // Environment.getExternalStorageDirectory()==/storage/emulated/0/   Boohee：为指定的文件夹
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
         //设置系统时间为文件名
         String fileName = System.currentTimeMillis() + ".jpg";
-        Log.i("Boohee", fileName);
         //文件夹和文件名
         File file = new File(appDir, fileName);
         try {
@@ -228,19 +230,19 @@ public class Dates {
         }
         /**
          * 其次把文件插入到系统图库
-         * 注：下面这段代码会保存一张缩略图片；
+         * 注：这段代码会保存两张图片；
          *
          */
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
         // 返回路径展示图片
         return appDir + "/" + fileName;
+
     }
 
     public static String downloadPhoto(Context context, Bitmap bmp, String result) {
         // 首先保存图片
-        String str = "/storage/emulated/0/Android/data/";
-        File appDir = new File(str, "picker");
+        File appDir = new File(Environment.getExternalStorageDirectory(), "picker");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -251,6 +253,7 @@ public class Dates {
         shop.setImage_url(appDir + "/" + fileName);
         shop.setName(result);
         LoveDao.insertLove(shop);
+        ToastUtils.showShortToast("已保存");
         //文件夹和文件名
         File file = new File(appDir, fileName);
         try {
@@ -265,7 +268,7 @@ public class Dates {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ToastUtils.showShortToast("保存成功");
+        // 返回路径展示图片
         return appDir + "/" + fileName;
 
     }

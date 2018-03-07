@@ -123,7 +123,6 @@ public class Imageloaders extends BaseAdapter {
         ArrayList<String> path = new ArrayList<>();
         path.addAll(list.get(position).getUpload());
         Dates.setback(context, list.get(position).getPortrait(), holder.user_auathor);
-
         switch (list.get(position).getIsFinish() + "") {
             //未完成
             case "0":

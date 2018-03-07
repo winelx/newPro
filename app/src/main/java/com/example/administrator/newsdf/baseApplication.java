@@ -19,7 +19,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.zxy.tiny.Tiny;
 
 /**
  * @author lx
@@ -45,7 +44,7 @@ public class baseApplication extends Application {
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
         OkGo.init(this);
         Iconify.with(new FontAwesomeModule());
-        Tiny.getInstance().init(this);
+
         OkGo.getInstance()
                 //可以全局统一设置缓存模式,默认是不使用缓存,可以不传,具体其他模式看 github 介绍 https://github.com/jeasonlzy/
                 .setCacheMode(CacheMode.NO_CACHE)

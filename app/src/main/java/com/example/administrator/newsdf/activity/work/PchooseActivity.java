@@ -72,9 +72,8 @@ public class PchooseActivity extends AppCompatActivity {
                     for (int i = 0; i < listPath.size(); i++) {
                         drawable.add(listPath.get(i).getImage_url());
                     }
-                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).setShowDeleteButton(true)
+                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).setShowDeleteButton(true).setShowUpLoadeButton(false)
                             .start((Activity) mContext);
-//                    Dates.getImg(mContext, drawable.get(0), image);
                 } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }

@@ -60,7 +60,8 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_projectmember);
+
+        setContentView(R.layout.activity_project_respon);
         mContext = MemberActivity.this;
         mData = new ArrayList<>();
         List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();

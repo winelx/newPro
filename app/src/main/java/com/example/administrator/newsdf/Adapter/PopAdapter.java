@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.Audio;
 
 import java.util.ArrayList;
 
@@ -54,8 +53,6 @@ public class PopAdapter extends BaseAdapter implements ListAdapter {
         }
         TextView tv_item = (TextView) convertView.findViewById(R.id.tv_item);
         tv_item.setText(list.get(position).getName());
-        Log.i("olgodse", list.get(position).getName());
-
         return convertView;
     }
 

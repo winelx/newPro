@@ -38,6 +38,7 @@ import static com.example.administrator.newsdf.photopicker.PhotoPicker.KEY_SELEC
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_CURRENT_ITEM;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_PHOTOS;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
+import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_UPLOADE;
 
 
 /**
@@ -54,6 +55,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String path;
     private ActionBar actionBar;
     private boolean showDelete;
+    private boolean showUploade;
     private LinearLayout upload;
     private List<Shop> listPath;
     private List<String> paths;
@@ -97,10 +99,12 @@ public class PhotoPagerActivity extends AppCompatActivity {
         int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
         paths = getIntent().getStringArrayListExtra(EXTRA_PHOTOS);
         showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE, true);
+        showUploade = getIntent().getBooleanExtra(EXTRA_SHOW_UPLOADE, true);
         if (pagerFragment == null) {
             pagerFragment =
                     (ImagePagerFragment) getSupportFragmentManager().findFragmentById(R.id.photoPagerFragment);
         }
+
         pathname = new ArrayList<>();
         listPath = new ArrayList<>();
         //加载数据库数据
@@ -112,11 +116,10 @@ public class PhotoPagerActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         actionBar = getSupportActionBar();
-        if (showDelete) {
+        if (showUploade == false) {
             upload.setVisibility(View.GONE);
         } else {
             upload.setVisibility(View.VISIBLE);
-
         }
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
+import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
 import com.example.administrator.newsdf.utils.Request;
@@ -80,7 +81,11 @@ public class PushFrgment extends LazyFragment {
     //推送次数
     sendTimes,
     //前置项
-    preconditionsName;
+    preconditionsName,
+    //用户ID
+    leaderId,
+    //前置项ID
+    preconditions;
     private View mEmptyView;
     private TextView push_jing;
     private Button head_modify;
@@ -99,7 +104,7 @@ public class PushFrgment extends LazyFragment {
     private SmartRefreshLayout refreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.push, container, false);
         data = new ArrayList<>();
@@ -161,15 +166,27 @@ public class PushFrgment extends LazyFragment {
         mContentRlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                MissionpushActivity activity = (MissionpushActivity) mContext;
+                String WbsID = activity.getId();
                 Intent intent = new Intent(mContext, PushdialogActivity.class);
-                //内容
-                intent.putExtra("content", data.get(position).getLabel());
-                //要求
-                intent.putExtra("requirements", data.get(position).getContent());
-                intent.putExtra("title", data.get(position).getPreconditionsCurid());
+                //用户名
                 intent.putExtra("user", data.get(position).getLeaderName());
+                //前置条件
+                intent.putExtra("requirements", data.get(position).getPreconditionsName());
+                //内容
+                intent.putExtra("content", data.get(position).getContent());
+                //任务名称
+                intent.putExtra("label", data.get(position).getLabel());
+                //用户ID
+                intent.putExtra("userId", data.get(position).getLeaderId());
+                //wbsId
+                intent.putExtra("WbsID", WbsID);
                 //推送次数
-                intent.putExtra("number", data.get(position).getSendTimes());
+                intent.putExtra("sendTimes", data.get(position).getSendTimes());
+                //前置项ID
+                intent.putExtra("preconditions", data.get(position).getPreconditions());
+                //任务ID
+                intent.putExtra("id", data.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -220,6 +237,7 @@ public class PushFrgment extends LazyFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Log.i("push", s);
                         if (s.indexOf("data") != -1) {
                             data.clear();
                             try {
@@ -272,7 +290,20 @@ public class PushFrgment extends LazyFragment {
                                             e.printStackTrace();
                                             preconditionsName = "";
                                         }
-                                        data.add(new Push_item(content, id, label, preconditionsName, leaderName, sendTime, sendTimes, false));
+                                        try {
+                                            leaderId = josn1.getString("leaderId");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            leaderId = "";
+                                        }
+                                        try {
+                                            preconditions = josn1.getString("preconditions");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            preconditions = "";
+                                        }
+                                        data.add(new Push_item(content, id, label, preconditionsName,
+                                                leaderName, sendTime, sendTimes, false, leaderId, preconditions));
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);

@@ -35,15 +35,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="项目成员"
-            android:textColor="@color/writer"
-            android:textSize="18sp" />
-
         <LinearLayout
             android:id="@+id/search_linear"
             android:layout_width="50dp"
@@ -56,11 +47,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@mipmap/search_for"
-                android:visibility="gone" />
+                android:background="@mipmap/search_for" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/lin_search"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15sp"
+            android:background="@color/writer">
+
+            <EditText
+                android:id="@+id/search_editext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="成员名字 "
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColorHint="@color/view"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
 

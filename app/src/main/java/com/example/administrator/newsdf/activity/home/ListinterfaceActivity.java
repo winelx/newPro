@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,12 +25,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -196,7 +195,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                     mData.clear();
                     //搜索
                     search(1);
-                    Log.i("search", "刷新数据");
                 }
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(1500);
@@ -453,8 +451,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
-    //组织id查询
+    /**
+     * 组织id查询
+     */
     private void okgo(String wbsId, String msgStatus, String content, int i) {
         post(Request.CascadeList)
                 .params("orgId", id)
@@ -466,8 +465,12 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("onSuccess", s);
+                        if (swip == false) {
+                            mData.clear();
+
+                        }
                         if (s.indexOf("data") != -1) {
+
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
@@ -481,7 +484,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 });
     }
 
-    //搜索
+    /**
+     * 搜索
+     */
+
     void searchokgo(String wbsId, String msgStatus, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
@@ -495,17 +501,21 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.indexOf("data") != -1) {
+                            if (swip == false) {
+                                mData.clear();
+                            }
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
 
                         }
-
                     }
                 });
     }
 
-    //搜索
+    /**
+     * 搜索
+     */
     void searchokgo1(String wbsId, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
@@ -518,7 +528,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.indexOf("data") != -1) {
-                            Log.i("ss", s);
+                            if (swip == false) {
+                                mData.clear();
+                            }
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
@@ -531,7 +543,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
     /**
      * 请求全部数据
      */
-
     void okgoall(String wbsId, String content, int i) {
         post(Request.CascadeList)
                 .params("orgId", id)
@@ -543,6 +554,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.indexOf("data") != -1) {
+                            if (swip == false) {
+                                mData.clear();
+                            }
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
@@ -609,14 +623,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    /**
-     * 界面消失
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
 
     /**
      * 解析json
@@ -625,7 +631,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
      */
     void getJson(String s) {
         refreshLayout.finishRefresh(true);
-        Log.i("json", s);
         try {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -652,7 +657,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 mData.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
             }
             mAdapter.getDate(mData);
-            Dates.disDialog();
         } catch (JSONException e) {
             e.printStackTrace();
         }

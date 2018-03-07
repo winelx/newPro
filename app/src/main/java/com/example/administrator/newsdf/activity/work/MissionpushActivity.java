@@ -357,7 +357,7 @@ public class MissionpushActivity extends AppCompatActivity {
     }
 
     /**
-     *推送请求
+     * 推送请求
      */
     void pushOkgo(String str) {
         OkGo.post(Request.pushOKgo)
@@ -376,4 +376,7 @@ public class MissionpushActivity extends AppCompatActivity {
                 });
     }
 
+    public String getId() {
+        return id;
+    }
 }

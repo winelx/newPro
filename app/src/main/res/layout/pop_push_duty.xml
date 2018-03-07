@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/node_pop_rel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,13 +48,14 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp" />
+                        android:background="@mipmap/pop_dismiss" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -70,8 +72,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginStart="45dp"
                     android:gravity="center"
                     android:text="检查项" />
 
@@ -79,8 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="106dp"
-                    android:layout_marginStart="106dp"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginStart="52dp"
                     android:layout_toEndOf="@+id/textView6"
                     android:layout_toRightOf="@+id/textView6"
                     android:gravity="center"
@@ -92,7 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/writer"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                tools:listitem="@layout/item_pop_duty" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

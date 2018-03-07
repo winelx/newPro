@@ -19,7 +19,7 @@ public class PhotoPreview {
     public final static String EXTRA_CURRENT_ITEM = "current_item";
     public final static String EXTRA_PHOTOS = "photos";
     public final static String EXTRA_SHOW_DELETE = "show_delete";
-
+    public final static String EXTRA_SHOW_UPLOADE = "show_uploade";
 
     public static PhotoPreviewBuilder builder() {
         return new PhotoPreviewBuilder();
@@ -96,6 +96,11 @@ public class PhotoPreview {
 
         public PhotoPreviewBuilder setShowDeleteButton(boolean showDeleteButton) {
             mPreviewOptionsBundle.putBoolean(EXTRA_SHOW_DELETE, showDeleteButton);
+            return this;
+        }
+
+        public PhotoPreviewBuilder setShowUpLoadeButton(boolean showDeleteButton) {
+            mPreviewOptionsBundle.putBoolean(EXTRA_SHOW_UPLOADE, showDeleteButton);
             return this;
         }
     }

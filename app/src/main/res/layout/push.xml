@@ -21,24 +21,24 @@
             android:layout_toLeftOf="@+id/che_all"
             android:layout_toStartOf="@+id/che_all"
             android:background="@color/back"
-            android:drawableLeft="@mipmap/write_areview"
+            android:drawableLeft="@mipmap/pen_blue"
             android:gravity="center"
             android:text="批量修改负责人"
-            android:textColor="@color/black" />
+            android:textColor="@color/colorAccent" />
 
 
         <CheckBox
             android:id="@+id/che_all"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:text="全选"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:text="全选" />
     </RelativeLayout>
 
 

@@ -44,7 +44,6 @@ import okhttp3.Response;
  */
 public class ProjectmemberActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
-    private TextView textView, comtitle;
     private EditText useditext;
     private LinearLayout comback;
     private SettingAdapter mAdapter = null;
@@ -74,7 +73,7 @@ public class ProjectmemberActivity extends AppCompatActivity implements XListVie
         uslistView.setAutoLoadEnable(false);
         uslistView.setXListViewListener(this);
         uslistView.setRefreshTime(getTime());
-        comtitle = (TextView) findViewById(R.id.com_title);
+
         comback = (LinearLayout) findViewById(R.id.com_back);
         okgo();
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.setting_member_item) {
@@ -96,7 +95,7 @@ public class ProjectmemberActivity extends AppCompatActivity implements XListVie
                 });
             }
         };
-        comtitle.setText(SPUtils.getString(mContext, "username", ""));
+
         uslistView.setAdapter(mAdapter);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
