@@ -40,7 +40,6 @@ import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_PH
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_UPLOADE;
 
-
 /**
  * description:
  *
@@ -50,7 +49,6 @@ import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SH
  *         version:
  */
 public class PhotoPagerActivity extends AppCompatActivity {
-    String str = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/";
     private ImagePagerFragment pagerFragment;
     private String path;
     private ActionBar actionBar;
@@ -65,7 +63,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
      * 异步get,直接调用
      */
     private OkHttpClient client;
-    byte[] bytes;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -95,7 +92,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.__picker_activity_photo_pager);
-
         int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
         paths = getIntent().getStringArrayListExtra(EXTRA_PHOTOS);
         showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE, true);
@@ -104,7 +100,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
             pagerFragment =
                     (ImagePagerFragment) getSupportFragmentManager().findFragmentById(R.id.photoPagerFragment);
         }
-
         pathname = new ArrayList<>();
         listPath = new ArrayList<>();
         //加载数据库数据
@@ -128,7 +123,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 actionBar.setElevation(25);
             }
         }
-
         pagerFragment.getViewPager().addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -159,7 +153,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (showDelete) {
@@ -167,8 +160,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -177,23 +168,18 @@ public class PhotoPagerActivity extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }
-
         if (item.getItemId() == R.id.delete) {
             Dates.getDialogs(PhotoPagerActivity.this, "删除数据");
             final int index = pagerFragment.getCurrentItem();
             if (pagerFragment.getPaths().size() >= 1) {
                 pagerFragment.getPaths().remove(index);
                 pagerFragment.getViewPager().getAdapter().notifyDataSetChanged();
-
                 LoveDao.deleteLove(listPath.get(index).getId());
                 Dates.deleteFile(listPath.get(index).getImage_url());
             }
@@ -202,7 +188,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void updateActionBarTitle() {
         if (actionBar != null) {
             actionBar.setTitle(
@@ -210,7 +195,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                             pagerFragment.getPaths().size()));
         }
     }
-
     private void asyncGet(String IMAGE_URL) {
         client = new OkHttpClient();
         final Request request = new Request.Builder().get()
@@ -222,7 +206,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 //下载失败
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //下载成功 在handler中保存数据
@@ -230,19 +213,15 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 message.what = 1;
                 message.obj = response.body().bytes();
                 handler.sendMessage(message);
-                //......
             }
         });
     }
-
     public void care() {
         //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
         pathname.clear();
         listPath = LoveDao.queryCart();
-        Log.i("listPath", listPath.size() + "");
         for (int i = 0; i < listPath.size(); i++) {
             pathname.add(listPath.get(i).getName());
         }
     }
-
 }

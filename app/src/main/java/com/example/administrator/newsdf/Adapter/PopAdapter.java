@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -52,7 +53,9 @@ public class PopAdapter extends BaseAdapter implements ListAdapter {
             convertView = inflater.inflate(R.layout.item_pop, null);
         }
         TextView tv_item = (TextView) convertView.findViewById(R.id.tv_item);
+        ImageView tv_image = (ImageView) convertView.findViewById(R.id.tv_image);
         tv_item.setText(list.get(position).getName());
+
         return convertView;
     }
 

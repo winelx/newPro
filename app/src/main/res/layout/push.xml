@@ -23,7 +23,7 @@
             android:background="@color/back"
             android:drawableLeft="@mipmap/pen_blue"
             android:gravity="center"
-            android:text="批量修改负责人"
+            android:text="批量修改责任人"
             android:textColor="@color/colorAccent" />
 
 

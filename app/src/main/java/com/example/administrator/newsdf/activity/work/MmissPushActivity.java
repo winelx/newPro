@@ -464,6 +464,7 @@ public class MmissPushActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
+                                intent.putExtra("titles", "任务下发");
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);

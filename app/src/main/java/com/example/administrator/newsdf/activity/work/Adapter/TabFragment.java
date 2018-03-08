@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.activity.work.Adapter.TabAdapter.ids;
 import static com.example.administrator.newsdf.activity.work.Adapter.TabAdapter.wbeID;
 
 
@@ -73,8 +74,9 @@ public class TabFragment extends LazyFragment {
             public void onRefresh(RefreshLayout refreshlayout) {
                 i = 1;
                 status = true;
-                okgo(TabAdapter.ids.get(pos), 1);
-                refreshlayout.finishRefresh(1500/*,false*/);//传入false表示刷新失败
+                okgo(ids.get(pos), 1);
+                //传入false表示刷新失败
+                refreshlayout.finishRefresh(1500/*,false*/);
             }
         });
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -83,7 +85,7 @@ public class TabFragment extends LazyFragment {
                 i = i + 1;
                 status = false;
                 Log.i("tabloading", i + "");
-                okgo(TabAdapter.ids.get(pos), i);
+                okgo(ids.get(pos), i);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -133,7 +135,7 @@ public class TabFragment extends LazyFragment {
             public void onClick(View v) {
                 Dates.getDialog(getActivity(), "请求数据中");
                 mData.clear();
-                okgo(TabAdapter.ids.get(pos), 1);
+                okgo(ids.get(pos), 1);
             }
         });
         return view;
@@ -239,7 +241,7 @@ public class TabFragment extends LazyFragment {
         super.onStart();
         //重新加载数据，
         status = true;
-        okgo(TabAdapter.ids.get(pos) + "", 1);
+        okgo(ids.get(pos) + "", 1);
     }
 
     @Override

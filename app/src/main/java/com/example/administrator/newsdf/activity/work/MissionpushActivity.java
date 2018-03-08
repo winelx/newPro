@@ -16,11 +16,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PushAdapter.PushAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -73,7 +73,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private boolean drew = true;
     //保存每个节目推送的ID
     private Map<String, List<String>> pushMap;
-
+    private String titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +97,13 @@ public class MissionpushActivity extends AppCompatActivity {
         com_img = (LinearLayout) findViewById(R.id.com_img);
         com_img.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
-        title.setText("任务下发");
+
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
         Intent intent = getIntent();
         //获取到intent传过来得集合
         titlename = new ArrayList<>();
         try {
+            titles= intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
             wbsname = intent.getExtras().getString("wbsnam");
         } catch (NullPointerException e) {
@@ -114,6 +115,7 @@ public class MissionpushActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        title.setText(titles);
         initView();
         //列表详情
         tabulation.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +232,6 @@ public class MissionpushActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -279,7 +280,6 @@ public class MissionpushActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     /**
      * 单选数据存储和删除
@@ -379,4 +379,5 @@ public class MissionpushActivity extends AppCompatActivity {
     public String getId() {
         return id;
     }
+
 }

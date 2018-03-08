@@ -1,16 +1,18 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.utils.Dates;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -49,14 +51,17 @@ public class TabAdapters extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_grid_icon, parent, false);
             holder = new ViewHolder();
-            holder.tab_str = (TextView) convertView.findViewById(R.id.tab_str); //标段
+            //标段
+            holder.tab_str = (TextView) convertView.findViewById(R.id.tab_str);
             holder.tab_content = (TextView) convertView.findViewById(R.id.tab_content);
             holder.tab_user = (TextView) convertView.findViewById(R.id.tab_user);
             holder.tab_time = (TextView) convertView.findViewById(R.id.tab_time);
+
             holder.tab_fixed_tiem = (TextView) convertView.findViewById(R.id.tab_fixed_tiem);
             holder.tab_view = (TextView) convertView.findViewById(R.id.tab_view);
             holder.tab_statu2 = (TextView) convertView.findViewById(R.id.tab_statu2);
-            convertView.setTag(holder);   //将Holder存储到convertView中
+            //将Holder存储到convertView中
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -69,25 +74,38 @@ public class TabAdapters extends BaseAdapter {
         holder.tab_str.setText(mData.get(position).getStr());
         holder.tab_content.setText(mData.get(position).getContent());
         holder.tab_user.setText(mData.get(position).getUser());
-        holder.tab_time.setText(mData.get(position).getTime());
-        holder.tab_fixed_tiem.setText(mData.get(position).getTime());
+
+
+        String time = null;
+        try {
+            time = Dates.datato(mData.get(position).getTime());
+            Log.i("time", time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         holder.tab_statu2.setText(mData.get(position).getStatus1());
         stsus = mData.get(position).getStatus1();
         switch (stsus) {
             case "0":
                 holder.tab_statu2.setText("未上传");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_gray);
+                holder.tab_time.setText("已推送： " + time);
                 break;
             case "1":
                 holder.tab_statu2.setText("通过");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
+                holder.tab_time.setText(mData.get(position).getTime());
                 break;
             case "2":
                 holder.tab_statu2.setText("通过");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
+                holder.tab_time.setText(mData.get(position).getTime());
+                break;
+            default:
                 break;
         }
-
         return convertView;
     }
 

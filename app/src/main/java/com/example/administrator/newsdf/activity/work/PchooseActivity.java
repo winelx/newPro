@@ -3,10 +3,6 @@ package com.example.administrator.newsdf.activity.work;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,7 +17,13 @@ import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * description: 图纸查看
+ * @author lx
+ * date: 2018/3/8 0008 下午 4:43
+ * update: 2018/3/8 0008
+ * version:
+*/
 public class PchooseActivity extends AppCompatActivity {
     private Context mContext;
     private TextView com_title;
@@ -38,9 +40,7 @@ public class PchooseActivity extends AppCompatActivity {
         listPath = new ArrayList<>();
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("图纸查看");
-
         image = (ImageView) findViewById(R.id.image);
-
         findViewById(R.id.pchoose_atlas).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +56,6 @@ public class PchooseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,20 +78,5 @@ public class PchooseActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    // byte[]转换成Bitmap
-    public Bitmap Bytes2Bitmap(byte[] b) {
-        if (b.length != 0) {
-            return BitmapFactory.decodeByteArray(b, 0, b.length);
-        }
-        return null;
-    }
-
-    // Bitmap转换成Drawable
-    public Drawable bitmap2Drawable(Bitmap bitmap) {
-        BitmapDrawable bd = new BitmapDrawable(bitmap);
-        Drawable d = (Drawable) bd;
-        return d;
     }
 }

@@ -30,6 +30,7 @@ public class PhotoPicker {
     public final static String EXTRA_GRID_COLUMN = "column";
     public final static String EXTRA_ORIGINAL_PHOTOS = "ORIGINAL_PHOTOS";
     public final static String EXTRA_PREVIEW_ENABLED = "PREVIEW_ENABLED";
+    public final static String EXTRA_ORIGINAL_TITLE = "ORIGINAL_TITLE";
 
     public static PhotoPickerBuilder builder() {
         return new PhotoPickerBuilder();
@@ -119,13 +120,33 @@ public class PhotoPicker {
             return this;
         }
 
+        /**
+         * 图片存储路径
+         * @param imagesUri
+         * @return
+         */
         public PhotoPickerBuilder setSelected(ArrayList<String> imagesUri) {
             mPickerOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_PHOTOS, imagesUri);
             return this;
         }
 
+        /**
+         * 是否显示下载
+         * @param previewEnabled
+         * @return
+         */
         public PhotoPickerBuilder setPreviewEnabled(boolean previewEnabled) {
             mPickerOptionsBundle.putBoolean(EXTRA_PREVIEW_ENABLED, previewEnabled);
+            return this;
+        }
+
+        /**
+         * 图片路径
+         * @param imagesPath
+         * @return
+         */
+        public PhotoPickerBuilder setImagePath(ArrayList<String> imagesPath) {
+            mPickerOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
             return this;
         }
     }

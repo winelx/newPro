@@ -64,7 +64,6 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .start((Activity) mContext);
             }
         });
-
     }
 
     @Override
@@ -75,7 +74,6 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class TypeHolder extends RecyclerView.ViewHolder {
         TextView photo_name, photo_number, photo_names;
         LinearLayout lin_photo_adm;
-
         public TypeHolder(View itemView) {
             super(itemView);
             photo_name = itemView.findViewById(R.id.photo_name);

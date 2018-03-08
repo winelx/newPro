@@ -71,6 +71,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
             parent.removeView(rootView);
         }
         init();
+        Okgo();
         return rootView;
     }
 
@@ -176,7 +177,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public void onStart() {
         super.onStart();
-        Okgo();
+
     }
 
 

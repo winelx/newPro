@@ -20,7 +20,12 @@ import java.util.List;
 
 
 /**
- * Created by donglua on 15/6/21.
+ * description:
+ *
+ * @author lx
+ *         date: 2018/3/8 0008 下午 5:10
+ *         update: 2018/3/8 0008
+ *         version:
  */
 public class PhotoPagerAdapter extends PagerAdapter {
 
@@ -37,9 +42,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         final Context context = container.getContext();
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.__picker_picker_item_pager, container, false);
-
         final ImageView imageView = itemView.findViewById(R.id.iv_pager);
-
         final String path = paths.get(position);
         final Uri uri;
         if (path.startsWith("http")) {
@@ -47,9 +50,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         } else {
             uri = Uri.fromFile(new File(path));
         }
-
         boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(context);
-
         if (canLoadImage) {
             final RequestOptions options = new RequestOptions();
             options.dontAnimate()
@@ -61,7 +62,6 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     .thumbnail(0.1f)
                     .into(imageView);
         }
-
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,24 +72,19 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 }
             }
         });
-
         container.addView(itemView);
-
         return itemView;
     }
-
 
     @Override
     public int getCount() {
         return paths.size();
     }
 
-
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
-
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {

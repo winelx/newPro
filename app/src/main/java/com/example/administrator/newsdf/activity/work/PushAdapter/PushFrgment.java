@@ -19,13 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.MemberActivity;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.bean.Push_item;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +94,8 @@ public class PushFrgment extends LazyFragment {
     private TextView push_jing;
     private Button head_modify;
     private CheckBox che_all;
+    private WbsDialog selfDialog;
+    private String strids;
 
     /**
      * 获取当前是第几个界面
@@ -107,6 +113,7 @@ public class PushFrgment extends LazyFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.push, container, false);
+
         data = new ArrayList<>();
         mContext = getActivity();
         push_img_nonew = view.findViewById(R.id.push_img_nonew);
@@ -130,7 +137,26 @@ public class PushFrgment extends LazyFragment {
         head_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                get();
+                //获取责任人ID
+                //创建一个要推送内容的集合，不能直接在数据源data集合中直接进行操作，否则会报异常
+                deleSelect = new ArrayList<String>();
+                //把选中的条目要推送的条目放在deleSelect这个集合中
+                for (int i = 0; i < data.size(); i++) {
+                    if (data.get(i).getChecked()) {
+                        deleSelect.add(data.get(i).getId());
+                    }
+                }
+                //查看集合是否有数据
+                if (deleSelect.size() != 0 && data.size() != 0) {
+                    strids = Dates.listToString(deleSelect);
+                    //批量修改数据
+                    get();
+                } else if (data.size() == 0) {
+                    Toast.makeText(getActivity(), "没有选项数据", Toast.LENGTH_SHORT).show();
+                } else if (deleSelect.size() == 0) {
+                    Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -194,7 +220,6 @@ public class PushFrgment extends LazyFragment {
         return view;
     }
 
-
     private void initlistener() {
         /**
          * 全选复选框设置事件监听
@@ -227,10 +252,11 @@ public class PushFrgment extends LazyFragment {
     public void onDestroy() {
         super.onDestroy();
         Dates.disDialog();
-
     }
 
-    //请求界面
+    /**
+     * 请求界面
+     */
     void okgo() {
         OkGo.post(Request.PUSHList)
                 .params("wbsId", PushAdapter.Content)
@@ -339,23 +365,70 @@ public class PushFrgment extends LazyFragment {
      * 批量修改负责人
      */
     public void get() {
-        //创建一个要推送内容的集合，不能直接在数据源data集合中直接进行操作，否则会报异常
-        deleSelect = new ArrayList<String>();
-        //把选中的条目要推送的条目放在deleSelect这个集合中
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getChecked()) {
-                deleSelect.add(data.get(i).getLeaderName());
-            }
-        }
-        //查看集合是否有数据
-        if (deleSelect.size() != 0 && data.size() != 0) {
-            String strids = Dates.listToString(deleSelect);
-            //批量修改数据
+        Intent intent = new Intent(mContext, MemberActivity.class);
+        intent.putExtra("data", "newpush");
+        startActivityForResult(intent, 1);
+    }
 
-        } else if (data.size() == 0) {
-            Toast.makeText(getActivity(), "没有选项数据", Toast.LENGTH_SHORT).show();
-        } else if (deleSelect.size() == 0) {
-            Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2) {
+            String user = data.getStringExtra("name");
+            String userId = data.getStringExtra("userId");
+
+            Dialog(userId);
         }
     }
+
+    public void Dialog(final String str) {
+        selfDialog = new WbsDialog(mContext);
+        selfDialog.setMessage("是否修改已选择中项的责任人");
+        selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                OkGo.<String>post(Request.CASDPOINTD)
+                        .params("id", strids)
+                        .params("leaderId", str)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject json = new JSONObject(s);
+                                    int ret = json.getInt("ret");
+                                    String msg = json.getString("msg");
+                                    ToastUtils.showShortToast(msg);
+                                    if (ret == 0) {
+                                        okgo();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                                try {
+                                    ToastUtils.showShortToast(response.body().string());
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        });
+                selfDialog.dismiss();
+            }
+
+        });
+        selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.show();
+
+    }
+
+
 }

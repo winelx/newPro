@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/recycler_view"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="120dp"
-        android:layout_height="75dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@mipmap/pop_window"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:weightSum="1">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/editext_background_blue">
 
-        <TextView
+        <EditText
             android:id="@+id/menu_item1"
-            android:layout_width="130dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="新增任务"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
-        <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:inputType="text"
+            android:drawableLeft="@mipmap/list_searh"
+            android:hint="输入姓名"
+            android:paddingLeft="20dp"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/menu_item2"
-            android:layout_width="130dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="批量修改负责人"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/menu_item1"
+            android:layout_alignBottom="@+id/menu_item1"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:text="取消"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +103,6 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        ToastUtils.showShortToast(preconditions);
         pushDialog.setText(label);
         pushContent.setText(content);
         pushDuty.setText(user);
@@ -274,24 +272,30 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 //推送内容
                 .params("content", pushcontent);
         //前置项ID
-
         if (preconditions != null && preconditions != "") {
             str.params("preconditions", id)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-
-                            Log.i("ssss", s);
-                            ToastUtils.showShortToast(preconditions + "不为空");
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         } else {
             str.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    Log.i("ssss", s);
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    ToastUtils.showShortToast(preconditions + "为空");
                 }
             });
         }

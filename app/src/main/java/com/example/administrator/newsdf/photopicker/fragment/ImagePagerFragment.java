@@ -26,24 +26,17 @@ public class ImagePagerFragment extends Fragment {
 
     public final static String ARG_PATH = "PATHS";
     public final static String ARG_CURRENT_ITEM = "ARG_CURRENT_ITEM";
-
     private ArrayList<String> paths;
     private ViewPager mViewPager;
     private PhotoPagerAdapter mPagerAdapter;
-
     private int currentItem = 0;
 
-
     public static ImagePagerFragment newInstance(List<String> paths, int currentItem) {
-
         ImagePagerFragment f = new ImagePagerFragment();
-
         Bundle args = new Bundle();
         args.putStringArray(ARG_PATH, paths.toArray(new String[paths.size()]));
         args.putInt(ARG_CURRENT_ITEM, currentItem);
-
         f.setArguments(args);
-
         return f;
     }
 
@@ -60,31 +53,23 @@ public class ImagePagerFragment extends Fragment {
         this.paths.clear();
         this.paths.addAll(paths);
         this.currentItem = currentItem;
-
         mViewPager.setCurrentItem(currentItem);
         mViewPager.getAdapter().notifyDataSetChanged();
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         paths = new ArrayList<>();
-
         Bundle bundle = getArguments();
-
         if (bundle != null) {
             String[] pathArr = bundle.getStringArray(ARG_PATH);
             paths.clear();
             if (pathArr != null) {
-
                 paths = new ArrayList<>(Arrays.asList(pathArr));
             }
-
             currentItem = bundle.getInt(ARG_CURRENT_ITEM);
         }
-
         mPagerAdapter = new PhotoPagerAdapter(Glide.with(this), paths);
     }
 
@@ -93,14 +78,11 @@ public class ImagePagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.__picker_picker_fragment_image_pager, container, false);
-
         mViewPager = rootView.findViewById(R.id.vp_photos);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(currentItem);
         mViewPager.setOffscreenPageLimit(5);
-
         return rootView;
     }
 
@@ -132,10 +114,8 @@ public class ImagePagerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         paths.clear();
         paths = null;
-
         if (mViewPager != null) {
             mViewPager.setAdapter(null);
         }

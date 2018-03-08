@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -15,24 +14,20 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.adapter.PopAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -87,6 +82,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> titlename;
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
+    EditText search;
 
     public NodedetailsActivity() {
     }
@@ -102,7 +98,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         //节点ID
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
-        Log.i("node", wbsId);
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -248,7 +243,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     *
+     * 获取联系人
      */
     void userdetails() {
         OkGo.<String>post(Request.UserList)
@@ -276,34 +271,36 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      * 联系人弹出框
      */
     void userPop() {
-        View view = getLayoutInflater().inflate(R.layout.pop_node_user, null);
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT, true);
-        //设置背景，
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setFocusable(true);
-        //显示(靠中间)
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        ListView lvList = view.findViewById(R.id.list_item);
-        RelativeLayout back = view.findViewById(R.id.node_pop_rel);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-        PopAdapter adapter = new PopAdapter(mData, NodedetailsActivity.this);
-        lvList.setAdapter(adapter);
-        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                nodeWbsUsername.setText(mData.get(position).getName());
-                userID = mData.get(position).getContent();
-                popupWindow.dismiss();
-            }
-        });
+//        View view = getLayoutInflater().inflate(R.layout.pop_node_user, null);
+//        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT, true);
+//        //设置背景，
+//        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+//        popupWindow.setFocusable(true);
+//        //显示(靠中间)
+//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+//        ListView lvList = view.findViewById(R.id.list_item);
+//        search = view.findViewById(R.id.pop_tv_search);
+//        LinearLayout tv_search = view.findViewById(R.id.tv_search);
+//        RelativeLayout back = view.findViewById(R.id.node_pop_rel);
+//        tv_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                search.setVisibility(View.VISIBLE);
+//            }
+//        });
+//        PopAdapter adapter = new PopAdapter(mData, NodedetailsActivity.this);
+//        lvList.setAdapter(adapter);
+//        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//                nodeWbsUsername.setText(mData.get(position).getName());
+//                userID = mData.get(position).getContent();
+//                popupWindow.dismiss();
+//            }
+//        });
     }
 
     /**
@@ -314,7 +311,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.node_configuration_task:
                 //任务配置
                 getOko(wbsId, wbsName);
@@ -327,6 +323,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.user_list:
                 userPop();
+                Intent intent = new Intent(mContext, MemberActivity.class);
+                intent.putExtra("data", "newpush");
+                startActivityForResult(intent, 1);
                 break;
             case R.id.node_lin_start:
                 selfDialog = new WbsDialog(NodedetailsActivity.this);
@@ -647,6 +646,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
+                                intent.putExtra("titles", "任务配置");
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);

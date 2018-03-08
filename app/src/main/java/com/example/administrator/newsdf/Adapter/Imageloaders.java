@@ -106,14 +106,6 @@ public class Imageloaders extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.inter_title.setText(list.get(position).getGroupName());
-        String str = null;
-        try {
-            str = Dates.datato(list.get(position).getCreateTime());
-            holder.inter_time.setText(str);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         holder.inface_wbs_path.setText(list.get(position).getWbsPath());
         holder.inter_content.setText(list.get(position).getContent());
         holder.inface_username.setText(list.get(position).getUploador());
@@ -129,10 +121,18 @@ public class Imageloaders extends BaseAdapter {
                 holder.inface_item_message.setTextString("未完成");
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.Orange);
                 holder.inface_status_true.setVisibility(View.GONE);
+                String str = null;
+                try {
+                    str = Dates.datato(list.get(position).getCreateTime());
+                    holder.inter_time.setText(str);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "1":
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
+                holder.inter_time.setText(list.get(position).getCreateTime());
                 holder.textView4.setText("(" + list.get(position).getComments() + ")");
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.finish_green);
                 // 预设一个图片

@@ -10,20 +10,24 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/1/26 0026.
  */
+
 /**
  * description: 我的任务列表适配器
+ *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:39
  * update: 2018/2/6 0006
  * version:
-*/
+ */
 public class Listinter_Adfapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<List_interface> mData;
@@ -75,8 +79,7 @@ public class Listinter_Adfapter extends BaseAdapter {
         holder.inter_title.setText(mData.get(position).getPointName());
         //创建时间
         holder.inter_data.setText(mData.get(position).getWbsPath());
-        //更新时间
-        holder.item_inface_date.setText(mData.get(position).getCreateTime());
+
         //内容
         holder.inter_content.setText(mData.get(position).getContent());
         switch (mData.get(position).getIsFinish() + "") {
@@ -85,9 +88,19 @@ public class Listinter_Adfapter extends BaseAdapter {
                 holder.inter_text.setText("点击上传");
                 holder.home_item_message.setTextString("未完成");
                 holder.home_item_message.setSlantedBackgroundColor(R.color.Orange);
+                //更新时间
+                String str = null;
+                try {
+                    str = Dates.datato(mData.get(position).getCreateTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                holder.item_inface_date.setText(str);
                 break;
             //已完成
             case "1":
+                //更新时间
+                holder.item_inface_date.setText(mData.get(position).getCreateTime());
                 holder.inter_text.setText("点击查看");
                 holder.home_item_message.setTextString("已完成");
                 holder.home_item_message.setSlantedBackgroundColor(R.color.finish_green);

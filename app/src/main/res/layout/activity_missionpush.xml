@@ -101,6 +101,7 @@
                     app:tabBackground="@color/writer"
                     app:tabIndicatorColor="@color/colorAccent"
                     app:tabMode="fixed"
+                    app:tabIndicatorHeight="3dp"
                     app:tabSelectedTextColor="@color/colorPrimaryDark"
                     app:tabTextColor="@color/colorPrimary" />
 

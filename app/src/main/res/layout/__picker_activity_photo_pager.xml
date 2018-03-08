@@ -6,6 +6,16 @@
 
     <include layout="@layout/__picker_toolbar" />
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+
+        <TextView
+            android:id="@+id/picker_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </HorizontalScrollView>
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
