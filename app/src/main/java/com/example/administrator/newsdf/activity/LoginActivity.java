@@ -42,10 +42,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 判断用户是否记住密码
      */
+
     private boolean status = true;
     //用户名密码1
     private EditText username, password;
     private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

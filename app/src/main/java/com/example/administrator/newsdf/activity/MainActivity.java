@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
-
         mContext = MainActivity.this;
         dates = new Dates();
         HiPermission.create(mContext)
@@ -67,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-        dates.deleteAllFiles(new File("/storage/emulated/0/pictures"));
-        dates.deleteAllFiles(new File("/storage/emulated/0/Pictures/cropUtils"));
+        Dates.deleteAllFiles(new File("/storage/emulated/0/pictures"));
+
         //数据处理
         initTab();
     }

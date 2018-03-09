@@ -209,7 +209,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     /**
      * 退出登录
      */
-
     private void Okgo() {
         OkGo.post(Request.BackTo)
                 .execute(new StringCallback() {

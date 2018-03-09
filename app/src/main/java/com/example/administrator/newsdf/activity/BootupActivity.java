@@ -29,11 +29,13 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-/**
+/** 
+ * description: 启动页
  * @author lx
- *         启动页
- */
+ * date: 2018/3/9 0009 下午 2:15 
+ * update: 2018/3/9 0009
+ * version: 
+*/
 public class BootupActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -52,7 +54,7 @@ public class BootupActivity extends AppCompatActivity {
         Dates.getSHA1(getApplicationContext());
         getPersimmions();
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
-//        final String password = SPUtils.getString(BootupActivity.this, "password", "");
+   final String password = SPUtils.getString(BootupActivity.this, "password", "");
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -63,9 +65,10 @@ public class BootupActivity extends AppCompatActivity {
                     finish();
                 } else {
                     //实现页面跳转
-                    startActivity(new Intent(BootupActivity.this, MainActivity.class));
-                    finish();
-                    // okgo(user, password);
+                    BackTo(user,password);
+//                    startActivity(new Intent(BootupActivity.this, MainActivity.class));
+//                    finish();
+
                 }
                 return false;
             }
@@ -78,9 +81,9 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+
                         login(user, passowd);
                     }
-
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -90,6 +93,11 @@ public class BootupActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 登录
+     * @param user
+     * @param password
+     */
     private void login(final String user, final String password) {
         OkGo.post(Request.Login)
                 .params("username", user)
@@ -106,7 +114,12 @@ public class BootupActivity extends AppCompatActivity {
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 String id = jsom.getString("id");
                                 //头像 需要拼接公共头
-                                String portrait = jsom.getString("portrait");
+                                String portrait;
+                                try{
+                                    portrait = jsom.getString("portrait");
+                                }catch (JSONException e){
+                                    portrait="";
+                                }
                                 //职员ID
                                 String staffId = jsom.getString("staffId");
                                 ;//所在组织名称
@@ -128,13 +141,14 @@ public class BootupActivity extends AppCompatActivity {
                                 SPUtils.putString(mContext, "id", id);
                                 //头像
                                 SPUtils.putString(mContext, "portrait", portrait);
-                                //头像
+                                //ID
                                 SPUtils.putString(mContext, "orgId", orgId);
-                                //头像
+                                //手机
                                 SPUtils.putString(mContext, "phone", phone);
                                 //是否保存数据
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
+                                Log.i("ssas","登录成功");
                                 startActivity(new Intent(BootupActivity.this, MainActivity.class));
                                 finish();
                             } else if (str == 1) {
@@ -180,5 +194,28 @@ public class BootupActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+
+    /**
+     * 退出登录
+     */
+    private void BackTo(final String user, final String password) {
+        OkGo.post(Request.BackTo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        Log.i("logup", s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int code = jsonObject.getInt("ret");
+                            if (code == 0) {
+                                okgo(user, password);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }
