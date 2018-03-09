@@ -172,6 +172,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         intent.putExtra("name", mData.get(position).getOrgname());
         intent.putExtra("orgId", mData.get(position).getOrgid());
         startActivity(intent);
+
     }
 
     @Override

@@ -17,13 +17,15 @@ import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * description: 图纸查看
+ *
  * @author lx
- * date: 2018/3/8 0008 下午 4:43
- * update: 2018/3/8 0008
- * version:
-*/
+ *         date: 2018/3/8 0008 下午 4:43
+ *         update: 2018/3/8 0008
+ *         version:
+ */
 public class PchooseActivity extends AppCompatActivity {
     private Context mContext;
     private TextView com_title;

@@ -32,10 +32,11 @@ import okhttp3.Response;
 
 /**
  * description:
+ *
  * @author lx
- * date: 2017/12/13 0013.
- * version:
-*/
+ *         date: 2017/12/13 0013.
+ *         version:
+ */
 public class PhotoadmActivity extends AppCompatActivity {
     private RecyclerView photo_rec;
     private PhotoadmAdapter photoAdapter;

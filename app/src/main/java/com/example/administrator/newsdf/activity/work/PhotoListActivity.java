@@ -34,13 +34,15 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
-/** 
- * description: 
+
+/**
+ * description:
+ *
  * @author lx
- * date: 2018/3/6 0006 下午 4:54
- * update: 2018/3/6 0006
- * version: 
-*/
+ *         date: 2018/3/6 0006 下午 4:54
+ *         update: 2018/3/6 0006
+ *         version:
+ */
 public class PhotoListActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;

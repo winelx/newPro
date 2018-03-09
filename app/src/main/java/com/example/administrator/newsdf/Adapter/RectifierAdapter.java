@@ -55,7 +55,8 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false)
+                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
+                        setShowDeleteButton(false).setShowUpLoadeButton(false)
                         .start((Activity) mContext);
             }
         });

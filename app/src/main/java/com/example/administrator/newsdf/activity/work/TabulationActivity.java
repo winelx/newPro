@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  * @author lx
- * 选择检查项
+ *         选择检查项
  */
 public class TabulationActivity extends AppCompatActivity {
     private ArrayList<String> mData = null;

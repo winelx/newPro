@@ -103,7 +103,7 @@ public class MissionpushActivity extends AppCompatActivity {
         //获取到intent传过来得集合
         titlename = new ArrayList<>();
         try {
-            titles= intent.getExtras().getString("titles");
+            titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
             wbsname = intent.getExtras().getString("wbsnam");
         } catch (NullPointerException e) {

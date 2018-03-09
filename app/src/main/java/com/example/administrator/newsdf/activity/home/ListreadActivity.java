@@ -552,6 +552,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         if (swip == false) {
             Alldata.clear();
         }
+        Log.i("data", s);
         if (s.indexOf("data") != -1) {
             try {
                 JSONObject jsonObject = new JSONObject(s);

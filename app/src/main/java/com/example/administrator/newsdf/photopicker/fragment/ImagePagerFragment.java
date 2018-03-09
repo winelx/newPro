@@ -19,8 +19,9 @@ import java.util.List;
 
 
 /**
- * Image Pager Fragment
- * Created by donglua on 15/6/21.
+ * @author 自定义fragment
+ *         Image Pager Fragment
+ *         Created by donglua on 15/6/21.
  */
 public class ImagePagerFragment extends Fragment {
 

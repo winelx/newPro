@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import static com.example.administrator.newsdf.photopicker.PhotoPicker.EXTRA_ORIGINAL_TITLE;
+
 /**
  * Created by Donglua on 16/6/25.
  * Builder class to ease Intent setup.
@@ -101,6 +103,17 @@ public class PhotoPreview {
 
         public PhotoPreviewBuilder setShowUpLoadeButton(boolean showDeleteButton) {
             mPreviewOptionsBundle.putBoolean(EXTRA_SHOW_UPLOADE, showDeleteButton);
+            return this;
+        }
+
+        /**
+         * 图片路径
+         *
+         * @param imagesPath
+         * @return
+         */
+        public PhotoPreviewBuilder setImagePath(ArrayList<String> imagesPath) {
+            mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
             return this;
         }
     }

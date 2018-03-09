@@ -39,11 +39,12 @@ import okhttp3.Response;
 
 /**
  * description: 任务推送的wbs树
+ *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:20
  * update: 2018/2/6 0006
  * version:
-*/
+ */
 public class MmissPushActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
@@ -394,8 +395,8 @@ public class MmissPushActivity extends AppCompatActivity {
                     Intent list = new Intent();
                     list.putExtra("id", node.getId());
                     list.putExtra("title", node.getName());
-                    Log.i("iswbs",node.iswbs()+"");
-                    list.putExtra("iswbs",node.iswbs());
+                    Log.i("iswbs", node.iswbs() + "");
+                    list.putExtra("iswbs", node.iswbs());
                     //回传数据到主Activity
                     setResult(RESULT_OK, list);
                     //此方法后才能返回主Activity
@@ -417,11 +418,12 @@ public class MmissPushActivity extends AppCompatActivity {
                     details.putExtra("wbsId", node.getId());
                     //节点名称
                     details.putExtra("Name", node.getName());
-                    details.putExtra("wbsName",  node.getTitle());
+                    details.putExtra("wbsName", node.getTitle());
 
                     startActivity(details);
                     break;
-                default:break;
+                default:
+                    break;
             }
         } else {
 //            Toast.makeText(mContext, "不是wbs,无法跳转", Toast.LENGTH_SHORT).show();

@@ -35,7 +35,7 @@ public class PushAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.i("id",position+"");
+        Log.i("id", position + "");
         return mData.get(position);
     }
 

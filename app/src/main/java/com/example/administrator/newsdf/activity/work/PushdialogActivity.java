@@ -237,6 +237,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
                 break;
+            //保存数据
             case R.id.com_button:
                 taskcontent = pushDialog.getText().toString();
                 pushcontent = pushContent.getText().toString();
@@ -247,9 +248,17 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         }
     }
 
+    /**
+     * activcity回调
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //拿到责任人信息
         if (requestCode == 1 && resultCode == 2) {
             user = data.getStringExtra("name");
             userId = data.getStringExtra("userId");

@@ -140,14 +140,5 @@ public class PhotoPicker {
             return this;
         }
 
-        /**
-         * 图片路径
-         * @param imagesPath
-         * @return
-         */
-        public PhotoPickerBuilder setImagePath(ArrayList<String> imagesPath) {
-            mPickerOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
-            return this;
-        }
     }
 }
