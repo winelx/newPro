@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +111,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.details_fixed_data.setText(content.get(posotion).getBackdata());
             //转交人
             holder.details_user.setText(content.get(posotion).getLeaderName());
-            Log.d("bindBAnner", content.get(posotion).getStatus());
             if (content.get(posotion).getStatus().equals("0")) {
                 //状态
                 holder.details_boolean.setText("未完成");

@@ -31,6 +31,7 @@ public class PchooseActivity extends AppCompatActivity {
     private TextView com_title;
     private List<Shop> listPath;
     ArrayList<String> drawable;
+    ArrayList<String> imagepath;
     private ImageView image;
 
     @Override
@@ -70,10 +71,13 @@ public class PchooseActivity extends AppCompatActivity {
                 listPath = LoveDao.queryCart();
                 if (listPath.size() != 0) {
                     drawable = new ArrayList<>();
+                    imagepath=new ArrayList<String>();
                     for (int i = 0; i < listPath.size(); i++) {
                         drawable.add(listPath.get(i).getImage_url());
+                        imagepath.add(listPath.get(i).getName());
                     }
-                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).setShowDeleteButton(true).setShowUpLoadeButton(false)
+                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).
+                            setShowDeleteButton(true).setShowUpLoadeButton(false).setImagePath(imagepath)
                             .start((Activity) mContext);
                 } else {
                     ToastUtils.showShortToast("没有下载图片");

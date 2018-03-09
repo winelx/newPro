@@ -57,10 +57,15 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 path = new ArrayList<>();
+                ArrayList imagepath = new ArrayList();
                 for (int i = 0; i < mData.size(); i++) {
                     path.add(mData.get(i).getFilePath());
+                    imagepath.add(mData.get(i).getDrawingNumber());
                 }
-                PhotoPreview.builder().setPhotos(path).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(true)
+                PhotoPreview.builder().setPhotos(path).setCurrentItem(position)
+                        .setShowDeleteButton(false)
+                        .setShowUpLoadeButton(true)
+                        .setImagePath(imagepath)
                         .start((Activity) mContext);
             }
         });
@@ -74,6 +79,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class TypeHolder extends RecyclerView.ViewHolder {
         TextView photo_name, photo_number, photo_names;
         LinearLayout lin_photo_adm;
+
         public TypeHolder(View itemView) {
             super(itemView);
             photo_name = itemView.findViewById(R.id.photo_name);

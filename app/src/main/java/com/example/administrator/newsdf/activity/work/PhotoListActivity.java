@@ -48,7 +48,7 @@ public class PhotoListActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private ListView mTree;
-    private PhotolistViewAdapter mTreeAdapter;
+    private PhotolistViewAdapter<OrganizationEntity> mTreeAdapter;
     private TextView com_title;
     private int addPosition;
     private Context mContext;
@@ -280,7 +280,7 @@ public class PhotoListActivity extends AppCompatActivity {
                 mTreeDatas.add(bean);
             }
             try {
-                mTreeAdapter = new PhotolistViewAdapter(mTree, this,
+                mTreeAdapter = new PhotolistViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
                 initEvent(organizationList);

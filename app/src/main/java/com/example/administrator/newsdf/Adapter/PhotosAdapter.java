@@ -17,11 +17,10 @@ import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import java.util.ArrayList;
 
 
-
 /**
  * @author lx
- * Created by donglua on 15/5/31.
- * 添加图片
+ *         Created by donglua on 15/5/31.
+ *         添加图片
  */
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> {
 
@@ -38,6 +37,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
+
     }
 
 
@@ -51,6 +51,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             case TYPE_PHOTO:
                 itemView = inflater.inflate(R.layout.picker_item_photo, parent, false);
                 break;
+            default:
+                break;
         }
         return new PhotoViewHolder(itemView);
     }
@@ -60,6 +62,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
 
         if (getItemViewType(position) == TYPE_PHOTO) {
+
             Glide.with(mContext)
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)
@@ -75,8 +78,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                 @Override
                 public void onClick(View v) {
                     ArrayList<String> paths = new ArrayList<String>();
+                    ArrayList<String> imagepath = new ArrayList<String>();
                     paths.addAll(photoPaths);
-                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false)
+                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                             .start((Activity) mContext);
                 }
             });

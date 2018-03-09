@@ -50,11 +50,20 @@ public class BootupActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bootup);
+        //防止重复创建的问题，第一次安装完成启动，和home键退出点击launcher icon启动会重复
+        if (!isTaskRoot()
+                && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
+                && getIntent().getAction() != null
+                && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+
+            finish();
+            return;
+        }
         mContext = BootupActivity.this;
         Dates.getSHA1(getApplicationContext());
         getPersimmions();
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
-   final String password = SPUtils.getString(BootupActivity.this, "password", "");
+         final String password = SPUtils.getString(BootupActivity.this, "password", "");
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -65,10 +74,7 @@ public class BootupActivity extends AppCompatActivity {
                     finish();
                 } else {
                     //实现页面跳转
-                    BackTo(user,password);
-//                    startActivity(new Intent(BootupActivity.this, MainActivity.class));
-//                    finish();
-
+                    BackTo(user,password);;
                 }
                 return false;
             }
@@ -81,7 +87,6 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         login(user, passowd);
                     }
                     //这个错误是网络级错误，不是请求失败的错误
@@ -90,7 +95,6 @@ public class BootupActivity extends AppCompatActivity {
                         super.onError(call, response, e);
                     }
                 });
-
     }
 
     /**
@@ -128,7 +132,7 @@ public class BootupActivity extends AppCompatActivity {
                                 String staffName = jsom.getString("staffName");
                                 //所在组织id
                                 String orgId = jsom.getString("orgId");
-                                //所在组织id
+                                //手机号
                                 String phone = jsom.getString("phone");
                                 SPUtils.deleAll(mContext);
                                 //职员ID
@@ -137,7 +141,7 @@ public class BootupActivity extends AppCompatActivity {
                                 SPUtils.putString(mContext, "username", orgName);
                                 //真实姓名
                                 SPUtils.putString(mContext, "staffName", staffName);
-                                ; //id
+                                //id
                                 SPUtils.putString(mContext, "id", id);
                                 //头像
                                 SPUtils.putString(mContext, "portrait", portrait);
@@ -148,7 +152,6 @@ public class BootupActivity extends AppCompatActivity {
                                 //是否保存数据
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
-                                Log.i("ssas","登录成功");
                                 startActivity(new Intent(BootupActivity.this, MainActivity.class));
                                 finish();
                             } else if (str == 1) {
@@ -161,7 +164,6 @@ public class BootupActivity extends AppCompatActivity {
                     }
                 });
     }
-
     @TargetApi(23)
     private void getPersimmions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

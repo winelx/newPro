@@ -363,7 +363,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 for (int i = 0; i < pathimg.size(); i++) {
                     files.add(new File(pathimg.get(i)));
                 }
-                Log.i("pathimg", pathimg.size() + "");
                 if (wbsID == null || wbsID.equals("")) {
                     Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
                 } else if ("".equals(reply_text.getText().toString())) {
@@ -394,7 +393,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         photoadd.setAdapter(photoAdapter);
         com_button.setBackgroundResource(R.mipmap.reply_commit);
     }
-
 
     /**
      * 网络请求
@@ -440,14 +438,12 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         popupWindow.dismiss();
                         popstatus = false;
                     }
-
                     //进度条
                     @Override
                     public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
@@ -499,6 +495,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             drew = true;
             photoAdm(wbsID);
         } else if (requestCode == 1 && resultCode == 2) {
+            //节点
             checkId = data.getStringExtra("id");
             reply_check_item.setText(data.getStringExtra("name"));
 
@@ -513,6 +510,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         } else {
+            //返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
                 public void takePhotoFinish(String path) {
@@ -644,8 +642,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
-
-    void userPop() {
+        //弹窗
+     public void userPop() {
         View view = getLayoutInflater().inflate(R.layout.pop_new_push, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -690,7 +688,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             if (drew) {
                                 photoPopPaths.clear();
                             }
-
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

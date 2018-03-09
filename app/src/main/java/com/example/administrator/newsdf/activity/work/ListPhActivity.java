@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -67,6 +68,7 @@ public class ListPhActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Log.i("sss",s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

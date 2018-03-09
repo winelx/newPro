@@ -72,10 +72,12 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
                 title = new ArrayList<String>();
                 for (int i = 0; i < imagePaths.size(); i++) {
                     mData.add(imagePaths.get(i).getFilePath());
-                    title.add(imagePaths.get(i).getDrawingName());
+                    title.add(imagePaths.get(i).getDrawingGroupName());
                 }
-                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).setShowDeleteButton(false)
+                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
+                        setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
                         .start((Activity) mContext);
+
             }
         });
         return convertView;

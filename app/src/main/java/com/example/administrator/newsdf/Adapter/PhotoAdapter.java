@@ -4,7 +4,6 @@ package com.example.administrator.newsdf.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,12 +76,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 @Override
                 public void onClick(View v) {
                     ArrayList<String> paths = new ArrayList<String>();
+                    ArrayList<String> imagepath = new ArrayList<String>();
                     paths.addAll(photoPaths);
-                    for (int i = 0; i < paths.size(); i++) {
-                        Log.i("paths", paths.get(i));
-                        Log.i("paths1", photoPaths.get(i));
-                    }
-                   PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false)
+
+                   PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                            .start((Activity) mContext);
                 }
             });

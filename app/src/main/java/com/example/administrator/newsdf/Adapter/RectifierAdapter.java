@@ -36,6 +36,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mData = listA;
     }
 
+    //初始化布局
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TypeHolder(LayoutInflater.from(parent.getContext())
@@ -50,13 +51,14 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void bindView(final TypeHolder holder, final int position) {
-
         Glide.with(mContext).load(mData.get(position)).into(holder.img);
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //查看图片
+                ArrayList<String> imagepath = new ArrayList<String>();
                 PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
-                        setShowDeleteButton(false).setShowUpLoadeButton(false)
+                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                         .start((Activity) mContext);
             }
         });
@@ -69,7 +71,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class TypeHolder extends RecyclerView.ViewHolder {
         ImageView img;
-
         public TypeHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.imgage);
