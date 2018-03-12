@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.cookie.store.CookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,14 +29,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import okhttp3.Call;
+import okhttp3.HttpUrl;
 import okhttp3.Response;
-/** 
+
+/**
  * description: 启动页
+ *
  * @author lx
- * date: 2018/3/9 0009 下午 2:15 
- * update: 2018/3/9 0009
- * version: 
-*/
+ *         date: 2018/3/9 0009 下午 2:15
+ *         update: 2018/3/9 0009
+ *         version:
+ */
 public class BootupActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -60,10 +64,17 @@ public class BootupActivity extends AppCompatActivity {
             return;
         }
         mContext = BootupActivity.this;
+        //清除cooking
+        HttpUrl httpUrl = HttpUrl.parse(Request.networks);
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        cookieStore.removeCookie(httpUrl);
+        //判断百度地图的key是否正确
         Dates.getSHA1(getApplicationContext());
+        //权限获取
         getPersimmions();
+        //获取保存的用户名和密码
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
-         final String password = SPUtils.getString(BootupActivity.this, "password", "");
+        final String password = SPUtils.getString(BootupActivity.this, "password", "");
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -73,20 +84,22 @@ public class BootupActivity extends AppCompatActivity {
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                     finish();
                 } else {
-                    //实现页面跳转
-                    BackTo(user,password);;
+                    //如果已经存在，
+                    // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
+                    BackTo(user, password);
                 }
                 return false;
             }
             //表示延迟3秒发送任务
         }).sendEmptyMessageDelayed(0, 2500);
     }
-
+    //假登录
     private void okgo(final String user, final String passowd) {
         OkGo.post(Request.networks)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        //进行真正的登录
                         login(user, passowd);
                     }
                     //这个错误是网络级错误，不是请求失败的错误
@@ -99,6 +112,7 @@ public class BootupActivity extends AppCompatActivity {
 
     /**
      * 登录
+     *
      * @param user
      * @param password
      */
@@ -119,10 +133,10 @@ public class BootupActivity extends AppCompatActivity {
                                 String id = jsom.getString("id");
                                 //头像 需要拼接公共头
                                 String portrait;
-                                try{
+                                try {
                                     portrait = jsom.getString("portrait");
-                                }catch (JSONException e){
-                                    portrait="";
+                                } catch (JSONException e) {
+                                    portrait = "";
                                 }
                                 //职员ID
                                 String staffId = jsom.getString("staffId");
@@ -164,6 +178,7 @@ public class BootupActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @TargetApi(23)
     private void getPersimmions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -192,7 +207,6 @@ public class BootupActivity extends AppCompatActivity {
                 permissionsList.add(permission);
                 return false;
             }
-
         } else {
             return true;
         }
@@ -207,16 +221,8 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("logup", s);
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int code = jsonObject.getInt("ret");
-                            if (code == 0) {
-                                okgo(user, password);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        //进行假登录，登录后重定向
+                        okgo(user, password);
                     }
                 });
     }

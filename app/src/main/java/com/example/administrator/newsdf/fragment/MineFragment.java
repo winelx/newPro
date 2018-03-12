@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,12 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.LoginActivity;
+import com.example.administrator.newsdf.activity.home.WebActivity;
 import com.example.administrator.newsdf.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.activity.mine.PasswordActvity;
 import com.example.administrator.newsdf.activity.mine.PersonalActivity;
 import com.example.administrator.newsdf.activity.mine.ProjectmemberActivity;
-import com.example.administrator.newsdf.activity.mine.SettingActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -131,7 +130,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //系统设置
             case R.id.mine_setting:
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                //    startActivity(new Intent(getActivity(), SettingActivity.class));
+                startActivity(new Intent(getActivity(), WebActivity.class));
                 break;
             //关于我们
             case R.id.about_us:
@@ -144,13 +144,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             case R.id.BackTo:
                 Okgo();
                 startActivity(new Intent(mContext, LoginActivity.class));
-
                 getActivity().finish();
                 break;
             case R.id.mine_Thecache:
                 Dates.getDialog(getActivity(), "清理缓存...");
-//                Dates.deleteAllFiles(new File("/storage/emulated/0/pictures"));
-//                Dates.deleteAllFiles(new File("/storage/emulated/0/Pictures/cropUtils"));
                 if (list.size() == 0) {
                     //如果资料上传的还有记录，那就不能删除本地文件，
                     Dates.deleteAllFiles(new File(Environment.getExternalStorageDirectory() + "/Boohee/"));
@@ -214,7 +211,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("logup", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int code = jsonObject.getInt("ret");

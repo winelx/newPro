@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,8 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Viewholder(LayoutInflater.from(parent.getContext()). //主体内容
+        //主体内容
+        return new Viewholder(LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.auditadapter_item, parent, false));
     }
 
@@ -39,7 +41,12 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
     private void bindContent(Viewholder holder, final int posotion) {
         holder.audi_user.setText(mDatas.get(posotion).getReplyUserName());
         holder.audi_content.setText(mDatas.get(posotion).getContent());
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        holder.image_viewpager.setLayoutManager(linearLayoutManager);
+        ArrayList<String> path = new ArrayList<>();
+        DialogRecAdapter adapter = new DialogRecAdapter(mContext, path,false);
+        holder.image_viewpager.setAdapter(adapter);
     }
 
     @Override
@@ -50,12 +57,14 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
     class Viewholder extends RecyclerView.ViewHolder {
 
         private TextView audi_user, adui_user_in, audi_content;
+        private RecyclerView image_viewpager;
 
         public Viewholder(View itemView) {
             super(itemView);
             audi_user = (TextView) itemView.findViewById(R.id.audi_user);
             adui_user_in = (TextView) itemView.findViewById(R.id.adui_user_in);
             audi_content = (TextView) itemView.findViewById(R.id.audi_content);
+            image_viewpager = itemView.findViewById(R.id.image_viewpager);
         }
     }
 

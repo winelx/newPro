@@ -58,7 +58,7 @@
         android:textSize="13sp" />
 
     <android.support.v7.widget.RecyclerView
-
+        android:id="@+id/audio_rec"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignLeft="@+id/audio_content"
@@ -66,10 +66,10 @@
         android:layout_below="@+id/audio_content"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone" />
+       />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/audio_rec"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignLeft="@+id/audio_content"

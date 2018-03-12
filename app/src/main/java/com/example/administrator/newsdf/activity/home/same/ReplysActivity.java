@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,14 +33,14 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.example.administrator.newsdf.adapter.PhotosAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.adapter.PhotosAdapter;
+import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
@@ -57,6 +58,8 @@ import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,7 +116,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private DrawerLayout drawer;
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
-
+    private int num = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -363,6 +366,25 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 drawer.openDrawer(GravityCompat.START);
             }
         });
+        reply_text.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    num++;
+                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+                    if (num % 2 != 0) {
+                        String s = reply_text.getText().toString();
+                        if (!TextUtils.isEmpty(s)) {
+                            reply_text.setText("" + s.substring(0, s.length() - 1));
+                            //将光标移到最后
+                            reply_text.setSelection(reply_text.getText().length());
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -504,7 +526,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //拍照
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
-                public void takePhotoFinish(String path) {
+                public void takePhotoFinish(final String path) {
 //                    ToastUtils.showLongToast("照片存放在：" + path);
                     //根据路径压缩图片并返回bitmap(2
                     Bitmap bitmap = Dates.getBitmap(path);
@@ -514,13 +536,18 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
                             bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
-                    String str = Dates.saveImageToGallery(mContext, textBitmap);
-                    //添加进集合
-                    pathimg.add(str);
-                    //填入listview，刷新界面
-                    photoAdapter.getData(pathimg);
-                    //删除原图
-                    Dates.deleteFile(path);
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //添加进集合
+                            pathimg.add(outfile);
+                            //填入listview，刷新界面
+                            photoAdapter.getData(pathimg);
+//                    //删除原图
+                            Dates.deleteFile(path);
+                        }
+                    });
                 }
             });
         }

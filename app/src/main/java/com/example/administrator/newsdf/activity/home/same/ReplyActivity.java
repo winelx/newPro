@@ -35,14 +35,14 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.example.administrator.newsdf.adapter.PhotoAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.adapter.PhotoAdapter;
+import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
@@ -60,6 +60,8 @@ import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,7 +120,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private ListView drawer_layout_list;
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
-
+    private int num = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +146,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+
         //发现ID
         //有可能没有传递数据过来。所以如果没有传递，那就消费掉
         findID();
@@ -168,8 +171,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             checkname = intent.getExtras().getString("Checkname");
             //转成集合
             imagePaths = Dates.stringToList(Paths);
-            for (int i = 0; i <imagePaths.size() ; i++) {
-                    Log.i("sss",imagePaths.get(i));
+            for (int i = 0; i < imagePaths.size(); i++) {
+                Log.i("sss", imagePaths.get(i));
             }
             pathimg.addAll(imagePaths);
             if (checkname.length() < 0) {
@@ -185,7 +188,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if (wbsname != null && wbsname.length() != 0) {
             wbs_text.setText(wbsname);
         }
-        if (TextUtils.isEmpty(wbsID)){
+        if (TextUtils.isEmpty(wbsID)) {
             fab.setVisibility(View.GONE);
         }
         reply_text.setText(content);
@@ -372,6 +375,26 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
+        reply_text.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    num++;
+                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+                    if (num % 2 != 0) {
+                        String s = reply_text.getText().toString();
+                        if (!TextUtils.isEmpty(s)) {
+                            reply_text.setText("" + s.substring(0, s.length() - 1));
+                            //将光标移到最后
+                            reply_text.setSelection(reply_text.getText().length());
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -438,12 +461,14 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         popupWindow.dismiss();
                         popstatus = false;
                     }
+
                     //进度条
                     @Override
                     public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
@@ -513,7 +538,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             //返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
-                public void takePhotoFinish(String path) {
+                public void takePhotoFinish(final String path) {
                     //   根据路径压缩图片并返回bitmap(2
                     Bitmap bitmap = Dates.compressPixel(path);
                     //给压缩的图片添加时间水印(1)
@@ -521,13 +546,19 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
                             bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
-                    String str = Dates.saveImageToGallery(mContext, textBitmap);
-                    //添加进集合
-                    pathimg.add(str);
-                    //填入listview，刷新界面
-                    photoAdapter.getData(pathimg);
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //添加进集合
+                            pathimg.add(outfile);
+                            //填入listview，刷新界面
+                            photoAdapter.getData(pathimg);
 //                    //删除原图
-                    Dates.deleteFile(path);
+                            Dates.deleteFile(path);
+                        }
+                    });
+
                 }
             });
         }
@@ -584,6 +615,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
+    //选择图片
     private void showPopwindow() {
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(ReplyActivity.this.getCurrentFocus()
@@ -642,8 +674,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
-        //弹窗
-     public void userPop() {
+
+    //弹窗
+    public void userPop() {
         View view = getLayoutInflater().inflate(R.layout.pop_new_push, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, true);

@@ -126,105 +126,109 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(msg);
-                            int ret =jsonObject.getInt("ret");
-                            if (ret!=0){
-                                Dates.disDialog();
-                            }
-                            ToastUtils.showShortToast(jsonObject.getString("msg"));
-                            JSONObject jsom = jsonObject.getJSONObject("data");
-                            String id;
+                        if (msg.indexOf("data") != -1) {
                             try {
-                                id = jsom.getString("id");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                id = "";
-                            }
-                            String portrait;
-                            try {
-                                //头像 需要拼接公共头
-                                portrait = jsom.getString("portrait");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                portrait = "";
-                            }
-                            String staffId;
-                            try {
+                                JSONObject jsonObject = new JSONObject(msg);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret != 0) {
+                                    Dates.disDialog();
+                                }
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                JSONObject jsom = jsonObject.getJSONObject("data");
+                                String id;
+                                try {
+                                    id = jsom.getString("id");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    id = "";
+                                }
+                                String portrait;
+                                try {
+                                    //头像 需要拼接公共头
+                                    portrait = jsom.getString("portrait");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    portrait = "";
+                                }
+                                String staffId;
+                                try {
+                                    //职员ID
+                                    staffId = jsom.getString("staffId");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    staffId = "";
+                                }
+                                String orgName;
+                                try {
+                                    //所在组织名称
+                                    orgName = jsom.getString("orgName");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    orgName = "";
+                                }
+                                String staffName;
+                                try {
+                                    //真实姓名
+                                    staffName = jsom.getString("staffName");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    staffName = "";
+                                }
+                                String orgId;
+                                try {
+                                    //所在组织id
+                                    orgId = jsom.getString("orgId");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    orgId = "";
+                                }
+                                String moblie;
+                                try {
+                                    //手机号
+                                    moblie = jsom.getString("phone");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    moblie = "";
+                                }
+                                SPUtils.deleAll(mContext);
                                 //职员ID
-                                staffId = jsom.getString("staffId");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                staffId = "";
-                            }
-                            String orgName;
-                            try {
+                                SPUtils.putString(mContext, "staffId", staffId);
                                 //所在组织名称
-                                orgName = jsom.getString("orgName");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                orgName = "";
-                            }
-                            String staffName;
-                            try {
+                                SPUtils.putString(mContext, "username", orgName);
                                 //真实姓名
-                                staffName = jsom.getString("staffName");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                staffName = "";
-                            }
-                            String orgId;
-                            try {
-                                //所在组织id
-                                orgId = jsom.getString("orgId");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                orgId = "";
-                            }
-                            String moblie;
-                            try {
+                                SPUtils.putString(mContext, "staffName", staffName);
+                                //id
+                                SPUtils.putString(mContext, "id", id);
+                                //头像
+                                SPUtils.putString(mContext, "portrait", portrait);
+                                //所在组织ID
+                                SPUtils.putString(mContext, "orgId", orgId);
                                 //手机号
-                                moblie = jsom.getString("phone");
+                                SPUtils.putString(mContext, "phone", moblie);
+                                //是否保存数据
+                                if (status) {
+                                    SPUtils.putString(mContext, "user", user);
+                                    SPUtils.putString(mContext, "password", password);
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                } else {
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                                Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                moblie = "";
                             }
-                            SPUtils.deleAll(mContext);
-                            //职员ID
-                            SPUtils.putString(mContext, "staffId", staffId);
-                            //所在组织名称
-                            SPUtils.putString(mContext, "username", orgName);
-                            //真实姓名
-                            SPUtils.putString(mContext, "staffName", staffName);
-                            //id
-                            SPUtils.putString(mContext, "id", id);
-                            //头像
-                            SPUtils.putString(mContext, "portrait", portrait);
-                            //所在组织ID
-                            SPUtils.putString(mContext, "orgId", orgId);
-                            //手机号
-                            SPUtils.putString(mContext, "phone", moblie);
-                            //是否保存数据
-                            if (status) {
-                                SPUtils.putString(mContext, "user", user);
-                                SPUtils.putString(mContext, "password", password);
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            }
-                            Dates.disDialog();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                        }else {
+                            ToastUtils.showShortToast("登陆失败");
                         }
+
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Log.i("ss", e + "");
                     }
                 });
 

@@ -93,6 +93,9 @@ public class Dates {
         long minute1 = between % 3600 / 60;
         long second1 = between % 60 / 60;
 //        System.out.println("" + day1 + "天" + hour1 + "小时" + minute1 + "分" + second1 + "秒");
+        if (day1==0){
+            return hour1 + "小时";
+        }
         return day1 + "天" + hour1 + "小时";
     }
 
@@ -343,7 +346,6 @@ public class Dates {
 
     private static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Log.i("压缩", "yas");
         //质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         image.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         int options = 100;

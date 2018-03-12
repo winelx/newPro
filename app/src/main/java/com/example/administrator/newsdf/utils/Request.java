@@ -9,9 +9,9 @@ public class Request {
     //  public static final String  = networks + "";
     //公共头  192.168.20.38
 
- //   public static final String networks = "http://192.168.20.40:8080/baseframe/";
-    public static final String networks = "http://117.187.27.78:8081/baseframe/";
-    //   public static final String networks = "http://120.79.142.15/pzgc/";
+    //public static final String networks = "http://192.168.20.40:8080/baseframe/";
+    // public static final String networks = "http://117.187.27.78:8081/baseframe/";
+   public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 用户登陆
      */
@@ -160,9 +160,9 @@ public class Request {
      * 获取前置条件
      */
     public static final String CASDPOINTD = networks + "iface/mobile/taskmain/findCasePoints";
- /**
-  * x修改配置
-  */
- public static final String WBSCASEPOINT = networks + "iface/mobile/taskmain/updateWbsCasePoint";
+    /**
+     * x修改配置
+     */
+    public static final String WBSCASEPOINT = networks + "iface/mobile/taskmain/updateWbsCasePoint";
 
 }

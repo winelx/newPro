@@ -192,11 +192,11 @@
                             android:src="@mipmap/image_loading" />
 
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/inface_relat1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="15sp"
-                            android:visibility="gone">
+                            android:layout_marginLeft="15sp">
 
                             <TextView
                                 android:id="@+id/inface_relat1_name"
@@ -230,7 +230,7 @@
 
                         <com.android.volley.toolbox.NetworkImageView
                             android:id="@+id/inface_image2"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="100dp"
                             android:layout_marginLeft="3sp"
                             android:layout_weight="1"
@@ -238,12 +238,12 @@
                             android:src="@mipmap/image_loading" />
 
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/inface_relat1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="3sp"
-                            android:background="#f5f8f7"
-                            android:visibility="gone">
+                            android:background="#f5f8f7">
 
                             <TextView
                                 android:id="@+id/inface_relat2_name"
@@ -279,13 +279,13 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/inface_relat3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="3sp"
                             android:layout_marginRight="5dp"
-                            android:background="#f1f6f7"
-                            android:visibility="gone">
+                            android:background="#f1f6f7">
 
                             <TextView
                                 android:id="@+id/inface_relat3_name"
@@ -318,9 +318,10 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:scaleType="fitXY"
-                           >
+                            android:visibility="gone">
 
                             <com.android.volley.toolbox.NetworkImageView
+
                                 android:id="@+id/inface_image3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"

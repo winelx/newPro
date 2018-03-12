@@ -113,7 +113,6 @@ public class PushFrgment extends LazyFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.push, container, false);
-
         data = new ArrayList<>();
         mContext = getActivity();
         push_img_nonew = view.findViewById(R.id.push_img_nonew);
@@ -149,6 +148,7 @@ public class PushFrgment extends LazyFragment {
                 //查看集合是否有数据
                 if (deleSelect.size() != 0 && data.size() != 0) {
                     strids = Dates.listToString(deleSelect);
+                    Log.i("strids", strids);
                     //批量修改数据
                     get();
                 } else if (data.size() == 0) {
@@ -213,7 +213,7 @@ public class PushFrgment extends LazyFragment {
                 intent.putExtra("preconditions", data.get(position).getPreconditions());
                 //任务ID
                 intent.putExtra("id", data.get(position).getId());
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         okgo();
@@ -376,18 +376,19 @@ public class PushFrgment extends LazyFragment {
         if (requestCode == 1 && resultCode == 2) {
             String user = data.getStringExtra("name");
             String userId = data.getStringExtra("userId");
-
-            Dialog(userId);
+            Dialog(userId, user);
+        } else {
+            okgo();
         }
     }
 
-    public void Dialog(final String str) {
+    public void Dialog(final String str, String name) {
         selfDialog = new WbsDialog(mContext);
-        selfDialog.setMessage("是否修改已选择中项的责任人");
+        selfDialog.setMessage("是否修改已选择中项的责任人为" + name);
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                OkGo.<String>post(Request.CASDPOINTD)
+                OkGo.<String>post(Request.WBSCASEPOINT)
                         .params("id", strids)
                         .params("leaderId", str)
                         .execute(new StringCallback() {

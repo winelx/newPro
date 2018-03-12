@@ -26,12 +26,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.adapter.Imageloaders;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -149,7 +149,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     search(1);
                 }
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(2000);
+                refreshlayout.finishRefresh(800);
             }
         });
         //上拉加载
@@ -175,7 +175,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     search(s);
                 }
                 //传入false表示加载失败
-                refreshlayout.finishLoadmore(2000);
+                refreshlayout.finishLoadmore(800);
             }
         });
         /**
@@ -476,7 +476,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("search", "search1");
                         parsingjson(s);
                     }
                 });
@@ -486,6 +485,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
      * 全部
      */
     private void okgoall(String wbsId, String content, int i) {
+        Log.i("wbs", id + "---" + wbsId);
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
@@ -669,7 +669,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     paths = new ArrayList<>();
                     if (files.length() > 0) {
                         for (int j = 0; j < files.length(); j++) {
-                            paths.add(Request.networks + files.get(j).toString());
+                            JSONObject jsonfilse = files.getJSONObject(j);
+                            String filepath = jsonfilse.getString("filepath");
+                            paths.add(Request.networks + filepath);
                         }
                     }
                     int comments = json2.length();
@@ -735,5 +737,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
+
 
 }

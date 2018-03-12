@@ -115,7 +115,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         handler.sendMessage(message);
         pagerFragment.setPhotos(paths, currentItem);
         picker_title = (TextView) findViewById(R.id.picker_title);
-        picker_horizon= (HorizontalScrollView) findViewById(R.id.picker_horizon);
+        picker_horizon = (HorizontalScrollView) findViewById(R.id.picker_horizon);
         upload = (LinearLayout) findViewById(R.id.upload);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -125,10 +125,10 @@ public class PhotoPagerActivity extends AppCompatActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        int size=imagepath.size();
-        if (size==0){
+        int size = imagepath.size();
+        if (size == 0) {
             picker_horizon.setVisibility(View.GONE);
-        }else {
+        } else {
             picker_horizon.setVisibility(View.VISIBLE);
         }
         if (actionBar != null) {
@@ -167,7 +167,11 @@ public class PhotoPagerActivity extends AppCompatActivity {
                     //下载图片
                     ToastUtils.showShortToast("已下载该图片过");
                 } else {
-                    asyncGet(path);
+                    if (path != null) {
+                        asyncGet(path);
+                    } else {
+
+                    }
                 }
             }
         });

@@ -16,7 +16,6 @@ import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import java.util.ArrayList;
 
 
-
 /**
  * Created by Administrator on 2017/12/28 0028.
  */
@@ -65,14 +64,17 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
                 @Override
                 public void onClick(View v) {
                     photoPaths.remove(position);
+                    notifyDataSetChanged();
                 }
             });
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ArrayList<String> paths = new ArrayList<String>();
+                    ArrayList<String> title = new ArrayList<String>();
                     paths.addAll(photoPaths);
-                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false)
+                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).
+                            setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(title)
                             .start((Activity) mContext);
                 }
             });

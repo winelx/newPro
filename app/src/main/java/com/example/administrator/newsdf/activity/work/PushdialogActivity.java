@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.bean.CasePointsBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Request;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -45,7 +46,7 @@ import okhttp3.Response;
  */
 public class PushdialogActivity extends Activity implements View.OnClickListener {
 
-    private LinearLayout com_back;
+    private IconTextView com_back;
     private PopupWindow popupWindow;
     private ArrayList<CasePointsBean> mData;
     //任务内容
@@ -289,6 +290,12 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                int ret =jsonObject.getInt("ret");
+                                if (ret==0){
+                                    Intent newpush = new Intent();
+                                    //回传数据到主Activity
+                                    setResult(0, newpush);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

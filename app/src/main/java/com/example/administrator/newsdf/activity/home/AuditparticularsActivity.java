@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.home;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,12 +12,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
@@ -24,16 +33,24 @@ import com.example.administrator.newsdf.adapter.Aduio_comm;
 import com.example.administrator.newsdf.adapter.Aduio_content;
 import com.example.administrator.newsdf.adapter.Aduio_data;
 import com.example.administrator.newsdf.adapter.AudioAdapter;
+import com.example.administrator.newsdf.adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.camera.CheckPermission;
+import com.example.administrator.newsdf.camera.CropImageUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,6 +95,11 @@ public class AuditparticularsActivity extends AppCompatActivity {
     SmartRefreshLayout drawerLayoutSmart;
     ListView drawerLayoutList;
     private boolean drew;
+    private RecyclerView dialog_rec;
+    private static final int IMAGE_PICKER = 101;
+    private CheckPermission checkPermission;
+    ArrayList<String> path;
+    DialogRecAdapter Dialogadapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +109,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         mContext = AuditparticularsActivity.this;
         usernma = SPUtils.getString(mContext, "staffName", null);
         Intent intent = getIntent();
+        path = new ArrayList<>();
         try {
             id = intent.getExtras().getString("frag_id");
             status = intent.getExtras().getString("status");
@@ -94,7 +117,19 @@ public class AuditparticularsActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        checkPermission = new CheckPermission(this) {
+            @Override
+            public void permissionSuccess() {
+                CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
+            }
 
+            @Override
+            public void negativeButton() {
+                //如果不重写，默认是finishddsfaasf
+                //super.negativeButton();
+                ToastUtils.showLongToast("权限申请失败！");
+            }
+        };
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -208,7 +243,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("wbsTaskId",s);
+                        Log.i("wbsTaskId", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -623,17 +658,35 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 });
     }
 
+    ArrayList<String> Tinys;
+
+    //startResult返回数据
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String id = data.getStringExtra("frag_id");
             com_button.setVisibility(View.GONE);
-
             okgo(id);
+        } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (data != null && requestCode == IMAGE_PICKER) {
+                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                for (int i = 0; i < images.size(); i++) {
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            path.add(outfile);
+                            Dialogadapter.getData(path);
+                        }
+                    });
+                }
+
+            } else {
+                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
 
     /**
      * 查询图册
@@ -678,5 +731,91 @@ public class AuditparticularsActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * 回复消息
+     */
+    private Dialog mCameraDialog;
+
+    /**
+     * 弹出框
+     */
+
+    public void setDialog() {
+        mCameraDialog = new Dialog(mContext, R.style.BottomDialog);
+        LinearLayout root = (LinearLayout) LayoutInflater.from(mContext).inflate(
+                R.layout.dialog_custom, null);
+        //初始化视图
+        final Button send = (Button) root.findViewById(R.id.par_button);
+        final EditText editext = (EditText) root.findViewById(R.id.par_editext);
+        final ImageView imageView = (ImageView) root.findViewById(R.id.par_image);
+        dialog_rec = root.findViewById(R.id.dialog_rec);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        dialog_rec.setLayoutManager(linearLayoutManager);
+        Dialogadapter = new DialogRecAdapter(mContext, path, true);
+        dialog_rec.setAdapter(Dialogadapter);
+        //拿到回复人
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(mContext, ImageGridActivity.class);
+//                startActivityForResult(intent, IMAGE_PICKER);
+
+            }
+        });
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ID = getId();
+                String str = editext.getText().toString();
+                if (str == null || str.isEmpty()) {
+                    ToastUtils.showShortToast("回复不能为空");
+                } else {
+                    OkGo.post(Request.commentaries)
+                            .params("taskId", ID)
+                            .params("status", "4")
+                            .params("content", str)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    okgo(id);
+                                    mCameraDialog.dismiss();
+                                }
+                            });
+                }
+            }
+        });
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        // 添加动画
+        dialogWindow.setWindowAnimations(R.style.DialogAnimation);
+        // 获取对话框当前的参数值
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        // 新位置X坐标
+        lp.x = 0;
+        //新位置Y坐标
+        lp.y = 0;
+        // 宽度
+        lp.width = (int) mContext.getResources().getDisplayMetrics().widthPixels;
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+        // 透明度
+        lp.alpha = 8f;
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
+        getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    editext.requestFocus();
+                    imm.showSoftInput(editext, 0);
+                }
+            }
+        }, 0);
+    }
+
 
 }

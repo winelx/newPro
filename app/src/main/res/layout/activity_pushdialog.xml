@@ -16,15 +16,11 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimaryDark">
 
-        <LinearLayout
-            android:id="@+id/com_back"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
 
             <com.joanzapata.iconify.widget.IconTextView
-                android:layout_width="20dp"
+                android:id="@+id/com_back"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|start"
                 android:gravity="center"
@@ -36,12 +32,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:text="修改配置"
                 android:textColor="@color/writer"
                 android:textSize="18sp" />
 
-
-        </LinearLayout>
+>
 
         <TextView
             android:id="@+id/com_title"

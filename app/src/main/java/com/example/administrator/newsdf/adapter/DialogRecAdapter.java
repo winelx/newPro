@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
@@ -17,32 +15,28 @@ import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
 
-
 /**
- * description:
- *
- * @author winelx
- *         date:2017/11/30 0030:下午 14:46
- *         update: 2018/3/1 0001
- *         version:
+ * Created by Administrator on 2018/3/12 0012.
  */
 
-public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<String> mData;
     private ArrayList<String> Title;
     private Dates dates = new Dates();
+    private boolean blean;
 
-    public RectifierAdapter(Context mContext, ArrayList<String> listA) {
+    public DialogRecAdapter(Context mContext, ArrayList<String> listA, boolean blean) {
         this.mContext = mContext;
         this.mData = listA;
+        this.blean = blean;
     }
 
     //初始化布局
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TypeHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rectifier_item, parent, false));
+                .inflate(R.layout.dialog_pop_item, parent, false));
     }
 
     @Override
@@ -53,8 +47,21 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void bindView(final TypeHolder holder, final int position) {
-        holder.audio_relat.setVisibility(View.GONE);
-        Glide.with(mContext).load(mData.get(position)).into(holder.img);
+        Glide.with(mContext)
+                .load(mData.get(position))
+                .into(holder.img);
+        if (blean) {
+            holder.error.setVisibility(View.VISIBLE);
+        } else {
+            holder.error.setVisibility(View.GONE);
+        }
+        holder.error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mData.remove(position);
+                notifyDataSetChanged();
+            }
+        });
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,15 +81,12 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class TypeHolder extends RecyclerView.ViewHolder {
         ImageView img;
-        RelativeLayout audio_relat;
-        TextView audio_relat_name, audio_relat_icon;
+        ImageView error;
 
         public TypeHolder(View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.imgage);
-            audio_relat = itemView.findViewById(R.id.audio_relat);
-            audio_relat_name = itemView.findViewById(R.id.audio_relat_name);
-            audio_relat_icon = itemView.findViewById(R.id.audio_relat_icon);
+            img = itemView.findViewById(R.id.dialog_pop_image);
+            error = itemView.findViewById(R.id.dialog_pop_error);
         }
     }
 

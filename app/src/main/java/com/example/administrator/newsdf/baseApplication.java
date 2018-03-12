@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
 import com.example.administrator.newsdf.service.LocationService;
@@ -19,6 +20,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.zxy.tiny.Tiny;
 
 /**
  * @author lx
@@ -43,8 +45,9 @@ public class baseApplication extends Application {
         instance = this;
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
         OkGo.init(this);
+        Tiny.getInstance().init(this);
         Iconify.with(new FontAwesomeModule());
-
+        Glide.with(this);
         OkGo.getInstance()
                 //可以全局统一设置缓存模式,默认是不使用缓存,可以不传,具体其他模式看 github 介绍 https://github.com/jeasonlzy/
                 .setCacheMode(CacheMode.NO_CACHE)
@@ -63,9 +66,9 @@ public class baseApplication extends Application {
         //设置图片加载器
         imagePicker.setImageLoader(new PicassoImageLoader());
         //显示拍照按钮
-        imagePicker.setShowCamera(false);
+        imagePicker.setShowCamera(true);
         //允许裁剪（单选才有效）
-        imagePicker.setCrop(true);
+        imagePicker.setCrop(false);
         //是否按矩形区域保存
         imagePicker.setSaveRectangle(true);
         //选中数量限制
