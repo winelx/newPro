@@ -234,7 +234,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 break;
             //负责人
             case R.id.push_duty:
-                Intent intent = new Intent(PushdialogActivity.this, MemberActivity.class);
+                Intent intent = new Intent(PushdialogActivity.this, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
                 break;
@@ -280,7 +280,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 //责任人ID
                 .params("leaderId", userId)
                 //推送内容
-                .params("content", pushcontent);
+                .params("preconditions", pushcontent);
         //前置项ID
         if (preconditions != null && preconditions != "") {
             str.params("preconditions", id)
@@ -294,7 +294,8 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                                 if (ret==0){
                                     Intent newpush = new Intent();
                                     //回传数据到主Activity
-                                    setResult(0, newpush);
+                                    setResult(5, newpush);
+                                    finish(); //此方法后才能返回主Activity
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

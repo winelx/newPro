@@ -362,6 +362,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Log.i("wbsTaskId", s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -476,11 +477,9 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 //打回说明
                                 backdata = ("");
                             }
-
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
-
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 JSONObject upload = Sub.getJSONObject("uploadUser");
@@ -606,16 +605,19 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                     userimage = "";
                                 }
                                 ArrayList<String> attachments = new ArrayList<>();
+                                ArrayList<String> filename = new ArrayList<>();
                                 if (hments.length() > 0) {
                                     for (int j = 0; j < hments.length(); j++) {
                                         JSONObject json = hments.getJSONObject(j);
                                         String path = json.getString("filepath");
+                                        String name1 = json.getString("filename");
+                                        filename.add(name1);
                                         attachments.add(Request.networks + path);
                                     }
                                 }
                                 aduio_datas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, Sub_name,
                                         Sub_wbsName, uploadContent, updateDate, uploadAddr, Sub_leaderName, Sub_leaderId, Sub_iscallback,
-                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage));
+                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage, filename));
                             }
 
                             for (int i = 0; i < comments.length(); i++) {

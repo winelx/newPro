@@ -60,7 +60,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList imagepath = new ArrayList();
                 for (int i = 0; i < mData.size(); i++) {
                     path.add(mData.get(i).getFilePath());
-                    imagepath.add(mData.get(i).getDrawingNumber());
+                    imagepath.add(mData.get(i).getDrawingGroupName() + "<<" + mData.get(i).getDrawingNumber() + "<<" + mData.get(position).getDrawingName());
                 }
                 PhotoPreview.builder().setPhotos(path).setCurrentItem(position)
                         .setShowDeleteButton(false)

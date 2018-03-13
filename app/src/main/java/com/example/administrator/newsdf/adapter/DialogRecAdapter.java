@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
@@ -60,16 +58,6 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View v) {
                 mData.remove(position);
                 notifyDataSetChanged();
-            }
-        });
-        holder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //查看图片
-                ArrayList<String> imagepath = new ArrayList<String>();
-                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
-                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
-                        .start((Activity) mContext);
             }
         });
     }

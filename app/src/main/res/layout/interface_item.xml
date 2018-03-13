@@ -195,17 +195,17 @@
                             android:id="@+id/inface_relat1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="15sp"
-                            android:visibility="gone">
+                            android:layout_marginLeft="15sp">
 
                             <TextView
                                 android:id="@+id/inface_relat1_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
+                                android:ellipsize="end"
                                 android:gravity="center"
-                                android:text="桥梁大桥需求文档.pdf"
-                                android:textSize="15sp" />
+                                android:maxEms="14"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/inface_relat1_icon"
@@ -238,7 +238,7 @@
                             android:src="@mipmap/image_loading" />
 
                         <RelativeLayout
-                            android:id="@+id/inface_relat1"
+                            android:id="@+id/inface_relat2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="3sp"
@@ -251,7 +251,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:gravity="center"
-                                android:text="桥梁大桥需求文档.xsxl"
+
                                 android:textSize="15sp" />
 
                             <TextView
@@ -293,7 +293,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
                                 android:gravity="center"
-                                android:text="桥梁大桥需求文档.doc"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -317,8 +316,7 @@
                             android:layout_marginLeft="3sp"
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
-                            android:scaleType="fitXY"
-                           >
+                            android:scaleType="fitXY">
 
                             <com.android.volley.toolbox.NetworkImageView
                                 android:id="@+id/inface_image3"

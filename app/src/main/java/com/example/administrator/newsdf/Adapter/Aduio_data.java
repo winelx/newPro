@@ -24,6 +24,7 @@ public class Aduio_data {
     String callbackTime;//打回说明
     String callbackId;//打回人ID
     ArrayList<String> attachments;//附件list（
+    ArrayList<String> filename;//附件list（
     String commentCount; //评论条数
       String userpath;
 
@@ -32,7 +33,7 @@ public class Aduio_data {
                       String replyUserHeaderURL, String name, String wbsName, String uploadContent,
                       String updateDate, String uploadAddr, String leaderName, String leaderId,
                       String iscallback, String callbackContent, String callbackTime,
-                      String callbackId, ArrayList<String> attachments, String commentCount,String userpath
+                      String callbackId, ArrayList<String> attachments, String commentCount,String userpath,   ArrayList<String> filename
                      ) {
         this.replyID = replyID;
         this.uploadId = uploadId;
@@ -52,6 +53,7 @@ public class Aduio_data {
         this.attachments = attachments;
         this.commentCount = commentCount;
         this.userpath = userpath;
+        this.filename = filename;
 
     }
 
@@ -197,5 +199,13 @@ public class Aduio_data {
 
     public void setUserpath(String userpath) {
         this.userpath = userpath;
+    }
+
+    public ArrayList<String> getFilename() {
+        return filename;
+    }
+
+    public void setFilename(ArrayList<String> filename) {
+        this.filename = filename;
     }
 }

@@ -42,7 +42,7 @@ public class PchooseActivity extends AppCompatActivity {
 
         listPath = new ArrayList<>();
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("图纸查看");
+        com_title.setText("图纸管理");
         image = (ImageView) findViewById(R.id.image);
         findViewById(R.id.pchoose_atlas).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -52,7 +52,7 @@ public class ProjectmemberActivity extends AppCompatActivity implements XListVie
     private CheckPermission checkPermission;
     private LinearLayout home_backgroud;
     private TextView home_backgroud_text;
-
+    private LinearLayout search_linear;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +73,8 @@ public class ProjectmemberActivity extends AppCompatActivity implements XListVie
         uslistView.setAutoLoadEnable(false);
         uslistView.setXListViewListener(this);
         uslistView.setRefreshTime(getTime());
-
+        search_linear= (LinearLayout) findViewById(R.id.search_linear);
+        search_linear.setVisibility(View.GONE);
         comback = (LinearLayout) findViewById(R.id.com_back);
         okgo();
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.setting_member_item) {

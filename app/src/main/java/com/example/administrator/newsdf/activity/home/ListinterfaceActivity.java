@@ -458,7 +458,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("msgStatus", msgStatus)
                 .params("content", content)
@@ -493,7 +493,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("msgStatus", msgStatus)
                 .params("content", content)
@@ -521,7 +521,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("content", content)
                 .execute(new StringCallback() {
@@ -547,7 +547,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("content", content)
                 .execute(new StringCallback() {
@@ -670,7 +670,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         OkGo.post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
-                .params("rows", 5)
+                .params("rows", 20)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

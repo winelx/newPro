@@ -377,8 +377,9 @@ public class PushFrgment extends LazyFragment {
             String user = data.getStringExtra("name");
             String userId = data.getStringExtra("userId");
             Dialog(userId, user);
-        } else {
+        } else   if (requestCode == 1 && resultCode == 5) {
             okgo();
+            che_all.setChecked(false);
         }
     }
 
@@ -400,6 +401,7 @@ public class PushFrgment extends LazyFragment {
                                     String msg = json.getString("msg");
                                     ToastUtils.showShortToast(msg);
                                     if (ret == 0) {
+                                        che_all.setChecked(false);
                                         okgo();
                                     }
                                 } catch (JSONException e) {

@@ -425,7 +425,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("msgStatus", msgStatus)
@@ -447,7 +447,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("msgStatus", msgStatus)
@@ -469,7 +469,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content)
@@ -489,7 +489,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 10)
+                .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content)
@@ -552,6 +552,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         if (swip == false) {
             Alldata.clear();
         }
+        Log.i("list", s);
         if (s.indexOf("data") != -1) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
@@ -667,16 +668,19 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         upload_content = "";
                     }
                     paths = new ArrayList<>();
+                   ArrayList<String> pathsname = new ArrayList<>();
                     if (files.length() > 0) {
                         for (int j = 0; j < files.length(); j++) {
                             JSONObject jsonfilse = files.getJSONObject(j);
                             String filepath = jsonfilse.getString("filepath");
+                            String filename = jsonfilse.getString("filename");
                             paths.add(Request.networks + filepath);
+                            pathsname.add(filename);
                         }
                     }
                     int comments = json2.length();
                     Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
-                            groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments));
+                            groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments,pathsname));
                 }
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
@@ -737,7 +741,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
-
 
 
 }

@@ -80,7 +80,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.audio_rec.setLayoutManager(linearLayoutManager);
-        RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments());
+        RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(),mDatas.get(posotion).getFilename());
         holder.audio_rec.setAdapter(adapter);
 
     }

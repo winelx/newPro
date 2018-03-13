@@ -125,12 +125,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        int size = imagepath.size();
-        if (size == 0) {
-            picker_horizon.setVisibility(View.GONE);
-        } else {
-            picker_horizon.setVisibility(View.VISIBLE);
-        }
+        picker_horizon.setVisibility(View.VISIBLE);
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionBarTitle();

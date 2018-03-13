@@ -667,4 +667,14 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2) {
+            String user = data.getStringExtra("name");
+            userID = data.getStringExtra("userId");
+            nodeWbsUsername.setText(user);
+        }
+    }
 }

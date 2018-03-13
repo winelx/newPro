@@ -23,13 +23,14 @@ public class Inface_all_item {
     String upload_addr;//上传地址
     String portrait;//人物头像
     ArrayList<String> upload;
+    ArrayList<String> filename;
     int comments;
 
     public Inface_all_item(String wbsPath, String updateDate, String content,
                            String taskId, String id, String wbsId, String createTime,
                            String groupName, int isFinish, String upload_time, String userid,
                            String uploador, String upload_content, String upload_addr,
-                           String portrait, ArrayList<String> upload, int comments) {
+                           String portrait, ArrayList<String> upload, int comments, ArrayList<String> filename) {
         this.wbsPath = wbsPath;
         this.updateDate = updateDate;
         this.content = content;
@@ -47,6 +48,7 @@ public class Inface_all_item {
         this.portrait = portrait;
         this.upload = upload;
         this.comments = comments;
+        this.filename = filename;
     }
 
     public String getWbsPath() {
@@ -183,5 +185,13 @@ public class Inface_all_item {
 
     public void setComments(int comments) {
         this.comments = comments;
+    }
+
+    public ArrayList<String> getFilename() {
+        return filename;
+    }
+
+    public void setFilename(ArrayList<String> filename) {
+        this.filename = filename;
     }
 }

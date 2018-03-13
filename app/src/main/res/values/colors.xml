@@ -23,7 +23,6 @@
     <color name="transparent">#00000000</color>
 
 
-
     <color name="finish_green">#22c67b</color>
     <color name="unfinish_gray">#a6a6a6</color>
     <color name="light_blue">#ccf0fd</color>
@@ -44,4 +43,12 @@
     <color name="__picker_item_photo_border_selected">#ff99cc00</color>
     <color name="__picker_item_photo_border_n">#33ffffff</color>
 
+    <color name="pdfback">#f8f5f6</color>
+    <color name="pdficon">#e98c90</color>
+
+    <color name="docback">#f1f6f7</color>
+    <color name="docicon">#5e8ed3</color>
+
+    <color name="xlsback">#f5f8f7</color>
+    <color name="slxicon">#67cd95</color>
 </resources>
