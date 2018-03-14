@@ -150,7 +150,7 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
         intent.putExtra("Checkid", list.get(position).getCheckid());
         intent.putExtra("Checkname", list.get(position).getCheckname());
         intent.putExtra("notup", "notup");
-        intent.putExtra("title", "新增任务编辑");
+        intent.putExtra("title", "任务编辑");
         startActivityForResult(intent, 2);
     }
 

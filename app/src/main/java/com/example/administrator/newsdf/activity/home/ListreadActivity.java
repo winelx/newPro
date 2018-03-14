@@ -692,6 +692,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
                     mAdapter.getData(Alldata);
+
                     listerad_nonumber.setVisibility(View.GONE);
                 }
 

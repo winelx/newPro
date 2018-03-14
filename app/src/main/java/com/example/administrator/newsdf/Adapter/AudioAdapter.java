@@ -112,7 +112,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //转交人
             holder.details_user.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {
-                holder.details_data.setText(content.get(posotion).getCreateDate() + "   已推送" + data);
+                holder.details_data.setText(content.get(posotion).getCreateDate() + "  已推送：" + data);
                 //状态
                 holder.details_boolean.setText("未完成");
                 //状态
