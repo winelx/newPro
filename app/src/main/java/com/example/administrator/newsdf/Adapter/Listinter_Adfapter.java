@@ -95,7 +95,7 @@ public class Listinter_Adfapter extends BaseAdapter {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                holder.item_inface_date.setText(str);
+                holder.item_inface_date.setText("已推送："+str);
                 break;
             //已完成
             case "1":

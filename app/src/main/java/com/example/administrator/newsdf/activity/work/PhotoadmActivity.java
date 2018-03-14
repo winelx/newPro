@@ -56,7 +56,7 @@ public class PhotoadmActivity extends AppCompatActivity {
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("图纸详情");
+        com_title.setText("分部分项图纸");
         comback = (IconTextView) findViewById(R.id.com_back);
         comback.setOnClickListener(
                 new View.OnClickListener() {
@@ -94,7 +94,7 @@ public class PhotoadmActivity extends AppCompatActivity {
                                 filePath = Request.networks + filePath;
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                             }
-                            photoAdapter.getData(imagePaths);
+                            photoAdapter.getData(imagePaths,Title);
                             wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                             Dates.disDialog();
                         } catch (JSONException e) {

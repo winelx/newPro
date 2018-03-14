@@ -323,7 +323,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.user_list:
                 userPop();
-                Intent intent = new Intent(mContext, MemberActivity.class);
+                Intent intent = new Intent(mContext, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
                 break;
@@ -590,6 +590,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
+                          //  wbsName 可以用
                             taskAdapter.getData(imagePaths);
                         }
                     }

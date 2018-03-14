@@ -27,7 +27,7 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> mData;
     private ArrayList<String> title;
     private Context mContext;
-
+   private String titles;
     public TaskPhotoAdapter(ArrayList<PhotoBean> imagePaths, Context context) {
         super();
         this.imagePaths = imagePaths;
@@ -72,7 +72,7 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
                 title = new ArrayList<String>();
                 for (int i = 0; i < imagePaths.size(); i++) {
                     mData.add(imagePaths.get(i).getFilePath());
-                    title.add(imagePaths.get(i).getDrawingGroupName());
+                    title.add(imagePaths.get(i).getDrawingNumber());
                 }
                 PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
                         setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
@@ -87,8 +87,9 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
         TextView pop_tast_item;
     }
 
-    public void getData(ArrayList<PhotoBean> imagePaths) {
+    public void getData(ArrayList<PhotoBean> imagePaths ) {
         this.imagePaths = imagePaths;
+        this.titles = titles;
         notifyDataSetChanged();
     }
 }

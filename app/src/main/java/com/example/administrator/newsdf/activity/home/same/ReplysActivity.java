@@ -493,7 +493,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-
+String titles;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -510,6 +510,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点
             checkId = data.getStringExtra("id");
+            titles=data.getStringExtra("name");
             reply_check_item.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //相册
@@ -762,6 +763,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                     filePath = Request.networks + filePath;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                                //titles
                                 mAdapter.getData(photoPopPaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

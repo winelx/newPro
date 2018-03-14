@@ -106,17 +106,19 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            holder.details_data.setText(content.get(posotion).getCreateDate() + "  " + data);
+
             holder.details_content.setText(content.get(posotion).getContent());
             holder.details_fixed_data.setText(content.get(posotion).getBackdata());
             //转交人
             holder.details_user.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {
+                holder.details_data.setText(content.get(posotion).getCreateDate() + "   已推送" + data);
                 //状态
                 holder.details_boolean.setText("未完成");
                 //状态
                 holder.details_boolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
             } else {
+                holder.details_data.setText(content.get(posotion).getCreateDate());
                 //状态
                 holder.details_boolean.setText("已完成");
                 //状态

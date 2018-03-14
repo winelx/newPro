@@ -348,6 +348,12 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
         mPopWindow.showAsDropDown(imageView, -10, 0);
         popwind = true;
+        //失去焦点
+        search_editext.clearFocus();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
+                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 
     @Override
@@ -500,13 +506,14 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
-
+    String titles;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //判断是不是Activity的返回，不是就是相机的返回
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String title = data.getStringExtra("title");
+             titles = data.getStringExtra("titles");
             Titlew.setText(title);
             wbsid = data.getStringExtra("id");
             popwind = data.getBooleanExtra("iswbs", false);
@@ -726,6 +733,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+//                                titles;可以用
                                 taskAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

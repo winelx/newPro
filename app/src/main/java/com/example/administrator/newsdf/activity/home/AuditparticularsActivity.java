@@ -100,7 +100,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private CheckPermission checkPermission;
     ArrayList<String> path;
     DialogRecAdapter Dialogadapter;
-
+    private String Titles;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -398,13 +398,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 //唯一标识
                                 wtMainid = wtMain.getString("id");
                             } catch (JSONException e) {
-
                                 wtMainid = "";
                             }
                             String name;
                             try {
                                 ///检查点
                                 name = wtMain.getString("name");
+                                Titles=name;
                             } catch (JSONException e) {
 
                                 name = "";
@@ -719,6 +719,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                              //  Titles
                                 taskPhotoAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

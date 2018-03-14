@@ -10,12 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.NotuploadActivity;
+import com.example.administrator.newsdf.activity.work.UploadPhotoActivity;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 这里未上传资料的recycler的适配器
+ * 下载图片recycler的适配器
  */
-public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
+public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
 
     private Context mContext;
 
@@ -37,7 +37,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
 
     private LeftSlideView mMenu = null;
 
-    public Adapter(Context context) {
+    public UploadPhAdapter(Context context) {
         mContext = context;
         mIDeleteBtnClickListener = (IonSlidingViewClickListener) context;
         mISetBtnClickListener = (IonSlidingViewClickListener) context;
@@ -53,21 +53,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
 
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-        //时间
-        holder.time.setText(mDatas.get(position).getTimme());
-        //输入内容
-        if (mDatas.get(position).getContent().length() != 0) {
-            holder.content.setText(mDatas.get(position).getContent());
-        } else {
-            holder.content.setText("暂未输入");
-        }
-        if (mDatas.get(position).getName().length() != 0) {
-            holder.wbsnam.setText(mDatas.get(position).getName());
-        } else {
-            holder.wbsnam.setText("暂未选择");
-        }
-
-        holder.title.setText(mDatas.get(position).getCheckname());
 
         //item正文点击事件
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +62,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 } else {
-                    NotuploadActivity activity = (NotuploadActivity) mContext;
+                    UploadPhotoActivity activity = (UploadPhotoActivity) mContext;
                     activity.getInt(position);
                 }
             }
@@ -95,17 +80,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NotuploadActivity activity = (NotuploadActivity) mContext;
+                UploadPhotoActivity activity = (UploadPhotoActivity) mContext;
                 activity.deleteDate(position);
             }
         });
+        holder.up_ph_name.setText(mDatas.get(position).getContent());
+        holder.up_ph_data.setText(mDatas.get(position).getTimme());
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
 
         //获取自定义View的布局（加载item布局）
-        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_item, arg0, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.up_ph_item, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
 
         return holder;
@@ -113,23 +100,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
 
    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView btn_Set, title;
+        public TextView btn_Set;
         public TextView btn_Delete;
-        public TextView content, time, wbsnam;
+        public TextView up_ph_data, up_ph_name;
         public ViewGroup layout_content;
-        public RelativeLayout relativeLayout;
+        public LinearLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
+
             btn_Set = (TextView) itemView.findViewById(R.id.tv_set);
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
             layout_content = (ViewGroup) itemView.findViewById(R.id.layout_content);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            content = itemView.findViewById(R.id.content);
-            time = itemView.findViewById(R.id.time);
-            wbsnam = itemView.findViewById(R.id.wbsname);
-            ((LeftSlideView) itemView).setSlidingButtonListener(Adapter.this);
+            up_ph_data=(TextView) itemView.findViewById(R.id.up_ph_data);
+            up_ph_name=(TextView) itemView.findViewById(R.id.up_ph_name);
+            ((LeftSlideView) itemView).setSlidingButtonListener(UploadPhAdapter.this);
         }
     }
 
@@ -200,4 +186,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
 
         void onSetBtnCilck(View view, int position);//点击“设置”
     }
+
+
 }

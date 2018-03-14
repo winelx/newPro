@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,12 @@ public class PopAdapterDialog extends BaseAdapter implements ListAdapter {
     private ArrayList<CasePointsBean> mData;
     private Context mContext;
     private LayoutInflater inflater;
-
-    public PopAdapterDialog(ArrayList<CasePointsBean> mData, Context mContext) {
+    private String preconditions;
+    public PopAdapterDialog(ArrayList<CasePointsBean> mData, Context mContext,String preconditions) {
         this.mData = mData;
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
+        this.preconditions = preconditions;
     }
 
     @Override
@@ -53,11 +55,21 @@ public class PopAdapterDialog extends BaseAdapter implements ListAdapter {
         LinearLayout chek_Lin = convertView.findViewById(R.id.chek_Lin);
         TextView taskCheck = (TextView) convertView.findViewById(R.id.task_check);
         TextView taskContent = (TextView) convertView.findViewById(R.id.task_content);
-        int Label = mData.get(position).getLabel().length();
-        int Content = mData.get(position).getContent().length();
 
-        taskCheck.setText(mData.get(position).getLabel());
-        taskContent.setText(mData.get(position).getContent());
+            String  str=mData.get(position).getID();
+            if (preconditions.equals(str)){
+                taskCheck.setText(mData.get(position).getLabel());
+                taskContent.setText(mData.get(position).getContent());
+                taskCheck.setTextColor(mContext.getResources().getColor(R.color.Orange));
+                taskContent.setTextColor(mContext.getResources().getColor(R.color.Orange));
+            }else {
+                taskCheck.setText(mData.get(position).getLabel());
+                taskContent.setText(mData.get(position).getContent());
+                taskCheck.setTextColor(mContext.getResources().getColor(R.color.textViwe));
+                taskContent.setTextColor(mContext.getResources().getColor(R.color.textViwe));
+            }
+
+
         return convertView;
     }
 }

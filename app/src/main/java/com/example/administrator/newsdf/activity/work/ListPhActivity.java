@@ -83,7 +83,7 @@ public class ListPhActivity extends AppCompatActivity {
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber,
                                         drawingName, drawingGroupName));
                             }
-                            photoAdapter.getData(imagePaths);
+                            photoAdapter.getData(imagePaths,Title);
                             wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                         } catch (JSONException e) {
                             e.printStackTrace();

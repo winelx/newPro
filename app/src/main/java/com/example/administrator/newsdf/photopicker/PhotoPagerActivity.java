@@ -63,6 +63,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private List<String> imagepath = new ArrayList<>();
     private String result;
     private HorizontalScrollView picker_horizon;
+    private String Title;
     /**
      * 异步get,直接调用
      */
@@ -76,7 +77,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    Dates.downloadPhoto(PhotoPagerActivity.this, bitmap, result);
+                    Dates.downloadPhoto(PhotoPagerActivity.this, bitmap, result,Title);
                     break;
                 case 2:
                     //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
@@ -125,7 +126,13 @@ public class PhotoPagerActivity extends AppCompatActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        picker_horizon.setVisibility(View.VISIBLE);
+        int leang= imagepath.size();
+        if(leang!=0){
+            picker_horizon.setVisibility(View.VISIBLE);
+        }else {
+            picker_horizon.setVisibility(View.GONE);
+        }
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionBarTitle();
@@ -139,6 +146,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (imagepath.size() == 0) {
                 } else {
+                    Title=imagepath.get(position);
                     picker_title.setText(imagepath.get(position));
                 }
                 updateActionBarTitle();
@@ -198,6 +206,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.delete) {
             Dates.getDialogs(PhotoPagerActivity.this, "删除数据");
             final int index = pagerFragment.getCurrentItem();
+            listPath = LoveDao.queryCart();
             if (pagerFragment.getPaths().size() >= 1) {
                 pagerFragment.getPaths().remove(index);
                 pagerFragment.getViewPager().getAdapter().notifyDataSetChanged();

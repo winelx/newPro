@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,6 +118,12 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         findViewById(R.id.com_button).setOnClickListener(this);
         //存放前置选项的集合
         mData = new ArrayList<>();
+        conditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWind();
+            }
+        });
         //获取前置项
         CasePoints();
     }
@@ -200,15 +206,19 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 popupWindow.dismiss();
             }
         });
-        PopAdapterDialog adapter = new PopAdapterDialog(mData, PushdialogActivity.this);
+        PopAdapterDialog adapter = new PopAdapterDialog(mData, PushdialogActivity.this,preconditions);
         lvList.setAdapter(adapter);
         lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                //前置项名
                 requirements = mData.get(position).getLabel();
+                //前置项ID
                 preconditions = mData.get(position).getID();
+                //填数据
                 conditions.setText(requirements);
+                Log.i("preconditions", preconditions);
                 popupWindow.dismiss();
             }
         });
@@ -271,8 +281,8 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
      * 保存数据
      */
     public void getSubmit() {
-        PostRequest str;
-        str = OkGo.<String>post(Request.WBSCASEPOINT)
+        Log.i("preconditions", id + "   " + taskcontent + "   " + userId + "   " + preconditions + pushContent.getText().toString());
+        OkGo.<String>post(Request.WBSCASEPOINTs)
                 //任务ID
                 .params("id", id)
                 //任务名称
@@ -280,42 +290,31 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 //责任人ID
                 .params("leaderId", userId)
                 //推送内容
-                .params("preconditions", pushcontent);
-        //前置项ID
-        if (preconditions != null && preconditions != "") {
-            str.params("preconditions", id)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
+                .params("content", pushContent.getText().toString())
+                //前置项ID
+                .params("preconditions", preconditions)
+                //前置项名称
+                .params("preconditionsName", requirements)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                ToastUtils.showShortToast("修改成功");
+                                Intent newpush = new Intent();
+                                //回传数据到主Activity
+                                setResult(5, newpush);
+                                finish(); //此方法后才能返回主Activity
+                            } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                int ret =jsonObject.getInt("ret");
-                                if (ret==0){
-                                    Intent newpush = new Intent();
-                                    //回传数据到主Activity
-                                    setResult(5, newpush);
-                                    finish(); //此方法后才能返回主Activity
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-        } else {
-            str.execute(new StringCallback() {
-                @Override
-                public void onSuccess(String s, Call call, Response response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(s);
-                        ToastUtils.showShortToast(jsonObject.getString("msg"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-
-                }
-            });
-        }
+                });
 
 
     }

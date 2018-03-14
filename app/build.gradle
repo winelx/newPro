@@ -82,6 +82,5 @@ dependencies {
     compile 'com.lzy.widget:imagepicker:0.5.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zxy.android:tiny:0.0.6'
-    compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     testCompile 'junit:junit:4.12'
 }

@@ -278,6 +278,7 @@ public class TenanceviewActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                                //wbspath
                                 taskAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

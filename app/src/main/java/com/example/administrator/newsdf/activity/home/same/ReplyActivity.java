@@ -121,6 +121,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
+    private String titlename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +163,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             check = intent.getStringArrayListExtra("list");
             //当前节点ID
             wbsID = intent.getExtras().getString("id");
-            title.setText(intent.getExtras().getString("title"));
+            titlename=intent.getExtras().getString("title");
+            title.setText(  titlename);
             //检查点id集合
             ids = intent.getExtras().getStringArrayList("ids");
             //图片字符串
@@ -185,6 +187,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
             title.setText("我很主动");
         }
+
+
         if (wbsname != null && wbsname.length() != 0) {
             wbs_text.setText(wbsname);
         }
@@ -505,7 +509,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-
+String Titles;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -522,6 +526,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
             checkId = data.getStringExtra("id");
+           Titles= data.getStringExtra("name");
             reply_check_item.setText(data.getStringExtra("name"));
 
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
@@ -734,6 +739,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                     filePath = Request.networks + filePath;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                                //Titles
                                 mAdapter.getData(photoPopPaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

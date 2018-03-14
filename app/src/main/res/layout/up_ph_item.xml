@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--item布局，自定义View-->
+<com.example.administrator.newsdf.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginBottom="1dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/item_not"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
+        <TextView
+            android:id="@+id/tv_set"
+            android:layout_width="80dp"
+            android:layout_height="106dp"
+            android:layout_toRightOf="@+id/layout_content"
+            android:background="@drawable/orange_background"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="#DDFFFFFF"
+            android:textSize="25dp"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/tv_set"
+            android:background="@color/red"
+            android:gravity="center"
+            android:text="删 除"
+            android:textColor="#DDFFFFFF"
+            android:textSize="18dp" />
+
+
+        <RelativeLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/relativeLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/title_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="图纸名称："
+                      />
+
+                    <TextView
+                        android:id="@+id/up_ph_name"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/wbsname"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/title_ll">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="下载时间："
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/up_ph_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxEms="14"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</com.example.administrator.newsdf.utils.LeftSlideView>

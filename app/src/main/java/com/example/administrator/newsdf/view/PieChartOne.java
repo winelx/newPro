@@ -19,18 +19,24 @@ import java.util.List;
  */
 
 public class PieChartOne extends View {
-
-    private Paint paint;            //圆画笔
+    //圆画笔
+    private Paint paint;
     private Paint mpaint;
-    private Paint piePaint;        //扇形画笔
-    private Paint outerLinePaint;       //轮廓画笔
-    private Paint linePaint;            //指示线
-    private Paint textPaint;                //文字画笔
-    private float radius;           //半径
+    //扇形画笔
+    private Paint piePaint;
+    //轮廓画笔
+    private Paint outerLinePaint;
+    //指示线
+    private Paint linePaint;
+    //文字画笔
+    private Paint textPaint;
+    //半径
+    private float radius;
 
     private static final int PAINT_COLOR = 0xed3535;
     private static final float OUTER_LINE_WIDTH = 4f;
-    private static final float START_DEGREE = -90f;         //开始绘制角度
+    //开始绘制角度
+    private static final float START_DEGREE = -90f;
 
     //饼状图动画效果
     private float X;
@@ -59,7 +65,7 @@ public class PieChartOne extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        radius = Math.min(getMeasuredWidth(), getMeasuredHeight()) / 3.5f;
+        radius = Math.min(getMeasuredWidth(), getMeasuredHeight()) / 4.0f;
 
         X = getMeasuredWidth() / 2;
         Y = getMeasuredHeight() / 2;
@@ -128,8 +134,10 @@ public class PieChartOne extends View {
             }
             for (int i = 0; i < anglesSize; i++) {
                 piePaint.setColor(Color.parseColor(list.get(i).getColor()));
-                canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);             //扇形
-                canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);           //边框线
+                //扇形
+                canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);
+                //边框线
+                canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);
                 initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%");
                 pieStart += mSweep[i];
             }

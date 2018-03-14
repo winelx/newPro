@@ -30,6 +30,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private ArrayList<PhotoBean> mData;
     private Dates dates = new Dates();
     ArrayList<String> path;
+    private String tiltle;
 
     public PhotoadmAdapter(Context mContext) {
         this.mContext = mContext;
@@ -60,9 +61,11 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList imagepath = new ArrayList();
                 for (int i = 0; i < mData.size(); i++) {
                     path.add(mData.get(i).getFilePath());
-                    imagepath.add(mData.get(i).getDrawingGroupName() + "<<" + mData.get(i).getDrawingNumber() + "<<" + mData.get(position).getDrawingName());
+                    imagepath.add(tiltle + ">>" + mData.get(i).getDrawingNumber() + ">>" + mData.get(i).getDrawingName());
                 }
-                PhotoPreview.builder().setPhotos(path).setCurrentItem(position)
+                PhotoPreview.builder()
+                        .setPhotos(path)
+                        .setCurrentItem(position)
                         .setShowDeleteButton(false)
                         .setShowUpLoadeButton(true)
                         .setImagePath(imagepath)
@@ -89,8 +92,9 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void getData(ArrayList<PhotoBean> mData) {
+    public void getData(ArrayList<PhotoBean> mData, String title) {
         this.mData = mData;
+        this.tiltle = title;
         notifyDataSetChanged();
     }
 

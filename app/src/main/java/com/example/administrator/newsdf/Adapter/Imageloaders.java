@@ -118,7 +118,13 @@ public class Imageloaders extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.inter_title.setText(list.get(position).getGroupName());
+
+       if (list.get(position).getGroupName().length()!=0){
+           holder.inter_title.setText(list.get(position).getGroupName());
+        }else {
+           holder.inter_title.setText("主动上传任务 ");
+       }
+
         holder.inface_wbs_path.setText(list.get(position).getWbsPath());
         holder.inter_content.setText(list.get(position).getContent());
         holder.inface_username.setText(list.get(position).getUploador());
@@ -139,7 +145,7 @@ public class Imageloaders extends BaseAdapter {
                 String str = null;
                 try {
                     str = Dates.datato(list.get(position).getCreateTime());
-                    holder.inter_time.setText(str);
+                    holder.inter_time.setText("已推送："+str);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -171,7 +177,7 @@ public class Imageloaders extends BaseAdapter {
                             //pdf的icon显示图
                             holder.inface_relat1_icon.setText("P");
                             //设置文件名
-                            holder.inface_relat1_name.setText(pathname.get(0)+strs);
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
                             //设置文字的颜色
                             holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
                             //设置文字背景色
@@ -186,7 +192,7 @@ public class Imageloaders extends BaseAdapter {
                             //pdf的icon显示图
                             holder.inface_relat1_icon.setText("W");
                             //设置文件名
-                            holder.inface_relat1_name.setText(pathname.get(0)+strs);
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
                             //设置文字的颜色
                             holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
                             //设置文字背景色
@@ -202,12 +208,13 @@ public class Imageloaders extends BaseAdapter {
                             //pdf的icon显示图
                             holder.inface_relat1_icon.setText("X");
                             //设置文件名
-                            holder.inface_relat1_name.setText(pathname.get(0)+strs);
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
                             //设置文字的颜色
                             holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
                             //设置文字背景色
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                         } else {
+                            holder.inface_relat1.setVisibility(View.GONE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
@@ -229,7 +236,7 @@ public class Imageloaders extends BaseAdapter {
                                     //pdf的icon显示图
                                     holder.inface_relat2_icon.setText("P");
                                     //设置文件名
-                                    holder.inface_relat2_name.setText(pathname.get(1)+strs1);
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
                                     //设置文字的颜色
                                     holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                     //设置文字背景色
@@ -244,7 +251,7 @@ public class Imageloaders extends BaseAdapter {
                                     //pdf的icon显示图
                                     holder.inface_relat2_icon.setText("W");
                                     //设置文件名
-                                    holder.inface_relat2_name.setText(pathname.get(1)+strs1);
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
                                     //设置文字的颜色
                                     holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                     //设置文字背景色
@@ -259,7 +266,7 @@ public class Imageloaders extends BaseAdapter {
                                     //pdf的icon显示图
                                     holder.inface_relat2_icon.setText("X");
                                     //设置文件名
-                                    holder.inface_relat2_name.setText(pathname.get(1)+strs1);
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
                                     //设置文字的颜色
                                     holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                     //设置文字背景色
@@ -285,7 +292,7 @@ public class Imageloaders extends BaseAdapter {
                                             //pdf的icon显示图
                                             holder.inface_relat3_icon.setText("P");
                                             //设置文件名
-                                            holder.inface_relat3_name.setText(pathname.get(2)+strs2);
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
                                             //设置文字的颜色
                                             holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                             //设置文字背景色
@@ -300,7 +307,7 @@ public class Imageloaders extends BaseAdapter {
                                             //pdf的icon显示图
                                             holder.inface_relat3_icon.setText("W");
                                             //设置文件名
-                                            holder.inface_relat3_name.setText(pathname.get(2)+strs2);
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
                                             //设置文字的颜色
                                             holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                             //设置文字背景色
@@ -315,7 +322,7 @@ public class Imageloaders extends BaseAdapter {
                                             //pdf的icon显示图
                                             holder.inface_relat3_icon.setText("X");
                                             //设置文件名
-                                            holder.inface_relat3_name.setText(pathname.get(2)+strs2);
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
                                             //设置文字的颜色
                                             holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
                                             //设置文字背景色

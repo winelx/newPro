@@ -112,7 +112,7 @@
                         android:layout_marginLeft="10dp"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="只能按内容查询 "
+                        android:hint="任务内容 "
                         android:imeOptions="actionSearch"
                         android:singleLine="true"
                         android:textColorHint="@color/view"

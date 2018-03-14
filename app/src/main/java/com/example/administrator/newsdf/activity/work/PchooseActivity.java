@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +28,6 @@ public class PchooseActivity extends AppCompatActivity {
     private Context mContext;
     private TextView com_title;
     private List<Shop> listPath;
-    ArrayList<String> drawable;
-    ArrayList<String> imagepath;
     private ImageView image;
 
     @Override
@@ -39,17 +35,18 @@ public class PchooseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pchoose);
         mContext = PchooseActivity.this;
-
         listPath = new ArrayList<>();
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("图纸管理");
         image = (ImageView) findViewById(R.id.image);
+        //图册
         findViewById(R.id.pchoose_atlas).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, PhotoListActivity.class));
             }
         });
+        //分部分项
         findViewById(R.id.pchoose_wbs).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,19 +67,12 @@ public class PchooseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 listPath = LoveDao.queryCart();
                 if (listPath.size() != 0) {
-                    drawable = new ArrayList<>();
-                    imagepath=new ArrayList<String>();
-                    for (int i = 0; i < listPath.size(); i++) {
-                        drawable.add(listPath.get(i).getImage_url());
-                        imagepath.add(listPath.get(i).getName());
-                    }
-                    PhotoPreview.builder().setPhotos(drawable).setCurrentItem(0).
-                            setShowDeleteButton(true).setShowUpLoadeButton(false).setImagePath(imagepath)
-                            .start((Activity) mContext);
+                  startActivity(new Intent(mContext,UploadPhotoActivity.class));
                 } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }
             }
         });
+
     }
 }

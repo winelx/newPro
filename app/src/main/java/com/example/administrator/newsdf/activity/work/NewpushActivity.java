@@ -243,6 +243,7 @@ public class NewpushActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                              //  wbsname
                                 taskAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

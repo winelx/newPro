@@ -171,6 +171,7 @@ public class MmissPushActivity extends AppCompatActivity {
      * @return 实体
      */
     public static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        Log.i("ss",json);
         if (json == null) {
             return null;
         } else {
@@ -221,48 +222,56 @@ public class MmissPushActivity extends AppCompatActivity {
                     try {
                         boolean isParentFlag = obj.getBoolean("isParent");
                         if (isParentFlag) {
-                            organization.setIsleaf("0"); //不是叶子节点
+                            //不是叶子节点
+                            organization.setIsleaf("0");
                         } else {
-                            organization.setIsleaf("1"); //是叶子节点
+                            //是叶子节点
+                            organization.setIsleaf("1");
                         }
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setIsleaf("");
                     }
                     try {
-                        organization.setParentId(obj.getString("parentId")); //组织机构父级节点
+                        //组织机构父级节点
+                        organization.setParentId(obj.getString("parentId"));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setParentId("");
                     }
                     try {
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName")); //负责人 //进度
+                        //负责人 //进度
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setUsername("");
                     }
 
                     try {
-                        organization.setNumber(obj.getJSONObject("extend").getString("finish")); //进度
+                        //进度
+                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setNumber("");
                     }
                     try {
-                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId")); //负责热ID
+                        //负责热ID
+                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setUserId("");
                     }
 
                     try {
-                        organization.setTitle(obj.getString("title")); //节点层级
+                        //节点层级
+                        organization.setTitle(obj.getString("title"));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getString("")); //节点层级
+                        //节点层级
+                        organization.setPhone(obj.getString(""));
                     } catch (JSONException e) {
                         // TODO: handle exception
                         organization.setPhone("");
@@ -374,7 +383,7 @@ public class MmissPushActivity extends AppCompatActivity {
         if (node.iswbs() != false) {
             switch (org_status) {
                 case "push":
-                    getOko(node.getId(), node.getTitle());
+                    getOko(node.getId(), node.getTitle(),node.getName());
                     break;
                 case "Photo":
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);
@@ -395,7 +404,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     Intent list = new Intent();
                     list.putExtra("id", node.getId());
                     list.putExtra("title", node.getName());
-                    Log.i("iswbs", node.iswbs() + "");
+                    list.putExtra("titles", node.getTitle());
                     list.putExtra("iswbs", node.iswbs());
                     //回传数据到主Activity
                     setResult(RESULT_OK, list);
@@ -432,7 +441,7 @@ public class MmissPushActivity extends AppCompatActivity {
 
     String name, id;
 
-    void getOko(final String str, final String wbsname) {
+    void getOko(final String str, final String wbsname, final String wbspath) {
         Dates.getDialog(MmissPushActivity.this, "请求数据中");
         OkGo.post(Request.PUSHList)
                 .params("wbsId", str)
@@ -467,6 +476,7 @@ public class MmissPushActivity extends AppCompatActivity {
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
                                 intent.putExtra("titles", "任务下发");
+                                intent.putExtra("wbsPath", wbspath);
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);

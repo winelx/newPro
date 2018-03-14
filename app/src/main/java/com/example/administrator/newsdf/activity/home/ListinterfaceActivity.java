@@ -88,7 +88,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
     private ListView drawer_layout_list;
     private TaskPhotoAdapter taskAdapter;
     private boolean drew = true;
-
+    String titles;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -377,6 +377,11 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
         mPopWindow.showAsDropDown(imageView, 0, 0);
         popwind = true;
+        search_editext.clearFocus();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(ListinterfaceActivity.this.getCurrentFocus()
+                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 
     /**
@@ -578,9 +583,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //判断是不是Activity的返回，不是就是相机的返回
+        //判断是不是Activity的返回，
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String title = data.getStringExtra("title");
+             titles = data.getStringExtra("titles");
             Titlew.setText(title);
             wbsid = data.getStringExtra("id");
             popwind = data.getBooleanExtra("iswbs", false);
@@ -592,6 +598,14 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
             page = 1;
             photoAdm(wbsid);
             okgoall(wbsid, null, 1);
+            mData.clear();
+            search_editext.setText("");
+            s = 1;
+            notall = "false";
+            status = "0";
+            okgo(null, status, null, 1);
+            mPopWindow.dismiss();
+            popwind = false;
         }
     }
 
@@ -691,6 +705,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+//                                titles 可以用
                                 taskAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

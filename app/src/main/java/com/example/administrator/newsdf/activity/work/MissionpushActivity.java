@@ -74,7 +74,7 @@ public class MissionpushActivity extends AppCompatActivity {
     //保存每个节目推送的ID
     private Map<String, List<String>> pushMap;
     private String titles;
-
+    private String wbspathl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +106,7 @@ public class MissionpushActivity extends AppCompatActivity {
             titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
             wbsname = intent.getExtras().getString("wbsnam");
+            wbspathl=intent.getExtras().getString("wbsPath");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -265,6 +266,7 @@ public class MissionpushActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
+                            //    wbspathl
                                 taskAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.MemberActivity;
+import com.example.administrator.newsdf.activity.work.ContactPeopleActivity;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
@@ -108,6 +108,7 @@ public class PushFrgment extends LazyFragment {
     private int mPage = 1;
     private int mIndex = 1;
     private SmartRefreshLayout refreshLayout;
+    private String pushid;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -212,6 +213,7 @@ public class PushFrgment extends LazyFragment {
                 //前置项ID
                 intent.putExtra("preconditions", data.get(position).getPreconditions());
                 //任务ID
+                pushid = data.get(position).getId();
                 intent.putExtra("id", data.get(position).getId());
                 startActivityForResult(intent, 1);
             }
@@ -263,7 +265,7 @@ public class PushFrgment extends LazyFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("push", s);
+
                         if (s.indexOf("data") != -1) {
                             data.clear();
                             try {
@@ -365,7 +367,7 @@ public class PushFrgment extends LazyFragment {
      * 批量修改负责人
      */
     public void get() {
-        Intent intent = new Intent(mContext, MemberActivity.class);
+        Intent intent = new Intent(mContext, ContactPeopleActivity.class);
         intent.putExtra("data", "newpush");
         startActivityForResult(intent, 1);
     }
@@ -377,7 +379,9 @@ public class PushFrgment extends LazyFragment {
             String user = data.getStringExtra("name");
             String userId = data.getStringExtra("userId");
             Dialog(userId, user);
-        } else   if (requestCode == 1 && resultCode == 5) {
+        } else if (requestCode == 1 && resultCode == 5) {
+            MissionpushActivity missionpush = (MissionpushActivity) mContext;
+            missionpush.getpush(pushid, false);
             okgo();
             che_all.setChecked(false);
         }
@@ -401,6 +405,9 @@ public class PushFrgment extends LazyFragment {
                                     String msg = json.getString("msg");
                                     ToastUtils.showShortToast(msg);
                                     if (ret == 0) {
+                                        MissionpushActivity activity = (MissionpushActivity) mContext;
+                                        ArrayList<String> list = new ArrayList<String>();
+                                        activity.getAllPush(list, false);
                                         che_all.setChecked(false);
                                         okgo();
                                     }

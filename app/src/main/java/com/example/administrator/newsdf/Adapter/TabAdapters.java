@@ -94,12 +94,12 @@ public class TabAdapters extends BaseAdapter {
                 holder.tab_time.setText("已推送： " + time);
                 break;
             case "1":
-                holder.tab_statu2.setText("通过");
+                holder.tab_statu2.setText("已完成");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;
             case "2":
-                holder.tab_statu2.setText("通过");
+                holder.tab_statu2.setText("已完成");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;

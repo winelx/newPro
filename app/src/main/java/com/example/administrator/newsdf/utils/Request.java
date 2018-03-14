@@ -164,5 +164,6 @@ public class Request {
      * x修改配置
      */
     public static final String WBSCASEPOINT = networks + "iface/mobile/taskmain/updateWbsCasePoint";
+    public static final String WBSCASEPOINTs = networks + "iface/mobile/taskmain/updateWbsCasePoint";
 
 }

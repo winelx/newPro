@@ -245,7 +245,7 @@
 
                 <com.example.administrator.newsdf.view.PieChartOne
                     android:id="@+id/piechartone"
-                    android:layout_width="220dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="220dp"
                     android:layout_below="@+id/linearLayout5"
                     android:layout_centerHorizontal="true" />
@@ -255,13 +255,13 @@
                     android:layout_height="60dp"
                     android:layout_below="@+id/linearLayout5"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="76dp"
+                    android:layout_marginTop="78dp"
                     android:background="@mipmap/yuan" />
 
                 <GridView
                     android:id="@+id/fr_work_grid"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/piechartone"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"

@@ -119,7 +119,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/pchoose_Local_img"
             android:layout_toRightOf="@+id/pchoose_Local_img"
-            android:text="本地下载图纸"
+            android:text="离线图纸"
             android:textColor="#323232" />
 
         <com.joanzapata.iconify.widget.IconTextView

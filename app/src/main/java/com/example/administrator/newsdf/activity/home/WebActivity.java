@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.administrator.newsdf.R;
-import com.joanzapata.pdfview.PDFView;
+
 
 /**
  * description:  使用webview展示pdf、文档和表格
@@ -25,7 +25,7 @@ import com.joanzapata.pdfview.PDFView;
 public class WebActivity extends AppCompatActivity {
     private WebView mWebView;
     private ProgressBar pg1;
-    private PDFView pdfview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

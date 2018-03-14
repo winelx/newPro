@@ -93,8 +93,14 @@ public class Dates {
         long minute1 = between % 3600 / 60;
         long second1 = between % 60 / 60;
 //        System.out.println("" + day1 + "天" + hour1 + "小时" + minute1 + "分" + second1 + "秒");
-        if (day1==0){
+        if (day1 == 0) {
+            if (hour1 == 0) {
+                return "1小时";
+            }
             return hour1 + "小时";
+        }
+        if (hour1 == 0) {
+            return day1 + "天" + 1 + "小时";
         }
         return day1 + "天" + hour1 + "小时";
     }
@@ -243,7 +249,7 @@ public class Dates {
 
     }
 
-    public static String downloadPhoto(Context context, Bitmap bmp, String result) {
+    public static String downloadPhoto(Context context, Bitmap bmp, String result,String Title) {
         // 首先保存图片
         File appDir = new File(Environment.getExternalStorageDirectory(), "picker");
         if (!appDir.exists()) {
@@ -255,6 +261,8 @@ public class Dates {
         shop.setType(Shop.TYPE_CART);
         shop.setImage_url(appDir + "/" + fileName);
         shop.setName(result);
+        shop.setContent(Title);
+        shop.setTimme(getDate());
         LoveDao.insertLove(shop);
         ToastUtils.showShortToast("已保存");
         //文件夹和文件名
