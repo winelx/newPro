@@ -107,7 +107,12 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         pushDialog.setText(label);
         pushContent.setText(content);
         pushDuty.setText(user);
-        conditions.setText(requirements);
+        if (requirements.length()!=0){
+            conditions.setText(requirements);
+        }else {
+            conditions.setText("无");
+        }
+
         sendtimes.setText(sendTimes);
         com_back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,25 +70,25 @@ public class TabAdapters extends BaseAdapter {
          * 有状态未添加
          */
         //判断是否有消息
-        holder.tab_str.setText(mData.get(position).getStr());
+        if (mData.get(position).getStr().length()!=0){
+            holder.tab_str.setText(mData.get(position).getStr());
+        }else {
+            holder.tab_str.setText("主动上传任务");
+        }
+
         holder.tab_content.setText(mData.get(position).getContent());
         holder.tab_user.setText(mData.get(position).getUser());
-
-
         String time = null;
         try {
             time = Dates.datato(mData.get(position).getTime());
-            Log.i("time", time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
         holder.tab_statu2.setText(mData.get(position).getStatus1());
         stsus = mData.get(position).getStatus1();
         switch (stsus) {
             case "0":
-                holder.tab_statu2.setText("未上传");
+                holder.tab_statu2.setText("未完成");
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_gray);
                 holder.tab_time.setText("已推送： " + time);
                 break;

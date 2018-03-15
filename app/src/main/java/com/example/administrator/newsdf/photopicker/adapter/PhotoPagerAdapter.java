@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.photopicker.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.photopicker.utils.AndroidLifecycleUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +41,12 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 .inflate(R.layout.__picker_picker_item_pager, container, false);
         final ImageView imageView = itemView.findViewById(R.id.iv_pager);
         final String path = paths.get(position);
-        final Uri uri;
-        if (path.startsWith("http")==true) {
-            uri = Uri.parse(path);
-        } else {
-            uri = Uri.fromFile(new File(path));
-        }
+//        if (path.startsWith("http")==true) {
+//            uri = Uri.parse(path);
+//        } else {
+//            uri = Uri.fromFile(new File(path));
+//        }
+
         boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(context);
         if (canLoadImage) {
             final RequestOptions options = new RequestOptions();
@@ -57,13 +55,14 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     .override(800, 800)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                     .error(R.drawable.__picker_ic_broken_image_black_48dp);
-            mGlide.setDefaultRequestOptions(options).load(uri)
+            mGlide.setDefaultRequestOptions(options).load(path)
                     .thumbnail(0.1f)
                     .into(imageView);
         }
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //点击空白地方退出界面
 //                if (context instanceof Activity) {
 //                    if (!((Activity) context).isFinishing()) {
 //                        ((Activity) context).onBackPressed();

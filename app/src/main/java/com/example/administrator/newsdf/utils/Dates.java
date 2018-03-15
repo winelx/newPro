@@ -463,7 +463,6 @@ public class Dates {
     }
 
     public static void getDialogs(Activity activity, String str) {
-
         progressDialog = new Dialog(activity, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

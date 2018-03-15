@@ -8,7 +8,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/tab_str"
@@ -77,7 +79,7 @@
             android:layout_marginRight="48dp"
             android:drawableLeft="@mipmap/time"
             android:drawablePadding="5dp"
-            android:text="推送次数"
+            android:text="推送次数："
             android:textColor="#999999"
             android:textSize="12sp" />
 
@@ -85,14 +87,15 @@
             android:id="@+id/tab_fixed_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tab_usr_img"
-            android:layout_marginEnd="74dp"
-            android:layout_marginRight="74dp"
-            android:layout_toLeftOf="@+id/tab_checkBox"
-            android:layout_toStartOf="@+id/tab_checkBox"
-            android:text="推送次数"
+
+            android:text="11"
             android:textColor="#999999"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_alignBottom="@+id/tab_usr_img"
+            android:layout_alignRight="@+id/tab_content"
+            android:layout_alignEnd="@+id/tab_content" />
 
 
         <CheckBox

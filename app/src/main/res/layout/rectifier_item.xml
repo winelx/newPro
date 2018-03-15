@@ -7,9 +7,9 @@
 
     <RelativeLayout
         android:id="@+id/audio_relat"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginRight="5dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
         android:background="#f1f6f7">
 
 
@@ -20,7 +20,7 @@
             android:gravity="center"
             android:maxEms="14"
             android:text="桥梁大桥需求文档.doc"
-            android:textSize="9sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/audio_relat_icon"
@@ -42,21 +42,22 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="55dp"
             android:text="点击查看"
             android:textColor="@color/colorAccent"
-            android:textSize="10sp" />
+            android:textSize="11sp" />
     </RelativeLayout>
 
 
     <ImageView
         android:id="@+id/imgage"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
         android:scaleType="fitXY"
         android:visibility="gone" />
 

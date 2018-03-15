@@ -697,7 +697,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         OkGo.post(Request.Photolist)
                 .params("WbsId", str)
                 .params("page", page)
-                .params("rows", 5)
+                .params("rows", 30)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -705,7 +705,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             if (drew) {
                                 imagePaths.clear();
                             }
-
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

@@ -257,7 +257,7 @@ public class TenanceviewActivity extends AppCompatActivity {
         OkGo.post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
-                .params("rows", 5)
+                .params("rows", 30)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

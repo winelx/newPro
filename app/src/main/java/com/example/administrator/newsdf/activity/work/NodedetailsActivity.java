@@ -216,7 +216,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 nodeStart.setBackgroundResource(R.mipmap.node_start);
                 nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
                 nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
-                nodeWbsStatus.setText("已启动");
+                nodeWbsStatus.setText("施工中");
                 break;
             case "2":
                 nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
@@ -559,7 +559,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         OkGo.post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
-                .params("rows", 5)
+                .params("rows", 30)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -590,7 +590,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                          //  wbsName 可以用
+                            //  wbsName 可以用
                             taskAdapter.getData(imagePaths);
                         }
                     }
