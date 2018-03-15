@@ -265,7 +265,7 @@ public class CheckActivity extends AppCompatActivity implements View.OnClickList
      */
     @Override
     protected void onStop() {
-        // TODO Auto-generated method stub
+
         locationService.unregisterListener(mListener); //注销掉监听
         locationService.stop(); //停止定位服务
         super.onStop();
@@ -281,7 +281,7 @@ public class CheckActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            // TODO Auto-generated method stub
+
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");

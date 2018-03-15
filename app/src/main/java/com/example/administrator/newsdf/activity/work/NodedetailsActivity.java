@@ -630,14 +630,14 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     try {
                                         id = json.getString("id");
                                     } catch (JSONException e) {
-                                        // TODO: handle exception
+
                                         id = "";
                                     }
                                     //可能界面没有数据,name可能为空
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
-                                        // TODO: handle exception
+
                                         name = "";
                                     }
                                     ids.add(id);

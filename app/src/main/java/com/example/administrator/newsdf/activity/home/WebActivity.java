@@ -46,7 +46,7 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void init() {
-        // TODO 自动生成的方法存根
+
         mWebView = (WebView) findViewById(R.id.web);
         pg1 = (ProgressBar) findViewById(R.id.progressBar1);
 
@@ -54,7 +54,7 @@ public class WebActivity extends AppCompatActivity {
             //覆写shouldOverrideUrlLoading实现内部显示网页
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO 自动生成的方法存根
+
                 view.loadUrl(url);
                 return true;
             }
@@ -65,7 +65,7 @@ public class WebActivity extends AppCompatActivity {
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                // TODO 自动生成的方法存根
+
 
                 if (newProgress == 100) {
                     //加载完网页进度条消失
@@ -116,7 +116,7 @@ public class WebActivity extends AppCompatActivity {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO 自动生成的方法存根
+
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //当webview不是处于第一页面时，返回上一个页面
             if (mWebView.canGoBack()) {

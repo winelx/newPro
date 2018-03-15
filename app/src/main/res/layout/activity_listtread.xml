@@ -169,7 +169,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginBottom="5dp"
                     android:divider="@null"
-                    android:scrollbars="none" />
+                    android:scrollbars="none"
+                    />
 
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:layout_width="match_parent"

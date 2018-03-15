@@ -94,6 +94,7 @@ public class WorkFragment extends Fragment {
             push = (LinearLayout) rootView.findViewById(R.id.push);
             pphotoadm = (LinearLayout) rootView.findViewById(R.id.pphotoadm);
             uploade = rootView.findViewById(R.id.uploade);
+
             one.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,6 +102,7 @@ public class WorkFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+            //任务下发
             push.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,6 +111,7 @@ public class WorkFragment extends Fragment {
 
                 }
             });
+            //图册管理
             pphotoadm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,6 +119,7 @@ public class WorkFragment extends Fragment {
 
                 }
             });
+            //树洞任务
             uploade.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

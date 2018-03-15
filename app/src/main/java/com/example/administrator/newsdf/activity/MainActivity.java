@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
@@ -12,21 +13,37 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
+import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.UpdateService;
+import com.example.administrator.newsdf.utils.WbsDialog;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 /**
- * 承载fragemnt的代码
+ * description: 承载fragemnt的代码
+ *
+ * @author lx
+ *         date: 2018/3/15 0015 上午 9:14
+ *         update: 2018/3/15 0015
+ *         version:
  */
 public class MainActivity extends AppCompatActivity {
     private FragmentTabHost mTabHost;
@@ -34,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater mInflater;
     private ArrayList<Tab> mTabs = new ArrayList<>();
     private Dates dates;
+    private String version;
+    private WbsDialog selfDialog;
 
     public static MainActivity getInstance() {
         return mContext;
     }
+
+    private long exitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = MainActivity.this;
         dates = new Dates();
+        //获取当前版本
+        version = AppUtils.getVersionName(mContext);
+        //权限请求
         HiPermission.create(mContext)
                 .checkMutiPermission(new PermissionCallback() {
                     @Override
@@ -66,10 +90,43 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-        Dates.deleteAllFiles(new File("/storage/emulated/0/pictures"));
-
+        //新本版检测
+        Uplogding();
         //数据处理
         initTab();
+    }
+
+    //新本版检测
+    private void Uplogding() {
+        OkGo.<String>post(Request.UpLoading)
+                .params("type", 1)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.indexOf("data") != -1) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    JSONObject json = jsonObject.getJSONObject("data");
+                                    //版本号
+                                    String versions = json.getString("version");
+                                    //更新地址
+                                    String filePath = json.getString("filePath");
+                                    int lenght = version.compareTo(versions);
+                                    if (lenght < 0) {
+                                        //提示框
+                                        show(filePath);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+
+                        }
+                    }
+                });
     }
 
     @Override
@@ -125,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         return view;
     }
 
+    //连续两次退出App
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -140,5 +198,30 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private long exitTime = 0;
+    //检测到有新版本后给的提示框
+    void show(final String path) {
+        selfDialog = new WbsDialog(mContext);
+        selfDialog.setTitle("更新提示");
+        selfDialog.setMessage("检测到有新版本，是否更新");
+        selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                Intent intent = new Intent(MainActivity.this, UpdateService.class);
+                intent.putExtra("data", path);
+                mContext.startService(intent);
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.setNoOnclickListener("更新", new WbsDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                Intent intent = new Intent(MainActivity.this, UpdateService.class);
+                intent.putExtra("data", path);
+                mContext.startService(intent);
+                selfDialog.dismiss();
+                selfDialog.dismiss();
+            }
+        });
+        selfDialog.show();
+    }
 }

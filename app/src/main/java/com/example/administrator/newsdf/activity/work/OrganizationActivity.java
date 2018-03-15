@@ -68,7 +68,7 @@ public class OrganizationActivity extends Activity {
     }
 
     private void initView() {
-        // TODO Auto-generated method stub
+
         mTree = (ListView) findViewById(R.id.wbs_listview);
     }
 
@@ -119,33 +119,35 @@ public class OrganizationActivity extends Activity {
                     JSONObject obj = jsonArray.getJSONObject(i);
                     OrganizationEntity organization = new OrganizationEntity();
                     try {
-                        organization.setId(obj.getString("id")); //节点id
+                        //节点id
+                        organization.setId(obj.getString("id"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setId("");
                     }
                     try {
-                        organization.setDepartname(obj.getString("name")); //节点名称
+                        //节点名称
+                        organization.setDepartname(obj.getString("name"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setDepartname("");
                     }
                     try {
                         organization.setTypes(obj.getString("type")); //组织类型
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setTypes("");
                     }
                     try {
                         organization.setIswbs(obj.getBoolean("iswbs")); //是否swbs
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIswbs(false);
                     }
                     try {
                         organization.setIsparent(obj.getBoolean("isParent")); //是否是父节点
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIsparent(false);
                     }
                     try {
@@ -156,20 +158,20 @@ public class OrganizationActivity extends Activity {
                             organization.setIsleaf("1"); //是叶子节点
                         }
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIsleaf("");
                     }
                     try {
                         organization.setParentId(obj.getString("parentId")); //组织机构父级节点
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setParentId("");
                     }
                     organizationList.add(organization);
                 }
                 return organizationList;
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
                 return null;
             }
@@ -197,7 +199,7 @@ public class OrganizationActivity extends Activity {
     }
 
     private void getOrganization() {
-        // TODO Auto-generated method stub
+
         for (OrganizationEntity entity : organizationList) {
             String departmentName = entity.getDepartname();
             OrganizationEntity bean = new OrganizationEntity(entity.getId(), entity.getParentId(),

@@ -4,7 +4,11 @@ android {
 
     compileSdkVersion 26
     buildToolsVersion '25.0.0'
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
 
+    }
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
@@ -17,11 +21,6 @@ android {
 
     }
 
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
-
-    }
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -34,6 +33,7 @@ android {
     }
 
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.adapter.HomgFragmentAdapter;
-import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
+import com.example.administrator.newsdf.adapter.HomgFragmentAdapter;
+import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -103,7 +102,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("home", s);
                         if (s.indexOf("data") != -1) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -112,7 +110,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                     listView.setVisibility(View.VISIBLE);
                                     mData.clear();
                                 }
-                                String msg = jsonObject.getString("msg");
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
@@ -129,24 +126,24 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                     String unfinish = json.getString("unfinish");
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish));
                                 }
+                                //请求到的数据不为空
                                 if (mData.size() != 0) {
                                     mAdapter.getDate(mData);
                                     home_frag_img.setVisibility(View.GONE);
-                                    Dates.disDialog();
                                 } else {
+                                    //请求到的数据为空
                                     home_frag_img.setVisibility(View.VISIBLE);
                                     home_img_text.setText("数据为空，点击刷新");
-                                    Dates.disDialog();
                                 }
-                                Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
+                            ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("数据为空，点击刷新");
-                            Dates.disDialog();
                         }
+                        Dates.disDialog();
                     }
 
                     @Override
@@ -179,6 +176,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //关闭dialog和刷新
         Dates.disDialog();
         refreshLayout.finishRefresh(false);
     }

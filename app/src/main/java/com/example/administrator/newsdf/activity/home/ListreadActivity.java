@@ -148,6 +148,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     //搜索
                     search(1);
                 }
+                uslistView.setSelection(0);
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -366,6 +367,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //选择wbs
             case R.id.pop_computer:
+
                 Intent intent = new Intent(ListreadActivity.this, MmissPushActivity.class);
                 intent.putExtra("data", "List");
                 startActivityForResult(intent, 1);
@@ -374,6 +376,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //全部
             case R.id.pop_All:
+                uslistView.setSelection(0);
                 Dates.getDialog(ListreadActivity.this, "请求数据中...");
                 Alldata.clear();
                 search_editext.setText("");
@@ -386,6 +389,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //未处理
             case R.id.pop_financial:
+                uslistView.setSelection(0);
                 Dates.getDialog(ListreadActivity.this, "请求数据中...");
                 Alldata.clear();
                 search_editext.setText("");
@@ -398,6 +402,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //已处理
             case R.id.pop_manage:
+                uslistView.setSelection(0);
                 Dates.getDialog(ListreadActivity.this, "请求数据中...");
                 search_editext.setText("");
                 s = 1;
@@ -491,7 +496,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
      * 全部
      */
     private void okgoall(String wbsId, String content, int i) {
-        Log.i("wbs", id + "---" + wbsId);
         post(Request.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
@@ -506,14 +510,16 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     String titles;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //判断是不是Activity的返回，不是就是相机的返回
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String title = data.getStringExtra("title");
-             titles = data.getStringExtra("titles");
+            titles = data.getStringExtra("titles");
             Titlew.setText(title);
             wbsid = data.getStringExtra("id");
             popwind = data.getBooleanExtra("iswbs", false);
@@ -524,6 +530,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             }
             page = 1;
             photoAdm(wbsid);
+            uslistView.setSelection(0);
             okgoall(wbsid, null, 1);
         }
     }
@@ -558,6 +565,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         int isFinish;//状态
         if (swip == false) {
             Alldata.clear();
+
         }
         Log.i("list", s);
         if (s.indexOf("data") != -1) {
@@ -675,7 +683,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         upload_content = "";
                     }
                     paths = new ArrayList<>();
-                   ArrayList<String> pathsname = new ArrayList<>();
+                    ArrayList<String> pathsname = new ArrayList<>();
                     if (files.length() > 0) {
                         for (int j = 0; j < files.length(); j++) {
                             JSONObject jsonfilse = files.getJSONObject(j);
@@ -687,12 +695,11 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                     int comments = json2.length();
                     Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
-                            groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments,pathsname));
+                            groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                 }
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
                     mAdapter.getData(Alldata);
-
                     listerad_nonumber.setVisibility(View.GONE);
                 }
 

@@ -126,7 +126,7 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        // TODO Auto-generated method stub
+
         mTree = (ListView) findViewById(R.id.wbs_listview);
     }
 
@@ -188,35 +188,35 @@ public class MmissPushActivity extends AppCompatActivity {
                         //节点id
                         organization.setId(obj.getString("id"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setId("");
                     }
                     try {
                         //节点名称
                         organization.setDepartname(obj.getString("name"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setDepartname("");
                     }
                     try {
                         //组织类型
                         organization.setTypes(obj.getString("type"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setTypes("");
                     }
                     try {
                         //是否swbs
                         organization.setIswbs(obj.getBoolean("iswbs"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIswbs(false);
                     }
                     try {
                         //是否是父节点
                         organization.setIsparent(obj.getBoolean("isParent"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIsparent(false);
                     }
                     try {
@@ -229,21 +229,21 @@ public class MmissPushActivity extends AppCompatActivity {
                             organization.setIsleaf("1");
                         }
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setIsleaf("");
                     }
                     try {
                         //组织机构父级节点
                         organization.setParentId(obj.getString("parentId"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setParentId("");
                     }
                     try {
                         //负责人 //进度
                         organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setUsername("");
                     }
 
@@ -251,14 +251,14 @@ public class MmissPushActivity extends AppCompatActivity {
                         //进度
                         organization.setNumber(obj.getJSONObject("extend").getString("finish"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setNumber("");
                     }
                     try {
                         //负责热ID
                         organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setUserId("");
                     }
 
@@ -266,14 +266,14 @@ public class MmissPushActivity extends AppCompatActivity {
                         //节点层级
                         organization.setTitle(obj.getString("title"));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setTitle("");
                     }
                     try {
                         //节点层级
                         organization.setPhone(obj.getString(""));
                     } catch (JSONException e) {
-                        // TODO: handle exception
+
                         organization.setPhone("");
                     }
 
@@ -283,7 +283,7 @@ public class MmissPushActivity extends AppCompatActivity {
                 }
                 return organizationList;
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
                 return null;
             }
@@ -326,7 +326,7 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
-        // TODO Auto-generated method stub
+
         if (organizationList != null) {
             for (OrganizationEntity entity : organizationList) {
                 String departmentName = entity.getDepartname();
@@ -458,14 +458,14 @@ public class MmissPushActivity extends AppCompatActivity {
                                     try {
                                         id = json.getString("id");
                                     } catch (JSONException e) {
-                                        // TODO: handle exception
+
                                         id = "";
                                     }
                                     //可能界面没有数据,name可能为空
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
-                                        // TODO: handle exception
+
                                         name = "";
                                     }
                                     ids.add(id);

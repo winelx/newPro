@@ -38,6 +38,7 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/1/15 0015.
+ * 全部消息
  */
 
 public class AllMessageFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -70,7 +71,9 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         if (parent != null) {
             parent.removeView(rootView);
         }
+        //控件处理
         init();
+        //网络请求
         Okgo();
         return rootView;
     }
@@ -78,9 +81,11 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
 
     private void init() {
         mData = new ArrayList<>();
+        //实例化 适配器
         mAdapter = new AllMessageAdapter(mContext);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
+        //没有网络的时候点击界面刷新数据
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +93,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                 Okgo();
             }
         });
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -99,25 +105,23 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     /**
-     *  网络请求
+     * 网络请求
      */
     private void Okgo() {
-        Dates.getDialog(getActivity(), "请求数据中...");
         OkGo.post(Request.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.indexOf("data") != -1) {
-                            Dates.disDialog();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int code = jsonObject.getInt("ret");
+
                                 if (code == 0) {
                                     listView.setVisibility(View.VISIBLE);
                                     mData.clear();
                                 }
-                                String msg = jsonObject.getString("msg");
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
@@ -137,21 +141,24 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                                 if (mData.size() != 0) {
                                     mAdapter.getDate(mData);
                                     home_frag_img.setVisibility(View.GONE);
-                                    Dates.disDialog();
+
                                 } else {
                                     home_frag_img.setVisibility(View.VISIBLE);
                                     home_img_text.setText("数据为空，点击刷新");
-                                    Dates.disDialog();
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
+
+                            ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("数据为空，点击刷新");
-                            Dates.disDialog();
+
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -159,7 +166,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                         home_frag_img.setVisibility(View.VISIBLE);
                         home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
                         home_img_text.setText("请求确认网络是否正常，点击再次请求");
-                        Dates.disDialog();
+
                     }
                 });
     }
@@ -185,6 +192,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //关闭刷新
         refreshLayout.finishRefresh(false);
     }
 }

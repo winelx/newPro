@@ -69,17 +69,28 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mine, null);
-            rootView.findViewById(R.id.organizationa).setOnClickListener(this);//我的组织
-            rootView.findViewById(R.id.projectmember).setOnClickListener(this);//项目成员
-            rootView.findViewById(R.id.changepassword).setOnClickListener(this);//修改密码
-            rootView.findViewById(R.id.mine_setting).setOnClickListener(this);//系统设置
-            rootView.findViewById(R.id.about_us).setOnClickListener(this);//关于我们
-            rootView.findViewById(R.id.newversion).setOnClickListener(this);//检查新版本
-            rootView.findViewById(R.id.mine_Thecache).setOnClickListener(this);//清除缓存
-            rootView.findViewById(R.id.mine_avatar).setOnClickListener(this);//头像
-            rootView.findViewById(R.id.mine_organization).setOnClickListener(this);//所在组织
-            rootView.findViewById(R.id.staffName).setOnClickListener(this);//名字
-            rootView.findViewById(R.id.BackTo).setOnClickListener(this);//退出
+            //我的组织
+            rootView.findViewById(R.id.organizationa).setOnClickListener(this);
+            //项目成员
+            rootView.findViewById(R.id.projectmember).setOnClickListener(this);
+            //修改密码
+            rootView.findViewById(R.id.changepassword).setOnClickListener(this);
+            //系统设置
+            rootView.findViewById(R.id.mine_setting).setOnClickListener(this);
+            //关于我们
+            rootView.findViewById(R.id.about_us).setOnClickListener(this);
+            //检查新版本
+            rootView.findViewById(R.id.newversion).setOnClickListener(this);
+            //清除缓存
+            rootView.findViewById(R.id.mine_Thecache).setOnClickListener(this);
+            //头像
+            rootView.findViewById(R.id.mine_avatar).setOnClickListener(this);
+            //所在组织
+            rootView.findViewById(R.id.mine_organization).setOnClickListener(this);
+            //名字
+            rootView.findViewById(R.id.staffName).setOnClickListener(this);
+            //退出
+            rootView.findViewById(R.id.BackTo).setOnClickListener(this);
             mine_uploading = rootView.findViewById(R.id.mine_uploadings);
             mine_avatar = rootView.findViewById(R.id.mine_avatar);
             mine_organization = rootView.findViewById(R.id.mine_organization);
@@ -163,37 +174,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //检查新版本
             case R.id.newversion:
-//                OkGo.<String>post(Request.UpLoading)
-//                        .params("type", 1)
-//                        .execute(new StringCallback() {
-//                            @Override
-//                            public void onSuccess(String s, Call call, Response response) {
-//                                if (s.indexOf("data") != -1) {
-//                                    try {
-//                                        JSONObject jsonObject = new JSONObject(s);
-//                                        int ret = jsonObject.getInt("ret");
-//                                       if (ret == 0) {
-//                                            JSONObject json = jsonObject.getJSONObject("data");
-//                                            String versions = json.getString("version");//版本号
-//                                            String filePath = json.getString("filePath");//更新地址
-//                                            int lenght = version.compareTo(versions);
-//                                          if (lenght < 0) {
-//                                         ToastUtils.showShortToast("有新版本需要更新");
-//                                                intent = new Intent(getActivity(), UpdateService.class);
-//                                                intent.putExtra("data", filePath);
-//                                                mContext.startService(intent);
-//                                          } else {
-//                                               ToastUtils.showShortToast("已经是最新本版本");
-//                                          }
-//                                       }
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                } else {
-//
-//                                }
-//                            }
-//                        });
+                upload();
                 break;
             default:
                 break;
@@ -259,8 +240,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                                         ToastUtils.showShortToast("有新版本需要更新");
                                         mine_uploading.setVisibility(View.VISIBLE);
                                         show(filePath);
-                                    } else {
-
                                     }
                                 }
                             } catch (JSONException e) {
