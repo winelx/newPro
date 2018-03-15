@@ -98,7 +98,12 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (content.size() != 0) {
             holder.linearLayout.setVisibility(View.VISIBLE);
             //标题
-            holder.details_title.setText(content.get(posotion).getName());
+            if (content.get(posotion).getName().length()!=0){
+                holder.details_title.setText(content.get(posotion).getName());
+            }else {
+                holder.details_title.setText("主动上传任务");
+            }
+
             //创建时间
             String data = null;
             try {

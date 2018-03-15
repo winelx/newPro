@@ -214,9 +214,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentLeft="true"
                                 android:layout_alignParentStart="true"
-                                android:background="#e98e90"
                                 android:gravity="center"
-                                android:text="P"
                                 android:textColor="@color/writer"
                                 android:textSize="20sp" />
 

@@ -705,6 +705,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             if (drew) {
                                 imagePaths.clear();
                             }
+
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

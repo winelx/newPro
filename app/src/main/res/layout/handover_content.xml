@@ -25,7 +25,6 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -50,7 +49,7 @@
             android:layout_below="@+id/details_title"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-
+            android:text="时间"
             android:textSize="13sp" />
 
         <TextView
@@ -60,7 +59,7 @@
             android:layout_below="@+id/details_data"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
-
+            android:text="内容"
             android:textColor="@color/textViwe"
             android:textSize="15sp" />
 

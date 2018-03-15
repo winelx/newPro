@@ -263,20 +263,31 @@ public class OrganiwbsActivity extends Activity {
     private void addOrganizationList(String result) {
         if (result.indexOf("data") != -1) {
             addOrganizationList = parseOrganizationList(result);
-            for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                String departmentName = addOrganizationList.get(i).getDepartname();
-                mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
-                        addOrganizationList.get(i).getParentId(), departmentName, addOrganizationList.get(i).getIsleaf(),
-                        addOrganizationList.get(i).iswbs(),
-                        addOrganizationList.get(i).isparent(),
-                        addOrganizationList.get(i).getTypes(), addOrganizationList.get(i).getUsername(),
-                        addOrganizationList.get(i).getNumber(), addOrganizationList.get(i).getUserId(),
-                        addOrganizationList.get(i).getTitle(), addOrganizationList.get(i).getPhone(), addOrganizationList.get(i).isDrawingGroup());
+            if (addOrganizationList.size() != 0) {
+                for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                    String departmentName = addOrganizationList.get(i).getDepartname();
+                    mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
+                            addOrganizationList.get(i).getParentId(),
+                            departmentName, addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).iswbs(),
+                            addOrganizationList.get(i).isparent(),
+                            addOrganizationList.get(i).getTypes(),
+                            addOrganizationList.get(i).getUsername(),
+                            addOrganizationList.get(i).getNumber(),
+                            addOrganizationList.get(i).getUserId(),
+                            addOrganizationList.get(i).getTitle(),
+                            addOrganizationList.get(i).getPhone(),
+                            addOrganizationList.get(i).isDrawingGroup()
+                    );
+                }
+                Dates.disDialog();
             }
             Dates.disDialog();
         } else {
             Dates.disDialog();
         }
+
+
     }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
@@ -294,7 +305,6 @@ public class OrganiwbsActivity extends Activity {
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
                 initEvent(organizationList);
-                Dates.disDialog();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
