@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.photopicker;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +23,8 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.fragment.ImagePagerFragment;
 import com.example.administrator.newsdf.utils.Dates;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_CU
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_PHOTOS;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_UPLOADE;
+import static com.example.administrator.newsdf.utils.Dates.getDate;
 
 /**
  * description:
@@ -64,6 +66,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String result;
     private HorizontalScrollView picker_horizon;
     private String Title;
+    Bitmap bitmap;
     /**
      * 异步get,直接调用
      */
@@ -76,8 +79,21 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 case 1:
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    Dates.downloadPhoto(PhotoPagerActivity.this, bitmap, result,Title);
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //设置系统时间为文件名
+                            Shop shop = new Shop();
+                            shop.setType(Shop.TYPE_CART);
+                            shop.setImage_url(outfile);
+                            shop.setName(result);
+                            shop.setContent(Title);
+                            shop.setTimme(getDate());
+                            LoveDao.insertLove(shop);
+                            ToastUtils.showShortToast("已保存");
+                        }
+                    });
                     break;
                 case 2:
                     //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
@@ -126,10 +142,10 @@ public class PhotoPagerActivity extends AppCompatActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        int leang= imagepath.size();
-        if(leang!=0){
+        int leang = imagepath.size();
+        if (leang != 0) {
             picker_horizon.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             picker_horizon.setVisibility(View.GONE);
         }
 
@@ -146,7 +162,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (imagepath.size() == 0) {
                 } else {
-                    Title=imagepath.get(position);
+                    Title = imagepath.get(position);
                     picker_title.setText(imagepath.get(position));
                 }
                 updateActionBarTitle();
@@ -187,7 +203,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    //返回
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -200,7 +216,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+           onBackPressed();
             return true;
         }
         if (item.getItemId() == R.id.delete) {

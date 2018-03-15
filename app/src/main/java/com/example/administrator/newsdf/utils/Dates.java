@@ -22,10 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -249,40 +246,30 @@ public class Dates {
 
     }
 
-    public static String downloadPhoto(Context context, Bitmap bmp, String result,String Title) {
-        // 首先保存图片
-        File appDir = new File(Environment.getExternalStorageDirectory(), "picker");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        //设置系统时间为文件名
-        String fileName = result + ".jpg";
-        Shop shop = new Shop();
-        shop.setType(Shop.TYPE_CART);
-        shop.setImage_url(appDir + "/" + fileName);
-        shop.setName(result);
-        shop.setContent(Title);
-        shop.setTimme(getDate());
-        LoveDao.insertLove(shop);
-        ToastUtils.showShortToast("已保存");
-        //文件夹和文件名
-        File file = new File(appDir, fileName);
-        try {
-            //使用输入流将数据写入本地，
-            FileOutputStream fos = new FileOutputStream(file);
-            //设置保存的 文件格式，是否压缩，输入流
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush(); //刷新文件流
-            fos.close();//关闭输入流
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 返回路径展示图片
-        return appDir + "/" + fileName;
-
-    }
+//    public static String downloadPhoto(Context context, Bitmap bmp, String result,String Title) {
+//        // 首先保存图片
+//        File appDir = new File(Environment.getExternalStorageDirectory(), "picker");
+//        if (!appDir.exists()) {
+//            appDir.mkdir();
+//        }
+//        //文件夹和文件名
+//        File file = new File(appDir, fileName);
+//        try {
+//            //使用输入流将数据写入本地，
+//            FileOutputStream fos = new FileOutputStream(file);
+//            //设置保存的 文件格式，是否压缩，输入流
+//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+//            fos.flush(); //刷新文件流
+//            fos.close();//关闭输入流
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        // 返回路径展示图片
+//        return appDir + "/" + fileName;
+//
+//    }
 
 
     public static Bitmap getBitmap(String srcPath) {

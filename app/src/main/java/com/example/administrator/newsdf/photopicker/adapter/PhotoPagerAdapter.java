@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.photopicker.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
@@ -45,7 +44,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         final ImageView imageView = itemView.findViewById(R.id.iv_pager);
         final String path = paths.get(position);
         final Uri uri;
-        if (path.startsWith("http")) {
+        if (path.startsWith("http")==true) {
             uri = Uri.parse(path);
         } else {
             uri = Uri.fromFile(new File(path));
@@ -65,11 +64,11 @@ public class PhotoPagerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (context instanceof Activity) {
-                    if (!((Activity) context).isFinishing()) {
-                        ((Activity) context).onBackPressed();
-                    }
-                }
+//                if (context instanceof Activity) {
+//                    if (!((Activity) context).isFinishing()) {
+//                        ((Activity) context).onBackPressed();
+//                    }
+//                }
             }
         });
         container.addView(itemView);
