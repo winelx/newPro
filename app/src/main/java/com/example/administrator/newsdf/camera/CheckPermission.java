@@ -89,6 +89,8 @@ public abstract class CheckPermission {
                             })
                             .start();
                     break;
+                default:
+                    break;
             }
         }
     }

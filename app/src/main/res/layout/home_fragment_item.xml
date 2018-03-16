@@ -1,120 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--item布局，自定义View-->
+<com.example.administrator.newsdf.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@color/writer">
+    android:layout_marginBottom="1dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical">
 
 
     <RelativeLayout
-        android:id="@+id/lin"
+        android:id="@+id/item_not"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/writer">
+        android:layout_height="match_parent">
+
+        <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
+        <TextView
+            android:id="@+id/tv_set"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/layout_content"
+            android:background="@drawable/orange_background"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="#DDFFFFFF"
+            android:textSize="25dp"
+            android:visibility="gone" />
+
 
         <TextView
-            android:id="@+id/home_item_img"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/home_item_blue"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="举个栗子"
-            android:textColor="@color/writer"
-            android:textSize="11sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/tv_delete"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/home_item_img"
-            android:layout_toRightOf="@+id/home_item_img"
-            android:orientation="vertical">
+            android:layout_toRightOf="@+id/tv_set"
+            android:background="@color/red"
+            android:gravity="center"
+            android:text="置 顶"
+            android:textColor="#DDFFFFFF"
+            android:textSize="18dp" />
 
 
-            <LinearLayout
+        <RelativeLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="70dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/writer">
 
                 <TextView
-                    android:id="@+id/home_item_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
+                    android:id="@+id/home_item_img"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_weight="7"
-                    android:text="所属组织"
-                    android:textColor="@color/textViwe"
-                    android:textSize="15sp" />
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/home_item_blue"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="举个栗子"
+                    android:textColor="@color/writer"
+                    android:textSize="11sp" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="2"
-                    android:gravity="right|center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/home_item_img"
+                    android:layout_toRightOf="@+id/home_item_img"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/home_item_message"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/home_item_style"
-                        android:gravity="center"
-                        android:text="99+"
-                        android:textColor="@color/writer"
-                        android:textSize="10sp" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/home_item_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_weight="7"
+                            android:text="所属组织"
+                            android:textColor="@color/textViwe"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/home_item_message"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/home_item_style"
+                                android:gravity="center"
+                                android:text="99+"
+                                android:textColor="@color/writer"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/home_item_content"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="7"
+                            android:ellipsize="end"
+                            android:maxEms="18"
+                            android:maxLines="1"
+                            android:text="1255f dskgn"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/home_item_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:text="2017-01-02"
+                            android:textSize="11dp" />
+
+                    </LinearLayout>
                 </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
 
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/home_item_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="7"
-                    android:ellipsize="end"
-                    android:maxEms="18"
-                    android:maxLines="1"
-                    android:text="1255f dskgn"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/home_item_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="2"
-                    android:gravity="right"
-                    android:text="2017-01-02"
-                    android:textSize="11dp" />
-
-            </LinearLayout>
-        </LinearLayout>
     </RelativeLayout>
-
-
-</RelativeLayout>
+</com.example.administrator.newsdf.utils.LeftSlideView>

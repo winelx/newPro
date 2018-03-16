@@ -97,7 +97,7 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImage(R.id.circleImageView, obj.getImageUrl());
+                holder.setImages(R.id.circleImageView, obj.getImageUrl());
                 //名字
                 holder.setText(R.id.member_name, obj.getName());
                 holder.setOnClickListener(R.id.member, new View.OnClickListener() {

@@ -1,10 +1,13 @@
 package com.example.administrator.newsdf.activity.home;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,6 +15,14 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.administrator.newsdf.R;
+import com.joanzapata.iconify.widget.IconTextView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 /**
@@ -23,112 +34,118 @@ import com.example.administrator.newsdf.R;
  *         version:
  */
 public class WebActivity extends AppCompatActivity {
-    private WebView mWebView;
+    WebView pdfViewerWeb;
     private ProgressBar pg1;
+    String Url;
+    private IconTextView com_back;
+    private String downloadUrl = "http://117.187.27.78:8081/baseframe/upload/2018/01/23/bbceda7901ba453d912b340a5badc081.pdf";
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbe);
+        com_back = (IconTextView) findViewById(R.id.com_back);
+        pdfViewerWeb = (WebView) findViewById(R.id.webview);
         Intent intent = getIntent();
-        String Url = intent.getStringExtra("http");
+        Url = intent.getStringExtra("http");
+        WebSettings settings = pdfViewerWeb.getSettings();
+        settings.setSavePassword(false);
+        settings.setJavaScriptEnabled(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
 
-       init();
-        mWebView.loadUrl(Url);
-
-        //方式2：加载apk包中的html页面
-        //  mWebView.loadUrl("file:///android_asset/test.html");
-        //方式3：加载手机本地的html页面
-//        mWebView.loadUrl("content://com.android.htmlfileprovider/sdcard/test.html");
-        // 方式4： 加载 HTML 页面的一小段内容
-        //  WebView.loadData(String data, String mimeType, String encoding);
-
-    }
-
-    private void init() {
-
-        mWebView = (WebView) findViewById(R.id.web);
-        pg1 = (ProgressBar) findViewById(R.id.progressBar1);
-
-        mWebView.setWebViewClient(new WebViewClient() {
-            //覆写shouldOverrideUrlLoading实现内部显示网页
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+        //AndroidtoJS类对象映射到js的test对象
+        pdfViewerWeb.addJavascriptInterface(new AndroidtoJs(), "android");
+        pdfViewerWeb.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
                 view.loadUrl(url);
                 return true;
+
             }
+
         });
-        WebSettings seting = mWebView.getSettings();
-        //设置webview支持javascript脚本
-        seting.setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(new WebChromeClient() {
+        pdfViewerWeb.setWebChromeClient(new WebChromeClient());
+
+        new Thread(new Runnable() {
             @Override
-            public void onProgressChanged(WebView view, int newProgress) {
+            public void run() {
+                final String download = download();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//api >= 19
+                            pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + download);
 
-
-                if (newProgress == 100) {
-                    //加载完网页进度条消失
-                    pg1.setVisibility(View.GONE);
-                } else {
-                    //开始加载网页时显示进度条
-                    pg1.setVisibility(View.VISIBLE);
-                    //设置进度值
-                    pg1.setProgress(newProgress);
-                }
-
+                        }
+                    }
+                });
             }
-        });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-//恢复pauseTimers状态
-        mWebView.resumeTimers();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //它会暂停所有webview的layout，parsing，javascripttimer。降低CPU功耗。
-        mWebView.pauseTimers();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    /**
-     * 重写返回键
-     * 设置返回键动作（防止按返回键直接退出程序)
-     *
-     * @param keyCode
-     * @param event
-     * @return
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //当webview不是处于第一页面时，返回上一个页面
-            if (mWebView.canGoBack()) {
-                mWebView.goBack();
-                return true;
-                //当webview处于第一页面时,直接退出程序
-            } else {
+        }).start();
+        com_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
-        }
-        return super.onKeyDown(keyCode, event);
+        });
     }
 
+    public class AndroidtoJs extends Object {
 
+        // 定义JS需要调用的方法
+        // 被JS调用的方法必须加入@JavascriptInterface注解
+        @JavascriptInterface
+        public void back() {
+            WebActivity.this.finish();
+        }
+    }
+
+    //下载具体操作
+    private String download() {
+        try {
+            URL url = new URL(Url);
+            //打开连接
+            URLConnection conn = url.openConnection();
+            //打开输入流
+            InputStream is = conn.getInputStream();
+            //获得长度
+            int contentLength = conn.getContentLength();
+            //创建文件夹 MyDownLoad，在存储卡下
+            String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
+            File file = new File(dirName);
+
+            //不存在创建
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            //下载后的文件名
+            final String fileName = dirName + "invoice.pdf";
+            File file1 = new File(fileName);
+            if (file1.exists()) {
+                file1.delete();
+            }
+            //创建字节流
+            byte[] bs = new byte[1024];
+            int len;
+            OutputStream os = new FileOutputStream(fileName);
+            //写数据
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+
+            //完成后关闭流
+            os.close();
+            is.close();
+            return fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.GreenDao.Shop;
@@ -103,15 +104,15 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
         public TextView btn_Set;
         public TextView btn_Delete;
         public TextView up_ph_data, up_ph_name;
-        public ViewGroup layout_content;
+        public RelativeLayout layout_content;
         public LinearLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            btn_Set = (TextView) itemView.findViewById(R.id.tv_set);
-            btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
-            layout_content = (ViewGroup) itemView.findViewById(R.id.layout_content);
+            btn_Set =itemView.findViewById(R.id.tv_set);
+            btn_Delete =  itemView.findViewById(R.id.tv_delete);
+            layout_content =  itemView.findViewById(R.id.layout_content);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
             up_ph_data=(TextView) itemView.findViewById(R.id.up_ph_data);
             up_ph_name=(TextView) itemView.findViewById(R.id.up_ph_name);

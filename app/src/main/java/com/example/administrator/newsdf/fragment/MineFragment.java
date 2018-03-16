@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,7 +30,6 @@ import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.utils.UpdateService;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -109,15 +109,18 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
         return rootView;
     }
-
+    //初始化数据
     private void ititData() {
+        //登录人头像
         String url = Request.networks + SPUtils.getString(mContext, "portrait", null);
         Glide.with(this)
                 .load(url)
                 .thumbnail(Glide.with(this)
                         .load(R.mipmap.mine_avatar))
                 .into(mine_avatar);
+        //名字
         mine_organization.setText(SPUtils.getString(mContext, "username", ""));
+        //组织
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
         list = new ArrayList<>();
         list = LoveDao.queryLove();
@@ -259,9 +262,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                intent = new Intent(getActivity(), UpdateService.class);
-                intent.putExtra("data", path);
-                mContext.startService(intent);
+//                intent = new Intent(getActivity(), UpdateService.class);
+//                intent.putExtra("data", path);
+//                mContext.startService(intent);
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(path);
+                intent.setData(content_url);
+                startActivity(intent);
                 selfDialog.dismiss();
             }
         });

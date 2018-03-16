@@ -140,7 +140,7 @@ public class MmissPushActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-
+                        Log.i("ss",result);
                         addOrganizationList(result);
                     }
 

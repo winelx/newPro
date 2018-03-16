@@ -61,15 +61,29 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:layout_marginRight="15dp"
+                    android:text="回复"
                     android:textColor="@color/writer"
                     android:textSize="15sp" />
 
-                <ImageView
+
+                <LinearLayout
                     android:id="@+id/com_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center|end"
-                    android:layout_marginRight="15dp"></ImageView>
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/task_log"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
 
             </android.support.v7.widget.Toolbar>
 

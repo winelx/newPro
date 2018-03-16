@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -61,10 +62,15 @@ public class MainActivity extends AppCompatActivity {
     private long exitTime = 0;
 
     @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        //  super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
-        mContext = MainActivity.this;
+        mContext = this;
         dates = new Dates();
         //获取当前版本
         version = AppUtils.getVersionName(mContext);

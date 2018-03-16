@@ -32,7 +32,7 @@ import java.util.List;
  * version:
  */
 
-public class NotuploadActivity extends AppCompatActivity implements Adapter.IonSlidingViewClickListener {
+public class NotuploadActivity extends AppCompatActivity  {
     private LinearLayout toolbar_add;
     LinearLayout com_back;
     String wbsID;
@@ -62,7 +62,7 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        //设置布局管理器
+
         //设置布局管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //设置适配器
@@ -116,27 +116,7 @@ public class NotuploadActivity extends AppCompatActivity implements Adapter.IonS
         queryDate();
     }
 
-    /**
-     * item的左滑设置
-     *
-     * @param view
-     * @param position
-     */
-    @Override
-    public void onSetBtnCilck(View view, int position) {
 
-    }
-
-    /**
-     * item的左滑删除
-     *
-     * @param view
-     * @param position
-     */
-    @Override
-    public void onDeleteBtnCilck(View view, int position) {
-        deleteDate(position);
-    }
 
     //点击条目跳转界面
     public void getInt(int position) {

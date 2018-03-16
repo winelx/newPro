@@ -31,16 +31,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
 
     private List<Shop> mDatas = new ArrayList<Shop>();
 
-    private IonSlidingViewClickListener mIDeleteBtnClickListener;
-
-    private IonSlidingViewClickListener mISetBtnClickListener;
-
     private LeftSlideView mMenu = null;
 
     public Adapter(Context context) {
         mContext = context;
-        mIDeleteBtnClickListener = (IonSlidingViewClickListener) context;
-        mISetBtnClickListener = (IonSlidingViewClickListener) context;
     }
 
     @Override
@@ -82,14 +76,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
                 }
             }
         });
-        //左滑设置点击事件
-        holder.btn_Set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int n = holder.getLayoutPosition();
-                mISetBtnClickListener.onSetBtnCilck(view, n);
-            }
-        });
 
         //左滑删除点击事件
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +97,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
         return holder;
     }
 
-   public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView btn_Set, title;
         public TextView btn_Delete;
         public TextView content, time, wbsnam;
-        public ViewGroup layout_content;
+        public RelativeLayout layout_content;
         public RelativeLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
@@ -124,7 +110,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
             title = (TextView) itemView.findViewById(R.id.title);
             btn_Set = (TextView) itemView.findViewById(R.id.tv_set);
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
-            layout_content = (ViewGroup) itemView.findViewById(R.id.layout_content);
+            layout_content =  itemView.findViewById(R.id.layout_content);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
             content = itemView.findViewById(R.id.content);
             time = itemView.findViewById(R.id.time);
@@ -191,13 +177,4 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
         notifyDataSetChanged();
     }
 
-    /**
-     * 注册接口的方法：点击事件。在Mactivity.java实现这些方法。
-     */
-    public interface IonSlidingViewClickListener {
-
-        void onDeleteBtnCilck(View view, int position);//点击“删除”
-
-        void onSetBtnCilck(View view, int position);//点击“设置”
-    }
 }

@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response response) {
+
                         if (msg.indexOf("data") != -1) {
                             try {
                                 JSONObject jsonObject = new JSONObject(msg);

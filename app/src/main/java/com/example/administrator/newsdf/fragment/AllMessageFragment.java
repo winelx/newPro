@@ -5,19 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.MainActivity;
+import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.adapter.AllMessageAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -37,13 +40,16 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2018/1/15 0015.
- * 全部消息
+ * description: 全部消息
+ *
+ * @author lx
+ *         date: 2018/3/16 0016 下午 1:45
+ *         update: 2018/3/16 0016
+ *         version:
  */
-
 public class AllMessageFragment extends Fragment implements AdapterView.OnItemClickListener {
     private View rootView;
-    private ListView listView;
+    private RecyclerView listView;
     private AllMessageAdapter mAdapter = null;
     private ArrayList<Home_item> mData;
     private Context mContext;
@@ -71,6 +77,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         if (parent != null) {
             parent.removeView(rootView);
         }
+        mContext = MainActivity.getInstance();
         //控件处理
         init();
         //网络请求
@@ -78,13 +85,14 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         return rootView;
     }
 
-
     private void init() {
         mData = new ArrayList<>();
-        //实例化 适配器
-        mAdapter = new AllMessageAdapter(mContext);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(this);
+        //设置布局管理器
+        listView.setLayoutManager(new LinearLayoutManager(mContext));
+        //设置适配器
+        listView.setAdapter(mAdapter = new AllMessageAdapter(mContext));
+        //设置控制Item增删的动画
+        listView.setItemAnimator(new DefaultItemAnimator());
         //没有网络的时候点击界面刷新数据
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +147,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish));
                                 }
                                 if (mData.size() != 0) {
-                                    mAdapter.getDate(mData);
+                                    mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
 
                                 } else {

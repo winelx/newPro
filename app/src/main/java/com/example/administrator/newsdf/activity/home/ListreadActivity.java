@@ -175,8 +175,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     //搜索
                     search(s);
                 }
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
+                Log.i("page",s+"");
+//                //传入false表示加载失败
+               refreshlayout.finishLoadmore(800);
             }
         });
         /**
@@ -710,6 +711,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             ToastUtils.showShortToast("没有更多数据了！");
             mAdapter.notifyDataSetChanged();
         }
+
+
     }
 
     /**

@@ -4,18 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
-import com.example.administrator.newsdf.adapter.HomgFragmentAdapter;
+import com.example.administrator.newsdf.adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
 /**
  * @author lx
  *         Created by Administrator on 2017/11/21 0021.
@@ -42,8 +45,8 @@ import okhttp3.Response;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
     private View rootView;
-    private ListView listView;
-    private HomgFragmentAdapter mAdapter = null;
+    private RecyclerView listView;
+    private HomeFragmentAdapter mAdapter;
     private ArrayList<Home_item> mData = null;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
@@ -51,14 +54,15 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private TextView home_img_text;
     private ImageView home_img_nonews;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_home, null);
             Dates.getDialog(getActivity(), "请求数据中...");
-            mContext = getActivity();
-            listView = (ListView) rootView.findViewById(R.id.home_list);
+
+            listView = (RecyclerView) rootView.findViewById(R.id.home_list);
             home_frag_img = rootView.findViewById(R.id.home_frag_img);
             home_img_nonews = rootView.findViewById(R.id.home_img_nonews);
             home_img_text = rootView.findViewById(R.id.home_img_text);
@@ -69,15 +73,20 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (parent != null) {
             parent.removeView(rootView);
         }
+        mContext = getActivity();
         init();
         return rootView;
     }
 
     private void init() {
         mData = new ArrayList<>();
-        mAdapter = new HomgFragmentAdapter(mContext);
+        //设置布局管理器
+        listView.setLayoutManager(new LinearLayoutManager(mContext));
+        //设置适配器
+        mAdapter = new HomeFragmentAdapter(mContext);
+        //设置控制Item增删的动画
+        listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(this);
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +137,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                 }
                                 //请求到的数据不为空
                                 if (mData.size() != 0) {
-                                    mAdapter.getDate(mData);
+                                    mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
                                 } else {
                                     //请求到的数据为空

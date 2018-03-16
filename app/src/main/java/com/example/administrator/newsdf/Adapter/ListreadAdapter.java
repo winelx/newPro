@@ -62,7 +62,7 @@ public class ListreadAdapter extends BaseAdapter {
             holder.inface_pcontent = (TextView) convertView.findViewById(R.id.home_item_img);
             holder.inface_loation = (TextView) convertView.findViewById(R.id.home_item_img);
             holder.inface_status_true = convertView.findViewById(R.id.inface_status_true);
-            convertView.setTag(holder);   //将Holder存储到convertView中
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }

@@ -39,7 +39,6 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -76,6 +75,7 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
 public class AuditparticularsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayout linearLayout;
+    //界面适配器
     private AudioAdapter mAdapter;
     private String id, intent_back;
     private ArrayList<Aduio_content> contents;
@@ -86,21 +86,29 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     private SwipeRefreshLayout mSwipeLayout;
+    //图片查看的圆形图标
     private CircleImageView fab;
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
-    LinearLayout back;
-    TaskPhotoAdapter taskPhotoAdapter;
-    DrawerLayout drawerLayout;
-    SmartRefreshLayout drawerLayoutSmart;
-    ListView drawerLayoutList;
+    private LinearLayout back;
+    //侧滑界面的listview的适配器
+    private TaskPhotoAdapter taskPhotoAdapter;
+    //侧滑界面
+    private DrawerLayout drawerLayout;
+    //下拉刷新
+    private SmartRefreshLayout drawerLayoutSmart;
+    private ListView drawerLayoutList;
     private boolean drew;
     private RecyclerView dialog_rec;
     private static final int IMAGE_PICKER = 101;
+    //权限
     private CheckPermission checkPermission;
-    ArrayList<String> path;
-    DialogRecAdapter Dialogadapter;
+    private ArrayList<String> path;
+    //任务回复时展示图片的适配器
+    private DialogRecAdapter Dialogadapter;
+    private LinearLayout com_img;
     private String Titles;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +138,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
-
+        com_img = (LinearLayout) findViewById(R.id.com_img);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
@@ -162,9 +170,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         switch (status) {
             case "one":
+                com_button.setVisibility(View.VISIBLE);
+                com_img.setVisibility(View.GONE);
                 okgoone(id);
                 break;
             case "two":
+                com_button.setVisibility(View.GONE);
+                com_img.setVisibility(View.VISIBLE);
                 okgo(id);
                 break;
             default:
@@ -203,6 +215,12 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        com_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showShortToast("任务记录");
+            }
+        });
 
         /**
          *    侧拉listview上拉加载
@@ -211,6 +229,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
+
                 drew = false;
                 photoAdm(id);
                 //传入false表示加载失败
@@ -219,12 +238,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
         });
     }
 
-    public void getpinL(String content) {
-        String name = SPUtils.getString(mContext, "staffName", "");
-        aduio_comms.add(0, new Aduio_comm(null, null, name, null, wtMainid, null, "4",
-                content, Dates.getDate()));
-        mAdapter.getmListB(aduio_comms);
-    }
 
     public String getId() {
         return wtMainid;
@@ -340,7 +353,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             contents.add(new Aduio_content(wtMainid, name, status, content, leaderName, leaderId, isread,
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             if (usernma.equals(wtMain.getString("leaderName"))) {
-                                com_button.setText("回复");
+
                             }
                             wbspath.setText(wbsName);
                             mAdapter.setmBanner(contents);
@@ -404,7 +417,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             try {
                                 ///检查点
                                 name = wtMain.getString("name");
-                                Titles=name;
+                                Titles = name;
                             } catch (JSONException e) {
 
                                 name = "";
@@ -719,7 +732,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                              //  Titles
+                                //  Titles
                                 taskPhotoAdapter.getData(imagePaths);
                             } catch (JSONException e) {
                                 e.printStackTrace();
