@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
-import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
@@ -65,12 +65,15 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                 }
             }
         });
-        //左滑删除点击事件
+        //左滑置顶点击事件
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NotuploadActivity activity = (NotuploadActivity) mContext;
-                activity.deleteDate(position);
+                ToastUtils.showShortToast("置顶");
+            Home_item    home_item =mDatas.get(position);
+                mDatas.add(0,home_item);
+                mDatas.remove(position);
+                getData(mDatas);
             }
         });
         //判断是否有消息

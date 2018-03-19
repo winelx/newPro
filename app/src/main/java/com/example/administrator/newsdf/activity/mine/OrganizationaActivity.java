@@ -5,14 +5,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Makeup;
-import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -93,33 +95,36 @@ public class OrganizationaActivity extends AppCompatActivity implements XListVie
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Log.i("ssss",s);
                         if (s.indexOf("data") != -1) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray1.length(); i++) {
-                                    JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
-                                    String orgID = jsonObject1.getString("organizationId");
-                                    JSONObject JSONObject11 = jsonObject1.getJSONObject("organization");
-                                    String name = JSONObject11.getString("name");
-                                    mData.add(new Makeup(name, orgID));
-                                }
-                                if (mData.size() != 0) {
-                                    mAdapter.getData(mData);
-                                    home_backgroud.setVisibility(View.GONE);
-                                } else {
-                                    home_backgroud_text.setText("数据加载失败，试试下拉刷新");
-                                    home_backgroud.setVisibility(View.VISIBLE);
-                                }
-                                Dates.disDialog();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Dates.disDialog();
-                            home_backgroud_text.setText(R.string.text_nupoint);
-                            home_backgroud.setVisibility(View.VISIBLE);
+                            parseOrganizationList(s);
                         }
+//                            try {
+//                                JSONObject jsonObject = new JSONObject(s);
+//                                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
+//                                for (int i = 0; i < jsonArray1.length(); i++) {
+//                                    JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
+//                                    String orgID = jsonObject1.getString("organizationId");
+//                                    JSONObject JSONObject11 = jsonObject1.getJSONObject("organization");
+//                                    String name = JSONObject11.getString("name");
+//                                    mData.add(new Makeup(name, orgID));
+//                                }
+//                                if (mData.size() != 0) {
+//                                    mAdapter.getData(mData);
+//                                    home_backgroud.setVisibility(View.GONE);
+//                                } else {
+//                                    home_backgroud_text.setText("数据加载失败，试试下拉刷新");
+//                                    home_backgroud.setVisibility(View.VISIBLE);
+//                                }
+//                                Dates.disDialog();
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        } else {
+//                            Dates.disDialog();
+//                            home_backgroud_text.setText(R.string.text_nupoint);
+//                            home_backgroud.setVisibility(View.VISIBLE);
+//                        }
                     }
 
                     @Override
@@ -131,7 +136,9 @@ public class OrganizationaActivity extends AppCompatActivity implements XListVie
                 });
     }
 
-    //切换组织
+    /**
+     *  切换组织
+     */
     void member(final String orgid, final String name) {
         OkGo.post(Request.Swatch)
                 .params("orgId", orgid)
@@ -196,4 +203,118 @@ public class OrganizationaActivity extends AppCompatActivity implements XListVie
     private String getTime() {
         return new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA).format(new Date());
     }
+
+    /**
+     * 组织机构
+     *
+     * @param json 字符串
+     * @return 实体
+     */
+    public ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        if (json == null) {
+            return null;
+        } else {
+            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject obj = jsonArray.getJSONObject(i);
+                    JSONObject object=obj.getJSONObject("organization");
+                    OrganizationEntity organization = new OrganizationEntity();
+                    try {
+                        //节点id
+                        organization.setId(object.getString("id"));
+                    } catch (JSONException e) {
+
+                        organization.setId("");
+                    }
+                    try {
+                        //节点名称
+                        organization.setDepartname(object.getString("name"));
+                    } catch (JSONException e) {
+
+                        organization.setDepartname("");
+                    }
+                    try {
+                        //组织类型
+                        organization.setTypes(object.getString("type"));
+                    } catch (JSONException e) {
+                        organization.setTypes("");
+                    }
+                    try {
+                        //是否swbs
+                        organization.setIswbs(obj.getBoolean("iswbs"));
+                    } catch (JSONException e) {
+
+                        organization.setIswbs(false);
+                    }
+                    try {
+                        //是否是父节点
+                        organization.setIsparent(obj.getBoolean("isParent"));
+                    } catch (JSONException e) {
+
+                        organization.setIsparent(false);
+                    }
+                    try {
+                        boolean isParentFlag = obj.getBoolean("isParent");
+                        if (isParentFlag) {
+                            //不是叶子节点
+                            organization.setIsleaf("0");
+                        } else {
+                            //是叶子节点
+                            organization.setIsleaf("1");
+                        }
+                    } catch (JSONException e) {
+
+                        organization.setIsleaf("");
+                    }
+                    try {
+                        //组织机构父级节点
+                        organization.setParentId(obj.getString("parentId"));
+                    } catch (JSONException e) {
+
+                        organization.setParentId("");
+                    }
+
+                    try {
+                        //负责人
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
+                    } catch (JSONException e) {
+                        organization.setUsername("");
+                    }
+                    try {
+                        //进度
+                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
+                    } catch (JSONException e) {
+                        organization.setNumber("");
+                    }
+                    try {
+                        //负责热ID
+                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
+                    } catch (JSONException e) {
+                        organization.setUserId("");
+                    }
+                    try {
+                        //节点层级
+                        organization.setTitle(obj.getString("title"));
+                    } catch (JSONException e) {
+                        organization.setTitle("");
+                    }
+                    try {
+                        organization.setPhone(obj.getString("title"));
+                    } catch (JSONException e) {
+                        organization.setPhone("");
+                    }
+                    organizationList.add(organization);
+                }
+
+                return organizationList;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
 }

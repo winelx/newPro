@@ -22,6 +22,8 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.zxy.tiny.Tiny;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * @author lx
  *         Created by Administrator on 2017/11/21 0021.
@@ -84,6 +86,9 @@ public class baseApplication extends Application {
         //保存文件的高度。单位像素
         imagePicker.setOutPutY(1000);
 
+        //开启极光推送
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     /**

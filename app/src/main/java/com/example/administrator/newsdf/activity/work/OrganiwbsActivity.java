@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -118,6 +119,7 @@ public class OrganiwbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
+                        Log.i("sss",result);
                         addOrganizationList(result);
                     }
 
@@ -182,9 +184,9 @@ public class OrganiwbsActivity extends Activity {
                         //是否swbs
                         organization.setIswbs(obj.getBoolean("iswbs"));
                     } catch (JSONException e) {
-
                         organization.setIswbs(false);
                     }
+
                     try {
                         //是否是父节点
                         organization.setIsparent(obj.getBoolean("isParent"));
@@ -213,12 +215,12 @@ public class OrganiwbsActivity extends Activity {
                         organization.setParentId("");
                     }
 
-                    try {
-                        //负责人 //进度
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
-                    } catch (JSONException e) {
+//                    try {
+//                        //负责人 //进度
+//                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
+//                    } catch (JSONException e) {
                         organization.setUsername("");
-                    }
+               //     }
                     try {
                         //进度
                         organization.setNumber(obj.getJSONObject("extend").getString("finish"));

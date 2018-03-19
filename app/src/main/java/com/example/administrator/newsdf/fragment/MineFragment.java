@@ -130,7 +130,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //我的组织
+            //切换组织
             case R.id.organizationa:
                 startActivity(new Intent(getActivity(), OrganizationaActivity.class));
                 break;

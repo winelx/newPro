@@ -2,7 +2,7 @@
     <string name="app_name">工程管理</string>
     <string name="home">任务</string>
     <string name="mine">我的</string>
-    <string name="work">工作</string>
+    <string name="work">办公</string>
     <string name="about_us">工程管理系统主要是路桥公司为了能对施工过程进行严格管控，对进度、技术、质量、安全、文明施工等一系列的施工过程做到实时监控而开发的一个平台。同时更好地保障工地员工实时的进行举证证明施工过程的规范性、安全性、按时性等。整个过程充分体现了”谁负责，谁举证“这一原则。</string>
     <string name="meun_one">选择WBS结构</string>
     <string name="meun_two">未处理消息</string>

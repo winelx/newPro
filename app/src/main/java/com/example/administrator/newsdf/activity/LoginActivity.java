@@ -125,9 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .params("mobileLogin", true)
                 .execute(new StringCallback() {
                     @Override
-                    public void onSuccess(String msg, Call call, Response response) {
-
-                        if (msg.indexOf("data") != -1) {
+                    public void onSuccess(String msg, Call call, Response respons) {
                             try {
                                 JSONObject jsonObject = new JSONObject(msg);
                                 int ret = jsonObject.getInt("ret");
@@ -220,10 +218,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-                        }else {
-                            ToastUtils.showShortToast("登陆失败");
-                        }
 
                     }
 

@@ -38,8 +38,6 @@ public class WebActivity extends AppCompatActivity {
     private ProgressBar pg1;
     String Url;
     private IconTextView com_back;
-    private String downloadUrl = "http://117.187.27.78:8081/baseframe/upload/2018/01/23/bbceda7901ba453d912b340a5badc081.pdf";
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class WebActivity extends AppCompatActivity {
         settings.setJavaScriptEnabled(true);
         settings.setAllowFileAccessFromFileURLs(true);
         settings.setAllowUniversalAccessFromFileURLs(true);
-
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setBuiltInZoomControls(true);
@@ -71,7 +68,6 @@ public class WebActivity extends AppCompatActivity {
 
         });
         pdfViewerWeb.setWebChromeClient(new WebChromeClient());
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,7 +77,6 @@ public class WebActivity extends AppCompatActivity {
                     public void run() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//api >= 19
                             pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + download);
-
                         }
                     }
                 });
@@ -94,9 +89,7 @@ public class WebActivity extends AppCompatActivity {
             }
         });
     }
-
     public class AndroidtoJs extends Object {
-
         // 定义JS需要调用的方法
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
@@ -104,7 +97,6 @@ public class WebActivity extends AppCompatActivity {
             WebActivity.this.finish();
         }
     }
-
     //下载具体操作
     private String download() {
         try {
