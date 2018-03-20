@@ -184,7 +184,6 @@ public class TreeHelper {
      */
     public static List<Node> filterVisibleNodes(List<Node> nodes) {
         List<Node> result = new ArrayList<Node>();
-
         for (Node node : nodes) {
             if (node.isRoot() || node.isParentExpand()) {
                 setNodeIcon(node);

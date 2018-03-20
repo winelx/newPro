@@ -140,7 +140,7 @@ public class MmissPushActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-                        Log.i("ss",result);
+
                         addOrganizationList(result);
                     }
 
@@ -326,7 +326,6 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
-
         if (organizationList != null) {
             for (OrganizationEntity entity : organizationList) {
                 String departmentName = entity.getDepartname();
@@ -335,7 +334,6 @@ public class MmissPushActivity extends AppCompatActivity {
                         entity.isparent(), entity.getTypes(), entity.getUsername(),
                         entity.getNumber(), entity.getUserId(), entity.getTitle(), entity.getPhone(), entity.isDrawingGroup());
                 mTreeDatas.add(bean);
-
             }
             try {
                 mTreeAdapter = new PushListviewAdapter<OrganizationEntity>(mTree, this,
@@ -358,11 +356,12 @@ public class MmissPushActivity extends AppCompatActivity {
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
                 if (node.isLeaf()) {
                 } else {
+                    //判断是否为空
                     if (node.getChildren().size() == 0) {
                         addOrganizationList.clear();
                         addPosition = position;
+                        //是否是父级点
                         if (node.isperent()) {
-                            //是否是父级点
                             addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
                         } else {
 //                            Toast.makeText(mContext, "是", Toast.LENGTH_SHORT).show();

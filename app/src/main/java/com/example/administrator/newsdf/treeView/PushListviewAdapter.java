@@ -73,6 +73,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
+        //点击跳转界面
         holder.itemRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +82,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
             }
 
         });
+
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,14 +92,15 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
+        //长按出现联系人信息
         holder.Lin_WBS.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 okgo(node.getUserId());
-                okgo(node.getUserId());
                 return true;
             }
         });
+        //点击跳转界面
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,10 +150,14 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject json = jsonObject.getJSONObject("data");
-                            String name = json.getString("name");//名字
-                            String moblie = json.getString("moblie");//手机号
-                            String orgName = json.getString("orgName");//组织名字
-                            String ethnicities = json.getString("ethnicities");  //民族
+                            //名字
+                            String name = json.getString("name");
+                            //手机号
+                            String moblie = json.getString("moblie");
+                            //组织名字
+                            String orgName = json.getString("orgName");
+                            //民族
+                            String ethnicities = json.getString("ethnicities");
                             Intent intent = new Intent(mContext, PopwindActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("moblie", moblie);

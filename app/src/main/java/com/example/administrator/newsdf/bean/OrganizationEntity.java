@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.treeView.inface.TreeNodeiswas;
  * Created by Administrator on 2017/12/12 0012.
  */
 
-public class OrganizationEntity {
+public class  OrganizationEntity {
     @TreeNodeLabel
     private String departname;
     @TreeNodePid

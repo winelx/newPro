@@ -85,23 +85,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
-        holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String userid = node.getUserId();
 
-                return true;
-            }
-        });
-        holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                okgo(node.getUserId());
-                return true;
-
-
-            }
-        });
         holder.dialog_mine.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

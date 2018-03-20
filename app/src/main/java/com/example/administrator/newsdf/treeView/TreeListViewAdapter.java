@@ -18,7 +18,6 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
     protected LayoutInflater mInflater;
 
     protected ListView mTree;
-
     /**
      * 设置Node的点击回调
      *
@@ -27,13 +26,11 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
     public interface OnTreeNodeClickListener {
         void onClick(Node node, int position);
     }
-
     public OnTreeNodeClickListener mListener;
 
     public void setOnTreeNodeClickListener(OnTreeNodeClickListener mListener) {
         this.mListener = mListener;
     }
-
     public TreeListViewAdapter(ListView tree, Context context, List<T> datas,
                                int defaultExpandLevel) throws IllegalArgumentException,
             IllegalAccessException {
@@ -41,15 +38,12 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
         mInflater = LayoutInflater.from(mContext);
         mAllNodes = TreeHelper.getSortedNodes(datas, defaultExpandLevel);
         mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
-
         mTree = tree;
-
         mTree.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 expandOrCollapse(position);
-
                 if (mListener != null) {
                     mListener.onClick(mVisibleNodes.get(position), position);
                 }

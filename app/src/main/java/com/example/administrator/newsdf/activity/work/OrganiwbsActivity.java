@@ -215,12 +215,12 @@ public class OrganiwbsActivity extends Activity {
                         organization.setParentId("");
                     }
 
-//                    try {
-//                        //负责人 //进度
-//                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
-//                    } catch (JSONException e) {
+                    try {
+                        //负责人 //进度
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
+                    } catch (JSONException e) {
                         organization.setUsername("");
-               //     }
+               }
                     try {
                         //进度
                         organization.setNumber(obj.getJSONObject("extend").getString("finish"));

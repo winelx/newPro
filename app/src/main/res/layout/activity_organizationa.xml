@@ -76,13 +76,15 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <com.example.administrator.newsdf.utils.list.XListView
+        <ListView
             android:id="@+id/organ_list_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/back"
             android:dividerHeight="1.5px"
             android:scrollbars="none" />
+
+
     </RelativeLayout>
 
 </LinearLayout>
