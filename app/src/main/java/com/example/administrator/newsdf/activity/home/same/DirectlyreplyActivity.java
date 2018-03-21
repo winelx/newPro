@@ -95,8 +95,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
-
-        ToastUtils.showShortToast("回复界面");
         //动态权限
         checkPermission = new CheckPermission(this) {
             @Override

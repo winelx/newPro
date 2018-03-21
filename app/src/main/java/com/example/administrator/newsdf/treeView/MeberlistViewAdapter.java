@@ -10,28 +10,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.PhotoListActivity;
-import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.utils.Request;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.administrator.newsdf.activity.mine.ProjectmemberActivity;
 
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/1/16 0016.
  */
 
-public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
+public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
 
-    public PhotolistViewAdapter(ListView tree, Context context,
+    public MeberlistViewAdapter(ListView tree, Context context,
                                 List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
@@ -45,9 +35,9 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
-            holder.mIcon = (ImageView) convertView
+            holder.mIcon = convertView
                     .findViewById(R.id.id_item_icon);
-            holder.mText = (TextView) convertView
+            holder.mText =  convertView
                     .findViewById(R.id.id_item_text);
             holder.dialog_mine = convertView.findViewById(R.id.dialog_mine);
             holder.tree_name = convertView.findViewById(R.id.tree_name);
@@ -73,11 +63,17 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoListActivity activity = (PhotoListActivity) context;
-                activity.switchAct(node);
+
+                Intent intent =new Intent(mContext, ProjectmemberActivity.class);
+                intent.putExtra("id",node.getId());
+                //联系人的树没有用带getPhone，就用来存联系的树节点路径
+                intent.putExtra("path",node.getPhone());
+                intent.putExtra("title",node.getTitle());
+                intent.putExtra("ids",node.getNumber());
+                mContext.startActivity(intent);
             }
         });
-
+    //伸缩展开节点
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,39 +83,15 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
-        holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String userid = node.getUserId();
-                return true;
-            }
-        });
-        holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                okgo(node.getUserId());
-                return true;
 
-
-            }
-        });
-        holder.dialog_mine.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                okgo(node.getUserId());
-                return true;
-            }
-        });
         return convertView;
     }
-
     private class ViewHolder {
         ImageView mIcon;
         public TextView mText, tree_name, tree_progress;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }
-
 
     /**
      * 动态插入节点
@@ -140,39 +112,9 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
-
     }
 
 
-    void okgo(String staffId) {
-        OkGo.post(Request.Personal)
-                .params("staffId", staffId)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONObject json = jsonObject.getJSONObject("data");
-                            //名字
-                            String name = json.getString("name");
-                            //手机号
-                            String moblie = json.getString("moblie");
-                            //组织名字
-                            String orgName = json.getString("orgName");
-                            //民族
-                            String ethnicities = json.getString("ethnicities");
-                            Intent intent = new Intent(mContext, PopwindActivity.class);
-                            intent.putExtra("name", name);
-                            intent.putExtra("moblie", moblie);
-                            intent.putExtra("orgName", orgName);
-                            intent.putExtra("ethnicities", ethnicities);
-                            mContext.startActivity(intent);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
-                    }
-                });
-    }
 
 }

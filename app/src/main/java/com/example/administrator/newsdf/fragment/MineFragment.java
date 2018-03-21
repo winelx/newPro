@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.activity.mine.PasswordActvity;
 import com.example.administrator.newsdf.activity.mine.PersonalActivity;
-import com.example.administrator.newsdf.activity.mine.ProjectmemberActivity;
+import com.example.administrator.newsdf.activity.mine.ProjectmbTreeActivity;
 import com.example.administrator.newsdf.activity.mine.SettingActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
@@ -136,7 +136,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //项目成员
             case R.id.projectmember:
-                startActivity(new Intent(getActivity(), ProjectmemberActivity.class));
+//                startActivity(new Intent(getActivity(), ProjectmemberActivity.class));
+                startActivity(new Intent(getActivity(), ProjectmbTreeActivity.class));
                 break;
             //修改密码
             case R.id.changepassword:

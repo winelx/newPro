@@ -116,7 +116,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auditparticulars);
         mContext = AuditparticularsActivity.this;
         usernma = SPUtils.getString(mContext, "staffName", null);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         path = new ArrayList<>();
         try {
             id = intent.getExtras().getString("frag_id");
@@ -170,7 +170,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         switch (status) {
             case "one":
-                com_button.setVisibility(View.VISIBLE);
                 com_img.setVisibility(View.GONE);
                 okgoone(id);
                 break;
@@ -215,10 +214,14 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+
+        //操作记录
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast("任务记录");
+                Intent intent1 = new Intent(AuditparticularsActivity.this, TaskRecordActivity.class);
+                intent1.putExtra("taskId", id);
+                startActivity(intent1);
             }
         });
 
@@ -353,7 +356,9 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             contents.add(new Aduio_content(wtMainid, name, status, content, leaderName, leaderId, isread,
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             if (usernma.equals(wtMain.getString("leaderName"))) {
-
+                                  com_button.setVisibility(View.VISIBLE);
+                            } else {
+                                com_button.setVisibility(View.GONE);
                             }
                             wbspath.setText(wbsName);
                             mAdapter.setmBanner(contents);

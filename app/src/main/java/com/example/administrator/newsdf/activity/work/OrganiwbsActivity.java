@@ -4,21 +4,19 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -94,9 +92,7 @@ public class OrganiwbsActivity extends Activity {
                 finish();
             }
         });
-
     }
-
     private void okgo() {
         OkGo.post(Request.WBSTress)
                 .execute(new StringCallback() {
@@ -107,7 +103,6 @@ public class OrganiwbsActivity extends Activity {
                     }
                 });
     }
-
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(OrganiwbsActivity.this, "请求数据中");
@@ -119,7 +114,6 @@ public class OrganiwbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-                        Log.i("sss",result);
                         addOrganizationList(result);
                     }
 
@@ -410,10 +404,6 @@ public class OrganiwbsActivity extends Activity {
                 });
     }
 
-    public void getphone(String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+
 
 }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.mine.OrganizationaActivity;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.treeviews.utils.TreeHelpers;
 import com.example.administrator.newsdf.treeviews.utils.adapter.TreeListViewAdapters;
@@ -75,7 +74,8 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(node.getName() + node.getIds());
+                OrganizationaActivity activity= (OrganizationaActivity) mContext;
+                activity.member(node.getIds(),node.getName());
             }
         });
         return convertView;

@@ -212,7 +212,9 @@
             android:theme="@style/ImagePickerThemeFullScreen" />
         <activity android:name=".activity.home.WebActivity" />
         <activity android:name=".activity.work.ContactPeopleActivity" />
-        <activity android:name=".activity.work.UploadPhotoActivity"></activity>
+        <activity android:name=".activity.work.UploadPhotoActivity" />
+        <activity android:name=".activity.mine.ProjectmbTreeActivity" />
+        <activity android:name=".activity.home.TaskRecordActivity"></activity>
     </application>
 
 </manifest>

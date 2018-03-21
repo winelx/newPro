@@ -48,7 +48,7 @@ import java.util.List;
  * 说明：
  */
 public class Dates {
-    public static Dialog progressDialog;
+    private static Dialog progressDialog;
 
     public static int getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context
@@ -58,11 +58,13 @@ public class Dates {
         return outMetrics.heightPixels;
     }
 
-    //时间戳转时间
+    /**
+     *     时间戳转时间
+     */
     public static String stampToDate(String s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long(s);
+        long lt = Long.valueOf(s);
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
@@ -89,7 +91,6 @@ public class Dates {
         long hour1 = between % (24 * 3600) / 3600;
         long minute1 = between % 3600 / 60;
         long second1 = between % 60 / 60;
-//        System.out.println("" + day1 + "天" + hour1 + "小时" + minute1 + "分" + second1 + "秒");
         if (day1 == 0) {
             if (hour1 == 0) {
                 return "1小时";
@@ -102,7 +103,9 @@ public class Dates {
         return day1 + "天" + hour1 + "小时";
     }
 
-    //获取时间
+    /**
+     * 获取时间
+     */
     public static String getDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取当前时间
@@ -119,7 +122,9 @@ public class Dates {
         return str;
     }
 
-    //加载图片
+    /**
+     *   加载图片
+     */
     public static void getImg(Context context, String imageUrl, ImageView view) {
         Glide.with(context)
                 .load(imageUrl)
@@ -132,13 +137,16 @@ public class Dates {
     public static void setback(Context context, String imageUrl, ImageView view) {
         Glide.with(context)
                 .load(imageUrl)
+
                 .transition(new DrawableTransitionOptions().crossFade(1000))
                 .thumbnail(Glide.with(context)
                         .load(R.mipmap.mine_avatar))
                 .into(view);
     }
 
-    //判断权限是否开启
+    /**
+     *   判断权限是否开启
+     */
     private boolean checkWriteExternalPermission(Context context) {
         //你要判断的权限名字
         String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
@@ -146,7 +154,9 @@ public class Dates {
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
-    //删除保存本地图片
+    /**
+     *    删除保存本地图片
+     */
     public static void deleteAllFiles(File root) {
         File files[] = root.listFiles();
         if (files != null) {
@@ -210,7 +220,9 @@ public class Dates {
     }
 
 
-    //保存添加水印的 图片
+    /**
+     * 保存添加水印的 图片
+     */
     public static String saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
         // Environment.getExternalStorageDirectory()==/storage/emulated/0/   Boohee：为指定的文件夹
@@ -339,6 +351,11 @@ public class Dates {
         }
     }
 
+    /**
+     * 压缩
+     * @param image
+     * @return
+     */
     private static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         //质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中

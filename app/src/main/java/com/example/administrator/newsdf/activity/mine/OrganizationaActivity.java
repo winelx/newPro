@@ -1,9 +1,11 @@
 package com.example.administrator.newsdf.activity.mine;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
@@ -11,6 +13,7 @@ import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -32,11 +35,12 @@ public class OrganizationaActivity extends AppCompatActivity {
     private SimpleTreeListViewAdapters<OrgBeans> mAdapter;
     private List<OrgBeans> mDatas2;
     private List<OrgenBeans> mData;
-
+    private Context mContext ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
+        mContext=OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
         mTree = (ListView) findViewById(R.id.organ_list_item);
         mDatas2 = new ArrayList<OrgBeans>();
@@ -124,39 +128,36 @@ public class OrganizationaActivity extends AppCompatActivity {
         }
         return false;
     }
-    //    /**
-//     * 切换组织
-//     */
-//    void member(final String orgid, final String name) {
-//        OkGo.post(Request.Swatch)
-//                .params("orgId", orgid)
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(s);
-//                            String msg = jsonObject.getString("msg");
-//                            int ret = jsonObject.getInt("ret");
-//                            if (ret == 0) {
-//                                SPUtils.deleShare(mContext, "orgName");
-//                                SPUtils.deleShare(mContext, "orgId");
-//                                //所在组织ID
-//                                SPUtils.putString(mContext, "orgId", orgid);
-//                                //所在组织名称
-//                                SPUtils.putString(mContext, "username", name);
-//                                finish(); //此方法后才能返回主Activity
-//                            } else {
-//                                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//    }
+        /**
+     * 切换组织
+     */
+    public void member(final String orgid, final String name) {
+        OkGo.post(Request.Swatch)
+                .params("orgId", orgid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String msg = jsonObject.getString("msg");
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                SPUtils.deleShare(mContext, "orgName");
+                                SPUtils.deleShare(mContext, "orgId");
+                                //所在组织ID
+                                SPUtils.putString(mContext, "orgId", orgid);
+                                //所在组织名称
+                                SPUtils.putString(mContext, "username", name);
+                                finish(); //此方法后才能返回主Activity
+                            } else {
+                                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                            }
 
-
-    //  }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
 }

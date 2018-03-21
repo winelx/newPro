@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +26,8 @@ import org.json.JSONObject;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
+
 /**
  * @author lx
  *         <p>
@@ -47,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //用户名密码1
     private EditText username, password;
     private Context mContext;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
+
     }
 
     @Override
@@ -105,7 +106,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("ss", s);
                         login(user, passowd);
                     }
 

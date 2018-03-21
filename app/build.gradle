@@ -28,23 +28,55 @@ android {
 
     }
 
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
-
     //greendao配置
     greendao {
         //版本号，升级时可配置
         schemaVersion 1
     }
+    //添加如下配置就ok了
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 
     buildTypes {
 
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//optimize 默认优化就是这两个文件的区别
         }
+
+//        debug {
+//            // 显示Log
+//            buildConfigField "boolean", "LOG_DEBUG", "true"
+//////            versionNameSuffix "-debug"
+////            minifyEnabled false
+////            zipAlignEnabled false
+////            shrinkResources false
+//
+//            //Zipalign优化
+//            zipAlignEnabled true
+//            // 移除无用的resource文件
+//            shrinkResources true
+//            //混淆--
+//            minifyEnabled false
+//            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+////            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'//optimize 默认优化就是这两个文件的区别
+////            //签名
+////            signingConfig signingConfigs.release
+//        }
     }
 
     sourceSets {
@@ -52,7 +84,11 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
 }
+
+
+
 dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     //图片
@@ -69,6 +105,9 @@ dependencies {
     //volley，用其中的图片控件，防止图片错位
     //刷新/上拉加载框架，两个相互使用
     //相册选图
+
+    //极光推送
+
     compile 'me.weyye.hipermission:library:1.0.7'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -89,9 +128,7 @@ dependencies {
     compile 'com.lzy.widget:imagepicker:0.5.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zxy.android:tiny:0.0.6'
-    testCompile 'junit:junit:4.12'
-
-    //极光推送
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
+    testCompile 'junit:junit:4.12'
 }

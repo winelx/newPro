@@ -15,8 +15,8 @@
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/com_back"
-            android:layout_width="45dp"
-            android:layout_height="35dp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center|start"
             android:gravity="center"
             android:text="{fa-angle-left}"
