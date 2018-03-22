@@ -131,6 +131,8 @@ public class SlantedTextView extends View {
             case MODE_RIGHT_BOTTOM_TRIANGLE:
                 path = getModeRightBottomTrianglePath(path, w, h);
                 break;
+            default:
+                break;
         }
         path.close();
         canvas.drawPath(path, mPaint);
@@ -269,6 +271,8 @@ public class SlantedTextView extends View {
                 xy[2] = w / 2 + offset;
                 xy[3] = h / 2 + offset;
                 xy[4] = -ROTATE_ANGLE;
+                break;
+            default:
                 break;
         }
         return xy;

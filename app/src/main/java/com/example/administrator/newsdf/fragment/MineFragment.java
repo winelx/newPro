@@ -109,6 +109,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
         return rootView;
     }
+
     //初始化数据
     private void ititData() {
         //登录人头像
@@ -166,6 +167,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     //如果资料上传的还有记录，那就不能删除本地文件，
                     Dates.deleteAllFiles(new File(Environment.getExternalStorageDirectory() + "/Boohee/"));
                 }
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        //清理glide的缓存
+                        Glide.get(mContext).clearDiskCache();
+                    }
+                }.start();
                 new Handler(new Handler.Callback() {
                     @Override
                     public boolean handleMessage(Message msg) {
@@ -263,9 +272,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
+                //这个是使直接下载
 //                intent = new Intent(getActivity(), UpdateService.class);
 //                intent.putExtra("data", path);
 //                mContext.startService(intent);
+                //这个是跳转网页下载
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 Uri content_url = Uri.parse(path);
@@ -274,6 +285,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 selfDialog.dismiss();
             }
         });
+
         selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {

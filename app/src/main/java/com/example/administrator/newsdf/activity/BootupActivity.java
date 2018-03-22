@@ -93,6 +93,7 @@ public class BootupActivity extends AppCompatActivity {
             //表示延迟3秒发送任务
         }).sendEmptyMessageDelayed(0, 2500);
     }
+
     //假登录
     private void okgo(final String user, final String passowd) {
         OkGo.post(Request.networks)
@@ -102,10 +103,13 @@ public class BootupActivity extends AppCompatActivity {
                         //进行真正的登录
                         login(user, passowd);
                     }
+
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        startActivity(new Intent(BootupActivity.this, LoginActivity.class));
+                        finish();
                     }
                 });
     }
@@ -223,6 +227,13 @@ public class BootupActivity extends AppCompatActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         //进行假登录，登录后重定向
                         okgo(user, password);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        startActivity(new Intent(BootupActivity.this, LoginActivity.class));
+                        finish();
                     }
                 });
     }

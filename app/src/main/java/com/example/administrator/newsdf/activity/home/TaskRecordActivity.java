@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -28,13 +30,15 @@ import okhttp3.Response;
 public class TaskRecordActivity extends AppCompatActivity {
     private TextView com_title;
     private IconTextView com_back;
-
+    private  SettingAdapter  mAdapter;
+    private ListView task_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
         com_title = (TextView) findViewById(R.id.com_title);
         com_back = (IconTextView) findViewById(R.id.com_back);
+        task_list= (ListView) findViewById(R.id.task_list);
         com_title.setText("操作记录");
         Intent intent = getIntent();
         String taskId = intent.getStringExtra("taskId");
@@ -53,5 +57,13 @@ public class TaskRecordActivity extends AppCompatActivity {
                 finish();
             }
         });
+//        //listview的适配器
+//        mAdapter = new SettingAdapter<M>(, R.layout.setting_member_item) {
+//            @Override
+//            public void bindView(SettingAdapter.ViewHolder holder, final  obj) {
+//
+//            }
+//        };
+//        task_list.setAdapter(mAdapter);
     }
 }

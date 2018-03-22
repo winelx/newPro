@@ -21,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 
 import java.io.BufferedInputStream;
@@ -49,6 +51,7 @@ import java.util.List;
  */
 public class Dates {
     private static Dialog progressDialog;
+
 
     public static int getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context
@@ -126,21 +129,31 @@ public class Dates {
      *   加载图片
      */
     public static void getImg(Context context, String imageUrl, ImageView view) {
+        RequestOptions options=new RequestOptions()
+                .centerCrop()
+                .error(R.mipmap.mine_avatar)
+                .placeholder(R.mipmap.image_loading)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(context)
                 .load(imageUrl)
+                .apply(options)
                 .transition(new DrawableTransitionOptions().crossFade(1000))
-                .thumbnail(Glide.with(context)
-                        .load(R.mipmap.mine_avatar))
                 .into(view);
     }
 
     public static void setback(Context context, String imageUrl, ImageView view) {
+        RequestOptions options=new RequestOptions()
+                .centerCrop()
+                .error(R.mipmap.mine_avatar)
+                .placeholder(R.mipmap.image_loading)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(context)
                 .load(imageUrl)
-
+                .apply(options)
                 .transition(new DrawableTransitionOptions().crossFade(1000))
                 .thumbnail(Glide.with(context)
                         .load(R.mipmap.mine_avatar))
+
                 .into(view);
     }
 

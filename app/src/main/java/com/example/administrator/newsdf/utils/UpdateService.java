@@ -16,6 +16,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 
 /**
  * Created by Administrator on 2018/1/22 0022.
+ * 这个是更新时的后台下载服务
  */
 
 public class UpdateService extends Service {

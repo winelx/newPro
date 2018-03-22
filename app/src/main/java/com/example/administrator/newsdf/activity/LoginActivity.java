@@ -27,7 +27,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-
 /**
  * @author lx
  *         <p>
@@ -63,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password.setText(SPUtils.getString(mContext, "password", ""));
 
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

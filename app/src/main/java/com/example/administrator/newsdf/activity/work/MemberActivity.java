@@ -139,7 +139,6 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mData.clear();
-
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

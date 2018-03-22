@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Created by Administrator on 2017/11/3 0003.
+ * sp的帮助类
  */
 
 public class SPUtils {

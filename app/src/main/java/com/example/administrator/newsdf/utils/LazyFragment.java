@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 /**
  * Created by Administrator on 2018/1/3 0003.
+ * //fragment懒加载
  */
 
 public abstract class LazyFragment extends Fragment {

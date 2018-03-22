@@ -3,7 +3,9 @@ package com.example.administrator.newsdf.activity.mine;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
@@ -40,16 +42,30 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
     private Context mContext;
     private int addPosition;
     private String path = "";
+    private TextView Title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmb_tree);
-        maberTree = (ListView) findViewById(R.id.maber_tree);
         mContext = ProjectmbTreeActivity.this;
+        //树
+        maberTree = (ListView) findViewById(R.id.maber_tree);
+        //标题
+        Title = (TextView) findViewById(R.id.com_title);
+        Title.setText("贵州路桥集团公司有限公司");
+        //请求数据存放结婚
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
+
         okgo();
+        //关闭
+        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -156,14 +172,15 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         organization.setTitle("");
                     }
+                    //根据title的长度判断是否是第一次加载数据
                     if (title.length() == 0) {
+                        //这棵树的number和phone 没有数据，用来存放id和名称集合，便于查询每个节点所在的层级路径
                         organization.setNumber(number + obj.getString("id"));
                         organization.setPhone(title + obj.getString("title"));
                     } else {
                         organization.setNumber(number + "," + obj.getString("id"));
                         organization.setPhone(title + "," + obj.getString("title"));
                     }
-
                     organizationList.add(organization);
                 }
                 return organizationList;
@@ -181,7 +198,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
      */
     private void addOrganizationList(String result, String title, String number) {
         if (result.indexOf("data") != -1) {
-            //解析json
+            //解析json    并将名称和id传递下去，便于解析是形成节点层级路径
             addOrganizationList = parseOrganizationList(result, title, number);
             if (addOrganizationList.size() != 0) {
                 //循环添加节点
@@ -213,6 +230,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {
+            //便利数据，将他从新加入集合
             for (OrganizationEntity entity : organizationList) {
                 String departmentName = entity.getDepartname();
                 OrganizationEntity bean = new OrganizationEntity(entity.getId(), entity.getParentId(),
@@ -222,6 +240,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                 mTreeDatas.add(bean);
             }
             try {
+                //更新界面数据
                 mTreeAdapter = new MeberlistViewAdapter<>(maberTree, this,
                         mTreeDatas, 0);
                 maberTree.setAdapter(mTreeAdapter);
@@ -237,15 +256,18 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+                //判断是否是字节点，
                 if (node.isLeaf()) {
                 } else {
+                    //  如果不是，判断该节点是否有数据，
                     if (node.getChildren().size() == 0) {
+                      //  如果没有，就请求数据，
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
+                            //从拿到该节点的名称和id
                             addOrganiztion(node.getId(), node.getPhone(), node.getNumber());
                         }
-
                     }
                 }
             }
@@ -264,7 +286,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        //解析json
+                        //解析json  并将名称和id传递下去，便于解析是形成节点层级路径
                         addOrganizationList(s, title, number);
                     }
 

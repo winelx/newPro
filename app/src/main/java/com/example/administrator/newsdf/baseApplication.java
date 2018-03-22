@@ -6,8 +6,6 @@ import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
 
-import com.baidu.mapapi.SDKInitializer;
-import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
 import com.example.administrator.newsdf.service.LocationService;
@@ -46,10 +44,13 @@ public class baseApplication extends Application {
         setupDatabase();
         instance = this;
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
+        //网络加载库
         OkGo.init(this);
+        //图片压缩
         Tiny.getInstance().init(this);
+        //字体图标
         Iconify.with(new FontAwesomeModule());
-        Glide.with(this);
+        //网络加载库配置
         OkGo.getInstance()
                 //可以全局统一设置缓存模式,默认是不使用缓存,可以不传,具体其他模式看 github 介绍 https://github.com/jeasonlzy/
                 .setCacheMode(CacheMode.NO_CACHE)
@@ -62,7 +63,10 @@ public class baseApplication extends Application {
          */
         locationService = new LocationService(getApplicationContext());
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-        SDKInitializer.initialize(getApplicationContext());
+
+        /**
+         * 图片预览库
+         */
         //一般在Application初始化配置一次就可以
         ImagePicker imagePicker = ImagePicker.getInstance();
         //设置图片加载器
@@ -85,7 +89,6 @@ public class baseApplication extends Application {
         imagePicker.setOutPutX(1000);
         //保存文件的高度。单位像素
         imagePicker.setOutPutY(1000);
-
         //开启极光推送
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
@@ -104,6 +107,5 @@ public class baseApplication extends Application {
     public static DaoSession getDaoInstant() {
         return daoSession;
     }
-
 
 }

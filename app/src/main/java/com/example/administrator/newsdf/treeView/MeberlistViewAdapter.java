@@ -63,7 +63,6 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent =new Intent(mContext, ProjectmemberActivity.class);
                 intent.putExtra("id",node.getId());
                 //联系人的树没有用带getPhone，就用来存联系的树节点路径

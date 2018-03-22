@@ -13,13 +13,14 @@ import java.io.File;
  * Created by Administrator on 2018/2/5 0005.
  */
 
-// Picasso三方加载库实现的
+
 /** 
  * description:
  * @author: lx
  * date: 2018/2/5 0005 下午 5:24
  * update: 2018/2/5 0005
- * version: 
+ * version:
+ * 图片加载框架的
 */
 
 public class PicassoImageLoader implements ImageLoader {

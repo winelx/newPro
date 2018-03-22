@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.photopicker.utils.AndroidLifecycleUtils;
@@ -53,6 +54,8 @@ public class PhotoPagerAdapter extends PagerAdapter {
             options.dontAnimate()
                     .dontTransform()
                     .override(800, 800)
+                    //缓存数据，减少流量，在我的界面清理缓存
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                     .error(R.drawable.__picker_ic_broken_image_black_48dp);
             mGlide.setDefaultRequestOptions(options).load(path)

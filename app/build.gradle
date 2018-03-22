@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 23
         versionCode 1
         versionName "1.1"
         ndk {
@@ -84,13 +84,11 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-
 }
 
 
 
 dependencies {
-    compile files('libs/BaiduLBS_Android.jar')
     //图片
     //字体图标库
     //Recycler
@@ -105,9 +103,7 @@ dependencies {
     //volley，用其中的图片控件，防止图片错位
     //刷新/上拉加载框架，两个相互使用
     //相册选图
-
     //极光推送
-
     compile 'me.weyye.hipermission:library:1.0.7'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -131,4 +127,5 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/BaiduLBS_Android.jar')
 }

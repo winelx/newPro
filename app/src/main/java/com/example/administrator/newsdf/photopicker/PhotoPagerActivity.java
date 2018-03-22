@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,7 +83,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                     Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            Log.i("outfile",outfile);
                             //设置系统时间为文件名
                             Shop shop = new Shop();
                             shop.setType(Shop.TYPE_CART);

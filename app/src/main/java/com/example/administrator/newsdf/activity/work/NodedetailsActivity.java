@@ -322,12 +322,13 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 setDialog();
                 break;
             case R.id.user_list:
-                userPop();
+               //选择责任人
                 Intent intent = new Intent(mContext, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
                 break;
             case R.id.node_lin_start:
+                //更改状态，判断是否处于该状态 启动
                 selfDialog = new WbsDialog(NodedetailsActivity.this);
                 selfDialog.setMessage("是否更改当前状态");
                 selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
@@ -350,6 +351,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 selfDialog.show();
                 break;
             case R.id.node_lin_stop:
+                //更改状态，判断是否处于该状态 暂停
                 selfDialog = new WbsDialog(NodedetailsActivity.this);
                 selfDialog.setMessage("是否更改当前状态");
                 selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
@@ -376,6 +378,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 selfDialog.show();
                 break;
             case R.id.node_lin_complete:
+                //完成
                 selfDialog = new WbsDialog(NodedetailsActivity.this);
                 selfDialog.setMessage("是否更改当前状态");
                 selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
