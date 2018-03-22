@@ -105,6 +105,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         //节点ID
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
+
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -272,42 +273,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
 
-    }
-
-    /**
-     * 联系人弹出框
-     */
-    void userPop() {
-//        View view = getLayoutInflater().inflate(R.layout.pop_node_user, null);
-//        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT, true);
-//        //设置背景，
-//        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-//        popupWindow.setFocusable(true);
-//        //显示(靠中间)
-//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-//        ListView lvList = view.findViewById(R.id.list_item);
-//        search = view.findViewById(R.id.pop_tv_search);
-//        LinearLayout tv_search = view.findViewById(R.id.tv_search);
-//        RelativeLayout back = view.findViewById(R.id.node_pop_rel);
-//        tv_search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                search.setVisibility(View.VISIBLE);
-//            }
-//        });
-//        PopAdapter adapter = new PopAdapter(mData, NodedetailsActivity.this);
-//        lvList.setAdapter(adapter);
-//        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                nodeWbsUsername.setText(mData.get(position).getName());
-//                userID = mData.get(position).getContent();
-//                popupWindow.dismiss();
-//            }
-//        });
     }
 
     /**
@@ -591,7 +556,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                taskAdapter.getData(imagePaths);
+                                taskAdapter.getData(imagePaths,wbsName);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -600,20 +565,18 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            //  wbsName 可以用
-                            taskAdapter.getData(imagePaths);
+                            taskAdapter.getData(imagePaths,wbsName);
                         }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-
                         if (drew) {
                             imagePaths.clear();
                             imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                         }
-                        taskAdapter.getData(imagePaths);
+                        taskAdapter.getData(imagePaths,wbsName);
                     }
                 });
     }
@@ -659,7 +622,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 intent.putExtra("title", titlename);
                                 intent.putExtra("titles", "任务配置");
                                 intent.putExtra("id", str);
-                                intent.putExtra("wbsnam", wbsname);
+                                intent.putExtra("wbsPath", wbsname);
                                 startActivity(intent);
                                 Dates.disDialog();
                             } catch (JSONException e) {
@@ -671,7 +634,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             intent.putExtra("ids", ids);
                             intent.putExtra("title", titles);
                             intent.putExtra("id", str);
-                            intent.putExtra("wbsnam", wbsname);
+                            intent.putExtra("wbsPath", wbsname);
                             startActivity(intent);
                             Dates.disDialog();
                         }

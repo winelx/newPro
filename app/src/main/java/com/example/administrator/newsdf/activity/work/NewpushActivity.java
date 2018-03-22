@@ -15,10 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -148,7 +147,12 @@ public class NewpushActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 drawerLayout.openDrawer(GravityCompat.START);
+                page = 1;
+                drew = true;
+                photoAdm(Wbsid);
+
             }
         });
         /**
@@ -217,11 +221,12 @@ public class NewpushActivity extends AppCompatActivity {
     /**
      * 查询图册
      */
+
     private void photoAdm(String string) {
         OkGo.post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
-                .params("rows", 5)
+                .params("rows", 30)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -229,7 +234,6 @@ public class NewpushActivity extends AppCompatActivity {
                             if (drew) {
                                 imagePaths.clear();
                             }
-
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -243,22 +247,23 @@ public class NewpushActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                              //  wbsname
-                                taskAdapter.getData(imagePaths);
+                                //    wbspathl
+                                taskAdapter.getData(imagePaths,wbsname);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             if (drew) {
                                 imagePaths.clear();
-                                imagePaths.add(new PhotoBean(Wbsid, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
+                                imagePaths.add(new PhotoBean(null, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths);
-                            ToastUtils.showShortToast("没有更多数据了！");
+                            taskAdapter.getData(imagePaths,wbsname);
                         }
 
                     }
                 });
     }
+
+
 }
 

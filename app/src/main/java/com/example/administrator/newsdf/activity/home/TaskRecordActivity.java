@@ -16,6 +16,9 @@ import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -30,15 +33,16 @@ import okhttp3.Response;
 public class TaskRecordActivity extends AppCompatActivity {
     private TextView com_title;
     private IconTextView com_back;
-    private  SettingAdapter  mAdapter;
+    private SettingAdapter mAdapter;
     private ListView task_list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
         com_title = (TextView) findViewById(R.id.com_title);
         com_back = (IconTextView) findViewById(R.id.com_back);
-        task_list= (ListView) findViewById(R.id.task_list);
+        task_list = (ListView) findViewById(R.id.task_list);
         com_title.setText("操作记录");
         Intent intent = getIntent();
         String taskId = intent.getStringExtra("taskId");
@@ -49,6 +53,15 @@ public class TaskRecordActivity extends AppCompatActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         ToastUtils.showShortToast(s);
                         Log.i("taskId", s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                ToastUtils.showShortToast("请求数据成功");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
         com_back.setOnClickListener(new View.OnClickListener() {

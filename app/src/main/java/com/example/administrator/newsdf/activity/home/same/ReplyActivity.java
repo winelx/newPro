@@ -740,7 +740,7 @@ String Titles;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //Titles
-                                mAdapter.getData(photoPopPaths);
+                                mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -749,7 +749,7 @@ String Titles;
                                 photoPopPaths.clear();
                                 photoPopPaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            mAdapter.getData(photoPopPaths);
+                            mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
                         }
                     }
                 });

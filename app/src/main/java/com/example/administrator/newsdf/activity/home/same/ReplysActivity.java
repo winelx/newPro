@@ -180,10 +180,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
             title.setText("我很主动");
         }
-
-        if (wbsname != null && wbsname.length() != 0) {
             wbs_text.setText(wbsname);
-        }
         reply_text.setText(content);
         baoxun.setVisibility(View.VISIBLE);
         baoxun.setImageResource(R.mipmap.reply_baocun);
@@ -764,7 +761,7 @@ String titles;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //titles
-                                mAdapter.getData(photoPopPaths);
+                                mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -773,7 +770,7 @@ String titles;
                                 photoPopPaths.clear();
                                 photoPopPaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            mAdapter.getData(photoPopPaths);
+                            mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
                         }
 
                     }

@@ -72,7 +72,8 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
                 title = new ArrayList<String>();
                 for (int i = 0; i < imagePaths.size(); i++) {
                     mData.add(imagePaths.get(i).getFilePath());
-                    title.add(imagePaths.get(i).getDrawingNumber());
+                    //将路径和图片名称拼接。在展示图片时显示
+                    title.add(titles+">>"+imagePaths.get(i).getDrawingName());
                 }
                 PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
                         setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
@@ -87,7 +88,7 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
         TextView pop_tast_item;
     }
 
-    public void getData(ArrayList<PhotoBean> imagePaths ) {
+    public void getData(ArrayList<PhotoBean> imagePaths,String titles ) {
         this.imagePaths = imagePaths;
         this.titles = titles;
         notifyDataSetChanged();

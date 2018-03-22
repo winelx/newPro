@@ -47,9 +47,13 @@ import okhttp3.Response;
 
 
 /**
- * Created by Administrator on 2017/11/21 0021.
+ * description: 个人界面
+ *
+ * @author lx
+ *         date: 2018/3/22 0022 下午 4:18
+ *         update: 2018/3/22 0022
+ *         version:
  */
-
 public class MineFragment extends Fragment implements View.OnClickListener {
     private View rootView;
     private CircleImageView mine_avatar;
@@ -62,7 +66,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     String version;
     private TextView mine_uploading;
     private WbsDialog selfDialog;
-    String sd = "1.2";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,15 +166,12 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.mine_Thecache:
                 Dates.getDialog(getActivity(), "清理缓存...");
-                if (list.size() == 0) {
-                    //如果资料上传的还有记录，那就不能删除本地文件，
-                    Dates.deleteAllFiles(new File(Environment.getExternalStorageDirectory() + "/Boohee/"));
-                }
                 new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         //清理glide的缓存
+                        Dates.deleteAllFiles(new File(Environment.getExternalStorageDirectory() + "/MyDonLoad/"));
                         Glide.get(mContext).clearDiskCache();
                     }
                 }.start();

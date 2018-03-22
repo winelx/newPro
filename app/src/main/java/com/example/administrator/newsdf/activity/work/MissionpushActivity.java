@@ -110,6 +110,7 @@ public class MissionpushActivity extends AppCompatActivity {
         try {
             titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
+            Log.i("ss",id);
             wbsname = intent.getExtras().getString("wbsnam");
             wbspathl=intent.getExtras().getString("wbsPath");
         } catch (NullPointerException e) {
@@ -271,17 +272,16 @@ public class MissionpushActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                            //    wbspathl
-                                taskAdapter.getData(imagePaths);
+                                taskAdapter.getData(imagePaths,wbspathl);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             if (drew) {
                                 imagePaths.clear();
-                                imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
+                                imagePaths.add(new PhotoBean(null, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths);
+                            taskAdapter.getData(imagePaths,wbspathl);
                         }
 
                     }
@@ -298,7 +298,6 @@ public class MissionpushActivity extends AppCompatActivity {
         //拿到当前的Viewpager的页数
         String type = String.valueOf(mViewPager.getCurrentItem());
         //判断map是否存在
-        Log.i("pushMap", pushMap.size() + "");
         if (pushMap.size() != 0) {
             //判断是否有当前页数的数据
             boolean flag = pushMap.containsKey(type);
@@ -308,7 +307,6 @@ public class MissionpushActivity extends AppCompatActivity {
                     //根据key取value
                     Value = pushMap.get(type);
                     //添加数据
-                    Log.i("Value", id);
                     Value.add(id);
                     //清除数据
                     pushMap.remove(type);
@@ -362,6 +360,7 @@ public class MissionpushActivity extends AppCompatActivity {
             pushMap.remove(type);
         }
     }
+
 
     /**
      * 推送请求

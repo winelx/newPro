@@ -705,8 +705,8 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-//                                titles 可以用
-                                taskAdapter.getData(imagePaths);
+//
+                                taskAdapter.getData(imagePaths,titles);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -715,7 +715,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths);
+                            taskAdapter.getData(imagePaths,titles);
 
                         }
 

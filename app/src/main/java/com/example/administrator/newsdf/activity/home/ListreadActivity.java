@@ -744,8 +744,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-//                                titles;可以用
-                                taskAdapter.getData(imagePaths);
+                                taskAdapter.getData(imagePaths,titles);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -754,7 +753,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths);
+                            taskAdapter.getData(imagePaths,titles);
                         }
 
                     }

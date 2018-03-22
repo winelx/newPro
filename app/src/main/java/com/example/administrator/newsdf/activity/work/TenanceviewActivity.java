@@ -278,8 +278,7 @@ public class TenanceviewActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                //  Titles
-                                taskAdapter.getData(imagePaths);
+                                taskAdapter.getData(imagePaths,wbspath);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -288,7 +287,7 @@ public class TenanceviewActivity extends AppCompatActivity {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths);
+                            taskAdapter.getData(imagePaths,wbspath);
                         }
                     }
                 });
