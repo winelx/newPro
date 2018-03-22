@@ -39,6 +39,57 @@
 
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/light_blue"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="图册"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="图纸编号"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="图纸名称"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
 

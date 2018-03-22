@@ -22,15 +22,14 @@ import java.util.List;
 import static com.example.administrator.newsdf.R.id.Up_ph_back;
 
 /**
- * description: 下载图片
+ * description: 离线图片
  *
  * @author lx
  *         date: 2018/3/14 0014 下午 1:24
  *         update: 2018/3/14 0014
  *         version:
  */
-public class UploadPhotoActivity extends AppCompatActivity implements UploadPhAdapter.IonSlidingViewClickListener {
-    private RecyclerView mRecyclerView;
+public class UploadPhotoActivity extends AppCompatActivity {
     private List<Shop> listPath;
     private Context mContext;
     private UploadPhAdapter mAdapter;
@@ -39,7 +38,7 @@ public class UploadPhotoActivity extends AppCompatActivity implements UploadPhAd
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photo);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mContext = UploadPhotoActivity.this;
         //设置布局管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,48 +59,34 @@ public class UploadPhotoActivity extends AppCompatActivity implements UploadPhAd
     @Override
     protected void onStart() {
         super.onStart();
+
         queryDate();
     }
-
+    /**
+     * 拿到数据
+     */
     private void queryDate() {
         listPath = new ArrayList<>();
+        //或者指定数据
         listPath = LoveDao.queryCart();
         mAdapter.getData(listPath);
     }
 
 
     /**
-     * item的左滑删除
-     *
-     * @param view
-     * @param position
+     *  左滑删除记录
      */
-    @Override
-    public void onDeleteBtnCilck(View view, int position) {
-        deleteDate(position);
-    }
-
-    /**
-     * item的左滑设置
-     *
-     * @param view
-     * @param position
-     */
-    @Override
-    public void onSetBtnCilck(View view, int position) {
-
-    }
-
-    //删除记录
-    public void deleteDate(int pos) {
+    public void deleteDate(int position) {
         if (!listPath.isEmpty()) {
-            LoveDao.deleteLove(listPath.get(pos).getId());
+            LoveDao.deleteLove(listPath.get(position).getId());
         }
         mAdapter.closeMenu();
         queryDate();
     }
 
-    //点击条目跳转界面
+    /**
+     *  点击条目跳转界面
+     */
     public void getInt(int position) {
         ArrayList<String> path = new ArrayList<>();
         ArrayList<String> imagepath = new ArrayList<>();

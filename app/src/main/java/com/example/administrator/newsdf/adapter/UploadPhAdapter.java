@@ -1,10 +1,5 @@
 package com.example.administrator.newsdf.adapter;
 
-/**
- * Created by Administrator on 2017/12/27 0027.
- */
-
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,27 +16,27 @@ import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+
 /**
- * 下载图片recycler的适配器
- */
+ * description: 下载图片recycler的适配器
+ * @author lx
+ * date: 2018/3/22 0022 下午 2:46
+ * update: 2018/3/22 0022
+ * version:
+*/
 public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
 
     private Context mContext;
 
-    private List<Shop> mDatas = new ArrayList<Shop>();
-
-    private IonSlidingViewClickListener mIDeleteBtnClickListener;
-
-    private IonSlidingViewClickListener mISetBtnClickListener;
+    private List<Shop> mDatas = new ArrayList<>();
 
     private LeftSlideView mMenu = null;
 
     public UploadPhAdapter(Context context) {
         mContext = context;
-        mIDeleteBtnClickListener = (IonSlidingViewClickListener) context;
-        mISetBtnClickListener = (IonSlidingViewClickListener) context;
     }
 
     @Override
@@ -53,8 +48,7 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         //设置内容布局的宽为屏幕宽度
-        holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-
+        holder.layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         //item正文点击事件
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,67 +62,49 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
                 }
             }
         });
-        //左滑设置点击事件
-        holder.btn_Set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int n = holder.getLayoutPosition();
-                mISetBtnClickListener.onSetBtnCilck(view, n);
-            }
-        });
 
         //左滑删除点击事件
-        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UploadPhotoActivity activity = (UploadPhotoActivity) mContext;
                 activity.deleteDate(position);
             }
         });
-        holder.up_ph_name.setText(mDatas.get(position).getContent());
-        holder.up_ph_data.setText(mDatas.get(position).getTimme());
+                List<String> list=stringToList(mDatas.get(position).getContent());
+
+        holder.photo_name.setText(list.get(0));
+        holder.photo_number.setText(list.get(1));
+        holder.photo_names.setText(list.get(2));
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
-
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.up_ph_item, arg0, false);
-        MyViewHolder holder = new MyViewHolder(view);
-
-        return holder;
+        return new MyViewHolder(view);
     }
+   class MyViewHolder extends RecyclerView.ViewHolder {
 
-   public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView btn_Set;
-        public TextView btn_Delete;
-        public TextView up_ph_data, up_ph_name;
-        public RelativeLayout layout_content;
-        public LinearLayout relativeLayout;
-
-        public MyViewHolder(View itemView) {
+        TextView btnSet;
+         TextView btnDelete;
+         TextView photo_name, photo_number,photo_names;
+         RelativeLayout layoutContent;
+         LinearLayout relativeLayout;
+        MyViewHolder(View itemView) {
             super(itemView);
 
-            btn_Set =itemView.findViewById(R.id.tv_set);
-            btn_Delete =  itemView.findViewById(R.id.tv_delete);
-            layout_content =  itemView.findViewById(R.id.layout_content);
+            btnSet =itemView.findViewById(R.id.tv_set);
+            btnDelete =  itemView.findViewById(R.id.tv_delete);
+            layoutContent =  itemView.findViewById(R.id.layout_content);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            up_ph_data=(TextView) itemView.findViewById(R.id.up_ph_data);
-            up_ph_name=(TextView) itemView.findViewById(R.id.up_ph_name);
+            photo_name= itemView.findViewById(R.id.photo_name);
+            photo_number= itemView.findViewById(R.id.photo_number);
+            photo_names= itemView.findViewById(R.id.photo_names);
             ((LeftSlideView) itemView).setSlidingButtonListener(UploadPhAdapter.this);
         }
     }
 
-    /**
-     * 删除item
-     *
-     * @param position
-     */
-    public void removeData(int position) {
-        mDatas.remove(position);
-        notifyItemRemoved(position);
-    }
 
     /**
      * 删除菜单打开信息接收
@@ -140,8 +116,6 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
 
     /**
      * 滑动或者点击了Item监听
-     *
-     * @param leftSlideView
      */
     @Override
     public void onDownOrMove(LeftSlideView leftSlideView) {
@@ -163,14 +137,9 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
 
     /**
      * 判断菜单是否打开
-     *
-     * @return
      */
-    public Boolean menuIsOpen() {
-        if (mMenu != null) {
-            return true;
-        }
-        return false;
+    private Boolean menuIsOpen() {
+        return mMenu != null;
     }
 
     public void getData(List<Shop> shops) {
@@ -179,14 +148,16 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
     }
 
     /**
-     * 注册接口的方法：点击事件。在Mactivity.java实现这些方法。
+     * string转集合
      */
-    public interface IonSlidingViewClickListener {
+    public static List<String> stringToList(String strs) {
+        if (strs == "" && strs.isEmpty()) {
 
-        void onDeleteBtnCilck(View view, int position);//点击“删除”
-
-        void onSetBtnCilck(View view, int position);//点击“设置”
+        } else {
+            String str[] = strs.split(">>");
+            return Arrays.asList(str);
+        }
+        return null;
     }
-
 
 }

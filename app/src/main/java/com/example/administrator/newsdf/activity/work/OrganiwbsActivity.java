@@ -37,11 +37,16 @@ import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * @author lx
- *         任务维护的wbs树
- */
 
+
+
+/**
+ * description: 任务维护的wbs树
+ * @author lx
+ * date: 2018/3/22 0022 下午 2:39
+ * update: 2018/3/22 0022
+ * version:
+*/
 public class OrganiwbsActivity extends Activity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;

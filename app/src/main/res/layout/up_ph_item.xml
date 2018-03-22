@@ -3,7 +3,7 @@
 <!--item布局，自定义View-->
 <com.example.administrator.newsdf.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="45dp"
     android:layout_marginBottom="1dp"
     android:background="@android:color/white"
     android:gravity="center_vertical">
@@ -52,52 +52,57 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/title_ll"
+                    android:id="@+id/lin_photo_adm"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:layout_height="45dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="图纸名称："
-                      />
-
-                    <TextView
-                        android:id="@+id/up_ph_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/wbsname"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/title_ll">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="下载时间："
+                        android:id="@+id/photo_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
                         android:gravity="center"
-                        android:layout_marginLeft="10dp" />
+                        android:text="图册"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/up_ph_data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxEms="14"
-                        android:singleLine="true"
-                        android:textSize="12sp"
-                        android:gravity="center" />
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/photo_number"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="图纸编号"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/photo_names"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="图纸名称"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
 

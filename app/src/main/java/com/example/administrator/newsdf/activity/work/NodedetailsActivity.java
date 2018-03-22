@@ -58,6 +58,13 @@ import static com.example.administrator.newsdf.R.id.node_wbs_username;
 /**
  * @author lx
  */
+/**
+ * description:  节点任务配置
+ * @author lx
+ * date: 2018/3/22 0022 下午 2:39
+ * update: 2018/3/22 0022
+ * version:
+*/
 public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress;

@@ -46,9 +46,14 @@ import okhttp3.Response;
 import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
 
 
+
 /**
- * 任务推送
- */
+ * description: 任务推送
+ * @author lx
+ * date: 2018/3/22 0022 下午 2:39
+ * update: 2018/3/22 0022
+ * version:
+*/
 public class MissionpushActivity extends AppCompatActivity {
     private TextView title;
     private LinearLayout button;
