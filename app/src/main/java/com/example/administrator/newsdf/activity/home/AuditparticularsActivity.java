@@ -356,7 +356,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             contents.add(new Aduio_content(wtMainid, name, status, content, leaderName, leaderId, isread,
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             if (usernma.equals(wtMain.getString("leaderName"))) {
-                                  com_button.setVisibility(View.VISIBLE);
+                                com_button.setVisibility(View.VISIBLE);
                             } else {
                                 com_button.setVisibility(View.GONE);
                             }
@@ -662,7 +662,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 String comments_content = json.getString("content");
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
-                                aduio_comms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
+                                aduio_comms.add(0,new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
                                         comments_content, replyTime));
                             }
 
@@ -719,11 +719,10 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             if (drew) {
                                 imagePaths.clear();
                             }
-
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -737,7 +736,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                taskPhotoAdapter.getData(imagePaths,wbsName);
+                                taskPhotoAdapter.getData(imagePaths, wbsName);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -746,7 +745,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskPhotoAdapter.getData(imagePaths,wbsName);
+                            taskPhotoAdapter.getData(imagePaths, wbsName);
                         }
                     }
                 });

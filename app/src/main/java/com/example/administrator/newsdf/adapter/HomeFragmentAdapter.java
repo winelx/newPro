@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
+import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
@@ -59,7 +59,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 } else {
-                    Intent intent = new Intent(mContext, ListinterfaceActivity.class);
+                    Intent intent = new Intent(mContext, LightfaceActivity.class);
                     intent.putExtra("name", mDatas.get(position).getOrgname());
                     intent.putExtra("back", mDatas.get(position).getOrgname());
                     intent.putExtra("orgId", mDatas.get(position).getOrgid());

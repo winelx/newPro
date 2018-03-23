@@ -215,14 +215,14 @@ public class Dates {
     /**
      * 删除文件和目录
      */
-    public void clearFiles(String workspaceRootPath) {
+    public static void clearFiles(String workspaceRootPath) {
         File file = new File(workspaceRootPath);
         if (file.exists()) {
             deleteFile(file);
         }
     }
 
-    private void deleteFile(File file) {
+    private static void deleteFile(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {

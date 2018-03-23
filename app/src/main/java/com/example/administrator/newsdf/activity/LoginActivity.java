@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -124,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response respons) {
+                        Log.i("msg",msg);
                             try {
                                 JSONObject jsonObject = new JSONObject(msg);
                                 int ret = jsonObject.getInt("ret");
@@ -151,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 try {
                                     //职员ID
                                     staffId = jsom.getString("staffId");
+                                    Log.i("staffId",staffId);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     staffId = "";

@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.activity.home;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -43,7 +42,8 @@ public class WebActivity extends AppCompatActivity {
     List<String> list = new ArrayList<>();
     String pathname;
     private IconTextView com_back;
-    String dirName = "/storage/emulated/0/MyDonLoad/";
+    String paths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDownLoad/";
+
     private boolean status = true;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -91,11 +91,11 @@ public class WebActivity extends AppCompatActivity {
         /**
          *判断路径下下你文件是否存在
          */
-        status = fileIsExists(dirName + pathname);
+        status = fileIsExists(paths + pathname);
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + dirName + pathname);
+                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + paths + pathname);
             }
         } else {
             //不存在
@@ -136,6 +136,7 @@ public class WebActivity extends AppCompatActivity {
      */
 
     private String download(String path) {
+        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
         try {
             URL url = new URL(path);
             //打开连接
@@ -145,7 +146,7 @@ public class WebActivity extends AppCompatActivity {
             //获得长度
             int contentLength = conn.getContentLength();
             //创建文件夹 MyDownLoad，在存储卡下
-            String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
+            String dirName = strpath+ "/MyDownLoad/";
             File file = new File(dirName);
             //不存在创建
             if (!file.exists()) {

@@ -9,7 +9,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -46,14 +45,14 @@ import okhttp3.Response;
 import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
 
 
-
 /**
  * description: 任务推送
+ *
  * @author lx
- * date: 2018/3/22 0022 下午 2:39
- * update: 2018/3/22 0022
- * version:
-*/
+ *         date: 2018/3/22 0022 下午 2:39
+ *         update: 2018/3/22 0022
+ *         version:
+ */
 public class MissionpushActivity extends AppCompatActivity {
     private TextView title;
     private LinearLayout button;
@@ -80,6 +79,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private Map<String, List<String>> pushMap;
     private String titles;
     private String wbspathl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,9 +110,8 @@ public class MissionpushActivity extends AppCompatActivity {
         try {
             titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
-            Log.i("ss",id);
             wbsname = intent.getExtras().getString("wbsnam");
-            wbspathl=intent.getExtras().getString("wbsPath");
+            wbspathl = intent.getExtras().getString("wbsPath");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -272,7 +271,7 @@ public class MissionpushActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                taskAdapter.getData(imagePaths,wbspathl);
+                                taskAdapter.getData(imagePaths, wbspathl);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -281,7 +280,7 @@ public class MissionpushActivity extends AppCompatActivity {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(null, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths,wbspathl);
+                            taskAdapter.getData(imagePaths, wbspathl);
                         }
 
                     }

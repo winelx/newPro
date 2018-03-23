@@ -52,6 +52,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
                     .findViewById(R.id.id_item_icon);
             holder.mText = (TextView) convertView
                     .findViewById(R.id.id_item_text);
+            holder.taskNum = convertView.findViewById(R.id.taskNum);
             holder.tree_name = convertView.findViewById(R.id.tree_name);
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
@@ -92,6 +93,18 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
+        String num = node.getPhone();
+        int str = 0;
+        try {
+            str = Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (str > 0) {
+            holder.taskNum.setVisibility(View.VISIBLE);
+        } else {
+            holder.taskNum.setVisibility(View.GONE);
+        }
         //长按出现联系人信息
         holder.Lin_WBS.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -114,7 +127,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
 
     private class ViewHolder {
         ImageView mIcon;
-        TextView mText, tree_name, tree_progress;
+        TextView mText, tree_name, tree_progress, taskNum;
         LinearLayout Lin_WBS;
         LinearLayout itemRl, image_ll;
     }

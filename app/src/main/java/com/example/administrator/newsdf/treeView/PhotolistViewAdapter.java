@@ -49,6 +49,7 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
                     .findViewById(R.id.id_item_icon);
             holder.mText = (TextView) convertView
                     .findViewById(R.id.id_item_text);
+            holder.taskNum=convertView.findViewById(R.id.taskNum);
             holder.dialog_mine = convertView.findViewById(R.id.dialog_mine);
             holder.tree_name = convertView.findViewById(R.id.tree_name);
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
@@ -78,6 +79,18 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
             }
         });
 
+        String num = node.getPhone();
+        int str = 0;
+        try {
+            str = Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (str > 0) {
+            holder.taskNum.setVisibility(View.VISIBLE);
+        } else {
+            holder.taskNum.setVisibility(View.GONE);
+        }
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +128,7 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
 
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress;
+        public TextView mText, tree_name, tree_progress,taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }

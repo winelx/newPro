@@ -26,7 +26,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
 import com.example.administrator.newsdf.adapter.PhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
+import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
@@ -198,7 +198,7 @@ public class CheckActivity extends AppCompatActivity implements View.OnClickList
                                 int code = jsonObject.getInt("ret");
                                 Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                                 if (code == 0) {
-                                    startActivity(new Intent(CheckActivity.this, ListinterfaceActivity.class));
+                                    startActivity(new Intent(CheckActivity.this, LightfaceActivity.class));
                                     finish();
                                 }
                             } catch (JSONException e) {

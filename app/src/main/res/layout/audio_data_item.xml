@@ -58,6 +58,7 @@
         android:textSize="13sp" />
 
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/audio_rec"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -70,13 +71,14 @@
 
 
     <LinearLayout
+
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/audio_rec"
         android:layout_alignStart="@+id/audio_rec"
         android:layout_below="@+id/audio_rec"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <ImageView

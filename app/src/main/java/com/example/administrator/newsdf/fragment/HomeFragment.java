@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.ListinterfaceActivity;
+import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //跳转列表界面
-        Intent intent = new Intent(mContext, ListinterfaceActivity.class);
+        Intent intent = new Intent(mContext, LightfaceActivity.class);
         intent.putExtra("name", mData.get(position).getOrgname());
         intent.putExtra("orgId", mData.get(position).getOrgid());
         startActivity(intent);

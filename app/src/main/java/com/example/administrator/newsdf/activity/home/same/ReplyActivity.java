@@ -122,6 +122,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private boolean drew = true;
     private int num = 0;
     private String titlename;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,8 +164,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             check = intent.getStringArrayListExtra("list");
             //当前节点ID
             wbsID = intent.getExtras().getString("id");
-            titlename=intent.getExtras().getString("title");
-            title.setText(  titlename);
+            titlename = intent.getExtras().getString("title");
+            title.setText(titlename);
             //检查点id集合
             ids = intent.getExtras().getStringArrayList("ids");
             //图片字符串
@@ -509,7 +510,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-String Titles;
+
+    String Titles;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -526,14 +528,26 @@ String Titles;
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
             checkId = data.getStringExtra("id");
-           Titles= data.getStringExtra("name");
+            Titles = data.getStringExtra("name");
             reply_check_item.setText(data.getStringExtra("name"));
 
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
-                    pathimg.add(images.get(i).path);
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //添加进集合
+                            Log.i("ss",outfile);
+                            pathimg.add(outfile);
+                            //填入listview，刷新界面
+                            photoAdapter.getData(pathimg);
+//                    //删除原图
+
+                        }
+                    });
                 }
                 photoAdapter.getData(pathimg);
             } else {
@@ -740,7 +754,7 @@ String Titles;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //Titles
-                                mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
+                                mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -749,7 +763,7 @@ String Titles;
                                 photoPopPaths.clear();
                                 photoPopPaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
+                            mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
                         }
                     }
                 });

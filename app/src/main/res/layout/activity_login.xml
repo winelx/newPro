@@ -64,7 +64,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:background="@null"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:hint="密码"></EditText>
     </LinearLayout>
 

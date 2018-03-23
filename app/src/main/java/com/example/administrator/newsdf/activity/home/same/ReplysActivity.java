@@ -16,6 +16,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -514,7 +515,17 @@ String titles;
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
-                    pathimg.add(images.get(i).path);
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //添加进集合
+
+                            pathimg.add(outfile);
+                            //填入listview，刷新界面
+                            photoAdapter.getData(pathimg);
+                        }
+                    });
                 }
                 photoAdapter.getData(pathimg);
             } else {

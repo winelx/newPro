@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.activity.mine;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,7 +58,6 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
         //请求数据存放结婚
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
-
         okgo();
         //关闭
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
@@ -304,6 +304,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mTreeDatas.clear();
+                        Log.i("data",s);
                         getWorkOrganizationList(s, "", "");
                     }
                 });

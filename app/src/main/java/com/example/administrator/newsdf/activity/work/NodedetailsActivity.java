@@ -58,13 +58,15 @@ import static com.example.administrator.newsdf.R.id.node_wbs_username;
 /**
  * @author lx
  */
+
 /**
  * description:  节点任务配置
+ *
  * @author lx
- * date: 2018/3/22 0022 下午 2:39
- * update: 2018/3/22 0022
- * version:
-*/
+ *         date: 2018/3/22 0022 下午 2:39
+ *         update: 2018/3/22 0022
+ *         version:
+ */
 public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress;
@@ -105,7 +107,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         //节点ID
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
-
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -136,6 +137,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //背景透明度
         drawer_layout.setScrimColor(Color.TRANSPARENT);
         taskAdapter = new TaskPhotoAdapter(imagePaths, NodedetailsActivity.this);
         drawer_layout_list.setAdapter(taskAdapter);
@@ -152,6 +154,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 page = 1;
                 drew = true;
                 photoAdm(wbsId);
@@ -294,7 +297,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 setDialog();
                 break;
             case R.id.user_list:
-               //选择责任人
+                //选择责任人
                 Intent intent = new Intent(mContext, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
@@ -556,7 +559,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                taskAdapter.getData(imagePaths,wbsName);
+                                taskAdapter.getData(imagePaths, wbsName);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -565,7 +568,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths,wbsName);
+                            taskAdapter.getData(imagePaths, wbsName);
                         }
                     }
 
@@ -576,7 +579,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             imagePaths.clear();
                             imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                         }
-                        taskAdapter.getData(imagePaths,wbsName);
+                        taskAdapter.getData(imagePaths, wbsName);
                     }
                 });
     }

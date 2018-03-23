@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.List_interface;
@@ -59,101 +59,129 @@ import static com.lzy.okgo.OkGo.post;
  * @author lx
  *         列表界面
  */
-public class ListinterfaceActivity extends AppCompatActivity implements View.OnClickListener {
+public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener {
     private Context mContext;
-    private ListView uslistView;
     private Listinter_Adfapter mAdapter = null;
+    //任务界面数据集合
     private ArrayList<List_interface> mData;
-    private TextView Titlew;
+    private TextView titlew;
     private PopupWindow mPopWindow;
-    private EditText search_editext;
-    private String id, wbsid, intent_back;
+    private EditText searchEditext;
+    private String id, wbsid, intentBack;
     private int s = 1, page = 1;
+    //侧拉界面数据集合
     private ArrayList<PhotoBean> imagePaths;
     boolean popwind = false;
     private LinearLayout imageView;
     private String status = "0";
-    private DrawerLayout drawer_layout;
-    /**
-     * 判断是否刷新还是上拉加载
-     */
-    private boolean refresh = false;
+    private DrawerLayout drawerLayout;
     /**
      * 判断是否刷新还是上拉加载
      */
     private String notall = "false";
-    private SmartRefreshLayout refreshLayout, drawerLayout_smart;
-    private boolean swip = false;
+    //下拉刷新控件
+    private SmartRefreshLayout refreshLayout;
+
     private CircleImageView fab;
-    private ListView drawer_layout_list;
     private TaskPhotoAdapter taskAdapter;
-    private boolean drew = true;
+    /**
+     *     判断是上拉还是下拉
+     */
+    //侧拉界面
+    private static boolean drew = true;
+    //任务列表
+    private static boolean swip = false;
     String titles;
+    private String wbsId,name;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
-        Dates.getDialog(ListinterfaceActivity.this, "请求数据中...");
+        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         Intent intent = getIntent();
         try {
+            intent.getExtras().getString("name");
             id = intent.getExtras().getString("orgId");
-            intent_back = intent.getExtras().getString("back");
+            wbsId = intent.getExtras().getString("orgId");
+            intentBack = intent.getExtras().getString("back");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        //任务列表
         mData = new ArrayList<>();
+        //图册
         imagePaths = new ArrayList<>();
         //获得控件id，初始化id
+        //返回
         findViewById(R.id.com_back).setOnClickListener(this);
-        Titlew = (TextView) findViewById(R.id.com_title);
+        //标题
+        titlew = (TextView) findViewById(R.id.com_title);
+        //查询图册
         fab = (CircleImageView) findViewById(R.id.fab);
+        //点击pop
         imageView = (LinearLayout) findViewById(R.id.com_img);
-        uslistView = (ListView) findViewById(R.id.list_recycler);
-        search_editext = (EditText) findViewById(R.id.search_editext);
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
+        //任务列表
+        ListView uslistView = (ListView) findViewById(R.id.list_recycler);
+        //搜索
+        searchEditext = (EditText) findViewById(R.id.search_editext);
+        //侧拉
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ListView drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        //任务列表的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        drawerLayout_smart.setEnableRefresh(false);
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧拉界面的下拉
+        SmartRefreshLayout drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+        //禁止下拉
+        drawerlayoutSmart.setEnableRefresh(false);
+        //启用或禁用与所有抽屉的交互。
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        drawer_layout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        //隐藏图片查看，
         fab.setVisibility(View.GONE);
+        //界面数据填充
         mAdapter = new Listinter_Adfapter(mContext, mData);
-        Titlew.setText(intent.getExtras().getString("name"));
-        Titlew.setTextSize(17);
-        taskAdapter = new TaskPhotoAdapter(imagePaths, ListinterfaceActivity.this);
-        drawer_layout_list.setAdapter(taskAdapter);
+        //标题
+        titlew.setText(intent.getExtras().getString("name"));
+        //标题文字大小
+        titlew.setTextSize(17);
+        //侧拉界面数据适配
+        taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
+        //侧拉界面数据填充
+        drawerLayoutList.setAdapter(taskAdapter);
+        //任务界面数据填充
         uslistView.setAdapter(mAdapter);
-        /**
-         * 搜索框
-         */
-        search_editext.setOnKeyListener(new View.OnKeyListener() {
+        //搜索框
+        searchEditext.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //是否是回车键
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(ListinterfaceActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    if (popwind == true) {
+                    //如歌pop开着，就关闭
+                    if (popwind) {
                         mPopWindow.dismiss();
                     }
+                    //初始化页数为第一页
                     s = 1;
+                    //当前为刷新数据。设置false 加载数据时清除之前的
                     swip = false;
+                    //搜索
                     search(1);
                 }
                 return false;
             }
         });
-        /**
-         * deditext获取焦点的处理
-         */
-        search_editext.setOnFocusChangeListener(new android.view.View.
+
+        //deditext获取焦点的处理
+        searchEditext.setOnFocusChangeListener(new android.view.View.
                 OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -164,24 +192,22 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                         mPopWindow.dismiss();
                     }
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(ListinterfaceActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                } else {
-                    // 此处为失去焦点时的处理内容
                 }
             }
         });
 
-        /**
-         *  下拉刷新
-         */
 
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                swip = false;
+                //初始化页数为第一页
                 s = 1;
+                //当前为刷新数据。设置false 加载数据时清除之前的
+                swip = false;
                 if (Objects.equals(notall, "false")) {
                     //已处理或未处理
                     okgo(wbsid, status, null, 1);
@@ -200,28 +226,27 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 refreshlayout.finishRefresh(1500);
             }
         });
-        /**
-         *   上拉加载
-         */
+
+        //上拉加载
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                //上拉加载
+                //上拉加载 设置为ture 解析数据时添加到 原来的数据集合
                 swip = true;
                 if (Objects.equals(notall, "false")) {
                     s = s + 1;
                     //已处理或未处理
                     okgo(null, status, null, s);
-                } else if (notall == "true") {
+                } else if (Objects.equals(notall, "true")) {
                     s = s + 1;
                     //已处理或未处理
                     okgo(null, status, null, s);
-                } else if (notall == "all") {
+                } else if (Objects.equals(notall, "all")) {
                     s = s + 1;
                     //全部
                     okgoall(null, null, s);
-                } else if (notall == "search") {
+                } else if (Objects.equals(notall, "search")) {
                     s = s + 1;
                     //搜索
                     search(s);
@@ -230,10 +255,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 refreshlayout.finishLoadmore(1500);
             }
         });
-        /**
-         * 侧拉listview上拉加载
-         */
-        drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
+
+        //侧拉listview上拉加载
+        drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
@@ -247,10 +271,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popwind == false) {
+                if (!popwind) {
                     PopupWindow();//打开弹出框
                     popwind = true;
-                } else if (popwind == true) {
+                } else {
                     mPopWindow.dismiss();
                     popwind = false;
                 }
@@ -290,7 +314,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_MOVE:
                         // 触摸移动时的操作
-                        if (popwind == true) {
+                        if (popwind) {
                             mPopWindow.dismiss();
                         }
                         break;
@@ -303,19 +327,21 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popwind == true) {
+                if (popwind) {
                     mPopWindow.dismiss();
                 }
                 page = 1;
                 drew = true;
                 photoAdm(wbsid);
-                drawer_layout.openDrawer(GravityCompat.START);
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+
+
         /**
          *    侧拉listview上拉加载
          */
-        drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
+        drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
@@ -330,7 +356,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onStart() {
         super.onStart();
+        //初始化页数为第一页
         s = 1;
+        //当前为刷新数据。设置false 加载数据时清除之前的
         swip = false;
         if (Objects.equals(notall, "false")) {
             //已处理或未处理
@@ -348,16 +376,18 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     private void search(final int str) {
-        String searchContext = search_editext.getText().toString().trim();
+        String searchContext = searchEditext.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext)) {
             Toast.makeText(getApplicationContext(), "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
         } else {
-            if (status == "3") {
-                searchokgo1(wbsid, searchContext, str);
-            } else {
-                searchokgo(wbsid, status, searchContext, str);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (Objects.equals(status, "3")) {
+                    searchokgo1(wbsid, searchContext, str);
+                } else {
+                    searchokgo(wbsid, status, searchContext, str);
+                }
             }
         }
     }
@@ -366,7 +396,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
      * meun弹出框
      */
     void PopupWindow() {
-        View contentView = LayoutInflater.from(ListinterfaceActivity.this).inflate(R.layout.popuplayout, null);
+        View contentView = LayoutInflater.from(LightfaceActivity.this).inflate(R.layout.popuplayout, null);
         mPopWindow = new PopupWindow(contentView);
         mPopWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -377,11 +407,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
         mPopWindow.showAsDropDown(imageView, 0, 0);
         popwind = true;
-        search_editext.clearFocus();
+        searchEditext.clearFocus();
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(ListinterfaceActivity.this.getCurrentFocus()
+                .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
     }
 
     /**
@@ -399,17 +428,18 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 break;
             //选择wbs
             case R.id.pop_computer:
-                Intent intent = new Intent(ListinterfaceActivity.this, MmissPushActivity.class);
+                Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
                 intent.putExtra("data", "List");
+                intent.putExtra("WbsID", wbsId);
+                intent.putExtra("wbsname", name);
                 startActivityForResult(intent, 1);
-                mPopWindow.dismiss();
                 popwind = false;
                 break;
             //全部
             case R.id.pop_All:
-                Dates.getDialog(ListinterfaceActivity.this, "请求数据中...");
+                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
                 mData.clear();
-                search_editext.setText("");
+                searchEditext.setText("");
                 s = 1;
                 status = "3";
                 notall = "all";
@@ -419,9 +449,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 break;
             //未处理
             case R.id.pop_financial:
-                Dates.getDialog(ListinterfaceActivity.this, "请求数据中...");
+                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
                 mData.clear();
-                search_editext.setText("");
+                searchEditext.setText("");
                 s = 1;
                 notall = "false";
                 status = "0";
@@ -431,8 +461,8 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 break;
             //已处理
             case R.id.pop_manage:
-                Dates.getDialog(ListinterfaceActivity.this, "请求数据中...");
-                search_editext.setText("");
+                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                searchEditext.setText("");
                 s = 1;
                 mData.clear();
                 notall = "true";
@@ -443,7 +473,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 break;
             //返回
             case R.id.com_back:
-                if (intent_back != null) {
+                if (intentBack != null) {
                     finish();
                 } else {
                     finish();
@@ -470,18 +500,17 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (swip == false) {
+                        //判断是否是下拉还是上拉
+                        if (!swip) {
                             mData.clear();
-
                         }
-                        if (s.indexOf("data") != -1) {
-
+                        //判断是否请求到数据
+                        if (s.contains("data")) {
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -505,8 +534,8 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mData.clear();
                             }
                             getJson(s);
@@ -532,19 +561,17 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mData.clear();
                             }
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
                         }
-
                     }
                 });
     }
-
     /**
      * 请求全部数据
      */
@@ -558,8 +585,8 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mData.clear();
                             }
                             getJson(s);
@@ -568,7 +595,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                             mData.clear();
                             mAdapter.notifyDataSetChanged();
                         }
-
                     }
                 });
     }
@@ -576,9 +602,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
     /**
      * result返回事件处理
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -587,10 +610,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String title = data.getStringExtra("title");
              titles = data.getStringExtra("titles");
-            Titlew.setText(title);
+            titlew.setText(title);
             wbsid = data.getStringExtra("id");
             popwind = data.getBooleanExtra("iswbs", false);
-            if (popwind != false) {
+            if (popwind) {
                 fab.setVisibility(View.VISIBLE);
             } else {
                 fab.setVisibility(View.GONE);
@@ -599,7 +622,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
             photoAdm(wbsid);
             okgoall(wbsid, null, 1);
             mData.clear();
-            search_editext.setText("");
+            searchEditext.setText("");
             s = 1;
             notall = "false";
             status = "0";
@@ -608,13 +631,9 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
             popwind = false;
         }
     }
-
     /**
      * 重写返回键
      *
-     * @param keyCode
-     * @param event
-     * @return
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -623,7 +642,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         }
         return true;
     }
-
     /**
      * 界面不可见
      */
@@ -632,12 +650,10 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
         super.onStop();
         //传入false表示刷失败
         refreshLayout.finishRefresh(true);
-        if (popwind == true) {
+        if (popwind) {
             mPopWindow.dismiss();
         }
     }
-
-
     /**
      * 解析json
      *
@@ -688,7 +704,7 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             if (drew) {
                                 imagePaths.clear();
                             }
@@ -716,7 +732,6 @@ public class ListinterfaceActivity extends AppCompatActivity implements View.OnC
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
                             taskAdapter.getData(imagePaths,titles);
-
                         }
 
                     }

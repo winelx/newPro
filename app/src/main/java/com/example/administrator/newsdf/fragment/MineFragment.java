@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -37,7 +36,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,7 +169,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     public void run() {
                         super.run();
                         //清理glide的缓存
-                        Dates.deleteAllFiles(new File(Environment.getExternalStorageDirectory() + "/MyDonLoad/"));
+//                        //清除压缩后图片
+//                        Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny");
+                        //本地pdf
+                        Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDonLoad");
+                        //glide缓存
                         Glide.get(mContext).clearDiskCache();
                     }
                 }.start();

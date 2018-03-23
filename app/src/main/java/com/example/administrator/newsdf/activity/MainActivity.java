@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.UpdateService;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -31,7 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 import okhttp3.Call;
@@ -63,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        //  super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -72,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = this;
         dates = new Dates();
+        final String staffId = SPUtils.getString(MainActivity.this, "id", "");
+        //设置极光别名Alia
+        JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                Log.d("tag","set Alias result is"+i);
+            }
+        });
+
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
         //权限请求
@@ -101,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         //数据处理
         initTab();
     }
-
     //新本版检测
     private void Uplogding() {
         OkGo.<String>post(Request.UpLoading)
@@ -109,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int ret = jsonObject.getInt("ret");

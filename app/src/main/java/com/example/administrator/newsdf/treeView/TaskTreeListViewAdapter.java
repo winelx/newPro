@@ -10,8 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
+import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -26,11 +26,11 @@ import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.tree_name;
 
-public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
+public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
 
-    public SimpleTreeListViewAdapter(ListView tree, Context context,
-                                     List<T> datas, int defaultExpandLevel)
+    public TaskTreeListViewAdapter(ListView tree, Context context,
+                                   List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
         this.context = context;
@@ -76,7 +76,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrganiwbsActivity activity = (OrganiwbsActivity) mContext;
+                TaskWbsActivity activity = (TaskWbsActivity) mContext;
                 activity.switchAct(node, node.getName());
             }
         });

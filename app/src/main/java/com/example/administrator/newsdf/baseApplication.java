@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
+import android.util.Log;
 
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
@@ -20,7 +21,11 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.zxy.tiny.Tiny;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * @author lx
@@ -92,6 +97,7 @@ public class baseApplication extends Application {
         //开启极光推送
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
     }
 
     /**

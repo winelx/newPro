@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.adapter.Imageloaders;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Inface_all_item;
@@ -94,7 +93,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     int G_whit;
     int page = 1;
     private boolean drew = true;
-
+    private String wbsId;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +108,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         try {
             id = intent.getExtras().getString("orgId");
+            wbsId = intent.getExtras().getString("orgId");
             intent_back = intent.getExtras().getString("back");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
@@ -121,6 +121,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawer_layout.setScrimColor(Color.TRANSPARENT);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayout_smart.setEnableRefresh(false);
@@ -175,8 +177,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     //搜索
                     search(s);
                 }
-                Log.i("page",s+"");
-//                //传入false表示加载失败
+                //传入false表示加载失败
                refreshlayout.finishLoadmore(800);
             }
         });
@@ -297,6 +298,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 //网络请求
                 photoAdm(wbsid);
                 drawer_layout.openDrawer(GravityCompat.START);
+
             }
         });
         taskAdapter = new TaskPhotoAdapter(imagePaths, ListreadActivity.this);
@@ -368,9 +370,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //选择wbs
             case R.id.pop_computer:
-
-                Intent intent = new Intent(ListreadActivity.this, MmissPushActivity.class);
+                Intent intent = new Intent(ListreadActivity.this, TaskWbsActivity.class);
                 intent.putExtra("data", "List");
+                intent.putExtra("WbsID", wbsId);
+                intent.putExtra("wbsname", name);
                 startActivityForResult(intent, 1);
                 mPopWindow.dismiss();
                 popwind = false;
@@ -529,6 +532,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             } else {
                 fab.setVisibility(View.GONE);
             }
+            swip = false;
             page = 1;
             photoAdm(wbsid);
             uslistView.setSelection(0);
@@ -564,12 +568,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         String createTime;
         String groupName;
         int isFinish;//状态
-        if (swip == false) {
+        if (!swip) {
             Alldata.clear();
-
         }
-        Log.i("list", s);
-        if (s.indexOf("data") != -1) {
+        if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
@@ -709,7 +711,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             }
         } else {
             ToastUtils.showShortToast("没有更多数据了！");
-            mAdapter.notifyDataSetChanged();
+            Alldata.clear();
+            mAdapter.getData(Alldata);
         }
 
 

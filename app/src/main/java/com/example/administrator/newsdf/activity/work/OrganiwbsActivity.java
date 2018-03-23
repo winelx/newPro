@@ -239,7 +239,7 @@ public class OrganiwbsActivity extends Activity {
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getString("title"));
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
