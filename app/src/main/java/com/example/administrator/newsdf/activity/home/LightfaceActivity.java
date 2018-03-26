@@ -85,24 +85,30 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private CircleImageView fab;
     private TaskPhotoAdapter taskAdapter;
     /**
-     *     判断是上拉还是下拉
+     * 判断是上拉还是下拉
      */
     //侧拉界面
     private static boolean drew = true;
     //任务列表
     private static boolean swip = false;
     String titles;
-    private String wbsId,name;
+    private String wbsId, name;
+    private Dates mDate;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+        mDate = new Dates();
+        //清除小红点
+        mDate.getclear();
         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+        //拿到上一个界面传递的数据，
         Intent intent = getIntent();
         try {
-            intent.getExtras().getString("name");
+            name = intent.getExtras().getString("name");
             id = intent.getExtras().getString("orgId");
             wbsId = intent.getExtras().getString("orgId");
             intentBack = intent.getExtras().getString("back");
@@ -280,7 +286,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
-
+        //listview的点击事件
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -308,6 +314,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
+        //list在 触摸是判断弹窗是否打开， 如果打开关闭
         uslistView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -324,6 +331,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 return false;
             }
         });
+        //图册查看按钮，如果有弹窗，先关闭弹窗
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -376,7 +384,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
+        //搜索方法
     private void search(final int str) {
         String searchContext = searchEditext.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext)) {
@@ -428,6 +436,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 break;
             //选择wbs
             case R.id.pop_computer:
+                mPopWindow.dismiss();
                 Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
                 intent.putExtra("data", "List");
                 intent.putExtra("WbsID", wbsId);
@@ -511,6 +520,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                             ToastUtils.showShortToast("没有更多数据了！");
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -572,6 +582,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     }
                 });
     }
+
     /**
      * 请求全部数据
      */
@@ -601,7 +612,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * result返回事件处理
-     *
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -609,7 +619,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //判断是不是Activity的返回，
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String title = data.getStringExtra("title");
-             titles = data.getStringExtra("titles");
+            titles = data.getStringExtra("titles");
             titlew.setText(title);
             wbsid = data.getStringExtra("id");
             popwind = data.getBooleanExtra("iswbs", false);
@@ -631,9 +641,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             popwind = false;
         }
     }
+
     /**
      * 重写返回键
-     *
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -642,6 +652,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
         return true;
     }
+
     /**
      * 界面不可见
      */
@@ -654,6 +665,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             mPopWindow.dismiss();
         }
     }
+
     /**
      * 解析json
      *
@@ -721,8 +733,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-//
-                                taskAdapter.getData(imagePaths,titles);
+                                taskAdapter.getData(imagePaths, titles);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -731,7 +742,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths,titles);
+                            taskAdapter.getData(imagePaths, titles);
                         }
 
                     }

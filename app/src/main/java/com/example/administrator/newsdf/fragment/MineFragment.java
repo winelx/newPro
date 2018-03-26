@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -159,6 +163,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.BackTo:
                 Okgo();
+
+                JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
+                    @Override
+                    public void gotResult(int i, String s, Set<String> set) {
+                        Log.d("tag","set Alias result is"+i);
+                    }
+                });
                 startActivity(new Intent(mContext, LoginActivity.class));
                 getActivity().finish();
                 break;

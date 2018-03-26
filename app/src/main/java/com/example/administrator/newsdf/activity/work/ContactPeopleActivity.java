@@ -44,7 +44,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.com_img;
-
+//选择责任人
 public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
     private TextView textView, comtitle;

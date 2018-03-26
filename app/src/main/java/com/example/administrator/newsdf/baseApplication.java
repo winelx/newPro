@@ -5,7 +5,6 @@ import android.app.Application;
 import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
-import android.util.Log;
 
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
@@ -21,11 +20,7 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.zxy.tiny.Tiny;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * @author lx
@@ -39,6 +34,7 @@ public class baseApplication extends Application {
         return instance;
     }
 
+
     private static DaoSession daoSession;
     public LocationService locationService;
     public Vibrator mVibrator;
@@ -48,6 +44,7 @@ public class baseApplication extends Application {
         super.onCreate();
         setupDatabase();
         instance = this;
+
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
         //网络加载库
         OkGo.init(this);

@@ -8,11 +8,12 @@ public class Tab {
     private int title;
     private int icon;
     private Class fragemnt;
-
-    public Tab(Class fragemnt, int title, int icon) {
+    private int number;
+    public Tab(Class fragemnt, int title, int icon,int number) {
         this.fragemnt = fragemnt;
         this.title = title;
         this.icon = icon;
+        this.number = number;
     }
 
     public int getTitle() {
@@ -37,5 +38,13 @@ public class Tab {
 
     public void setFragemnt(Class fragemnt) {
         this.fragemnt = fragemnt;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

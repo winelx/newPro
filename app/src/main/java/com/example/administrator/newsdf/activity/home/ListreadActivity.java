@@ -370,13 +370,12 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //选择wbs
             case R.id.pop_computer:
+                mPopWindow.dismiss();
                 Intent intent = new Intent(ListreadActivity.this, TaskWbsActivity.class);
                 intent.putExtra("data", "List");
                 intent.putExtra("WbsID", wbsId);
                 intent.putExtra("wbsname", name);
                 startActivityForResult(intent, 1);
-                mPopWindow.dismiss();
-                popwind = false;
                 break;
             //全部
             case R.id.pop_All:

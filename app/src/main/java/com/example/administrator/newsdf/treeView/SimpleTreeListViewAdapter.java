@@ -52,6 +52,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
+            holder.taskNum=convertView.findViewById(R.id.taskNum);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -90,7 +91,18 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
-
+        String num = node.getPhone();
+        int str = 0;
+        try {
+            str = Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (str > 0) {
+            holder.taskNum.setVisibility(View.VISIBLE);
+        } else {
+            holder.taskNum.setVisibility(View.GONE);
+        }
         holder.dialog_mine.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -103,7 +115,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
 
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress;
+        public TextView mText, tree_name, tree_progress,taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }

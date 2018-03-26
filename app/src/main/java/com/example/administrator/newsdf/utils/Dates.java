@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +24,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.MainActivity;
+
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -39,6 +40,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -49,9 +51,9 @@ import java.util.List;
  * 时间：2017/11/27 0027:下午 14:59
  * 说明：
  */
-public class Dates {
+public class Dates  {
     private static Dialog progressDialog;
-
+    private static ArrayList<String> JpMap = new ArrayList<>();
 
     public static int getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context
@@ -61,8 +63,12 @@ public class Dates {
         return outMetrics.heightPixels;
     }
 
+    public static ArrayList<String> getsize() {
+        return JpMap;
+    }
+
     /**
-     *     时间戳转时间
+     * 时间戳转时间
      */
     public static String stampToDate(String s) {
         String res;
@@ -87,7 +93,6 @@ public class Dates {
         SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date begin = dfs.parse(str);
         java.util.Date end = dfs.parse(getDate());
-        Log.i("begin", begin + "" + end + "");
         //除以1000是为了转换成秒
         long between = (end.getTime() - begin.getTime()) / 1000;
         long day1 = between / (24 * 3600);
@@ -126,10 +131,10 @@ public class Dates {
     }
 
     /**
-     *   加载图片
+     * 加载图片
      */
     public static void getImg(Context context, String imageUrl, ImageView view) {
-        RequestOptions options=new RequestOptions()
+        RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .error(R.mipmap.mine_avatar)
                 .placeholder(R.mipmap.image_loading)
@@ -142,7 +147,7 @@ public class Dates {
     }
 
     public static void setback(Context context, String imageUrl, ImageView view) {
-        RequestOptions options=new RequestOptions()
+        RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .error(R.mipmap.mine_avatar)
                 .placeholder(R.mipmap.image_loading)
@@ -158,7 +163,7 @@ public class Dates {
     }
 
     /**
-     *   判断权限是否开启
+     * 判断权限是否开启
      */
     private boolean checkWriteExternalPermission(Context context) {
         //你要判断的权限名字
@@ -168,7 +173,7 @@ public class Dates {
     }
 
     /**
-     *    删除保存本地图片
+     * 删除保存本地图片
      */
     public static void deleteAllFiles(File root) {
         File files[] = root.listFiles();
@@ -366,6 +371,7 @@ public class Dates {
 
     /**
      * 压缩
+     *
      * @param image
      * @return
      */
@@ -545,5 +551,13 @@ public class Dates {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void addPut() {
+        JpMap.add("消息");
+        MainActivity activity =new MainActivity();
+    }
+    public void getclear(){
+        JpMap.clear();
     }
 }

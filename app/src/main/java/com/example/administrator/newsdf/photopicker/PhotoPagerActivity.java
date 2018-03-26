@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.photopicker;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,7 +44,7 @@ import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SH
 import static com.example.administrator.newsdf.utils.Dates.getDate;
 
 /**
- * description:
+ * description:预览图片界面
  *
  * @author lx
  *         date: 2018/3/2 0002 下午 2:41
@@ -66,7 +65,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String result;
     private HorizontalScrollView picker_horizon;
     private String Title;
-    Bitmap bitmap;
     /**
      * 异步get,直接调用
      */

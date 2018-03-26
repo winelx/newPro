@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.PhotoadmAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.utils.Request;
@@ -31,7 +31,7 @@ import okhttp3.Response;
 
 
 /**
- * description:
+ * description:分部分项图纸
  *
  * @author lx
  *         date: 2017/12/13 0013.

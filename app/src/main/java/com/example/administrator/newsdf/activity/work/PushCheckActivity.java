@@ -9,7 +9,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-
+/** 
+ * description: 任务下发
+ * @author lx
+ * date: 2018/3/26 0026 上午 9:48
+ * update: 2018/3/26 0026
+ * version: 
+*/
 public class PushCheckActivity extends AppCompatActivity {
     private RelativeLayout pchoose_atlas, pchoose_wbs;
     private Context mContext;

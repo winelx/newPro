@@ -22,8 +22,8 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
-                //         JPUSH_APPKEY : " f050fc1f161dd2f848ac1f58",
+                //    JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
+            JPUSH_APPKEY : "15da678acd3913ae41770d50",
 
                 JPUSH_CHANNEL: "developer-default",
         ]
@@ -130,5 +130,4 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/slidingmenu.jar')
 }

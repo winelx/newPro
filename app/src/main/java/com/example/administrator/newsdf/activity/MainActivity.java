@@ -2,10 +2,11 @@ package com.example.administrator.newsdf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.UpdateService;
+import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -41,6 +43,8 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.example.administrator.newsdf.utils.Dates.getsize;
 
 
 /**
@@ -59,12 +63,23 @@ public class MainActivity extends AppCompatActivity {
     private Dates dates;
     private String version;
     private WbsDialog selfDialog;
+    private TextView home_img_red;
+    private int JpMap;
+    private Handler submit;
 
     public static MainActivity getInstance() {
         return mContext;
     }
 
     private long exitTime = 0;
+    int width = 0;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            home_img_red.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
@@ -76,14 +91,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = this;
         dates = new Dates();
+
+        //找到控件
+        home_img_red = (TextView) findViewById(R.id.home_img_red);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
         //设置极光别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
-                Log.d("tag","set Alias result is"+i);
+
             }
         });
+        width = Utils.getScreenWidth(mContext) / 3;
 
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
@@ -113,7 +132,22 @@ public class MainActivity extends AppCompatActivity {
         Uplogding();
         //数据处理
         initTab();
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ArrayList<String> list = Dates.getsize();
+        int str = list.size();
+        if (str > 0) {
+            home_img_red.setVisibility(View.VISIBLE);
+        } else {
+            home_img_red.setVisibility(View.GONE);
+        }
+
+    }
+
     //新本版检测
     private void Uplogding() {
         OkGo.<String>post(Request.UpLoading)
@@ -145,17 +179,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
     }
+
 
     @Override
     protected void onStop() {
         super.onStop();
+
     }
 
     @Override
@@ -163,15 +194,17 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void initTab() {
+    public void initTab() {
+        ArrayList<String> list = getsize();
+        JpMap = list.size();
         //添加tab信息，存入集合进行展示
-        Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style);
-        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style);
-        Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style);
+        Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style, 0);
+        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
         mTabs.add(tab_home);
         mTabs.add(tab_work);
         mTabs.add(tab_hot);
-        //找到控件
+
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
         for (Tab tab : mTabs) {
             //获取都文字
@@ -183,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_BEGINNING);
         //设置默认打开的界面
         mTabHost.setCurrentTab(0);
+
     }
 
     private View buildIndicator(Tab tab) {
@@ -194,7 +228,8 @@ public class MainActivity extends AppCompatActivity {
         //获取控件ID
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textview = (TextView) view.findViewById(R.id.text);
-        //d动态添加图片文字，类似listview 的adapter的getItem，不过本来就是
+
+        //d动态添加图片文字，类似listview 的adapter的getItem，
         imageView.setBackgroundResource(tab.getIcon());
         textview.setText(tab.getTitle());
         return view;
@@ -216,8 +251,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //检测到有新版本后给的提示框
-    void show(final String path) {
+    /**
+     * 检测到有新版本后给的提示框
+     */
+    public void show(final String path) {
         selfDialog = new WbsDialog(mContext);
         selfDialog.setTitle("更新提示");
         selfDialog.setMessage("检测到有新版本，是否更新");
@@ -241,5 +278,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         selfDialog.show();
+    }
+    public void getRedPoint() {
+        home_img_red.setVisibility(View.VISIBLE);
     }
 }

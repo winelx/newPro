@@ -55,6 +55,7 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

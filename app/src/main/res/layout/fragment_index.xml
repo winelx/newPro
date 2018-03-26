@@ -24,14 +24,31 @@
                 android:text="全部"
                 android:textSize="15sp" />
 
-
-            <TextView
-                android:id="@+id/fr_index_mm"
+            <RelativeLayout
                 android:layout_width="80dp"
-                android:layout_height="35dp"
-                android:gravity="center"
-                android:text="我的"
-                android:textSize="15sp" />
+                android:layout_height="35dp">
+
+                <TextView
+                    android:id="@+id/fr_index_mm"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:text="我的"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/index_point_red"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/home_item_red"
+                    android:gravity="center"
+                    android:textColor="@color/writer"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
 
         </LinearLayout>
 

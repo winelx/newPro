@@ -36,7 +36,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:
+ * description:选择图册wbs树
  *
  * @author lx
  *         date: 2018/3/6 0006 下午 4:54
@@ -223,7 +223,7 @@ public class PhotoListActivity extends AppCompatActivity {
                     }
                     try {
                         //节点层级
-                        organization.setPhone(obj.getString("title"));
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }

@@ -3,6 +3,8 @@ package com.example.administrator.newsdf.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,36 +13,50 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.model.Function;
+
+import static com.example.administrator.newsdf.R.id.index_point_red;
 
 /**
  * Created by Administrator on 2018/1/15 0015.
  */
 
-public class IndexFrament extends Fragment implements View.OnClickListener {
+public class IndexFrament extends Fragment implements View.OnClickListener , Function {
     private View rootView;
     private HomeFragment home;
     private AllMessageFragment message;
-    private TextView mMessage, aMessage;
+    TextView mMessage, aMessage, point_red;
     private String status;
     private Context mContext;
-
+    private int JpMap;
+    public static final String FUNCTION_WITH_PARAM_AND_RESULT = "FUNCTION_WITH_PARAM_AND_RESULT_ACTIVITY";
+    private  Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            point_red.setVisibility(View.VISIBLE);
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_index, null);
+            //全部
             mMessage = rootView.findViewById(R.id.fr_index_mm);
+            //我的
             aMessage = rootView.findViewById(R.id.fr_index_am);
+            point_red = rootView.findViewById(index_point_red);
             mContext = getActivity();
             mMessage.setOnClickListener(this);
             aMessage.setOnClickListener(this);
-
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
+
         //第一次初始化首页默认显示第一个fragment
         initFragment2();
         return rootView;
@@ -49,6 +65,15 @@ public class IndexFrament extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        Message message = new Message();
+        handler.sendMessage(message);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 
     //显示第一个fragment
@@ -94,5 +119,19 @@ public class IndexFrament extends Fragment implements View.OnClickListener {
         } else if (v == aMessage) {
             initFragment2();
         }
+    }
+
+    public void getPoint() {
+        point_red.setVisibility(View.VISIBLE);
+//        index_point_red=rootView.findViewById(R.id.index_point_red);
+//            index_point_red.setText(str);
+//            index_point_red.setVisibility(View.VISIBLE);
+
+    }
+
+
+    @Override
+    public Object function(Object[] data) {
+        return null;
     }
 }

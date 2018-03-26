@@ -38,7 +38,7 @@ import okhttp3.Response;
 
 
 /**
- * description:
+ * description:任务列表界面的赛选的wbs树
  *
  * @author lx
  *         date: 2018/3/22 0022 下午 2:39
@@ -245,7 +245,7 @@ public class TaskWbsActivity extends Activity {
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getString("title"));
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
