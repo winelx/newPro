@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
@@ -273,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
-        SPUtils.putString(mContext,"Jpmap","ss");
+        SPUtils.putString(mContext, "Jpmap", "ss");
+                CallBackUtils.doCallBackMethod();
     }
 }

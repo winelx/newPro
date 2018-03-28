@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.service.CallBack;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 
 import static com.example.administrator.newsdf.R.id.index_point_red;
@@ -25,7 +27,7 @@ import static com.example.administrator.newsdf.R.id.index_point_red;
  * update: 2018/3/27 0027
  * version:
 */
-public class IndexFrament extends Fragment implements View.OnClickListener {
+public class IndexFrament extends Fragment implements View.OnClickListener ,CallBack {
     private View rootView;
     private HomeFragment home;
     private AllMessageFragment message;
@@ -59,15 +61,10 @@ public class IndexFrament extends Fragment implements View.OnClickListener {
         if (parent != null) {
             parent.removeView(rootView);
         }
-        initData();
+        CallBackUtils.setCallBack(this);
         //第一次初始化首页默认显示第一个fragment
         initFragment2();
         return rootView;
-    }
-
-    private void initData() {
-
-
     }
 
     @Override
@@ -77,6 +74,8 @@ public class IndexFrament extends Fragment implements View.OnClickListener {
         if (size>0){
             Message message = new Message();
             handler.sendMessage(message);
+        }else {
+            pointRed.setVisibility(View.GONE);
         }
     }
 
@@ -127,9 +126,9 @@ public class IndexFrament extends Fragment implements View.OnClickListener {
         }
     }
 
-    public  void getPoint() {
-        Message message = new Message();
-        handler.sendMessage(message);
-    }
+    @Override
+    public void doSomeThing(String string) {
+        pointRed.setVisibility(View.VISIBLE);
 
+    }
 }

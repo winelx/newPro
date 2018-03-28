@@ -8,9 +8,10 @@
             android:id="@+id/handovers_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
             android:text="| 回复详情"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/blue"
             android:textSize="13sp" />
 

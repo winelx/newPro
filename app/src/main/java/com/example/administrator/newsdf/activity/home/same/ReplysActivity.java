@@ -16,7 +16,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -735,6 +734,7 @@ String titles;
      * @param event
      * @return
      */
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {

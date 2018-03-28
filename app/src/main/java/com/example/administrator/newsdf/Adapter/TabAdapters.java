@@ -55,7 +55,6 @@ public class TabAdapters extends BaseAdapter {
             holder.tab_content = (TextView) convertView.findViewById(R.id.tab_content);
             holder.tab_user = (TextView) convertView.findViewById(R.id.tab_user);
             holder.tab_time = (TextView) convertView.findViewById(R.id.tab_time);
-
             holder.tab_fixed_tiem = (TextView) convertView.findViewById(R.id.tab_fixed_tiem);
             holder.tab_view = (TextView) convertView.findViewById(R.id.tab_view);
             holder.tab_statu2 = (TextView) convertView.findViewById(R.id.tab_statu2);
@@ -75,7 +74,6 @@ public class TabAdapters extends BaseAdapter {
         }else {
             holder.tab_str.setText("主动上传任务");
         }
-
         holder.tab_content.setText(mData.get(position).getContent());
         holder.tab_user.setText(mData.get(position).getUser());
         String time = null;

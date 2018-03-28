@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.baseApplication;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -107,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
-
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -125,14 +122,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response respons) {
-                        Log.i("msg",msg);
                             try {
                                 JSONObject jsonObject = new JSONObject(msg);
                                 int ret = jsonObject.getInt("ret");
                                 if (ret != 0) {
                                     Dates.disDialog();
                                 }
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 String id;
                                 try {
@@ -153,7 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 try {
                                     //职员ID
                                     staffId = jsom.getString("staffId");
-                                    Log.i("staffId",staffId);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     staffId = "";
@@ -219,7 +214,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                     }
 
                     @Override
@@ -232,7 +226,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent home = new Intent(Intent.ACTION_MAIN);
             home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

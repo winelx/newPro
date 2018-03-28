@@ -24,19 +24,21 @@
                 android:id="@+id/btn_camera_pop_camera"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/pop_first_selector"
                 android:text="@string/camera_pop_camera"
                 android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1dp"
                 android:background="@color/back"></View>
 
             <Button
                 android:id="@+id/btn_camera_pop_album"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/pop_last_selector"
                 android:text="@string/camera_pop_album"
                 android:textSize="15sp" />

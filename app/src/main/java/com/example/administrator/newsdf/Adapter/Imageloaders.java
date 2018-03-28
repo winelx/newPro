@@ -114,6 +114,8 @@ public class Imageloaders extends BaseAdapter {
             holder.inface_relat1_icon = convertView.findViewById(R.id.inface_relat1_icon);
             holder.inface_relat2_icon = convertView.findViewById(R.id.inface_relat2_icon);
             holder.inface_relat3_icon = convertView.findViewById(R.id.inface_relat3_icon);
+            holder.view = convertView.findViewById(R.id.view);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -142,6 +144,7 @@ public class Imageloaders extends BaseAdapter {
                 holder.inface_item_message.setTextString("未完成");
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.Orange);
                 holder.inface_status_true.setVisibility(View.GONE);
+                holder.view.setVisibility(View.GONE);
                 String str = null;
                 try {
                     str = Dates.datato(list.get(position).getCreateTime());
@@ -151,6 +154,7 @@ public class Imageloaders extends BaseAdapter {
                 }
                 break;
             case "1":
+                holder.view.setVisibility(View.VISIBLE);
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
                 holder.inter_time.setText(list.get(position).getCreateTime());
@@ -160,7 +164,6 @@ public class Imageloaders extends BaseAdapter {
                 if (path.size() >= 1) {
                     holder.inface_image.setVisibility(View.VISIBLE);
                     String imgUrl = path.get(0);
-
                     if (imgUrl != null && !imgUrl.equals("")) {
                         int doc = imgUrl.lastIndexOf(".");
                         String strs = imgUrl.substring(doc + 1);
@@ -367,6 +370,7 @@ public class Imageloaders extends BaseAdapter {
         TextView inface_loation;
         TextView inface_imgae_text;
         TextView textView4;
+        View view;
         LinearLayout inface_image;
         RelativeLayout inface_relat1, inface_relat2, inface_relat3;
         TextView inface_relat1_icon, inface_relat2_icon, inface_relat3_icon;

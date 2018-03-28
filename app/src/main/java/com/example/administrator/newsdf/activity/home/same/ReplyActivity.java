@@ -717,6 +717,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * @param event
      * @return
      */
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {
@@ -753,7 +754,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                     filePath = Request.networks + filePath;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                //Titles
                                 mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();

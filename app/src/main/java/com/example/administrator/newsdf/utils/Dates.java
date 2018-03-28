@@ -148,15 +148,12 @@ public class Dates  {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .error(R.mipmap.mine_avatar)
-                .placeholder(R.mipmap.image_loading)
+                .placeholder(R.mipmap.mine_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
         Glide.with(context)
                 .load(imageUrl)
                 .apply(options)
                 .transition(new DrawableTransitionOptions().crossFade(1000))
-                .thumbnail(Glide.with(context)
-                        .load(R.mipmap.mine_avatar))
-
                 .into(view);
     }
 

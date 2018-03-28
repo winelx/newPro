@@ -44,7 +44,6 @@ import static com.example.administrator.newsdf.activity.work.Adapter.TabAdapter.
 @SuppressLint("ValidFragment")
 public class TabFragment extends LazyFragment {
     private int pos = 0;
-
     private TabAdapter TabAdapter = null;
     private TabAdapters mAdapters;
     private ArrayList<Tab_fragment_item> mData = null;

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -128,8 +127,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.details_data.setText(content.get(posotion).getCreateDate());
                 //状态
                 holder.details_boolean.setText("已完成");
-                //状态
-                holder.details_boolean.setTextColor(Color.parseColor("#f8f5f6"));
+                //状态 finish_green
+                holder.details_boolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
             }// 转交说明
             holder.handover_status_description.setText(content.get(posotion).getCreateDate());
         }

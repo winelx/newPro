@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
+                android:text="是的法规和"
                 android:gravity="center"
                 android:textColor="@color/textViwe"
                 android:textSize="16sp"
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_title"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:text="时间"
             android:textSize="13sp" />
 
@@ -57,8 +58,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_data"
+            android:lineSpacingExtra="4dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
             android:text="内容"
             android:textColor="@color/textViwe"
             android:textSize="15sp" />
@@ -99,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
             <TextView
@@ -149,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -158,7 +161,6 @@
                 android:layout_height="wrap_content"
                 android:text="状态:"
                 android:textSize="13sp" />
-
 
             <TextView
                 android:id="@+id/details_boolean"

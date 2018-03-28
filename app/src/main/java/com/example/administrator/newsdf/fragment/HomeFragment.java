@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.CallBack;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (parent != null) {
             parent.removeView(rootView);
         }
+
         mContext = getActivity();
         init();
         return rootView;
@@ -188,4 +192,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         Dates.disDialog();
         refreshLayout.finishRefresh(false);
     }
+
+
 }
