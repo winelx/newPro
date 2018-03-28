@@ -13,40 +13,43 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.model.Function;
+import com.example.administrator.newsdf.utils.Dates;
 
 import static com.example.administrator.newsdf.R.id.index_point_red;
 
-/**
- * Created by Administrator on 2018/1/15 0015.
- */
 
-public class IndexFrament extends Fragment implements View.OnClickListener , Function {
+/**
+ * description: 首页的数据的fragment
+ * @author lx
+ * date: 2018/1/15 0015.
+ * update: 2018/3/27 0027
+ * version:
+*/
+public class IndexFrament extends Fragment implements View.OnClickListener {
     private View rootView;
     private HomeFragment home;
     private AllMessageFragment message;
-    TextView mMessage, aMessage, point_red;
+    TextView mMessage, aMessage, pointRed;
     private String status;
     private Context mContext;
-    private int JpMap;
-    public static final String FUNCTION_WITH_PARAM_AND_RESULT = "FUNCTION_WITH_PARAM_AND_RESULT_ACTIVITY";
-    private  Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            point_red.setVisibility(View.VISIBLE);
+            pointRed.setVisibility(View.VISIBLE);
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//避免重复绘制界面
+        //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_index, null);
             //全部
             mMessage = rootView.findViewById(R.id.fr_index_mm);
             //我的
             aMessage = rootView.findViewById(R.id.fr_index_am);
-            point_red = rootView.findViewById(index_point_red);
+            pointRed = rootView.findViewById(index_point_red);
             mContext = getActivity();
             mMessage.setOnClickListener(this);
             aMessage.setOnClickListener(this);
@@ -56,24 +59,25 @@ public class IndexFrament extends Fragment implements View.OnClickListener , Fun
         if (parent != null) {
             parent.removeView(rootView);
         }
-
+        initData();
         //第一次初始化首页默认显示第一个fragment
         initFragment2();
         return rootView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Message message = new Message();
-        handler.sendMessage(message);
+    private void initData() {
+
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-
+    public void onStart() {
+        super.onStart();
+       int size= Dates.getsize().size();
+        if (size>0){
+            Message message = new Message();
+            handler.sendMessage(message);
+        }
     }
 
     //显示第一个fragment
@@ -94,7 +98,9 @@ public class IndexFrament extends Fragment implements View.OnClickListener , Fun
         transaction.commit();
     }
 
-    //显示第一个fragment
+    /**
+     *  显示第一个fragment
+     */
     private void initFragment2() {
         aMessage.setTextColor(Color.parseColor("#5096F8"));
         mMessage.setTextColor(Color.parseColor("#f5f4f4"));
@@ -121,17 +127,9 @@ public class IndexFrament extends Fragment implements View.OnClickListener , Fun
         }
     }
 
-    public void getPoint() {
-        point_red.setVisibility(View.VISIBLE);
-//        index_point_red=rootView.findViewById(R.id.index_point_red);
-//            index_point_red.setText(str);
-//            index_point_red.setVisibility(View.VISIBLE);
-
+    public  void getPoint() {
+        Message message = new Message();
+        handler.sendMessage(message);
     }
 
-
-    @Override
-    public Object function(Object[] data) {
-        return null;
-    }
 }

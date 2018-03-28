@@ -53,7 +53,6 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
         });
 
     }
-
     /**
      * 点击搜索或者展开
      *
@@ -62,8 +61,9 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
     public void expandOrCollapse(int position) {
         Node n = mVisibleNodes.get(position);
         if (n != null) {
-            if (n.isLeaf())
+            if (n.isLeaf()) {
                 return;
+            }
             n.setExpand(!n.isExpand());
             mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
             notifyDataSetChanged();

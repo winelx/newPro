@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -68,7 +69,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     private ListView uslistView;
     private Imageloaders mAdapter = null;
     private TaskPhotoAdapter taskAdapter;
-    private TextView Titlew, intent_loading_text;
+    private TextView Titlew, intent_loading_text,delete_search;
     private PopupWindow mPopWindow;
     private EditText search_editext;
     private String id, wbsid, intent_back, name = "";
@@ -116,6 +117,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
         //获得控件id，初始化id
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
+        delete_search= (TextView) findViewById(R.id.delete_search);
         fab = (CircleImageView) findViewById(R.id.fab);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -127,6 +129,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayout_smart.setEnableRefresh(false);
         listerad_nonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
+        uslistView = (ListView) findViewById(R.id.list_recycler);
+        Titlew = (TextView) findViewById(R.id.com_title);
+        imageView = (LinearLayout) findViewById(R.id.com_img);
         search_editext = (EditText) findViewById(R.id.search_editext);
         /**
          *   下拉刷新
@@ -210,28 +215,40 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                     // 触摸移动时的操作
+                    delete_search.setVisibility(View.VISIBLE);
                     if (popwind == true) {
                         mPopWindow.dismiss();
+                        popwind=false;
                     }
                 } else {
+                    delete_search.setVisibility(View.GONE);
                     // 此处为失去焦点时的处理内容
                 }
             }
         });
-        uslistView = (ListView) findViewById(R.id.list_recycler);
-        Titlew = (TextView) findViewById(R.id.com_title);
-        imageView = (LinearLayout) findViewById(R.id.com_img);
+        //搜索框的取消按钮
+        delete_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_editext.setText("");
+            }
+        });
         Titlew.setText(name);
         Titlew.setTextSize(17);
         findViewById(R.id.com_back).setOnClickListener(this);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                search_editext.clearFocus();//失去焦点
+                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
+                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 if (popwind == false) {
                     PopupWindow();//打开弹出框
                     popwind = true;
                 } else if (popwind == true) {
                     mPopWindow.dismiss();
+                    backgroundAlpha(1f);
                     popwind = false;
                 }
             }
@@ -271,8 +288,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_MOVE:
                         // 触摸移动时的操作
+                        search_editext.clearFocus();//失去焦点
                         if (popwind == true) {
                             mPopWindow.dismiss();
+                            backgroundAlpha(1f);
                         }
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                                 .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
@@ -351,6 +370,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         contentView.findViewById(R.id.pop_All).setOnClickListener(this);
         contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
         mPopWindow.showAsDropDown(imageView, -10, 0);
+        backgroundAlpha(0.5f);
         popwind = true;
         //失去焦点
         search_editext.clearFocus();
@@ -367,6 +387,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             case R.id.recycler_view:
                 mPopWindow.dismiss();
                 popwind = false;
+                backgroundAlpha(1f);
                 break;
             //选择wbs
             case R.id.pop_computer:
@@ -376,6 +397,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("WbsID", wbsId);
                 intent.putExtra("wbsname", name);
                 startActivityForResult(intent, 1);
+                backgroundAlpha(1f);
                 break;
             //全部
             case R.id.pop_All:
@@ -388,6 +410,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 notall = "all";
                 okgoall(null, null, 1);
                 mPopWindow.dismiss();
+                backgroundAlpha(1f);
                 popwind = false;
                 break;
             //未处理
@@ -402,6 +425,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 okgo(null, status, null, 1);
                 mPopWindow.dismiss();
                 popwind = false;
+                backgroundAlpha(1f);
                 break;
             //已处理
             case R.id.pop_manage:
@@ -409,6 +433,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 Dates.getDialog(ListreadActivity.this, "请求数据中...");
                 search_editext.setText("");
                 s = 1;
+                backgroundAlpha(1f);
                 Alldata.clear();
                 notall = "true";
                 status = "2";
@@ -710,7 +735,9 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             }
         } else {
             ToastUtils.showShortToast("没有更多数据了！");
-            Alldata.clear();
+            if (!swip) {
+                Alldata.clear();
+            }
             mAdapter.getData(Alldata);
         }
 
@@ -762,5 +789,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 });
     }
 
-
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        //0.0-1.0
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
+    }
 }

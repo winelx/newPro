@@ -100,15 +100,20 @@ public class NewpushActivity extends AppCompatActivity {
         com_button.setText("下发任务");
         reply_button.setText("推送");
         Intent intent = getIntent();
+        //上个界面传递过来的数据
+        //wbsID
         Wbsid = intent.getExtras().getString("wbsID");
+        //wbs名称
         wbsname = intent.getExtras().getString("wbsname");
         wbs_text.setText(wbsname);
+        //返回键
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        //选择wbs
         newpush_wbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +122,7 @@ public class NewpushActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        //推送
         reply_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,8 +140,10 @@ public class NewpushActivity extends AppCompatActivity {
 
             }
         });
+        //图册适配器
         taskAdapter = new TaskPhotoAdapter(imagePaths, NewpushActivity.this);
         drawerLayoutList.setAdapter(taskAdapter);
+        //选择联系人
         newpush_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +152,7 @@ public class NewpushActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        //图册查看
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

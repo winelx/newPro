@@ -8,19 +8,21 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_gravity="end"
         android:background="@color/back"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/head_modify"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="15sp"
             android:layout_toLeftOf="@+id/che_all"
             android:layout_toStartOf="@+id/che_all"
-            android:background="@color/back"
+            android:background="@drawable/button_normal_back"
             android:drawableLeft="@mipmap/pen_blue"
             android:gravity="center"
             android:text="批量修改责任人"
@@ -37,8 +39,12 @@
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="全选" />
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:text="全选"
+            android:theme="@style/MyCheckBox" />
     </RelativeLayout>
 
 
@@ -49,7 +55,6 @@
         android:visibility="gone">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_centerInParent="true"
@@ -86,6 +91,8 @@
             android:id="@+id/lv_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:divider="@color/back"
+            android:dividerHeight="1dp"
             tools:listitem="@layout/push_fragment_item" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

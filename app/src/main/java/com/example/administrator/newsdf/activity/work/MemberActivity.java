@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -139,6 +140,7 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mData.clear();
+                        Log.i("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

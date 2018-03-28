@@ -8,10 +8,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="15dp"
         android:padding="0dp"
-        app:cardCornerRadius="4dp">
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp">
 
 
         <RelativeLayout
@@ -29,8 +28,8 @@
                 android:maxEms="6"
                 android:maxLines="1"
                 android:text="技术：安装盖板"
-                android:textColor="@color/inter_text"
-                android:textSize="15sp"
+                android:textColor="@color/textViwe"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -65,38 +64,36 @@
                 android:id="@+id/inface_wbs_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/inter_title"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="7"
-                android:ellipsize="end"
+                android:text="ssdga"
+                android:gravity="center"
                 android:maxEms="14"
                 android:maxLines="1"
-                android:text="13sp"
-                android:textColor="@color/textViwe" />
+                android:textSize="12sp"
+                android:textColor="@color/editext_text"
+                android:layout_below="@+id/inter_title"
+                android:layout_alignLeft="@+id/inter_title"
+                android:layout_alignStart="@+id/inter_title" />
 
 
             <TextView
                 android:id="@+id/inter_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/inface_wbs_path"
-                android:layout_alignStart="@+id/inface_wbs_path"
-                android:layout_below="@+id/inface_wbs_path"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
                 android:maxEms="12"
                 android:maxLines="1"
                 android:text="请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:textColor="@color/textViwe"
+                android:textSize="14sp"
+                android:layout_below="@+id/inface_item_message"
+                android:layout_alignLeft="@+id/inface_wbs_path"
+                android:layout_alignStart="@+id/inface_wbs_path" />
 
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@+id/inter_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/back" />
 
             <TextView
@@ -174,6 +171,7 @@
                     android:id="@+id/inface_image"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
                     android:layout_below="@+id/inface_pcontent"
                     android:orientation="horizontal">
 
@@ -351,7 +349,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginTop="2dp"
-                        android:background="@color/back"></View>
+                        android:background="@color/back" />
 
                     <ImageView
                         android:id="@+id/imageView"

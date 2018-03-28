@@ -69,8 +69,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             bindGrid((TypeGridHolder) holder, position);
         } else if (holder instanceof TypeListHolder && comms.size() != 0) {
             bindList((TypeListHolder) holder, position);
-        } else {
-
         }
     }
 
@@ -103,7 +101,11 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }else {
                 holder.details_title.setText("主动上传任务");
             }
-
+//        if (datas.size()>0){
+//
+//        }else {
+//
+//        }
             //创建时间
             String data = null;
             try {
@@ -127,9 +129,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //状态
                 holder.details_boolean.setText("已完成");
                 //状态
-                holder.details_boolean.setTextColor(Color.GREEN);
-            }
-// 转交说明
+                holder.details_boolean.setTextColor(Color.parseColor("#f8f5f6"));
+            }// 转交说明
             holder.handover_status_description.setText(content.get(posotion).getCreateDate());
         }
     }
@@ -149,8 +150,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         }
-
-
     }
 
     /**
@@ -190,7 +189,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             details_boolean = itemView.findViewById(R.id.details_boolean);
             handover_status_description = itemView.findViewById(R.id.handover_status_description);
             details_content = itemView.findViewById(R.id.details_content);
-            handover_huifu = itemView.findViewById(R.id.handover_fhui);
+//            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }
 

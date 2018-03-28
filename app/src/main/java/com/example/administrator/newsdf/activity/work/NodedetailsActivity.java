@@ -154,7 +154,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 page = 1;
                 drew = true;
                 photoAdm(wbsId);

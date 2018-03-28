@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
-import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
@@ -55,19 +56,17 @@ public class TaskWbsActivity extends Activity {
     private int addPosition;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    String wbsname,wbsID,org_status;
-
+    String wbsname, wbsID, org_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
-        Intent intent =getIntent();
-        wbsID=intent.getStringExtra("WbsID");
+        Intent intent = getIntent();
+        wbsID = intent.getStringExtra("WbsID");
         org_status = intent.getExtras().getString("data");
-
+        wbsname = intent.getExtras().getString("wbsname");
         mContext = TaskWbsActivity.this;
         refreshLayout = findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -92,14 +91,29 @@ public class TaskWbsActivity extends Activity {
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
-        okgo();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        OrganizationEntity bean = new OrganizationEntity(wbsID, "",
+                wbsname, "", true,
+                true, "3,5", "",
+                "", "", wbsname, "", true);
+        mTreeDatas.add(bean);
+        organizationList.add(bean);
+        try {
+            mTreeAdapter = new TaskTreeListViewAdapter<OrganizationEntity>(mTree, this,
+                    mTreeDatas, 0);
+            mTree.setAdapter(mTreeAdapter);
+            initEvent(organizationList);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
     }
+
     private void okgo() {
         OkGo.post(Request.WBSTress)
                 .params("nodeid", wbsID)
@@ -114,6 +128,7 @@ public class TaskWbsActivity extends Activity {
                     }
                 });
     }
+
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(TaskWbsActivity.this, "请求数据中");
@@ -245,15 +260,13 @@ public class TaskWbsActivity extends Activity {
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
                     organizationList.add(organization);
                 }
-                if (organizationList.size() != 0) {
 
-                }
                 return organizationList;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -268,10 +281,13 @@ public class TaskWbsActivity extends Activity {
      * @return
      */
     private void addOrganizationList(String result) {
-        if (result.indexOf("data") != -1) {
+        if (result.contains("data")) {
             addOrganizationList = parseOrganizationList(result);
+            ToastUtils.showShortToast("解析完数据");
             if (addOrganizationList.size() != 0) {
+                ToastUtils.showShortToast("解析完数据1");
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                    ToastUtils.showShortToast("填充");
                     String departmentName = addOrganizationList.get(i).getDepartname();
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
@@ -323,18 +339,23 @@ public class TaskWbsActivity extends Activity {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
-                if (node.isLeaf()) {
-                } else {
+
+                //判断是否是字节点，
+                    ToastUtils.showShortToast("按钮3");
+                    //  如果不是，判断该节点是否有数据，
                     if (node.getChildren().size() == 0) {
+                        //  如果没有，就请求数据，
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
-                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
-                        } else {
+                            ToastUtils.showShortToast("按钮4");
+                            //从拿到该节点的名称和id
+                            ToastUtils.showShortToast(node.getId()+"  "+node.iswbs()+"  "+node.isperent()+"  "+ node.getType());
+                            Log.i("toast",node.getId()+"  "+node.iswbs()+"  "+node.isperent()+"  "+ node.getType());
+                            addOrganiztion(node.getId(),false,false, node.getType());
                         }
-
                     }
-                }
+
             }
         });
     }
@@ -344,24 +365,4 @@ public class TaskWbsActivity extends Activity {
         super.onResume();
     }
 
-    public void switchAct(Node node, final String name) {
-        wbsname = name;
-        if (node.iswbs()) {
-                switch (org_status) {
-                    case "List":
-                        Intent list = new Intent();
-                        list.putExtra("id", node.getId());
-                        list.putExtra("title", node.getName());
-                        list.putExtra("titles", node.getTitle());
-                        list.putExtra("iswbs", node.iswbs());
-                        //回传数据到主Activity
-                        setResult(RESULT_OK, list);
-                        //此方法后才能返回主Activity
-                        finish();
-                        break;
-                    default:
-                        break;
-                }
-        }
-    }
 }

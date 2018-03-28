@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/member"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/writer"
     android:orientation="horizontal">
 
-
+    <ImageView
+        android:id="@+id/member_avatar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:background="@mipmap/mine_avatar" />
 
     <TextView
         android:id="@+id/member_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="20dp"
-        android:gravity="center"
-        android:text="夏末"
+        android:layout_alignLeft="@+id/member_text"
+        android:layout_alignStart="@+id/member_text"
+        android:layout_alignTop="@+id/member_avatar"
+        android:text="111"
         android:textColor="@color/textViwe"
         android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/member_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/member_name"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_toEndOf="@+id/member_avatar"
+        android:layout_toRightOf="@+id/member_avatar"
+        android:text="职位" />
 
-
-</LinearLayout>
+</RelativeLayout>

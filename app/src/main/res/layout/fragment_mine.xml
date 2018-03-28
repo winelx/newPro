@@ -28,8 +28,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true">
-
-
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -41,10 +39,11 @@
                     android:id="@+id/mine_avatar"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:src="@mipmap/mine_avatar" />
+                    android:layout_marginTop="40dp"
+                    android:src="@mipmap/mine_avatar"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:id="@+id/staffName"
@@ -126,14 +125,14 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back"></View>
+                android:background="@color/back" />
 
             <RelativeLayout
                 android:id="@+id/projectmember"
@@ -173,7 +172,7 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
             <View
@@ -191,9 +190,12 @@
                     android:id="@+id/mine_img3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="21dp"
+                    android:background="@mipmap/changepassword"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/changepassword" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="21dp" />
 
                 <TextView
                     android:id="@+id/mine_text3"
@@ -216,13 +218,14 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/back"></View>
+
 
             <RelativeLayout
 
@@ -305,13 +308,13 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back"></View>
+                android:background="@color/back" />
 
             <RelativeLayout
                 android:id="@+id/mine_Thecache"
@@ -348,7 +351,7 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
             <View
@@ -405,14 +408,14 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back"></View>
+                android:background="@color/back" />
 
             <RelativeLayout
                 android:id="@+id/BackTo"
@@ -449,7 +452,7 @@
                     android:layout_marginRight="15dp"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
+                    android:textSize="25sp" />
             </RelativeLayout>
 
 

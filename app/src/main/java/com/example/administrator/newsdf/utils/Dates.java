@@ -24,8 +24,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.MainActivity;
-
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -555,7 +553,6 @@ public class Dates  {
 
     public void addPut() {
         JpMap.add("消息");
-        MainActivity activity =new MainActivity();
     }
     public void getclear(){
         JpMap.clear();

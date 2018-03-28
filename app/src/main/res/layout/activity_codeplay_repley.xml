@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="ssss"
+        android:text="121212"
             android:textColor="@color/writer"
             android:textSize="18sp" />
 
@@ -46,7 +46,7 @@
                 android:layout_marginTop="15dp"
                 android:text="提交"
                 android:textColor="@color/writer"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
 
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text=""
-                android:textColor="@color/black"
+                android:textColor="@color/textViwe"
                 android:textSize="13sp" />
         </LinearLayout>
 

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -52,7 +51,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
-            holder.taskNum=convertView.findViewById(R.id.taskNum);
+            holder.taskNum = convertView.findViewById(R.id.taskNum);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,13 +73,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
-        holder.mText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaskWbsActivity activity = (TaskWbsActivity) mContext;
-                activity.switchAct(node, node.getName());
-            }
-        });
 
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,24 +91,13 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 return true;
             }
         });
-        String num = node.getPhone();
-        int str = 0;
-        try {
-            str = Integer.parseInt(num);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        if (str > 0) {
-            holder.taskNum.setVisibility(View.VISIBLE);
-        } else {
-            holder.taskNum.setVisibility(View.GONE);
-        }
+
         return convertView;
     }
 
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress,taskNum;
+        public TextView mText, tree_name, tree_progress, taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }
@@ -133,7 +114,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                              String number, String userId, String title, String phone, boolean isDrawingGroup) {
         Node node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
-
         Node extraNode = new Node(id, node.getId(), name, isLeaf, iswbs,
                 isparent, type, username, number, userId, title, phone, isDrawingGroup);
         extraNode.setParent(node);
@@ -141,7 +121,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
-
     }
 
 

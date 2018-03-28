@@ -131,8 +131,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/fab"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -163,8 +163,7 @@
                     android:id="@+id/drawer_layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:divider="@color/back"
-
+                    android:divider="@color/textViwe"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />
 

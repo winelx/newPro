@@ -315,7 +315,7 @@
         <!-- Required. AppKey copied from Portal -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="15da678acd3913ae41770d50" />
+            android:value="f050fc1f161dd2f848ac1f58" />
         <!--极光推送结束-->
 
 

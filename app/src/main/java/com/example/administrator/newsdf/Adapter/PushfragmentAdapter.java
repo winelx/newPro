@@ -101,6 +101,7 @@ public class PushfragmentAdapter extends BaseAdapter {
         Push_item currItem = data.get(position);
         viewHodler.tvTitle.setText(currItem.getLabel());
         viewHodler.tvContent.setText(currItem.getContent());
+
         viewHodler.tvUser.setText(currItem.getLeaderName());
         viewHodler.ch_delete.setChecked(currItem.getChecked());
         viewHodler.tab_fixed_number.setText(currItem.getSendTimes());

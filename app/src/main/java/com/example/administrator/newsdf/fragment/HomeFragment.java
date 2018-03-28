@@ -61,7 +61,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_home, null);
             Dates.getDialog(getActivity(), "请求数据中...");
-
             listView = (RecyclerView) rootView.findViewById(R.id.home_list);
             home_frag_img = rootView.findViewById(R.id.home_frag_img);
             home_img_nonews = rootView.findViewById(R.id.home_img_nonews);

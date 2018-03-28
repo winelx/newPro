@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -132,7 +131,6 @@ public class MmissPushActivity extends AppCompatActivity {
 
     void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
-
         OkGo.post(Request.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
@@ -141,7 +139,6 @@ public class MmissPushActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-
                         addOrganizationList(result);
                     }
 
@@ -270,7 +267,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     }
                     try {
                         //节点层级
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
@@ -294,15 +291,13 @@ public class MmissPushActivity extends AppCompatActivity {
      * @return
      */
     private void addOrganizationList(String result) {
-        Log.i("sss",result);
-        if (result.indexOf("data") != -1) {
+        if (result.contains("data")) {
             addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    String departmentName = addOrganizationList.get(i).getDepartname();
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
-                            departmentName, addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),
                             addOrganizationList.get(i).iswbs(),
                             addOrganizationList.get(i).isparent(),
                             addOrganizationList.get(i).getTypes(),
@@ -339,14 +334,10 @@ public class MmissPushActivity extends AppCompatActivity {
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
                 initEvent(organizationList);
-
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-        } else {
-
         }
-
     }
 
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
@@ -379,7 +370,7 @@ public class MmissPushActivity extends AppCompatActivity {
         if (node.iswbs() != false) {
             switch (org_status) {
                 case "push":
-                    getOko(node.getId(), node.getTitle(),node.getName());
+                    getOko(node.getId(), node.getTitle(), node.getName());
                     break;
                 case "Photo":
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);

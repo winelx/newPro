@@ -46,6 +46,8 @@
 
         <ListView
             android:id="@+id/shLv"
+            android:divider="@color/unfinish_gray"
+            android:dividerHeight="0.7px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></ListView>
 

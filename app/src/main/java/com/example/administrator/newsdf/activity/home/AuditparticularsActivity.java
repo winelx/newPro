@@ -215,7 +215,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
             }
         });
 
-        //操作记录
+        //回复
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

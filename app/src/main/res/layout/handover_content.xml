@@ -25,7 +25,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="@color/textViwe"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -66,10 +66,9 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:background="@color/back"></View>
+            android:background="@color/back" />
 
         <LinearLayout
             android:id="@+id/details_in"
@@ -197,16 +196,5 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/handover_fhui"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="5dp"
-        android:text="|回复详情"
-        android:textColor="@color/blue"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
+
 </LinearLayout>

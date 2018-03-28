@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -52,6 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.search_editext;
 import static com.lzy.okgo.OkGo.post;
 
 
@@ -64,7 +66,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private Listinter_Adfapter mAdapter = null;
     //任务界面数据集合
     private ArrayList<List_interface> mData;
-    private TextView titlew;
+    private TextView titlew, delete_search;
     private PopupWindow mPopWindow;
     private EditText searchEditext;
     private String id, wbsid, intentBack;
@@ -131,7 +133,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //任务列表
         ListView uslistView = (ListView) findViewById(R.id.list_recycler);
         //搜索
-        searchEditext = (EditText) findViewById(R.id.search_editext);
+        searchEditext = (EditText) findViewById(search_editext);
         //侧拉
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ListView drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
@@ -155,6 +157,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         titlew.setText(intent.getExtras().getString("name"));
         //标题文字大小
         titlew.setTextSize(17);
+        //搜索界面的取消按钮
+        delete_search = (TextView) findViewById(R.id.delete_search);
         //侧拉界面数据适配
         taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
         //侧拉界面数据填充
@@ -194,16 +198,20 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                     // 触摸移动时的操作
+                    delete_search.setVisibility(View.VISIBLE);
+                    backgroundAlpha(1f);
                     if (popwind) {
                         mPopWindow.dismiss();
                     }
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } else {
+                    delete_search.setVisibility(View.GONE);
+
                 }
             }
         });
-
 
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -280,7 +288,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 if (!popwind) {
                     PopupWindow();//打开弹出框
                     popwind = true;
+                    searchEditext.clearFocus();//失去焦点
                 } else {
+                    backgroundAlpha(1f);
                     mPopWindow.dismiss();
                     popwind = false;
                 }
@@ -323,7 +333,12 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         // 触摸移动时的操作
                         if (popwind) {
                             mPopWindow.dismiss();
+                            backgroundAlpha(1f);
                         }
+                        searchEditext.clearFocus();//失去焦点
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         break;
                     default:
                         break;
@@ -384,7 +399,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-        //搜索方法
+    //搜索方法
     private void search(final int str) {
         String searchContext = searchEditext.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext)) {
@@ -414,6 +429,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         contentView.findViewById(R.id.pop_All).setOnClickListener(this);
         contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
         mPopWindow.showAsDropDown(imageView, 0, 0);
+        backgroundAlpha(0.5f);
         popwind = true;
         searchEditext.clearFocus();
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
@@ -433,6 +449,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             case R.id.recycler_view:
                 mPopWindow.dismiss();
                 popwind = false;
+                backgroundAlpha(1f);
                 break;
             //选择wbs
             case R.id.pop_computer:
@@ -442,6 +459,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra("WbsID", wbsId);
                 intent.putExtra("wbsname", name);
                 startActivityForResult(intent, 1);
+                backgroundAlpha(1f);
                 popwind = false;
                 break;
             //全部
@@ -453,6 +471,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 status = "3";
                 notall = "all";
                 okgoall(null, null, 1);
+                backgroundAlpha(1f);
                 mPopWindow.dismiss();
                 popwind = false;
                 break;
@@ -465,6 +484,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 notall = "false";
                 status = "0";
                 okgo(null, status, null, 1);
+                backgroundAlpha(1f);
                 mPopWindow.dismiss();
                 popwind = false;
                 break;
@@ -475,6 +495,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 s = 1;
                 mData.clear();
                 notall = "true";
+                backgroundAlpha(1f);
                 status = "1";
                 okgo(null, status, null, 1);
                 mPopWindow.dismiss();
@@ -487,6 +508,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     finish();
                 }
+                backgroundAlpha(1f);
                 break;
             case R.id.search_img:
                 break;
@@ -531,7 +553,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     /**
      * 搜索
      */
-
     void searchokgo(String wbsId, String msgStatus, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
@@ -551,7 +572,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
-
                         }
                     }
                 });
@@ -749,4 +769,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 });
     }
 
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        //0.0-1.0
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
+    }
 }

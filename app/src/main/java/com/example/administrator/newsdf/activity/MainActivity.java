@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
@@ -73,13 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
     private long exitTime = 0;
     int width = 0;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            home_img_red.setVisibility(View.VISIBLE);
-        }
-    };
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
@@ -281,5 +273,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
+        SPUtils.putString(mContext,"Jpmap","ss");
     }
 }

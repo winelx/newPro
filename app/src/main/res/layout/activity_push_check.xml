@@ -44,7 +44,7 @@
             android:layout_marginRight="15dp"
             android:text="{fa-angle-right}"
             android:textColor="@color/inconfy"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
     </RelativeLayout>
 
     <View
@@ -90,7 +90,7 @@
             android:layout_marginRight="15dp"
             android:text="{fa-angle-right}"
             android:textColor="@color/inconfy"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
     </RelativeLayout>
 
 </LinearLayout>

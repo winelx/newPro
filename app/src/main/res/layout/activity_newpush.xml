@@ -93,7 +93,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="8"
                         android:text="默认上部结构（wbs结构）"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textViwe"
                         android:textSize="14sp" />
 
                     <com.joanzapata.iconify.widget.IconTextView
@@ -104,6 +104,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:gravity="end"
+                        android:textColor="@color/back"
                         android:text="{fa-angle-right}"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -136,7 +137,7 @@
                         android:hint="输入任务名称（必填）"
                         android:padding="10dp"
                         android:paddingLeft="10dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textViwe"
                         android:textSize="14sp" />
 
                     <com.joanzapata.iconify.widget.IconTextView
@@ -144,6 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:layout_marginRight="10dp"
+                        android:textColor="@color/back"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textSize="25sp" />
@@ -166,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="15dp"
-                        android:background="@mipmap/alone_push" />
+                        android:background="@mipmap/handperson" />
 
                     <TextView
                         android:id="@+id/push_username"
@@ -176,7 +178,7 @@
                         android:layout_weight="8"
                         android:hint="选择责任人"
                         android:paddingLeft="10dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textViwe"
                         android:textSize="14sp" />
 
                     <com.joanzapata.iconify.widget.IconTextView
@@ -184,6 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:layout_marginRight="10dp"
+                        android:textColor="@color/back"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="{fa-angle-right}"
@@ -251,7 +254,6 @@
                     android:id="@+id/drawer_layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     android:divider="@color/back"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />

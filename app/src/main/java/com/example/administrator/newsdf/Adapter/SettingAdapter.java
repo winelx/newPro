@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 
@@ -240,12 +242,17 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
         public ViewHolder setImages(int id, String url) {
             View view = getView(id);
             if (view instanceof ImageView) {
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .error(R.mipmap.mine_avatar)
+                        .placeholder(R.mipmap.image_loading)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(context)
                         .load(url)
-                        .transition(new DrawableTransitionOptions().crossFade(2000))
-                        .thumbnail(Glide.with(context)
-                                .load(R.mipmap.mine_avatar))
+                        .apply(options)
+                        .transition(new DrawableTransitionOptions().crossFade(1000))
                         .into((ImageView) view);
+
 
             }
             return this;
