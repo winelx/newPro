@@ -55,7 +55,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
         //标题
         Title = (TextView) findViewById(R.id.com_title);
         Title.setText("贵州路桥集团公司有限公司");
-        //请求数据存放结婚
+        //请求数据存放集合
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         okgo();
@@ -204,6 +204,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                 //循环添加节点
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
                     //动态添加节点
+
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
                             addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),

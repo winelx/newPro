@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -295,6 +296,7 @@ public class MmissPushActivity extends AppCompatActivity {
             addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                    Log.i("addPosition",addPosition+"");
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
                             addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),
@@ -330,17 +332,17 @@ public class MmissPushActivity extends AppCompatActivity {
                 mTreeDatas.add(bean);
             }
             try {
-                mTreeAdapter = new PushListviewAdapter<OrganizationEntity>(mTree, this,
+                mTreeAdapter = new PushListviewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                initEvent(organizationList);
+                initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void initEvent(ArrayList<OrganizationEntity> organizationList) {
+    private void initEvent() {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
@@ -349,6 +351,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     //判断是否为空
                     if (node.getChildren().size() == 0) {
                         addOrganizationList.clear();
+                        Log.i("node",position+"");
                         addPosition = position;
                         //是否是父级点
                         if (node.isperent()) {

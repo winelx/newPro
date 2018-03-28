@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
@@ -98,21 +97,14 @@ public class TaskWbsActivity extends Activity {
             }
         });
         OrganizationEntity bean = new OrganizationEntity(wbsID, "",
-                wbsname, "", true,
+                wbsname, "0", false,
                 true, "3,5", "",
                 "", "", wbsname, "", true);
-        mTreeDatas.add(bean);
         organizationList.add(bean);
-        try {
-            mTreeAdapter = new TaskTreeListViewAdapter<OrganizationEntity>(mTree, this,
-                    mTreeDatas, 0);
-            mTree.setAdapter(mTreeAdapter);
-            initEvent(organizationList);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        getOrganization(organizationList);
 
     }
+
 
     private void okgo() {
         OkGo.post(Request.WBSTress)
@@ -142,7 +134,6 @@ public class TaskWbsActivity extends Activity {
                     public void onSuccess(String result, Call call, Response response) {
                         addOrganizationList(result);
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -283,15 +274,13 @@ public class TaskWbsActivity extends Activity {
     private void addOrganizationList(String result) {
         if (result.contains("data")) {
             addOrganizationList = parseOrganizationList(result);
-            ToastUtils.showShortToast("解析完数据");
             if (addOrganizationList.size() != 0) {
-                ToastUtils.showShortToast("解析完数据1");
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    ToastUtils.showShortToast("填充");
-                    String departmentName = addOrganizationList.get(i).getDepartname();
-                    mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
+                    mTreeAdapter.addExtraNode(addPosition,
+                            addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
-                            departmentName, addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).getDepartname(),
+                            addOrganizationList.get(i).getIsleaf(),
                             addOrganizationList.get(i).iswbs(),
                             addOrganizationList.get(i).isparent(),
                             addOrganizationList.get(i).getTypes(),
@@ -300,8 +289,7 @@ public class TaskWbsActivity extends Activity {
                             addOrganizationList.get(i).getUserId(),
                             addOrganizationList.get(i).getTitle(),
                             addOrganizationList.get(i).getPhone(),
-                            addOrganizationList.get(i).isDrawingGroup()
-                    );
+                            addOrganizationList.get(i).isDrawingGroup());
                 }
                 Dates.disDialog();
             }
@@ -324,10 +312,10 @@ public class TaskWbsActivity extends Activity {
                 mTreeDatas.add(bean);
             }
             try {
-                mTreeAdapter = new TaskTreeListViewAdapter<OrganizationEntity>(mTree, this,
+                mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                initEvent(organizationList);
+                initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -335,27 +323,53 @@ public class TaskWbsActivity extends Activity {
 
     }
 
-    private void initEvent(ArrayList<OrganizationEntity> organizationList) {
+    private void initEvent() {
+//        mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
+//            @Override
+//            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+//
+//                //  如果不是，判断该节点是否有数据，
+//                if (node.getChildren().size() == 0) {
+//                    mTreeAdapter.addExtraNode(addPosition, wbsID,
+//                            "",
+//                            "新增", "",
+//                            false,
+//                            true,
+//                            "",
+//                            "sdfg",
+//                            "",
+//                            "ssdgf",
+//                            "sss",
+//                            "sss",
+//                            false);
+//                    //  如果没有，就请求数据，
+//                    ToastUtils.showLongToast("该节点无数据");
+//                    addOrganizationList.clear();
+//                    addPosition = position;
+//                    if (node.isperent()) {
+//                        addOrganiztion(node.getId(), false, false, node.getType());
+//                    }
+//                }
+//            }
+//        });
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
-
                 //判断是否是字节点，
-                    ToastUtils.showShortToast("按钮3");
+                if (node.isLeaf()) {
+                } else {
                     //  如果不是，判断该节点是否有数据，
                     if (node.getChildren().size() == 0) {
                         //  如果没有，就请求数据，
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
-                            ToastUtils.showShortToast("按钮4");
+
                             //从拿到该节点的名称和id
-                            ToastUtils.showShortToast(node.getId()+"  "+node.iswbs()+"  "+node.isperent()+"  "+ node.getType());
-                            Log.i("toast",node.getId()+"  "+node.iswbs()+"  "+node.isperent()+"  "+ node.getType());
-                            addOrganiztion(node.getId(),false,false, node.getType());
+                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
                         }
                     }
-
+                }
             }
         });
     }
@@ -364,5 +378,18 @@ public class TaskWbsActivity extends Activity {
     protected void onResume() {
         super.onResume();
     }
+    public void switchAct(Node node) {
+        if (node.iswbs() != false) {
+                    Intent list = new Intent();
+                    list.putExtra("id", node.getId());
+                    list.putExtra("title", node.getName());
+                    list.putExtra("titles", node.getTitle());
+                    list.putExtra("iswbs", node.iswbs());
+                    //回传数据到主Activity
+                    setResult(RESULT_OK, list);
+                    //此方法后才能返回主Activity
+                    finish();
 
+        }
+    }
 }

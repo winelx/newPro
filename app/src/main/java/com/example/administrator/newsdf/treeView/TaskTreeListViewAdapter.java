@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
+import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -24,7 +25,13 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.tree_name;
-
+/** 
+ * description:
+ * @author lx
+ * date: 2018/3/28 0028 上午 10:11 
+ * update: 2018/3/28 0028
+ * version: 
+*/
 public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
 
@@ -91,7 +98,13 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 return true;
             }
         });
-
+    holder.mText.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TaskWbsActivity activity = (TaskWbsActivity) context;
+            activity.switchAct(node);
+        }
+    });
         return convertView;
     }
 
@@ -112,6 +125,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     public void addExtraNode(int position, String id, String pid, String name, String isLeaf,
                              boolean iswbs, boolean isparent, String type, String username,
                              String number, String userId, String title, String phone, boolean isDrawingGroup) {
+
         Node node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
         Node extraNode = new Node(id, node.getId(), name, isLeaf, iswbs,
@@ -123,7 +137,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         notifyDataSetChanged();
     }
 
-
     void okgo(String staffId) {
         OkGo.post(Request.Personal)
                 .params("staffId", staffId)
@@ -133,10 +146,14 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject json = jsonObject.getJSONObject("data");
-                            String name = json.getString("name");//名字
-                            String moblie = json.getString("moblie");//手机号
-                            String orgName = json.getString("orgName");//组织名字
-                            String ethnicities = json.getString("ethnicities");  //民族
+                            //名字
+                            String name = json.getString("name");
+                            //手机号
+                            String moblie = json.getString("moblie");
+                            //组织名字
+                            String orgName = json.getString("orgName");
+                            //民族
+                            String ethnicities = json.getString("ethnicities");
                             Intent intent = new Intent(mContext, PopwindActivity.class);
                             intent.putExtra("name", name);
                             intent.putExtra("moblie", moblie);
