@@ -95,16 +95,11 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (content.size() != 0) {
             holder.linearLayout.setVisibility(View.VISIBLE);
             //标题
-            if (content.get(posotion).getName().length()!=0){
+            if (content.get(posotion).getName().length() != 0) {
                 holder.details_title.setText(content.get(posotion).getName());
-            }else {
+            } else {
                 holder.details_title.setText("主动上传任务");
             }
-//        if (datas.size()>0){
-//
-//        }else {
-//
-//        }
             //创建时间
             String data = null;
             try {
@@ -136,7 +131,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * 提交数据
-     *
      * @param holder
      * @param posotion
      */
@@ -148,6 +142,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             dataTypeAdapter = new RecycleAtataAdapterType(mContext);
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
+        } else {
         }
     }
 
@@ -176,7 +171,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private TextView details_title, details_data,
                 details_user, details_boolean,
                 handover_status_description, handover_huifu,
-                details_content, details_fixed_data;
+                details_content, details_fixed_data, handovers_text;
 
         public TypeBannerHolder(View itemView) {
             super(itemView);
@@ -188,6 +183,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             details_boolean = itemView.findViewById(R.id.details_boolean);
             handover_status_description = itemView.findViewById(R.id.handover_status_description);
             details_content = itemView.findViewById(R.id.details_content);
+
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }

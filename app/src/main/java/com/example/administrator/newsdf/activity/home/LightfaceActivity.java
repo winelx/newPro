@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -11,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -65,18 +67,18 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private Context mContext;
     private Listinter_Adfapter mAdapter = null;
     //任务界面数据集合
-    private ArrayList<List_interface> mData;
+    private ArrayList<List_interface> mDatas;
     private TextView titlew, delete_search;
-    private PopupWindow mPopWindow;
     private EditText searchEditext;
     private String id, wbsid, intentBack;
-    private int s = 1, page = 1;
+    private int pages = 1, page = 1;
     //侧拉界面数据集合
     private ArrayList<PhotoBean> imagePaths;
     boolean popwind = false;
     private LinearLayout imageView;
     private String status = "0";
     private DrawerLayout drawerLayout;
+    private ListView drawerLayoutList;
     /**
      * 判断是否刷新还是上拉加载
      */
@@ -118,7 +120,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             e.printStackTrace();
         }
         //任务列表
-        mData = new ArrayList<>();
+        mDatas = new ArrayList<>();
         //图册
         imagePaths = new ArrayList<>();
         //获得控件id，初始化id
@@ -136,7 +138,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         searchEditext = (EditText) findViewById(search_editext);
         //侧拉
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //任务列表的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //侧拉界面的下拉
@@ -152,7 +154,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //隐藏图片查看，
         fab.setVisibility(View.GONE);
         //界面数据填充
-        mAdapter = new Listinter_Adfapter(mContext, mData);
+        mAdapter = new Listinter_Adfapter(mContext, mDatas);
         //标题
         titlew.setText(intent.getExtras().getString("name"));
         //标题文字大小
@@ -167,6 +169,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         uslistView.setAdapter(mAdapter);
         //搜索框
         searchEditext.setOnKeyListener(new View.OnKeyListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //是否是回车键
@@ -175,13 +178,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    //如歌pop开着，就关闭
-                    if (popwind) {
-                        mPopWindow.dismiss();
-                    }
                     //初始化页数为第一页
-                    s = 1;
-                    //当前为刷新数据。设置false 加载数据时清除之前的
+                    pages = 1;
+                    //当前为刷新数据。false 加载数据时清除之前的
                     swip = false;
                     //搜索
                     search(1);
@@ -199,16 +198,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     // 此处为得到焦点时的处理内容
                     // 触摸移动时的操作
                     delete_search.setVisibility(View.VISIBLE);
-                    backgroundAlpha(1f);
-                    if (popwind) {
-                        mPopWindow.dismiss();
-                    }
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 } else {
                     delete_search.setVisibility(View.GONE);
-
                 }
             }
         });
@@ -219,7 +213,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //初始化页数为第一页
-                s = 1;
+                pages = 1;
                 //当前为刷新数据。设置false 加载数据时清除之前的
                 swip = false;
                 if (Objects.equals(notall, "false")) {
@@ -232,7 +226,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     //全部
                     okgoall(wbsid, null, 1);
                 } else if (Objects.equals(notall, "search")) {
-                    mData.clear();
+                    mDatas.clear();
                     //搜索
                     search(1);
                 }
@@ -249,21 +243,21 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 //上拉加载 设置为ture 解析数据时添加到 原来的数据集合
                 swip = true;
                 if (Objects.equals(notall, "false")) {
-                    s = s + 1;
+                    pages = pages + 1;
                     //已处理或未处理
-                    okgo(null, status, null, s);
+                    okgo(null, status, null, pages);
                 } else if (Objects.equals(notall, "true")) {
-                    s = s + 1;
+                    pages = pages + 1;
                     //已处理或未处理
-                    okgo(null, status, null, s);
+                    okgo(null, status, null, pages);
                 } else if (Objects.equals(notall, "all")) {
-                    s = s + 1;
+                    pages = pages + 1;
                     //全部
-                    okgoall(null, null, s);
+                    okgoall(null, null, pages);
                 } else if (Objects.equals(notall, "search")) {
-                    s = s + 1;
+                    pages = pages + 1;
                     //搜索
-                    search(s);
+                    search(pages);
                 }
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
@@ -285,36 +279,31 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!popwind) {
-                    PopupWindow();//打开弹出框
-                    popwind = true;
-                    searchEditext.clearFocus();//失去焦点
-                } else {
-                    backgroundAlpha(1f);
-                    mPopWindow.dismiss();
-                    popwind = false;
-                }
+                MeunPop();//打开弹出框
+                popwind = true;
+                searchEditext.clearFocus();//失去焦点
+
             }
         });
         //listview的点击事件
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (mData.get(position).getIsFinish() + "") {
+                switch (mDatas.get(position).getIsFinish() + "") {
                     //回复转发(自己回复或选择转发)
                     case "0":
                         //未上传进入详情
                         Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        intent.putExtra("frag_id", mData.get(position).getTaskId());
-                        intent.putExtra("wbsid", mData.get(position).getWbsId());
+                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
+                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
                         intent.putExtra("status", "one");
                         startActivity(intent);
                         break;
                     //通过的详情
                     case "1":
                         Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        audio.putExtra("frag_id", mData.get(position).getTaskId());
-                        audio.putExtra("wbsid", mData.get(position).getWbsId());
+                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
+                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
                         audio.putExtra("status", "two");
                         startActivity(audio);
                         break;
@@ -322,19 +311,16 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         break;
 
                 }
+                backgroundAlpha(1f);
             }
         });
-        //list在 触摸是判断弹窗是否打开， 如果打开关闭
+        //listview滑动时让editext失去焦点，并且关闭软键盘
         uslistView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_MOVE:
                         // 触摸移动时的操作
-                        if (popwind) {
-                            mPopWindow.dismiss();
-                            backgroundAlpha(1f);
-                        }
                         searchEditext.clearFocus();//失去焦点
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                                 .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
@@ -350,9 +336,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popwind) {
-                    mPopWindow.dismiss();
-                }
                 page = 1;
                 drew = true;
                 photoAdm(wbsid);
@@ -373,31 +356,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 refreshlayout.finishLoadmore(1500);
             }
         });
+        okgo(wbsid, status, null, 1);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //初始化页数为第一页
-        s = 1;
-        //当前为刷新数据。设置false 加载数据时清除之前的
-        swip = false;
-        if (Objects.equals(notall, "false")) {
-            //已处理或未处理
-            okgo(wbsid, status, null, 1);
-        } else if (Objects.equals(notall, "true")) {
-            //已处理或未处理
-            okgo(wbsid, status, null, 1);
-        } else if (Objects.equals(notall, "all")) {
-            //全部
-            okgoall(wbsid, null, 1);
-        } else if (Objects.equals(notall, "search")) {
-            //搜索
-            search(1);
 
-        }
-    }
 
     //搜索方法
     private void search(final int str) {
@@ -415,27 +378,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    /**
-     * meun弹出框
-     */
-    void PopupWindow() {
-        View contentView = LayoutInflater.from(LightfaceActivity.this).inflate(R.layout.popuplayout, null);
-        mPopWindow = new PopupWindow(contentView);
-        mPopWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        contentView.findViewById(R.id.pop_computer).setOnClickListener(this);
-        contentView.findViewById(R.id.pop_financial).setOnClickListener(this);
-        contentView.findViewById(R.id.pop_manage).setOnClickListener(this);
-        contentView.findViewById(R.id.pop_All).setOnClickListener(this);
-        contentView.findViewById(R.id.recycler_view).setOnClickListener(this);
-        mPopWindow.showAsDropDown(imageView, 0, 0);
-        backgroundAlpha(0.5f);
-        popwind = true;
-        searchEditext.clearFocus();
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
-                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
 
     /**
      * 点击事件
@@ -446,61 +388,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.recycler_view:
-                mPopWindow.dismiss();
-                popwind = false;
-                backgroundAlpha(1f);
-                break;
-            //选择wbs
-            case R.id.pop_computer:
-                mPopWindow.dismiss();
-                Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
-                intent.putExtra("data", "List");
-                intent.putExtra("WbsID", wbsId);
-                intent.putExtra("wbsname", name);
-                startActivityForResult(intent, 1);
-                backgroundAlpha(1f);
-                popwind = false;
-                break;
-            //全部
-            case R.id.pop_All:
-                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
-                mData.clear();
-                searchEditext.setText("");
-                s = 1;
-                status = "3";
-                notall = "all";
-                okgoall(null, null, 1);
-                backgroundAlpha(1f);
-                mPopWindow.dismiss();
-                popwind = false;
-                break;
-            //未处理
-            case R.id.pop_financial:
-                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
-                mData.clear();
-                searchEditext.setText("");
-                s = 1;
-                notall = "false";
-                status = "0";
-                okgo(null, status, null, 1);
-                backgroundAlpha(1f);
-                mPopWindow.dismiss();
-                popwind = false;
-                break;
-            //已处理
-            case R.id.pop_manage:
-                Dates.getDialog(LightfaceActivity.this, "请求数据中...");
-                searchEditext.setText("");
-                s = 1;
-                mData.clear();
-                notall = "true";
-                backgroundAlpha(1f);
-                status = "1";
-                okgo(null, status, null, 1);
-                mPopWindow.dismiss();
-                popwind = false;
-                break;
             //返回
             case R.id.com_back:
                 if (intentBack != null) {
@@ -508,9 +395,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     finish();
                 }
-                backgroundAlpha(1f);
-                break;
-            case R.id.search_img:
                 break;
             default:
                 break;
@@ -533,16 +417,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     public void onSuccess(String s, Call call, Response response) {
                         //判断是否是下拉还是上拉
                         if (!swip) {
-                            mData.clear();
+                            Log.i("result","删除");
+                            mDatas.clear();
                         }
-                        //判断是否请求到数据
-                        if (s.contains("data")) {
                             getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-                        }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -553,7 +432,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     /**
      * 搜索
      */
-    void searchokgo(String wbsId, String msgStatus, String content, int i) {
+    void searchokgo(String wbsId, final String msgStatus, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
@@ -565,14 +444,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (!swip) {
-                                mData.clear();
-                            }
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
+                        if (!swip) {
+                            mDatas.clear();
                         }
+                        getJson(s);
+
                     }
                 });
     }
@@ -591,14 +467,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (!swip) {
-                                mData.clear();
-                            }
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
+                        if (!swip) {
+                            mDatas.clear();
                         }
+                        getJson(s);
                     }
                 });
     }
@@ -616,16 +488,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
                             if (!swip) {
-                                mData.clear();
+                                mDatas.clear();
                             }
                             getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-                            mData.clear();
-                            mAdapter.notifyDataSetChanged();
-                        }
                     }
                 });
     }
@@ -650,15 +516,14 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             }
             page = 1;
             photoAdm(wbsid);
-            okgoall(wbsid, null, 1);
-            mData.clear();
             searchEditext.setText("");
-            s = 1;
             notall = "false";
             status = "0";
-            okgo(null, status, null, 1);
-            mPopWindow.dismiss();
-            popwind = false;
+            //初始化页数为第一页
+            pages = 1;
+            //当前为刷新数据。false 加载数据时清除之前的
+            swip = false;
+            okgoall(wbsId, status,  1);
         }
     }
 
@@ -681,9 +546,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onStop();
         //传入false表示刷失败
         refreshLayout.finishRefresh(true);
-        if (popwind) {
-            mPopWindow.dismiss();
-        }
     }
 
     /**
@@ -693,36 +555,45 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      */
     void getJson(String s) {
         refreshLayout.finishRefresh(true);
-        try {
-            JSONObject jsonObject = new JSONObject(s);
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                String id = json.getString("id");
-                //任务id
-                String taskId = json.getString("taskId");
-                ///检查点id
-                String cascadeId = json.getString("cascadeId");
-                //任务状态，0 和1;
-                String isFinish = json.getString("isFinish");
-                //推送内容
-                String content = json.getString("content");
-                //负责人
-                String groupName = json.getString("groupName");
-                //创建时间;
-                String createTime = json.getString("createTime");
-                //检查点名称
-                String pointName = json.getString("pointName");
-                // Wbs路径;
-                String wbsPath = json.getString("wbsPath");
-                String wbsId = json.getString("wbsId");
-                mData.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
+        if (s.contains("data")) {
+            Log.i("result","有数据");
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    String id = json.getString("id");
+                    //任务id
+                    String taskId = json.getString("taskId");
+                    ///检查点id
+                    String cascadeId = json.getString("cascadeId");
+                    //任务状态，0 和1;
+                    String isFinish = json.getString("isFinish");
+                    //推送内容
+                    String content = json.getString("content");
+                    //负责人
+                    String groupName = json.getString("groupName");
+                    //创建时间;
+                    String createTime = json.getString("createTime");
+                    //检查点名称
+                    String pointName = json.getString("pointName");
+                    // Wbs路径;
+                    String wbsPath = json.getString("wbsPath");
+                    String wbsId = json.getString("wbsId");
+                    mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
+                }
+                mAdapter.getDate(mDatas);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            mAdapter.getDate(mData);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } else {
+            Log.i("result","没有数据");
+          ToastUtils.showShortToast("没有更多数据了！");
+            if (!swip) {
+                mDatas.clear();
+            }
+            mAdapter.getDate(mDatas);
         }
-
     }
 
     /**
@@ -774,5 +645,100 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //0.0-1.0
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
+    }
+
+    PopupWindow mPopupWindow;
+
+    private void MeunPop() {
+        View contentView = getPopupWindowContentView();
+        mPopupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+// 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+// 默认在mButton2的左下角显示
+        mPopupWindow.showAsDropDown(imageView);
+        backgroundAlpha(0.5f);
+//添加pop窗口关闭事件
+        mPopupWindow.setOnDismissListener(new poponDismissListener());
+    }
+
+    //设置pop的点击事件
+    private View getPopupWindowContentView() {
+        // 一个自定义的布局，作为显示的内容
+        // 布局ID
+        int layoutId = R.layout.popuplayout;
+        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
+        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.pop_computer:
+                        Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
+                        intent.putExtra("data", "List");
+                        intent.putExtra("WbsID", wbsId);
+                        intent.putExtra("wbsname", name);
+                        startActivityForResult(intent, 1);
+                        backgroundAlpha(1f);
+                        drawerLayoutList.setSelection(0);
+                        break;
+                    case R.id.pop_All:
+                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        mDatas.clear();
+                        searchEditext.setText("");
+                        pages = 1;
+                        status = "3";
+                        notall = "all";
+                        okgoall(wbsId, null, 1);
+                        drawerLayoutList.setSelection(0);
+                        break;
+                    case R.id.pop_financial:
+                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        mDatas.clear();
+                        searchEditext.setText("");
+                        pages = 1;
+                        notall = "false";
+                        status = "0";
+                        okgo(wbsId, status, null, 1);
+                        drawerLayoutList.setSelection(0);
+                        break;
+                    case R.id.pop_manage:
+                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        mDatas.clear();
+                        notall = "true";
+                        status = "1";
+                        okgo(wbsId, status, null, 1);
+                        drawerLayoutList.setSelection(0);
+                        break;
+                    default:
+                        break;
+                }
+                if (mPopupWindow != null) {
+                    mPopupWindow.dismiss();
+                }
+            }
+        };
+        contentView.findViewById(R.id.pop_computer).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        return contentView;
+    }
+
+    /**
+     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
+     *
+     * @author cg
+     */
+    class poponDismissListener implements PopupWindow.OnDismissListener {
+
+        @Override
+        public void onDismiss() {
+            // TODO Auto-generated method stub
+            backgroundAlpha(1f);
+        }
+
     }
 }
