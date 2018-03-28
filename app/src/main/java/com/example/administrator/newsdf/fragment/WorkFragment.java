@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,19 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.adapter.SettingAdapter;
-import com.example.administrator.newsdf.adapter.Fr_work_pie;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.view.IPieElement;
-import com.example.administrator.newsdf.view.PieChartBeans;
-import com.example.administrator.newsdf.view.PieChartOne;
+import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
-import com.example.administrator.newsdf.activity.work.NotuploadActivity;
+import com.example.administrator.newsdf.adapter.Fr_work_pie;
+import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
+import com.example.administrator.newsdf.view.IPieElement;
+import com.example.administrator.newsdf.view.PieChartBeans;
+import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -174,9 +173,7 @@ public class WorkFragment extends Fragment {
                                 for (int i = 0; i < jsonArray1.length(); i++) {
                                     JSONObject json = jsonArray1.getJSONObject(i);
                                     num = json.getInt("num");
-                                    Log.i("ss", num + "");
                                     number = number + num;
-                                    Log.i("ss", number + "");
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
@@ -194,7 +191,6 @@ public class WorkFragment extends Fragment {
                                 }
                                 mAdapter.getData(mData);
                             } else {
-                                System.out.println("不包含");
                                 mData.add(new PieChartBeans("未开始开工", 100f, color[1]));
                                 mAdapter.getData(mData);
                             }

@@ -181,7 +181,6 @@ public class PieChart extends View implements GestureDetector.OnGestureListener 
             canvas.drawPath(mPath, mLinePaint);
             mPath.reset();
             mPath.moveTo((float) (x * 1.2), (float) (y * 1.2));
-
             //水平线的长度设置为文字长度的1.3倍
             float horizontalLineLength = (float) (getTextWidth(mTextPaint, percentText) * 1.0);
             //当线的起点在第三、四象限时，先把path移动到终点位置，然后向起点画线，使后面画文字时，文字方向是正确的
@@ -191,13 +190,12 @@ public class PieChart extends View implements GestureDetector.OnGestureListener 
                 mPath.lineTo((float) (x * 1.2), (float) (y * 1.2));
             } else {
                 mPath.lineTo((float) (x * 1.3) + horizontalLineLength, (float) (y * 1.2));
-
             }
             mPath.close();
             canvas.drawPath(mPath, mLinePaint);
             //垂直方向的偏移量，画文字时，文字显示在path的下方，为了让文字显示在上方，设置一个文字高度的垂直偏移量
             float offsetV = -getTextHeight(mTextPaint, percentText);
-            canvas.drawTextOnPath(percentText, mPath, -25, offsetV, mTextPaint);
+            canvas.drawTextOnPath(percentText, mPath, 25, offsetV, mTextPaint);
         }
 
         //这里开始画中心空白部分以及文字，空白部分半径设置为整个圆半径的0.6倍

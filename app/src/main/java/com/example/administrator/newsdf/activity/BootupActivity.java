@@ -41,9 +41,7 @@ import okhttp3.Response;
  *         version:
  */
 public class BootupActivity extends AppCompatActivity {
-
     private Context mContext;
-
     private final int SDK_PERMISSION_REQUEST = 127;
 
     @Override
@@ -59,7 +57,6 @@ public class BootupActivity extends AppCompatActivity {
                 && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
                 && getIntent().getAction() != null
                 && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
-
             finish();
             return;
         }

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -30,6 +31,8 @@ public class PieChartOne extends View {
     private Paint linePaint;
     //文字画笔
     private Paint textPaint;
+    //介绍画笔
+    private Paint namePaint;
     //半径
     private float radius;
 
@@ -65,8 +68,8 @@ public class PieChartOne extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //
         radius = Math.min(getMeasuredWidth(), getMeasuredHeight()) / 4.0f;
-
         X = getMeasuredWidth() / 2;
         Y = getMeasuredHeight() / 2;
         rectF.left = X - radius;
@@ -101,6 +104,11 @@ public class PieChartOne extends View {
         textPaint.setAntiAlias(true);
         textPaint.setStrokeWidth(30);
         textPaint.setTextSize(25);
+
+        namePaint = new Paint();
+        namePaint.setAntiAlias(true);
+        namePaint.setStrokeWidth(30);
+        namePaint.setTextSize(25);
         mAnimation = new PieChartAnimation();
         mAnimation.setDuration(800);
     }
@@ -110,8 +118,9 @@ public class PieChartOne extends View {
         if (mSweep == null) {
             mSweep = new Float[list.size()];
         }
-        if (mAnimation != null)
+        if (mAnimation != null) {
             setAnimation(mAnimation);
+        }
     }
 
     @Override
@@ -138,7 +147,8 @@ public class PieChartOne extends View {
                 canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);
                 //边框线
                 canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);
-                initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%");
+                Log.i("sss", list.get(i).getValuer());
+                initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%", list.get(i).getValuer());
                 pieStart += mSweep[i];
             }
         }
@@ -150,13 +160,16 @@ public class PieChartOne extends View {
      * @param canvas
      * @param text
      */
-    private void initLineAndText(Canvas canvas, float statrAngles, float angles, String color, String text) {
+    private void initLineAndText(Canvas canvas, float statrAngles, float angles, String color, String text, String name) {
         float stopX, stopY;
         float ceterX = getMeasuredWidth() / 2;
         float ceterY = getMeasuredHeight() / 2;
         linePaint.setColor(Color.parseColor(color));
         textPaint.setColor(Color.parseColor(color));
-        textPaint.setStrokeWidth(10);
+        textPaint.setStrokeWidth(1);
+        namePaint.setColor(Color.parseColor(color));
+        namePaint.setStrokeWidth(1);
+
         //  半径加上多出的20个像素的位置，去根据角度算出 转点的X,Y轴
         float cosX = (float) Math.cos((2 * statrAngles + angles) / 2 * Math.PI / 180);
         float sinY = (float) Math.sin((2 * statrAngles + angles) / 2 * Math.PI / 180);
@@ -167,6 +180,7 @@ public class PieChartOne extends View {
                 stopX + ceterX, stopY + ceterY, linePaint);
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 00, text.length(), rect);
+        namePaint.getTextBounds(name, 00, name.length(), rect);
         int h = rect.height();
         int w = rect.width();
         //画第二根线，第二个根线的起点是第一根线的终点，然后终点，根据X轴来定直接加25个像素
@@ -178,9 +192,11 @@ public class PieChartOne extends View {
             //50为横线的长度 60 为文字的偏移量
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(10), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY + h / 3, textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         } else {
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(10), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + h / 3, textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         }
 
     }

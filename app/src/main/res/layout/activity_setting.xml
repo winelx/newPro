@@ -197,7 +197,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:switchMinWidth="55dp"
-
             android:thumb="@drawable/switch_selector"
             android:track="@drawable/switch_track" />
 

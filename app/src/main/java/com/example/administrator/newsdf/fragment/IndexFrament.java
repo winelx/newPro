@@ -32,7 +32,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
     private HomeFragment home;
     private AllMessageFragment message;
     TextView mMessage, aMessage, pointRed;
-    private String status;
+
     private Context mContext;
     private Handler handler = new Handler() {
         @Override
@@ -70,6 +70,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
     @Override
     public void onStart() {
         super.onStart();
+        //拿到存放推送消息的集合，根据集合是否为空，判断是否显示推送红点，反之隐藏
        int size= Dates.getsize().size();
         if (size>0){
             Message message = new Message();
@@ -81,11 +82,13 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
 
     //显示第一个fragment
     private void initFragment1() {
+        //这是文字颜色
         mMessage.setTextColor(Color.parseColor("#5096F8"));
         aMessage.setTextColor(Color.parseColor("#f5f4f4"));
+        //设置背景样式
         aMessage.setBackgroundResource(R.drawable.fr_home_mm_f);
         mMessage.setBackgroundResource(R.drawable.fr_home_am);
-        status = "false";
+
         //开启事务，fragment的控制是由事务来实现的
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         //第二种方式(replace)，初始化fragment
@@ -105,7 +108,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
         mMessage.setTextColor(Color.parseColor("#f5f4f4"));
         aMessage.setBackgroundResource(R.drawable.fr_home_mm);
         mMessage.setBackgroundResource(R.drawable.fr_home_am_f);
-        status = "true";
+
         //开启事务，fragment的控制是由事务来实现的
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         //第二种方式(replace)，初始化fragment
@@ -129,6 +132,5 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
     @Override
     public void doSomeThing(String string) {
         pointRed.setVisibility(View.VISIBLE);
-
     }
 }

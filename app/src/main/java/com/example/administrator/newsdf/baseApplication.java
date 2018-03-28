@@ -44,7 +44,6 @@ public class baseApplication extends Application {
         super.onCreate();
         setupDatabase();
         instance = this;
-
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
         //网络加载库
         OkGo.init(this);

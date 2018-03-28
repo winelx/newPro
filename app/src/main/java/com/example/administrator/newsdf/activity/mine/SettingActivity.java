@@ -8,6 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.baseApplication;
+
+import cn.jpush.android.api.JPushInterface;
+
+import static com.example.administrator.newsdf.R.id.setting_new_message;
 
 /**
  * 系统设置
@@ -61,11 +66,12 @@ public class SettingActivity extends AppCompatActivity {
         settingNewMessage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (isChecked) {
                     setting_message.setVisibility(View.VISIBLE);
+                    JPushInterface.resumePush(baseApplication.getInstance());
                 } else {
                     setting_message.setVisibility(View.GONE);
+                    JPushInterface.stopPush(baseApplication.getInstance());
                 }
             }
         });
@@ -106,7 +112,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initView() {
         //接受新消息
-        settingNewMessage = (Switch) findViewById(R.id.setting_new_message);
+        settingNewMessage = (Switch) findViewById(setting_new_message);
         //显示消息内容
         settingMessageDetails = (Switch) findViewById(R.id.setting_message_details);
         //声音
