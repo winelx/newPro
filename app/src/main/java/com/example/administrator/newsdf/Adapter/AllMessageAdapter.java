@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
 
 import java.util.ArrayList;
@@ -69,11 +69,17 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showShortToast("置顶");
-            Home_item    home_item =mDatas.get(position);
-                mDatas.add(0,home_item);
-                mDatas.remove(position);
+                Home_item home_item = mDatas.get(position);
+                SPUtils.deleShare(mContext, "Alltop");
+                mDatas.add(0, home_item);
+                mDatas.remove(position + 1);
+                //重新写入置顶项
+                SPUtils.putString(mContext,"Alltop",home_item.getId());
                 getData(mDatas);
+
+                if (menuIsOpen()) {
+                    closeMenu();//关闭菜单
+                }
             }
         });
         //判断是否有消息

@@ -2,8 +2,10 @@ package com.example.administrator.newsdf.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -119,6 +122,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         OkGo.post(Request.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.indexOf("data") != -1) {
@@ -147,6 +151,19 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish));
                                 }
                                 if (mData.size() != 0) {
+                                    try {
+                                        String ID = SPUtils.getString(mContext, "Alltop", "");
+                                        for (int i = 0; i < mData.size(); i++) {
+                                            String itemId = mData.get(i).getId();
+                                            if (ID.equals(itemId)){
+                                                Home_item home_item = mData.get(i);
+                                                mData.add(0,home_item);
+                                                mData.remove(i + 1);
+                                            }
+                                        }
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
 

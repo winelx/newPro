@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.WebActivity;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
 
@@ -93,8 +95,18 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
+            String urlpath =mData.get(position);
+            Log.i("urlpath",urlpath);
+            //截取出后缀
+            String  pas = urlpath.substring(urlpath.length()-4,urlpath.length());
+            //拿到截取后缀后的字段
+            urlpath=   urlpath.replace(pas,"");
+            //在字段后面添加_min后再拼接后缀
+            urlpath=   urlpath+"_min"+pas;
+            ToastUtils.showLongToast(urlpath);
+            Log.i("urlpath",urlpath);
             Glide.with(mContext)
-                    .load(mData.get(position))
+                    .load(urlpath)
                     .thumbnail(Glide.with(mContext)
                             .load(R.mipmap.image_loading))
                     .into(holder.img);

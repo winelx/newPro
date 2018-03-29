@@ -90,6 +90,7 @@ public class OrganiwbsActivity extends Activity {
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
+        Dates.getDialogs(OrganiwbsActivity.this,"请求数据中...");
         okgo();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +105,14 @@ public class OrganiwbsActivity extends Activity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mTreeDatas.clear();
-                        getWorkOrganizationList(s);
+                        if (s.contains("data")) {
+                            getWorkOrganizationList(s);
+                        }
+                        else {
+                            ToastUtils.showLongToast("数据加载失败");
+                        }
+                        Dates.disDialog();
+
                     }
                 });
     }

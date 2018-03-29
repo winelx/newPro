@@ -60,7 +60,6 @@ public class MmissPushActivity extends AppCompatActivity {
     String org_status, wbsID;
     private SmartRefreshLayout refreshLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +96,7 @@ public class MmissPushActivity extends AppCompatActivity {
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
         initView();
+        Dates.getDialogs(MmissPushActivity.this, "请求数据中...");
         okgo();
         back.setOnClickListener(new View.OnClickListener()
 
@@ -114,7 +114,12 @@ public class MmissPushActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mTreeDatas.clear();
-                        getWorkOrganizationList(s);
+                        if (s.contains("data")) {
+                            getWorkOrganizationList(s);
+                        } else {
+                            ToastUtils.showLongToast("数据加载失败");
+                        }
+                        Dates.disDialog();
                     }
 
                     @Override
@@ -296,7 +301,7 @@ public class MmissPushActivity extends AppCompatActivity {
             addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    Log.i("addPosition",addPosition+"");
+                    Log.i("addPosition", addPosition + "");
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
                             addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),
@@ -351,7 +356,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     //判断是否为空
                     if (node.getChildren().size() == 0) {
                         addOrganizationList.clear();
-                        Log.i("node",position+"");
+                        Log.i("node", position + "");
                         addPosition = position;
                         //是否是父级点
                         if (node.isperent()) {
@@ -431,13 +436,13 @@ public class MmissPushActivity extends AppCompatActivity {
     String name, id;
 
     void getOko(final String str, final String wbsname, final String wbspath) {
-        Dates.getDialog(MmissPushActivity.this, "请求数据中");
+        Dates.getDialogs(MmissPushActivity.this, "请求数据中");
         OkGo.post(Request.PUSHList)
                 .params("wbsId", str)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -447,7 +452,6 @@ public class MmissPushActivity extends AppCompatActivity {
                                     try {
                                         id = json.getString("id");
                                     } catch (JSONException e) {
-
                                         id = "";
                                     }
                                     //可能界面没有数据,name可能为空
@@ -461,6 +465,7 @@ public class MmissPushActivity extends AppCompatActivity {
                                     //保存标题
                                     titlename.add(name);
                                 }
+
                                 Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
@@ -469,10 +474,10 @@ public class MmissPushActivity extends AppCompatActivity {
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);
-                                Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            Dates.disDialog();
                         } else {
                             ToastUtils.showShortToast("该节点未启动");
                             Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);

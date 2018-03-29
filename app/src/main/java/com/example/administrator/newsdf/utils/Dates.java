@@ -26,7 +26,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -271,67 +270,33 @@ public class Dates  {
 
     }
 
-//    public static String downloadPhoto(Context context, Bitmap bmp, String result,String Title) {
-//        // 首先保存图片
-//        File appDir = new File(Environment.getExternalStorageDirectory(), "picker");
-//        if (!appDir.exists()) {
-//            appDir.mkdir();
-//        }
-//        //文件夹和文件名
-//        File file = new File(appDir, fileName);
-//        try {
-//            //使用输入流将数据写入本地，
-//            FileOutputStream fos = new FileOutputStream(file);
-//            //设置保存的 文件格式，是否压缩，输入流
-//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.flush(); //刷新文件流
-//            fos.close();//关闭输入流
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        // 返回路径展示图片
-//        return appDir + "/" + fileName;
-//
-//    }
-
-
-    public static Bitmap getBitmap(String srcPath) {
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        //此时返回bm为空
-        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //现在主流手机比较多是1920f*1080f分辨率，所以高和宽我们设置为
-        //这里设置高度为1920f
-        float hh = 1920f;
-        //这里设置宽度为1080f
-        float ww = 1080f;
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        //be=1表示不缩放
-        int be = 1;
-        //如果宽度大的话根据宽度固定大小缩放
-        if (w > h && w > ww) {
-            be = (int) (newOpts.outWidth / ww);
-            //如果高度高的话根据宽度固定大小缩放
-        } else if (w < h && h > hh) {
-            be = (int) (newOpts.outHeight / hh);
+    public static String downloadPhoto (Bitmap bmp,String Title) {
+        // 首先保存图片
+        File appDir = new File("ExternalStorage/Android/data/${packageName}/", "picker");
+        if (!appDir.exists()) {
+            appDir.mkdir();
         }
-        if (be <= 0) {
-            be = 1;
+        //文件夹和文件名
+        File file = new File(appDir, Title);
+        try {
+            //使用输入流将数据写入本地，
+            FileOutputStream fos = new FileOutputStream(file);
+            //设置保存的 文件格式，是否压缩，输入流
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush(); //刷新文件流
+            fos.close();//关闭输入流
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //设置缩放比例
-        newOpts.inSampleSize = be;
-        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        //压缩好比例大小后再进行质量压缩
-        return compressImage(bitmap);
+        // 返回路径展示图片
+        return appDir + "/" + Title;
 
     }
+
+
+
 
     public static Bitmap compressPixel(String filePath) {
         Bitmap bmp = null;
@@ -364,32 +329,7 @@ public class Dates  {
         }
     }
 
-    /**
-     * 压缩
-     *
-     * @param image
-     * @return
-     */
-    private static Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        //质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        image.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        int options = 100;
-        //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-        while (baos.toByteArray().length / 1024 > 250) {
-            //重置baos即清空baos
-            baos.reset();
-            //每次都减少10
-            options -= 15;
-            //这里压缩options%，把压缩后的数据存放到baos中
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-        }
-        //把压缩后的数据baos存放到ByteArrayInputStream中
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        //把ByteArrayInputStream数据生成图片
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
-        return bitmap;
-    }
+
 
     /**
      * 获取应用的 SHA1 值， 可据此判断高德，百度地图 key 是否正确
@@ -475,6 +415,11 @@ public class Dates  {
         return false;
     }
 
+    /**
+     * 定时自动取消的dialog
+     * @param activity
+     * @param str
+     */
     public static void getDialog(Activity activity, String str) {
         progressDialog = new Dialog(activity, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);
@@ -492,7 +437,9 @@ public class Dates  {
         }).sendEmptyMessageDelayed(0, 2000);
 
     }
-
+    /**
+     *   展示dailog
+     */
     public static void getDialogs(Activity activity, String str) {
         progressDialog = new Dialog(activity, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);

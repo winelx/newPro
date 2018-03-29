@@ -277,4 +277,5 @@ public class MainActivity extends AppCompatActivity {
         SPUtils.putString(mContext, "Jpmap", "ss");
                 CallBackUtils.doCallBackMethod();
     }
+
 }

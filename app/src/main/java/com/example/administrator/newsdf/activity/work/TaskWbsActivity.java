@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -133,8 +132,6 @@ public class TaskWbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-
-                        Log.i("result",result);
                         addOrganizationList(result);
                     }
                     @Override
@@ -384,7 +381,6 @@ public class TaskWbsActivity extends Activity {
 
     public void switchAct(Node node) {
         if (node.iswbs()) {
-            Log.i("result","跳转回去");
                     Intent list = new Intent();
                     list.putExtra("id", node.getId());
                     list.putExtra("title", node.getName());

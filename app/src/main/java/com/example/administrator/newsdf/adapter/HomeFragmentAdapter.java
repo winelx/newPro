@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.utils.LeftSlideView;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
 
 import java.util.ArrayList;
@@ -49,8 +50,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
 
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-
-
         //item正文点击事件
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,17 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //删除置顶项
+                SPUtils.deleShare(mContext,"hometop");
+                Home_item   home_item =mDatas.get(position);
+                mDatas.add(0,home_item);
+                mDatas.remove(position+1);
+                getData(mDatas);
+                //重新写入置顶项
+                SPUtils.putString(mContext,"hometop",home_item.getId());
+                if (menuIsOpen()) {
+                    closeMenu();//关闭菜单
+                }
             }
         });
 

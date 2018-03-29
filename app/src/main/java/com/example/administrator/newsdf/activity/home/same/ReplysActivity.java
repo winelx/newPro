@@ -117,6 +117,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +181,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
             title.setText("我很主动");
         }
-            wbs_text.setText(wbsname);
+        wbs_text.setText(wbsname);
         reply_text.setText(content);
         baoxun.setVisibility(View.VISIBLE);
         baoxun.setImageResource(R.mipmap.reply_baocun);
@@ -490,7 +491,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-String titles;
+
+    String titles;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -507,7 +509,7 @@ String titles;
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点
             checkId = data.getStringExtra("id");
-            titles=data.getStringExtra("name");
+            titles = data.getStringExtra("name");
             reply_check_item.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //相册
@@ -535,15 +537,13 @@ String titles;
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
                 public void takePhotoFinish(final String path) {
-//                    ToastUtils.showLongToast("照片存放在：" + path);
-                    //根据路径压缩图片并返回bitmap(2
-                    Bitmap bitmap = Dates.getBitmap(path);
+                    Bitmap bitmap = Dates.compressPixel(path);
                     //给压缩的图片添加时间水印(1)
                     String time = Dates.getDate();
                     Bitmap textBitmap = null;
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
                             bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
-                    //保存添加水印的时间的图片
+                    //压缩保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
@@ -552,7 +552,7 @@ String titles;
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
-//                    //删除原图
+                           //删除原图
                             Dates.deleteFile(path);
                         }
                     });
@@ -772,7 +772,7 @@ String titles;
                                     photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //titles
-                                mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
+                                mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -781,7 +781,7 @@ String titles;
                                 photoPopPaths.clear();
                                 photoPopPaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            mAdapter.getData(photoPopPaths,wbs_text.getText().toString());
+                            mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
                         }
 
                     }

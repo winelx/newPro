@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -147,7 +146,6 @@ public class PieChartOne extends View {
                 canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);
                 //边框线
                 canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);
-                Log.i("sss", list.get(i).getValuer());
                 initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%", list.get(i).getValuer());
                 pieStart += mSweep[i];
             }
@@ -190,13 +188,13 @@ public class PieChartOne extends View {
         //文字如果在右边，减去文字的宽度 - 30个像素
         if (stopX > 0) {
             //50为横线的长度 60 为文字的偏移量
-            canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(10), ceterY + stopY, linePaint);
+            canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(15), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY + h / 3, textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+//            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         } else {
-            canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(10), ceterY + stopY, linePaint);
+            canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(12), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + h / 3, textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+//            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         }
 
     }

@@ -556,7 +556,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     void getJson(String s) {
         refreshLayout.finishRefresh(true);
         if (s.contains("data")) {
-            Log.i("result","有数据");
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -587,7 +586,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             }
         } else {
-            Log.i("result","没有数据");
           ToastUtils.showShortToast("没有更多数据了！");
             if (!swip) {
                 mDatas.clear();
@@ -728,15 +726,13 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
+     * 弹出的popWin关闭的事件，主要是为了将背景透明度改回来
      *
      * @author cg
      */
     class poponDismissListener implements PopupWindow.OnDismissListener {
-
         @Override
         public void onDismiss() {
-            // TODO Auto-generated method stub
             backgroundAlpha(1f);
         }
 

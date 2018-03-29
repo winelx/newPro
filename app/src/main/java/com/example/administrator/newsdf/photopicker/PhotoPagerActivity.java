@@ -66,6 +66,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private HorizontalScrollView picker_horizon;
     private String Title;
     /**
+     * ExternalStorage/Android/data/${packageName}/tiny/
      * 异步get,直接调用
      */
     private OkHttpClient client;
@@ -77,6 +78,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 case 1:
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
+                    //压缩并保存
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
@@ -104,7 +106,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 default:
                     break;
             }
-
         }
     };
 

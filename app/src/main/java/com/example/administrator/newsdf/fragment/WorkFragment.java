@@ -168,7 +168,6 @@ public class WorkFragment extends Fragment {
                             number = 0;
                             JSONObject jsonObject = new JSONObject(s);
                             if (s.indexOf("data") != -1) {
-                                System.out.println("包含");
                                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray1.length(); i++) {
                                     JSONObject json = jsonArray1.getJSONObject(i);

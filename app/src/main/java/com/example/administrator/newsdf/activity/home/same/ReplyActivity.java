@@ -188,16 +188,16 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
             title.setText("我很主动");
         }
-
-
+        //展示wbsname
         if (wbsname != null && wbsname.length() != 0) {
             wbs_text.setText(wbsname);
         }
+        //根据wbsname的长度判断默认是否展示图册按钮
         if (TextUtils.isEmpty(wbsID)) {
             fab.setVisibility(View.GONE);
         }
+        //展示专递过来的回复数据
         reply_text.setText(content);
-
         baoxun.setVisibility(View.VISIBLE);
         baoxun.setImageResource(R.mipmap.reply_baocun);
         //sp帮助类
@@ -229,12 +229,15 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
+        //侧拉界面listview
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
+        //侧拉界面
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer.setScrimColor(Color.TRANSPARENT);
+        //图册查看按钮
         fab = (CircleImageView) findViewById(R.id.fabloating);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,23 +248,33 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 drawer.openDrawer(GravityCompat.START);
             }
         });
+        //下拉控件，禁止下拉，只允许上拉加载更多
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         smartRefreshLayout.setEnableRefresh(false);
+
         lin_sdfg = (LinearLayout) findViewById(R.id.lin_sdfg);
+        //进度条
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
         //图片
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
         repley_address = (TextView) findViewById(R.id.repley_address);
         reply_text = (EditText) findViewById(R.id.reply_text);
         address = (ImageView) findViewById(R.id.address);
+        //上传数据
         com_button = (TextView) findViewById(R.id.com_button);
+        //检查项
         reply_check_item = (TextView) findViewById(R.id.reply_check_item);
+        //保存
         baoxun = (ImageView) findViewById(R.id.com_img);
+        //wbs
         wbs_text = (TextView) findViewById(R.id.wbs_text);
+        //标题
         title = (TextView) findViewById(R.id.com_title);
         findViewById(R.id.reply_wbs).setOnClickListener(this);
         findViewById(R.id.reply_check).setOnClickListener(this);
+
         Progessn = (LinearLayout) findViewById(R.id.Progess);
+        //进度条
         mProgressBar = (ProgressBar) findViewById(R.id.reply_bar);
         findViewById(R.id.com_back).setOnClickListener(this);
         /**
@@ -445,7 +458,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-
                                 ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
@@ -461,19 +473,16 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                 ToastUtils.showShortToast(msg);
                                 popupWindow.dismiss();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         popupWindow.dismiss();
                         popstatus = false;
                     }
-
                     //进度条
                     @Override
                     public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
@@ -484,8 +493,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 });
 
     }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -508,11 +515,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             default:
                 break;
         }
-
     }
-
     String Titles;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -613,19 +617,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
                 // 纬度
-                sb.append("\nlatitude : ");
-                sb.append(location.getLatitude());
                 Latitude = location.getLatitude() + "";
                 // 经度
-                sb.append("\nlontitude : ");
-                sb.append(location.getLongitude());
                 Longitude = location.getLongitude() + "";
-                // 地址信息
-                sb.append("\naddr : ");
                 Bai_address = location.getAddrStr();
                 if (Bai_address != null && !Bai_address.equals("")) {
                 } else {
-                    Bai_address = "";
+                    Bai_address ="";
                 }
                 repley_address.setText(location.getAddrStr());
                 // 定位停止SDK

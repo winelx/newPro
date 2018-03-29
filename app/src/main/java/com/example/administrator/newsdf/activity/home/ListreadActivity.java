@@ -72,7 +72,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     private Imageloaders mAdapter = null;
     private TaskPhotoAdapter taskAdapter;
     private TextView Titlew, intent_loading_text, delete_search;
-
     private EditText search_editext;
     private String id, wbsid, intent_back, name = "";
     private LinearLayout imageView, intent_loading;

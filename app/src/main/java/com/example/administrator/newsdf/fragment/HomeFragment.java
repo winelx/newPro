@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,9 @@ import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.CallBack;
-import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -75,7 +73,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (parent != null) {
             parent.removeView(rootView);
         }
-
         mContext = getActivity();
         init();
         return rootView;
@@ -105,7 +102,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 refreshlayout.finishRefresh(1200);
             }
         });
-
+        Okgo();
     }
 
     //网络请求
@@ -140,6 +137,26 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                 }
                                 //请求到的数据不为空
                                 if (mData.size() != 0) {
+                                    try {
+                                        //初始化时没有这个参数，避免非空异常抛
+                                        String ID = SPUtils.getString(mContext, "hometop", "");
+                                        //便利集合拿到置顶的放在第一个，并删除原来位置的数据
+                                        for (int i = 0; i < mData.size(); i++) {
+                                            //拿到ID
+                                            String itemId = mData.get(i).getId();
+                                            //对比ID 如果相等
+                                            if (itemId.equals(ID)) {
+                                              //获取对象，
+                                                Home_item home_item = mData.get(i);
+                                                //并添加到第一位
+                                                mData.add(home_item);
+                                                //删除原来位置的数据，由于在第一位加了一条相同数据，删除原来的位置数据
+                                                mData.remove(i + 1);
+                                            }
+                                        }
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
                                 } else {
@@ -182,7 +199,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onStart() {
         super.onStart();
-        Okgo();
+
     }
 
     @Override
