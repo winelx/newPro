@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,20 +12,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
-import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.adapter.AllMessageAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.CallBack;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,7 +51,7 @@ import okhttp3.Response;
  *         update: 2018/3/16 0016
  *         version:
  */
-public class AllMessageFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class AllMessageFragment extends Fragment implements CallBack{
     private View rootView;
     private RecyclerView listView;
     private AllMessageAdapter mAdapter = null;
@@ -60,7 +61,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
-
+    private ArrayList<String> placedTop;
     @Nullable
 
     @Override
@@ -82,6 +83,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         }
         mContext = MainActivity.getInstance();
         //控件处理
+        CallBackUtils.setCallBack(this);
         init();
         //网络请求
         Okgo();
@@ -118,18 +120,18 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     /**
      * 网络请求
      */
-    private void Okgo() {
+    public void Okgo() {
+        putTop();
         OkGo.post(Request.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int code = jsonObject.getInt("ret");
-
                                 if (code == 0) {
                                     listView.setVisibility(View.VISIBLE);
                                     mData.clear();
@@ -148,21 +150,37 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish));
-                                }
-                                if (mData.size() != 0) {
-                                    try {
-                                        String ID = SPUtils.getString(mContext, "Alltop", "");
-                                        for (int i = 0; i < mData.size(); i++) {
-                                            String itemId = mData.get(i).getId();
-                                            if (ID.equals(itemId)){
-                                                Home_item home_item = mData.get(i);
-                                                mData.add(0,home_item);
-                                                mData.remove(i + 1);
-                                            }
+                                    if (placedTop.size()>0){
+                                        if (placedTop.contains(id)){
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,true));
+                                        }else {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
                                         }
-                                    } catch (NullPointerException e) {
-                                        e.printStackTrace();
+                                    }else {
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
+                                    }
+
+                                }
+                                //是否有数据
+                                if (mData.size() != 0) {
+                                    //数据库是否有数据
+                                    if (placedTop.size()!=0){
+                                        try {
+                                            for (int i = 0; i <placedTop.size() ; i++) {
+                                               String str= placedTop.get(i);
+                                                for (int j = 0; j <mData.size() ; j++) {
+                                                   String id= mData.get(j).getId();
+                                                   if (str.equals(id)){
+                                                      Home_item home_item= mData.get(j);
+                                                       mData.add(0,home_item);
+                                                       mData.remove(j+1);
+                                                   }
+                                                }
+                                            }
+
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
@@ -197,15 +215,7 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //跳转列表界面
-        Intent intent = new Intent(mContext, ListreadActivity.class);
-        intent.putExtra("name", mData.get(position).getOrgname());
-        intent.putExtra("orgId", mData.get(position).getOrgid());
-        startActivity(intent);
 
-    }
 
     @Override
     public void onStart() {
@@ -219,5 +229,25 @@ public class AllMessageFragment extends Fragment implements AdapterView.OnItemCl
         super.onDestroy();
         //关闭刷新
         refreshLayout.finishRefresh(false);
+    }
+
+    public void putTop(){
+        placedTop=new ArrayList<>();
+        List<Shop> list= new  ArrayList<>();
+        list= LoveDao.ALLCart();
+        for (int i = 0; i <list.size() ; i++) {
+            placedTop.add(list.get(i).getWebsid());
+        }
+    }
+
+
+    @Override
+    public void doSomeThing(String string) {
+
+    }
+        //接收适配器的消息，刷新数据
+    @Override
+    public void deleteTop(int pos,String str) {
+        Okgo();
     }
 }

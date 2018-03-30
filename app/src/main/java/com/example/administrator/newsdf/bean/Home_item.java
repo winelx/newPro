@@ -13,14 +13,15 @@ public class Home_item {
     String orgid;
     String orgname;
     String unfinish;
-
-    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish) {
+    boolean putTop;
+    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish,boolean putTop) {
         this.content = content;
         this.creaeTime = creaeTime;
         this.id = id;
         this.orgid = orgid;
         this.orgname = orgname;
         this.unfinish = unfinish;
+        this.putTop = putTop;
     }
 
     public String getContent() {
@@ -69,5 +70,12 @@ public class Home_item {
 
     public void setUnfinish(String unfinish) {
         this.unfinish = unfinish;
+    }
+
+    public boolean isPutTop() {
+        return putTop;
+    }
+    public void setPutTop(boolean putTop) {
+        this.putTop = putTop;
     }
 }

@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
 
 import java.util.ArrayList;
@@ -70,19 +72,47 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //删除置顶项
-                SPUtils.deleShare(mContext,"hometop");
-                Home_item   home_item =mDatas.get(position);
-                mDatas.add(0,home_item);
-                mDatas.remove(position+1);
-                getData(mDatas);
-                //重新写入置顶项
-                SPUtils.putString(mContext,"hometop",home_item.getId());
+                //创建集合
+                List<Shop> list =new  ArrayList<Shop>();
+                //拿到数据
+                list= LoveDao.MineCart();
+               if (mDatas.get(position).isPutTop()){
+                    // 状态为ture 为置顶状态 点击为取消
+                    //拿到当前item的ID
+                    String str=mDatas.get(position).getId();
+                    //便利数据库数据
+                    for (int i = 0; i <list.size() ; i++) {
+                        //拿到数据库ID
+                        String wbsID=list.get(i).getWebsid();
+                        //数据库ID与当前节点id
+                        if (str.equals(wbsID)){
+                            //相等就删除
+
+                            LoveDao.deleteLove(list.get(i).getId());
+                            CallBackUtils.dohomeCallBackMethod();
+                        }
+                    }
+                }else {
+                    //状态为false 点击为置顶
+                    //添加置顶
+                    Shop shop=new Shop();
+                    //保存ID
+                   shop.setWebsid(mDatas.get(position).getId());
+                   shop.setType(Shop.TYPE_MINE);
+                   LoveDao.insertLove(shop);
+
+                   CallBackUtils.dohomeCallBackMethod();
+                }
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 }
             }
         });
+        if (mDatas.get(position).isPutTop()){
+            holder.btn_Delete.setText("取消置顶");
+        }else {
+            holder.btn_Delete.setText("置顶");
+        }
 
         /**
          *

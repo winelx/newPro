@@ -1,8 +1,6 @@
 package com.example.administrator.newsdf.adapter;
 
-/**
- * Created by Administrator on 2017/12/27 0027.
- */
+
 
 
 import android.content.Context;
@@ -32,9 +30,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
     private List<Shop> mDatas = new ArrayList<Shop>();
 
     private LeftSlideView mMenu = null;
-
+    private IonSlidingViewClickListener mIDeleteBtnClickListener;
     public Adapter(Context context) {
         mContext = context;
+        mIDeleteBtnClickListener = (IonSlidingViewClickListener) context;
     }
 
     @Override
@@ -176,5 +175,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> implemen
         mDatas = shops;
         notifyDataSetChanged();
     }
+    /**
+     * 注册接口的方法：点击事件。在Mactivity.java实现这些方法。
+     */
+    public interface IonSlidingViewClickListener {
 
+        void onDeleteBtnCilck(View view, int position);//点击“删除”
+
+    }
 }

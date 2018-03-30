@@ -133,4 +133,10 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
     public void doSomeThing(String string) {
         pointRed.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void deleteTop(int pos, String str) {
+
+    }
+
 }

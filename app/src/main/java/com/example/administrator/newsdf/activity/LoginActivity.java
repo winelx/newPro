@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+
                     }
                 });
     }
@@ -121,10 +123,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .params("mobileLogin", true)
                 .execute(new StringCallback() {
                     @Override
-                    public void onSuccess(String msg, Call call, Response respons) {
+                    public void onSuccess(String result, Call call, Response respons) {
                             try {
-                                JSONObject jsonObject = new JSONObject(msg);
+                                JSONObject jsonObject = new JSONObject(result);
                                 int ret = jsonObject.getInt("ret");
+                                String msg =jsonObject.getString("msg");
+                                ToastUtils.showLongToast(msg);
                                 if (ret != 0) {
                                     Dates.disDialog();
                                 }

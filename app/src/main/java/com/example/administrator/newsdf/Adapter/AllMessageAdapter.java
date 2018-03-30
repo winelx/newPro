@@ -14,19 +14,18 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 这里未上传资料的recycler的适配器
- */
 public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
 
     private Context mContext;
@@ -35,8 +34,10 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
 
     private LeftSlideView mMenu = null;
 
+
     public AllMessageAdapter(Context context) {
         mContext = context;
+
     }
 
     @Override
@@ -68,20 +69,41 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         //左滑置顶点击事件
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Home_item home_item = mDatas.get(position);
-                SPUtils.deleShare(mContext, "Alltop");
-                mDatas.add(0, home_item);
-                mDatas.remove(position + 1);
-                //重新写入置顶项
-                SPUtils.putString(mContext,"Alltop",home_item.getId());
-                getData(mDatas);
+            public void  onClick(View view) {
+                if (mDatas.get(position).isPutTop()){
 
+                    List<Shop> list =new  ArrayList<Shop>();
+                    list= LoveDao.ALLCart();
+                    // 状态为ture 为置顶状态 点击为取消
+                    //删除置顶
+                     String str=mDatas.get(position).getId();
+                    for (int i = 0; i <list.size() ; i++) {
+                        String wbsID=list.get(i).getWebsid();
+                        if (str.equals(wbsID)){
+                            LoveDao.deleteLove(list.get(i).getId());
+                            CallBackUtils.removeCallBackMethod(position,"删除");
+                        }
+                    }
+                }else {
+                   //状态为false 点击为置顶
+                   //添加置顶
+                    Shop shop=new Shop();
+                    //保存ID
+                    shop.setWebsid(mDatas.get(position).getId());
+                    shop.setType(Shop.TYPE_ALL);
+                    LoveDao.insertLove(shop);
+                    CallBackUtils.removeCallBackMethod(position,"增加");
+                }
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 }
             }
         });
+        if (mDatas.get(position).isPutTop()){
+            holder.btn_Delete.setText("取消置顶");
+        }else {
+            holder.btn_Delete.setText("置顶");
+        }
         //判断是否有消息
         String mess = mDatas.get(position).getUnfinish();
         if (mDatas.get(position).getUnfinish().length() != 0) {
@@ -122,7 +144,6 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         public TextView btn_Delete;
         public RelativeLayout layout_content;
         public RelativeLayout relativeLayout;
@@ -154,15 +175,6 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         }
     }
 
-    /**
-     * 删除item
-     *
-     * @param position
-     */
-    public void removeData(int position) {
-        mDatas.remove(position);
-        notifyItemRemoved(position);
-    }
 
     /**
      * 删除菜单打开信息接收
@@ -211,5 +223,6 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         mDatas = shops;
         notifyDataSetChanged();
     }
+
 
 }

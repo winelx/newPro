@@ -3,13 +3,10 @@ package com.example.administrator.newsdf.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -26,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -48,7 +47,7 @@ import java.util.List;
  * 时间：2017/11/27 0027:下午 14:59
  * 说明：
  */
-public class Dates  {
+public class Dates {
     private static Dialog progressDialog;
     private static ArrayList<String> JpMap = new ArrayList<>();
 
@@ -232,45 +231,7 @@ public class Dates  {
     }
 
 
-    /**
-     * 保存添加水印的 图片
-     */
-    public static String saveImageToGallery(Context context, Bitmap bmp) {
-        // 首先保存图片
-        // Environment.getExternalStorageDirectory()==/storage/emulated/0/   Boohee：为指定的文件夹
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        //设置系统时间为文件名
-        String fileName = System.currentTimeMillis() + ".jpg";
-        //文件夹和文件名
-        File file = new File(appDir, fileName);
-        try {
-            //使用输入流将数据写入本地，
-            FileOutputStream fos = new FileOutputStream(file);
-            //设置保存的 文件格式，是否压缩，输入流
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush(); //刷新文件流
-            fos.close();//关闭输入流
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /**
-         * 其次把文件插入到系统图库
-         * 注：这段代码会保存两张图片；
-         *
-         */
-        // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-        // 返回路径展示图片
-        return appDir + "/" + fileName;
-
-    }
-
-    public static String downloadPhoto (Bitmap bmp,String Title) {
+    public static String downloadPhoto(Bitmap bmp, String Title) {
         // 首先保存图片
         File appDir = new File("ExternalStorage/Android/data/${packageName}/", "picker");
         if (!appDir.exists()) {
@@ -296,8 +257,6 @@ public class Dates  {
     }
 
 
-
-
     public static Bitmap compressPixel(String filePath) {
         Bitmap bmp = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -316,8 +275,6 @@ public class Dates  {
                     inputStream = new FileInputStream(filePath);
                     BitmapFactory.decodeStream(inputStream, null, options);
                     inputStream.close();
-                } catch (FileNotFoundException exception) {
-                    exception.printStackTrace();
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
@@ -328,7 +285,6 @@ public class Dates  {
             return bmp;
         }
     }
-
 
 
     /**
@@ -417,6 +373,7 @@ public class Dates  {
 
     /**
      * 定时自动取消的dialog
+     *
      * @param activity
      * @param str
      */
@@ -437,8 +394,9 @@ public class Dates  {
         }).sendEmptyMessageDelayed(0, 2000);
 
     }
+
     /**
-     *   展示dailog
+     * 展示dailog
      */
     public static void getDialogs(Activity activity, String str) {
         progressDialog = new Dialog(activity, R.style.progress_dialog);
@@ -498,7 +456,56 @@ public class Dates  {
     public void addPut() {
         JpMap.add("消息");
     }
-    public void getclear(){
+
+    public void getclear() {
         JpMap.clear();
+    }
+
+    public static void WriteFile(String content) {
+        FileOutputStream fop = null;
+        File file = null;
+        try {
+            file = new File("ExternalStorage/Android/data/${packageName}/newfile.txt");
+            fop = new FileOutputStream(file);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            byte[] contentInBytes = content.getBytes();
+            fop.write(contentInBytes);
+            fop.flush();
+            fop.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fop != null) {
+                    fop.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //效率高
+    public static String readTxtFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (file.isFile() && file.exists()) {
+                InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "utf-8");
+                BufferedReader br = new BufferedReader(isr);
+                String lineTxt = null;
+                while ((lineTxt = br.readLine()) != null) {
+                    System.out.println(lineTxt);
+                    return lineTxt;
+                }
+                br.close();
+            } else {
+                System.out.println("文件不存在!");
+            }
+        } catch (Exception e) {
+            System.out.println("文件读取错误!");
+        }
+        return null;
     }
 }

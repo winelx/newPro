@@ -15,14 +15,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.CallBackUtils;
+import com.example.administrator.newsdf.service.HomeCallback;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -44,7 +48,7 @@ import okhttp3.Response;
  *         Created by Administrator on 2017/11/21 0021.
  */
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener , HomeCallback {
     private View rootView;
     private RecyclerView listView;
     private HomeFragmentAdapter mAdapter;
@@ -54,7 +58,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
-
+    private List<String> placedTop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +77,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (parent != null) {
             parent.removeView(rootView);
         }
+        CallBackUtils.sethomeCallBack(this);
+
         mContext = getActivity();
         init();
         return rootView;
@@ -107,11 +113,13 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     //网络请求
     private void Okgo() {
+        //请求数据库的数据
+        getPutTop();
         OkGo.post(Request.TaskMain)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int code = jsonObject.getInt("ret");
@@ -133,56 +141,66 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish));
-                                }
-                                //请求到的数据不为空
-                                if (mData.size() != 0) {
-                                    try {
-                                        //初始化时没有这个参数，避免非空异常抛
-                                        String ID = SPUtils.getString(mContext, "hometop", "");
-                                        //便利集合拿到置顶的放在第一个，并删除原来位置的数据
-                                        for (int i = 0; i < mData.size(); i++) {
-                                            //拿到ID
-                                            String itemId = mData.get(i).getId();
-                                            //对比ID 如果相等
-                                            if (itemId.equals(ID)) {
-                                              //获取对象，
-                                                Home_item home_item = mData.get(i);
-                                                //并添加到第一位
-                                                mData.add(home_item);
-                                                //删除原来位置的数据，由于在第一位加了一条相同数据，删除原来的位置数据
-                                                mData.remove(i + 1);
-                                            }
+                                    if (placedTop.size()>0){
+                                        if (placedTop.contains(id)){
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,true));
+                                        }else {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
                                         }
-                                    } catch (NullPointerException e) {
-                                        e.printStackTrace();
+                                    }else {
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
+                                    }
+
+                                }
+                                //是否有数据
+                                if (mData.size() != 0) {
+                                    //数据库是否有数据
+                                    if (placedTop.size()!=0){
+                                        try {
+                                            for (int i = 0; i <placedTop.size() ; i++) {
+                                                String str= placedTop.get(i);
+                                                for (int j = 0; j <mData.size() ; j++) {
+                                                    String id= mData.get(j).getId();
+                                                    if (str.equals(id)){
+                                                        Home_item home_item= mData.get(j);
+                                                        mData.add(0,home_item);
+                                                        mData.remove(j+1);
+                                                    }
+                                                }
+                                            }
+
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
+
                                 } else {
-                                    //请求到的数据为空
                                     home_frag_img.setVisibility(View.VISIBLE);
                                     home_img_text.setText("数据为空，点击刷新");
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
+
                             ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("数据为空，点击刷新");
+
                         }
-                        Dates.disDialog();
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showShortToast("网络请求失败,请求确认网络是否正常");
+                        ToastUtils.showShortToast("网络连接失败");
                         home_frag_img.setVisibility(View.VISIBLE);
                         home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
                         home_img_text.setText("请求确认网络是否正常，点击再次请求");
-                        Dates.disDialog();
+
                     }
                 });
     }
@@ -210,5 +228,24 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         refreshLayout.finishRefresh(false);
     }
 
+    /**
+     * 获取数据库数据
+     */
+    public  void getPutTop(){
 
+        placedTop=new ArrayList<>();
+        List<Shop> list =new ArrayList<>();
+        //取出数据库的数据
+        list= LoveDao.MineCart();
+        //取出ID
+        for (int i = 0; i <list.size() ; i++) {
+            placedTop.add(list.get(i).getWebsid());
+        }
+    }
+
+    @Override
+    public void doSomeThing() {
+
+        Okgo();
+    }
 }

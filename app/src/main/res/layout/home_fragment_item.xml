@@ -30,12 +30,13 @@
 
         <TextView
             android:id="@+id/tv_delete"
-            android:layout_width="60dp"
+            android:layout_width="70dp"
+            android:layout_marginRight="10dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/tv_set"
             android:background="@color/red"
             android:gravity="center"
-            android:text="置 顶"
+            android:text="置顶"
             android:textColor="#DDFFFFFF"
             android:textSize="18dp" />
 

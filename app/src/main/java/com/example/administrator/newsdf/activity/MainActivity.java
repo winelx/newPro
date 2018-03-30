@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
         SPUtils.putString(mContext, "Jpmap", "ss");
-                CallBackUtils.doCallBackMethod();
+       CallBackUtils.doCallBackMethod();
     }
 
 }
