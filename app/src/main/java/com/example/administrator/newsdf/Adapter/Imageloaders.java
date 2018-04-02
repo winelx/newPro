@@ -32,6 +32,7 @@ import static com.example.administrator.newsdf.R.id.inface_item_message;
 import static com.example.administrator.newsdf.R.id.inface_status_true;
 
 /**
+ * 全部任务列表界面的listview 的adapter
  * Created by Administrator on 2018/1/22 0022.
  */
 
@@ -220,6 +221,12 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_relat1.setVisibility(View.GONE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
+                            //截取出后缀
+                            String  pas = imgUrl.substring(imgUrl.length()-4,imgUrl.length());
+                            //拿到截取后缀后的字段
+                            imgUrl=   imgUrl.replace(pas,"");
+                            //在字段后面添加_min后再拼接后缀
+                            imgUrl=imgUrl+"_min"+pas;
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
                         }
                         if (path.size() >= 2) {
@@ -275,8 +282,15 @@ public class Imageloaders extends BaseAdapter {
                                     //设置文字背景色
                                     holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                 } else {
+
                                     holder.inface_image2.setDefaultImageResId(R.mipmap.image_loading);
                                     holder.inface_image2.setErrorImageResId(R.mipmap.image_error);
+                                    //截取出后缀
+                                    String  pas = imgUrl1.substring(imgUrl1.length()-4,imgUrl1.length());
+                                    //拿到截取后缀后的字段
+                                    imgUrl1=   imgUrl1.replace(pas,"");
+                                    //在字段后面添加_min后再拼接后缀
+                                    imgUrl1=imgUrl1+"_min"+pas;
                                     holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
                                 }
                                 if (path.size() >= 3) {
@@ -339,6 +353,12 @@ public class Imageloaders extends BaseAdapter {
                                             holder.inface_image3.setVisibility(View.VISIBLE);
                                             holder.inface_image3.setDefaultImageResId(R.mipmap.image_loading);
                                             holder.inface_image3.setErrorImageResId(R.mipmap.image_error);
+                                            //截取出后缀
+                                            String  pas = imgUrl2.substring(imgUrl2.length()-4,imgUrl2.length());
+                                            //拿到截取后缀后的字段
+                                            imgUrl2=   imgUrl2.replace(pas,"");
+                                            //在字段后面添加_min后再拼接后缀
+                                            imgUrl2=imgUrl2+"_min"+pas;
                                             holder.inface_image3.setImageUrl(imgUrl2, imageLoader);
                                         }
                                     }

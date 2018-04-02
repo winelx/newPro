@@ -65,6 +65,8 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String result;
     private HorizontalScrollView picker_horizon;
     private String Title;
+    //下载后的图片存储路径
+    private String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
     /**
      * ExternalStorage/Android/data/${packageName}/tiny/
      * 异步get,直接调用
@@ -86,7 +88,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                             //设置系统时间为文件名
                             Shop shop = new Shop();
                             shop.setType(Shop.TYPE_CART);
-                            shop.setImage_url(outfile);
+                            shop.setImage_url(strpath+Title);
                             shop.setName(result);
                             shop.setContent(Title);
                             shop.setTimme(getDate());

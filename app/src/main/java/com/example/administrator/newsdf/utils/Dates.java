@@ -230,10 +230,30 @@ public class Dates {
         file.delete();
     }
 
+   /**
+     * 复制文件
+     * @param fromFile
+     * @param toFile
+     * <br/>
+     */
+    public void copyFile(File fromFile,File toFile) throws IOException{
+        FileInputStream ins = new FileInputStream(fromFile);
+        FileOutputStream out = new FileOutputStream(toFile);
+        byte[] b = new byte[1024];
+        int n=0;
+        while((n=ins.read(b))!=-1){
+            out.write(b, 0, n);
+        }
+        ins.close();
+        out.close();
+    }
+
+
 
     public static String downloadPhoto(Bitmap bmp, String Title) {
         // 首先保存图片
-        File appDir = new File("ExternalStorage/Android/data/${packageName}/", "picker");
+        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
+        File appDir = new File(strpath, "picker");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -254,6 +274,39 @@ public class Dates {
         // 返回路径展示图片
         return appDir + "/" + Title;
 
+    }
+
+    public static String  saveBitmap(Bitmap bitmap,String bitName) throws IOException
+    {
+        String strpaths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
+        File appDir = new File(strpaths, "picker");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+
+        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
+        File file = new File(strpath+bitName);
+        if(file.exists()){
+            file.delete();
+        }
+        FileOutputStream out;
+        try{
+            out = new FileOutputStream(file);
+            if(bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out))
+            {
+                out.flush();
+                out.close();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return strpath+bitName;
     }
 
 
@@ -507,5 +560,33 @@ public class Dates {
             System.out.println("文件读取错误!");
         }
         return null;
+    }
+
+
+    public static  void  createmkdir(){
+        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
+        File appDir = new File(strpath, "picker");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+    }
+    public static double getDirSize(File file) {
+        //判断文件是否存在
+        if (file.exists()) {
+            //如果是目录则递归计算其内容的总大小
+            if (file.isDirectory()) {
+                File[] children = file.listFiles();
+                double size = 0;
+                for (File f : children)
+                    size += getDirSize(f);
+                return size;
+            } else {//如果是文件则直接返回其大小,以“兆”为单位
+                double size = (double) file.length() / 1024 / 1024;
+                return size;
+            }
+        } else {
+            System.out.println("文件或者文件夹不存在，请检查路径是否正确！");
+            return 0.0;
+        }
     }
 }

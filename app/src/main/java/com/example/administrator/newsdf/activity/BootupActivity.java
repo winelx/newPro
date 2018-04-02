@@ -22,6 +22,8 @@ import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +81,16 @@ public class BootupActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
+                    //为pdf创建文件路径，
+                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    Tiny.getInstance().source(R.mipmap.add).asFile().withOptions(options).compress(new FileCallback() {
+                        @Override
+                        public void callback(boolean isSuccess, String outfile) {
+                            //不需要压缩后的图，删除
+                            Dates.deleteFile(outfile);
+                        }
+                    });
+                    Dates.createmkdir();
                     finish();
                 } else {
                     //如果已经存在，

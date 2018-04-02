@@ -174,7 +174,7 @@ public class PieChartOne extends View {
         stopX = (radius + dip2px(5)) * cosX;
         stopY = (radius + dip2px(5)) * sinY;
         //扇形弧边的中点的X,Y 为起点，然后算出中间点的角度，加上半径+1个像素 得出终点的XY轴，
-        canvas.drawLine(ceterX + (radius - dip2px(1)) * cosX, ceterY + (radius - dip2px(1)) * sinY,
+        canvas.drawLine(ceterX + (radius - dip2px(3)) * cosX, ceterY + (radius - dip2px(3)) * sinY+dip2px(3),
                 stopX + ceterX, stopY + ceterY, linePaint);
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 00, text.length(), rect);
@@ -190,11 +190,11 @@ public class PieChartOne extends View {
             //50为横线的长度 60 为文字的偏移量
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(15), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY + h / 3, textPaint);
-//            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         } else {
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(12), ceterY + stopY, linePaint);
             canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + h / 3, textPaint);
-//            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         }
 
     }

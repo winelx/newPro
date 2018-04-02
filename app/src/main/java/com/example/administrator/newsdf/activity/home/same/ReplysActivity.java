@@ -521,7 +521,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             //添加进集合
-
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);

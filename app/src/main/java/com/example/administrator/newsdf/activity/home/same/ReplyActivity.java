@@ -75,6 +75,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.utils.Dates.compressPixel;
+
 
 /**
  * description: 主动上传任务界面
@@ -548,7 +550,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
-//                    //删除原图
 
                         }
                     });
@@ -563,7 +564,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void takePhotoFinish(final String path) {
                     //   根据路径压缩图片并返回bitmap(2
-                    Bitmap bitmap = Dates.compressPixel(path);
+                    Bitmap bitmap = compressPixel(path);
                     //给压缩的图片添加时间水印(1)
                     String time = Dates.getDate();
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
@@ -573,9 +574,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            //添加进集合
-                            pathimg.add(outfile);
-                            //填入listview，刷新界面
+                                pathimg.add(outfile);
+                                //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
 //                    //删除原图
                             Dates.deleteFile(path);
@@ -586,7 +586,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             });
         }
     }
-
     /***
      * Stop location service
      */

@@ -37,6 +37,7 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -112,6 +113,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         if (parent != null) {
             parent.removeView(rootView);
         }
+        double totalSize=    Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
+        totalSize=-   totalSize*1024*1024;
+        Log.i("ssss",totalSize+"");
         return rootView;
     }
 
