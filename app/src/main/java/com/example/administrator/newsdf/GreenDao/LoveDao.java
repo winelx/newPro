@@ -45,16 +45,23 @@ public class LoveDao {
     public static List<Shop> queryLove() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_LOVE)).list();
     }
+
     // 下载图片
     public static List<Shop> queryCart() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
     }
+
     //用户置顶
     public static List<Shop> ALLCart() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_ALL)).list();
     }
+
     //用户置顶
     public static List<Shop> MineCart() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_MINE)).list();
+    }//用户置顶
+
+    public static List<Shop> JPushCart() {
+        return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();
     }
 }

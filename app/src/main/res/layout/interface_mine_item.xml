@@ -10,8 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="15dp"
         android:background="#e4c2c2c2"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -24,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:padding="0dp"
         app:cardCornerRadius="4dp">
 
@@ -81,7 +79,7 @@
                 android:layout_below="@+id/inter_data"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料"
                 android:textColor="@color/inter_text"
                 android:textSize="13sp" />
@@ -91,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@+id/inter_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/back" />
 
             <TextView

@@ -59,6 +59,17 @@ public class SPUtils {
         SharedPreferences sp = mContext.getSharedPreferences(NAME, Context.MODE_PRIVATE);
         sp.edit().clear().commit();
     }
+    /**
+     * SP中是否存在该key
+     *
+     * @param key 键
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean contains(Context mContext, String key) {
+        SharedPreferences sp = mContext.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return sp.contains(key);
+    }
+
 
 
 }

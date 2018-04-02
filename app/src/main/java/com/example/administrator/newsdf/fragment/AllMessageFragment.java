@@ -84,6 +84,7 @@ public class AllMessageFragment extends Fragment implements CallBack{
         mContext = MainActivity.getInstance();
         //控件处理
         CallBackUtils.setCallBack(this);
+
         init();
         //网络请求
         Okgo();
@@ -241,10 +242,7 @@ public class AllMessageFragment extends Fragment implements CallBack{
     }
 
 
-    @Override
-    public void doSomeThing(String string) {
 
-    }
         //接收适配器的消息，刷新数据
     @Override
     public void deleteTop(int pos,String str) {

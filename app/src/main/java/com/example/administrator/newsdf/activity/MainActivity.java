@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +16,17 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
-import com.example.administrator.newsdf.service.CallBackUtils;
+import com.example.administrator.newsdf.service.JPushCallUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.UpdateService;
@@ -35,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -43,8 +48,6 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.example.administrator.newsdf.utils.Dates.getsize;
 
 
 /**
@@ -64,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private String version;
     private WbsDialog selfDialog;
     private TextView home_img_red;
-    private int JpMap;
-    private Handler submit;
+    List<Shop> list;
 
     public static MainActivity getInstance() {
         return mContext;
@@ -73,6 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
     private long exitTime = 0;
     int width = 0;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    home_img_red.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    home_img_red.setVisibility(View.GONE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
@@ -84,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = this;
         dates = new Dates();
-
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
+        home_img_red.setVisibility(View.GONE);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
         //设置极光别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
@@ -96,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         width = Utils.getScreenWidth(mContext) / 3;
-
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
         //权限请求
@@ -126,20 +143,24 @@ public class MainActivity extends AppCompatActivity {
         //数据处理
         initTab();
 
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        ArrayList<String> list = Dates.getsize();
-        int str = list.size();
-        if (str > 0) {
-            home_img_red.setVisibility(View.VISIBLE);
-        } else {
-            home_img_red.setVisibility(View.GONE);
+        list = new ArrayList<>();
+        list = LoveDao.JPushCart();
+        LogUtil.i("ss",list.size()+"");
+        if (list.size() > 0) {
+            LogUtil.i("ss", "有数据");
+            Message msg = new Message();
+            msg.what = 1;
+            handler.sendMessage(msg);
+        }else {
+            Message msg = new Message();
+            msg.what = 2;
+            handler.sendMessage(msg);
         }
-
     }
 
     //新本版检测
@@ -176,11 +197,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
+        LogUtil.i("ss", "onStop");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.i("ss", "onResume");
     }
 
     @Override
@@ -189,8 +215,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initTab() {
-        ArrayList<String> list = getsize();
-        JpMap = list.size();
         //添加tab信息，存入集合进行展示
         Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style, 0);
         Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
@@ -222,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
         //获取控件ID
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textview = (TextView) view.findViewById(R.id.text);
-
         //d动态添加图片文字，类似listview 的adapter的getItem，
         imageView.setBackgroundResource(tab.getIcon());
         textview.setText(tab.getTitle());
@@ -273,10 +296,10 @@ public class MainActivity extends AppCompatActivity {
         });
         selfDialog.show();
     }
+
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
-        SPUtils.putString(mContext, "Jpmap", "ss");
-       CallBackUtils.doCallBackMethod();
+        JPushCallUtils.removeCallBackMethod();
     }
 
 }

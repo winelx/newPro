@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.WebActivity;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
 
@@ -68,7 +69,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f8f5f6"));
-
             holder.audio_relat_name.setText(Title.get(position) + ".pdf");
             holder.audio_relat_icon.setText("P");
             //字体背景色
@@ -130,9 +130,20 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.audio_relat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(mContext, WebActivity.class);
-                intent.putExtra("http", mData.get(position));
-                mContext.startActivity(intent);
+                //判断是否是pdf文件
+                String imgUrl = mData.get(position);
+                //拿到.位置
+                int doc = imgUrl.lastIndexOf(".");
+                //截取doc+1后面的字符串，包括doc+1；
+                String strs = imgUrl.substring(doc + 1);
+                if (strs.equals("pdf")) {
+                    Intent intent = new Intent(mContext, WebActivity.class);
+                    intent.putExtra("http", mData.get(position));
+                    mContext.startActivity(intent);
+                }else {
+                    ToastUtils.showLongToast("请到pc端查看详情");
+                }
+
             }
         });
     }

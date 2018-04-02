@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.utils;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 存储数据到本地
  * Created by Administrator on 2017/12/25 0025.
  */
 
@@ -31,9 +31,9 @@ public class ListSaveUtils {
         FileInputStream fileInputStream = null;
         try {
             String path = String.valueOf(Environment.getExternalStorageDirectory());
-            Log.i("path", path);
             File file = new File(Environment.getExternalStorageDirectory(), fileName);
-            fileOutputStream = new FileOutputStream(file.toString());  //新建一个内容为空的文件
+            //新建一个内容为空的文件
+            fileOutputStream = new FileOutputStream(file.toString());
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(tArrayList);
         } catch (Exception e) {

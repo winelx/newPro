@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
@@ -48,4 +49,7 @@ public class Utils {
         return outMetrics.widthPixels;
     }
 
+    public  void showLog(String key,String Value){
+        Log.i(key,Value);
+    }
 }

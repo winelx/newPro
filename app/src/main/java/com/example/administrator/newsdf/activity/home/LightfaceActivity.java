@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +30,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
@@ -36,6 +40,7 @@ import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -49,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -97,7 +103,17 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private static boolean swip = false;
     String titles;
     private String wbsId, name;
-    private Dates mDate;
+    List<Shop> list;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            LogUtil.i("ss","删除");
+            for (int i = 0; i < list.size(); i++) {
+                LoveDao.deleteLove(list.get(i).getId());
+            }
+        }
+    };
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -105,9 +121,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
-        mDate = new Dates();
         //清除小红点
-        mDate.getclear();
+        list = new ArrayList<>();
+        list = LoveDao.JPushCart();
+        Message mes = new Message();
+        handler.sendMessage(mes);
         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
@@ -417,11 +435,12 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     public void onSuccess(String s, Call call, Response response) {
                         //判断是否是下拉还是上拉
                         if (!swip) {
-                            Log.i("result","删除");
+                            Log.i("result", "删除");
                             mDatas.clear();
                         }
-                            getJson(s);
+                        getJson(s);
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -488,10 +507,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                            if (!swip) {
-                                mDatas.clear();
-                            }
-                            getJson(s);
+                        if (!swip) {
+                            mDatas.clear();
+                        }
+                        getJson(s);
                     }
                 });
     }
@@ -523,7 +542,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             pages = 1;
             //当前为刷新数据。false 加载数据时清除之前的
             swip = false;
-            okgoall(wbsId, status,  1);
+            okgoall(wbsId, status, 1);
         }
     }
 
@@ -586,7 +605,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             }
         } else {
-          ToastUtils.showShortToast("没有更多数据了！");
+            ToastUtils.showShortToast("没有更多数据了！");
             if (!swip) {
                 mDatas.clear();
             }

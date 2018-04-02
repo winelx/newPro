@@ -42,6 +42,10 @@ public class WebActivity extends AppCompatActivity {
     List<String> list = new ArrayList<>();
     String pathname;
     private IconTextView com_back;
+    /**
+     *     存储路径
+     */
+
     String paths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDownLoad/";
 
     private boolean status = true;

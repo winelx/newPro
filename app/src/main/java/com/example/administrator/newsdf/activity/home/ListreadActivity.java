@@ -126,6 +126,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         //展示侧拉界面后，背景透明度（当前透明度为完全透明）
         drawer_layout.setScrimColor(Color.TRANSPARENT);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        //是否在加载的时候禁止列表的操作
+        refreshLayout.setDisableContentWhenLoading(true);
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayout_smart.setEnableRefresh(false);
         listerad_nonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
@@ -495,6 +497,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         int isFinish;//状态
         if (!swip) {
             Alldata.clear();
+
         }
         if (s.contains("data")) {
             try {
@@ -702,13 +705,13 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-// 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
-// 默认在mButton2的左下角显示
+        // 默认在mButton2的左下角显示
         mPopupWindow.showAsDropDown(imageView);
         backgroundAlpha(0.5f);
-//添加pop窗口关闭事件
+        //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 

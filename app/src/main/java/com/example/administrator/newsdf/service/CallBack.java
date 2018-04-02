@@ -6,6 +6,6 @@ package com.example.administrator.newsdf.service;
 
 public interface CallBack {
 
-    void doSomeThing(String string);
+
     void deleteTop(int pos,String str);
 }

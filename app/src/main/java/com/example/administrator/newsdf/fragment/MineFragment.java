@@ -114,7 +114,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             parent.removeView(rootView);
         }
         double totalSize=    Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
-        totalSize=-   totalSize*1024*1024;
+        totalSize=totalSize*1024*1024*1024;
         Log.i("ssss",totalSize+"");
         return rootView;
     }

@@ -13,10 +13,6 @@ public class CallBackUtils {
     public static void sethomeCallBack(HomeCallback homecallBack) {
         homemCallBack = homecallBack;
     }
-    public static void doCallBackMethod(){
-        String info = "这里CallBackUtils即将发送的数据。";
-        mCallBack.doSomeThing(info);
-    }
     public static void removeCallBackMethod(int pos,String str){
         String info = "这里CallBackUtils即将发送的数据。";
         mCallBack.deleteTop(pos, str);

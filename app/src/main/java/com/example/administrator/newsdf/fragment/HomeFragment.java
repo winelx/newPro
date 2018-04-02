@@ -78,7 +78,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             parent.removeView(rootView);
         }
         CallBackUtils.sethomeCallBack(this);
-
         mContext = getActivity();
         init();
         return rootView;
@@ -232,7 +231,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
      * 获取数据库数据
      */
     public  void getPutTop(){
-
         placedTop=new ArrayList<>();
         List<Shop> list =new ArrayList<>();
         //取出数据库的数据

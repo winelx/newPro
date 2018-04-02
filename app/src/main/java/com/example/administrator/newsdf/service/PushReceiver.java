@@ -6,25 +6,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 
 
-
+/**
+ * description: 极光推送数据接收
+ *
+ * @author lx
+ *         date: 2018/3/26 0026 下午 1:30
+ *         update: 2018/3/26 0026
+ *         version:
+ */
 /**
  * description: 极光推送数据接收
  * @author lx
  * date: 2018/3/26 0026 下午 1:30
  * update: 2018/3/26 0026
  * version:
-*/
+ */
 public class PushReceiver extends BroadcastReceiver {
     private Context context;
     Dates dates =new Dates();
@@ -48,8 +59,23 @@ public class PushReceiver extends BroadcastReceiver {
             //处理接收到的信息
             dates.addPut();
             context=MainActivity.getInstance();
-            MainActivity activity = (MainActivity) context;
-            activity.getRedPoint();
+            try {
+                List<Shop> list = LoveDao.JPushCart();
+                if (list.size() > 0) {
+                    LogUtil.i("ss", "有数据");
+                } else {
+                    LogUtil.i("ss", "保存数据");
+                    Shop shop = new Shop();
+                    shop.setType(Shop.TYPE_JPUSH);
+                    shop.setName("消息");
+                    LoveDao.insertLove(shop);
+                }
+                MainActivity activity = (MainActivity) context;
+                activity.getRedPoint();
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
+
             onReceivedMessage(bundle);
         } else if (pushAction.equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
             //打开相应的Notification
@@ -76,4 +102,3 @@ public class PushReceiver extends BroadcastReceiver {
         ContextCompat.startActivity(context, intent, null);
     }
 }
-

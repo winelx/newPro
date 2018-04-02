@@ -20,6 +20,7 @@ import android.view.View;
 import com.example.administrator.newsdf.R;
 
 /**
+ * 任务列表界面的item的三角
  * @author HaoZhang
  */
 public class SlantedTextView extends View {

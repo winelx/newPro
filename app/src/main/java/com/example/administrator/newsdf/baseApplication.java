@@ -5,10 +5,12 @@ import android.app.Application;
 import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
+import android.util.Log;
 
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
 import com.example.administrator.newsdf.service.LocationService;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.PicassoImageLoader;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -93,6 +95,14 @@ public class baseApplication extends Application {
         //开启极光推送
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
+        //Log
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtil.init(true, Log.VERBOSE);
+        } else {
+            LogUtil.init(false);
+        }
+
 
     }
 

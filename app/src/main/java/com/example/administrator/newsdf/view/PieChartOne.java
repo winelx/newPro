@@ -106,8 +106,8 @@ public class PieChartOne extends View {
 
         namePaint = new Paint();
         namePaint.setAntiAlias(true);
-        namePaint.setStrokeWidth(30);
-        namePaint.setTextSize(25);
+        namePaint.setStrokeWidth(20);
+        namePaint.setTextSize(23);
         mAnimation = new PieChartAnimation();
         mAnimation.setDuration(800);
     }

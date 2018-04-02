@@ -12,22 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.service.CallBack;
-import com.example.administrator.newsdf.service.CallBackUtils;
-import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.service.JPushCallBack;
+import com.example.administrator.newsdf.service.JPushCallUtils;
+
+import java.util.List;
 
 import static com.example.administrator.newsdf.R.id.index_point_red;
 
 
 /**
  * description: 首页的数据的fragment
+ *
  * @author lx
- * date: 2018/1/15 0015.
- * update: 2018/3/27 0027
- * version:
-*/
-public class IndexFrament extends Fragment implements View.OnClickListener ,CallBack {
+ *         date: 2018/1/15 0015.
+ *         update: 2018/3/27 0027
+ *         version:
+ */
+public class IndexFrament extends Fragment implements View.OnClickListener, JPushCallBack {
     private View rootView;
     private HomeFragment home;
     private AllMessageFragment message;
@@ -38,7 +42,13 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            pointRed.setVisibility(View.VISIBLE);
+            switch (msg.what) {
+                case 1:
+                    pointRed.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -61,20 +71,20 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
         if (parent != null) {
             parent.removeView(rootView);
         }
-        CallBackUtils.setCallBack(this);
+        JPushCallUtils.setCallBack(this);
         //第一次初始化首页默认显示第一个fragment
         initFragment2();
         return rootView;
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
-        //拿到存放推送消息的集合，根据集合是否为空，判断是否显示推送红点，反之隐藏
-       int size= Dates.getsize().size();
-        if (size>0){
-            Message message = new Message();
-            handler.sendMessage(message);
+        List<Shop> list= LoveDao.JPushCart();
+        if (list.size() > 0) {
+
+            pointRed.setVisibility(View.VISIBLE);
         }else {
             pointRed.setVisibility(View.GONE);
         }
@@ -101,7 +111,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
     }
 
     /**
-     *  显示第一个fragment
+     * 显示第一个fragment
      */
     private void initFragment2() {
         aMessage.setTextColor(Color.parseColor("#5096F8"));
@@ -119,7 +129,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
         //提交事务
         transaction.commit();
     }
-
+    //时间点击
     @Override
     public void onClick(View v) {
         if (v == mMessage) {
@@ -129,14 +139,12 @@ public class IndexFrament extends Fragment implements View.OnClickListener ,Call
         }
     }
 
+    //更新界面
     @Override
     public void doSomeThing(String string) {
-        pointRed.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void deleteTop(int pos, String str) {
+        Message message = new Message();
+        message.what = 1;
+        handler.sendMessage(message);
 
     }
-
 }
