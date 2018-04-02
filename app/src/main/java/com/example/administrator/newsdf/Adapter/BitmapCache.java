@@ -1,10 +1,10 @@
 package com.example.administrator.newsdf.adapter;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.example.administrator.newsdf.utils.LogUtil;
 
 /**
  * Created by Administrator on 2018/1/22 0022.
@@ -25,13 +25,13 @@ public class BitmapCache implements ImageLoader.ImageCache {
 
     @Override
     public Bitmap getBitmap(String url) {
-        Log.i("leslie", "get cache " + url);
+        LogUtil.i("leslie", "get cache " + url);
         return mCache.get(url);
     }
 
     @Override
     public void putBitmap(String url, Bitmap bitmap) {
-        Log.i("leslie", "add cache " + url);
+        LogUtil.i("leslie", "add cache " + url);
         if (bitmap != null) {
             mCache.put(url, bitmap);
         }

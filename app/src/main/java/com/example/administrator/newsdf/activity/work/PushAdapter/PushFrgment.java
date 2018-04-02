@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -149,7 +149,7 @@ public class PushFrgment extends LazyFragment {
                 //查看集合是否有数据
                 if (deleSelect.size() != 0 && data.size() != 0) {
                     strids = Dates.listToString(deleSelect);
-                    Log.i("strids", strids);
+                    LogUtil.i("strids", strids);
                     //批量修改数据
                     get();
                 } else if (data.size() == 0) {

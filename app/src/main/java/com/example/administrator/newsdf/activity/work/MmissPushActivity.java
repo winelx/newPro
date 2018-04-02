@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -19,6 +18,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PushListviewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -301,7 +301,7 @@ public class MmissPushActivity extends AppCompatActivity {
             addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    Log.i("addPosition", addPosition + "");
+                    LogUtil.i("addPosition", addPosition + "");
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
                             addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),
@@ -356,7 +356,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     //判断是否为空
                     if (node.getChildren().size() == 0) {
                         addOrganizationList.clear();
-                        Log.i("node", position + "");
+                        LogUtil.i("node", position + "");
                         addPosition = position;
                         //是否是父级点
                         if (node.isperent()) {

@@ -96,14 +96,12 @@ public class baseApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
 
-        //Log
+        //Log配置 根据运行的环境是debug还是打包，控制是否显示日志
         if (BuildConfig.LOG_DEBUG) {
             LogUtil.init(true, Log.VERBOSE);
         } else {
             LogUtil.init(false);
         }
-
-
     }
 
     /**

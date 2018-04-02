@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Makeup;
-import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
@@ -75,7 +75,7 @@ public class ChoosecheckActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("res", s);
+                        LogUtil.i("res", s);
                         list.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);

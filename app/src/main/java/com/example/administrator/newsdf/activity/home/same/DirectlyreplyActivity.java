@@ -14,7 +14,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,6 +38,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -176,7 +176,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 for (int i = 0; i < imagePaths.size(); i++) {
                     files.add(new File(imagePaths.get(i)));
                 }
-                Log.d("DirectlyreplyActivity", "files.size():" + files.size());
+                LogUtil.d("DirectlyreplyActivity", "files.size():" + files.size());
 
                 if (content.isEmpty()) {
                     ToastUtils.showShortToast("回复内容为空");

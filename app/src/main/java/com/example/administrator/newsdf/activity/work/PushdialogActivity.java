@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.bean.CasePointsBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -223,7 +224,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 preconditions = mData.get(position).getID();
                 //填数据
                 conditions.setText(requirements);
-                Log.i("preconditions", preconditions);
+                LogUtil.i("preconditions", preconditions);
                 popupWindow.dismiss();
             }
         });

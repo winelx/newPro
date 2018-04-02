@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
     }
-
+    StackTraceElement   Stack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,13 +200,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtil.i("ss", "onStop");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.i("ss", "onResume");
+
     }
 
     @Override

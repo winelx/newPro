@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import com.example.administrator.newsdf.activity.mine.SettingActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
@@ -115,7 +115,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
         double totalSize=    Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
         totalSize=totalSize*1024*1024*1024;
-        Log.i("ssss",totalSize+"");
+        LogUtil.i("ssss",totalSize+"");
         return rootView;
     }
 
@@ -171,7 +171,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
-                        Log.d("tag","set Alias result is"+i);
+                        LogUtil.d("tag","set Alias result is"+i);
                     }
                 });
                 startActivity(new Intent(mContext, LoginActivity.class));

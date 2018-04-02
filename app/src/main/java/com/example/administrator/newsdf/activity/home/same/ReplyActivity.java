@@ -16,7 +16,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,6 +48,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
@@ -177,7 +177,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             //转成集合
             imagePaths = Dates.stringToList(Paths);
             for (int i = 0; i < imagePaths.size(); i++) {
-                Log.i("sss", imagePaths.get(i));
+                LogUtil.i("sss", imagePaths.get(i));
             }
             pathimg.addAll(imagePaths);
             if (checkname.length() < 0) {
@@ -546,7 +546,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             //添加进集合
-                            Log.i("ss",outfile);
+                            LogUtil.i("ss",outfile);
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);

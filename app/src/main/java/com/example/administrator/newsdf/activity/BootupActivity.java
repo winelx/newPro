@@ -11,12 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
@@ -137,7 +137,7 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response response) {
-                        Log.i("msg", msg);
+                        LogUtil.i("msg", msg);
                         try {
                             JSONObject jsonObject = new JSONObject(msg);
                             int str = jsonObject.getInt("ret");

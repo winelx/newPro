@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.activity.home.AuditparticularsActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -83,7 +84,7 @@ public class TabFragment extends LazyFragment {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 i = i + 1;
                 status = false;
-                Log.i("tabloading", i + "");
+                LogUtil.i("tabloading", i + "");
                 okgo(ids.get(pos), i);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);

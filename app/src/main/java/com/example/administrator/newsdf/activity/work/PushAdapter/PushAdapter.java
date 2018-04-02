@@ -3,7 +3,8 @@ package com.example.administrator.newsdf.activity.work.PushAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
+
+import com.example.administrator.newsdf.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class PushAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.i("id", position + "");
+        LogUtil.i("id", position + "");
         return mData.get(position);
     }
 

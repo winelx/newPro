@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.utils.LogUtil;
+import com.example.administrator.newsdf.utils.ScreenUtil;
+
 import java.util.List;
 
 /**
@@ -79,6 +83,9 @@ public class PieChartOne extends View {
 
 
     private void init() {
+      //获取屏幕对比比例1DP=？PX
+       float ste= ScreenUtil.getDensity(baseApplication.getInstance());
+        LogUtil.i("ss",ste);
         paint = new Paint();
         paint.setColor(PAINT_COLOR);
         paint.setAntiAlias(true);
@@ -102,12 +109,14 @@ public class PieChartOne extends View {
         textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setStrokeWidth(30);
-        textPaint.setTextSize(25);
+        //根据屏幕dp比例，设置文字大小
+        textPaint.setTextSize(adjustFontSize(ste));
 
         namePaint = new Paint();
         namePaint.setAntiAlias(true);
         namePaint.setStrokeWidth(20);
-        namePaint.setTextSize(23);
+//根据屏幕dp比例，设置文字大小
+        namePaint.setTextSize(adjustFontSize(ste));
         mAnimation = new PieChartAnimation();
         mAnimation.setDuration(800);
     }
@@ -174,7 +183,7 @@ public class PieChartOne extends View {
         stopX = (radius + dip2px(5)) * cosX;
         stopY = (radius + dip2px(5)) * sinY;
         //扇形弧边的中点的X,Y 为起点，然后算出中间点的角度，加上半径+1个像素 得出终点的XY轴，
-        canvas.drawLine(ceterX + (radius - dip2px(3)) * cosX, ceterY + (radius - dip2px(3)) * sinY+dip2px(3),
+        canvas.drawLine(ceterX + (radius - dip2px(3)) * cosX, ceterY + (radius - dip2px(3)) * sinY + dip2px(3),
                 stopX + ceterX, stopY + ceterY, linePaint);
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 00, text.length(), rect);
@@ -189,12 +198,12 @@ public class PieChartOne extends View {
         if (stopX > 0) {
             //50为横线的长度 60 为文字的偏移量
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(15), ceterY + stopY, linePaint);
-            canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY + h / 3, textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+            canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY , textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY+ dip2px(10), namePaint);
         } else {
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(12), ceterY + stopY, linePaint);
-            canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + h / 3, textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
+            canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY , textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY+dip2px(10), namePaint);
         }
 
     }
@@ -230,5 +239,23 @@ public class PieChartOne extends View {
         }
     }
 
+    public static int adjustFontSize(float screenWidth) {
+        // 240X320 屏幕
+        if (screenWidth == 1.0) {
+            LogUtil.i("ss","10");
+            return 10;
+            // 320X480 屏幕
+        } else if (screenWidth == 2.0) {
+            LogUtil.i("ss","20");
+            return 18;
+            // 480X800 或 480X854 屏幕
+        } else if (screenWidth == 3.0) {
+            LogUtil.i("ss","30");
+            return 30;
+            // 540X960 屏幕
+        }  else {
+            return 25;
 
+        }
+    }
 }

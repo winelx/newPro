@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,6 +38,7 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -259,7 +259,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("wbsTaskId", s);
+                        LogUtil.i("wbsTaskId", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
@@ -380,7 +380,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Log.i("wbsTaskId", s);
+                        LogUtil.i("wbsTaskId", s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);

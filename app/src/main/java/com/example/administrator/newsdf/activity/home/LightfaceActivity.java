@@ -14,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -435,7 +434,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     public void onSuccess(String s, Call call, Response response) {
                         //判断是否是下拉还是上拉
                         if (!swip) {
-                            Log.i("result", "删除");
+                            LogUtil.i("result", "删除");
                             mDatas.clear();
                         }
                         getJson(s);

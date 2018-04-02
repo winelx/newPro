@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.activity.mine;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -305,7 +305,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         mTreeDatas.clear();
-                        Log.i("data",s);
+                        LogUtil.i("data",s);
                         getWorkOrganizationList(s, "", "");
                     }
                 });
