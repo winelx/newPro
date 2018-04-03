@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,10 +32,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
+
 
 /**
  * description: 任务推送的wbs树
@@ -65,11 +63,6 @@ public class MmissPushActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        HiPermission.create(MmissPushActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
         Intent intent = getIntent();
         org_status = intent.getExtras().getString("data");
         try {

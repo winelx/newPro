@@ -9,7 +9,7 @@
       android:id="@+id/iv_photo"
       android:scaleType="centerCrop"
       android:layout_width="match_parent"
-      android:background="@drawable/__picker_photo_bg"
+      android:background="@drawable/image_error"
       android:layout_height="match_parent"
       android:adjustViewBounds="true"
       />
@@ -23,7 +23,7 @@
       android:paddingLeft="20dip"
       android:paddingBottom="20dip"
       android:id="@+id/v_selected"
-      android:src="@drawable/__picker_checkbox_bg"
+      android:src="@drawable/image_loading"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       />

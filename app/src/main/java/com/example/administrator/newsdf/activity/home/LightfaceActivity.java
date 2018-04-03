@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,8 +27,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
@@ -38,8 +34,9 @@ import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.TaskCallback;
+import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -53,7 +50,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,12 +59,11 @@ import okhttp3.Response;
 import static com.example.administrator.newsdf.R.id.search_editext;
 import static com.lzy.okgo.OkGo.post;
 
-
 /**
  * @author lx
  *         列表界面
  */
-public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener {
+public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener,TaskCallback {
     private Context mContext;
     private Listinter_Adfapter mAdapter = null;
     //任务界面数据集合
@@ -90,7 +85,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private String notall = "false";
     //下拉刷新控件
     private SmartRefreshLayout refreshLayout;
-
     private CircleImageView fab;
     private TaskPhotoAdapter taskAdapter;
     /**
@@ -102,29 +96,18 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private static boolean swip = false;
     String titles;
     private String wbsId, name;
-    List<Shop> list;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            LogUtil.i("ss","删除");
-            for (int i = 0; i < list.size(); i++) {
-                LoveDao.deleteLove(list.get(i).getId());
-            }
-        }
-    };
-
+    private Dates mDate;
+    ListView uslistView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+        TaskCallbackUtils.setCallBack(this);
+        mDate = new Dates();
         //清除小红点
-        list = new ArrayList<>();
-        list = LoveDao.JPushCart();
-        Message mes = new Message();
-        handler.sendMessage(mes);
+        mDate.getclear();
         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
@@ -150,7 +133,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //点击pop
         imageView = (LinearLayout) findViewById(R.id.com_img);
         //任务列表
-        ListView uslistView = (ListView) findViewById(R.id.list_recycler);
+         uslistView = (ListView) findViewById(R.id.list_recycler);
         //搜索
         searchEditext = (EditText) findViewById(search_editext);
         //侧拉
@@ -432,12 +415,15 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        //判断是否是下拉还是上拉
-                        if (!swip) {
-                            LogUtil.i("result", "删除");
+                        if (swip == false) {
                             mDatas.clear();
+
                         }
-                        getJson(s);
+                        if (s.indexOf("data") != -1) {
+                            getJson(s);
+                        } else {
+                            ToastUtils.showShortToast("没有更多数据了！");
+                        }
                     }
 
                     @Override
@@ -450,7 +436,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     /**
      * 搜索
      */
-    void searchokgo(String wbsId, final String msgStatus, String content, int i) {
+
+    void searchokgo(String wbsId, String msgStatus, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
                 .params("orgId", id)
@@ -462,11 +449,15 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (!swip) {
-                            mDatas.clear();
-                        }
-                        getJson(s);
+                        if (s.indexOf("data") != -1) {
+                            if (swip == false) {
+                                mDatas.clear();
+                            }
+                            getJson(s);
+                        } else {
+                            ToastUtils.showShortToast("没有更多数据了！");
 
+                        }
                     }
                 });
     }
@@ -485,10 +476,15 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (!swip) {
-                            mDatas.clear();
+                        if (s.indexOf("data") != -1) {
+                            if (swip == false) {
+                                mDatas.clear();
+                            }
+                            getJson(s);
+                        } else {
+                            ToastUtils.showShortToast("没有更多数据了！");
                         }
-                        getJson(s);
+
                     }
                 });
     }
@@ -506,10 +502,17 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (!swip) {
+                        if (s.indexOf("data") != -1) {
+                            if (swip == false) {
+                                mDatas.clear();
+                            }
+                            getJson(s);
+                        } else {
+                            ToastUtils.showShortToast("没有更多数据了！");
                             mDatas.clear();
+                            mAdapter.notifyDataSetChanged();
                         }
-                        getJson(s);
+
                     }
                 });
     }
@@ -616,7 +619,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * 查询图册
      */
     private void photoAdm(final String string) {
-        OkGo.post(Request.Photolist)
+        post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
                 .params("rows", 30)
@@ -696,7 +699,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         intent.putExtra("wbsname", name);
                         startActivityForResult(intent, 1);
                         backgroundAlpha(1f);
-                        drawerLayoutList.setSelection(0);
+                        uslistView.setSelection(0);
                         break;
                     case R.id.pop_All:
                         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
@@ -705,8 +708,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         pages = 1;
                         status = "3";
                         notall = "all";
-                        okgoall(wbsId, null, 1);
-                        drawerLayoutList.setSelection(0);
+                        okgoall(null, null, 1);
+                        uslistView.setSelection(0);
                         break;
                     case R.id.pop_financial:
                         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
@@ -715,8 +718,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         pages = 1;
                         notall = "false";
                         status = "0";
-                        okgo(wbsId, status, null, 1);
-                        drawerLayoutList.setSelection(0);
+                        okgo(null, status, null, 1);
+                        uslistView.setSelection(0);
                         break;
                     case R.id.pop_manage:
                         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
@@ -725,8 +728,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         mDatas.clear();
                         notall = "true";
                         status = "1";
-                        okgo(wbsId, status, null, 1);
-                        drawerLayoutList.setSelection(0);
+                        okgo(null, status, null, 1);
+                        uslistView.setSelection(0);
                         break;
                     default:
                         break;
@@ -741,6 +744,29 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
         return contentView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void taskCallback() {
+        //初始化页数为第一页
+        pages = 1;
+        //当前为刷新数据。设置false 加载数据时清除之前的
+        swip = false;
+        if (Objects.equals(notall, "false")) {
+            //已处理或未处理
+            okgo(wbsid, status, null, 1);
+        } else if (Objects.equals(notall, "true")) {
+            //已处理或未处理
+            okgo(wbsid, status, null, 1);
+        } else if (Objects.equals(notall, "all")) {
+            //全部
+            okgoall(wbsid, null, 1);
+        } else if (Objects.equals(notall, "search")) {
+            mDatas.clear();
+            //搜索
+            search(1);
+        }
     }
 
     /**

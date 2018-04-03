@@ -53,11 +53,10 @@ public class PhotoPagerAdapter extends PagerAdapter {
             final RequestOptions options = new RequestOptions();
             options.dontAnimate()
                     .dontTransform()
-                    .override(800, 800)
                     //缓存数据，减少流量，在我的界面清理缓存
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.__picker_ic_photo_black_48dp)
-                    .error(R.drawable.__picker_ic_broken_image_black_48dp);
+                    .placeholder(R.drawable.image_loading)
+                    .error(R.drawable.image_error);
             mGlide.setDefaultRequestOptions(options).load(path)
                     .thumbnail(0.1f)
                     .into(imageView);

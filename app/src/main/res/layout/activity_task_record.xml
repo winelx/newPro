@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.administrator.newsdf.activity.home.TaskRecordActivity">
 
     <include layout="@layout/toolbar"></include>
 
     <ListView
         android:id="@+id/task_list"
+        tools:listitem="@layout/taskrecord_item"
+        android:divider="@color/back"
+        android:dividerHeight="1dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

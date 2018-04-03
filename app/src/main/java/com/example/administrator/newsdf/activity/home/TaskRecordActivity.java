@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.SettingAdapter;
+import com.example.administrator.newsdf.adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.bean.Tenanceview;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -36,44 +37,24 @@ import okhttp3.Response;
 public class TaskRecordActivity extends AppCompatActivity {
     private TextView com_title;
     private IconTextView com_back;
-    private SettingAdapter mAdapter;
+    private TaskRecordAdapter mAdapter;
     private ListView task_list;
     private ArrayList<Tenanceview> mData;
+    String taskId;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
+        mContext = TaskRecordActivity.this;
         com_title = (TextView) findViewById(R.id.com_title);
         com_back = (IconTextView) findViewById(R.id.com_back);
         task_list = (ListView) findViewById(R.id.task_list);
         mData = new ArrayList<>();
-        com_title.setText("操作记录");
+        com_title.setText("查看记录");
         Intent intent = getIntent();
-        String taskId = intent.getStringExtra("taskId");
-        OkGo.<String>post(Request.TASKRECORD)
-                .params("taskId", taskId)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        ToastUtils.showShortToast(s);
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray1.length(); i++) {
-                                    JSONObject json = jsonArray1.getJSONObject(i);
-                                    json.getString("name");
-                                }
-                                ToastUtils.showShortToast("请求数据成功");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        taskId = intent.getStringExtra("taskId");
         com_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,14 +62,60 @@ public class TaskRecordActivity extends AppCompatActivity {
             }
         });
         //listview的适配器
-        mAdapter = new SettingAdapter<Tenanceview>(mData, R.layout.taskrecord_item) {
-            @Override
-            public void bindView(ViewHolder holder, Tenanceview obj) {
-                holder.setText(R.id.task_cord_name, obj.getName());
-                holder.setText(R.id.task_cord_number, obj.getUnmber());
-                holder.setText(R.id.task_cord_time, obj.getId());
-            }
-        };
+        mAdapter = new TaskRecordAdapter(mContext);
         task_list.setAdapter(mAdapter);
+        okGo();
+
+    }
+
+    public void okGo() {
+        OkGo.<String>post(Request.TASKRECORD)
+                .params("taskId", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("ss", s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray1.length(); i++) {
+                                    JSONObject json = jsonArray1.getJSONObject(i);
+                                    String name;
+                                    try {
+                                        name = json.getString("browserName");
+                                        LogUtil.i("ss", name);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        name = "";
+                                    }
+                                    String times;
+                                    try {
+                                        times = json.getString("times");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        times = "";
+                                    }
+                                    String wbsId;
+                                    try {
+                                        wbsId = json.getString("wbsId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        wbsId = "";
+                                    }
+                                    mData.add(new Tenanceview(wbsId, name, times));
+                                }
+                                LogUtil.i("ss", "解析完成" + mData.size());
+
+                                mAdapter.getData(mData);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
     }
 }

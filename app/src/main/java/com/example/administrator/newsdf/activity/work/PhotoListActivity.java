@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -30,8 +29,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -70,11 +67,7 @@ public class PhotoListActivity extends AppCompatActivity {
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择图册");
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        HiPermission.create(PhotoListActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
+
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = PhotoListActivity.this;
         mTreeDatas = new ArrayList<>();

@@ -36,9 +36,10 @@ public class PieChartOne extends View {
     private Paint textPaint;
     //介绍画笔
     private Paint namePaint;
+
     //半径
     private float radius;
-
+    private float Aradius;
     private static final int PAINT_COLOR = 0xed3535;
     private static final float OUTER_LINE_WIDTH = 4f;
     //开始绘制角度
@@ -73,6 +74,7 @@ public class PieChartOne extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //
         radius = Math.min(getMeasuredWidth(), getMeasuredHeight()) / 4.0f;
+        Aradius = Math.min(getMeasuredWidth(), getMeasuredHeight()) / 7.0f;
         X = getMeasuredWidth() / 2;
         Y = getMeasuredHeight() / 2;
         rectF.left = X - radius;
@@ -83,9 +85,8 @@ public class PieChartOne extends View {
 
 
     private void init() {
-      //获取屏幕对比比例1DP=？PX
+      //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
        float ste= ScreenUtil.getDensity(baseApplication.getInstance());
-        LogUtil.i("ss",ste);
         paint = new Paint();
         paint.setColor(PAINT_COLOR);
         paint.setAntiAlias(true);
@@ -115,7 +116,7 @@ public class PieChartOne extends View {
         namePaint = new Paint();
         namePaint.setAntiAlias(true);
         namePaint.setStrokeWidth(20);
-//根据屏幕dp比例，设置文字大小
+        //根据屏幕dp比例，设置文字大小
         namePaint.setTextSize(adjustFontSize(ste));
         mAnimation = new PieChartAnimation();
         mAnimation.setDuration(800);
@@ -135,8 +136,27 @@ public class PieChartOne extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         initPie(canvas);
+        drawPoint(canvas);
     }
+    private void drawPoint(Canvas canvas){
+        int canvasWidth =getMeasuredWidth();
+        int canvasHeight =getMeasuredHeight();
+        int x = canvasWidth / 2;
+        int deltaY = canvasHeight / 3;
+        int y = deltaY / 2;
+        //设置颜色
+        paint.setARGB(255,255,255,255);
+        //设置线宽，如果不设置线宽，无法绘制点
+        paint.setStrokeWidth(50);
+        int r = getMeasuredWidth()*2;
+        //绘制Cap为ROUND的点
+        canvas.translate(0, deltaY);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+      canvas.drawCircle(x, y,Aradius, paint);
+        //开始绘制
 
+
+    }
     /**
      * 画扇形
      *
@@ -238,7 +258,7 @@ public class PieChartOne extends View {
             invalidate();
         }
     }
-
+    //根据bii返回当前分辨率下该设置多大文字
     public static int adjustFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {

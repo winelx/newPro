@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -195,6 +196,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
                         home_frag_img.setVisibility(View.VISIBLE);
                         home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
@@ -216,7 +218,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override

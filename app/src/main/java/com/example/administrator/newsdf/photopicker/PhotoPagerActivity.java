@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.fragment.ImagePagerFragment;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -178,6 +179,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 care();
                 path = paths.get(pagerFragment.getViewPager().getCurrentItem());
+                LogUtil.i("sss",path);
                 //根据'/'切割地址，
                 String[] strs = path.split("/");
                 //拿到图片名称

@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,8 +31,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -79,12 +76,7 @@ public class OrganiwbsActivity extends Activity {
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = findViewById(R.id.com_title);
         com_title.setText("选择WBS节点");
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE,
-                getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        HiPermission.create(OrganiwbsActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
+
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = OrganiwbsActivity.this;
         mTreeDatas = new ArrayList<>();

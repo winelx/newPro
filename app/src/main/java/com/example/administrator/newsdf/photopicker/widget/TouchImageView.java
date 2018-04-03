@@ -33,7 +33,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
@@ -41,30 +40,29 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
 
     private static final String DEBUG = "DEBUG";
 
-    //
-    // SuperMin and SuperMax multipliers. Determine how much the image can be
-    // zoomed below or above the zoom boundaries, before animating back to the
-    // min/max zoom boundary.
-    //
-    private static final float SUPER_MIN_MULTIPLIER = .75f;
-    private static final float SUPER_MAX_MULTIPLIER = 1.25f;
 
+    // SuperMin和SuperMax multipliers。确定图像的大小。
+//在缩放边界上放大或缩小，然后再返回。
+    //最小/最大变焦边界。
     //
-    // Scale of image ranges from minScale to maxScale, where minScale == 1
-    // when the image is stretched to fit view.
-    //
+    private static final float SUPER_MIN_MULTIPLIER = 1.0f;
+    private static final float SUPER_MAX_MULTIPLIER = 10.00f;
+
+
+//图像的尺度范围从minScale到maxScale，其中minScale == 1。
+//当图像被拉伸到适合视图时。
+
     private float normalizedScale;
 
-    //
-    // Matrix applied to image. MSCALE_X and MSCALE_Y should always be equal.
-    // MTRANS_X and MTRANS_Y are the other values used. prevMatrix is the matrix
-    // saved prior to the screen rotating.
-    //
+
+
+//矩阵应用于图像。MSCALE_X和MSCALE_Y应该是相等的。
+// MTRANS_X和MTRANS_Y是使用的其他值。prevMatrix是矩阵
+//在屏幕旋转前保存。
     private Matrix matrix, prevMatrix;
 
     private enum State {NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM}
 
-    ;
     private State state;
 
     private float minScale;
@@ -230,8 +228,8 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Save the current matrix and view dimensions
-     * in the prevMatrix and prevView variables.
+     * 保存当前矩阵和视图维度。
+     * 在prevMatrix和prevView变量中。
      */
     private void savePreviousImageValues() {
         if (matrix != null && viewHeight != 0 && viewWidth != 0) {
@@ -297,7 +295,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Get the max zoom multiplier.
+     * 获取最大缩放倍数。
      *
      * @return max zoom multiplier.
      */
@@ -316,7 +314,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Get the min zoom multiplier.
+     * 获取最小放大倍数。
      *
      * @return min zoom multiplier.
      */
@@ -325,8 +323,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Get the current zoom. This is the zoom relative to the initial
-     * scale, not the original resource.
+     * 获取当前缩放。这是相对于初始的缩放规模，而不是原始资源。
      *
      * @return current zoom multiplier.
      */
@@ -335,7 +332,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Set the min zoom multiplier. Default value: 1.
+     * 设置最小放大倍数。默认值:1。
      *
      * @param min min zoom multiplier.
      */
@@ -345,7 +342,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Reset zoom and translation to initial state.
+     * 重置缩放和转换到初始状态。
      */
     public void resetZoom() {
         normalizedScale = 1;
@@ -353,17 +350,20 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Set zoom to the specified scale. Image will be centered by default.
+     * 设置缩放到指定的范围。图像将以默认为中心。
      */
     public void setZoom(float scale) {
         setZoom(scale, 0.5f, 0.5f);
     }
 
     /**
-     * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left
-     * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
+     * 设置缩放到指定的范围。图像将以点为中心。
+     * <p>
+     * (focusX focusY)。这些浮动范围从0到1，并表示焦点。
+     * <p>
+     * 从左到右的分数。例如，左上角。
+     * <p>
+     * 图像的角是(0,0)，右下角是(1,1)
      *
      * @param scale
      * @param focusX
@@ -374,10 +374,13 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left
-     * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
+     * 设置缩放到指定的比例。图像将以点为中心。
+     * <p>
+     * (focusX focusY)。这些浮动范围从0到1，并表示焦点。
+     * <p>
+     * 从左到右的分数。例如，左上角。
+     * <p>
+     * 图像的角为(0,0)，右下角为(1,1)。
      *
      * @param scale
      * @param focusX
@@ -409,8 +412,9 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Set zoom parameters equal to another TouchImageView. Including scale, position,
-     * and ScaleType.
+     * 设置缩放参数等于另一个TouchImageView。包括规模、位置、
+     * <p>
+     * 和ScaleType。
      *
      * @param img TouchImageView
      */
@@ -420,12 +424,15 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Return the point at the center of the zoomed image. The PointF coordinates range
-     * in value between 0 and 1 and the focus point is denoted as a fraction from the left
-     * and top of the view. For example, the top left corner of the image would be (0, 0).
-     * And the bottom right corner would be (1, 1).
+     * 返回放大图像中心的点。PointF坐标范围
+     * <p>
+     * 在0和1之间的值，焦点表示为左边的分数。
+     * <p>
+     * 以及视图的顶部。例如，图像的左上角是(0,0)。
+     * <p>
+     * 右下角是(1,1)
      *
-     * @return PointF representing the scroll position of the zoomed image.
+     * @return 表示缩放图像的滚动位置的PointF。
      */
     public PointF getScrollPosition() {
         Drawable drawable = getDrawable();
@@ -435,15 +442,15 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
 
-        PointF point = transformCoordTouchToBitmap(viewWidth / 2, viewHeight / 2, true);
+        PointF point = transformCoordTouchToBitmap(viewWidth / 5, viewHeight / 5, true);
         point.x /= drawableWidth;
         point.y /= drawableHeight;
         return point;
     }
 
     /**
-     * Set the focus point of the zoomed image. The focus points are denoted as a fraction from the
-     * left and top of the view. The focus points can range in value between 0 and 1.
+     * 设置缩放图像的焦点。聚焦点表示为一个分数。
+     * 左边和顶部的视图。焦点可以取值范围在0到1之间。
      *
      * @param focusX X
      * @param focusY Y
@@ -453,8 +460,9 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Performs boundary checking and fixes the image matrix if it
-     * is out of bounds.
+     * 执行边界检查并修复图像矩阵。
+     * <p>
+     * 是越界的。
      */
     private void fixTrans() {
         matrix.getValues(m);
@@ -470,11 +478,15 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * When transitioning from zooming from focus to zoom from center (or vice versa)
-     * the image can become unaligned within the view. This is apparent when zooming
-     * quickly. When the content size is less than the view size, the content will often
-     * be centered incorrectly within the view. fixScaleTrans first calls fixTrans() and
-     * then makes sure the image is centered correctly within the view.
+     * 当从聚焦放大到中心变焦时(反之亦然)
+     * <p>
+     * 图像可以在视图中不对齐。这一点在缩放时很明显。
+     * <p>
+     * 快。当内容大小小于视图大小时，内容将经常出现。
+     * <p>
+     * 在视图中不正确地居中。fixScaleTrans首先调用fixTrans()和。
+     * <p>
+     * 然后确保图像在视图中正确地居中。
      */
     private void fixScaleTrans() {
         fixTrans();
@@ -482,7 +494,6 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
         if (getImageWidth() < viewWidth) {
             m[Matrix.MTRANS_X] = (viewWidth - getImageWidth()) / 2;
         }
-
         if (getImageHeight() < viewHeight) {
             m[Matrix.MTRANS_Y] = (viewHeight - getImageHeight()) / 2;
         }
@@ -550,9 +561,11 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * If the normalizedScale is equal to 1, then the image is made to fit the screen. Otherwise,
-     * it is made to fit the screen according to the dimensions of the previous image matrix. This
-     * allows the image to maintain its zoom after rotation.
+     * 如果normalizedScale = 1，那么图像就会适合屏幕。否则,
+     * <p>
+     * 根据前一个图像矩阵的大小，使其适合屏幕。这
+     * <p>
+     * 允许图像在旋转后保持缩放。
      */
     private void fitImageToView() {
         Drawable drawable = getDrawable();
@@ -664,7 +677,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * Set view dimensions based on layout params
+     * 根据布局参数设置视图维度。
      */
     private int setViewSize(int mode, int size, int drawableWidth) {
         int viewSize;
@@ -854,6 +867,8 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
                     case MotionEvent.ACTION_POINTER_UP:
                         setState(State.NONE);
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -954,8 +969,8 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     /**
-     * DoubleTapZoom calls a series of runnables which apply
-     * an animated zoom in/out graphic to the image.
+     * DoubleTapZoom调用了一系列应用的runnables。
+     * 对图像进行动画缩放。
      *
      * @author Ortiz
      */
@@ -1018,9 +1033,9 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
         }
 
         /**
-         * Interpolate between where the image should start and end in order to translate
-         * the image so that the point that is touched is what ends up centered at the end
-         * of the zoom.
+         * 在图像的开始和结束之间进行插值以进行翻译。
+         * 图像使被触摸的点最终以中心为中心。
+         * 的变焦。
          */
         private void translateImageToCenterTouchPosition(float t) {
             float targetX = startTouch.x + t * (endTouch.x - startTouch.x);

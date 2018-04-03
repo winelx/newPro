@@ -34,6 +34,8 @@ import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.TaskCallback;
+import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -66,7 +68,7 @@ import static com.lzy.okgo.OkGo.post;
  * update: 2018/2/6 0006
  * version:
  */
-public class ListreadActivity extends AppCompatActivity implements View.OnClickListener {
+public class ListreadActivity extends AppCompatActivity implements View.OnClickListener,TaskCallback {
     private Context mContext;
     private ListView uslistView;
     private Imageloaders mAdapter = null;
@@ -100,6 +102,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
+        TaskCallbackUtils.setCallBack(this);
         Dates.getDialog(ListreadActivity.this, "请求数据中...");
         mContext = getApplicationContext();
         int whit = Dates.getScreenHeight(mContext);
@@ -125,9 +128,11 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //展示侧拉界面后，背景透明度（当前透明度为完全透明）
         drawer_layout.setScrimColor(Color.TRANSPARENT);
+        //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //是否在加载的时候禁止列表的操作
         refreshLayout.setDisableContentWhenLoading(true);
+        //侧拉界面下拉
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayout_smart.setEnableRefresh(false);
         listerad_nonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
@@ -658,7 +663,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         if (s.indexOf("data") != -1) {
                             if (drew) {
                                 imagePaths.clear();
@@ -778,6 +782,27 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
         return contentView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void taskCallback() {
+        swip = false;
+        s = 1;
+        //已处理或未处理
+        if (Objects.equals(notall, "false")) {
+            okgo(wbsid, status, null, 1);
+            //已处理或未处理
+        } else if (Objects.equals(notall, "true")) {
+            okgo(wbsid, status, null, 1);
+        } else if (Objects.equals(notall, "all")) {
+            //全部
+            okgoall(wbsid, null, 1);
+        } else if (Objects.equals(notall, "search")) {
+            //搜索
+            search(1);
+        }
+        uslistView.setSelection(0);
     }
 
     /**

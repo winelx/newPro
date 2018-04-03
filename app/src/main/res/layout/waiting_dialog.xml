@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
     android:background="@drawable/ic_loading_bg"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="20.0dip">
+    android:weightSum="1">
 
     <ProgressBar
-        android:layout_width="24.0dip"
-        android:layout_height="24.0dip"
-        android:layout_margin="5dp" />
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
 
     <TextView
         android:id="@+id/id_tv_loadingmsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:text="请求数据中"
         android:layout_marginTop="8.0dip"
         android:textColor="@color/writer"
         android:textSize="16.0dip" />

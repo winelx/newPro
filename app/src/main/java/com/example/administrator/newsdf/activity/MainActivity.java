@@ -26,7 +26,6 @@ import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.service.JPushCallUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.UpdateService;
@@ -150,9 +149,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         list = new ArrayList<>();
         list = LoveDao.JPushCart();
-        LogUtil.i("ss",list.size()+"");
         if (list.size() > 0) {
-            LogUtil.i("ss", "有数据");
             Message msg = new Message();
             msg.what = 1;
             handler.sendMessage(msg);
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                                     String versions = json.getString("version");
                                     //更新地址
                                     String filePath = json.getString("filePath");
-                                    int lenght = version.compareTo(versions);
+                                    int lenght = version.compareTo("1.3");
                                     if (lenght < 0) {
                                         //提示框
                                         show(filePath);
@@ -189,12 +186,9 @@ public class MainActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } else {
-
                         }
                     }
                 });
-
     }
 
     @Override
@@ -274,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     public void show(final String path) {
         selfDialog = new WbsDialog(mContext);
         selfDialog.setTitle("更新提示");
-        selfDialog.setMessage("检测到有新版本，是否更新");
+        selfDialog.setMessage("检测到有新版本，立即更新更新");
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
@@ -284,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 selfDialog.dismiss();
             }
         });
+
         selfDialog.setNoOnclickListener("更新", new WbsDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 /**
  * Created by donglua on 15/5/31.
  */
@@ -56,7 +58,9 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
         this(context, requestManager, photoDirectories);
         setColumnNumber(context, colNum);
         selectedPhotos = new ArrayList<>();
-        if (orginalPhotos != null) selectedPhotos.addAll(orginalPhotos);
+        if (orginalPhotos != null) {
+            selectedPhotos.addAll(orginalPhotos);
+        }
     }
 
     private void setColumnNumber(Context context, int columnNumber) {
@@ -115,9 +119,9 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
                 final RequestOptions options = new RequestOptions();
                 options.centerCrop()
                         .dontAnimate()
-                        .override(imageSize, imageSize)
-                        .placeholder(R.drawable.__picker_ic_photo_black_48dp)
-                        .error(R.drawable.__picker_ic_broken_image_black_48dp);
+
+                        .placeholder(R.drawable.image_loading)
+                        .error(R.drawable.image_error);
 
                 glide.setDefaultRequestOptions(options)
                         .load(new File(photo.getPath()))

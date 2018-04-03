@@ -38,6 +38,7 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -183,6 +184,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         }
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, AuditparticularsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
+        //回复任务
         com_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +197,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TaskCallbackUtils.removeCallBackMethod();
                 finish();
             }
         });
@@ -215,7 +218,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
             }
         });
 
-        //回复
+        //任务详情
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,7 +235,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-
                 drew = false;
                 photoAdm(id);
                 //传入false表示加载失败
@@ -248,6 +250,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        TaskCallbackUtils.removeCallBackMethod();
         finish();
         return true;
     }
