@@ -44,6 +44,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.com_img;
+
 //选择责任人
 public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
@@ -140,7 +141,13 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                                 String id = content.getString("id");
                                 String userId = content.getString("userId");
                                 String name = content.getString("name");
-                                String moblie = content.getString("moblie");
+                                String moblie;
+                                try {
+                                    moblie = content.getString("positionName");
+                                } catch (JSONException e) {
+                                    moblie="";
+                                }
+
                                 String imageUrl = content.getString("imageUrl");
                                 imageUrl = Request.networks + imageUrl;
                                 mData.add(new Icon(id, userId, name, moblie, imageUrl));

@@ -16,14 +16,25 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/task_cord_name"
+            android:id="@+id/task_cord_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="朱静"
+            android:text="时间"
+            android:textSize="13sp" />
+
+
+
+        <TextView
+            android:id="@+id/task_cord_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="12"
             android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/task_cord"
@@ -32,17 +43,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:text="操作了任务"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/task_cord_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="12"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -54,7 +54,7 @@ public class NewpushActivity extends AppCompatActivity {
     private IconTextView back;
     private LinearLayout newpush_wbs, newpush_user, newpush_name;
     private EditText newpush_check, push_content;
-    private String Wbsid, wbsname, userid;
+    private String Wbsid, wbsname, userid,wbsPath;
     private Context mContent;
     boolean staus = false;
     private int page = 1;
@@ -105,6 +105,8 @@ public class NewpushActivity extends AppCompatActivity {
         Wbsid = intent.getExtras().getString("wbsID");
         //wbs名称
         wbsname = intent.getExtras().getString("wbsname");
+        //wbs路径
+        wbsPath= intent.getExtras().getString("wbsPath");
         wbs_text.setText(wbsname);
         //返回键
         back.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +119,7 @@ public class NewpushActivity extends AppCompatActivity {
         newpush_wbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewpushActivity.this, MmissPushActivity.class);
+                Intent intent = new Intent(NewpushActivity.this, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
             }
@@ -147,7 +149,7 @@ public class NewpushActivity extends AppCompatActivity {
         newpush_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewpushActivity.this, MemberActivity.class);
+                Intent intent = new Intent(NewpushActivity.this, ContactPeopleActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
             }

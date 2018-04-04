@@ -24,6 +24,8 @@ import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.CallBackUtils;
 import com.example.administrator.newsdf.service.HomeCallback;
+import com.example.administrator.newsdf.service.OgranCallback;
+import com.example.administrator.newsdf.service.OgranCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -48,7 +50,7 @@ import okhttp3.Response;
  *         Created by Administrator on 2017/11/21 0021.
  */
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener , HomeCallback {
+public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener , HomeCallback,OgranCallback {
     private View rootView;
     private RecyclerView listView;
     private HomeFragmentAdapter mAdapter;
@@ -78,6 +80,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             parent.removeView(rootView);
         }
         CallBackUtils.sethomeCallBack(this);
+        OgranCallbackUtils.setCallBack(this);
         mContext = getActivity();
         init();
         return rootView;
@@ -241,10 +244,14 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             placedTop.add(list.get(i).getWebsid());
         }
     }
-
+        //置顶后刷新数据
     @Override
     public void doSomeThing() {
-
+        Okgo();
+    }
+    //切换组织后刷新
+    @Override
+    public void taskCallback() {
         Okgo();
     }
 }

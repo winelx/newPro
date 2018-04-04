@@ -23,7 +23,9 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -143,7 +145,7 @@ public class Imageloaders extends BaseAdapter {
             //未完成
             case "0":
                 holder.inface_item_message.setTextString("未完成");
-                holder.inface_item_message.setSlantedBackgroundColor(R.color.Orange);
+                holder.inface_item_message.setSlantedBackgroundColor(R.color.unfinish_gray);
                 holder.inface_status_true.setVisibility(View.GONE);
                 holder.view.setVisibility(View.GONE);
                 String str = null;
@@ -158,7 +160,12 @@ public class Imageloaders extends BaseAdapter {
                 holder.view.setVisibility(View.VISIBLE);
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
-                holder.inter_time.setText(list.get(position).getCreateTime());
+                try {
+                 String strtime=   dateToStamp(list.get(position).getCreateTime());
+                    holder.inter_time.setText( Dates.stampToDates(strtime));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 holder.textView4.setText("(" + list.get(position).getComments() + ")");
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.finish_green);
                 // 预设一个图片
@@ -402,6 +409,16 @@ public class Imageloaders extends BaseAdapter {
         this.list = mdata;
         notifyDataSetChanged();
     }
-
+    /**
+       * 将时间转换为时间戳
+       */
+    public static String dateToStamp(String s) throws ParseException{
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
+    }
 }
 

@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,10 +29,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.adapter.Listinter_Adfapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -51,8 +56,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -99,6 +106,17 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     private String wbsId, name;
     private Dates mDate;
     ListView uslistView;
+    List<Shop> list;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            for (int i = 0; i < list.size(); i++) {
+                LoveDao.deleteLove(list.get(i).getId());
+            }
+        }
+    };
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +126,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         TaskCallbackUtils.setCallBack(this);
         mDate = new Dates();
         //清除小红点
-        mDate.getclear();
+        list = new ArrayList<>();
+        list = LoveDao.JPushCart();
+        Message mes = new Message();
+        handler.sendMessage(mes);
+        JPushInterface.clearAllNotifications(baseApplication.getInstance());
         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();

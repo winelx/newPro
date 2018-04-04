@@ -33,7 +33,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
@@ -47,7 +46,7 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     // min/max zoom boundary.
     //
     private static final float SUPER_MIN_MULTIPLIER = .75f;
-    private static final float SUPER_MAX_MULTIPLIER = 1.25f;
+    private static final float SUPER_MAX_MULTIPLIER = 10.0f;
 
     //
     // Scale of image ranges from minScale to maxScale, where minScale == 1

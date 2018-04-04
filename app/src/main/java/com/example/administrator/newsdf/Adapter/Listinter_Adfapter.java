@@ -87,7 +87,7 @@ public class Listinter_Adfapter extends BaseAdapter {
             case "0":
                 holder.inter_text.setText("点击上传");
                 holder.home_item_message.setTextString("未完成");
-                holder.home_item_message.setSlantedBackgroundColor(R.color.Orange);
+                holder.home_item_message.setSlantedBackgroundColor(R.color.unfinish_gray);
                 //更新时间
                 String str = null;
                 try {

@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -138,7 +139,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 //名字
                 holder.setText(R.id.member_name, obj.getName());
                 //手机号
-                holder.setText(R.id.member_moblie, obj.getMoblie());
+                holder.setText(R.id.member_moblie, obj.getUserId());
                 holder.setOnClickListener(R.id.call_phone, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -202,7 +203,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
                     //便利数据拿到有关键只的数据并添加到新集合中
                     for (int i = 0; i < mData.size(); i++) {
                         String name = mData.get(i).getName();
-                        if (name.indexOf(string) != -1) {
+                        if (name.contains(string)) {
                             searchData.add(mData.get(i));
                         }
                     }
@@ -229,7 +230,8 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        LogUtil.i("ss", s);
+                        if (s.contains("data")) {
                             mData.clear();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -238,7 +240,13 @@ public class ProjectmemberActivity extends AppCompatActivity {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject content = jsonArray.getJSONObject(i);
                                     String id = content.getString("id");
-                                    String userId = content.getString("userId");
+                                    String userId;
+                                    try {
+                                        userId = content.getString("positionName");
+                                    } catch (JSONException e) {
+                                        userId = "";
+                                    }
+
                                     String name = content.getString("name");
                                     String moblie = content.getString("moblie");
                                     String imageUrl = content.getString("imageUrl");

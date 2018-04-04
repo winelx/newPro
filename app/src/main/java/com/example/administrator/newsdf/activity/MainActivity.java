@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         list = new ArrayList<>();
         list = LoveDao.JPushCart();
+
         if (list.size() > 0) {
             Message msg = new Message();
             msg.what = 1;

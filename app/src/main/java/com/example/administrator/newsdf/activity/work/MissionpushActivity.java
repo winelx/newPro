@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.PushCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -79,7 +80,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private Map<String, List<String>> pushMap;
     private String titles;
     private String wbspathl;
-
+    int pagss = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,6 @@ public class MissionpushActivity extends AppCompatActivity {
             titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
             wbsname = intent.getExtras().getString("wbsnam");
-            wbspathl = intent.getExtras().getString("wbsPath");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -175,20 +175,24 @@ public class MissionpushActivity extends AppCompatActivity {
             }
         });
 
+        //推送
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Dates.getDialog(MissionpushActivity.this,"推送消息中");
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
                 list = pushMap.get(type);
+                pagss = pagss + 1;
                 String strids = Dates.listToString(list);
+
                 if (strids != null) {
                     pushOkgo(strids);
                 } else {
+                    Dates.disDialog();
                     ToastUtils.showShortToast("请选择推送项");
                 }
-
             }
         });
     }
@@ -318,7 +322,6 @@ public class MissionpushActivity extends AppCompatActivity {
                     Value1 = pushMap.get(type);
                     pushMap.remove(type);
                     if (Value1.size() == 1) {
-
                     } else {
                         for (int i = 0; i < Value1.size(); i++) {
                             //判断要删除的是哪个数据
@@ -373,7 +376,16 @@ public class MissionpushActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
-                            ToastUtils.showShortToast("推送成功");
+                            int ret = jsonObject.getInt("ret");
+
+                            if (ret == 0) {
+                                Dates.disDialog();
+                                ToastUtils.showShortToast("推送成功");
+                                PushCallbackUtils.removeCallBackMethod();
+                            } else {
+                                ToastUtils.showShortToast(msg);
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

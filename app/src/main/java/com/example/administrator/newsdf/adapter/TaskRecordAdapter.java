@@ -46,21 +46,23 @@ public class TaskRecordAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.taskrecord_item, parent, false);
             holder = new ViewHolder();
-            holder.item_name = convertView.findViewById(R.id.task_cord_name);
-            holder.item_number = convertView.findViewById(R.id.task_cord_number);
+            holder.task_cord_name = convertView.findViewById(R.id.task_cord_name);
+            holder.task_cord_data = convertView.findViewById(R.id.task_cord_data);
+            holder.task_cord = convertView.findViewById(R.id.task_cord);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.item_name.setText(list.get(position).getName());
-        holder.item_number.setText(list.get(position).getUnmber());
+        holder.task_cord_data.setText(list.get(position).getId());
+        holder.task_cord_name.setText(list.get(position).getName());
+        holder.task_cord.setText("第"+list.get(position).getUnmber()+"次查看了任务");
         return convertView;
     }
 
 
     static class ViewHolder {
-        TextView item_name;
-        TextView item_number;
+        TextView task_cord_data,task_cord_name;
+        TextView task_cord;
 
     }
 

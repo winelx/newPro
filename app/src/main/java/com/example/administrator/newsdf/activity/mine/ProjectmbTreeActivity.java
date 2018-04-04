@@ -182,8 +182,11 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
                         organization.setPhone(title + "," + obj.getString("title"));
                     }
                     organizationList.add(organization);
+
                 }
+
                 return organizationList;
+
             } catch (JSONException e) {
                 e.printStackTrace();
                 return null;
@@ -197,14 +200,13 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
      * @return
      */
     private void addOrganizationList(String result, String title, String number) {
-        if (result.indexOf("data") != -1) {
+        if (result.contains("data")) {
             //解析json    并将名称和id传递下去，便于解析是形成节点层级路径
             addOrganizationList = parseOrganizationList(result, title, number);
             if (addOrganizationList.size() != 0) {
                 //循环添加节点
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
                     //动态添加节点
-
                     mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
                             addOrganizationList.get(i).getDepartname(), addOrganizationList.get(i).getIsleaf(),

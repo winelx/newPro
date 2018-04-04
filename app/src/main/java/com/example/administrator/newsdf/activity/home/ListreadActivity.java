@@ -408,7 +408,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         parsingjson(s);
                     }
                 });

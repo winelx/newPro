@@ -43,7 +43,13 @@ public class ProjectmemberAdapter extends RecyclerView.Adapter<ProjectmemberAdap
     //绑定数据
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, int position) {
-        holder.text_item.setText(mData.get(position).getName() + ">> ");
+      int size=  mData.size();
+        if (position+1==size){
+            holder.text_item.setText(mData.get(position).getName());
+        }else {
+            holder.text_item.setText(mData.get(position).getName() + ">>");
+        }
+
         holder.text_item.setTextSize(13);
         holder.text_item.setTextColor(Color.parseColor("#5096F8"));
         //判断是否设置了监听器

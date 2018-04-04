@@ -24,6 +24,8 @@ import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.service.PushCallback;
+import com.example.administrator.newsdf.service.PushCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
 import com.example.administrator.newsdf.utils.Request;
@@ -52,7 +54,7 @@ import okhttp3.Response;
  *         说明：
  */
 @SuppressLint("ValidFragment")
-public class PushFrgment extends LazyFragment {
+public class PushFrgment extends LazyFragment implements PushCallback {
     private int pos = 0;
     private Context mContext;
     private ArrayList<Push_item> data = null;
@@ -115,6 +117,7 @@ public class PushFrgment extends LazyFragment {
         view = inflater.inflate(R.layout.push, container, false);
         data = new ArrayList<>();
         mContext = getActivity();
+        PushCallbackUtils.setCallBack(this);
         push_img_nonew = view.findViewById(R.id.push_img_nonew);
         push_img = view.findViewById(R.id.push_img);
         push_img_text = view.findViewById(R.id.push_img_text);
@@ -128,9 +131,14 @@ public class PushFrgment extends LazyFragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 okgo();
+                //清除推送集合数据
+                ArrayList<String> list = new ArrayList<String>();
+                MissionpushActivity missionpush = (MissionpushActivity) mContext;
+                missionpush.getAllPush(list, false);
+                //checkbox修改状态
                 che_all.setChecked(false);
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(1500);
+                refreshlayout.finishRefresh(1200);
             }
         });
         head_modify.setOnClickListener(new View.OnClickListener() {
@@ -149,9 +157,9 @@ public class PushFrgment extends LazyFragment {
                 if (deleSelect.size() != 0 && data.size() != 0) {
                     strids = Dates.listToString(deleSelect);
                     //批量修改数据
-                    if (data.size()<=1){
-                    ToastUtils.showLongToast("至少选择2条要批量修改的任务");
-                    }else {
+                    if (deleSelect.size() < 2) {
+                        ToastUtils.showLongToast("至少选择2条要批量修改的任务");
+                    } else {
                         get();
                     }
                 } else if (data.size() == 0) {
@@ -267,7 +275,7 @@ public class PushFrgment extends LazyFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                    ToastUtils.showLongToast("请求数据");
                         if (s.contains("data")) {
                             data.clear();
                             try {
@@ -382,9 +390,12 @@ public class PushFrgment extends LazyFragment {
             String userId = data.getStringExtra("userId");
             Dialog(userId, user);
         } else if (requestCode == 1 && resultCode == 5) {
-            MissionpushActivity missionpush = (MissionpushActivity) mContext;
-            missionpush.getpush(pushid, false);
             okgo();
+            //清除推送集合数据
+            ArrayList<String> list = new ArrayList<String>();
+            MissionpushActivity missionpush = (MissionpushActivity) mContext;
+            missionpush.getAllPush(list, false);
+            //checkbox修改状态
             che_all.setChecked(false);
         }
     }
@@ -443,4 +454,12 @@ public class PushFrgment extends LazyFragment {
     }
 
 
+    @Override
+    public void deleteTop() {
+
+//        MissionpushActivity missionpush = (MissionpushActivity) mContext;
+//        missionpush.getpush(pushid, false);
+        okgo();
+        che_all.setChecked(false);
+    }
 }

@@ -44,6 +44,7 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
+            holder.taskNum = convertView.findViewById(R.id.taskNum);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -57,6 +58,7 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
         if (node.getUsername().length() == 0) {
             holder.Lin_WBS.setVisibility(View.GONE);
         }
+        holder.taskNum.setVisibility(View.GONE);
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
@@ -87,7 +89,7 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
     }
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress;
+        public TextView mText, tree_name, tree_progress,taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }

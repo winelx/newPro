@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.service.OgranCallbackUtils;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -148,6 +149,8 @@ public class OrganizationaActivity extends AppCompatActivity {
                                 SPUtils.putString(mContext, "orgId", orgid);
                                 //所在组织名称
                                 SPUtils.putString(mContext, "username", name);
+//                                //刷新全部和我的界面的数据
+                                OgranCallbackUtils.removeCallBackMethod();
                                 finish(); //此方法后才能返回主Activity
                             } else {
                                 Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();

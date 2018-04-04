@@ -71,6 +71,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         if (parent != null) {
             parent.removeView(rootView);
         }
+        //推送
         JPushCallUtils.setCallBack(this);
         //第一次初始化首页默认显示第一个fragment
         initFragment2();

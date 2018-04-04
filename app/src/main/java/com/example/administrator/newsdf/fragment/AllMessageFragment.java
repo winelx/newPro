@@ -25,6 +25,8 @@ import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.CallBack;
 import com.example.administrator.newsdf.service.CallBackUtils;
+import com.example.administrator.newsdf.service.OgranCallback;
+import com.example.administrator.newsdf.service.OgranCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -51,7 +53,7 @@ import okhttp3.Response;
  *         update: 2018/3/16 0016
  *         version:
  */
-public class AllMessageFragment extends Fragment implements CallBack{
+public class AllMessageFragment extends Fragment implements CallBack,OgranCallback{
     private View rootView;
     private RecyclerView listView;
     private AllMessageAdapter mAdapter = null;
@@ -62,6 +64,7 @@ public class AllMessageFragment extends Fragment implements CallBack{
     private TextView home_img_text;
     private ImageView home_img_nonews;
     private ArrayList<String> placedTop;
+
     @Nullable
 
     @Override
@@ -84,7 +87,7 @@ public class AllMessageFragment extends Fragment implements CallBack{
         mContext = MainActivity.getInstance();
         //控件处理
         CallBackUtils.setCallBack(this);
-
+        OgranCallbackUtils.setCallBack(this);
         init();
         //网络请求
         Okgo();
@@ -151,31 +154,31 @@ public class AllMessageFragment extends Fragment implements CallBack{
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    if (placedTop.size()>0){
-                                        if (placedTop.contains(id)){
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,true));
-                                        }else {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
+                                    if (placedTop.size() > 0) {
+                                        if (placedTop.contains(id)) {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, true));
+                                        } else {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                         }
-                                    }else {
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
+                                    } else {
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                     }
 
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
                                     //数据库是否有数据
-                                    if (placedTop.size()!=0){
+                                    if (placedTop.size() != 0) {
                                         try {
-                                            for (int i = 0; i <placedTop.size() ; i++) {
-                                               String str= placedTop.get(i);
-                                                for (int j = 0; j <mData.size() ; j++) {
-                                                   String id= mData.get(j).getId();
-                                                   if (str.equals(id)){
-                                                      Home_item home_item= mData.get(j);
-                                                       mData.add(0,home_item);
-                                                       mData.remove(j+1);
-                                                   }
+                                            for (int i = 0; i < placedTop.size(); i++) {
+                                                String str = placedTop.get(i);
+                                                for (int j = 0; j < mData.size(); j++) {
+                                                    String id = mData.get(j).getId();
+                                                    if (str.equals(id)) {
+                                                        Home_item home_item = mData.get(j);
+                                                        mData.add(0, home_item);
+                                                        mData.remove(j + 1);
+                                                    }
                                                 }
                                             }
 
@@ -216,8 +219,6 @@ public class AllMessageFragment extends Fragment implements CallBack{
     }
 
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -232,20 +233,25 @@ public class AllMessageFragment extends Fragment implements CallBack{
         refreshLayout.finishRefresh(false);
     }
 
-    public void putTop(){
-        placedTop=new ArrayList<>();
-        List<Shop> list= new  ArrayList<>();
-        list= LoveDao.ALLCart();
-        for (int i = 0; i <list.size() ; i++) {
+    public void putTop() {
+        placedTop = new ArrayList<>();
+        List<Shop> list = new ArrayList<>();
+        list = LoveDao.ALLCart();
+        for (int i = 0; i < list.size(); i++) {
             placedTop.add(list.get(i).getWebsid());
         }
     }
 
 
-
-        //接收适配器的消息，刷新数据
+    //接收适配器的消息，刷新数据
     @Override
-    public void deleteTop(int pos,String str) {
+    public void deleteTop(int pos, String str) {
+        Okgo();
+    }
+
+
+    @Override
+    public void taskCallback() {
         Okgo();
     }
 }

@@ -703,6 +703,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String id = data.getStringExtra("frag_id");
             com_button.setVisibility(View.GONE);
+            com_img.setVisibility(View.VISIBLE);
             okgo(id);
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {

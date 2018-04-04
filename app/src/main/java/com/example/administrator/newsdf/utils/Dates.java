@@ -74,6 +74,17 @@ public class Dates {
         res = simpleDateFormat.format(date);
         return res;
     }
+    /**
+     * 时间戳转时间
+     */
+    public static String stampToDates(String s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long lt = Long.valueOf(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 
     public static String dateToStamp(String s) throws ParseException {
         String res;
@@ -97,13 +108,19 @@ public class Dates {
         long second1 = between % 60 / 60;
         if (day1 == 0) {
             if (hour1 == 0) {
-                return "1小时";
+                if (minute1>0){
+                    long data=  hour1+1;
+                    return data+"小时";
+                }
+
+            }else {
+                if (minute1>0){
+                  long data=  hour1+1;
+                    return data+"小时";
+                }
             }
-            return hour1 + "小时";
         }
-        if (hour1 == 0) {
-            return day1 + "天" + 1 + "小时";
-        }
+
         return day1 + "天" + hour1 + "小时";
     }
 
@@ -117,6 +134,9 @@ public class Dates {
         String str = formatter.format(curDate);
         return str;
     }
+
+
+
 
     public static String getHH() {
         SimpleDateFormat formatter = new SimpleDateFormat("HH");

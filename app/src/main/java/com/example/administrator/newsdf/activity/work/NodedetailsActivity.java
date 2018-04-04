@@ -107,6 +107,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         //节点ID
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
+
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -605,14 +606,12 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     try {
                                         id = json.getString("id");
                                     } catch (JSONException e) {
-
                                         id = "";
                                     }
                                     //可能界面没有数据,name可能为空
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
-
                                         name = "";
                                     }
                                     ids.add(id);
@@ -624,7 +623,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 intent.putExtra("title", titlename);
                                 intent.putExtra("titles", "任务配置");
                                 intent.putExtra("id", str);
-                                intent.putExtra("wbsPath", wbsname);
+                                intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);
                                 Dates.disDialog();
                             } catch (JSONException e) {

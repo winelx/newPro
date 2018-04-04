@@ -85,7 +85,6 @@ public class TaskRecordActivity extends AppCompatActivity {
                                     String name;
                                     try {
                                         name = json.getString("browserName");
-                                        LogUtil.i("ss", name);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         name = "";
@@ -99,7 +98,7 @@ public class TaskRecordActivity extends AppCompatActivity {
                                     }
                                     String wbsId;
                                     try {
-                                        wbsId = json.getString("wbsId");
+                                        wbsId = json.getString("createDate");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         wbsId = "";

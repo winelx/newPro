@@ -25,13 +25,15 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.tree_name;
-/** 
+
+/**
  * description:
+ *
  * @author lx
- * date: 2018/3/28 0028 上午 10:11 
- * update: 2018/3/28 0028
- * version: 
-*/
+ *         date: 2018/3/28 0028 上午 10:11
+ *         update: 2018/3/28 0028
+ *         version:
+ */
 public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
 
@@ -72,9 +74,24 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         try {
             if (node.getUsername().length() == 0) {
                 holder.Lin_WBS.setVisibility(View.GONE);
+            } else {
+                holder.Lin_WBS.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
+        }
+
+        String num = node.getPhone();
+        int str = 0;
+        try {
+            str = Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (str > 0) {
+            holder.taskNum.setVisibility(View.VISIBLE);
+        } else {
+            holder.taskNum.setVisibility(View.GONE);
         }
 
         holder.tree_name.setText(node.getUsername());
@@ -98,13 +115,13 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 return true;
             }
         });
-    holder.mText.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            TaskWbsActivity activity = (TaskWbsActivity) context;
-            activity.switchAct(node);
-        }
-    });
+        holder.mText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskWbsActivity activity = (TaskWbsActivity) context;
+                activity.switchAct(node);
+            }
+        });
         return convertView;
     }
 
