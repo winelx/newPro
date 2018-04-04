@@ -37,6 +37,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.TaskCallback;
 import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -351,6 +352,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
+                drew = false;
                 photoAdm(wbsid);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
@@ -575,6 +577,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * @param s
      */
     void getJson(String s) {
+        LogUtil.i("ss",s);
         refreshLayout.finishRefresh(true);
         if (s.contains("data")) {
             try {
@@ -708,7 +711,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         pages = 1;
                         status = "3";
                         notall = "all";
-                        okgoall(null, null, 1);
+                        okgoall(wbsid, null, 1);
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_financial:
@@ -718,7 +721,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         pages = 1;
                         notall = "false";
                         status = "0";
-                        okgo(null, status, null, 1);
+                        okgo(wbsid, status, null, 1);
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_manage:
@@ -728,7 +731,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         mDatas.clear();
                         notall = "true";
                         status = "1";
-                        okgo(null, status, null, 1);
+                        okgo(wbsid, status, null, 1);
                         uslistView.setSelection(0);
                         break;
                     default:

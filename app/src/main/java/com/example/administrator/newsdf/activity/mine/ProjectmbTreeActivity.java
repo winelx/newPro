@@ -54,7 +54,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
         Title = (TextView) findViewById(R.id.com_title);
-        Title.setText("贵州路桥集团公司有限公司");
+        Title.setText("选择组织");
         //请求数据存放集合
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();

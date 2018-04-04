@@ -26,7 +26,6 @@ import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -149,9 +148,12 @@ public class PushFrgment extends LazyFragment {
                 //查看集合是否有数据
                 if (deleSelect.size() != 0 && data.size() != 0) {
                     strids = Dates.listToString(deleSelect);
-                    LogUtil.i("strids", strids);
                     //批量修改数据
-                    get();
+                    if (data.size()<=1){
+                    ToastUtils.showLongToast("至少选择2条要批量修改的任务");
+                    }else {
+                        get();
+                    }
                 } else if (data.size() == 0) {
                     Toast.makeText(getActivity(), "没有选项数据", Toast.LENGTH_SHORT).show();
                 } else if (deleSelect.size() == 0) {
@@ -266,7 +268,7 @@ public class PushFrgment extends LazyFragment {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
 
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             data.clear();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);

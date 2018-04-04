@@ -37,6 +37,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.TaskCallback;
 import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -121,8 +122,11 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         //获得控件id，初始化id
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
         delete_search = (TextView) findViewById(R.id.delete_search);
+        //图册圆形控件
         fab = (CircleImageView) findViewById(R.id.fab);
+        //侧拉布局
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //关闭边缘滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -491,6 +495,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void parsingjson(String s) {
+        LogUtil.i("ss",s);
         String wbsPath;
         String updateDate;
         String content;

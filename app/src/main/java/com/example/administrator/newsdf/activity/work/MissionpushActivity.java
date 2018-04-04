@@ -373,7 +373,7 @@ public class MissionpushActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
-                            ToastUtils.showShortToast(msg);
+                            ToastUtils.showShortToast("推送成功");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

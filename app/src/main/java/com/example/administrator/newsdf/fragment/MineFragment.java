@@ -167,7 +167,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.BackTo:
                 Okgo();
-
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
@@ -185,7 +184,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         super.run();
                         //清理glide的缓存
 //                        //清除压缩后图片
-//                        Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny");
+                        if (list.size()==0){
+                            Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny");
+                        }
                         //本地pdf
                         Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDonLoad");
                         //glide缓存

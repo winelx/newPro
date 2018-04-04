@@ -197,7 +197,14 @@ public class AuditparticularsActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskCallbackUtils.removeCallBackMethod();
+                //抛出异常，在任务管理界面返回时不需要刷新数据，
+                try {
+                    TaskCallbackUtils.removeCallBackMethod();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 finish();
             }
         });
@@ -250,7 +257,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        TaskCallbackUtils.removeCallBackMethod();
+        //抛出异常，在任务管理界面返回时不需要刷新数据，
+        try {
+            TaskCallbackUtils.removeCallBackMethod();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         finish();
         return true;
     }

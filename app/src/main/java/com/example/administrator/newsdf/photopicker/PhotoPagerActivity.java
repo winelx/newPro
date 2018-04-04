@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.photopicker;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +24,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.fragment.ImagePagerFragment;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -45,7 +46,7 @@ import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SH
 import static com.example.administrator.newsdf.utils.Dates.getDate;
 
 /**
- * description:预览图片界面
+ * description:
  *
  * @author lx
  *         date: 2018/3/2 0002 下午 2:41
@@ -66,10 +67,8 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String result;
     private HorizontalScrollView picker_horizon;
     private String Title;
-    //下载后的图片存储路径
-    private String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
+    Bitmap bitmap;
     /**
-     * ExternalStorage/Android/data/${packageName}/tiny/
      * 异步get,直接调用
      */
     private OkHttpClient client;
@@ -81,15 +80,15 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 case 1:
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
-                    //压缩并保存
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
+                            Log.i("outfile",outfile);
                             //设置系统时间为文件名
                             Shop shop = new Shop();
                             shop.setType(Shop.TYPE_CART);
-                            shop.setImage_url(strpath+Title);
+                            shop.setImage_url(outfile);
                             shop.setName(result);
                             shop.setContent(Title);
                             shop.setTimme(getDate());
@@ -109,6 +108,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 default:
                     break;
             }
+
         }
     };
 
@@ -179,7 +179,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 care();
                 path = paths.get(pagerFragment.getViewPager().getCurrentItem());
-                LogUtil.i("sss",path);
                 //根据'/'切割地址，
                 String[] strs = path.split("/");
                 //拿到图片名称

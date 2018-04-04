@@ -7,6 +7,7 @@ import com.example.administrator.newsdf.baseApplication;
 
 /**
  * Created by solexit04 on 2016/12/20.
+ * 提示框帮助类
  */
 
 public class ToastUtils {
@@ -18,8 +19,9 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showLongToast(String message) {
-        if (baseApplication.getInstance() == null)
+        if (baseApplication.getInstance() == null) {
             return;
+        }
         if (toast == null) {
             toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.BOTTOM, 0, 100);

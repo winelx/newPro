@@ -25,7 +25,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
-                android:maxEms="6"
+                android:maxEms="10"
                 android:maxLines="1"
                 android:text="技术：安装盖板"
                 android:textColor="@color/textViwe"
