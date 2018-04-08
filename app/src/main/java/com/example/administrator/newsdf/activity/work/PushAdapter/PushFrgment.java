@@ -57,7 +57,7 @@ import okhttp3.Response;
  *         说明：
  */
 @SuppressLint("ValidFragment")
-public class PushFrgment extends LazyFragment implements PushCallback {
+public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapter.UpdateAble {
     private int pos = 0;
     private Context mContext;
     private ArrayList<Push_item> data = null;
@@ -136,14 +136,14 @@ public class PushFrgment extends LazyFragment implements PushCallback {
         view = inflater.inflate(R.layout.push, container, false);
         data = new ArrayList<>();
         mContext = getActivity();
-        PushCallbackUtils.setCallBack(this);
+
         push_img_nonew = view.findViewById(R.id.push_img_nonew);
         push_img = view.findViewById(R.id.push_img);
         push_img_text = view.findViewById(R.id.push_img_text);
         mContentRlv = (ListView) view.findViewById(R.id.lv_data);
         head_modify = view.findViewById(R.id.head_modify);
         che_all = view.findViewById(R.id.che_all);
-        myAdapter = new PushfragmentAdapter(mContext,data);
+        myAdapter = new PushfragmentAdapter(mContext, data);
         mContentRlv.setAdapter(myAdapter);
         view.findViewById(R.id.resflse).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,7 +307,6 @@ public class PushFrgment extends LazyFragment implements PushCallback {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("Call",s);
                         if (s.contains("data")) {
                             data.clear();
                             try {
@@ -377,7 +376,6 @@ public class PushFrgment extends LazyFragment implements PushCallback {
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);
-                                        LogUtil.i("shuxin","数据");
                                         push_img.setVisibility(View.GONE);
                                         Dates.disDialog();
                                     } else {
@@ -486,17 +484,14 @@ public class PushFrgment extends LazyFragment implements PushCallback {
 
     }
 
-
+    //刷新数据
     @Override
-    public void deleteTop() {
-        Message message = new Message();
-        message.what = 1;
-        handler.sendMessage(message);
-        ToastUtils.showLongToast("回调");
-        //checkbox修改状态
+    public void update() {
         che_all.setChecked(false);
-
-
+        //清除推送集合数据
+        ArrayList<String> list = new ArrayList<String>();
+        MissionpushActivity missionpush = (MissionpushActivity) mContext;
+        missionpush.getAllPush(list, false);
+        okgo();
     }
-
 }
