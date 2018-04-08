@@ -35,6 +35,8 @@
             android:id="@+id/upload"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:gravity="center"
+            android:background="@drawable/ic_loading_bg"
             android:layout_gravity="end|bottom">
 
             <ImageView

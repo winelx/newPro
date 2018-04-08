@@ -42,7 +42,6 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.TaskCallback;
 import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -304,7 +303,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 MeunPop();//打开弹出框
                 popwind = true;
-                searchEditext.clearFocus();//失去焦点
+                //失去焦点
+                searchEditext.clearFocus();
 
             }
         });
@@ -599,7 +599,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * @param s
      */
     void getJson(String s) {
-        LogUtil.i("ss",s);
+
         refreshLayout.finishRefresh(true);
         if (s.contains("data")) {
             try {

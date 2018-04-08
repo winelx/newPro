@@ -130,15 +130,15 @@ public class PushFrgment extends LazyFragment implements PushCallback {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                okgo();
+                //checkbox修改状态
+                che_all.setChecked(false);
                 //清除推送集合数据
                 ArrayList<String> list = new ArrayList<String>();
                 MissionpushActivity missionpush = (MissionpushActivity) mContext;
                 missionpush.getAllPush(list, false);
-                //checkbox修改状态
-                che_all.setChecked(false);
-                //传入false表示刷新失败
+                okgo();
                 refreshlayout.finishRefresh(1200);
+
             }
         });
         head_modify.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +275,6 @@ public class PushFrgment extends LazyFragment implements PushCallback {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                    ToastUtils.showLongToast("请求数据");
                         if (s.contains("data")) {
                             data.clear();
                             try {
@@ -456,10 +455,21 @@ public class PushFrgment extends LazyFragment implements PushCallback {
 
     @Override
     public void deleteTop() {
-
-//        MissionpushActivity missionpush = (MissionpushActivity) mContext;
-//        missionpush.getpush(pushid, false);
-        okgo();
+        //checkbox修改状态
         che_all.setChecked(false);
+        //清除推送集合数据
+        ArrayList<String> list = new ArrayList<String>();
+        MissionpushActivity missionpush = (MissionpushActivity) mContext;
+        missionpush.getAllPush(list, false);
+        okgo();
+        //推送后无法刷新数据，将数据添加到消息队列刷新
+        mContentRlv.post(new Runnable() {
+            @Override
+            public void run() {
+                myAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
+
 }

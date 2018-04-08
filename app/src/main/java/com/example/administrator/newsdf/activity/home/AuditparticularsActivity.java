@@ -109,6 +109,8 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private DialogRecAdapter Dialogadapter;
     private LinearLayout com_img;
     private String Titles;
+    //是否需要返回后刷新界面状态
+    private boolean Refresh = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,9 +201,12 @@ public class AuditparticularsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //抛出异常，在任务管理界面返回时不需要刷新数据，
                 try {
-                    TaskCallbackUtils.removeCallBackMethod();
-                }
-                catch (Exception e){
+                    //判断状态是否改变
+                    if (!Refresh) {
+                        //改变了，调用刷新数据方法
+                        TaskCallbackUtils.removeCallBackMethod();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -259,9 +264,12 @@ public class AuditparticularsActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //抛出异常，在任务管理界面返回时不需要刷新数据，
         try {
-            TaskCallbackUtils.removeCallBackMethod();
-        }
-        catch (Exception e){
+            //判断状态是否改变
+            if (!Refresh) {
+                //改变了，调用刷新数据方法
+                TaskCallbackUtils.removeCallBackMethod();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         finish();
@@ -447,6 +455,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             //状态
                             try {
                                 status = wtMain.getString("status");
+
                             } catch (JSONException e) {
 
                                 status = "";
@@ -678,7 +687,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 String comments_content = json.getString("content");
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
-                                aduio_comms.add(0,new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
+                                aduio_comms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
                                         comments_content, replyTime));
                             }
 
@@ -704,6 +713,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
             String id = data.getStringExtra("frag_id");
             com_button.setVisibility(View.GONE);
             com_img.setVisibility(View.VISIBLE);
+            Refresh = false;
             okgo(id);
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {

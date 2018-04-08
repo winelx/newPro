@@ -10,7 +10,6 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,21 +22,13 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * description: 极光推送数据接收
- *
- * @author lx
- *         date: 2018/3/26 0026 下午 1:30
- *         update: 2018/3/26 0026
- *         version:
- */
-/**
- * description: 极光推送数据接收
  * @author lx
  * date: 2018/3/26 0026 下午 1:30
  * update: 2018/3/26 0026
  * version:
  */
 public class PushReceiver extends BroadcastReceiver {
-    private Context context;
+
     Dates dates =new Dates();
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -61,10 +52,7 @@ public class PushReceiver extends BroadcastReceiver {
             context=MainActivity.getInstance();
             try {
                 List<Shop> list = LoveDao.JPushCart();
-                if (list.size() > 0) {
-                    LogUtil.i("ss", "有数据");
-                } else {
-                    LogUtil.i("ss", "保存数据");
+                if (list.size() == 0) {
                     Shop shop = new Shop();
                     shop.setType(Shop.TYPE_JPUSH);
                     shop.setName("消息");
@@ -75,7 +63,6 @@ public class PushReceiver extends BroadcastReceiver {
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
-
             onReceivedMessage(bundle);
         } else if (pushAction.equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
             //打开相应的Notification
