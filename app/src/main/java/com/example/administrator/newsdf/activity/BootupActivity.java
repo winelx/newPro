@@ -81,7 +81,7 @@ public class BootupActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
-                    //为pdf创建文件路径，
+                    //创建文件路径，
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(R.mipmap.add).asFile().withOptions(options).compress(new FileCallback() {
                         @Override

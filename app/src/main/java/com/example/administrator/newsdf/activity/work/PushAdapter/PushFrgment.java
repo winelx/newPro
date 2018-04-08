@@ -276,7 +276,8 @@ public class PushFrgment extends LazyFragment implements PushCallback {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.contains("data")) {
-                            data.clear();
+
+
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -456,20 +457,20 @@ public class PushFrgment extends LazyFragment implements PushCallback {
     @Override
     public void deleteTop() {
         //checkbox修改状态
+        ToastUtils.showLongToast("s");
+        //checkbox修改状态
         che_all.setChecked(false);
         //清除推送集合数据
         ArrayList<String> list = new ArrayList<String>();
         MissionpushActivity missionpush = (MissionpushActivity) mContext;
         missionpush.getAllPush(list, false);
         okgo();
-        //推送后无法刷新数据，将数据添加到消息队列刷新
         mContentRlv.post(new Runnable() {
             @Override
             public void run() {
                 myAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
 }

@@ -1,10 +1,16 @@
 package com.example.administrator.newsdf.activity.home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -42,12 +48,20 @@ public class WebActivity extends AppCompatActivity {
     List<String> list = new ArrayList<>();
     String pathname;
     private IconTextView com_back;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    static final String[] PERMISSION = new String[]{
+            // 写入权限
+            Manifest.permission.READ_CONTACTS,
+            //读取权限
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            //读取设备信息
+            Manifest.permission.WRITE_CALL_LOG,
+    };
     /**
-     *     存储路径
+     * 存储路径
      */
-
     String paths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDownLoad/";
-
+    String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
     private boolean status = true;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -55,6 +69,7 @@ public class WebActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbe);
+        setPermissions();
         com_back = (IconTextView) findViewById(R.id.com_back);
         pdfViewerWeb = (WebView) findViewById(R.id.webview);
         Intent intent = getIntent();
@@ -99,13 +114,15 @@ public class WebActivity extends AppCompatActivity {
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + paths + pathname);
+                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + dirName + pathname);
             }
         } else {
             //不存在
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    //判断当前系统是否高于或等于6.0
+
                     final String download = download(Url);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -140,7 +157,6 @@ public class WebActivity extends AppCompatActivity {
      */
 
     private String download(String path) {
-        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
         try {
             URL url = new URL(path);
             //打开连接
@@ -150,7 +166,7 @@ public class WebActivity extends AppCompatActivity {
             //获得长度
             int contentLength = conn.getContentLength();
             //创建文件夹 MyDownLoad，在存储卡下
-            String dirName = strpath+ "/MyDownLoad/";
+            String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
             File file = new File(dirName);
             //不存在创建
             if (!file.exists()) {
@@ -209,4 +225,16 @@ public class WebActivity extends AppCompatActivity {
         //存在
         return true;
     }
+    /**
+     * 设置Android6.0的权限申请
+     */
+    private void setPermissions() {
+        if (ContextCompat.checkSelfPermission(WebActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            //Android 6.0申请权限
+            ActivityCompat.requestPermissions(this,PERMISSION,1);
+        }else{
+            Log.i("权限申请ok","权限申请ok");
+        }
+    }
+
 }

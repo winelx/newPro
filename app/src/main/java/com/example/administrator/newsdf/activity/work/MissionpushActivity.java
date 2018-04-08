@@ -188,7 +188,8 @@ public class MissionpushActivity extends AppCompatActivity {
                 String strids = Dates.listToString(list);
 
                 if (strids != null) {
-                    pushOkgo(strids);
+//                    pushOkgo(strids);
+                    PushCallbackUtils.removeCallBackMethod();
                 } else {
                     Dates.disDialog();
                     ToastUtils.showShortToast("请选择推送项");
@@ -380,7 +381,7 @@ public class MissionpushActivity extends AppCompatActivity {
 
                             if (ret == 0) {
                                 Dates.disDialog();
-                                ToastUtils.showShortToast("推送成功");
+//                                ToastUtils.showShortToast("推送成功");
                                 PushCallbackUtils.removeCallBackMethod();
                             } else {
                                 ToastUtils.showShortToast(msg);
