@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PushAdapter.PushAdapter;
+import com.example.administrator.newsdf.activity.work.PushAdapter.PushFrgment;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
@@ -188,8 +189,7 @@ public class MissionpushActivity extends AppCompatActivity {
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
                 if (strids != null) {
-//                pushOkgo(strids);
-                    PushCallbackUtils.removeCallBackMethod();
+               pushOkgo(strids);
                 } else {
                     Dates.disDialog();
                     ToastUtils.showShortToast("请选择推送项");
@@ -381,7 +381,12 @@ public class MissionpushActivity extends AppCompatActivity {
                             if (ret == 0) {
                                 Dates.disDialog();
                                 ToastUtils.showShortToast("推送成功");
-                                PushCallbackUtils.removeCallBackMethod();
+                                if(mViewPager != null && mAdapter != null){
+                                    //拿到当前的Viewpager的页数
+                                    int type = mViewPager.getCurrentItem();
+                                    mViewPager.setCurrentItem(type, true);
+                                    mAdapter.update(type);//又一次载入position是3的页面
+                                }
                             } else {
                                 ToastUtils.showShortToast(msg);
                             }
@@ -396,5 +401,7 @@ public class MissionpushActivity extends AppCompatActivity {
     public String getId() {
         return id;
     }
+
+
 
 }
