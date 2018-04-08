@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class TabulationActivity extends AppCompatActivity {
     private ArrayList<String> mData = null;
     private Context mContext;
-    private TextView tv;
+    private TextView tv,com_title;
     private TagFlowLayout flowlayout;
 
     @Override
@@ -36,6 +36,8 @@ public class TabulationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //获取到intent传过来得集合
         mData = intent.getExtras().getStringArrayList("data");
+        com_title= (TextView) findViewById(R.id.com_title);
+        com_title.setText("选择任务项");
         flowlayout = (TagFlowLayout) findViewById(R.id.id_flowlayout);
         //初始化layoutinflater布局管理器
         final LayoutInflater mInflater = LayoutInflater.from(mContext);

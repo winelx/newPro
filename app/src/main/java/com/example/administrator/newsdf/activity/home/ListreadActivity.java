@@ -815,6 +815,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
      * @author cg
      */
     class poponDismissListener implements PopupWindow.OnDismissListener {
+
         @Override
         public void onDismiss() {
             backgroundAlpha(1f);

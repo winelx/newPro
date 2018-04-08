@@ -168,6 +168,7 @@ public class MmissPushActivity extends AppCompatActivity {
      * @return 实体
      */
     public static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        LogUtil.i("orgin",json);
         if (json == null) {
             return null;
         } else {
@@ -239,7 +240,6 @@ public class MmissPushActivity extends AppCompatActivity {
                         //负责人 //进度
                         organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
                     } catch (JSONException e) {
-
                         organization.setUsername("");
                     }
 

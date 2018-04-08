@@ -82,7 +82,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if (strs.equals("doc") || strs.equals("docx")) {
+        } else if (strs.equals("xls") || strs.equals("xlsx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(Title.get(position) + ".xsl");

@@ -111,5 +111,6 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/BaiduLBS_Android.jar')
 }

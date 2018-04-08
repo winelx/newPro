@@ -9,6 +9,7 @@ public class PushCallbackUtils {
 
     public static void setCallBack(PushCallback callBack) {
         mCallBack = callBack;
+
     }
 
     public static void removeCallBackMethod() {

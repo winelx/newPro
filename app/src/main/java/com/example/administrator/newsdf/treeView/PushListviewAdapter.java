@@ -70,8 +70,11 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         }
         if (node.getUsername().length() == 0) {
             holder.Lin_WBS.setVisibility(View.GONE);
+        }else {
+            holder.Lin_WBS.setVisibility(View.VISIBLE);
         }
         holder.tree_name.setText(node.getUsername());
+
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
         //点击跳转界面

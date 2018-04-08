@@ -155,6 +155,7 @@ public class WorkFragment extends Fragment {
             status = true;
         }
     }
+
     //走oncreate
     private void okgo() {
         mData.clear();

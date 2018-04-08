@@ -81,6 +81,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private String titles;
     private String wbspathl;
     int pagss = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,16 +180,15 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(MissionpushActivity.this,"推送消息中");
+                Dates.getDialog(MissionpushActivity.this, "推送消息中");
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
                 list = pushMap.get(type);
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
-
                 if (strids != null) {
-//                    pushOkgo(strids);
+//                pushOkgo(strids);
                     PushCallbackUtils.removeCallBackMethod();
                 } else {
                     Dates.disDialog();
@@ -378,10 +378,9 @@ public class MissionpushActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
-
                             if (ret == 0) {
                                 Dates.disDialog();
-//                                ToastUtils.showShortToast("推送成功");
+                                ToastUtils.showShortToast("推送成功");
                                 PushCallbackUtils.removeCallBackMethod();
                             } else {
                                 ToastUtils.showShortToast(msg);

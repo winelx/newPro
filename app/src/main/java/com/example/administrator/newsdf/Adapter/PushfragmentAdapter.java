@@ -11,9 +11,10 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
+import com.example.administrator.newsdf.bean.Push_item;
+import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -28,10 +29,9 @@ public class PushfragmentAdapter extends BaseAdapter {
     private Context mContext;
     private PopupWindow mPopWindow;
 
-    public PushfragmentAdapter(Context context) {
+    public PushfragmentAdapter(Context context, ArrayList<Push_item> data) {
         this.mContext = context;
-
-        data = new ArrayList<>();
+        this.data = data;
     }
 
     /**
@@ -89,16 +89,17 @@ public class PushfragmentAdapter extends BaseAdapter {
             //使用缓存的中的布局
             viewHodler = (ViewHodler) convertView.getTag();
         }
-        //为缓存的布局ViewHodler控件设置新的数据
-        String content;//所属名称
-        String id;//ID
-        String label;//内容
-        String preconditionsCurid;//先决条件
-        String leaderName;//负责人
-        String sendTime;//发送时间
-        String sendTimes;//发送次数
+//        //为缓存的布局ViewHodler控件设置新的数据
+//        String content;//所属名称
+//        String id;//ID
+//        String label;//内容
+//        String preconditionsCurid;//先决条件
+//        String leaderName;//负责人
+//        String sendTime;//发送时间
+//        String sendTimes;//发送次数
 
         Push_item currItem = data.get(position);
+
         viewHodler.tvTitle.setText(currItem.getLabel());
         viewHodler.tvContent.setText(currItem.getContent());
 
@@ -124,7 +125,6 @@ public class PushfragmentAdapter extends BaseAdapter {
         });
 
 
-
         return convertView;
     }
 
@@ -140,7 +140,8 @@ public class PushfragmentAdapter extends BaseAdapter {
 
     public void getData(ArrayList<Push_item> data) {
         this.data = data;
-        notifyDataSetChanged();
+        notifyDataSetInvalidated();
+        ToastUtils.showLongToast("刷新数据");
     }
 
     /**

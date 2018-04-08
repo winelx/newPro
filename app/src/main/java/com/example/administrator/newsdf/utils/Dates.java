@@ -108,21 +108,16 @@ public class Dates {
         long second1 = between % 60 / 60;
         if (day1 == 0) {
             if (hour1 == 0) {
-                if (minute1>0){
-                    long data=  hour1+1;
-                    return data+"小时";
-                }
-
-            }else {
-                if (minute1>0){
-                  long data=  hour1+1;
-                    return data+"小时";
-                }
+                return "1小时";
             }
+            return hour1 + "小时";
         }
-
+        if (hour1 == 0) {
+            return day1 + "天" + 1 + "小时";
+        }
         return day1 + "天" + hour1 + "小时";
     }
+
 
     /**
      * 获取时间

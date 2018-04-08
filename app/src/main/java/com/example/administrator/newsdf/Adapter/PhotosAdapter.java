@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -41,7 +40,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     }
 
-
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = null;
@@ -58,12 +56,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         return new PhotoViewHolder(itemView);
     }
 
-
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
 
         if (getItemViewType(position) == TYPE_PHOTO) {
-
             Glide.with(mContext)
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)

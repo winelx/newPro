@@ -68,9 +68,8 @@
                 android:layout_alignStart="@+id/inter_title"
                 android:layout_below="@+id/inter_title"
                 android:gravity="center"
-                android:maxEms="16"
-                android:singleLine="true"
-                android:ellipsize="end"
+                android:maxEms="14"
+                android:maxLines="1"
                 android:text="ssdga"
                 android:textColor="@color/editext_text"
                 android:textSize="12sp" />
@@ -83,9 +82,8 @@
                 android:layout_alignLeft="@+id/inface_wbs_path"
                 android:layout_alignStart="@+id/inface_wbs_path"
                 android:layout_below="@+id/inface_item_message"
-                android:maxEms="16"
-                android:singleLine="true"
-                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
                 android:text="请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料"
                 android:textColor="@color/textViwe"
                 android:textSize="14sp" />
@@ -162,9 +160,8 @@
                     android:layout_alignStart="@+id/inface_username"
                     android:layout_below="@+id/inface_username"
                     android:layout_marginTop="5dp"
-                    android:singleLine="true"
                     android:ellipsize="end"
-                    android:maxEms="16"
+                    android:maxEms="10"
                     android:maxLines="1"
                     android:text="定义定义定义定义定义定义"
                     android:textSize="15sp" />
@@ -178,182 +175,12 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
 
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/inface_image1"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/image_loading"
-                            android:visibility="gone" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/mreaycelr"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"/>
 
-                        <RelativeLayout
-                            android:id="@+id/inface_relat1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="15sp"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:id="@+id/inface_relat1_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:ellipsize="end"
-                                android:gravity="center"
-                                android:maxEms="14"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:id="@+id/inface_relat1_icon"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:gravity="center"
-                                android:textColor="@color/writer"
-                                android:textSize="20sp" />
-
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <com.android.volley.toolbox.NetworkImageView
-                            android:id="@+id/inface_image2"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_toEndOf="@+id/inface_relat2"
-                            android:layout_toRightOf="@+id/inface_relat2"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/image_loading"
-                            android:visibility="gone" />
-
-                        <RelativeLayout
-                            android:id="@+id/inface_relat2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="3sp"
-                            android:background="#f5f8f7"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:id="@+id/inface_relat2_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:gravity="center"
-
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/inface_relat2_icon"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:background="#67cf95"
-                                android:gravity="center"
-                                android:text="X"
-                                android:textColor="@color/writer"
-                                android:textSize="20sp" />
-
-
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:id="@+id/inface_relat3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="3sp"
-                            android:layout_marginRight="5dp"
-                            android:background="#f1f6f7"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:id="@+id/inface_relat3_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:gravity="center"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/inface_relat3_icon"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:background="#5e8ed3"
-                                android:gravity="center"
-                                android:text="W"
-                                android:textColor="@color/writer"
-                                android:textSize="20sp" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="100sp"
-                            android:layout_marginLeft="3sp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY">
-
-                            <com.android.volley.toolbox.NetworkImageView
-                                android:id="@+id/inface_image3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="fitXY"
-
-                                android:src="@mipmap/image_loading" />
-
-                            <LinearLayout
-                                android:id="@+id/ic_loading_bg"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/ic_loading_bg">
-
-                                <TextView
-                                    android:id="@+id/inface_imgae_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_alignParentTop="true"
-                                    android:gravity="center"
-                                    android:scaleType="fitXY"
-                                    android:text="+3"
-                                    android:textColor="@color/writer"
-                                    android:textSize="40sp" />
-                            </LinearLayout>
-
-
-                        </RelativeLayout>
-                    </RelativeLayout>
 
                 </LinearLayout>
 

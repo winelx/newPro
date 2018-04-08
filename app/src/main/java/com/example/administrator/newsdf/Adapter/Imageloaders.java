@@ -118,17 +118,18 @@ public class Imageloaders extends BaseAdapter {
             holder.inface_relat2_icon = convertView.findViewById(R.id.inface_relat2_icon);
             holder.inface_relat3_icon = convertView.findViewById(R.id.inface_relat3_icon);
             holder.view = convertView.findViewById(R.id.view);
-
+            //多图片时显示图片数量
+            holder.ic_loading_bg = convertView.findViewById(R.id.ic_loading_bg);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-       if (list.get(position).getGroupName().length()!=0){
-           holder.inter_title.setText(list.get(position).getGroupName());
-        }else {
-           holder.inter_title.setText("主动上传任务 ");
-       }
+        if (list.get(position).getGroupName().length() != 0) {
+            holder.inter_title.setText(list.get(position).getGroupName());
+        } else {
+            holder.inter_title.setText("主动上传任务 ");
+        }
 
         holder.inface_wbs_path.setText(list.get(position).getWbsPath());
         holder.inter_content.setText(list.get(position).getContent());
@@ -151,7 +152,7 @@ public class Imageloaders extends BaseAdapter {
                 String str = null;
                 try {
                     str = Dates.datato(list.get(position).getCreateTime());
-                    holder.inter_time.setText("已推送："+str);
+                    holder.inter_time.setText("已推送：" + str);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -161,8 +162,8 @@ public class Imageloaders extends BaseAdapter {
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
                 try {
-                 String strtime=   dateToStamp(list.get(position).getCreateTime());
-                    holder.inter_time.setText( Dates.stampToDates(strtime));
+                    String strtime = dateToStamp(list.get(position).getCreateTime());
+                    holder.inter_time.setText(Dates.stampToDates(strtime));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -176,6 +177,7 @@ public class Imageloaders extends BaseAdapter {
                         int doc = imgUrl.lastIndexOf(".");
                         String strs = imgUrl.substring(doc + 1);
                         holder.inface_imgae_text.setVisibility(View.GONE);
+                        holder.ic_loading_bg.setVisibility(View.GONE);
                         holder.inface_image2.setVisibility(View.INVISIBLE);
                         holder.inface_image3.setVisibility(View.INVISIBLE);
                         if (strs.equals("pdf")) {
@@ -226,14 +228,15 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                         } else {
                             holder.inface_relat1.setVisibility(View.GONE);
+                            holder.inface_imag1.setVisibility(View.VISIBLE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
                             //截取出后缀
-                            String  pas = imgUrl.substring(imgUrl.length()-4,imgUrl.length());
+                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
                             //拿到截取后缀后的字段
-                            imgUrl=   imgUrl.replace(pas,"");
+                            imgUrl = imgUrl.replace(pas, "");
                             //在字段后面添加_min后再拼接后缀
-                            imgUrl=imgUrl+"_min"+pas;
+                            imgUrl = imgUrl + "_min" + pas;
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
                         }
                         if (path.size() >= 2) {
@@ -289,15 +292,17 @@ public class Imageloaders extends BaseAdapter {
                                     //设置文字背景色
                                     holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                 } else {
-
+                                    holder.inface_image2.setVisibility(View.VISIBLE);
+                                    //显示文档布局
+                                    holder.inface_relat2.setVisibility(View.GONE);
                                     holder.inface_image2.setDefaultImageResId(R.mipmap.image_loading);
                                     holder.inface_image2.setErrorImageResId(R.mipmap.image_error);
                                     //截取出后缀
-                                    String  pas = imgUrl1.substring(imgUrl1.length()-4,imgUrl1.length());
+                                    String pas = imgUrl1.substring(imgUrl1.length() - 4, imgUrl1.length());
                                     //拿到截取后缀后的字段
-                                    imgUrl1=   imgUrl1.replace(pas,"");
+                                    imgUrl1 = imgUrl1.replace(pas, "");
                                     //在字段后面添加_min后再拼接后缀
-                                    imgUrl1=imgUrl1+"_min"+pas;
+                                    imgUrl1 = imgUrl1 + "_min" + pas;
                                     holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
                                 }
                                 if (path.size() >= 3) {
@@ -305,7 +310,6 @@ public class Imageloaders extends BaseAdapter {
                                     if (imgUrl2 != null && !imgUrl2.equals("")) {
                                         int doc2 = imgUrl2.lastIndexOf(".");
                                         String strs2 = imgUrl2.substring(doc2 + 1);
-
                                         if (strs2.equals("pdf")) {
                                             //隐藏图片
                                             holder.inface_image3.setVisibility(View.GONE);
@@ -352,20 +356,22 @@ public class Imageloaders extends BaseAdapter {
                                             //设置文字背景色
                                             holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                         } else {
+                                            holder.inface_image3.setVisibility(View.VISIBLE);
+                                            holder.inface_relat3.setVisibility(View.GONE);
                                             if (path.size() > 3) {
+                                                holder.ic_loading_bg.setVisibility(View.VISIBLE);
                                                 holder.inface_imgae_text.setVisibility(View.VISIBLE);
                                                 int num = path.size() - 3;
                                                 holder.inface_imgae_text.setText("+" + num);
                                             }
-                                            holder.inface_image3.setVisibility(View.VISIBLE);
                                             holder.inface_image3.setDefaultImageResId(R.mipmap.image_loading);
                                             holder.inface_image3.setErrorImageResId(R.mipmap.image_error);
                                             //截取出后缀
-                                            String  pas = imgUrl2.substring(imgUrl2.length()-4,imgUrl2.length());
+                                            String pas = imgUrl2.substring(imgUrl2.length() - 4, imgUrl2.length());
                                             //拿到截取后缀后的字段
-                                            imgUrl2=   imgUrl2.replace(pas,"");
+                                            imgUrl2 = imgUrl2.replace(pas, "");
                                             //在字段后面添加_min后再拼接后缀
-                                            imgUrl2=imgUrl2+"_min"+pas;
+                                            imgUrl2 = imgUrl2 + "_min" + pas;
                                             holder.inface_image3.setImageUrl(imgUrl2, imageLoader);
                                         }
                                     }
@@ -402,6 +408,7 @@ public class Imageloaders extends BaseAdapter {
         RelativeLayout inface_relat1, inface_relat2, inface_relat3;
         TextView inface_relat1_icon, inface_relat2_icon, inface_relat3_icon;
         TextView inface_relat1_name, inface_relat2_name, inface_relat3_name;
+        LinearLayout ic_loading_bg;
         private SlantedTextView inface_item_message;
     }
 
@@ -409,10 +416,11 @@ public class Imageloaders extends BaseAdapter {
         this.list = mdata;
         notifyDataSetChanged();
     }
+
     /**
-       * 将时间转换为时间戳
-       */
-    public static String dateToStamp(String s) throws ParseException{
+     * 将时间转换为时间戳
+     */
+    public static String dateToStamp(String s) throws ParseException {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = simpleDateFormat.parse(s);
