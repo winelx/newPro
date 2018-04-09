@@ -1,8 +1,7 @@
-package com.example.administrator.newsdf.activity.work.PushAdapter;
+package com.example.administrator.newsdf.activity.work.pushadapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.utils.LogUtil;
@@ -22,8 +21,9 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     private List<String> tagList = new ArrayList<String>();
     public PushAdapter(FragmentManager fm, ArrayList<String> mData) {
         super(fm);
+        PushAdapter.mData = mData;
         this.mFragmentManager = fm;
-        this.mData = mData;
+
     }
 
     @Override
@@ -45,12 +45,13 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     }
 
     public void getID(String Content) {
-        this.Content = Content;
+        PushAdapter.Content = Content;
 
     }
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        tagList.add(makeFragmentName(container.getId(), getItemId(position))); //把tag存起来
+        //把tag存起来
+        tagList.add(makeFragmentName(container.getId(), getItemId(position)));
         return super.instantiateItem(container, position);
     }
 
@@ -59,7 +60,7 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     }
 
     public void update(ArrayList<String> datas){
-        this.mData = datas;
+        mData = datas;
         notifyDataSetChanged();
     }
     @Override

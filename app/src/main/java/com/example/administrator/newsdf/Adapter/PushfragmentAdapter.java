@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.bean.Push_item;
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -141,7 +140,6 @@ public class PushfragmentAdapter extends BaseAdapter {
     public void getData(ArrayList<Push_item> data) {
         this.data = data;
         notifyDataSetInvalidated();
-
     }
 
     /**

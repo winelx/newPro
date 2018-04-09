@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.activity.work.PushAdapter;
+package com.example.administrator.newsdf.activity.work.pushadapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,11 +26,8 @@ import com.example.administrator.newsdf.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.PushCallback;
-import com.example.administrator.newsdf.service.PushCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;

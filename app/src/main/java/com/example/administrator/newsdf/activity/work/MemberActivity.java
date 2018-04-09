@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -36,11 +35,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -78,11 +74,6 @@ public class MemberActivity extends AppCompatActivity implements XListView.IXLis
         mContext = MemberActivity.this;
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        HiPermission.create(MemberActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
         Toolbar = (TextView) findViewById(R.id.com_title);

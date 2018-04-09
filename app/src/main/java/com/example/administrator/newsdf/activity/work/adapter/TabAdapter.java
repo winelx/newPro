@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.activity.work.Adapter;
+package com.example.administrator.newsdf.activity.work.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

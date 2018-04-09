@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.activity.work.Adapter;
+package com.example.administrator.newsdf.activity.work.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.activity.work.Adapter.TabAdapter.ids;
-import static com.example.administrator.newsdf.activity.work.Adapter.TabAdapter.wbeID;
+import static com.example.administrator.newsdf.activity.work.adapter.TabAdapter.ids;
+import static com.example.administrator.newsdf.activity.work.adapter.TabAdapter.wbeID;
 
 
 @SuppressLint("ValidFragment")

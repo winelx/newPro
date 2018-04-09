@@ -16,13 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.PushAdapter.PushAdapter;
-import com.example.administrator.newsdf.activity.work.PushAdapter.PushFrgment;
+import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.PushCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
