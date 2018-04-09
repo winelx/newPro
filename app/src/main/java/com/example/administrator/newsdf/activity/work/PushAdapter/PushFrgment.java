@@ -377,7 +377,6 @@ public class PushFrgment extends LazyFragment implements PushCallback {
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);
-                                        LogUtil.i("shuxin","数据");
                                         push_img.setVisibility(View.GONE);
                                         Dates.disDialog();
                                     } else {
@@ -489,14 +488,21 @@ public class PushFrgment extends LazyFragment implements PushCallback {
 
     @Override
     public void deleteTop() {
-        Message message = new Message();
-        message.what = 1;
-        handler.sendMessage(message);
         ToastUtils.showLongToast("回调");
         //checkbox修改状态
         che_all.setChecked(false);
-
-
+        //清除推送集合数据
+//        ArrayList<String> list = new ArrayList<String>();
+//        MissionpushActivity missionpush = (MissionpushActivity) mContext;
+//        missionpush.getAllPush(list, false);
+        okgo();
+        //推送后无法刷新数据，将数据添加到消息队列刷新
+        mContentRlv.post(new Runnable() {
+            @Override
+            public void run() {
+                myAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }

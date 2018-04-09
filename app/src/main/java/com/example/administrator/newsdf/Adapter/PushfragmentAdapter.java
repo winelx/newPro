@@ -135,7 +135,7 @@ public class PushfragmentAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return this.data != null ? this.data.size() : 0;
+        return data.size();
     }
 
     public void getData(ArrayList<Push_item> data) {
