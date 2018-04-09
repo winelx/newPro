@@ -141,7 +141,7 @@ public class PushfragmentAdapter extends BaseAdapter {
     public void getData(ArrayList<Push_item> data) {
         this.data = data;
         notifyDataSetInvalidated();
-        ToastUtils.showLongToast("刷新数据");
+
     }
 
     /**
