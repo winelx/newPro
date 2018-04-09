@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.DirectlyreplyAdapter;
+import com.example.administrator.newsdf.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
@@ -223,6 +223,10 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                //删除上传的图片
+                                for (int i = 0; i < imagePaths.size(); i++) {
+                                    Dates.deleteFile(imagePaths.get(i));
+                                }
                                 Intent intent = new Intent();
                                 intent.putExtra("frag_id", id);
                                 //回传数据到主Activity

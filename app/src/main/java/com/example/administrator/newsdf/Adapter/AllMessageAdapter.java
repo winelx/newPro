@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 /**
  * Created by Administrator on 2017/12/27 0027.
@@ -26,6 +26,9 @@ import com.example.administrator.newsdf.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 全部消息界面的适配器
+ */
 public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
 
     private Context mContext;

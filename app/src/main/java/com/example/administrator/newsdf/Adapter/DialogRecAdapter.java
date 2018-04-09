@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.utils.Dates;
 import java.util.ArrayList;
 
 /**
+ * 任务详情回复图片的recyclervuiew的适配器
  * Created by Administrator on 2018/3/12 0012.
  */
 

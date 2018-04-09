@@ -1,8 +1,9 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import java.util.ArrayList;
 
 /**
+ * 详情内容
  * Created by Administrator on 2017/12/13 0013.
  */
 

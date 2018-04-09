@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;

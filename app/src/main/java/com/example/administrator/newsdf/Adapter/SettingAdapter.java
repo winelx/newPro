@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 万能适配器，
  * Created by Jay on 2015/9/22 0022.
  */
 public abstract class SettingAdapter<T> extends BaseAdapter {

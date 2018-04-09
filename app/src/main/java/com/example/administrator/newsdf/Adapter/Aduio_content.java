@@ -1,10 +1,10 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 /**
  * Created by Administrator on 2017/12/13 0013.
  */
 /**
- * description:
+ * description:详情回复内容
  * @author lx
  * date: 2018/2/6 0006 下午 1:58
  * update: 2018/2/6 0006

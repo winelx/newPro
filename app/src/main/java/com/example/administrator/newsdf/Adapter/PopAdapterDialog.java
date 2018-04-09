@@ -1,7 +1,6 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.example.administrator.newsdf.bean.CasePointsBean;
 import java.util.ArrayList;
 
 /**
+ * 图册的适配器
  * @author winelx
  *         Created by Administrator on 2018/3/6 0006.
  */

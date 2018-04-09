@@ -29,8 +29,8 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
-import com.example.administrator.newsdf.adapter.Imageloaders;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.Imageloaders;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;

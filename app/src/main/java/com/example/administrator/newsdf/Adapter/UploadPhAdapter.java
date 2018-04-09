@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /**
- * description: 下载图片recycler的适配器
+ * description: 离线图片recycler的适配器
  * @author lx
  * date: 2018/3/22 0022 下午 2:46
  * update: 2018/3/22 0022

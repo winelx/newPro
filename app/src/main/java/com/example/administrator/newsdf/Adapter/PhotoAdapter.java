@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 
 import android.app.Activity;
@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
 

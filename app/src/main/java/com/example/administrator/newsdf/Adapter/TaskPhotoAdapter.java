@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 
 /**
+ * 所有侧滑界面的适配器
  * Created by Administrator on 2018/2/7 0007.
  */
 

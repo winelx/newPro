@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;

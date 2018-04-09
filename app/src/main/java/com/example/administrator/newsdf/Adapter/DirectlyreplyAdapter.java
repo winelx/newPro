@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 
 /**
+ * 回复和上传界面图片展示控件
  * Created by Administrator on 2017/12/28 0028.
  */
 

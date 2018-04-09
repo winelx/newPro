@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.R;
 import java.util.ArrayList;
 
 /**
+ * 任务详情回复部分的适配器
  * Created by Administrator on 2017/12/13 0013.
  */
 

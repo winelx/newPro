@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 10942 on 2018/4/8 0008.
+ * 抽出的viewpager的基类
+ * Created by Administrator on 2018/4/9 0009.
  */
 
 public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -37,8 +37,8 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.adapter.PhotosAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.PhotosAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -74,7 +74,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:
+ * description:新增推送界面
  * autour: lx
  * date: 2018/2/5 0005 下午 2:53
  * update: 2018/2/5 0005
@@ -430,6 +430,10 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             int ret = jsonObject.getInt("ret");
                             String msg = jsonObject.getString("msg");
                             if (ret == 0) {
+                                //删除上传的图片
+                                for (int i = 0; i < pathimg.size(); i++) {
+                                    Dates.deleteFile(pathimg.get(i));
+                                }
                                 ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
@@ -551,7 +555,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
-                           //删除原图
+                            //删除原图
                             Dates.deleteFile(path);
                         }
                     });

@@ -66,6 +66,8 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         try {
             if (node.getUsername().length() == 0) {
                 holder.Lin_WBS.setVisibility(View.GONE);
+            }else {
+                holder.Lin_WBS.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

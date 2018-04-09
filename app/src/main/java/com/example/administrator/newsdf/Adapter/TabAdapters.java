@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
+ * 任务管理界面的适配器
  * Created by Administrator on 2017/12/12 0012.
  */
 

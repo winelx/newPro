@@ -24,7 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;

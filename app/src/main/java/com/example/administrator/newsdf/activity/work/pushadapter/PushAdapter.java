@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 作者：winelx
- * 时间：2017/12/2 0002:下午 16:49
- * 说明：
+ * 任务下发界面Viewpager的适配器
+ * Created by Administrator on 2018/4/9 0009.
  */
+
 public class PushAdapter extends BaseFragmentPagerAdapter {
     public static ArrayList<String> mData;
     public static String Content;
@@ -21,9 +21,8 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     private List<String> tagList = new ArrayList<String>();
     public PushAdapter(FragmentManager fm, ArrayList<String> mData) {
         super(fm);
-        PushAdapter.mData = mData;
         this.mFragmentManager = fm;
-
+        this.mData = mData;
     }
 
     @Override
@@ -45,13 +44,12 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     }
 
     public void getID(String Content) {
-        PushAdapter.Content = Content;
+        this.Content = Content;
 
     }
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        //把tag存起来
-        tagList.add(makeFragmentName(container.getId(), getItemId(position)));
+        tagList.add(makeFragmentName(container.getId(), getItemId(position))); //把tag存起来
         return super.instantiateItem(container, position);
     }
 
@@ -60,7 +58,7 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
     }
 
     public void update(ArrayList<String> datas){
-        mData = datas;
+        this.mData = datas;
         notifyDataSetChanged();
     }
     @Override

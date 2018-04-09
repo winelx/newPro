@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -19,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -35,17 +34,16 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.R.id.com_img;
 
-//选择责任人
+/**
+ * 选择责任人
+ */
+
 public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
     private TextView textView, comtitle;
@@ -69,11 +67,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         mContext = ContactPeopleActivity.this;
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        HiPermission.create(ContactPeopleActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
+        searchData = new ArrayList<>();
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
         Toolbar = (TextView) findViewById(R.id.com_title);
@@ -115,7 +109,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                 finish();
             }
         });
-        findViewById(com_img).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.com_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DiaLog();

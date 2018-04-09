@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -7,6 +7,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.example.administrator.newsdf.utils.LogUtil;
 
 /**
+ * 任务列表界面的缓存
  * Created by Administrator on 2018/1/22 0022.
  */
 

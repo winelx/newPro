@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 
 /**
- * description:
+ * description:任务详情页的回复内容的图片展示适配器
  *
  * @author winelx
  *         date:2017/11/30 0030:下午 14:46

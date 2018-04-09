@@ -17,11 +17,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
-import com.example.administrator.newsdf.activity.work.adapter.TabAdapter;
+import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;

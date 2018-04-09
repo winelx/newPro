@@ -13,7 +13,7 @@ import android.view.View;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.UploadPhAdapter;
+import com.example.administrator.newsdf.Adapter.UploadPhAdapter;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;

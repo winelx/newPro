@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.TaskRecordAdapter;
+import com.example.administrator.newsdf.Adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.bean.Tenanceview;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;

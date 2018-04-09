@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.ContactPeopleActivity;
 import com.example.administrator.newsdf.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.activity.work.PushdialogActivity;
-import com.example.administrator.newsdf.adapter.PushfragmentAdapter;
+import com.example.administrator.newsdf.Adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -46,7 +44,6 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
 
 /**
  * @author ：winelx
@@ -74,7 +71,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     private List<String> deleSelect;
     String
             //内容
-            content,
+       content,
     //ID
     id,
     //标签
@@ -97,7 +94,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     private CheckBox che_all;
     private WbsDialog selfDialog;
     private String strids;
-
     /**
      * 获取当前是第几个界面
      */
@@ -105,27 +101,8 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     public PushFrgment(int pos) {
         this.pos = pos;
     }
-
-    private int mPage = 1;
-    private int mIndex = 1;
     private SmartRefreshLayout refreshLayout;
     private String pushid;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    ToastUtils.showLongToast("回调");
-                    //checkbox修改状态
-                    che_all.setChecked(false);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -140,19 +117,8 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
         mContentRlv = (ListView) view.findViewById(R.id.lv_data);
         head_modify = view.findViewById(R.id.head_modify);
         che_all = view.findViewById(R.id.che_all);
-        myAdapter = new PushfragmentAdapter(mContext, data);
+        myAdapter = new PushfragmentAdapter(mContext);
         mContentRlv.setAdapter(myAdapter);
-        view.findViewById(R.id.resflse).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                che_all.setChecked(false);
-                //清除推送集合数据
-                ArrayList<String> list = new ArrayList<String>();
-                MissionpushActivity missionpush = (MissionpushActivity) mContext;
-                missionpush.getAllPush(list, false);
-                okgo();
-            }
-        });
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -165,7 +131,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                 missionpush.getAllPush(list, false);
                 okgo();
                 refreshlayout.finishRefresh(1200);
-
 
             }
         });
@@ -257,7 +222,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
             }
         });
         okgo();
-
         return view;
     }
 
@@ -480,7 +444,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
         selfDialog.show();
 
     }
-
 
     @Override
     public void update() {

@@ -38,8 +38,8 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.adapter.PhotoAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -460,6 +460,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                //删除单闯的图片
+                                for (int i = 0; i < pathimg.size(); i++) {
+                                    Dates.deleteFile(pathimg.get(i));
+                                }
                                 ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
@@ -479,12 +483,14 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         popupWindow.dismiss();
                         popstatus = false;
                     }
+
                     //进度条
                     @Override
                     public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
@@ -495,6 +501,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 });
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -518,7 +525,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
     String Titles;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -546,7 +555,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             //添加进集合
-                            LogUtil.i("ss",outfile);
+                            LogUtil.i("ss", outfile);
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
@@ -574,8 +583,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                                pathimg.add(outfile);
-                                //填入listview，刷新界面
+                            pathimg.add(outfile);
+                            //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
 //                    //删除原图
                             Dates.deleteFile(path);
@@ -586,6 +595,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             });
         }
     }
+
     /***
      * Stop location service
      */
@@ -622,7 +632,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 Bai_address = location.getAddrStr();
                 if (Bai_address != null && !Bai_address.equals("")) {
                 } else {
-                    Bai_address ="";
+                    Bai_address = "";
                 }
                 repley_address.setText(location.getAddrStr());
                 // 定位停止SDK

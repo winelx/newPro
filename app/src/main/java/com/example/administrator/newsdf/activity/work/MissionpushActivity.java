@@ -15,9 +15,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -41,9 +41,6 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
-
 
 /**
  * description: 任务推送
@@ -80,7 +77,6 @@ public class MissionpushActivity extends AppCompatActivity {
     private String titles;
     private String wbspathl;
     int pagss = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +86,7 @@ public class MissionpushActivity extends AppCompatActivity {
         pushMap = new HashMap<>();
         imagePaths = new ArrayList<>();
         fab = (CircleImageView) findViewById(R.id.fab);
-        smartRefreshLayout = (SmartRefreshLayout) findViewById(drawerLayout_smart);
+        smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         smartRefreshLayout.setEnableRefresh(false);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
@@ -179,15 +175,16 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(MissionpushActivity.this, "推送消息中");
+                Dates.getDialog(MissionpushActivity.this,"推送消息中");
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
                 list = pushMap.get(type);
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
+
                 if (strids != null) {
-               pushOkgo(strids);
+                    pushOkgo(strids);
                 } else {
                     Dates.disDialog();
                     ToastUtils.showShortToast("请选择推送项");
@@ -376,14 +373,16 @@ public class MissionpushActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
+
                             if (ret == 0) {
                                 Dates.disDialog();
                                 ToastUtils.showShortToast("推送成功");
                                 if(mViewPager != null && mAdapter != null){
                                     //拿到当前的Viewpager的页数
-                                    int type = mViewPager.getCurrentItem();
-                                    mViewPager.setCurrentItem(type, true);
-                                    mAdapter.update(type);//又一次载入position是3的页面
+                                    int types = mViewPager.getCurrentItem();
+                                    mViewPager.setCurrentItem(types, true);
+                                    //又一次载入position的页面
+                                    mAdapter.update(types);
                                 }
                             } else {
                                 ToastUtils.showShortToast(msg);
@@ -399,7 +398,5 @@ public class MissionpushActivity extends AppCompatActivity {
     public String getId() {
         return id;
     }
-
-
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -60,8 +59,8 @@ public class WebActivity extends AppCompatActivity {
     /**
      * 存储路径
      */
-    String paths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/MyDownLoad/";
-    String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
+
+    String paths;
     private boolean status = true;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -70,6 +69,8 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbe);
         setPermissions();
+        paths = getExternalCacheDir().getPath();
+        paths = paths.replace("cache", "MyDownLoad/");
         com_back = (IconTextView) findViewById(R.id.com_back);
         pdfViewerWeb = (WebView) findViewById(R.id.webview);
         Intent intent = getIntent();
@@ -114,7 +115,7 @@ public class WebActivity extends AppCompatActivity {
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + dirName + pathname);
+                pdfViewerWeb.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + paths + pathname);
             }
         } else {
             //不存在
@@ -163,17 +164,13 @@ public class WebActivity extends AppCompatActivity {
             URLConnection conn = url.openConnection();
             //打开输入流
             InputStream is = conn.getInputStream();
-            //获得长度
-            int contentLength = conn.getContentLength();
-            //创建文件夹 MyDownLoad，在存储卡下
-            String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
-            File file = new File(dirName);
+            File file = new File(paths);
             //不存在创建
             if (!file.exists()) {
                 file.mkdir();
             }
             //下载后的文件名
-            final String fileName = dirName + pathname;
+            final String fileName = paths + pathname;
             File file1 = new File(fileName);
             if (file1.exists()) {
                 file1.delete();
@@ -225,15 +222,16 @@ public class WebActivity extends AppCompatActivity {
         //存在
         return true;
     }
+
     /**
      * 设置Android6.0的权限申请
      */
     private void setPermissions() {
         if (ContextCompat.checkSelfPermission(WebActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             //Android 6.0申请权限
-            ActivityCompat.requestPermissions(this,PERMISSION,1);
-        }else{
-            Log.i("权限申请ok","权限申请ok");
+            ActivityCompat.requestPermissions(this, PERMISSION, 1);
+        } else {
+            Log.i("权限申请ok", "权限申请ok");
         }
     }
 

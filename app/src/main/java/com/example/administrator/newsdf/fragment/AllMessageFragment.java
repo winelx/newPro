@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
-import com.example.administrator.newsdf.adapter.AllMessageAdapter;
+import com.example.administrator.newsdf.Adapter.AllMessageAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.CallBack;

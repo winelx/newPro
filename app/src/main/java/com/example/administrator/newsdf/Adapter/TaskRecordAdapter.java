@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.bean.Tenanceview;
 import java.util.ArrayList;
 
 /**
+ * 操作记录的适配器
  * Created by Administrator on 2018/4/3 0003.
  */
 

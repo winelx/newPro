@@ -50,7 +50,7 @@ import okhttp3.Response;
 
 
 /**
- * description: 承载fragemnt的代码
+ * description: 承载fragemnt的界面
  *
  * @author lx
  *         date: 2018/3/15 0015 上午 9:14

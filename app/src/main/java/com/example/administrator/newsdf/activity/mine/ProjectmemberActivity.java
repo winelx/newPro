@@ -18,8 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.ProjectmemberAdapter;
-import com.example.administrator.newsdf.adapter.SettingAdapter;
+import com.example.administrator.newsdf.Adapter.ProjectmemberAdapter;
+import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.camera.CheckPermission;

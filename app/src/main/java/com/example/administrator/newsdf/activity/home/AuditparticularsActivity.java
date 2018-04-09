@@ -28,12 +28,12 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
-import com.example.administrator.newsdf.adapter.Aduio_comm;
-import com.example.administrator.newsdf.adapter.Aduio_content;
-import com.example.administrator.newsdf.adapter.Aduio_data;
-import com.example.administrator.newsdf.adapter.AudioAdapter;
-import com.example.administrator.newsdf.adapter.DialogRecAdapter;
-import com.example.administrator.newsdf.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.Adapter.Aduio_comm;
+import com.example.administrator.newsdf.Adapter.Aduio_content;
+import com.example.administrator.newsdf.Adapter.Aduio_data;
+import com.example.administrator.newsdf.Adapter.AudioAdapter;
+import com.example.administrator.newsdf.Adapter.DialogRecAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;

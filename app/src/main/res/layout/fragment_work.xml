@@ -45,7 +45,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:shadowColor="@color/textViwe"
-                android:text="欢迎使用工程管理系统,尽请体验"
+                android:text="欢迎使用工程管理系统，尽请体验。"
                 android:textColor="@color/writer"
                 android:textSize="15sp" />
 

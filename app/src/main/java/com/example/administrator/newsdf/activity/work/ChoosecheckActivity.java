@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.adapter.SettingAdapter;
+import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 任务下发或上传界面的选择检查点
+ */
 public class ChoosecheckActivity extends AppCompatActivity {
     private ListView list_item;
     private ArrayList<String> list;

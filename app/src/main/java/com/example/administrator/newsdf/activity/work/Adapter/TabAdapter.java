@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.activity.work.adapter;
+package com.example.administrator.newsdf.activity.work.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * 任务管理界面viewpager的适配器
+ */
 public class TabAdapter extends FragmentStatePagerAdapter {
 
     private FragmentManager fm;

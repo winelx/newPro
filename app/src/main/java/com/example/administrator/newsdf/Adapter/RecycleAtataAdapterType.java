@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
- * description:
+ * description:任务详情回复内容适配器
  *
  * @author lx
  *         date:2017/12/13 0013.

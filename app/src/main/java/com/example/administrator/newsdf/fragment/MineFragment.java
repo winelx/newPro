@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -114,9 +113,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         if (parent != null) {
             parent.removeView(rootView);
         }
-        double totalSize=    Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
-        totalSize=totalSize*1024*1024*1024;
-        LogUtil.i("ssss",totalSize+"");
+        double totalSize = Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
+        totalSize = totalSize * 1024 * 1024 * 1024;
         return rootView;
     }
 
@@ -147,7 +145,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //项目成员
             case R.id.projectmember:
-//                startActivity(new Intent(getActivity(), ProjectmemberActivity.class));
                 startActivity(new Intent(getActivity(), ProjectmbTreeActivity.class));
                 break;
             //修改密码
@@ -171,7 +168,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
-                        LogUtil.d("tag","set Alias result is"+i);
+                        LogUtil.d("tag", "set Alias result is" + i);
                     }
                 });
                 startActivity(new Intent(mContext, LoginActivity.class));
@@ -183,14 +180,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         super.run();
-                        //清理glide的缓存
-//                        //清除压缩后图片
-                        if (list.size()==0){
-                            Dates.clearFiles("/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny");
-                        }
-                        //本地pdf
-                        String dirName = Environment.getExternalStorageDirectory() + "/MyDownLoad/";
-                        Dates.clearFiles(dirName);
+                        //删除本地pdf
+                        String paths = mContext.getExternalCacheDir().getPath();
+                        paths = paths.replace("cache", "MyDownLoad/");
+                        //删除目录
+                        Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
                     }
@@ -201,9 +195,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.disDialog();
                         Toast.makeText(mContext, "缓存清除成功", Toast.LENGTH_SHORT).show();
                         return false;
-                        //表示延迟3秒发送任务
+                        //延迟发送任务
                     }
-                }).sendEmptyMessageDelayed(0, 1000);
+                }).sendEmptyMessageDelayed(0, 1200);
                 break;
             //检查新版本
             case R.id.newversion:

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.adapter;
+package com.example.administrator.newsdf.Adapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.bean.Push_item;
 import java.util.ArrayList;
 
 /**
+ * 推送界面的适配器
  * Created by Administrator on 2017/12/18 0018.
  */
 
@@ -28,9 +29,10 @@ public class PushfragmentAdapter extends BaseAdapter {
     private Context mContext;
     private PopupWindow mPopWindow;
 
-    public PushfragmentAdapter(Context context, ArrayList<Push_item> data) {
+    public PushfragmentAdapter(Context context) {
         this.mContext = context;
-        this.data = data;
+
+        data = new ArrayList<>();
     }
 
     /**
@@ -88,17 +90,16 @@ public class PushfragmentAdapter extends BaseAdapter {
             //使用缓存的中的布局
             viewHodler = (ViewHodler) convertView.getTag();
         }
-//        //为缓存的布局ViewHodler控件设置新的数据
-//        String content;//所属名称
-//        String id;//ID
-//        String label;//内容
-//        String preconditionsCurid;//先决条件
-//        String leaderName;//负责人
-//        String sendTime;//发送时间
-//        String sendTimes;//发送次数
+        //为缓存的布局ViewHodler控件设置新的数据
+        String content;//所属名称
+        String id;//ID
+        String label;//内容
+        String preconditionsCurid;//先决条件
+        String leaderName;//负责人
+        String sendTime;//发送时间
+        String sendTimes;//发送次数
 
         Push_item currItem = data.get(position);
-
         viewHodler.tvTitle.setText(currItem.getLabel());
         viewHodler.tvContent.setText(currItem.getContent());
 
@@ -124,6 +125,7 @@ public class PushfragmentAdapter extends BaseAdapter {
         });
 
 
+
         return convertView;
     }
 
@@ -134,12 +136,12 @@ public class PushfragmentAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return data.size();
+        return this.data != null ? this.data.size() : 0;
     }
 
     public void getData(ArrayList<Push_item> data) {
         this.data = data;
-        notifyDataSetInvalidated();
+        notifyDataSetChanged();
     }
 
     /**
