@@ -23,6 +23,7 @@
 
 
     <HorizontalScrollView
+        android:id="@+id/handover_status_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

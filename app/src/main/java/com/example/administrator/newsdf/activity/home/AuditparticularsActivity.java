@@ -87,12 +87,16 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     private SwipeRefreshLayout mSwipeLayout;
-    //图片查看的圆形图标
+    /**
+     * 图片查看的圆形图标
+     */
     private CircleImageView fab;
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
     private LinearLayout back;
-    //侧滑界面的listview的适配器
+    /**
+     * 侧滑界面的listview的适配器
+     */
     private TaskPhotoAdapter taskPhotoAdapter;
     //侧滑界面
     private DrawerLayout drawerLayout;
@@ -105,11 +109,15 @@ public class AuditparticularsActivity extends AppCompatActivity {
     //权限
     private CheckPermission checkPermission;
     private ArrayList<String> path;
-    //任务回复时展示图片的适配器
+    /**
+     * 任务回复时展示图片的适配器
+     */
     private DialogRecAdapter Dialogadapter;
     private LinearLayout com_img;
     private String Titles;
-    //是否需要返回后刷新界面状态
+    /**
+     * 是否需要返回后刷新界面状态
+     */
     private boolean Refresh = true;
 
     @Override
@@ -133,7 +141,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
             }
-
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -703,7 +710,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 });
     }
 
-    ArrayList<String> Tinys;
 
     //startResult返回数据
     @Override
@@ -801,15 +807,15 @@ public class AuditparticularsActivity extends AppCompatActivity {
         dialog_rec.setLayoutManager(linearLayoutManager);
         Dialogadapter = new DialogRecAdapter(mContext, path, true);
         dialog_rec.setAdapter(Dialogadapter);
-        //拿到回复人
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(mContext, ImageGridActivity.class);
-//                startActivityForResult(intent, IMAGE_PICKER);
-
-            }
-        });
+//        //拿到回复人
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = new Intent(mContext, ImageGridActivity.class);
+////                startActivityForResult(intent, IMAGE_PICKER);
+//
+//            }
+//        });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

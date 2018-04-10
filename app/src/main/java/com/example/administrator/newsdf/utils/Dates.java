@@ -604,4 +604,15 @@ public class Dates {
             return 0.0;
         }
     }
+    /**
+     * 屏幕亮度
+     *
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha ,Activity activity) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        //0.0-1.0
+        lp.alpha = bgAlpha;
+        activity.getWindow().setAttributes(lp);
+    }
 }

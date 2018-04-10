@@ -160,7 +160,7 @@ public class TaskWbsActivity extends Activity {
      * @param json 字符串
      * @return 实体
      */
-    public ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+    private ArrayList<OrganizationEntity> parseOrganizationList(String json) {
         if (json == null) {
             return null;
         } else {
@@ -297,8 +297,6 @@ public class TaskWbsActivity extends Activity {
         } else {
             Dates.disDialog();
         }
-
-
     }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
@@ -324,34 +322,6 @@ public class TaskWbsActivity extends Activity {
     }
 
     private void initEvent() {
-//        mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
-//            @Override
-//            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
-//
-//                //  如果不是，判断该节点是否有数据，
-//                if (node.getChildren().size() == 0) {
-//                    mTreeAdapter.addExtraNode(addPosition, wbsID,
-//                            "",
-//                            "新增", "",
-//                            false,
-//                            true,
-//                            "",
-//                            "sdfg",
-//                            "",
-//                            "ssdgf",
-//                            "sss",
-//                            "sss",
-//                            false);
-//                    //  如果没有，就请求数据，
-//                    ToastUtils.showLongToast("该节点无数据");
-//                    addOrganizationList.clear();
-//                    addPosition = position;
-//                    if (node.isperent()) {
-//                        addOrganiztion(node.getId(), false, false, node.getType());
-//                    }
-//                }
-//            }
-//        });
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
@@ -364,7 +334,6 @@ public class TaskWbsActivity extends Activity {
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
-
                             //从拿到该节点的名称和id
                             addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
                         }

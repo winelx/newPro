@@ -91,13 +91,15 @@
 
                         <TextView
                             android:id="@+id/home_item_name"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-
                             android:layout_marginTop="3dp"
                             android:layout_weight="7"
-                            android:text="所属组织"
+                            android:ellipsize="end"
+                            android:maxEms="14"
+                            android:singleLine="true"
+                            android:text="所属组织所属所属组织所属所属组织所属组织组织所属组织所属组织组织"
                             android:textColor="@color/textViwe"
                             android:textSize="15sp" />
 

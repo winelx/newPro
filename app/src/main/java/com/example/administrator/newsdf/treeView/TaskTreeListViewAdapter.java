@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -61,6 +62,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
             holder.taskNum = convertView.findViewById(R.id.taskNum);
+            holder.handover_status_recycler = convertView.findViewById(R.id.handover_status_recycler);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -80,7 +82,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
+        holder.handover_status_recycler.setHorizontalScrollBarEnabled(false);
         String num = node.getPhone();
         int str = 0;
         try {
@@ -118,7 +120,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskWbsActivity activity = (TaskWbsActivity) context;
+                ListreadActivity activity = (ListreadActivity) context;
                 activity.switchAct(node);
             }
         });
@@ -130,6 +132,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         public TextView mText, tree_name, tree_progress, taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
+        HorizontalScrollView handover_status_recycler;
     }
 
 

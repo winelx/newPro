@@ -13,7 +13,7 @@ import android.content.pm.PackageManager;
  */
 public class AppUtils {
 
-    private AppUtils() {
+    public AppUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
 
@@ -53,5 +53,6 @@ public class AppUtils {
         }
         return null;
     }
+
 
 }

@@ -167,8 +167,8 @@ public class MmissPushActivity extends AppCompatActivity {
      * @param json 字符串
      * @return 实体
      */
-    public static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
-        LogUtil.i("orgin",json);
+    private static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        LogUtil.i("orgin", json);
         if (json == null) {
             return null;
         } else {
