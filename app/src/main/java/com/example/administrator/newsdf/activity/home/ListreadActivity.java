@@ -372,6 +372,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
+                mTreeAdapter.getStatus("all");
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -880,8 +881,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             }
             mAdapter.getData(Alldata);
         }
-
-
     }
 
     /**
@@ -923,7 +922,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                             }
                             taskAdapter.getData(imagePaths, titles);
                         }
-
                     }
                 });
     }

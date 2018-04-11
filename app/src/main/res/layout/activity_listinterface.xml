@@ -240,6 +240,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/drawer_content"
             android:layout_width="220dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
@@ -251,9 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@color/back"
-                android:dividerHeight="1px"
-                android:scrollbars="none" />
-
+                android:dividerHeight="1px" />
 
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>

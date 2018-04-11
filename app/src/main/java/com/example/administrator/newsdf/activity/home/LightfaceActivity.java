@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,19 +30,23 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.newsdf.Adapter.Listinter_Adfapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
-import com.example.administrator.newsdf.Adapter.Listinter_Adfapter;
-import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.List_interface;
+import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.TaskCallback;
 import com.example.administrator.newsdf.service.TaskCallbackUtils;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -63,58 +68,124 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.R.id.search_editext;
 import static com.lzy.okgo.OkGo.post;
 
 /**
  * @author lx
  *         列表界面
  */
-public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener,TaskCallback {
+public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
     private Listinter_Adfapter mAdapter = null;
-    //任务界面数据集合
+    /**
+     * 任务界面数据集合
+     */
     private ArrayList<List_interface> mDatas;
+    /**
+     * titlew 标题
+     * delete_search 搜索框的取消按钮
+     */
     private TextView titlew, delete_search;
+    /**
+     * 搜索框
+     */
     private EditText searchEditext;
-    private String id, wbsid, intentBack;
+    /**
+     * orgid 由上一个界面传过来，每次请求都需要的固定值
+     * wbsid 从wsb节点返回，默认请求可以没有，
+     * fixedwbsId 用在选择wbs节点，用来筛选wbs，减少节点
+     */
+    private String orgId, wbsid, fixedwbsId;
+    /**
+     * pages 任务列表 请求页数
+     * page  图册请求页数
+     */
     private int pages = 1, page = 1;
-    //侧拉界面数据集合
+    /**
+     * 侧拉界面数据集合
+     */
     private ArrayList<PhotoBean> imagePaths;
-    boolean popwind = false;
+    /**
+     * 打开状态选择弹窗
+     */
     private LinearLayout imageView;
+    /**
+     * 用来判断请求数据的状态
+     * 0未完
+     * 1已完成
+     * 3全部
+     */
     private String status = "0";
+    /**
+     * 抽屉控件
+     */
     private DrawerLayout drawerLayout;
+    /**
+     * 右侧wbs节点
+     */
     private ListView drawerLayoutList;
     /**
      * 判断是否刷新还是上拉加载
      */
     private String notall = "false";
-    //下拉刷新控件
+    /**
+     * 下拉刷新控件
+     */
+
     private SmartRefreshLayout refreshLayout;
+    /**
+     * 图册按钮
+     */
     private CircleImageView fab;
+    /**
+     * 图册适配器
+     */
     private TaskPhotoAdapter taskAdapter;
     /**
      * 判断是上拉还是下拉
      */
-    //侧拉界面
+    /**
+     * drew  drew
+     * 判断是否需要原本的数据
+     */
     private static boolean drew = true;
     //任务列表
     private static boolean swip = false;
-    String titles;
-    private String wbsId, name;
-    private Dates mDate;
-    ListView uslistView;
-    List<Shop> list;
+    /**
+     * wbs的节点层级，在侧拉界面查看图片时用来拼接节点层级
+     */
+    private String titles;
+    /**
+     * 主界面的listview
+     */
+    private ListView uslistView;
+    /**
+     * 数据库集合， 保存了是否查看推送消息
+     */
+    private List<Shop> list;
+    /**
+     * 右侧抽屉布局
+     */
+    private LinearLayout drawer_content;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            /**
+             * 删除数据库数据，改变状态
+             */
             for (int i = 0; i < list.size(); i++) {
                 LoveDao.deleteLove(list.get(i).getId());
             }
         }
     };
+    private ListView mTree;
+    private ArrayList<OrganizationEntity> organizationList;
+    private ArrayList<OrganizationEntity> addOrganizationList;
+    private List<OrganizationEntity> mTreeDatas;
+    private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
+    private int addPosition;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -122,10 +193,13 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+        //
         TaskCallbackUtils.setCallBack(this);
-        mDate = new Dates();
         //清除小红点
         list = new ArrayList<>();
+        mTreeDatas = new ArrayList<>();
+        addOrganizationList = new ArrayList<>();
+        organizationList = new ArrayList<>();
         list = LoveDao.JPushCart();
         Message mes = new Message();
         handler.sendMessage(mes);
@@ -134,10 +208,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
         try {
-            name = intent.getExtras().getString("name");
-            id = intent.getExtras().getString("orgId");
-            wbsId = intent.getExtras().getString("orgId");
-            intentBack = intent.getExtras().getString("back");
+            orgId = intent.getExtras().getString("orgId");
+            fixedwbsId = intent.getExtras().getString("orgId");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -155,12 +227,14 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //点击pop
         imageView = (LinearLayout) findViewById(R.id.com_img);
         //任务列表
-         uslistView = (ListView) findViewById(R.id.list_recycler);
+        uslistView = (ListView) findViewById(R.id.list_recycler);
         //搜索
-        searchEditext = (EditText) findViewById(search_editext);
+        searchEditext = (EditText) findViewById(R.id.search_editext);
         //侧拉
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        mTree = (ListView) findViewById(R.id.drawer_right_list);
+        drawer_content = (LinearLayout) findViewById(R.id.drawer_content);
         //任务列表的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //侧拉界面的下拉
@@ -302,9 +376,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 MeunPop();//打开弹出框
-                popwind = true;
-                //失去焦点
-                searchEditext.clearFocus();
+                searchEditext.clearFocus();//失去焦点
 
             }
         });
@@ -381,12 +453,232 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             }
         });
         okgo(wbsid, status, null, 1);
+        OrganizationEntity bean = new OrganizationEntity(fixedwbsId, "",
+                intent.getExtras().getString("name"), "0", false,
+                true, "3,5", "",
+                "", "", intent.getExtras().getString("name"), "", true);
+        organizationList.add(bean);
+        getOrganization(organizationList);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
+        if (organizationList != null) {
+            for (OrganizationEntity entity : organizationList) {
+                String departmentName = entity.getDepartname();
+                OrganizationEntity bean = new OrganizationEntity(entity.getId(), entity.getParentId(),
+                        departmentName, entity.getIsleaf(), entity.iswbs(),
+                        entity.isparent(), entity.getTypes(), entity.getUsername(),
+                        entity.getNumber(), entity.getUserId(), entity.getTitle(), entity.getPhone(), entity.isDrawingGroup());
+                mTreeDatas.add(bean);
+            }
+            try {
+                mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
+                        mTreeDatas, 0);
+                mTree.setAdapter(mTreeAdapter);
+                mTreeAdapter.getStatus("mine");
+                initEvent();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void initEvent() {
+        mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
+            @Override
+            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+                //判断是否是字节点，
+                if (node.isLeaf()) {
+                } else {
+                    //  如果不是，判断该节点是否有数据，
+                    if (node.getChildren().size() == 0) {
+                        //  如果没有，就请求数据，
+                        addOrganizationList.clear();
+                        addPosition = position;
+                        if (node.isperent()) {
+                            //从拿到该节点的名称和id
+                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    void addOrganiztion(final String id, final boolean iswbs,
+                        final boolean isparent, String type) {
+        Dates.getDialogs(LightfaceActivity.this, "请求数据中");
+        OkGo.post(Request.WBSTress)
+                .params("nodeid", id)
+                .params("iswbs", iswbs)
+                .params("isparent", isparent)
+                .params("type", type)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String result, Call call, Response response) {
+                        addOrganizationList(result);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+
+    }
+
+    /**
+     * 解析SoapObject对象
+     *
+     * @return
+     */
+    private void addOrganizationList(String result) {
+        if (result.contains("data")) {
+            addOrganizationList = parseOrganizationList(result);
+            if (addOrganizationList.size() != 0) {
+                for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                    mTreeAdapter.addExtraNode(addPosition,
+                            addOrganizationList.get(i).getId(),
+                            addOrganizationList.get(i).getParentId(),
+                            addOrganizationList.get(i).getDepartname(),
+                            addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).iswbs(),
+                            addOrganizationList.get(i).isparent(),
+                            addOrganizationList.get(i).getTypes(),
+                            addOrganizationList.get(i).getUsername(),
+                            addOrganizationList.get(i).getNumber(),
+                            addOrganizationList.get(i).getUserId(),
+                            addOrganizationList.get(i).getTitle(),
+                            addOrganizationList.get(i).getPhone(),
+                            addOrganizationList.get(i).isDrawingGroup());
+                }
+                Dates.disDialog();
+            }
+            Dates.disDialog();
+        } else {
+            Dates.disDialog();
+        }
+    }
+
+
+    /**
+     * 组织机构
+     *
+     * @param json 字符串
+     * @return 实体
+     */
+    private ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        if (json == null) {
+            return null;
+        } else {
+            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject obj = jsonArray.getJSONObject(i);
+                    OrganizationEntity organization = new OrganizationEntity();
+                    try {
+                        //节点id
+                        organization.setId(obj.getString("id"));
+                    } catch (JSONException e) {
+
+                        organization.setId("");
+                    }
+                    try {
+                        //节点名称
+                        organization.setDepartname(obj.getString("name"));
+                    } catch (JSONException e) {
+
+                        organization.setDepartname("");
+                    }
+                    try {
+                        //组织类型
+                        organization.setTypes(obj.getString("type"));
+                    } catch (JSONException e) {
+                        organization.setTypes("");
+                    }
+                    try {
+                        //是否swbs
+                        organization.setIswbs(obj.getBoolean("iswbs"));
+                    } catch (JSONException e) {
+                        organization.setIswbs(false);
+                    }
+
+                    try {
+                        //是否是父节点
+                        organization.setIsparent(obj.getBoolean("isParent"));
+                    } catch (JSONException e) {
+
+                        organization.setIsparent(false);
+                    }
+                    try {
+                        boolean isParentFlag = obj.getBoolean("isParent");
+                        if (isParentFlag) {
+                            //不是叶子节点
+                            organization.setIsleaf("0");
+                        } else {
+                            //是叶子节点
+                            organization.setIsleaf("1");
+                        }
+                    } catch (JSONException e) {
+
+                        organization.setIsleaf("");
+                    }
+                    try {
+                        //组织机构父级节点
+                        organization.setParentId(obj.getString("parentId"));
+                    } catch (JSONException e) {
+
+                        organization.setParentId("");
+                    }
+
+                    try {
+                        //负责人 //进度
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
+                    } catch (JSONException e) {
+                        organization.setUsername("");
+                    }
+                    try {
+                        //进度
+                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
+                    } catch (JSONException e) {
+                        organization.setNumber("");
+                    }
+                    try {
+                        //负责热ID
+                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
+                    } catch (JSONException e) {
+                        organization.setUserId("");
+                    }
+                    try {
+                        //节点层级
+                        organization.setTitle(obj.getString("title"));
+                    } catch (JSONException e) {
+                        organization.setTitle("");
+                    }
+                    try {
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
+                    } catch (JSONException e) {
+                        organization.setPhone("");
+                    }
+                    organizationList.add(organization);
+                }
+
+                return organizationList;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
 
 
     //搜索方法
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void search(final int str) {
         String searchContext = searchEditext.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext)) {
@@ -414,11 +706,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         switch (id) {
             //返回
             case R.id.com_back:
-                if (intentBack != null) {
-                    finish();
-                } else {
-                    finish();
-                }
+                finish();
                 break;
             default:
                 break;
@@ -430,7 +718,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      */
     private void okgo(String wbsId, String msgStatus, String content, int i) {
         post(Request.CascadeList)
-                .params("orgId", id)
+                .params("orgId", orgId)
                 .params("page", i)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
@@ -439,11 +727,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (swip == false) {
+                        if (!swip) {
                             mDatas.clear();
 
                         }
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             getJson(s);
                         } else {
                             ToastUtils.showShortToast("没有更多数据了！");
@@ -464,7 +752,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     void searchokgo(String wbsId, String msgStatus, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
-                .params("orgId", id)
+                .params("orgId", orgId)
                 .params("page", i)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
@@ -473,8 +761,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mDatas.clear();
                             }
                             getJson(s);
@@ -492,7 +780,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     void searchokgo1(String wbsId, String content, int i) {
         notall = "search";
         OkGo.post(Request.CascadeList)
-                .params("orgId", id)
+                .params("orgId", orgId)
                 .params("page", i)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
@@ -500,8 +788,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mDatas.clear();
                             }
                             getJson(s);
@@ -518,7 +806,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      */
     void okgoall(String wbsId, String content, int i) {
         post(Request.CascadeList)
-                .params("orgId", id)
+                .params("orgId", orgId)
                 .params("page", i)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
@@ -526,8 +814,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (swip == false) {
+                        if (s.contains("data")) {
+                            if (!swip) {
                                 mDatas.clear();
                             }
                             getJson(s);
@@ -553,12 +841,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             titles = data.getStringExtra("titles");
             titlew.setText(title);
             wbsid = data.getStringExtra("id");
-            popwind = data.getBooleanExtra("iswbs", false);
-            if (popwind) {
-                fab.setVisibility(View.VISIBLE);
-            } else {
-                fab.setVisibility(View.GONE);
-            }
+            fab.setVisibility(View.VISIBLE);
             page = 1;
             photoAdm(wbsid);
             searchEditext.setText("");
@@ -568,7 +851,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             pages = 1;
             //当前为刷新数据。false 加载数据时清除之前的
             swip = false;
-            okgoall(wbsId, status, 1);
+            okgoall(wbsid, status, 1);
         }
     }
 
@@ -599,7 +882,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * @param s
      */
     void getJson(String s) {
-
+        LogUtil.i("ss", s);
         refreshLayout.finishRefresh(true);
         if (s.contains("data")) {
             try {
@@ -675,7 +958,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         } else {
                             if (drew) {
                                 imagePaths.clear();
-                                imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
+                                imagePaths.add(new PhotoBean(orgId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
                             taskAdapter.getData(imagePaths, titles);
                         }
@@ -718,13 +1001,14 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.pop_computer:
-                        Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
-                        intent.putExtra("data", "List");
-                        intent.putExtra("WbsID", wbsId);
-                        intent.putExtra("wbsname", name);
-                        startActivityForResult(intent, 1);
-                        backgroundAlpha(1f);
-                        uslistView.setSelection(0);
+//                        Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
+//                        intent.putExtra("data", "List");
+//                        intent.putExtra("WbsID", fixedwbsId);
+//                        intent.putExtra("wbsname", intent.getExtras().getString("name"));
+//                        startActivityForResult(intent, 1);
+//                        backgroundAlpha(1f);
+//                        uslistView.setSelection(0);
+                        drawerLayout.openDrawer(Gravity.END);
                         break;
                     case R.id.pop_All:
                         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
@@ -771,6 +1055,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         return contentView;
     }
 
+    /**
+     * 详情页数据状态发生改变，刷新当前界面
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void taskCallback() {
@@ -804,6 +1091,21 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         public void onDismiss() {
             backgroundAlpha(1f);
         }
+    }
 
+    public void switchAct(Node node) {
+        if (node.iswbs()) {
+            drawerLayout.closeDrawer(drawer_content);
+            titles = node.getTitle();
+            titlew.setText(node.getName());
+            wbsid = node.getId();
+            fab.setVisibility(View.VISIBLE);
+            swip = false;
+            page = 1;
+            pages = 1;
+            photoAdm(wbsid);
+            uslistView.setSelection(0);
+            okgoall(wbsid, null, 1);
+        }
     }
 }

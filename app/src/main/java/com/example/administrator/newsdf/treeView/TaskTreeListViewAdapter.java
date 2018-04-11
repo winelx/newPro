@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.utils.Request;
@@ -37,6 +38,7 @@ import static com.example.administrator.newsdf.R.id.tree_name;
  */
 public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
+    private String status;
 
     public TaskTreeListViewAdapter(ListView tree, Context context,
                                    List<T> datas, int defaultExpandLevel)
@@ -120,8 +122,19 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ListreadActivity activity = (ListreadActivity) context;
-                activity.switchAct(node);
+                switch (status) {
+                    case "mine":
+                        LightfaceActivity activity = (LightfaceActivity) context;
+             activity.switchAct(node);
+                        break;
+                    case "all":
+                        ListreadActivity activity1 = (ListreadActivity) context;
+                        activity1.switchAct(node);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
         return convertView;
@@ -188,4 +201,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 });
     }
 
+    public void getStatus(String string) {
+        this.status = string;
+    }
 }
