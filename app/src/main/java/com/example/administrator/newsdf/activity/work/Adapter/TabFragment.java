@@ -70,6 +70,7 @@ public class TabFragment extends LazyFragment {
         mContext = getActivity();
         mData = new ArrayList<>();
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
+        refreshLayout.setDisableContentWhenLoading(true);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

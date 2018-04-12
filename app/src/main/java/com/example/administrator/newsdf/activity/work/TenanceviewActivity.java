@@ -10,18 +10,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
-import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -59,44 +59,41 @@ public class TenanceviewActivity extends AppCompatActivity {
     private RelativeLayout tabulation;
     private TextView title;
     private LinearLayout com_img;
-    private ArrayList<String> ids, names, titlename;
+    private ArrayList<String> ids=null,
+            names=null,
+            titlename=null;
     int msg = 0;
     int page = 1;
     String id, wbspath;
     private CircleImageView fab;
     private SmartRefreshLayout drawerLayout_smart;
     private DrawerLayout drawer_layout;
-    private ArrayList<PhotoBean> imagePaths;
+    private ArrayList<PhotoBean> imagePaths=null;
     private TaskPhotoAdapter taskAdapter;
     private ListView drawer_layout_list;
     private boolean drew = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
+        // Probably initialize members with default values for a new instance：activity第一次创建时
         setContentView(R.layout.activity_missionmte);
-        Log.i("left", "onCreate");
         mContext = TenanceviewActivity.this;
-        //ws得到跳转到该Activity的Intent对象
-        Intent intent = getIntent();
         //获取到intent传过来得集合
-        names = new ArrayList<>();
-        ids = new ArrayList<>();
-        titlename = new ArrayList<>();
-        imagePaths = new ArrayList<>();
-        try {
-            //加上检查数量的检查点
-            names = intent.getExtras().getStringArrayList("name");
-            ids = intent.getExtras().getStringArrayList("ids");
-            titlename = intent.getExtras().getStringArrayList("title");
-            id = intent.getExtras().getString("id");
-
-            id = intent.getExtras().getString("id");
-            //节点路径
-            wbspath = intent.getExtras().getString("wbspath");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        Array();
+            try {
+                //ws得到跳转到该Activity的Intent对象
+                Intent intent = getIntent();
+                //加上检查数量的检查点
+                names = intent.getExtras().getStringArrayList("name");
+                ids = intent.getExtras().getStringArrayList("ids");
+                titlename = intent.getExtras().getStringArrayList("title");
+                id = intent.getExtras().getString("id");
+                //节点路径
+                wbspath = intent.getExtras().getString("wbspath");
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
@@ -171,6 +168,13 @@ public class TenanceviewActivity extends AppCompatActivity {
         initView();
     }
 
+    private void Array() {
+        names = new ArrayList<>();
+        ids = new ArrayList<>();
+        titlename = new ArrayList<>();
+        imagePaths = new ArrayList<>();
+    }
+
 
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
@@ -229,25 +233,52 @@ public class TenanceviewActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        LogUtil.i("demosdg","onStart");
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.i("demosdg","onStart");
+    }
+
+    // 将数据保存到outState对象中, 该对象会在重建activity时传递给onCreate方法
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("name", names);
+        outState.putStringArrayList("ids", ids);
+        outState.putStringArrayList("titlename", titlename);
+        outState.putString("wbspath", wbspath);
+        LogUtil.i("demosdg","onSaveInstanceState");
+        outState.putString("id", id);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        //可以在这里拿出数据和状态
+        ids = savedInstanceState.getStringArrayList("ids");
+        names = savedInstanceState.getStringArrayList("name");
+        titlename = savedInstanceState.getStringArrayList("titlename");
+        wbspath = savedInstanceState.getString("wbspath");
+        id = savedInstanceState.getString("id");
+
+        initView();
 
     }
+
 
     @Override
     protected void onPause() {
         super.onPause();
-
+        LogUtil.i("demosdg","onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
+        LogUtil.i("demosdg","onStop");
     }
 
     /**
@@ -278,7 +309,7 @@ public class TenanceviewActivity extends AppCompatActivity {
                                     filePath = Request.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
-                                taskAdapter.getData(imagePaths,wbspath);
+                                taskAdapter.getData(imagePaths, wbspath);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -287,7 +318,7 @@ public class TenanceviewActivity extends AppCompatActivity {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths,wbspath);
+                            taskAdapter.getData(imagePaths, wbspath);
                         }
                     }
                 });

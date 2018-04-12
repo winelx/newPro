@@ -46,7 +46,6 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -193,6 +192,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+
         //
         TaskCallbackUtils.setCallBack(this);
         //清除小红点
@@ -452,7 +452,13 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 refreshlayout.finishLoadmore(1500);
             }
         });
+        /**
+         * 请求任务列表
+         */
         okgo(wbsid, status, null, 1);
+        /**
+         * 拼接 选择wbs的节点
+         */
         OrganizationEntity bean = new OrganizationEntity(fixedwbsId, "",
                 intent.getExtras().getString("name"), "0", false,
                 true, "3,5", "",
@@ -460,6 +466,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         organizationList.add(bean);
         getOrganization(organizationList);
     }
+
+
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {
@@ -481,10 +489,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             }
         }
-
     }
 
-    private void initEvent() {
+    public void initEvent() {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
@@ -506,7 +513,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         });
     }
 
-
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(LightfaceActivity.this, "请求数据中");
@@ -520,7 +526,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     public void onSuccess(String result, Call call, Response response) {
                         addOrganizationList(result);
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -537,142 +542,17 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      */
     private void addOrganizationList(String result) {
         if (result.contains("data")) {
-            addOrganizationList = parseOrganizationList(result);
-            if (addOrganizationList.size() != 0) {
-                for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    mTreeAdapter.addExtraNode(addPosition,
-                            addOrganizationList.get(i).getId(),
-                            addOrganizationList.get(i).getParentId(),
-                            addOrganizationList.get(i).getDepartname(),
-                            addOrganizationList.get(i).getIsleaf(),
-                            addOrganizationList.get(i).iswbs(),
-                            addOrganizationList.get(i).isparent(),
-                            addOrganizationList.get(i).getTypes(),
-                            addOrganizationList.get(i).getUsername(),
-                            addOrganizationList.get(i).getNumber(),
-                            addOrganizationList.get(i).getUserId(),
-                            addOrganizationList.get(i).getTitle(),
-                            addOrganizationList.get(i).getPhone(),
-                            addOrganizationList.get(i).isDrawingGroup());
-                }
-                Dates.disDialog();
-            }
+            /**
+             * 解析数据
+             */
+            addOrganizationList = homeUtils.parseOrganizationList(result);
+            /**
+             * 动态添加
+             */
+            homeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
             Dates.disDialog();
         } else {
             Dates.disDialog();
-        }
-    }
-
-
-    /**
-     * 组织机构
-     *
-     * @param json 字符串
-     * @return 实体
-     */
-    private ArrayList<OrganizationEntity> parseOrganizationList(String json) {
-        if (json == null) {
-            return null;
-        } else {
-            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject obj = jsonArray.getJSONObject(i);
-                    OrganizationEntity organization = new OrganizationEntity();
-                    try {
-                        //节点id
-                        organization.setId(obj.getString("id"));
-                    } catch (JSONException e) {
-
-                        organization.setId("");
-                    }
-                    try {
-                        //节点名称
-                        organization.setDepartname(obj.getString("name"));
-                    } catch (JSONException e) {
-
-                        organization.setDepartname("");
-                    }
-                    try {
-                        //组织类型
-                        organization.setTypes(obj.getString("type"));
-                    } catch (JSONException e) {
-                        organization.setTypes("");
-                    }
-                    try {
-                        //是否swbs
-                        organization.setIswbs(obj.getBoolean("iswbs"));
-                    } catch (JSONException e) {
-                        organization.setIswbs(false);
-                    }
-
-                    try {
-                        //是否是父节点
-                        organization.setIsparent(obj.getBoolean("isParent"));
-                    } catch (JSONException e) {
-
-                        organization.setIsparent(false);
-                    }
-                    try {
-                        boolean isParentFlag = obj.getBoolean("isParent");
-                        if (isParentFlag) {
-                            //不是叶子节点
-                            organization.setIsleaf("0");
-                        } else {
-                            //是叶子节点
-                            organization.setIsleaf("1");
-                        }
-                    } catch (JSONException e) {
-
-                        organization.setIsleaf("");
-                    }
-                    try {
-                        //组织机构父级节点
-                        organization.setParentId(obj.getString("parentId"));
-                    } catch (JSONException e) {
-
-                        organization.setParentId("");
-                    }
-
-                    try {
-                        //负责人 //进度
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
-                    } catch (JSONException e) {
-                        organization.setUsername("");
-                    }
-                    try {
-                        //进度
-                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
-                    } catch (JSONException e) {
-                        organization.setNumber("");
-                    }
-                    try {
-                        //负责热ID
-                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
-                    } catch (JSONException e) {
-                        organization.setUserId("");
-                    }
-                    try {
-                        //节点层级
-                        organization.setTitle(obj.getString("title"));
-                    } catch (JSONException e) {
-                        organization.setTitle("");
-                    }
-                    try {
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
-                    } catch (JSONException e) {
-                        organization.setPhone("");
-                    }
-                    organizationList.add(organization);
-                }
-
-                return organizationList;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
         }
     }
 
@@ -727,15 +607,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (!swip) {
-                            mDatas.clear();
-
-                        }
-                        if (s.contains("data")) {
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-                        }
+                        getJson(s);
                     }
 
                     @Override
@@ -761,15 +633,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (!swip) {
-                                mDatas.clear();
-                            }
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-
-                        }
+                        getJson(s);
                     }
                 });
     }
@@ -788,14 +652,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (!swip) {
-                                mDatas.clear();
-                            }
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-                        }
+                        getJson(s);
 
                     }
                 });
@@ -814,46 +671,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (!swip) {
-                                mDatas.clear();
-                            }
-                            getJson(s);
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
-                            mDatas.clear();
-                            mAdapter.notifyDataSetChanged();
-                        }
-
+                        getJson(s);
                     }
                 });
     }
 
-    /**
-     * result返回事件处理
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //判断是不是Activity的返回，
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String title = data.getStringExtra("title");
-            titles = data.getStringExtra("titles");
-            titlew.setText(title);
-            wbsid = data.getStringExtra("id");
-            fab.setVisibility(View.VISIBLE);
-            page = 1;
-            photoAdm(wbsid);
-            searchEditext.setText("");
-            notall = "false";
-            status = "0";
-            //初始化页数为第一页
-            pages = 1;
-            //当前为刷新数据。false 加载数据时清除之前的
-            swip = false;
-            okgoall(wbsid, status, 1);
-        }
-    }
 
     /**
      * 重写返回键
@@ -882,9 +704,11 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * @param s
      */
     void getJson(String s) {
-        LogUtil.i("ss", s);
         refreshLayout.finishRefresh(true);
         if (s.contains("data")) {
+            if (!swip) {
+                mDatas.clear();
+            }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -915,7 +739,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             }
         } else {
-            ToastUtils.showShortToast("没有更多数据了！");
+            ToastUtils.showShortToast("暂无数据！");
             if (!swip) {
                 mDatas.clear();
             }
@@ -980,13 +804,13 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-// 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
-// 默认在mButton2的左下角显示
+        // 默认在mButton2的左下角显示
         mPopupWindow.showAsDropDown(imageView);
         backgroundAlpha(0.5f);
-//添加pop窗口关闭事件
+        //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
@@ -1001,13 +825,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.pop_computer:
-//                        Intent intent = new Intent(LightfaceActivity.this, TaskWbsActivity.class);
-//                        intent.putExtra("data", "List");
-//                        intent.putExtra("WbsID", fixedwbsId);
-//                        intent.putExtra("wbsname", intent.getExtras().getString("name"));
-//                        startActivityForResult(intent, 1);
-//                        backgroundAlpha(1f);
-//                        uslistView.setSelection(0);
                         drawerLayout.openDrawer(Gravity.END);
                         break;
                     case R.id.pop_All:
@@ -1105,7 +922,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             pages = 1;
             photoAdm(wbsid);
             uslistView.setSelection(0);
-            okgoall(wbsid, null, 1);
+            status = "0";
+            okgo(wbsid, status, null, pages);
         }
     }
 }

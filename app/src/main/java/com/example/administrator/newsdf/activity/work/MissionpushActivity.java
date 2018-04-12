@@ -22,7 +22,6 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -176,7 +175,7 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(MissionpushActivity.this,"推送消息中");
+                Dates.getDialog(MissionpushActivity.this,"推送任务中");
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
@@ -186,7 +185,6 @@ public class MissionpushActivity extends AppCompatActivity {
 
                 if (strids != null) {
                     pushOkgo(strids);
-                    LogUtil.i("推送","推送");
                 } else {
                     Dates.disDialog();
                     ToastUtils.showShortToast("请选择推送项");

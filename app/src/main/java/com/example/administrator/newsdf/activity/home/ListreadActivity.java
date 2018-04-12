@@ -434,32 +434,19 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
      */
     private void addOrganizationList(String result) {
         if (result.contains("data")) {
-            addOrganizationList = parseOrganizationList(result);
-            if (addOrganizationList.size() != 0) {
-                for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    mTreeAdapter.addExtraNode(addPosition,
-                            addOrganizationList.get(i).getId(),
-                            addOrganizationList.get(i).getParentId(),
-                            addOrganizationList.get(i).getDepartname(),
-                            addOrganizationList.get(i).getIsleaf(),
-                            addOrganizationList.get(i).iswbs(),
-                            addOrganizationList.get(i).isparent(),
-                            addOrganizationList.get(i).getTypes(),
-                            addOrganizationList.get(i).getUsername(),
-                            addOrganizationList.get(i).getNumber(),
-                            addOrganizationList.get(i).getUserId(),
-                            addOrganizationList.get(i).getTitle(),
-                            addOrganizationList.get(i).getPhone(),
-                            addOrganizationList.get(i).isDrawingGroup());
-                }
-                Dates.disDialog();
-            }
+            /**
+             * 解析数据
+             */
+            addOrganizationList = homeUtils.parseOrganizationList(result);
+            /**
+             * 动态添加
+             */
+            homeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
             Dates.disDialog();
         } else {
             Dates.disDialog();
         }
     }
-
 
     /**
      * 组织机构

@@ -1,12 +1,15 @@
 package com.example.administrator.newsdf.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,11 +97,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
     }
-    StackTraceElement   Stack;
+
+    StackTraceElement Stack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
+        setupWindowAnimations();
         mContext = this;
         dates = new Dates();
         //找到控件
@@ -144,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupWindowAnimations() {
+        Slide slide = new Slide();
+        slide.setDuration(1000);
+        getWindow().setExitTransition(slide);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -154,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             Message msg = new Message();
             msg.what = 1;
             handler.sendMessage(msg);
-        }else {
+        } else {
             Message msg = new Message();
             msg.what = 2;
             handler.sendMessage(msg);
