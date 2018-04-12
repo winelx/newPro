@@ -138,8 +138,8 @@
         <item name="colorControlActivated">@color/colorAccent</item>
     </style>
     //仿抽屉弹窗的弹出样式
-    <style name="AnimationLeftFade">
-        <item name="android:windowEnterAnimation">@anim/in_lefttoright</item>
-        <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
+    <style name="AnimationBottomFade">
+        <item name="android:windowEnterAnimation">@anim/out_righttoleft</item>
+        <item name="android:windowExitAnimation">@anim/in_lefttoright</item>
     </style>
 </resources>
