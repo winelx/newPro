@@ -1,10 +1,13 @@
 package com.example.administrator.newsdf.activity.home;
 
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
+import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -184,5 +187,55 @@ public class homeUtils {
                 });
         return result;
     }
+
+    /**
+     * 查询图册
+     */
+    public static void photoAdm(final String string, int page,
+                                                final ArrayList<PhotoBean> imagePaths,
+                                                final boolean drew,
+                                                final TaskPhotoAdapter taskPhotoAdapter,
+                                                final String wbsName) {
+        OkGo.post(Request.Photolist)
+                .params("WbsId", string)
+                .params("page", page)
+                .params("rows", 30)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                        if (s.contains("data")) {
+                            if (drew) {
+                                imagePaths.clear();
+                            }
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id = (String) json.get("id");
+                                    String filePath = (String) json.get("filePath");
+                                    String drawingNumber = (String) json.get("drawingNumber");
+                                    String drawingName = (String) json.get("drawingName");
+                                    String drawingGroupName = (String) json.get("drawingGroupName");
+                                    filePath = Request.networks + filePath;
+                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
+                                }
+                                taskPhotoAdapter.getData(imagePaths, wbsName);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (drew) {
+                                imagePaths.clear();
+                                imagePaths.add(new PhotoBean(
+                                        "", "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
+                            }
+                            taskPhotoAdapter.getData(imagePaths, wbsName);
+                        }
+                    }
+                });
+    }
+
 
 }

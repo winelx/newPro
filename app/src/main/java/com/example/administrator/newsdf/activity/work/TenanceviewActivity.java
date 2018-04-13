@@ -18,27 +18,19 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
-import okhttp3.Response;
 
 
 /**
@@ -59,49 +51,50 @@ public class TenanceviewActivity extends AppCompatActivity {
     private RelativeLayout tabulation;
     private TextView title;
     private LinearLayout com_img;
-    private ArrayList<String> ids=null,
-            names=null,
-            titlename=null;
-    int msg = 0;
-    int page = 1;
-    String id, wbspath;
+    private ArrayList<String> ids = null,
+            names = null,
+            titlename = null;
+    private int msg = 0,page = 1;
+    private  String id, wbspath;
     private CircleImageView fab;
-    private SmartRefreshLayout drawerLayout_smart;
-    private DrawerLayout drawer_layout;
-    private ArrayList<PhotoBean> imagePaths=null;
+    private SmartRefreshLayout drawerlayoutSmart;
+    private DrawerLayout drawerLayout;
+    private ArrayList<PhotoBean> imagePaths = null;
     private TaskPhotoAdapter taskAdapter;
-    private ListView drawer_layout_list;
+    private ListView drawerLayoutList;
     private boolean drew = true;
-
+    ArrayList<String> replly = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
-        // Probably initialize members with default values for a new instance：activity第一次创建时
         setContentView(R.layout.activity_missionmte);
         mContext = TenanceviewActivity.this;
         //获取到intent传过来得集合
-        Array();
-            try {
-                //ws得到跳转到该Activity的Intent对象
-                Intent intent = getIntent();
-                //加上检查数量的检查点
-                names = intent.getExtras().getStringArrayList("name");
-                ids = intent.getExtras().getStringArrayList("ids");
-                titlename = intent.getExtras().getStringArrayList("title");
-                id = intent.getExtras().getString("id");
-                //节点路径
-                wbspath = intent.getExtras().getString("wbspath");
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+        names = new ArrayList<>();
+        ids = new ArrayList<>();
+        titlename = new ArrayList<>();
+        imagePaths = new ArrayList<>();
+        try {
+            //ws得到跳转到该Activity的Intent对象
+            Intent intent = getIntent();
+            //加上检查数量的检查点
+            names = intent.getExtras().getStringArrayList("name");
+            ids = intent.getExtras().getStringArrayList("ids");
+            titlename = intent.getExtras().getStringArrayList("title");
+            id = intent.getExtras().getString("id");
+            //节点路径
+            wbspath = intent.getExtras().getString("wbspath");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
-        drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
-        drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        drawerLayout_smart.setEnableRefresh(false);
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+        drawerlayoutSmart.setEnableRefresh(false);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         fab = (CircleImageView) findViewById(R.id.fab);
         com_img = (LinearLayout) findViewById(R.id.tenac_img);
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
@@ -109,8 +102,8 @@ public class TenanceviewActivity extends AppCompatActivity {
         com_back = (IconTextView) findViewById(R.id.com_back);
         title.setText("任务管理");
         taskAdapter = new TaskPhotoAdapter(imagePaths, TenanceviewActivity.this);
-        drawer_layout.setScrimColor(Color.TRANSPARENT);
-        drawer_layout_list.setAdapter(taskAdapter);
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayoutList.setAdapter(taskAdapter);
         tabulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,33 +141,26 @@ public class TenanceviewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                photoAdm(id);
-                drawer_layout.openDrawer(GravityCompat.START);
+                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter,wbspath);
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
         /**
          *    侧拉listview上拉加载
          */
-        drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
+        drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(id);
+                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter,wbspath);
+                taskAdapter.getData(imagePaths, wbspath);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
         });
         initView();
     }
-
-    private void Array() {
-        names = new ArrayList<>();
-        ids = new ArrayList<>();
-        titlename = new ArrayList<>();
-        imagePaths = new ArrayList<>();
-    }
-
 
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
@@ -212,7 +198,7 @@ public class TenanceviewActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    ArrayList<String> replly = new ArrayList<>();
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -233,14 +219,12 @@ public class TenanceviewActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtil.i("demosdg","onStart");
-
+        LogUtil.i("demosdg", "onStart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.i("demosdg","onStart");
     }
 
     // 将数据保存到outState对象中, 该对象会在重建activity时传递给onCreate方法
@@ -251,7 +235,6 @@ public class TenanceviewActivity extends AppCompatActivity {
         outState.putStringArrayList("ids", ids);
         outState.putStringArrayList("titlename", titlename);
         outState.putString("wbspath", wbspath);
-        LogUtil.i("demosdg","onSaveInstanceState");
         outState.putString("id", id);
     }
 
@@ -263,65 +246,20 @@ public class TenanceviewActivity extends AppCompatActivity {
         titlename = savedInstanceState.getStringArrayList("titlename");
         wbspath = savedInstanceState.getString("wbspath");
         id = savedInstanceState.getString("id");
-
         initView();
-
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtil.i("demosdg","onPause");
+        LogUtil.i("demosdg", "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LogUtil.i("demosdg","onStop");
-    }
-
-    /**
-     * 查询图册
-     */
-    private void photoAdm(String string) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskAdapter.getData(imagePaths, wbspath);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskAdapter.getData(imagePaths, wbspath);
-                        }
-                    }
-                });
+        LogUtil.i("demosdg", "onStop");
     }
 
 

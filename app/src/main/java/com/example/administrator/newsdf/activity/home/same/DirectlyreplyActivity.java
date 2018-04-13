@@ -305,7 +305,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
      */
     @Override
     protected void onStop() {
-        // TODO Auto-generated method stub
         //注销掉监听
         locationService.unregisterListener(mListener);
         locationService.stop(); //停止定位服务
@@ -422,6 +421,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         popstatus = true;
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {

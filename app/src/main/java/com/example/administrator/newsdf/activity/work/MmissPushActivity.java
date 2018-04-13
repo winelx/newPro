@@ -451,14 +451,12 @@ public class MmissPushActivity extends AppCompatActivity {
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
-
                                         name = "";
                                     }
                                     ids.add(id);
                                     //保存标题
                                     titlename.add(name);
                                 }
-
                                 Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);

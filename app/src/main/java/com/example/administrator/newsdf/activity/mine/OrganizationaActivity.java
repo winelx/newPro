@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.service.OgranCallbackUtils;
+import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;

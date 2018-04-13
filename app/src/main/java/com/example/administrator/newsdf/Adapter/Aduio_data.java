@@ -27,7 +27,7 @@ public class Aduio_data {
     ArrayList<String> attachments;//附件list（
     ArrayList<String> filename;//附件list（
     String commentCount; //评论条数
-      String userpath;
+   String userpath;
 
 
     public Aduio_data(String replyID, String uploadId, String replyUserName,

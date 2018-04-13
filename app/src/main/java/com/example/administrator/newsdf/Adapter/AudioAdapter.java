@@ -96,9 +96,9 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.linearLayout.setVisibility(View.VISIBLE);
             //标题
             if (content.get(posotion).getName().length() != 0) {
-                holder.details_title.setText(content.get(posotion).getName());
+                holder.detailsTitle.setText(content.get(posotion).getName());
             } else {
-                holder.details_title.setText("主动上传任务");
+                holder.detailsTitle.setText("主动上传任务");
             }
             //创建时间
             String data = null;
@@ -108,24 +108,25 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 e.printStackTrace();
             }
 
-            holder.details_content.setText(content.get(posotion).getContent());
-            holder.details_fixed_data.setText(content.get(posotion).getBackdata());
+            holder.detailsContent.setText(content.get(posotion).getContent());
+            holder.detailsFixedData.setText(content.get(posotion).getBackdata());
             //转交人
-            holder.details_user.setText(content.get(posotion).getLeaderName());
+            holder.detailsUser.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {
-                holder.details_data.setText(content.get(posotion).getCreateDate() + "  已推送：" + data);
+                holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + data);
                 //状态
-                holder.details_boolean.setText("未完成");
+                holder.detailsBoolean.setText("未完成");
                 //状态
-                holder.details_boolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
+                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
+
             } else {
-                holder.details_data.setText(content.get(posotion).getCreateDate());
+                holder.detailsData.setText(content.get(posotion).getCreateDate());
                 //状态
-                holder.details_boolean.setText("已完成");
+                holder.detailsBoolean.setText("已完成");
                 //状态 finish_green
-                holder.details_boolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
+                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
             }// 转交说明
-            holder.handover_status_description.setText(content.get(posotion).getCreateDate());
+            holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
         }
     }
 
@@ -134,7 +135,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * @param holder
      * @param posotion
      */
-
     private void bindGrid(TypeGridHolder holder, final int posotion) {
         if (datas.size() != 0) {
             holder.setpin.setVisibility(View.VISIBLE);
@@ -145,7 +145,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
         }
     }
-
     /**
      * 评论
      *
@@ -168,30 +167,27 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //ViewHolder初始化控件
     public class TypeBannerHolder extends RecyclerView.ViewHolder {
         private LinearLayout linearLayout;
-        private TextView details_title, details_data,
-                details_user, details_boolean,
-                handover_status_description, handover_huifu,
-                details_content, details_fixed_data, handovers_text;
+        private TextView detailsTitle, detailsData,
+                detailsUser, detailsBoolean,
+                handoverStatusDescription, handoverHuifu,
+                detailsContent, detailsFixedData, handoversText;
 
         public TypeBannerHolder(View itemView) {
             super(itemView);
             linearLayout = itemView.findViewById(R.id.linearLayout);
-            details_title = itemView.findViewById(R.id.details_title);
-            details_data = itemView.findViewById(R.id.details_data);
-            details_fixed_data = itemView.findViewById(R.id.details_end_data);
-            details_user = itemView.findViewById(R.id.details_user);
-            details_boolean = itemView.findViewById(R.id.details_boolean);
-            handover_status_description = itemView.findViewById(R.id.handover_status_description);
-            details_content = itemView.findViewById(R.id.details_content);
-
+            detailsTitle = itemView.findViewById(R.id.details_title);
+            detailsData = itemView.findViewById(R.id.details_data);
+            detailsFixedData = itemView.findViewById(R.id.details_end_data);
+            detailsUser = itemView.findViewById(R.id.details_user);
+            detailsBoolean = itemView.findViewById(R.id.details_boolean);
+            handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
+            detailsContent = itemView.findViewById(R.id.details_content);
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }
-
     public class TypeGridHolder extends RecyclerView.ViewHolder {
         RecyclerView dataRec;
         TextView setpin;
-
         public TypeGridHolder(View itemView) {
             super(itemView);
             dataRec = (RecyclerView) itemView.findViewById(R.id.handover_part_item);
@@ -202,7 +198,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class TypeListHolder extends RecyclerView.ViewHolder {
         RecyclerView ListRec;
         TextView textView;
-
         public TypeListHolder(View itemView) {
             super(itemView);
             ListRec = (RecyclerView) itemView.findViewById(R.id.handover_part_item);
@@ -210,7 +205,9 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    //数据源
+    /**
+     *  数据源
+     */
     public void setmBanner(ArrayList<Aduio_content> content) {
         this.content = content;
         notifyDataSetChanged();

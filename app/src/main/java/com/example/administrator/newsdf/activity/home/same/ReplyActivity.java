@@ -34,12 +34,13 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.example.administrator.newsdf.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.Adapter.PhotoAdapter;
-import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -50,7 +51,6 @@ import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -63,7 +63,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,6 +74,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.activity.home.homeUtils.photoAdm;
 import static com.example.administrator.newsdf.utils.Dates.compressPixel;
 
 
@@ -93,14 +93,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repley_address, wbs_text, com_button, title, tvNetSpeed, reply_check_item;
+    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem;
     private ImageView address, baoxun;
-    private String Latitude, Longitude;
-    private EditText reply_text;
+    private String latitude, longitude;
+    private EditText replyText;
     private Context mContext;
     private ProgressBar mProgressBar;
     private LinearLayout Progessn;
-    private SPUtils spUtils;
     private ArrayList<String> pathimg, ids;
     private CheckPermission checkPermission;
     LinearLayout lin_sdfg;
@@ -119,11 +118,12 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private ArrayList<PhotoBean> photoPopPaths;
     private DrawerLayout drawer;
     private SmartRefreshLayout smartRefreshLayout;
-    private ListView drawer_layout_list;
+    private ListView drawerLayoutList;
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
     private String titlename;
+    private String Titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +142,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
             }
-
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -181,9 +180,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             }
             pathimg.addAll(imagePaths);
             if (checkname.length() < 0) {
-                reply_check_item.setText("选择检查点");
+                replyCheckItem.setText("选择检查点");
             } else {
-                reply_check_item.setText(checkname);
+                replyCheckItem.setText(checkname);
             }
             status = true;
         } catch (NullPointerException e) {
@@ -192,18 +191,16 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
         //展示wbsname
         if (wbsname != null && wbsname.length() != 0) {
-            wbs_text.setText(wbsname);
+            wbsText.setText(wbsname);
         }
         //根据wbsname的长度判断默认是否展示图册按钮
         if (TextUtils.isEmpty(wbsID)) {
             fab.setVisibility(View.GONE);
         }
         //展示专递过来的回复数据
-        reply_text.setText(content);
+        replyText.setText(content);
         baoxun.setVisibility(View.VISIBLE);
         baoxun.setImageResource(R.mipmap.reply_baocun);
-        //sp帮助类
-        spUtils = new SPUtils();
         loaction();//定位
         initDate();//recycclerView
     }
@@ -232,7 +229,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      */
     private void findID() {
         //侧拉界面listview
-        drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //侧拉界面
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -246,7 +243,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                photoAdm(wbsID);
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -259,17 +256,17 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
         //图片
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
-        repley_address = (TextView) findViewById(R.id.repley_address);
-        reply_text = (EditText) findViewById(R.id.reply_text);
+        repleyAddress = (TextView) findViewById(R.id.repley_address);
+        replyText = (EditText) findViewById(R.id.reply_text);
         address = (ImageView) findViewById(R.id.address);
         //上传数据
-        com_button = (TextView) findViewById(R.id.com_button);
+        comButton = (TextView) findViewById(R.id.com_button);
         //检查项
-        reply_check_item = (TextView) findViewById(R.id.reply_check_item);
+        replyCheckItem = (TextView) findViewById(R.id.reply_check_item);
         //保存
         baoxun = (ImageView) findViewById(R.id.com_img);
         //wbs
-        wbs_text = (TextView) findViewById(R.id.wbs_text);
+        wbsText = (TextView) findViewById(R.id.wbs_text);
         //标题
         title = (TextView) findViewById(R.id.com_title);
         findViewById(R.id.reply_wbs).setOnClickListener(this);
@@ -287,18 +284,18 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsID);
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
         });
         mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
-        drawer_layout_list.setAdapter(mAdapter);
+        drawerLayoutList.setAdapter(mAdapter);
         baoxun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //存放到本地
-                if (status != true) {
+                if (!status) {
                     selfDialog = new WbsDialog(ReplyActivity.this);
                     selfDialog.setMessage("是否保存本地");
                     selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
@@ -308,18 +305,18 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             Shop shop = new Shop();
                             shop.setType(Shop.TYPE_LOVE);
                             //路径
-                            shop.setName(wbs_text.getText().toString());
+                            shop.setName(wbsText.getText().toString());
                             //wbsID
                             shop.setWebsid(wbsID);
                             //时间
                             shop.setTimme(Dates.getDate());
                             //内容
-                            shop.setContent(reply_text.getText().toString());
+                            shop.setContent(replyText.getText().toString());
                             shop.setImage_url(Dates.listToString(pathimg));
                             shop.setCheckid(checkId);
                             //检查点
-                            if (reply_check_item.getText().toString().length() != 0) {
-                                shop.setCheckname(reply_check_item.getText().toString());
+                            if (replyCheckItem.getText().toString().length() != 0) {
+                                shop.setCheckname(replyCheckItem.getText().toString());
                             } else {
                                 shop.setCheckname("自定义");
                             }
@@ -344,9 +341,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             //更新数据库数据
                             //拿到需要进行修改的记录
                             Shop shop = list.get(position);
-                            shop.setName(wbs_text.getText().toString());
+                            shop.setName(wbsText.getText().toString());
                             //内容
-                            shop.setContent(reply_text.getText().toString());
+                            shop.setContent(replyText.getText().toString());
                             //图片保存路径
                             shop.setImage_url(Dates.listToString(pathimg));
                             //wbsid
@@ -356,7 +353,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             //checkid
                             shop.setCheckid(checkId);
                             //checkname
-                            shop.setCheckname(reply_check_item.getText().toString());
+                            shop.setCheckname(replyCheckItem.getText().toString());
                             //更新
                             LoveDao.updateLove(shop);
                             //返回之前的界面
@@ -378,7 +375,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
-        com_button.setOnClickListener(new View.OnClickListener() {
+        comButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 files = new ArrayList<>();
@@ -388,7 +385,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 }
                 if (wbsID == null || wbsID.equals("")) {
                     Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
-                } else if ("".equals(reply_text.getText().toString())) {
+                } else if ("".equals(replyText.getText().toString())) {
                     Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
                 } else {
                     Okgo(files, Bai_address);
@@ -396,18 +393,18 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        reply_text.setOnKeyListener(new View.OnKeyListener() {
+        replyText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     num++;
                     //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
                     if (num % 2 != 0) {
-                        String s = reply_text.getText().toString();
+                        String s = replyText.getText().toString();
                         if (!TextUtils.isEmpty(s)) {
-                            reply_text.setText("" + s.substring(0, s.length() - 1));
+                            replyText.setText("" + s.substring(0, s.length() - 1));
                             //将光标移到最后
-                            reply_text.setSelection(reply_text.getText().length());
+                            replyText.setSelection(replyText.getText().length());
                         }
                     }
                     return true;
@@ -434,7 +431,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         photoAdapter = new PhotoAdapter(this, pathimg);
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setAdapter(photoAdapter);
-        com_button.setBackgroundResource(R.mipmap.reply_commit);
+        comButton.setBackgroundResource(R.mipmap.reply_commit);
     }
 
     /**
@@ -444,9 +441,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         userPop();
         OkGo.post(Request.Uploade)
                 .params("wbsId", wbsID)
-                .params("uploadContent", reply_text.getText().toString())
-                .params("latitude", Latitude)
-                .params("longitude", Longitude)
+                .params("uploadContent", replyText.getText().toString())
+                .params("latitude", latitude)
+                .params("longitude", longitude)
                 .params("uploadAddr", address)
                 .params("wbsqastaffId", checkId)
                 //上传图片
@@ -526,7 +523,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    String Titles;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -536,15 +532,15 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == 1 && resultCode == RESULT_OK) {
             wbsID = data.getStringExtra("position");
             Title = data.getStringExtra("title");
-            wbs_text.setText(Title);
+            wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
             drew = true;
-            photoAdm(wbsID);
+            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
             checkId = data.getStringExtra("id");
             Titles = data.getStringExtra("name");
-            reply_check_item.setText(data.getStringExtra("name"));
+            replyCheckItem.setText(data.getStringExtra("name"));
 
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
@@ -608,16 +604,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /*****
-     *
      * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
-     *
      */
     private String Bai_address = "";
     private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            // TODO Auto-generated method stub
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");
@@ -626,15 +619,15 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
                 // 纬度
-                Latitude = location.getLatitude() + "";
+                latitude = location.getLatitude() + "";
                 // 经度
-                Longitude = location.getLongitude() + "";
+                longitude = location.getLongitude() + "";
                 Bai_address = location.getAddrStr();
                 if (Bai_address != null && !Bai_address.equals("")) {
                 } else {
                     Bai_address = "";
                 }
-                repley_address.setText(location.getAddrStr());
+                repleyAddress.setText(location.getAddrStr());
                 // 定位停止SDK
                 locationService.stop();
             }
@@ -649,9 +642,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
 
-        Button btnCamera = (Button) popView.findViewById(R.id.btn_camera_pop_camera);
-        Button btnAlbum = (Button) popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel = (Button) popView.findViewById(R.id.btn_camera_pop_cancel);
+        Button btnCamera =  popView.findViewById(R.id.btn_camera_pop_camera);
+        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
+        Button btnCancel =  popView.findViewById(R.id.btn_camera_pop_cancel);
         RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
@@ -731,48 +724,5 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             finish();
         }
         return false;
-    }
-
-    /**
-     * 查询图册
-     */
-    private void photoAdm(final String string) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 5)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (drew) {
-                                photoPopPaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    photoPopPaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                photoPopPaths.clear();
-                                photoPopPaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            mAdapter.getData(photoPopPaths, wbs_text.getText().toString());
-                        }
-                    }
-                });
     }
 }

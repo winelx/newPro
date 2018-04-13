@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.service.CallBackUtils;
+import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 

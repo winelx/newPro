@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.home;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,34 +10,29 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.Adapter.Aduio_comm;
 import com.example.administrator.newsdf.Adapter.Aduio_content;
 import com.example.administrator.newsdf.Adapter.Aduio_data;
 import com.example.administrator.newsdf.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.callback.DetailsCallback;
+import com.example.administrator.newsdf.callback.DetailsCallbackUtils;
+import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -73,17 +67,17 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
  * update: 2018/2/6 0006
  * version:
  */
-public class AuditparticularsActivity extends AppCompatActivity {
+public class AuditparticularsActivity extends AppCompatActivity implements DetailsCallback {
     private RecyclerView mRecyclerView;
     private LinearLayout linearLayout;
     //界面适配器
     private AudioAdapter mAdapter;
-    private String id, intent_back;
+    private String id, intentBack;
     private ArrayList<Aduio_content> contents;
-    private ArrayList<Aduio_data> aduio_datas;
-    private ArrayList<Aduio_comm> aduio_comms;
+    private ArrayList<Aduio_data> aduioDatas;
+    private ArrayList<Aduio_comm> aduioComms;
     private Context mContext;
-    private TextView wbsnam, com_title, wbspath, com_button;
+    private TextView wbsnam, comTitle, wbspath, comButton;
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     private SwipeRefreshLayout mSwipeLayout;
@@ -104,16 +98,14 @@ public class AuditparticularsActivity extends AppCompatActivity {
     private SmartRefreshLayout drawerLayoutSmart;
     private ListView drawerLayoutList;
     private boolean drew;
-    private RecyclerView dialog_rec;
+    private RecyclerView dialogRec;
     private static final int IMAGE_PICKER = 101;
-    //权限
-    private CheckPermission checkPermission;
     private ArrayList<String> path;
     /**
      * 任务回复时展示图片的适配器
      */
-    private DialogRecAdapter Dialogadapter;
-    private LinearLayout com_img;
+    private DialogRecAdapter dialogadapter;
+    private LinearLayout comImg;
     private String Titles;
     /**
      * 是否需要返回后刷新界面状态
@@ -126,6 +118,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
         mContext = AuditparticularsActivity.this;
+        DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
         final Intent intent = getIntent();
         path = new ArrayList<>();
@@ -136,11 +129,12 @@ public class AuditparticularsActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        checkPermission = new CheckPermission(this) {
+        CheckPermission checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
             }
+
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -148,7 +142,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
-        com_img = (LinearLayout) findViewById(R.id.com_img);
+        comImg = (LinearLayout) findViewById(R.id.com_img);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
@@ -158,8 +152,8 @@ public class AuditparticularsActivity extends AppCompatActivity {
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ly);
         //得到跳转到该Activity的Intent对象
         contents = new ArrayList<>();
-        aduio_datas = new ArrayList<>();
-        aduio_comms = new ArrayList<>();
+        aduioDatas = new ArrayList<>();
+        aduioComms = new ArrayList<>();
         imagePaths = new ArrayList<>();
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -168,11 +162,11 @@ public class AuditparticularsActivity extends AppCompatActivity {
         //关闭下拉刷新
         drawerLayoutSmart.setEnableRefresh(false);
         //获取到intent传过来得集合
-        com_title = (TextView) findViewById(R.id.audio_com_title);
-        com_title.setText("任务详情");
+        comTitle = (TextView) findViewById(R.id.audio_com_title);
+        comTitle.setText("任务详情");
         wbspath = (TextView) findViewById(R.id.wbspath);
         back = (LinearLayout) findViewById(R.id.adui_com_back);
-        com_button = (TextView) findViewById(R.id.audio_com_button);
+        comButton = (TextView) findViewById(R.id.audio_com_button);
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         //添加分割线
@@ -180,12 +174,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         switch (status) {
             case "one":
-                com_img.setVisibility(View.GONE);
+                comImg.setVisibility(View.GONE);
+//              homeUtils.okgoone(id);
                 okgoone(id);
                 break;
             case "two":
-                com_button.setVisibility(View.GONE);
-                com_img.setVisibility(View.VISIBLE);
+                comButton.setVisibility(View.GONE);
+                comImg.setVisibility(View.VISIBLE);
                 okgo(id);
                 break;
             default:
@@ -194,7 +189,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, AuditparticularsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
         //回复任务
-        com_button.setOnClickListener(new View.OnClickListener() {
+        comButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(AuditparticularsActivity.this, DirectlyreplyActivity.class);
@@ -232,13 +227,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew,taskPhotoAdapter,wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
         //任务详情
-        com_img.setOnClickListener(new View.OnClickListener() {
+        comImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(AuditparticularsActivity.this, TaskRecordActivity.class);
@@ -255,7 +250,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(id);
+              homeUtils.photoAdm(wbsid, page, imagePaths, drew,taskPhotoAdapter,wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -283,7 +278,9 @@ public class AuditparticularsActivity extends AppCompatActivity {
         return true;
     }
 
-    //未完成数据
+    /**
+     * 未完成数据
+     */
     private void okgoone(String ids) {
         OkGo.post(Request.Detail)
                 .params("wbsTaskId", ids)
@@ -383,18 +380,17 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 //打回说明
                                 backdata = ("");
                             }
-
                             contents.add(new Aduio_content(wtMainid, name, status, content, leaderName, leaderId, isread,
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             if (usernma.equals(wtMain.getString("leaderName"))) {
-                                com_button.setVisibility(View.VISIBLE);
+                                comButton.setVisibility(View.VISIBLE);
                             } else {
-                                com_button.setVisibility(View.GONE);
+                                comButton.setVisibility(View.GONE);
                             }
                             wbspath.setText(wbsName);
                             mAdapter.setmBanner(contents);
-                            mAdapter.getmListA(aduio_datas);
-                            mAdapter.getmListB(aduio_comms);
+                            mAdapter.getmListA(aduioDatas);
+                            mAdapter.getmListB(aduioComms);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -403,7 +399,9 @@ public class AuditparticularsActivity extends AppCompatActivity {
                 });
     }
 
-    //完成详细数据
+    /**
+     * 完成详细数据
+     */
     private void okgo(final String id) {
         mSwipeLayout.setRefreshing(false);
         OkGo.post(Request.Detail)
@@ -418,8 +416,8 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 contents.clear();
-                                aduio_datas.clear();
-                                aduio_comms.clear();
+                                aduioDatas.clear();
+                                aduioComms.clear();
                             }
                             JSONObject data = jsonObject.getJSONObject("data");
                             JSONObject wtMain = data.getJSONObject("wtMain");
@@ -433,7 +431,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 String path = uploadUser.getString("portrait");
                                 userpath = Request.networks + path;
                             } catch (JSONException e) {
-
                                 userpath = "";
                             }
                             //任务详情
@@ -488,7 +485,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             try {
                                 leaderId = wtMain.getString("leaderId");
                             } catch (JSONException e) {
-
                                 leaderId = "";
                             }
                             //是否已读
@@ -496,7 +492,6 @@ public class AuditparticularsActivity extends AppCompatActivity {
                             try {
                                 isread = wtMain.getString("isread");
                             } catch (JSONException e) {
-
                                 leaderId = "";
                             }
                             //创建人ID  (路径：wtMain –> createBy -> id)
@@ -534,9 +529,9 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 JSONObject upload = Sub.getJSONObject("uploadUser");
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
-                                        Sub_name, Sub_wbsName,
-                                        uploadContent, updateDate, uploadAddr, Sub_leaderName,
-                                        Sub_leaderId, Sub_iscallback, callbackContent;
+                                        subName, subWbsname,
+                                        uploadContent, updateDate, uploadAddr, subLeadername,
+                                        subLeaderid, subIscallback, callbackContent;
                                 JSONArray hments = new JSONArray();
                                 try {
                                     hments = Sub.getJSONArray("attachments");
@@ -559,6 +554,32 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                     uploadId = "";
                                 }
+
+                                try {
+                                    //检查点
+                                    subName = Sub.getString("name");
+                                } catch (JSONException e) {
+                                    subName = "";
+                                }
+                                try {
+                                    //wbsName
+                                    subWbsname = Sub.getString("wbsName");
+                                } catch (JSONException e) {
+                                    subWbsname = "";
+                                }
+                                try {
+                                    //上传时间
+                                    updateDate = Sub.getString("updateDate");
+                                } catch (JSONException e) {
+                                    updateDate = "";
+                                }
+
+                                try {
+                                    //上传内容说明
+                                    uploadContent = Sub.getString("uploadContent");
+                                } catch (JSONException e) {
+                                    uploadContent = "";
+                                }
                                 try {
                                     // 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
                                     replyUserName = upload.getString("realname");
@@ -571,32 +592,7 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     replyUserHeaderURL = "";
                                 }
-                                try {
-                                    //检查点
-                                    Sub_name = Sub.getString("name");
-                                } catch (JSONException e) {
-                                    Sub_name = "";
-                                }
 
-                                try {
-                                    //wbsName
-                                    Sub_wbsName = Sub.getString("wbsName");
-                                } catch (JSONException e) {
-                                    Sub_wbsName = "";
-                                }
-
-                                try {
-                                    //上传内容说明
-                                    uploadContent = Sub.getString("uploadContent");
-                                } catch (JSONException e) {
-                                    uploadContent = "";
-                                }
-                                try {
-                                    //上传时间
-                                    updateDate = Sub.getString("updateDate");
-                                } catch (JSONException e) {
-                                    updateDate = "";
-                                }
                                 try {
                                     //上传地点
                                     uploadAddr = Sub.getString("uploadAddr");
@@ -606,24 +602,24 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 }
                                 try {
                                     //任务负责人人
-                                    Sub_leaderName = Sub.getString("leaderName");
+                                    subLeadername = Sub.getString("leaderName");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Sub_leaderName = "";
+                                    subLeadername = "";
                                 }
                                 try {
                                     //任务负责人id
-                                    Sub_leaderId = Sub.getString("leaderId");
+                                    subLeaderid = Sub.getString("leaderId");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Sub_leaderId = "";
+                                    subLeaderid = "";
                                 }
                                 try {
                                     //是否被打回
-                                    Sub_iscallback = Sub.getString("iscallback");
+                                    subIscallback = Sub.getString("iscallback");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Sub_iscallback = "";
+                                    subIscallback = "";
                                 }
                                 try {
                                     //打回说明
@@ -665,8 +661,8 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                         attachments.add(Request.networks + path);
                                     }
                                 }
-                                aduio_datas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, Sub_name,
-                                        Sub_wbsName, uploadContent, updateDate, uploadAddr, Sub_leaderName, Sub_leaderId, Sub_iscallback,
+                                aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                        subWbsname, uploadContent, updateDate, uploadAddr, subLeadername, subLeaderid, subIscallback,
                                         callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage, filename));
                             }
 
@@ -694,13 +690,13 @@ public class AuditparticularsActivity extends AppCompatActivity {
                                 String comments_content = json.getString("content");
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
-                                aduio_comms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
+                                aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
                                         comments_content, replyTime));
                             }
 
                             mAdapter.setmBanner(contents);
-                            mAdapter.getmListA(aduio_datas);
-                            mAdapter.getmListB(aduio_comms);
+                            mAdapter.getmListA(aduioDatas);
+                            mAdapter.getmListB(aduioComms);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -711,14 +707,16 @@ public class AuditparticularsActivity extends AppCompatActivity {
     }
 
 
-    //startResult返回数据
+    /**
+     * startResult返回数据
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String id = data.getStringExtra("frag_id");
-            com_button.setVisibility(View.GONE);
-            com_img.setVisibility(View.VISIBLE);
+            comButton.setVisibility(View.GONE);
+            comImg.setVisibility(View.VISIBLE);
             Refresh = false;
             okgo(id);
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
@@ -730,144 +728,22 @@ public class AuditparticularsActivity extends AppCompatActivity {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             path.add(outfile);
-                            Dialogadapter.getData(path);
+                            dialogadapter.getData(path);
                         }
                     });
                 }
-
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+
     /**
-     * 查询图册
+     * 回调刷新界面
      */
-    private void photoAdm(final String str) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", str)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskPhotoAdapter.getData(imagePaths, wbsName);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskPhotoAdapter.getData(imagePaths, wbsName);
-                        }
-                    }
-                });
+    @Override
+    public void deleteTop() {
+            okgo(id);
     }
-
-    /**
-     * 回复消息
-     */
-    private Dialog mCameraDialog;
-
-    /**
-     * 弹出框
-     */
-
-    public void setDialog() {
-        mCameraDialog = new Dialog(mContext, R.style.BottomDialog);
-        LinearLayout root = (LinearLayout) LayoutInflater.from(mContext).inflate(
-                R.layout.dialog_custom, null);
-        //初始化视图
-        final Button send = (Button) root.findViewById(R.id.par_button);
-        final EditText editext = (EditText) root.findViewById(R.id.par_editext);
-        final ImageView imageView = (ImageView) root.findViewById(R.id.par_image);
-        dialog_rec = root.findViewById(R.id.dialog_rec);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        dialog_rec.setLayoutManager(linearLayoutManager);
-        Dialogadapter = new DialogRecAdapter(mContext, path, true);
-        dialog_rec.setAdapter(Dialogadapter);
-//        //拿到回复人
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intent = new Intent(mContext, ImageGridActivity.class);
-////                startActivityForResult(intent, IMAGE_PICKER);
-//
-//            }
-//        });
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ID = getId();
-                String str = editext.getText().toString();
-                if (str == null || str.isEmpty()) {
-                    ToastUtils.showShortToast("回复不能为空");
-                } else {
-                    OkGo.post(Request.commentaries)
-                            .params("taskId", ID)
-                            .params("status", "4")
-                            .params("content", str)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(String s, Call call, Response response) {
-                                    okgo(id);
-                                    mCameraDialog.dismiss();
-                                }
-                            });
-                }
-            }
-        });
-        mCameraDialog.setContentView(root);
-        Window dialogWindow = mCameraDialog.getWindow();
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        // 添加动画
-        dialogWindow.setWindowAnimations(R.style.DialogAnimation);
-        // 获取对话框当前的参数值
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        // 新位置X坐标
-        lp.x = 0;
-        //新位置Y坐标
-        lp.y = 0;
-        // 宽度
-        lp.width = (int) mContext.getResources().getDisplayMetrics().widthPixels;
-        root.measure(0, 0);
-        lp.height = root.getMeasuredHeight();
-        // 透明度
-        lp.alpha = 8f;
-        dialogWindow.setAttributes(lp);
-        mCameraDialog.show();
-        getWindow().getDecorView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    editext.requestFocus();
-                    imm.showSoftInput(editext, 0);
-                }
-            }
-        }, 0);
-    }
-
-
 }

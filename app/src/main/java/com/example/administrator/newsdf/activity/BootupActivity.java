@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
@@ -138,9 +139,11 @@ public class BootupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String msg, Call call, Response response) {
                         LogUtil.i("msg", msg);
+                        String  message ;
                         try {
                             JSONObject jsonObject = new JSONObject(msg);
                             int str = jsonObject.getInt("ret");
+                            message = jsonObject.getString("msg");
                             if (str == 0) {
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 String id = jsom.getString("id");
@@ -181,7 +184,8 @@ public class BootupActivity extends AppCompatActivity {
                                 SPUtils.putString(mContext, "password", password);
                                 startActivity(new Intent(BootupActivity.this, MainActivity.class));
                                 finish();
-                            } else if (str == 1) {
+                            } else {
+                                ToastUtils.showLongToast(message );
                                 startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                                 finish();
                             }
@@ -235,12 +239,14 @@ public class BootupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         //进行假登录，登录后重定向
+                        LogUtil.i("ss", s);
                         okgo(user, password);
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        LogUtil.i("ss", "");
                         startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                         finish();
                     }

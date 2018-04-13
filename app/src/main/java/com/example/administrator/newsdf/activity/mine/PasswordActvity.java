@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.LoginActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -21,11 +23,12 @@ import okhttp3.Response;
 
 /**
  * description: 修改密码
+ *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:43
  * update: 2018/2/6 0006
  * version:
-*/
+ */
 public class PasswordActvity extends AppCompatActivity implements View.OnClickListener {
     private Button commint;
     private AppCompatEditText pass_old, pass_new, pass_newtoo;
@@ -71,7 +74,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     *     网络请求
+     * 网络请求
      */
     void okgo(String old, String news) {
         OkGo.post(Request.AlterPwd)
@@ -85,6 +88,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Toast.makeText(PasswordActvity.this, "修改密码成功", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(PasswordActvity.this, LoginActivity.class));
                             } else {
                                 Toast.makeText(PasswordActvity.this, "修改密码失败", Toast.LENGTH_SHORT).show();
                             }

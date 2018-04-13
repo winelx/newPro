@@ -49,7 +49,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     private TextView textView, comtitle;
     private EditText useditext;
     private LinearLayout comback;
-    private SettingAdapter mAdapter = null;
+    private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;
     private ArrayList<Icon> searchData;
     private Context mContext;
@@ -228,7 +228,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                     searchData.clear();
                     for (int i = 0; i < mData.size(); i++) {
                         String name = mData.get(i).getName();
-                        if (name.indexOf(string) != -1) {
+                        if (name.contains(string)) {
                             searchData.add(mData.get(i));
                         }
                     }
@@ -236,11 +236,9 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(ContactPeopleActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
                     mAdapter.getData(searchData);
                     mPopupWindow.dismiss();
                 }
-
                 return false;
             }
         });
@@ -278,7 +276,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
      *
      * @author cg
      */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
+    private class poponDismissListener implements PopupWindow.OnDismissListener {
         @Override
         public void onDismiss() {
             backgroundAlpha(1f);

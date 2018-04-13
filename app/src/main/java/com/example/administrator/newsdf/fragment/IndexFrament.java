@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.service.JPushCallBack;
-import com.example.administrator.newsdf.service.JPushCallUtils;
+import com.example.administrator.newsdf.callback.JPushCallBack;
+import com.example.administrator.newsdf.callback.JPushCallUtils;
 
 import java.util.List;
 

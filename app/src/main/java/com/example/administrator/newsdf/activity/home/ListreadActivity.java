@@ -34,8 +34,8 @@ import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.TaskCallback;
-import com.example.administrator.newsdf.service.TaskCallbackUtils;
+import com.example.administrator.newsdf.callback.TaskCallback;
+import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -182,7 +182,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -248,7 +248,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 drawer_layout.openDrawer(GravityCompat.START);
 
             }
@@ -448,123 +448,10 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * 组织机构
-     *
-     * @param json 字符串
-     * @return 实体
-     */
-    private ArrayList<OrganizationEntity> parseOrganizationList(String json) {
-        if (json == null) {
-            return null;
-        } else {
-            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject obj = jsonArray.getJSONObject(i);
-                    OrganizationEntity organization = new OrganizationEntity();
-                    try {
-                        //节点id
-                        organization.setId(obj.getString("id"));
-                    } catch (JSONException e) {
-
-                        organization.setId("");
-                    }
-                    try {
-                        //节点名称
-                        organization.setDepartname(obj.getString("name"));
-                    } catch (JSONException e) {
-
-                        organization.setDepartname("");
-                    }
-                    try {
-                        //组织类型
-                        organization.setTypes(obj.getString("type"));
-                    } catch (JSONException e) {
-                        organization.setTypes("");
-                    }
-                    try {
-                        //是否swbs
-                        organization.setIswbs(obj.getBoolean("iswbs"));
-                    } catch (JSONException e) {
-                        organization.setIswbs(false);
-                    }
-
-                    try {
-                        //是否是父节点
-                        organization.setIsparent(obj.getBoolean("isParent"));
-                    } catch (JSONException e) {
-
-                        organization.setIsparent(false);
-                    }
-                    try {
-                        boolean isParentFlag = obj.getBoolean("isParent");
-                        if (isParentFlag) {
-                            //不是叶子节点
-                            organization.setIsleaf("0");
-                        } else {
-                            //是叶子节点
-                            organization.setIsleaf("1");
-                        }
-                    } catch (JSONException e) {
-
-                        organization.setIsleaf("");
-                    }
-                    try {
-                        //组织机构父级节点
-                        organization.setParentId(obj.getString("parentId"));
-                    } catch (JSONException e) {
-
-                        organization.setParentId("");
-                    }
-
-                    try {
-                        //负责人 //进度
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
-                    } catch (JSONException e) {
-                        organization.setUsername("");
-                    }
-                    try {
-                        //进度
-                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
-                    } catch (JSONException e) {
-                        organization.setNumber("");
-                    }
-                    try {
-                        //负责热ID
-                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
-                    } catch (JSONException e) {
-                        organization.setUserId("");
-                    }
-                    try {
-                        //节点层级
-                        organization.setTitle(obj.getString("title"));
-                    } catch (JSONException e) {
-                        organization.setTitle("");
-                    }
-                    try {
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
-                    } catch (JSONException e) {
-                        organization.setPhone("");
-                    }
-                    organizationList.add(organization);
-                }
-
-                return organizationList;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -681,15 +568,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 });
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //判断是不是Activity的返回，不是就是相机的返回
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-
-        }
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -870,48 +748,6 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * 查询图册
-     */
-    private void photoAdm(String string) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskAdapter.getData(imagePaths, titles);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(id, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskAdapter.getData(imagePaths, titles);
-                        }
-                    }
-                });
-    }
 
     /**
      * 界面亮度
@@ -1046,7 +882,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             swip = false;
             page = 1;
             pages = 1;
-            photoAdm(wbsid);
+            homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
             uslistView.setSelection(0);
             okgoall(wbsid, null, 1);
         }

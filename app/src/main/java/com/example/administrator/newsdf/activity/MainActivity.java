@@ -26,7 +26,7 @@ import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
-import com.example.administrator.newsdf.service.JPushCallUtils;
+import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;

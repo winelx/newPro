@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AuditparticularsActivity;
+import com.example.administrator.newsdf.utils.CameDialog;
 
 import java.util.ArrayList;
 
@@ -74,7 +75,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View v) {
                 AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
-                audio.setDialog();
+                CameDialog.setDialog(audio.getId(),audio);
+//                audio.setDialog();
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);

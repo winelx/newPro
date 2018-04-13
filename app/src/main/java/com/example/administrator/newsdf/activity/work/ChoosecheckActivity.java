@@ -74,7 +74,7 @@ public class ChoosecheckActivity extends AppCompatActivity {
 
     private void okGo() {
         OkGo.post(Request.Members)
-                .params("orgId", spUtils.getString(mContent, "orgId", ""))
+                .params("orgId", SPUtils.getString(mContent, "orgId", ""))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

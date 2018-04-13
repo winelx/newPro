@@ -40,8 +40,8 @@ import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.service.TaskCallback;
-import com.example.administrator.newsdf.service.TaskCallbackUtils;
+import com.example.administrator.newsdf.callback.TaskCallback;
+import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -366,7 +366,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -433,7 +433,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -447,7 +447,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsid);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -466,7 +466,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         organizationList.add(bean);
         getOrganization(organizationList);
     }
-
 
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
@@ -526,6 +525,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     public void onSuccess(String result, Call call, Response response) {
                         addOrganizationList(result);
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -747,50 +747,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    /**
-     * 查询图册
-     */
-    private void photoAdm(final String string) {
-        post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskAdapter.getData(imagePaths, titles);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(orgId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskAdapter.getData(imagePaths, titles);
-                        }
-
-                    }
-                });
-    }
-
     public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         //0.0-1.0
@@ -912,6 +868,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
 
     public void switchAct(Node node) {
         if (node.iswbs()) {
+            //关闭抽屉控件
             drawerLayout.closeDrawer(drawer_content);
             titles = node.getTitle();
             titlew.setText(node.getName());
@@ -920,7 +877,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             swip = false;
             page = 1;
             pages = 1;
-            photoAdm(wbsid);
+            homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
             uslistView.setSelection(0);
             status = "0";
             okgo(wbsid, status, null, pages);

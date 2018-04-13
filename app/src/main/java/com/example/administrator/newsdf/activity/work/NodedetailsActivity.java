@@ -23,8 +23,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -157,7 +158,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                photoAdm(wbsId);
+                homeUtils.photoAdm(wbsId, page, imagePaths, drew,taskAdapter,wbsName);
                 drawer_layout.openDrawer(GravityCompat.START);
             }
         });
@@ -169,7 +170,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsId);
+                homeUtils.photoAdm(wbsId, page, imagePaths, drew,taskAdapter,wbsName);
+                taskAdapter.getData(imagePaths, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -530,59 +532,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         mCameraDialog.show();
     }
 
-    /**
-     * 查询图册
-     */
-    private void photoAdm(String string) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("node", s);
-                        if (s.indexOf("data") != -1) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskAdapter.getData(imagePaths, wbsName);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskAdapter.getData(imagePaths, wbsName);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        if (drew) {
-                            imagePaths.clear();
-                            imagePaths.add(new PhotoBean(wbsId, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                        }
-                        taskAdapter.getData(imagePaths, wbsName);
-                    }
-                });
-    }
 
     /**
      * 任务配置

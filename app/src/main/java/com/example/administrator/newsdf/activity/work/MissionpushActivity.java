@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
@@ -29,7 +30,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,11 +60,11 @@ public class MissionpushActivity extends AppCompatActivity {
     private PushAdapter mAdapter;
     int msg = 0;
     int page = 1;
-    ArrayList<ArrayList<Push_item>> push;
-    ArrayList<String> titlename = null;
-    ArrayList<String> ids = new ArrayList<>();
+    private ArrayList<ArrayList<Push_item>> push;
+    private ArrayList<String> titlename = null;
+    private ArrayList<String> ids = new ArrayList<>();
     private Context mContext;
-    String id, wbsname;
+    private String id, wbsname;
     private ArrayList<PhotoBean> imagePaths;
     private CircleImageView fab;
     private SmartRefreshLayout smartRefreshLayout;
@@ -75,8 +75,8 @@ public class MissionpushActivity extends AppCompatActivity {
     //保存每个节目推送的ID
     private Map<String, List<String>> pushMap;
     private String titles;
-    private String wbspathl;
     int pagss = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,6 @@ public class MissionpushActivity extends AppCompatActivity {
         com_img = (LinearLayout) findViewById(R.id.com_img);
         com_img.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
-
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
         Intent intent = getIntent();
         //获取到intent传过来得集合
@@ -118,82 +117,6 @@ public class MissionpushActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         title.setText(titles);
-        initView();
-        //列表详情
-        tabulation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MissionpushActivity.this, TabulationActivity.class);
-                intent.putExtra("data", titlename);
-                startActivityForResult(intent, 1);
-            }
-        });
-        //新增推送
-        com_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
-                intent.putExtra("wbsname", wbsname);
-                intent.putExtra("wbsID", id);
-                //节点名称
-                intent.putExtra("title", "下发任务");
-                startActivity(intent);
-
-
-            }
-        });
-        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                photoAdm(id);
-                drawer_layout.openDrawer(GravityCompat.START);
-            }
-        });
-        /**
-         *    侧拉listview上拉加载
-         */
-        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
-                drew = false;
-                photoAdm(id);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
-            }
-        });
-
-        //推送
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dates.getDialog(MissionpushActivity.this,"推送任务中");
-                //拿到当前的Viewpager的页数
-                String type = String.valueOf(mViewPager.getCurrentItem());
-                List<String> list = new ArrayList<String>();
-                list = pushMap.get(type);
-                pagss = pagss + 1;
-                String strids = Dates.listToString(list);
-
-                if (strids != null) {
-                    pushOkgo(strids);
-                } else {
-                    Dates.disDialog();
-                    ToastUtils.showShortToast("请选择推送项");
-                }
-            }
-        });
-    }
-
-    private void initView() {
         taskAdapter = new TaskPhotoAdapter(imagePaths, MissionpushActivity.this);
         drawer_layout_list.setAdapter(taskAdapter);
         mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
@@ -224,6 +147,83 @@ public class MissionpushActivity extends AppCompatActivity {
 
             }
         });
+        //列表详情
+        tabulation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MissionpushActivity.this, TabulationActivity.class);
+                intent.putExtra("data", titlename);
+                startActivityForResult(intent, 1);
+            }
+        });
+        //新增推送
+        com_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
+                intent.putExtra("wbsname", wbsname);
+                intent.putExtra("wbsID", id);
+                //节点名称
+                intent.putExtra("title", "下发任务");
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                page = 1;
+                drew = true;
+                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter, wbsname);
+                drawer_layout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        /**
+         *    侧拉listview上拉加载
+         */
+        smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                drew = false;
+                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter, wbsname);
+                //传入false表示加载失败
+                refreshlayout.finishLoadmore(1500);
+            }
+        });
+
+        //推送
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dates.getDialog(MissionpushActivity.this, "推送任务中");
+                //拿到当前的Viewpager的页数
+                String type = String.valueOf(mViewPager.getCurrentItem());
+                List<String> list = new ArrayList<String>();
+                list = pushMap.get(type);
+                pagss = pagss + 1;
+                String strids = Dates.listToString(list);
+
+                if (strids != null) {
+                    pushOkgo(strids);
+                } else {
+                    Dates.disDialog();
+                    ToastUtils.showShortToast("请选择推送项");
+                }
+            }
+        });
+    }
+
+    private void initView() {
+
     }
 
     /**
@@ -241,50 +241,6 @@ public class MissionpushActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    /**
-     * 查询图册
-     */
-    private void photoAdm(String string) {
-        OkGo.post(Request.Photolist)
-                .params("WbsId", string)
-                .params("page", page)
-                .params("rows", 30)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
-                            if (drew) {
-                                imagePaths.clear();
-                            }
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
-                                }
-                                taskAdapter.getData(imagePaths, wbspathl);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            if (drew) {
-                                imagePaths.clear();
-                                imagePaths.add(new PhotoBean(null, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
-                            }
-                            taskAdapter.getData(imagePaths, wbspathl);
-                        }
-
-                    }
-                });
     }
 
     /**
@@ -373,11 +329,10 @@ public class MissionpushActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
-
                             if (ret == 0) {
                                 Dates.disDialog();
                                 ToastUtils.showShortToast("推送成功");
-                                if(mViewPager != null && mAdapter != null){
+                                if (mViewPager != null && mAdapter != null) {
                                     //拿到当前的Viewpager的页数
                                     int types = mViewPager.getCurrentItem();
                                     mViewPager.setCurrentItem(types, true);
