@@ -22,7 +22,6 @@ import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -180,25 +179,16 @@ public class TenanceviewActivity extends AppCompatActivity {
                 //切换ViewPager
                 mViewPager.setCurrentItem(tab.getPosition());
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -216,26 +206,10 @@ public class TenanceviewActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LogUtil.i("demosdg", "onStart");
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    // 将数据保存到outState对象中, 该对象会在重建activity时传递给onCreate方法
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putStringArrayList("name", names);
-        outState.putStringArrayList("ids", ids);
-        outState.putStringArrayList("titlename", titlename);
-        outState.putString("wbspath", wbspath);
-        outState.putString("id", id);
     }
 
     @Override
@@ -250,17 +224,6 @@ public class TenanceviewActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LogUtil.i("demosdg", "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        LogUtil.i("demosdg", "onStop");
-    }
 
 
 }

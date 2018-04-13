@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="3dp"
                 android:background="@color/writer"
                 android:textSize="12dp" />

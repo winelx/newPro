@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 
 import java.text.ParseException;
@@ -32,6 +33,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private RecycleAtataAdapterType dataTypeAdapter;
     private RecycleCommAdapterType commlistBTypeAdapter;
     private Context mContext;
+    private boolean status = false;
 
     //构造
     public AudioAdapter(Context mContext) {
@@ -65,7 +67,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof TypeBannerHolder && content.size() != 0) {
             bindBAnner((TypeBannerHolder) holder, position);
         } else if (holder instanceof TypeGridHolder && datas.size() != 0) {
-            bindGrid((TypeGridHolder) holder, position);
+            bindGrid((TypeGridHolder) holder);
         } else if (holder instanceof TypeListHolder && comms.size() != 0) {
             bindList((TypeListHolder) holder, position);
         }
@@ -125,6 +127,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.detailsBoolean.setText("已完成");
                 //状态 finish_green
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
+                status = false;
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
         }
@@ -132,19 +135,23 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * 提交数据
+     *
      * @param holder
-     * @param posotion
      */
-    private void bindGrid(TypeGridHolder holder, final int posotion) {
+    private void bindGrid(TypeGridHolder holder) {
         if (datas.size() != 0) {
             holder.setpin.setVisibility(View.VISIBLE);
             holder.dataRec.setLayoutManager(new LinearLayoutManager(holder.dataRec.getContext(), LinearLayoutManager.VERTICAL, false));
-            dataTypeAdapter = new RecycleAtataAdapterType(mContext);
+            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status);
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         } else {
+            ToastUtils.showLongToast("没有回复");
+            holder.setpin.setVisibility(View.GONE);
+            holder.dataRec.setVisibility(View.GONE);
         }
     }
+
     /**
      * 评论
      *
@@ -160,6 +167,10 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.ListRec.setAdapter(commlistBTypeAdapter);
             holder.ListRec.setNestedScrollingEnabled(false);
             commlistBTypeAdapter.getComm(comms);
+        } else {
+            ToastUtils.showLongToast("没有评论");
+            holder.textView.setVisibility(View.GONE);
+            holder.ListRec.setVisibility(View.GONE);
         }
 
     }
@@ -185,9 +196,11 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }
+
     public class TypeGridHolder extends RecyclerView.ViewHolder {
         RecyclerView dataRec;
         TextView setpin;
+
         public TypeGridHolder(View itemView) {
             super(itemView);
             dataRec = (RecyclerView) itemView.findViewById(R.id.handover_part_item);
@@ -198,6 +211,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class TypeListHolder extends RecyclerView.ViewHolder {
         RecyclerView ListRec;
         TextView textView;
+
         public TypeListHolder(View itemView) {
             super(itemView);
             ListRec = (RecyclerView) itemView.findViewById(R.id.handover_part_item);
@@ -206,7 +220,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     /**
-     *  数据源
+     * 数据源
      */
     public void setmBanner(ArrayList<Aduio_content> content) {
         this.content = content;

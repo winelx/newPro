@@ -16,15 +16,12 @@ import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +87,6 @@ public class PhotoListActivity extends AppCompatActivity {
                         mTreeDatas.clear();
                         getWorkOrganizationList(s);
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -120,132 +116,20 @@ public class PhotoListActivity extends AppCompatActivity {
      * @return
      */
     private void getWorkOrganizationList(String result) {
-        organizationList = parseOrganizationList(result);
+        organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
     }
 
-    /**
-     * 组织机构
-     *
-     * @param json 字符串
-     * @return 实体
-     */
-    public ArrayList<OrganizationEntity> parseOrganizationList(String json) {
-        if (json == null) {
-            return null;
-        } else {
-            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject obj = jsonArray.getJSONObject(i);
-                    OrganizationEntity organization = new OrganizationEntity();
-                    try {
-                        //节点id
-                        organization.setId(obj.getString("id"));
-                    } catch (JSONException e) {
-                        organization.setId("");
-                    }
-                    try {
-                        //节点名称
-                        organization.setDepartname(obj.getString("name"));
-                    } catch (JSONException e) {
-                        organization.setDepartname("");
-                    }
-                    try {
-                        //组织类型
-                        organization.setTypes(obj.getString("type"));
-                    } catch (JSONException e) {
-                        organization.setTypes("");
-                    }
-                    try {
-                        //是否swbs
-                        organization.setIswbs(obj.getBoolean("iswbs"));
-                    } catch (JSONException e) {
-                        organization.setIswbs(false);
-                    }
-                    try {
-                        //是否是父节点
-                        organization.setIsparent(obj.getBoolean("isParent"));
-                    } catch (JSONException e) {
-                        organization.setIsparent(false);
-                    }
-                    try {
-                        boolean isParentFlag = obj.getBoolean("isParent");
-                        if (isParentFlag) {
-                            //不是叶子节点
-                            organization.setIsleaf("0");
-                        } else {
-                            //是叶子节点
-                            organization.setIsleaf("1");
-                        }
-                    } catch (JSONException e) {
-                        organization.setIsleaf("");
-                    }
-                    try {
-                        //组织机构父级节点
-                        organization.setParentId(obj.getString("parentId"));
-                    } catch (JSONException e) {
-                        organization.setParentId("");
-                    }
-                    try {
-                        //负责人 //进度
-                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
-                    } catch (JSONException e) {
-                        organization.setUsername("");
-                    }
-
-                    try {
-                        //进度
-                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
-                    } catch (JSONException e) {
-                        organization.setNumber("");
-                    }
-                    try {
-                        //负责热ID
-                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
-                    } catch (JSONException e) {
-                        organization.setUserId("");
-                    }
-                    try {
-                        //节点层级
-                        organization.setTitle(obj.getString("title"));
-                    } catch (JSONException e) {
-                        organization.setTitle("");
-                    }
-                    try {
-                        //节点层级
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
-                    } catch (JSONException e) {
-                        organization.setPhone("");
-                    }
-                    try {
-                        organization.setDrawingGroup(obj.getBoolean("isDrawingGroup"));
-                    } catch (JSONException e) {
-                        organization.setPhone("");
-                    }
-                    organizationList.add(organization);
-                }
-                if (organizationList.size() != 0) {
-                }
-                return organizationList;
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
 
     /**
      * 解析SoapObject对象
+     * 动态添加数据
      *
      * @return
      */
     private void addOrganizationList(String result) {
-        if (result.indexOf("data") != -1) {
-            addOrganizationList = parseOrganizationList(result);
+        if (result.contains("data")) {
+            addOrganizationList = TreeUtlis.parseOrganizationList(result);
             for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
                 String departmentName = addOrganizationList.get(i).getDepartname();
                 mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
@@ -283,7 +167,9 @@ public class PhotoListActivity extends AppCompatActivity {
         }
 
     }
-
+    /**
+     *  点击事件
+     */
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
@@ -295,10 +181,7 @@ public class PhotoListActivity extends AppCompatActivity {
                         addPosition = position;
                         if (node.isperent()) {
                             addOrganiztion(node.getId(), node.isDrawingGroup(), node.isperent(), node.getType());
-                        } else {
-
                         }
-
                     }
                 }
             }
@@ -310,18 +193,16 @@ public class PhotoListActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    /**
+     * 查看当前图册详细列表
+     * @param node
+     */
     public void switchAct(Node node) {
-        if (node.isDrawingGroup() == true) {
+        if (node.isDrawingGroup()) {
             Intent intent1 = new Intent(mContext, ListPhActivity.class);
             intent1.putExtra("groupId", node.getId());
             intent1.putExtra("title", node.getName());
             startActivity(intent1);
-        } else {
-
         }
-
-
     }
-
-
 }

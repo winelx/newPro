@@ -31,12 +31,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
+    private boolean status;
     private ArrayList<Aduio_data> mDatas;
     AuditparticularsActivity activity;
     String str = null;
 
-    public RecycleAtataAdapterType(Context mContext) {
+    public RecycleAtataAdapterType(Context mContext,boolean status) {
         this.mContext = mContext;
+        this.status = status;
         mDatas = new ArrayList<>();
     }
 
@@ -54,36 +56,38 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
-        if (mDatas.get(posotion).getAttachments().size() == 0) {
+        if (mDatas.size()== 0) {
             holder.audio_rec.setVisibility(View.GONE);
-        }
-        Glide.with(mContext)
-                .load(mDatas.get(posotion).getUserpath())
-                .into(holder.audio_acathor);
-        //上传人
-        holder.audio_name.setText(mDatas.get(posotion).getReplyUserName());
-        //附加内容
-        holder.audio_content.setText(mDatas.get(posotion).getUploadContent());
-        //上传时间
-        holder.audio_data.setText(mDatas.get(posotion).getUpdateDate());
-        //上传地点
-        holder.audio_address.setText(mDatas.get(posotion).getUploadAddr());
-        //评论条数
-        holder.comment_count.setText(mDatas.get(posotion).getCommentCount());
-        //评论
-        holder.audio_data_comm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
-                CameDialog.setDialog(audio.getId(),audio);
+        }else {
+            Glide.with(mContext)
+                    .load(mDatas.get(posotion).getUserpath())
+                    .into(holder.audio_acathor);
+            //上传人
+            holder.audio_name.setText(mDatas.get(posotion).getReplyUserName());
+            //附加内容
+            holder.audio_content.setText(mDatas.get(posotion).getUploadContent());
+            //上传时间
+            holder.audio_data.setText(mDatas.get(posotion).getUpdateDate());
+            //上传地点
+            holder.audio_address.setText(mDatas.get(posotion).getUploadAddr());
+            //评论条数
+            holder.comment_count.setText(mDatas.get(posotion).getCommentCount());
+            //评论
+            holder.audio_data_comm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
+                    CameDialog.setDialog(audio.getId(), audio);
 //                audio.setDialog();
-            }
-        });
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        holder.audio_rec.setLayoutManager(linearLayoutManager);
-        RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(),mDatas.get(posotion).getFilename());
-        holder.audio_rec.setAdapter(adapter);
+                }
+            });
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            holder.audio_rec.setLayoutManager(linearLayoutManager);
+            RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
+            holder.audio_rec.setAdapter(adapter);
+        }
+
 
     }
 

@@ -43,8 +43,8 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description: 任务推送
- *
+ * description: 任务推送界面。负责任务推送和新增下发任务
+ *从viewpager的fragment界面发送要推送数据集合，用map存储数据，以fragment所处的页数为key
  * @author lx
  *         date: 2018/3/22 0022 下午 2:39
  *         update: 2018/3/22 0022
@@ -200,7 +200,9 @@ public class MissionpushActivity extends AppCompatActivity {
             }
         });
 
-        //推送
+        /**
+         *    推送
+         */
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,7 +213,6 @@ public class MissionpushActivity extends AppCompatActivity {
                 list = pushMap.get(type);
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
-
                 if (strids != null) {
                     pushOkgo(strids);
                 } else {
@@ -335,6 +336,7 @@ public class MissionpushActivity extends AppCompatActivity {
                                 if (mViewPager != null && mAdapter != null) {
                                     //拿到当前的Viewpager的页数
                                     int types = mViewPager.getCurrentItem();
+                                    //设置当前选中的页面。
                                     mViewPager.setCurrentItem(types, true);
                                     //又一次载入position的页面
                                     mAdapter.update(types);

@@ -188,14 +188,21 @@ public class homeUtils {
         return result;
     }
 
+
     /**
      * 查询图册
+     * @param string wbsID
+     * @param page 请求页数
+     * @param imagePaths 集合数据
+     * @param drew  是否删除之前集合数据
+     * @param taskPhotoAdapter 适配器
+     * @param wbsName 节点层级
      */
     public static void photoAdm(final String string, int page,
-                                                final ArrayList<PhotoBean> imagePaths,
-                                                final boolean drew,
-                                                final TaskPhotoAdapter taskPhotoAdapter,
-                                                final String wbsName) {
+                                final ArrayList<PhotoBean> imagePaths,
+                                final boolean drew,
+                                final TaskPhotoAdapter taskPhotoAdapter,
+                                final String wbsName) {
         OkGo.post(Request.Photolist)
                 .params("WbsId", string)
                 .params("page", page)

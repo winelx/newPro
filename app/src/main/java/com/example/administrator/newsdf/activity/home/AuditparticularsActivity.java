@@ -98,7 +98,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
     private SmartRefreshLayout drawerLayoutSmart;
     private ListView drawerLayoutList;
     private boolean drew;
-    private RecyclerView dialogRec;
     private static final int IMAGE_PICKER = 101;
     private ArrayList<String> path;
     /**
@@ -175,8 +174,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         switch (status) {
             case "one":
                 comImg.setVisibility(View.GONE);
-//              homeUtils.okgoone(id);
-                okgoone(id);
+                okgo(id);
                 break;
             case "two":
                 comButton.setVisibility(View.GONE);
@@ -227,7 +225,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew,taskPhotoAdapter,wbsName);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -250,7 +248,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-              homeUtils.photoAdm(wbsid, page, imagePaths, drew,taskPhotoAdapter,wbsName);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -279,127 +277,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
     }
 
     /**
-     * 未完成数据
-     */
-    private void okgoone(String ids) {
-        OkGo.post(Request.Detail)
-                .params("wbsTaskId", ids)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("wbsTaskId", s);
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            JSONObject wtMain = jsonObject1.getJSONObject("wtMain");
-                            JSONObject createBy = wtMain.getJSONObject("createBy");
-                            //任务详情
-                            try {
-                                wbsName = wtMain.getString("wbsName");
-                            } catch (JSONException e) {
-                                wbsName = "";
-                            }
-                            try {
-                                //唯一标识
-                                wtMainid = wtMain.getString("id");
-                            } catch (JSONException e) {
-
-                                wtMainid = "";
-                            }
-                            String name;
-                            try {
-                                ///检查点
-                                name = wtMain.getString("name");
-                            } catch (JSONException e) {
-
-                                name = "";
-                            }
-                            String status;
-                            //状态
-                            try {
-                                status = wtMain.getString("status");
-                            } catch (JSONException e) {
-                                status = "";
-                            }
-                            String content;
-                            //推送内容
-                            try {
-                                content = wtMain.getString("content");
-                            } catch (JSONException e) {
-
-                                content = "";
-                            }
-                            String leaderName = null;
-                            //负责人
-                            try {
-                                leaderName = wtMain.getString("leaderName");
-                            } catch (JSONException e) {
-
-                                leaderName = "";
-                            }
-                            String leaderId = null;
-                            //负责人ID
-                            try {
-                                leaderId = wtMain.getString("leaderId");
-                            } catch (JSONException e) {
-
-                                leaderId = "";
-                            }
-                            //是否已读
-                            String isread = null;
-                            try {
-                                isread = wtMain.getString("isread");
-                            } catch (JSONException e) {
-
-                                leaderId = "";
-                            }
-                            //创建人ID  (路径：wtMain –> createBy -> id)
-                            String createByUserID;
-                            try {
-                                createByUserID = createBy.getString("id");
-                            } catch (JSONException e) {
-
-                                createByUserID = "";
-                            }
-                            //是否被打回过
-                            String iscallback;
-                            try {
-                                iscallback = wtMain.getString("iscallback");
-                            } catch (JSONException e) {
-                                iscallback = "";
-                            }
-                            //更新时间
-                            String createDate = wtMain.getString("createDate");
-                            //wbsname
-                            //转交id
-                            String changeId = null;
-                            String backdata;
-                            try {
-                                backdata = wtMain.getString("updateDate");
-                            } catch (JSONException e) {
-                                //打回说明
-                                backdata = ("");
-                            }
-                            contents.add(new Aduio_content(wtMainid, name, status, content, leaderName, leaderId, isread,
-                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata));
-                            if (usernma.equals(wtMain.getString("leaderName"))) {
-                                comButton.setVisibility(View.VISIBLE);
-                            } else {
-                                comButton.setVisibility(View.GONE);
-                            }
-                            wbspath.setText(wbsName);
-                            mAdapter.setmBanner(contents);
-                            mAdapter.getmListA(aduioDatas);
-                            mAdapter.getmListB(aduioComms);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-    }
-
-    /**
      * 完成详细数据
      */
     private void okgo(final String id) {
@@ -423,12 +300,12 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             JSONObject wtMain = data.getJSONObject("wtMain");
                             JSONObject createBy = wtMain.getJSONObject("createBy");
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
-                            JSONObject uploadUser = wtMain.getJSONObject("uploadUser");
+
                             JSONArray comments = data.getJSONArray("comments");
                             //评论人头像
                             String userpath;
                             try {
-                                String path = uploadUser.getString("portrait");
+                                String path = wtMain.getJSONObject("uploadUser").getString("portrait");
                                 userpath = Request.networks + path;
                             } catch (JSONException e) {
                                 userpath = "";
@@ -527,7 +404,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                     createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
-                                JSONObject upload = Sub.getJSONObject("uploadUser");
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
                                         subName, subWbsname,
                                         uploadContent, updateDate, uploadAddr, subLeadername,
@@ -582,13 +458,13 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 }
                                 try {
                                     // 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
-                                    replyUserName = upload.getString("realname");
+                                    replyUserName = wtMain.getJSONObject("uploadUser").getString("realname");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     replyUserName = "";
                                 }
                                 try {
-                                    replyUserHeaderURL = upload.getString("portrait");
+                                    replyUserHeaderURL = wtMain.getJSONObject("uploadUser").getString("portrait");
                                 } catch (JSONException e) {
                                     replyUserHeaderURL = "";
                                 }
@@ -645,7 +521,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 }
                                 String userimage;
                                 try {
-                                    String path = uploadUser.getString("portrait");
+                                    String path = wtMain.getJSONObject("uploadUser").getString("portrait");
                                     userimage = Request.networks + path;
                                 } catch (JSONException e) {
                                     userimage = "";
@@ -693,7 +569,15 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
                                         comments_content, replyTime));
                             }
-
+                            if (contents.get(0).getStatus().equals("0")) {
+                                aduioDatas.clear();
+                                aduioComms.clear();
+                                if (usernma.equals(wtMain.getString("leaderName"))) {
+                                    comButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    comButton.setVisibility(View.GONE);
+                                }
+                            }
                             mAdapter.setmBanner(contents);
                             mAdapter.getmListA(aduioDatas);
                             mAdapter.getmListB(aduioComms);
@@ -728,6 +612,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             path.add(outfile);
+                            //回复任务是选择的图片
                             dialogadapter.getData(path);
                         }
                     });
@@ -744,6 +629,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
      */
     @Override
     public void deleteTop() {
-            okgo(id);
+        okgo(id);
     }
 }
