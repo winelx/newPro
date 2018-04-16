@@ -63,6 +63,7 @@ public class BootupActivity extends AppCompatActivity {
             finish();
             return;
         }
+
         mContext = BootupActivity.this;
         //清除cooking
         HttpUrl httpUrl = HttpUrl.parse(Request.networks);
@@ -113,7 +114,6 @@ public class BootupActivity extends AppCompatActivity {
                         //进行真正的登录
                         login(user, passowd);
                     }
-
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {

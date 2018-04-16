@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,7 +79,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
     private TextView wbsnam, comTitle, wbspath, comButton;
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
-    private SwipeRefreshLayout mSwipeLayout;
     /**
      * 图片查看的圆形图标
      */
@@ -148,7 +146,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         fab = (CircleImageView) findViewById(R.id.fab);
         mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
-        mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_ly);
         //得到跳转到该Activity的Intent对象
         contents = new ArrayList<>();
         aduioDatas = new ArrayList<>();
@@ -213,18 +210,14 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                 finish();
             }
         });
-        //刷新
-        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                okgo(id);
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 page = 1;
                 drew = true;
+                /**
+                 *查询当前任务节点图册
+                 */
                 homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
@@ -248,6 +241,9 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
+                /**
+                 *查询当前任务节点图册
+                 */
                 homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
@@ -280,7 +276,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
      * 完成详细数据
      */
     private void okgo(final String id) {
-        mSwipeLayout.setRefreshing(false);
         OkGo.post(Request.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {
@@ -302,14 +297,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
 
                             JSONArray comments = data.getJSONArray("comments");
-                            //评论人头像
-                            String userpath;
-                            try {
-                                String path = wtMain.getJSONObject("uploadUser").getString("portrait");
-                                userpath = Request.networks + path;
-                            } catch (JSONException e) {
-                                userpath = "";
-                            }
                             //任务详情
                             try {
                                 wbsName = wtMain.getString("wbsName");
@@ -605,7 +592,8 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             okgo(id);
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
-                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                ArrayList<ImageItem> images =
+                        (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {

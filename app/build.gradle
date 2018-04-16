@@ -22,7 +22,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                   JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
+                JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
                 //      JPUSH_APPKEY : "15da678acd3913ae41770d50",
                 JPUSH_CHANNEL: "developer-default",
         ]
@@ -43,7 +43,7 @@ android {
     buildTypes {
         debug {
             //显示日志
-            buildConfigField("boolean","LOG_DEBUG","true");
+            buildConfigField("boolean", "LOG_DEBUG", "true");
         }
 
         release {
@@ -88,6 +88,7 @@ dependencies {
     //刷新/上拉加载框架，两个相互使用
     //相册选图
     //极光推送
+    compile files('libs/BaiduLBS_Android.jar')
     compile 'me.weyye.hipermission:library:1.0.7'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -111,5 +112,4 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     testCompile 'junit:junit:4.12'
-    compile files('libs/BaiduLBS_Android.jar')
 }

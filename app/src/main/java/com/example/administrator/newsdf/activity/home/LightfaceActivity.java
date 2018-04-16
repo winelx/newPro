@@ -71,7 +71,7 @@ import static com.lzy.okgo.OkGo.post;
 
 /**
  * @author lx
- *         列表界面
+ *         我的消息列表界面
  */
 public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
@@ -130,7 +130,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     /**
      * 下拉刷新控件
      */
-
     private SmartRefreshLayout refreshLayout;
     /**
      * 图册按钮
@@ -178,6 +177,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             }
         }
     };
+    //选项wbs的树
     private ListView mTree;
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
@@ -388,18 +388,20 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     //回复转发(自己回复或选择转发)
                     case "0":
                         //未上传进入详情
-                        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
-                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
-                        intent.putExtra("status", "one");
+//                        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
+                        Intent intent = new Intent(mContext, MoretaskActivity.class);
+//                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
+//                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+//                        intent.putExtra("status", "one");
                         startActivity(intent);
                         break;
                     //通过的详情
                     case "1":
-                        Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
-                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
-                        audio.putExtra("status", "two");
+                        //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
+                        Intent audio = new Intent(mContext, MoretaskActivity.class);
+//                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
+//                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
+//                        audio.putExtra("status", "two");
                         startActivity(audio);
                         break;
                     default:
@@ -705,10 +707,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      */
     void getJson(String s) {
         refreshLayout.finishRefresh(true);
+        if (!swip) {
+            mDatas.clear();
+        }
         if (s.contains("data")) {
-            if (!swip) {
-                mDatas.clear();
-            }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -740,9 +742,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             }
         } else {
             ToastUtils.showShortToast("暂无数据！");
-            if (!swip) {
-                mDatas.clear();
-            }
             mAdapter.getDate(mDatas);
         }
     }

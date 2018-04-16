@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginLeft="14.3dp"
+    android:id="@+id/footer"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textView10"
+        android:layout_marginLeft="6.2dp"
+        android:background="@color/persomal_text" />
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView12"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/textView12"
+        android:layout_toRightOf="@+id/textView12"
+        android:gravity="center"
+        android:text="回复任务"
+        android:textColor="#B3B3B3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_alignStart="@+id/imageView3"
+        android:layout_alignTop="@+id/item_text"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:background="@drawable/hollow_round_gray"
+        android:textColor="#B3B3B3"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/textView10"
+        android:layout_toRightOf="@+id/textView10"
+        android:background="@mipmap/task_add" />
+
+
+</RelativeLayout>

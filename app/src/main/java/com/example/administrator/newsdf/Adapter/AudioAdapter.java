@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 
 import java.text.ParseException;
@@ -127,7 +126,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.detailsBoolean.setText("已完成");
                 //状态 finish_green
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
-                status = false;
+
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
         }
@@ -146,7 +145,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         } else {
-            ToastUtils.showLongToast("没有回复");
             holder.setpin.setVisibility(View.GONE);
             holder.dataRec.setVisibility(View.GONE);
         }
@@ -168,7 +166,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.ListRec.setNestedScrollingEnabled(false);
             commlistBTypeAdapter.getComm(comms);
         } else {
-            ToastUtils.showLongToast("没有评论");
             holder.textView.setVisibility(View.GONE);
             holder.ListRec.setVisibility(View.GONE);
         }

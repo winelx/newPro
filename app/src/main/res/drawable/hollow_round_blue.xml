@@ -5,12 +5,12 @@
         android:width="25dp"
         android:height="25dp" />
     <stroke
-        android:width="1dp"
-        android:color="@color/transparent" />
+        android:width="3dp"
+        android:color="@color/blue" />
     <corners
         android:bottomLeftRadius="20dp"
         android:bottomRightRadius="20dp"
         android:topLeftRadius="20dp"
         android:topRightRadius="20dp" />
-    <solid android:color="#e23522" />
+    <solid android:color="@color/writer" />
 </shape>

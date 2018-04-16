@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginLeft="10.3dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textView10"
+        android:layout_marginLeft="6.2dp"
+        android:background="@color/persomal_text" />
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="部位：更梁山大桥"
+        android:textColor="#323232"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/item_text"
+        android:layout_alignStart="@+id/item_text"
+        android:layout_below="@+id/textView10"
+        android:layout_marginTop="5dp"
+        android:text="sssssssss"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_alignStart="@+id/imageView3"
+        android:layout_alignTop="@+id/item_text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/hollow_round_gray" />
+
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/create_time"
+        android:layout_alignBottom="@+id/create_time"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="评论3"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="59dp"
+        android:background="#dddddd" />
+
+
+</RelativeLayout>

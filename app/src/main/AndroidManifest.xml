@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.newsdf">
+
     <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
@@ -50,12 +51,11 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
 
-
         <!-- 声明service组件 -->
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
-        </service>
+            android:process=":remote"></service>
         <!-- //百度 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -131,26 +131,22 @@
             android:name=".activity.home.same.ReplyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activity.home.AuditparticularsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activity.work.TenanceviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.work.TabulationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.work.MissionpushActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.home.ListreadActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.work.OrganiwbsActivity"
             android:screenOrientation="portrait" />
@@ -169,7 +165,6 @@
         <activity
             android:name=".activity.work.NotuploadActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.home.same.DirectlyreplyActivity"
             android:screenOrientation="portrait" />
@@ -208,27 +203,30 @@
         <activity android:name=".activity.work.UploadPhotoActivity" />
         <activity android:name=".activity.work.TaskWbsActivity" />
         <activity android:name=".activity.mine.ProjectmbTreeActivity" />
-        <activity android:name=".activity.home.TaskRecordActivity"></activity>
+        <activity android:name=".activity.home.TaskRecordActivity" />
 
-        <!-- User defined. 用户自定义的广播接收器-->
+        <!-- User defined. 用户自定义的广播接收器 -->
         <receiver
             android:name=".service.PushReceiver"
             android:enabled="true">
             <intent-filter>
-                <!--Required 用户注册SDK的intent-->
+
+                <!-- Required 用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <!--Required 用户接收SDK消息的intent-->
+                <!-- Required 用户接收SDK消息的intent -->
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <!--Required 用户接收SDK通知栏信息的intent-->
+                <!-- Required 用户接收SDK通知栏信息的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <!--Required 用户打开自定义通知栏的intent-->
+                <!-- Required 用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
+
                 <category android:name="com.example.administrator.newsdf" />
             </intent-filter>
         </receiver>
 
+        <activity android:name=".activity.home.MoretaskActivity"></activity>
     </application>
 
 </manifest>

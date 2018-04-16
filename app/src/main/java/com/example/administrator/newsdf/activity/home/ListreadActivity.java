@@ -64,7 +64,7 @@ import static com.baidu.location.g.j.s;
 import static com.lzy.okgo.OkGo.post;
 
 /**
- * description:
+ * description:全部消息的列表界面，
  *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:43
