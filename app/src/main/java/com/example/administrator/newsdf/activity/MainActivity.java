@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                                     String versions = json.getString("version");
                                     //更新地址
                                     String filePath = json.getString("filePath");
-                                    int lenght = version.compareTo("1.3");
+                                    int lenght = version.compareTo(versions);
                                     if (lenght < 0) {
                                         //提示框
                                         show(filePath);
