@@ -121,6 +121,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
     public void getdata(ArrayList<Aduio_data> mDatas) {
         this.mDatas = mDatas;
+        notifyDataSetChanged();
     }
 
 

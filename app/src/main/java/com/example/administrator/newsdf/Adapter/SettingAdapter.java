@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ import java.util.List;
 public abstract class SettingAdapter<T> extends BaseAdapter {
 
     private List<T> mData;
-    private int mLayoutRes;           //布局id
-
+    //布局id
+    private int mLayoutRes;
     public SettingAdapter() {
     }
 
@@ -39,7 +40,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
 
     public void getData(List<T> mData) {
         this.mData = mData;
-        notifyDataSetChanged();
+        notifyDataSetInvalidated();
     }
 
     @Override
@@ -104,6 +105,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             mData.clear();
         }
         notifyDataSetChanged();
+
     }
 
 
@@ -229,12 +231,16 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
          */
         public ViewHolder setImage(int id, String url) {
             View view = getView(id);
+            LogUtil.i("url",url);
             if (view instanceof ImageView) {
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .error(R.mipmap.mine_avatar)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(context)
                         .load(url)
-                        .transition(new DrawableTransitionOptions().crossFade(2000))
-                        .thumbnail(Glide.with(context)
-                                .load(R.mipmap.mine_avatar))
+                        .apply(options)
+                        .transition(new DrawableTransitionOptions().crossFade(1000))
                         .into((ImageView) view);
             }
             return this;
@@ -251,7 +257,6 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
                 Glide.with(context)
                         .load(url)
                         .apply(options)
-                        .transition(new DrawableTransitionOptions().crossFade(1000))
                         .into((ImageView) view);
 
 

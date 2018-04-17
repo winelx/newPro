@@ -223,7 +223,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             }
         });
 
-        //任务详情
+        //任务详情记录
         comImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,6 +282,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("wbsTaskId", s);
+                        LogUtil.i("wbsTaskId", id);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);

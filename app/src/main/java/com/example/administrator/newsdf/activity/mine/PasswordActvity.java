@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.LoginActivity;
+import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -63,7 +64,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
                     if (news.equals(newtoo)) {
                         okgo(old, newtoo);
                     } else {
-                        Toast.makeText(this, "不相等", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "两次输入不相同", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -87,8 +88,12 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                BackTo();
                                 Toast.makeText(PasswordActvity.this, "修改密码成功", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(PasswordActvity.this, LoginActivity.class));
+                                MainActivity activity = MainActivity.getInstance();
+                                activity.finish();
+                                finish();
                             } else {
                                 Toast.makeText(PasswordActvity.this, "修改密码失败", Toast.LENGTH_SHORT).show();
                             }
@@ -96,6 +101,23 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
 
                             e.printStackTrace();
                         }
+                    }
+                });
+    }
+
+    /**
+     * 退出登录
+     */
+    private void BackTo() {
+        OkGo.post(Request.BackTo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
                     }
                 });
     }

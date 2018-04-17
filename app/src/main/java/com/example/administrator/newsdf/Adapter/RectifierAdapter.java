@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.activity.home.WebActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -93,13 +94,14 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
-            String urlpath =mData.get(position);
+            String urlpath = mData.get(position);
             //截取出后缀
-            String  pas = urlpath.substring(urlpath.length()-4,urlpath.length());
+            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
             //拿到截取后缀后的字段
-            urlpath=   urlpath.replace(pas,"");
+            urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
-            urlpath=urlpath+"_min"+pas;
+            urlpath = urlpath + "_min" + pas;
+            LogUtil.i("_min",urlpath);
             Glide.with(mContext)
                     .load(urlpath)
                     .thumbnail(Glide.with(mContext)
@@ -113,13 +115,14 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //查看图片
                 ArrayList<String> imagepath = new ArrayList<String>();
                 ArrayList<String> path = new ArrayList<String>();
+
                 for (int i = 0; i < mData.size(); i++) {
                     String urlpath = mData.get(i);
                     int doc = urlpath.lastIndexOf(".");
                     //截取doc+1后面的字符串，包括doc+1；
                     String strs = urlpath.substring(doc + 1);
                     //图片可能为jpg 也可能是png
-                    if (strs.equals("jpg")||strs.equals("png")) {
+                    if (strs.equals("jpg") || strs.equals("png") || strs.equals("JPG") || strs.equals("PNG")) {
                         path.add(mData.get(i));
                     }
                 }
@@ -141,7 +144,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     Intent intent = new Intent(mContext, WebActivity.class);
                     intent.putExtra("http", mData.get(position));
                     mContext.startActivity(intent);
-                }else {
+                } else {
                     ToastUtils.showLongToast("请到pc端查看详情");
                 }
 

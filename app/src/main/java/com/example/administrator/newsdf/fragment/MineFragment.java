@@ -107,7 +107,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         dates = new Dates();
         version = AppUtils.getVersionName(getActivity());
         ititData();
-        //  upload();
+         upload();
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
@@ -252,7 +252,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int ret = jsonObject.getInt("ret");

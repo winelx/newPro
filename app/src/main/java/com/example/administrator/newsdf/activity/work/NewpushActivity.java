@@ -119,7 +119,7 @@ public class NewpushActivity extends AppCompatActivity {
         newpush_wbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewpushActivity.this, ContactPeopleActivity.class);
+                Intent intent = new Intent(NewpushActivity.this, MmissPushActivity.class);
                 intent.putExtra("data", "newpush");
                 startActivityForResult(intent, 1);
             }

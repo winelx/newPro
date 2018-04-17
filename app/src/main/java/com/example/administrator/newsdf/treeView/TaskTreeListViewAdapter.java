@@ -124,17 +124,15 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             public void onClick(View v) {
                 switch (status) {
                     case "mine":
-                        LightfaceActivity activity = (LightfaceActivity) context;
-             activity.switchAct(node);
+                        LightfaceActivity lightface = (LightfaceActivity) mContext;
+                        lightface.switchAct(node);
                         break;
                     case "all":
-                        ListreadActivity activity1 = (ListreadActivity) context;
-                        activity1.switchAct(node);
-                        break;
+                        ListreadActivity listreadActivity = (ListreadActivity) mContext;
+                        listreadActivity.switchAct(node);
                     default:
                         break;
                 }
-
             }
         });
         return convertView;

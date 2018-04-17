@@ -16,16 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.HomeFragmentAdapter;
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.callback.CallBackUtils;
-import com.example.administrator.newsdf.callback.HomeCallback;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
@@ -50,7 +46,7 @@ import okhttp3.Response;
  *         Created by Administrator on 2017/11/21 0021.
  */
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener , HomeCallback,OgranCallback {
+public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback {
     private View rootView;
     private RecyclerView listView;
     private HomeFragmentAdapter mAdapter;
@@ -64,7 +60,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//避免重复绘制界面
+        //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_home, null);
             Dates.getDialog(getActivity(), "请求数据中...");
@@ -79,7 +75,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         if (parent != null) {
             parent.removeView(rootView);
         }
-        CallBackUtils.sethomeCallBack(this);
         OgranCallbackUtils.setCallBack(this);
         mContext = getActivity();
         init();
@@ -116,7 +111,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     //网络请求
     private void Okgo() {
         //请求数据库的数据
-        getPutTop();
         OkGo.post(Request.TaskMain)
                 .execute(new StringCallback() {
                     @Override
@@ -144,38 +138,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    if (placedTop.size()>0){
-                                        if (placedTop.contains(id)){
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,true));
-                                        }else {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
-                                        }
-                                    }else {
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,false));
-                                    }
-
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
-                                    //数据库是否有数据
-                                    if (placedTop.size()!=0){
-                                        try {
-                                            for (int i = 0; i <placedTop.size() ; i++) {
-                                                String str= placedTop.get(i);
-                                                for (int j = 0; j <mData.size() ; j++) {
-                                                    String id= mData.get(j).getId();
-                                                    if (str.equals(id)){
-                                                        Home_item home_item= mData.get(j);
-                                                        mData.add(0,home_item);
-                                                        mData.remove(j+1);
-                                                    }
-                                                }
-                                            }
-
-                                        } catch (NullPointerException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
 
@@ -231,24 +197,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         refreshLayout.finishRefresh(false);
     }
 
-    /**
-     * 获取数据库数据
-     */
-    public  void getPutTop(){
-        placedTop=new ArrayList<>();
-        List<Shop> list =new ArrayList<>();
-        //取出数据库的数据
-        list= LoveDao.MineCart();
-        //取出ID
-        for (int i = 0; i <list.size() ; i++) {
-            placedTop.add(list.get(i).getWebsid());
-        }
-    }
-        //置顶后刷新数据
-    @Override
-    public void doSomeThing() {
-        Okgo();
-    }
+
+
+
+
     //切换组织后刷新
     @Override
     public void taskCallback() {

@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
@@ -151,7 +152,7 @@ public class OrganiwbsActivity extends Activity {
      * @return
      */
     private void addOrganizationList(String result) {
-        if (result.indexOf("data") != -1) {
+        if (result.contains("data")) {
             addOrganizationList = TreeUtlis.parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
@@ -213,7 +214,6 @@ public class OrganiwbsActivity extends Activity {
                         addPosition = position;
                         if (node.isperent()) {
                             addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
-                        } else {
                         }
 
                     }
@@ -230,13 +230,14 @@ public class OrganiwbsActivity extends Activity {
     public void switchAct(Node node, final String name) {
         wbsname = name;
         if (node.iswbs() != false) {
-            getOko(node.getId(), node.getTitle());
+            getOko(node.getId(), node.getTitle(),node.isperent(),node.getName(),node.iswbs(),node.getType());
         } else {
 //            Toast.makeText(mContext, "不是wbs,无法跳转", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void getOko(final String str, final String title) {
+    void getOko(final String str, final String title, final boolean isParent, final String wbsname, final boolean iswbs, final String type) {
+        LogUtil.i("wbsID",str);
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
@@ -247,7 +248,7 @@ public class OrganiwbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             System.out.println("有数据");
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -260,6 +261,7 @@ public class OrganiwbsActivity extends Activity {
                                     namess.add(name + "(" + totalNum + ")");
                                     ids.add(id);
                                     titlename.add(name);
+
                                 }
                                 Intent intent = new Intent(OrganiwbsActivity.this, TenanceviewActivity.class);
                                 //加了任务数量的检查点
@@ -272,6 +274,11 @@ public class OrganiwbsActivity extends Activity {
                                 intent.putExtra("id", str);
                                 //节点路径
                                 intent.putExtra("wbspath", title);
+                                //是否是父节点
+                                intent.putExtra("isParent",isParent );
+                                intent.putExtra("wbsname",wbsname );
+                                intent.putExtra("iswbs",iswbs);
+                                intent.putExtra("type",type);
                                 startActivity(intent);
                                 Dates.disDialog();
                             } catch (JSONException e) {
@@ -290,6 +297,11 @@ public class OrganiwbsActivity extends Activity {
                             intent.putExtra("id", str);
                             //节点路径
                             intent.putExtra("wbspath", title);
+                            //是否是父节点
+                            intent.putExtra("isParent",isParent);
+                            intent.putExtra("wbsname",wbsname );
+                            intent.putExtra("iswbs",iswbs);
+                            intent.putExtra("type",type);
                             startActivity(intent);
                             Dates.disDialog();
                         }

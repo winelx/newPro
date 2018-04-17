@@ -141,7 +141,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                                 } catch (JSONException e) {
                                     moblie="";
                                 }
-
                                 String imageUrl = content.getString("imageUrl");
                                 imageUrl = Request.networks + imageUrl;
                                 mData.add(new Icon(id, userId, name, moblie, imageUrl));

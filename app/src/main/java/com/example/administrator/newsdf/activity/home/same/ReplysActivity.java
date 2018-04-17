@@ -1,10 +1,10 @@
 package com.example.administrator.newsdf.activity.home.same;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -99,7 +99,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<String> pathimg, ids;
     private CheckPermission checkPermission;
     private LinearLayout lin_sdfg;
-    private String content = "", wbsname = "", wbsID = "", id = "";
+    private String content = "", wbsname = "", wbsID = "", id = "",wbstitle="";
     boolean status = false;
     int position;
     private int page = 1;
@@ -107,8 +107,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private String Title = "", checkId = "", checkname = "";
     private WbsDialog selfDialog;
     private static final int IMAGE_PICKER = 101;
-    private PopupWindow popupWindow;
-    private boolean popstatus = false;
     private CircleImageView fab;
     private SmartRefreshLayout smartRefreshLayout;
     private ListView drawerLayoutList;
@@ -116,7 +114,10 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String titles;
+    private String titles,type;
+    ProgressDialog dialog;
+    private boolean isParent,iswbs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,6 +155,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             content = intent.getExtras().getString("content");
             //wbs路径
             wbsname = intent.getExtras().getString("wbsname");
+            wbstitle = intent.getExtras().getString("wbstitle");
             //检查点
             check = intent.getStringArrayListExtra("list");
             //当前节点ID
@@ -163,6 +165,10 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             title.setText(intent.getExtras().getString("title"));
             //检查点id集合
             ids = intent.getExtras().getStringArrayList("ids");
+            iswbs = intent.getExtras().getBoolean("iswbs");
+            type = intent.getExtras().getString("type");
+            //
+            isParent = intent.getExtras().getBoolean("isParent");
             //图片字符串
             String Paths = intent.getExtras().getString("Imgpath");
             checkId = intent.getExtras().getString("Checkid");
@@ -241,7 +247,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew,mAdapter, wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -353,7 +359,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew,mAdapter, wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -404,7 +410,13 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 网络请求
      */
     private void Okgo(ArrayList<File> file, final String address) {
-        userPop();
+        dialog = new ProgressDialog(mContext);
+        dialog.setMessage("提交数据中...");
+        // 设置是否可以通过点击Back键取消
+        dialog.setCancelable(false);
+        // 设置在点击Dialog外是否取消Dialog进度条
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         OkGo.post(Request.Uploade)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
@@ -417,7 +429,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        popstatus = false;
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -434,18 +445,19 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                 setList();
                             } else {
                                 ToastUtils.showShortToast(msg);
-                                popupWindow.dismiss();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        popupWindow.dismiss();
-                        popstatus = false;
+                        dialog.dismiss();
                     }
+
                     //进度条
                     @Override
                     public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
@@ -464,7 +476,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //wbs结构
+            //选择wbs结构
             case R.id.reply_wbs:
                 Intent intent = new Intent(ReplysActivity.this, MmissPushActivity.class);
                 intent.putExtra("data", "reply");
@@ -495,18 +507,27 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             wbsID = data.getStringExtra("position");
             Title = data.getStringExtra("title");
             wbsText.setText(Title);
+            //请求图片页数
             page = 1;
-            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew,mAdapter, wbsText.getText().toString());
+            //清除选择项ID
+            checkId="";
+            //清除选择项名称
+            titles="";
+            //控件显示文字
+            replyCheckItem.setText(data.getStringExtra(""));
+            //请求图片
+            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
-            //检查点
+            //检查点返回
             checkId = data.getStringExtra("id");
             titles = data.getStringExtra("name");
             replyCheckItem.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            //相册
+            //相册返回数据
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
+                    //压缩图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
@@ -620,13 +641,17 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                 setResult(RESULT_OK, intent);
                                 //此方法后才能返回主Activity
                                 finish();
-                                popupWindow.dismiss();
+                                dialog.dismiss();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } else {
-                            popupWindow.dismiss();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        dialog.dismiss();
                     }
                 });
     }
@@ -690,22 +715,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    /**
-     * 提交时的弹出框
-     */
-    void userPop() {
-        View view = getLayoutInflater().inflate(R.layout.pop_new_push, null);
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT, true);
-        //设置背景，
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setFocusable(false);
-        //显示(靠中间)
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        popstatus = true;
-    }
+
     /**
      * 重写返回键，根据业务进行控制
      *
@@ -715,10 +725,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (popstatus) {
-        } else {
-            finish();
-        }
+        finish();
         return false;
     }
 }

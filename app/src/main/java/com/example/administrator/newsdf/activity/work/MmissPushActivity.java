@@ -355,6 +355,7 @@ public class MmissPushActivity extends AppCompatActivity {
                             intent.putExtra("title", titles);
                             intent.putExtra("id", str);
                             intent.putExtra("wbsnam", wbsname);
+                            intent.putExtra("titles", "任务下发");
                             startActivity(intent);
                             Dates.disDialog();
                         }

@@ -21,7 +21,7 @@
     <color name="blue">#167fe1</color>
     <color name="gray">#cccccc</color>
     <color name="transparent">#00000000</color>
-
+    <color name="transparents">#55000000</color>
 
     <color name="finish_green">#22c67b</color>
     <color name="unfinish_gray">#a6a6a6</color>

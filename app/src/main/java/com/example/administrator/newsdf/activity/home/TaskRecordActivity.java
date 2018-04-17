@@ -98,15 +98,13 @@ public class TaskRecordActivity extends AppCompatActivity {
                                     }
                                     String wbsId;
                                     try {
-                                        wbsId = json.getString("createDate");
+                                        wbsId = json.getString("updateDate");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        wbsId = "";
+                                        wbsId =json.getString("createDate");
                                     }
                                     mData.add(new Tenanceview(wbsId, name, times));
                                 }
-                                LogUtil.i("ss", "解析完成" + mData.size());
-
                                 mAdapter.getData(mData);
 
                             }

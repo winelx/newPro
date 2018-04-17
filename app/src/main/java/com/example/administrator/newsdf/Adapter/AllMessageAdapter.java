@@ -72,39 +72,39 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         //左滑置顶点击事件
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void  onClick(View view) {
-                if (mDatas.get(position).isPutTop()){
+            public void onClick(View view) {
+                if (mDatas.get(position).isPutTop()) {
 
-                    List<Shop> list =new  ArrayList<Shop>();
-                    list= LoveDao.ALLCart();
+                    List<Shop> list = new ArrayList<Shop>();
+                    list = LoveDao.ALLCart();
                     // 状态为ture 为置顶状态 点击为取消
                     //删除置顶
-                     String str=mDatas.get(position).getId();
-                    for (int i = 0; i <list.size() ; i++) {
-                        String wbsID=list.get(i).getWebsid();
-                        if (str.equals(wbsID)){
+                    String str = mDatas.get(position).getId();
+                    for (int i = 0; i < list.size(); i++) {
+                        String wbsID = list.get(i).getWebsid();
+                        if (str.equals(wbsID)) {
                             LoveDao.deleteLove(list.get(i).getId());
-                            CallBackUtils.removeCallBackMethod(position,"删除");
+                            CallBackUtils.removeCallBackMethod(position, "删除");
                         }
                     }
-                }else {
-                   //状态为false 点击为置顶
-                   //添加置顶
-                    Shop shop=new Shop();
+                } else {
+                    //状态为false 点击为置顶
+                    //添加置顶
+                    Shop shop = new Shop();
                     //保存ID
                     shop.setWebsid(mDatas.get(position).getId());
                     shop.setType(Shop.TYPE_ALL);
                     LoveDao.insertLove(shop);
-                    CallBackUtils.removeCallBackMethod(position,"增加");
+                    CallBackUtils.removeCallBackMethod(position, "增加");
                 }
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 }
             }
         });
-        if (mDatas.get(position).isPutTop()){
+        if (mDatas.get(position).isPutTop()) {
             holder.btn_Delete.setText("取消置顶");
-        }else {
+        } else {
             holder.btn_Delete.setText("置顶");
         }
         //判断是否有消息
@@ -141,7 +141,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
         //获取自定义View的布局（加载item布局）
-        View view = LayoutInflater.from(mContext).inflate(R.layout.home_fragment_item, arg0, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.message_fragment_item, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }

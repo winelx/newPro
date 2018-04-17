@@ -44,7 +44,8 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new ViewholderContent(LayoutInflater.from(parent.getContext()).
                         inflate(R.layout.handover_content, parent, false));
             case TYPE_DATA:
-                return new ViewholderData(LayoutInflater.from(parent.getContext()).inflate(R.layout.handover_part_item, parent, false));
+                return new ViewholderData(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.handover_part_item, parent, false));
             default:
                 return null;
         }

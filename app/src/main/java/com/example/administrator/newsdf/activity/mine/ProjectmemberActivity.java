@@ -17,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.ProjectmemberAdapter;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -55,7 +55,7 @@ import static com.example.administrator.newsdf.R.id.tree_path;
 public class ProjectmemberActivity extends AppCompatActivity {
     private ListView uslistView;
     private LinearLayout comback;
-    private SettingAdapter mAdapter = null;
+    private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData, searchData;
     private Context mContext;
     private CheckPermission checkPermission;
@@ -135,7 +135,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
             @Override
             public void bindView(ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImages(R.id.circleImageView, obj.getImageUrl());
+                holder.setImage(R.id.memberImageView, obj.getImageUrl());
                 //名字
                 holder.setText(R.id.member_name, obj.getName());
                 //手机号
@@ -150,8 +150,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 });
             }
         };
-        //联系人列表
-        uslistView.setAdapter(mAdapter);
+
         //设置布局管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //设置为垂直布局，这也是默认的
@@ -217,11 +216,13 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        //联系人列表
+        uslistView.setAdapter(mAdapter);
     }
 
     /**
      * 网络请求
+     *   OkGo.post(Request.Members)
      */
 
     void okgo(String id) {
@@ -246,24 +247,33 @@ public class ProjectmemberActivity extends AppCompatActivity {
                                     } catch (JSONException e) {
                                         userId = "";
                                     }
-
                                     String name = content.getString("name");
                                     String moblie = content.getString("moblie");
-                                    String imageUrl = content.getString("imageUrl");
+                                    String imageUrl;
+                                    try {
+                                        imageUrl = content.getString("imageUrl");
+                                        imageUrl = Request.networks + imageUrl;
+                                        LogUtil.i("imageUrl",imageUrl);
+                                    } catch (JSONException e) {
+                                        imageUrl = "";
+                                        LogUtil.i("imageUrl",imageUrl);
+                                    }
                                     mData.add(new Icon(id, userId, name, moblie, imageUrl));
                                 }
                                 if (mData.size() != 0) {
-                                    homeBackgroud.setVisibility(View.GONE);
                                     mAdapter.getData(mData);
+                                    homeBackgroud.setVisibility(View.GONE);
                                 } else {
                                     homeBackgroud.setVisibility(View.VISIBLE);
-                                    homeBackgroudText.setText("数据加载失败，试试下拉刷新");
+                                    homeBackgroudText.setText(R.string.text_nupoint);
                                 }
                                 Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
+                            mData.clear();
+                            mAdapter.getData(mData);
                             Dates.disDialog();
                             homeBackgroud.setVisibility(View.VISIBLE);
                             homeBackgroudText.setText(R.string.text_nupoint);

@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -38,7 +39,7 @@ import okhttp3.Response;
 
 
 /**
- * description:任务列表界面的赛选的wbs树
+ * description:赛选的wbs树
  *
  * @author lx
  *         date: 2018/3/22 0022 下午 2:39
@@ -55,7 +56,8 @@ public class TaskWbsActivity extends Activity {
     private int addPosition;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    String wbsname, wbsID, org_status;
+    String wbsname, wbsID, type;
+    private boolean isParent, iswbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,10 @@ public class TaskWbsActivity extends Activity {
         setContentView(R.layout.activity_wbs);
         Intent intent = getIntent();
         wbsID = intent.getStringExtra("WbsID");
-        org_status = intent.getExtras().getString("data");
         wbsname = intent.getExtras().getString("wbsname");
+        type = intent.getExtras().getString("type");
+        isParent = intent.getExtras().getBoolean("isParent");
+        iswbs = intent.getExtras().getBoolean("iswbs");
         mContext = TaskWbsActivity.this;
         refreshLayout = findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -97,8 +101,8 @@ public class TaskWbsActivity extends Activity {
             }
         });
         OrganizationEntity bean = new OrganizationEntity(wbsID, "",
-                wbsname, "0", false,
-                true, "3,5", "",
+                wbsname, "0", iswbs,
+                isParent, type, "",
                 "", "", wbsname, "", true);
         organizationList.add(bean);
         getOrganization(organizationList);
@@ -110,7 +114,7 @@ public class TaskWbsActivity extends Activity {
         OkGo.post(Request.WBSTress)
                 .params("nodeid", wbsID)
                 .params("iswbs", false)
-                .params("isparent", true)
+                .params("isparent", isParent)
                 .params("type", "3,5")
                 .execute(new StringCallback() {
                     @Override
@@ -132,8 +136,10 @@ public class TaskWbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
+                        LogUtil.i("dddd", result);
                         addOrganizationList(result);
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -350,15 +356,15 @@ public class TaskWbsActivity extends Activity {
 
     public void switchAct(Node node) {
         if (node.iswbs()) {
-                    Intent list = new Intent();
-                    list.putExtra("id", node.getId());
-                    list.putExtra("title", node.getName());
-                    list.putExtra("titles", node.getTitle());
-                    list.putExtra("iswbs", node.iswbs());
-                    //回传数据到主Activity
-                    setResult(RESULT_OK, list);
-                    //此方法后才能返回主Activity
-                    finish();
+            Intent list = new Intent();
+            list.putExtra("id", node.getId());
+            list.putExtra("title", node.getName());
+            list.putExtra("titles", node.getTitle());
+            list.putExtra("iswbs", node.iswbs());
+            //回传数据到主Activity
+            setResult(RESULT_OK, list);
+            //此方法后才能返回主Activity
+            finish();
 
         }
     }

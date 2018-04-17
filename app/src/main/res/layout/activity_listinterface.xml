@@ -49,12 +49,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:ellipsize="marquee"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxEms="10"
                     android:maxLines="1"
-                    android:text="组织管理"
+                    android:singleLine="true"
+                    android:text="sssssssssssssssssssssssssssssssssss"
                     android:textColor="@color/writer"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/listnumber"

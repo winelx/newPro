@@ -63,7 +63,6 @@ public class BootupActivity extends AppCompatActivity {
             finish();
             return;
         }
-
         mContext = BootupActivity.this;
         //清除cooking
         HttpUrl httpUrl = HttpUrl.parse(Request.networks);

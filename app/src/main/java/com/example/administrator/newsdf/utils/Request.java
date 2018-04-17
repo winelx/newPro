@@ -8,8 +8,8 @@ package com.example.administrator.newsdf.utils;
 public class Request {
     //公共头  192.168.20.38
     // public static final String networks = "http://192.168.1.109:8090/";
- public static final String networks = "http://117.187.27.78:8081/baseframe/";
-    //public static final String networks = "http://120.79.142.15/pzgc/";
+    // public static final String networks = "http://117.187.27.78:8081/baseframe/";
+     public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 用户登陆
      */

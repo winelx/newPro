@@ -33,9 +33,9 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.callback.TaskCallback;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -740,7 +740,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 e.printStackTrace();
             }
         } else {
-            ToastUtils.showShortToast("没有更多数据了！");
+            ToastUtils.showShortToast("暂无数据！");
             if (!swip) {
                 Alldata.clear();
             }

@@ -388,20 +388,20 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     //回复转发(自己回复或选择转发)
                     case "0":
                         //未上传进入详情
-//                        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        Intent intent = new Intent(mContext, MoretaskActivity.class);
-//                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
-//                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
-//                        intent.putExtra("status", "one");
+                        //  Intent intent = new Intent(mContext, MoretaskActivity.class);
+                        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
+                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
+                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+                        intent.putExtra("status", "one");
                         startActivity(intent);
                         break;
                     //通过的详情
                     case "1":
-                        //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        Intent audio = new Intent(mContext, MoretaskActivity.class);
-//                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
-//                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
-//                        audio.putExtra("status", "two");
+//                        Intent audio = new Intent(mContext, MoretaskActivity.class);
+                        Intent audio = new Intent(mContext, AuditparticularsActivity.class);
+                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
+                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
+                        audio.putExtra("status", "two");
                         startActivity(audio);
                         break;
                     default:
@@ -440,7 +440,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-
         /**
          *    侧拉listview上拉加载
          */
@@ -461,6 +460,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         /**
          * 拼接 选择wbs的节点
          */
+
         OrganizationEntity bean = new OrganizationEntity(fixedwbsId, "",
                 intent.getExtras().getString("name"), "0", false,
                 true, "3,5", "",

@@ -14,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
@@ -68,51 +65,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
                 }
             }
         });
-        //左滑置顶点击事件
-        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //创建集合
-                List<Shop> list =new  ArrayList<Shop>();
-                //拿到数据
-                list= LoveDao.MineCart();
-               if (mDatas.get(position).isPutTop()){
-                    // 状态为ture 为置顶状态 点击为取消
-                    //拿到当前item的ID
-                    String str=mDatas.get(position).getId();
-                    //便利数据库数据
-                    for (int i = 0; i <list.size() ; i++) {
-                        //拿到数据库ID
-                        String wbsID=list.get(i).getWebsid();
-                        //数据库ID与当前节点id
-                        if (str.equals(wbsID)){
-                            //相等就删除
-
-                            LoveDao.deleteLove(list.get(i).getId());
-                            CallBackUtils.dohomeCallBackMethod();
-                        }
-                    }
-                }else {
-                    //状态为false 点击为置顶
-                    //添加置顶
-                    Shop shop=new Shop();
-                    //保存ID
-                   shop.setWebsid(mDatas.get(position).getId());
-                   shop.setType(Shop.TYPE_MINE);
-                   LoveDao.insertLove(shop);
-
-                   CallBackUtils.dohomeCallBackMethod();
-                }
-                if (menuIsOpen()) {
-                    closeMenu();//关闭菜单
-                }
-            }
-        });
-        if (mDatas.get(position).isPutTop()){
-            holder.btn_Delete.setText("取消置顶");
-        }else {
-            holder.btn_Delete.setText("置顶");
-        }
 
         /**
          *
@@ -162,7 +114,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.home_fragment_item, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
-
         return holder;
     }
 
@@ -196,19 +147,9 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             home_item_time = (TextView) itemView.findViewById(R.id.home_item_time);
             //消息数据
             home_item_message = (TextView) itemView.findViewById(R.id.home_item_message);
-            ((LeftSlideView) itemView).setSlidingButtonListener(HomeFragmentAdapter.this);
         }
     }
 
-    /**
-     * 删除item
-     *
-     * @param position
-     */
-    public void removeData(int position) {
-        mDatas.remove(position);
-        notifyItemRemoved(position);
-    }
 
     /**
      * 删除菜单打开信息接收

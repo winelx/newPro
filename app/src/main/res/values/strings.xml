@@ -24,7 +24,7 @@
     <string name="header_hint_refresh_time"></string>
     <string name="footer_hint_load_normal">加载更多数据</string>
     <string name="footer_hint_load_ready">释放加载更多</string>
-    <string name="text_nupoint">当前界面没有数据</string>
+    <string name="text_nupoint">暂无数据</string>
     <string name="text_okgo_error">网络请求失败</string>
     <string name="camera_pop_camera">拍摄</string>
     <string name="camera_pop_album">从相册选择</string>

@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/head"
-        android:layout_width="2dp"
+        android:layout_width="1.5dp"
         android:layout_height="match_parent"
         android:layout_alignLeft="@+id/textView10"
         android:layout_alignParentTop="true"
@@ -67,8 +67,8 @@
         android:layout_alignLeft="@+id/imageView3"
         android:layout_alignStart="@+id/imageView3"
         android:layout_alignTop="@+id/linearLayout7"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
         android:background="@drawable/hollow_round_blue" />
 
 

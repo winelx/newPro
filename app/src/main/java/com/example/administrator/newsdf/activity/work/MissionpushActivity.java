@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.work;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -44,7 +45,8 @@ import okhttp3.Response;
 
 /**
  * description: 任务推送界面。负责任务推送和新增下发任务
- *从viewpager的fragment界面发送要推送数据集合，用map存储数据，以fragment所处的页数为key
+ * 从viewpager的fragment界面发送要推送数据集合，用map存储数据，以fragment所处的页数为key
+ *
  * @author lx
  *         date: 2018/3/22 0022 下午 2:39
  *         update: 2018/3/22 0022
@@ -76,6 +78,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private Map<String, List<String>> pushMap;
     private String titles;
     int pagss = 0;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +184,7 @@ public class MissionpushActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter, wbsname);
+                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
                 drawer_layout.openDrawer(GravityCompat.START);
             }
         });
@@ -194,7 +197,7 @@ public class MissionpushActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter, wbsname);
+                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -206,7 +209,7 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(MissionpushActivity.this, "推送任务中");
+
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
@@ -214,6 +217,15 @@ public class MissionpushActivity extends AppCompatActivity {
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
                 if (strids != null) {
+                    dialog = new ProgressDialog(MissionpushActivity.this);
+                    // 设置进度条的形式为圆形转动的进度条
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("推送任务中...");
+                    // 设置是否可以通过点击Back键取消
+                    dialog.setCancelable(true);
+                    // 设置在点击Dialog外是否取消Dialog进度条
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
                     pushOkgo(strids);
                 } else {
                     Dates.disDialog();
@@ -233,7 +245,7 @@ public class MissionpushActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == 1 && resultCode == 2) {
             msg = data.getIntExtra("position", 1);
             mViewPager.setCurrentItem(msg);
         }
@@ -340,14 +352,21 @@ public class MissionpushActivity extends AppCompatActivity {
                                     mViewPager.setCurrentItem(types, true);
                                     //又一次载入position的页面
                                     mAdapter.update(types);
+                                    dialog.dismiss();
                                 }
                             } else {
                                 ToastUtils.showShortToast(msg);
                             }
-
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        dialog.dismiss();
                     }
                 });
     }

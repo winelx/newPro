@@ -53,8 +53,8 @@ public class TenanceviewActivity extends AppCompatActivity {
     private ArrayList<String> ids = null,
             names = null,
             titlename = null;
-    private int msg = 0,page = 1;
-    private  String id, wbspath;
+    private int msg = 0, page = 1;
+    private String id, wbspath, wbsname, type;
     private CircleImageView fab;
     private SmartRefreshLayout drawerlayoutSmart;
     private DrawerLayout drawerLayout;
@@ -62,7 +62,9 @@ public class TenanceviewActivity extends AppCompatActivity {
     private TaskPhotoAdapter taskAdapter;
     private ListView drawerLayoutList;
     private boolean drew = true;
+    private boolean isParent, iswbs;
     ArrayList<String> replly = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
@@ -81,8 +83,13 @@ public class TenanceviewActivity extends AppCompatActivity {
             ids = intent.getExtras().getStringArrayList("ids");
             titlename = intent.getExtras().getStringArrayList("title");
             id = intent.getExtras().getString("id");
+            wbsname = intent.getExtras().getString("wbsname");
             //节点路径
             wbspath = intent.getExtras().getString("wbspath");
+            isParent = intent.getExtras().getBoolean("isParent");
+            iswbs = intent.getExtras().getBoolean("iswbs");
+            type = intent.getExtras().getString("type");
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -126,6 +133,11 @@ public class TenanceviewActivity extends AppCompatActivity {
                 intent.putStringArrayListExtra("ids", ids);
                 //节点ID
                 intent.putExtra("id", id);
+                intent.putExtra("isParent", isParent);
+                intent.putExtra("wbstitle", wbsname);
+                intent.putExtra("iswbs", iswbs);
+                intent.putExtra("type", type);
+
                 startActivityForResult(intent, 1);
             }
         });
@@ -140,7 +152,7 @@ public class TenanceviewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter,wbspath);
+                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -152,7 +164,7 @@ public class TenanceviewActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(id, page, imagePaths, drew,taskAdapter,wbspath);
+                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 taskAdapter.getData(imagePaths, wbspath);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
@@ -179,10 +191,12 @@ public class TenanceviewActivity extends AppCompatActivity {
                 //切换ViewPager
                 mViewPager.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
@@ -222,8 +236,6 @@ public class TenanceviewActivity extends AppCompatActivity {
         id = savedInstanceState.getString("id");
         initView();
     }
-
-
 
 
 }

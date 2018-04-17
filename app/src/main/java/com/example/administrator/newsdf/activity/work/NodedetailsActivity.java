@@ -583,6 +583,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
                             intent.putExtra("ids", ids);
                             intent.putExtra("title", titles);
+                            intent.putExtra("titles", "任务配置");
                             intent.putExtra("id", str);
                             intent.putExtra("wbsPath", wbsname);
                             startActivity(intent);

@@ -1,10 +1,10 @@
 package com.example.administrator.newsdf.activity.home.same;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,7 +74,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.activity.home.homeUtils.photoAdm;
 import static com.example.administrator.newsdf.utils.Dates.compressPixel;
 
 
@@ -142,6 +141,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
             }
+
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -243,7 +243,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -284,7 +284,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -438,7 +438,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 网络请求
      */
     private void Okgo(ArrayList<File> file, final String address) {
-        userPop();
+        final ProgressDialog dialog = new ProgressDialog(mContext);
+        dialog.setMessage("提交数据中...");
+        // 设置是否可以通过点击Back键取消
+        dialog.setCancelable(false);
+        // 设置在点击Dialog外是否取消Dialog进度条
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         OkGo.post(Request.Uploade)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
@@ -451,12 +457,12 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        popstatus = false;
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+
                                 //删除单闯的图片
                                 for (int i = 0; i < pathimg.size(); i++) {
                                     Dates.deleteFile(pathimg.get(i));
@@ -470,15 +476,14 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                 //回传数据到主Activity
                                 setResult(RESULT_OK, intent);
                                 //此方法后才能返回主Activity
-                                popupWindow.dismiss();
                                 finish();
                             } else {
                                 ToastUtils.showShortToast(msg);
-                                popupWindow.dismiss();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        dialog.dismiss();
                     }
 
                     @Override
@@ -535,7 +540,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
             drew = true;
-            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter,wbsText.getText().toString());
+            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+            checkId = "";
+            Titles = "";
+            replyCheckItem.setText(data.getStringExtra(""));
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
             checkId = data.getStringExtra("id");
@@ -551,7 +559,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             //添加进集合
-                            LogUtil.i("ss", outfile);
                             pathimg.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
@@ -642,9 +649,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
 
-        Button btnCamera =  popView.findViewById(R.id.btn_camera_pop_camera);
+        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel =  popView.findViewById(R.id.btn_camera_pop_cancel);
+        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
         RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
@@ -692,21 +699,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         ColorDrawable dw = new ColorDrawable(0x30000000);
         popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-    }
-
-    //弹窗
-    public void userPop() {
-        View view = getLayoutInflater().inflate(R.layout.pop_new_push, null);
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT, true);
-        //设置背景，
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setFocusable(false);
-        //显示(靠中间)
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        popstatus = true;
     }
 
     /**

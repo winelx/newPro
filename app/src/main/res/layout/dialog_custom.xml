@@ -36,7 +36,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/ic_menu_camera"
-                android:padding="0dp" />
+                android:padding="0dp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/par_editext"

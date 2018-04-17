@@ -23,9 +23,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:padding="0dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
-                android:maxEms="10"
+                android:maxEms="8"
                 android:maxLines="1"
                 android:text="技术：安装盖板"
                 android:textColor="@color/textViwe"
@@ -51,6 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/inter_title"
                 android:layout_marginTop="2dp"
+                android:padding="0dp"
+                android:layout_marginLeft="0dp"
                 android:layout_toEndOf="@+id/item_inface_remind"
                 android:layout_toRightOf="@+id/item_inface_remind"
                 android:ellipsize="end"
@@ -67,10 +71,10 @@
                 android:layout_alignLeft="@+id/inter_title"
                 android:layout_alignStart="@+id/inter_title"
                 android:layout_below="@+id/inter_title"
+                android:ellipsize="end"
                 android:gravity="center"
                 android:maxEms="16"
                 android:singleLine="true"
-                android:ellipsize="end"
                 android:text="ssdga"
                 android:textColor="@color/editext_text"
                 android:textSize="12sp" />
@@ -83,9 +87,9 @@
                 android:layout_alignLeft="@+id/inface_wbs_path"
                 android:layout_alignStart="@+id/inface_wbs_path"
                 android:layout_below="@+id/inface_item_message"
+                android:ellipsize="end"
                 android:maxEms="16"
                 android:singleLine="true"
-                android:ellipsize="end"
                 android:text="请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料"
                 android:textColor="@color/textViwe"
                 android:textSize="14sp" />
@@ -162,10 +166,10 @@
                     android:layout_alignStart="@+id/inface_username"
                     android:layout_below="@+id/inface_username"
                     android:layout_marginTop="5dp"
-                    android:singleLine="true"
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:text="定义定义定义定义定义定义"
                     android:textSize="15sp" />
 
@@ -175,6 +179,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_below="@+id/inface_pcontent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -191,7 +197,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
                             android:layout_weight="1"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/image_loading"
                             android:visibility="gone" />
 
@@ -228,6 +234,7 @@
 
                     <RelativeLayout
                         android:layout_width="0dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
@@ -239,7 +246,8 @@
                             android:layout_toEndOf="@+id/inface_relat2"
                             android:layout_toRightOf="@+id/inface_relat2"
                             android:layout_weight="1"
-                            android:scaleType="fitXY"
+
+                            android:scaleType="centerCrop"
                             android:src="@mipmap/image_loading"
                             android:visibility="gone" />
 
@@ -327,15 +335,14 @@
                                 android:id="@+id/inface_image3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="fitXY"
-
+                                android:scaleType="centerCrop"
                                 android:src="@mipmap/image_loading" />
 
                             <LinearLayout
                                 android:id="@+id/ic_loading_bg"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/ic_loading_bg">
+                                android:background="@color/transparents">
 
                                 <TextView
                                     android:id="@+id/inface_imgae_text"
@@ -348,7 +355,7 @@
                                     android:scaleType="fitXY"
                                     android:text="+3"
                                     android:textColor="@color/writer"
-                                    android:textSize="40sp" />
+                                    android:textSize="30sp" />
                             </LinearLayout>
 
 

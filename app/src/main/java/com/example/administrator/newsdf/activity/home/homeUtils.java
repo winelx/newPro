@@ -168,7 +168,6 @@ public class homeUtils {
 
     public String get() {
         post(Request.CascadeList)
-
                 .params("rows", 25)
                 .execute(new StringCallback() {
                     @Override
@@ -176,10 +175,9 @@ public class homeUtils {
                         if (s.contains("data")) {
                             result = s;
                         } else {
-                            ToastUtils.showShortToast("没有更多数据了！");
+                            ToastUtils.showShortToast("暂无数据！");
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -210,7 +208,6 @@ public class homeUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         if (s.contains("data")) {
                             if (drew) {
                                 imagePaths.clear();
