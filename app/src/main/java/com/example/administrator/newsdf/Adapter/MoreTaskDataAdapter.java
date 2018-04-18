@@ -84,6 +84,7 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 myHolders.button.setVisibility(View.GONE);
             }
+            myHolders.taskNumber.setText("(" + list.size() + ")");
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 内容
             MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
@@ -99,6 +100,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     ToastUtils.showLongToast("新增");
+
+                    list.add("ss");
+                    notifyDataSetChanged();
                 }
             });
         }
@@ -111,11 +115,12 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     // 头部
     private class HeadHolder extends RecyclerView.ViewHolder {
-        private TextView button;
+        private TextView button, taskNumber;
 
         public HeadHolder(View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.head);
+            taskNumber = itemView.findViewById(R.id.taskNumber);
         }
     }
 
@@ -125,7 +130,7 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public ContentHolder(View itemView) {
             super(itemView);
-            itemText =itemView.findViewById(R.id.item_text);
+            itemText = itemView.findViewById(R.id.item_text);
         }
     }
 

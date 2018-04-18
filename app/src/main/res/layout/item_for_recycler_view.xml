@@ -2,22 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginLeft="10.3dp"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/head"
         android:layout_width="1.5dp"
-        android:layout_marginLeft="26dp"
         android:layout_height="match_parent"
-        android:background="@color/persomal_text"
-         />
+        android:layout_marginLeft="38dp"
+        android:layout_marginStart="38dp"
+        android:background="#a8a8a8" />
 
     <TextView
         android:id="@+id/item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="45dp"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="部位：更梁山大桥"
@@ -39,14 +38,12 @@
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
-        android:background="@drawable/hollow_round_gray"
-        android:layout_alignBottom="@+id/item_text"
-        android:layout_toLeftOf="@+id/create_time"
-        android:layout_toStartOf="@+id/create_time"
-        android:layout_marginRight="11dp"
-        android:layout_marginEnd="11dp" />
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="31.7dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/hollow_round_gray" />
 
 
     <TextView

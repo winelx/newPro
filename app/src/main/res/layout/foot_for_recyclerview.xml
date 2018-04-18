@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/footer"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginLeft="14.3dp"
-    android:id="@+id/footer"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/head"
-        android:layout_width="1.5dp"
-        android:layout_marginLeft="26dp"
-        android:layout_height="match_parent"
-        android:background="@color/persomal_text"
-        />
 
+    <TextView
+        android:layout_width="1.5dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginStart="38dp"
+        android:background="#a8a8a8" />
 
     <TextView
         android:id="@+id/item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView12"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_toEndOf="@+id/textView12"
+        android:layout_alignBottom="@+id/textView12"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/textView12"
         android:gravity="center"
         android:text="回复任务"
@@ -31,14 +28,12 @@
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@drawable/hollow_round_gray"
-        android:textColor="#B3B3B3"
-        android:textSize="14sp" />
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginLeft="31.7dp"
+        android:layout_marginStart="31.7dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/hollow_round_gray" />
 
 
     <TextView
@@ -46,9 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
         android:layout_toEndOf="@+id/textView10"
         android:layout_toRightOf="@+id/textView10"
         android:background="@mipmap/task_add" />
