@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.UpdateService;
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("sss",s);
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
