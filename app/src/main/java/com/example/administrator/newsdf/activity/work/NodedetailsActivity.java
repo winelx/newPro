@@ -50,11 +50,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.R.id.node_start_text;
-import static com.example.administrator.newsdf.R.id.node_stop_text;
-import static com.example.administrator.newsdf.R.id.node_wbs_progress;
-import static com.example.administrator.newsdf.R.id.node_wbs_status;
-import static com.example.administrator.newsdf.R.id.node_wbs_username;
 
 /**
  * @author lx
@@ -71,7 +66,7 @@ import static com.example.administrator.newsdf.R.id.node_wbs_username;
 public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress;
-    String wbsId, userID, status, wbsName;
+    String wbsId, userID, status, wbsName, wbspath;
 
     ArrayList<Audio> mData;
     private PopupWindow popupWindow;
@@ -108,7 +103,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         //节点ID
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
-
+        wbspath = intent.getExtras().getString("Name");
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -119,8 +114,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.node_configuration_task).setOnClickListener(this);
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        nodeStartText = (TextView) findViewById(node_start_text);
-        nodeStopText = (TextView) findViewById(node_stop_text);
+        nodeStartText = (TextView) findViewById(R.id.node_start_text);
+        nodeStopText = (TextView) findViewById(R.id.node_stop_text);
         nodeCompleteText = (TextView) findViewById(R.id.node_complete_text);
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
         nodeStart = (ImageView) findViewById(R.id.node_start);
@@ -129,9 +124,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         nodeWbsName = (TextView) findViewById(R.id.node_wbs_name);
         nodeWbsProject = (TextView) findViewById(R.id.node_wbs_project);
         nodeWbsType = (TextView) findViewById(R.id.node_wbs_type);
-        nodeWbsStatus = (TextView) findViewById(node_wbs_status);
-        nodeWbsUsername = (TextView) findViewById(node_wbs_username);
-        nodeWbsProgress = (TextView) findViewById(node_wbs_progress);
+        nodeWbsStatus = (TextView) findViewById(R.id.node_wbs_status);
+        nodeWbsUsername = (TextView) findViewById(R.id.node_wbs_username);
+        nodeWbsProgress = (TextView) findViewById(R.id.node_wbs_progress);
         findViewById(R.id.user_list).setOnClickListener(this);
         //禁止下拉
         smartRefreshLayout.setEnableRefresh(false);
@@ -158,7 +153,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsId, page, imagePaths, drew,taskAdapter,wbsName);
+                homeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
                 drawer_layout.openDrawer(GravityCompat.START);
             }
         });
@@ -170,7 +165,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsId, page, imagePaths, drew,taskAdapter,wbsName);
+                homeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
                 taskAdapter.getData(imagePaths, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
@@ -545,7 +540,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -570,22 +565,23 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
-                                intent.putExtra("titles", "任务配置");
+                                intent.putExtra("titles", "任务下发");
+                                intent.putExtra("wbsPath", wbspath);
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
                                 startActivity(intent);
-                                Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            Dates.disDialog();
                         } else {
                             ToastUtils.showShortToast("该节点未启动");
                             Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
                             intent.putExtra("ids", ids);
                             intent.putExtra("title", titles);
-                            intent.putExtra("titles", "任务配置");
                             intent.putExtra("id", str);
-                            intent.putExtra("wbsPath", wbsname);
+                            intent.putExtra("wbsnam", wbsname);
+                            intent.putExtra("titles", "任务下发");
                             startActivity(intent);
                             Dates.disDialog();
                         }

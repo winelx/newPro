@@ -44,7 +44,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description: 任务推送界面。负责任务推送和新增下发任务
+ * description: 任务推送界面
  * 从viewpager的fragment界面发送要推送数据集合，用map存储数据，以fragment所处的页数为key
  *
  * @author lx
@@ -63,7 +63,7 @@ public class MissionpushActivity extends AppCompatActivity {
     int msg = 0;
     int page = 1;
     private ArrayList<ArrayList<Push_item>> push;
-    private ArrayList<String> titlename = null;
+    private ArrayList<String> titlename ;
     private ArrayList<String> ids = new ArrayList<>();
     private Context mContext;
     private String id, wbsname;
@@ -87,6 +87,8 @@ public class MissionpushActivity extends AppCompatActivity {
         mContext = MissionpushActivity.this;
         push = new ArrayList<>();
         pushMap = new HashMap<>();
+        //获取到intent传过来得集合
+        titlename = new ArrayList<>();
         imagePaths = new ArrayList<>();
         fab = (CircleImageView) findViewById(R.id.fab);
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
@@ -104,8 +106,7 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setVisibility(View.VISIBLE);
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
         Intent intent = getIntent();
-        //获取到intent传过来得集合
-        titlename = new ArrayList<>();
+
         try {
             titles = intent.getExtras().getString("titles");
             id = intent.getExtras().getString("id");
@@ -113,16 +114,18 @@ public class MissionpushActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+
+        title.setText(titles);
+        taskAdapter = new TaskPhotoAdapter(imagePaths, MissionpushActivity.this);
+        drawer_layout_list.setAdapter(taskAdapter);
+        mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
         try {
             ids = intent.getExtras().getStringArrayList("ids");
             titlename = intent.getExtras().getStringArrayList("title");
         } catch (NullPointerException e) {
             e.printStackTrace();
+
         }
-        title.setText(titles);
-        taskAdapter = new TaskPhotoAdapter(imagePaths, MissionpushActivity.this);
-        drawer_layout_list.setAdapter(taskAdapter);
-        mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
         if (titlename.size() > 3) {
             mTabLayout.setTabMode(0);
         }
