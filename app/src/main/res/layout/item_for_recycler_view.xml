@@ -32,7 +32,7 @@
         android:layout_alignStart="@+id/item_text"
         android:layout_below="@+id/textView10"
         android:layout_marginTop="5dp"
-        android:text="sssssssss"
+        android:text="2018-04-18"
         android:textColor="#808080"
         android:textSize="12sp" />
 

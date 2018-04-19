@@ -15,7 +15,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
@@ -90,11 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     String user = username.getText().toString();
                     String passowd = password.getText().toString();
-                    LogUtil.i("passowd",passowd);
                     // 网络请求
                     okgo(user, passowd);
-//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    finish();
                 }
                 break;
             default:
@@ -107,14 +103,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss",s);
                         login(user, passowd);
                     }
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-
+                        ToastUtils.showLongToast("网络无法连接到internet");
                     }
                 });
     }
@@ -228,6 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        ToastUtils.showLongToast("网络无法连接到internet");
                     }
                 });
 

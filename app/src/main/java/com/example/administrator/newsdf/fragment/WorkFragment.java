@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -54,6 +55,7 @@ public class WorkFragment extends Fragment {
     private List<PieChartBeans> mData;
     private GridView fr_work_grid;
     private SettingAdapter mAdapter;
+    private ListView workList;
     String name = "";
     int num = 0;
     String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
@@ -73,9 +75,9 @@ public class WorkFragment extends Fragment {
             fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
             PieChartOne = rootView.findViewById(R.id.piechartone);
             fr_work_dn = rootView.findViewById(R.id.fr_work_dn);
+            workList = rootView.findViewById(R.id.work_list);
             fr_work_name = rootView.findViewById(R.id.fr_work_name);
             fr_work_name.setText(SPUtils.getString(mContext, "staffName", null) + ",");
-
             String data = Dates.getHH();
             int time = Integer.parseInt(data);
             if (time >= 6 && time < 12) {

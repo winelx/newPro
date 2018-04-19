@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/4/16 0016.
+ * 多任务上传界面adapter （）
  */
 
 public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
