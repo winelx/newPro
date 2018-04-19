@@ -63,7 +63,7 @@ public class MissionpushActivity extends AppCompatActivity {
     int msg = 0;
     int page = 1;
     private ArrayList<ArrayList<Push_item>> push;
-    private ArrayList<String> titlename ;
+    private ArrayList<String> titlename;
     private ArrayList<String> ids = new ArrayList<>();
     private Context mContext;
     private String id, wbsname;

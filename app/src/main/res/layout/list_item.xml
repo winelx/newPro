@@ -31,7 +31,8 @@
         android:layout_marginRight="15dp"
         android:layout_toRightOf="@id/image_ll"
         android:drawingCacheQuality="low"
-        android:scrollbarSize="12px"
+        android:scrollbarSize="1px"
+
         >
 
         <LinearLayout

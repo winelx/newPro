@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.utils.GlideRoundTransform;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.SlantedTextView;
 
@@ -235,6 +236,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             if (view instanceof ImageView) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
+
                         .error(R.mipmap.mine_avatar)
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(context)
@@ -246,11 +248,12 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             return this;
         }
 
-        public ViewHolder setImages(int id, String url) {
+        public ViewHolder setImages(int id, String url,Context context) {
             View view = getView(id);
             if (view instanceof ImageView) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
+                        .transform(new GlideRoundTransform(context,50))
                         .error(R.mipmap.mine_avatar)
                         .placeholder(R.mipmap.image_loading)
                         .diskCacheStrategy(DiskCacheStrategy.ALL);

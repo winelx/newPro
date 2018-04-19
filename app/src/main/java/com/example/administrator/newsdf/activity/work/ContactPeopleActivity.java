@@ -83,7 +83,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImage(R.id.contact_acatar, obj.getImageUrl());
+                holder.setImages(R.id.contact_acatar, obj.getImageUrl(),mContext);
                 //名字
                 holder.setText(R.id.content_name, obj.getName());
 

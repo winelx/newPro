@@ -135,7 +135,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
             @Override
             public void bindView(ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImage(R.id.memberImageView, obj.getImageUrl());
+                holder.setImages(R.id.memberImageView, obj.getImageUrl(),mContext);
                 //名字
                 holder.setText(R.id.member_name, obj.getName());
                 //手机号
