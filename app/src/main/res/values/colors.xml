@@ -20,8 +20,10 @@
     <color name="black">#050505</color>
     <color name="blue">#167fe1</color>
     <color name="gray">#cccccc</color>
+    <color name="colorc8c8c8">#c8c8c8</color>
     <color name="transparent">#00000000</color>
     <color name="transparents">#55000000</color>
+
 
     <color name="finish_green">#22c67b</color>
     <color name="unfinish_gray">#a6a6a6</color>
@@ -51,4 +53,7 @@
 
     <color name="xlsback">#f5f8f7</color>
     <color name="slxicon">#67cd95</color>
+
+    <color name="tab_tv_nor">#646464</color>
+    <color name="tab_tv_sel">#f27f19</color>
 </resources>

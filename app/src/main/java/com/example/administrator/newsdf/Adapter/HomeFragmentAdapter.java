@@ -85,7 +85,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         } else if (Random == 3) {
             holder.home_item_img.setBackgroundResource(R.drawable.home_item_style);
         } else if (Random == 4) {
-            holder.home_item_img.setBackgroundResource(R.drawable.homt_item_blue);
+            holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
         }
         //前面圆圈
         holder.home_item_img.setText(mDatas.get(position).getOrgname());
