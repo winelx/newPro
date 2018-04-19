@@ -413,7 +413,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         dialog = new ProgressDialog(mContext);
         dialog.setMessage("提交数据中...");
         // 设置是否可以通过点击Back键取消
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         // 设置在点击Dialog外是否取消Dialog进度条
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
