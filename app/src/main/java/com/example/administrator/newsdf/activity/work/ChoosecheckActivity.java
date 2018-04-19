@@ -60,10 +60,14 @@ public class ChoosecheckActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //返回列表
                         Intent intent = new Intent();
-                        intent.putExtra("id", obj.getId());//内容
-                        intent.putExtra("name", obj.getName());//内容
-                        setResult(2, intent);//回传数据到主Activity
-                        finish(); //此方法后才能返回主Activity
+                        //内容
+                        intent.putExtra("id", obj.getId());
+                        //内容
+                        intent.putExtra("name", obj.getName());
+                        //回传数据到主Activity
+                        setResult(2, intent);
+                        //此方法后才能返回主Activity
+                        finish();
                     }
                 });
             }

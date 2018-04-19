@@ -79,7 +79,7 @@ public class BootupActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 //进行是否登录判断
-                if (TextUtils.isEmpty(user)) {
+                if (TextUtils.isEmpty(password)) {
                     //实现页面跳转
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                     //创建文件路径，
@@ -113,10 +113,12 @@ public class BootupActivity extends AppCompatActivity {
                         //进行真正的登录
                         login(user, passowd);
                     }
-                    //这个错误是网络级错误，不是请求失败的错误
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        //这个错误是网络级错误，不是请求失败的错误,
+                        //如果走这里，可能是当前网络无法连接该地址
                         startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                         finish();
                     }
@@ -238,7 +240,6 @@ public class BootupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         //进行假登录，登录后重定向
-                        LogUtil.i("ss", s);
                         okgo(user, password);
                     }
 

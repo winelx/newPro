@@ -41,23 +41,21 @@ import okhttp3.Response;
 
 
 /**
- * 选择责任人
- */
-
+ * description: 选择责任人
+ * @author lx
+ * date: 2018/4/19 0019 上午 11:33
+ * update: 2018/4/19 0019
+ * version:
+*/
 public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
-    private TextView textView, comtitle;
-    private EditText useditext;
-    private LinearLayout comback;
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;
     private ArrayList<Icon> searchData;
     private Context mContext;
-    private SPUtils spUtils;
     private LinearLayout backgroud;
-    String result;
     private PopupWindow mPopupWindow;
-    private TextView Toolbar, deleta;
+    private TextView Toolbar;
     private EditText search;
 
     @Override
@@ -76,8 +74,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         uslistView.setAutoLoadEnable(false);
         uslistView.setXListViewListener(this);
         uslistView.setRefreshTime(getTime());
-        comtitle = (TextView) findViewById(R.id.com_title);
-        comback = (LinearLayout) findViewById(R.id.com_back);
         okgo();
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.contact_item) {
             @Override
@@ -101,7 +97,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                 });
             }
         };
-        spUtils = new SPUtils();
+
         uslistView.setAdapter(mAdapter);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +108,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         findViewById(R.id.com_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiaLog();
+                dialog();
             }
 
 
@@ -195,7 +191,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     /**
      * 弹出框
      */
-    private void DiaLog() {
+    private void dialog() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -215,7 +211,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         int layoutId = R.layout.popup_content_layout;
         View contentView = LayoutInflater.from(this).inflate(layoutId, null);
         search = contentView.findViewById(R.id.menu_item1);
-        deleta = contentView.findViewById(R.id.menu_item2);
         //回车键搜索
         search.setOnKeyListener(new View.OnKeyListener() {
             @Override

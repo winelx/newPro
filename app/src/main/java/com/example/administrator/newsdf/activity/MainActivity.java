@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
@@ -94,30 +93,26 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-    }
-
-    StackTraceElement Stack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
-        setupWindowAnimations();
+
         mContext = this;
         dates = new Dates();
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
-        //设置极光别名Alia
+        //设置极光推送别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
 
             }
         });
+        //屏幕宽度
         width = Utils.getScreenWidth(mContext) / 3;
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
@@ -306,8 +301,10 @@ public class MainActivity extends AppCompatActivity {
         selfDialog.show();
     }
 
+    //在接受推送消息的广播出调用该方法（service/PushReceiver）
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
+        //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
     }
 

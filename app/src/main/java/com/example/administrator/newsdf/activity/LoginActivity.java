@@ -228,6 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        ToastUtils.showLongToast("请确认网络是否通畅");
                     }
                 });
 
