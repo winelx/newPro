@@ -8,6 +8,7 @@
         android:id="@+id/lin_photo_adm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="45dp"
         android:orientation="horizontal">
 
         <TextView
@@ -18,8 +19,8 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="图册"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,8 +36,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="图纸编号"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -52,8 +53,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="图纸名称"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>

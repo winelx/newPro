@@ -99,7 +99,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<String> pathimg, ids;
     private CheckPermission checkPermission;
     private LinearLayout lin_sdfg;
-    private String content = "", wbsname = "", wbsID = "", id = "",wbstitle="";
+    private String content = "", wbsname = "", wbsID = "", id = "", wbstitle = "";
     boolean status = false;
     int position;
     private int page = 1;
@@ -114,9 +114,9 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String titles,type;
+    private String titles, type;
     ProgressDialog dialog;
-    private boolean isParent,iswbs;
+    private boolean isParent, iswbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -484,6 +484,9 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
+                for (int i = 0; i < pathimg.size(); i++) {
+                    Dates.deleteFile(pathimg.get(i));
+                }
                 finish();
                 break;
             //选择检查项
@@ -510,9 +513,9 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //请求图片页数
             page = 1;
             //清除选择项ID
-            checkId="";
+            checkId = "";
             //清除选择项名称
-            titles="";
+            titles = "";
             //控件显示文字
             replyCheckItem.setText(data.getStringExtra(""));
             //请求图片
@@ -527,19 +530,24 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
-                    //压缩图片
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            //添加进集合
-                            pathimg.add(outfile);
-                            //填入listview，刷新界面
-                            photoAdapter.getData(pathimg);
-                        }
-                    });
+                    double mdouble = Dates.getDirSize(new File(images.get(i).path));
+                    if (mdouble != 0.0) {
+                        //压缩图片
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                            @Override
+                            public void callback(boolean isSuccess, String outfile) {
+                                //添加进集合
+                                pathimg.add(outfile);
+                                //填入listview，刷新界面
+                                photoAdapter.getData(pathimg);
+                            }
+                        });
+                    } else {
+                        ToastUtils.showLongToast("请检查上传的图片是否损坏");
+                    }
+
                 }
-                photoAdapter.getData(pathimg);
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
@@ -725,6 +733,9 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        for (int i = 0; i < pathimg.size(); i++) {
+            Dates.deleteFile(pathimg.get(i));
+        }
         finish();
         return false;
     }

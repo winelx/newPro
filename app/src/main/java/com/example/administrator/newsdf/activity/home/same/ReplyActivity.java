@@ -462,7 +462,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-
                                 //删除单闯的图片
                                 for (int i = 0; i < pathimg.size(); i++) {
                                     Dates.deleteFile(pathimg.get(i));
@@ -515,6 +514,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
+                for (int i = 0; i < pathimg.size(); i++) {
+                    Dates.deleteFile(pathimg.get(i));
+                }
                 finish();
                 break;
             //选择检查项
@@ -549,24 +551,27 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             checkId = data.getStringExtra("id");
             Titles = data.getStringExtra("name");
             replyCheckItem.setText(data.getStringExtra("name"));
-
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                for (int i = 0; i < images.size(); i++) {
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            //添加进集合
-                            pathimg.add(outfile);
-                            //填入listview，刷新界面
-                            photoAdapter.getData(pathimg);
 
-                        }
-                    });
+                for (int i = 0; i < images.size(); i++) {
+                    double mdouble = Dates.getDirSize(new File(images.get(i).path));
+                    if (mdouble != 0.0) {
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                            @Override
+                            public void callback(boolean isSuccess, String outfile) {
+                                //添加进集合
+                                pathimg.add(outfile);
+                                //填入listview，刷新界面
+                                photoAdapter.getData(pathimg);
+                            }
+                        });
+                    } else {
+                        ToastUtils.showLongToast("请检查上传的图片是否损坏");
+                    }
                 }
-                photoAdapter.getData(pathimg);
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
@@ -713,6 +718,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {
+            for (int i = 0; i < pathimg.size(); i++) {
+                Dates.deleteFile(pathimg.get(i));
+            }
             finish();
         }
         return false;

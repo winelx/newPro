@@ -85,8 +85,8 @@ public class PieChartOne extends View {
 
 
     private void init() {
-      //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
-       float ste= ScreenUtil.getDensity(baseApplication.getInstance());
+        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
+        float ste = ScreenUtil.getDensity(baseApplication.getInstance());
         paint = new Paint();
         paint.setColor(PAINT_COLOR);
         paint.setAntiAlias(true);
@@ -138,25 +138,27 @@ public class PieChartOne extends View {
         initPie(canvas);
         drawPoint(canvas);
     }
-    private void drawPoint(Canvas canvas){
-        int canvasWidth =getMeasuredWidth();
-        int canvasHeight =getMeasuredHeight();
+
+    private void drawPoint(Canvas canvas) {
+        int canvasWidth = getMeasuredWidth();
+        int canvasHeight = getMeasuredHeight();
         int x = canvasWidth / 2;
         int deltaY = canvasHeight / 3;
         int y = deltaY / 2;
         //设置颜色
-        paint.setARGB(255,255,255,255);
+        paint.setARGB(255, 255, 255, 255);
         //设置线宽，如果不设置线宽，无法绘制点
         paint.setStrokeWidth(50);
-        int r = getMeasuredWidth()*2;
+        int r = getMeasuredWidth() * 2;
         //绘制Cap为ROUND的点
         canvas.translate(0, deltaY);
         paint.setStrokeCap(Paint.Cap.ROUND);
-      canvas.drawCircle(x, y,Aradius, paint);
+        canvas.drawCircle(x, y, Aradius, paint);
         //开始绘制
 
 
     }
+
     /**
      * 画扇形
      *
@@ -218,12 +220,12 @@ public class PieChartOne extends View {
         if (stopX > 0) {
             //50为横线的长度 60 为文字的偏移量
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX + dip2px(15), ceterY + stopY, linePaint);
-            canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY , textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY+ dip2px(10), namePaint);
+            canvas.drawText(text, 0, text.length(), ceterX + stopX + dip2px(15), ceterY + stopY, textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX + dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         } else {
             canvas.drawLine(ceterX + stopX, ceterY + stopY, ceterX + stopX - dip2px(12), ceterY + stopY, linePaint);
-            canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY , textPaint);
-            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY+dip2px(10), namePaint);
+            canvas.drawText(text, 0, text.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY, textPaint);
+            canvas.drawText(name, 0, name.length(), ceterX + stopX - w - dip2px(15), ceterY + stopY + dip2px(10), namePaint);
         }
 
     }
@@ -258,22 +260,23 @@ public class PieChartOne extends View {
             invalidate();
         }
     }
+
     //根据bii返回当前分辨率下该设置多大文字
     public static int adjustFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-            LogUtil.i("ss","10");
+            LogUtil.i("ss", "10");
             return 10;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
-            LogUtil.i("ss","20");
+            LogUtil.i("ss", "20");
             return 18;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
-            LogUtil.i("ss","30");
+            LogUtil.i("ss", "30");
             return 30;
             // 540X960 屏幕
-        }  else {
+        } else {
             return 25;
 
         }

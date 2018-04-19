@@ -29,8 +29,8 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.DirectlyreplyAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
@@ -164,6 +164,9 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (int i = 0; i < imagePaths.size(); i++) {
+                    Dates.deleteFile(imagePaths.get(i));
+                }
                 finish();
             }
         });
@@ -264,9 +267,22 @@ public class DirectlyreplyActivity extends AppCompatActivity {
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
-                    imagePaths.add(images.get(i).path);
+                    double mdouble = Dates.getDirSize(new File(images.get(i).path));
+                    if (mdouble != 0.0) {
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                            @Override
+                            public void callback(boolean isSuccess, String outfile) {
+                                //添加进集合
+                                imagePaths.add(outfile);
+                                //填入listview，刷新界面
+                                photoAdapter.getData(imagePaths);
+                            }
+                        });
+                    } else {
+                        ToastUtils.showLongToast("请检查上传的图片是否损坏");
+                    }
                 }
-                photoAdapter.getData(imagePaths);
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
@@ -274,7 +290,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
                 public void takePhotoFinish(final String path) {
-                    //   根据路径压缩图片并返回bitmap(2
+                    //根据路径压缩图片并返回bitmap
                     Bitmap bitmap = Dates.compressPixel(path);
                     //给压缩的图片添加时间水印(1)
                     String time = Dates.getDate();
@@ -289,7 +305,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             imagePaths.add(outfile);
                             //填入listview，刷新界面
                             photoAdapter.getData(imagePaths);
-//                    //删除原图
+                            //删除原图
                             Dates.deleteFile(path);
                         }
                     });
@@ -425,6 +441,9 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (popstatus) {
         } else {
+            for (int i = 0; i < imagePaths.size(); i++) {
+                Dates.deleteFile(imagePaths.get(i));
+            }
             finish();
         }
         return false;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_width="100dp"
+    android:layout_height="155dp">
 
     <LinearLayout
         android:layout_width="100dp"
@@ -71,9 +71,9 @@
             android:layout_width="135dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="已处理消息"
             android:textColor="@color/black"
