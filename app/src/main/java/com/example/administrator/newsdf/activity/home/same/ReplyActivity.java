@@ -112,7 +112,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private Bitmap textBitmap = null;
     private boolean popstatus = false;
     private int page = 1;
-    private PopupWindow popupWindow;
     private CircleImageView fab;
     private ArrayList<PhotoBean> photoPopPaths;
     private DrawerLayout drawer;
@@ -479,17 +478,17 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             } else {
                                 ToastUtils.showShortToast(msg);
                             }
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        dialog.dismiss();
+
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        popupWindow.dismiss();
-                        popstatus = false;
+                        dialog.dismiss();
                     }
 
                     //进度条
@@ -509,6 +508,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             //wbs结构
             case R.id.reply_wbs:
                 Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
+                //标签，用来判读该进入那个界面，
                 intent.putExtra("data", "reply");
                 intent.putExtra("wbsID", wbsID);
                 startActivityForResult(intent, 1);

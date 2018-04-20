@@ -446,6 +446,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             } else {
                                 ToastUtils.showShortToast(msg);
                             }
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

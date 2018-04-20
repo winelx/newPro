@@ -225,19 +225,20 @@ public class ProjectmemberActivity extends AppCompatActivity {
      *   OkGo.post(Request.Members)
      */
 
-    void okgo(String id) {
+    void okgo(final String id) {
         OkGo.post(Request.Members)
                 .params("orgId", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss", s);
+                        LogUtil.i("jsonArray",id);
                         if (s.contains("data")) {
                             mData.clear();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String str = jsonObject.getString("msg");
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                LogUtil.i("jsonArray",jsonArray.length());
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject content = jsonArray.getJSONObject(i);
                                     String id = content.getString("id");
@@ -253,10 +254,9 @@ public class ProjectmemberActivity extends AppCompatActivity {
                                     try {
                                         imageUrl = content.getString("imageUrl");
                                         imageUrl = Request.networks + imageUrl;
-                                        LogUtil.i("imageUrl",imageUrl);
+
                                     } catch (JSONException e) {
                                         imageUrl = "";
-                                        LogUtil.i("imageUrl",imageUrl);
                                     }
                                     mData.add(new Icon(id, userId, name, moblie, imageUrl));
                                 }

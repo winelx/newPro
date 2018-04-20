@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Icon;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
-import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.list.XListView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -42,11 +42,12 @@ import okhttp3.Response;
 
 /**
  * description: 选择责任人
+ *
  * @author lx
- * date: 2018/4/19 0019 上午 11:33
- * update: 2018/4/19 0019
- * version:
-*/
+ *         date: 2018/4/19 0019 上午 11:33
+ *         update: 2018/4/19 0019
+ *         version:
+ */
 public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
     private XListView uslistView;
     private SettingAdapter<Icon> mAdapter = null;
@@ -57,7 +58,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     private PopupWindow mPopupWindow;
     private TextView Toolbar;
     private EditText search;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +66,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
         searchData = new ArrayList<>();
+        okgo();
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
         Toolbar = (TextView) findViewById(R.id.com_title);
@@ -74,12 +75,25 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         uslistView.setAutoLoadEnable(false);
         uslistView.setXListViewListener(this);
         uslistView.setRefreshTime(getTime());
-        okgo();
+        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        findViewById(R.id.com_img).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog();
+            }
+
+
+        });
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.contact_item) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImages(R.id.contact_acatar, obj.getImageUrl(),mContext);
+                holder.setImages(R.id.contact_acatar, obj.getImageUrl(), mContext);
                 //名字
                 holder.setText(R.id.content_name, obj.getName());
 
@@ -99,29 +113,16 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         };
 
         uslistView.setAdapter(mAdapter);
-        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        findViewById(R.id.com_img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog();
-            }
-
-
-        });
     }
 
     //网络请求
     void okgo() {
-        OkGo.post(Request.UserList)
-                .params("orgId", SPUtils.getString(mContext, "orgId", ""))
+        OkGo.post(Request.Members)
+                .params("orgId","")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("sss",s);
                         mData.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -135,7 +136,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                                 try {
                                     moblie = content.getString("positionName");
                                 } catch (JSONException e) {
-                                    moblie="";
+                                    moblie = "";
                                 }
                                 String imageUrl = content.getString("imageUrl");
                                 imageUrl = Request.networks + imageUrl;
