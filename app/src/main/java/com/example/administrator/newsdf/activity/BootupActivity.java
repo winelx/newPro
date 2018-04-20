@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
@@ -23,8 +21,6 @@ import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
-import com.zxy.tiny.Tiny;
-import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,33 +71,35 @@ public class BootupActivity extends AppCompatActivity {
         //获取保存的用户名和密码
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
         final String password = SPUtils.getString(BootupActivity.this, "password", "");
-        new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                //进行是否登录判断
-                if (TextUtils.isEmpty(user)) {
-                    //实现页面跳转
-                    startActivity(new Intent(BootupActivity.this, LoginActivity.class));
-                    //创建文件路径，
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(R.mipmap.add).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            //不需要压缩后的图，删除
-                            Dates.deleteFile(outfile);
-                        }
-                    });
-                    Dates.createmkdir();
-                    finish();
-                } else {
-                    //如果已经存在，
-                    // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
-                    BackTo(user, password);
-                }
-                return false;
-            }
-            //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 2500);
+//        new Handler(new Handler.Callback() {
+//            @Override
+//            public boolean handleMessage(Message msg) {
+//                //进行是否登录判断
+//                if (TextUtils.isEmpty(user)) {
+//                    //实现页面跳转
+//                    startActivity(new Intent(BootupActivity.this, LoginActivity.class));
+//                    //创建文件路径，
+//                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+//                    Tiny.getInstance().source(R.mipmap.add).asFile().withOptions(options).compress(new FileCallback() {
+//                        @Override
+//                        public void callback(boolean isSuccess, String outfile) {
+//                            //不需要压缩后的图，删除
+//                            Dates.deleteFile(outfile);
+//                        }
+//                    });
+//                    Dates.createmkdir();
+//                    finish();
+//                } else {
+//                    //如果已经存在，
+//                    // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
+//                    BackTo(user, password);
+//                }
+//                return false;
+//            }
+//            //表示延迟3秒发送任务
+//        }).sendEmptyMessageDelayed(0, 2500);
+
+        startActivity(new Intent(BootupActivity.this, BrightspotActivity.class));
     }
 
     //假登录

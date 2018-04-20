@@ -55,7 +55,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote"/>
         <!-- //百度 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -85,7 +85,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.work.MemberActivity" />
+        <activity android:name=".activity.work.BrightspotActivity" />
         <activity
             android:name=".activity.mine.SettingActivity"
             android:screenOrientation="portrait" />
@@ -118,10 +118,6 @@
             android:name=".activity.home.LightfaceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <!-- //检查项列表 -->
-        <activity
-            android:name=".activity.home.ListDetailsActivity"
-            android:screenOrientation="portrait" />
 
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />
@@ -204,6 +200,7 @@
         <activity android:name=".activity.work.TaskWbsActivity" />
         <activity android:name=".activity.mine.ProjectmbTreeActivity" />
         <activity android:name=".activity.home.TaskRecordActivity" />
+
 
         <!-- User defined. 用户自定义的广播接收器 -->
         <receiver
