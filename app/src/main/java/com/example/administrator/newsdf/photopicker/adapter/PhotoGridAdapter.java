@@ -116,13 +116,12 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
                 final RequestOptions options = new RequestOptions();
                 options.centerCrop()
                         .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .override(imageSize, imageSize)
                         .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                         .error(R.drawable.image_error);
                 glide.setDefaultRequestOptions(options)
                         .load(new File(photo.getPath()))
-                        .thumbnail(0.5f)
                         .into(holder.ivPhoto);
             }
 

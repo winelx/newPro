@@ -565,7 +565,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
                                 intent.putExtra("ids", ids);
                                 intent.putExtra("title", titlename);
-                                intent.putExtra("titles", "任务下发");
+                                intent.putExtra("titles", "任务配置");
                                 intent.putExtra("wbsPath", wbspath);
                                 intent.putExtra("id", str);
                                 intent.putExtra("wbsnam", wbsname);
@@ -581,7 +581,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             intent.putExtra("title", titles);
                             intent.putExtra("id", str);
                             intent.putExtra("wbsnam", wbsname);
-                            intent.putExtra("titles", "任务下发");
+                            intent.putExtra("titles", "任务配置");
                             startActivity(intent);
                             Dates.disDialog();
                         }

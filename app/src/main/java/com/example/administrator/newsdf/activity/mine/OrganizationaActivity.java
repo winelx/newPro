@@ -36,12 +36,14 @@ public class OrganizationaActivity extends AppCompatActivity {
     private SimpleTreeListViewAdapters<OrgBeans> mAdapter;
     private List<OrgBeans> mDatas2;
     private List<OrgenBeans> mData;
-    private Context mContext ;
+    private Context mContext;
+    private boolean status = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
-        mContext=OrganizationaActivity.this;
+        mContext = OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
         mTree = (ListView) findViewById(R.id.organ_list_item);
         mDatas2 = new ArrayList<OrgBeans>();
@@ -65,7 +67,6 @@ public class OrganizationaActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
                                 JSONObject json = jsonObject1.getJSONObject("organization");
-
                                 String Id;
                                 try {
                                     Id = json.getString("id");
@@ -78,7 +79,10 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     parentId = json.getString("parentId");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    //如果父ID为null
                                     parentId = "";
+                                    //当做第一级处理
+                                    status = false;
                                     mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId));
                                 }
                                 String name;
@@ -96,6 +100,34 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 mData.add(new OrgenBeans(Id, parentId, name));
+                            }
+                            if (status) {
+                                //拿到所有的ID
+                                final ArrayList<String> IDs = new ArrayList<String>();
+                                for (int i = 0; i < mData.size(); i++) {
+                                    IDs.add(mData.get(i).getId());
+                                }
+                                //循环集合
+                                for (int i = 0; i < mData.size(); i++) {
+                                    //取出父ID，
+                                    String pernID = mData.get(i).getParentId();
+                                    //用ID判断是否有父级相同的
+                                    if (IDs.contains(pernID)) {
+                                        //存在相同的的不处理
+                                    } else {
+
+                                        //不存在相同的当做第一级
+                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId()));
+                                        try {
+                                            mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
+                                                    mDatas2, 0);
+                                            mTree.setAdapter(mAdapter);
+                                        } catch (IllegalAccessException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -129,7 +161,8 @@ public class OrganizationaActivity extends AppCompatActivity {
         }
         return false;
     }
-        /**
+
+    /**
      * 切换组织
      */
     public void member(final String orgid, final String name) {
@@ -149,13 +182,12 @@ public class OrganizationaActivity extends AppCompatActivity {
                                 SPUtils.putString(mContext, "orgId", orgid);
                                 //所在组织名称
                                 SPUtils.putString(mContext, "username", name);
-//                                //刷新全部和我的界面的数据
+                                //刷新全部和我的界面的数据
                                 OgranCallbackUtils.removeCallBackMethod();
                                 finish(); //此方法后才能返回主Activity
                             } else {
                                 Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
