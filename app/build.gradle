@@ -14,7 +14,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.2"
+        versionName "1.1.1"
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
@@ -82,8 +82,8 @@ dependencies {
     //权限
     //网络框架
     //卡片布局
-    //    //图片预览
-    //    compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
+    //图片预览
+    //compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
     //数据库
     //volley，用其中的图片控件，防止图片错位
     //刷新/上拉加载框架，两个相互使用

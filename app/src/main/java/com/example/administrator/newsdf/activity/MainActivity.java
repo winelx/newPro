@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,14 +24,15 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.utils.UpdateService;
 import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -176,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("ss", s);
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                                     //版本号
                                     String versions = json.getString("version");
                                     //更新地址
-                                    String filePath = json.getString("filePath");
+                                    String filePath = json.getString("downloadUrl");
                                     int lenght = version.compareTo(versions);
                                     if (lenght < 0) {
                                         //提示框
@@ -275,15 +278,14 @@ public class MainActivity extends AppCompatActivity {
      * 检测到有新版本后给的提示框
      */
     public void show(final String path) {
+        ToastUtils.showLongToast(path);
+        LogUtil.i("path", path);
         selfDialog = new WbsDialog(mContext);
         selfDialog.setTitle("更新提示");
         selfDialog.setMessage("检测到有新版本，立即更新更新");
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                Intent intent = new Intent(MainActivity.this, UpdateService.class);
-                intent.putExtra("data", path);
-                mContext.startService(intent);
                 selfDialog.dismiss();
             }
         });
@@ -291,10 +293,11 @@ public class MainActivity extends AppCompatActivity {
         selfDialog.setNoOnclickListener("更新", new WbsDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {
-                Intent intent = new Intent(MainActivity.this, UpdateService.class);
-                intent.putExtra("data", path);
-                mContext.startService(intent);
-                selfDialog.dismiss();
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(path);
+                intent.setData(content_url);
+                startActivity(intent);
                 selfDialog.dismiss();
             }
         });
