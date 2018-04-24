@@ -2,21 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/member"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="70dp"
     android:background="@color/writer"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/contact_acatar"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
         android:background="@mipmap/mine_avatar" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -36,9 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/textViwe" />
+            android:layout_marginTop="6dp"
+            android:text="项目成员"
+            android:textColor="@color/textViwe"
+            android:textSize="13dp" />
     </LinearLayout>
-
-
 </LinearLayout>

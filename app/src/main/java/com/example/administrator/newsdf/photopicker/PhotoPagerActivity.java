@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +23,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.fragment.ImagePagerFragment;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -84,17 +84,23 @@ public class PhotoPagerActivity extends AppCompatActivity {
                     Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            Log.i("outfile",outfile);
-                            //设置系统时间为文件名
-                            Shop shop = new Shop();
-                            shop.setType(Shop.TYPE_CART);
-                            shop.setImage_url(outfile);
-                            shop.setName(result);
-                            shop.setContent(Title);
-                            shop.setTimme(getDate());
-                            LoveDao.insertLove(shop);
+                            LogUtil.i("ss", outfile);
+                            if (outfile.length()!=0){
+                                //设置系统时间为文件名
+                                Shop shop = new Shop();
+                                shop.setType(Shop.TYPE_CART);
+                                shop.setImage_url(outfile);
+                                shop.setName(result);
+                                shop.setContent(Title);
+                                shop.setTimme(getDate());
+                                LoveDao.insertLove(shop);
+
+                                ToastUtils.showShortToast("已保存");
+                            }else {
+
+                                ToastUtils.showShortToast("下载失败");
+                            }
                             Dates.disDialog();
-                            ToastUtils.showShortToast("已保存");
                         }
                     });
                     break;
@@ -179,6 +185,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 care();
                 path = paths.get(pagerFragment.getViewPager().getCurrentItem());
+                LogUtil.i("ssss", path);
                 //根据'/'切割地址，
                 String[] strs = path.split("/");
                 //拿到图片名称
@@ -190,10 +197,8 @@ public class PhotoPagerActivity extends AppCompatActivity {
                     ToastUtils.showShortToast("已下载该图片过");
                 } else {
                     if (path != null) {
-                        Dates.getDialogs(PhotoPagerActivity.this,"保存图片中...");
+                        Dates.getDialogs(PhotoPagerActivity.this, "保存图片中...");
                         asyncGet(path);
-                    } else {
-
                     }
                 }
             }
@@ -207,6 +212,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         }
         return true;
     }
+
     //返回
     @Override
     public void onBackPressed() {
@@ -220,7 +226,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-           onBackPressed();
+            onBackPressed();
             return true;
         }
         if (item.getItemId() == R.id.delete) {
@@ -262,7 +268,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //下载成功 在handler中保存数据
-
                 Message message = new Message();
                 message.what = 1;
                 message.obj = response.body().bytes();

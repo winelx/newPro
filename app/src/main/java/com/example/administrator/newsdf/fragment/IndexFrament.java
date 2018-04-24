@@ -71,7 +71,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         if (parent != null) {
             parent.removeView(rootView);
         }
-        //推送
+        //Mianactivity接收极光推送的接口回调
         JPushCallUtils.setCallBack(this);
         //第一次初始化首页默认显示第一个fragment
         initFragment2();
@@ -82,11 +82,11 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
     @Override
     public void onStart() {
         super.onStart();
-        List<Shop> list= LoveDao.JPushCart();
+        List<Shop> list = LoveDao.JPushCart();
         if (list.size() > 0) {
 
             pointRed.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             pointRed.setVisibility(View.GONE);
         }
     }
@@ -130,6 +130,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         //提交事务
         transaction.commit();
     }
+
     //时间点击
     @Override
     public void onClick(View v) {
@@ -146,6 +147,5 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         Message message = new Message();
         message.what = 1;
         handler.sendMessage(message);
-
     }
 }

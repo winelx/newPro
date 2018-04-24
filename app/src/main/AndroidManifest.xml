@@ -2,12 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.newsdf">
-
     <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位 -->
@@ -15,15 +13,9 @@
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 网络 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <!-- //文件可读 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- //文件可写 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
@@ -37,9 +29,9 @@
     <!-- SD卡读取权限，用户写入离线定位数据 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 拨号权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
 
     <application
         android:name=".baseApplication"
@@ -50,7 +42,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
-
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="24864634" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="a1e09a81cc65c6baba87901c7829bae6" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCF6vs3kySLH3GuNfsiaSLD314ADFYVVBC6lNsqVLhuoAaxWIfCSUlCzwaXUZj0XwhrYlOZeAliU9vPu8K13xH/C552qYxPjWGRktrnCgcJMPEbZPDqElisPhaIx+qXtKlT2NY7S5OVvJQTZM+rcu2a8P/JgGZMc4BLyqrh70iUZZPcwJE7IKa1tSJ1a95AZEPogb5vLmh8LhLuF92wpx0Mpf8RXjRFTEUajAG0D2D69qLJKBlkctZbfC35W+DDTZF9luvP+Yzkx8RuWtH9j/2v3k+bdlJ9pGEQYbvzMwcpZGNu3zZe5U9FONr/S+pNDcLkaeqgEW5RJWyOZP7QvhBdAgMBAAECggEAIYcrTkawp4Q/2fX54iugYJnT1v8/ridV6ODL3lVHt6qpAk2/74yZovhiFhB/0u7YFMqRU6MR9mQ4bFH99brbrpciHWNllaU4AFJcK+v+xvZR5yHmjzP4r2b8DVLAEStSGYP4XvAVCzAjgpeCxtIHWvtrju9urUVdoZwkHFzkNwK5dMqChDoJcjHCdGQebfkTNtveFuxxkDE0VMFF1JmvFIl4KH966pN2D/P9IWEkhdrczXEQI74T8j3W64aaTOF26hIreBOS/+5wE8EcAiiNetiV8VOGE8Sxds1ggILP79H8SAUtkmOGA2CuGHdEn8QGn30oqMzHq7R8rNpna0yQoQKBgQDa+coWfmlwGjzSYtPX4+Gs9l+40NmpBRbYS6tIgdSjxLYZls0Y4xxVHDyzQaOBsk1LchxJ4nLRUtnsJMWi2kU/6jfvTVxHrgPRABYE1udAoQ0+ZiJOh5YNLjIHgEJoHvWyo2+KQ3tTPSb6qwE3/0lWquHKxsaS6c9e7bifXmZf5wKBgQCcj4XnuOZuNbGn+QdRWAZA0rF8BsN0ANiAEIzeu7+Rpep0vPmmhckUAyVJ3qowTkmwlF1amp3rERfxDWrW4bv/BDBX12FPZOzkC0Ut9UkCZzenlUoqCpuJ/+kxrG3OTi2YzGl4EKmijgTfUBbRZfi/DGnqlW6MIx8AwCRBZswVGwKBgQDLpj+yB8LbhStHpq3KPJ8nksKXSXUEYj1Kz6TufABchpes2LjKCn3REb/KHqOH/WExZ2Czvix2TI1rtw8vU7vPo2592f6Wk1ntSB0yRwMu8hk1DRue2S5N98aDf19DInfyuVkEx5msYlUcD2nEwGFefvIa+h63h0day89GOC8RxQKBgHIB4dT4RHUFDLXxFm8Z1pPl2fEjS7lx1DaN1sdrmPkLBUy1QGcPDXpRQBom13AN0oOPxttvtIe1DuYuixqnjysJddrBsM8MA6Wcv2fUMrJZT6HtiPBMgS9g+AOAOQX+0B1w3WzdVWpWWR31SGh8BUO6WnbFEpdiC/WT9dLadMr5AoGAZXgbCid9WQONVxrTJU9LbMpAdjudaafl7sijo3vsfa1pPW408y6hQoT51MpC++nVX/++8Wuw3I76+hVJ8Kbu/H7xDUC6XO8k2glOyc03bRsFSJgryxBSLSDzzTBwpFlyuZMxFe+sTiT14QHH3p24QZCvjp6rqpDRAWGfQ3AOLEY="/>
         <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
@@ -85,7 +85,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.work.BrightspotActivity" />
         <activity
             android:name=".activity.mine.SettingActivity"
             android:screenOrientation="portrait" />
@@ -164,8 +163,8 @@
         <activity
             android:name=".activity.home.same.DirectlyreplyActivity"
             android:screenOrientation="portrait" />
-        //直接回复
-        //图片预览界面
+        <!--//直接回复-->
+        <!--//图片预览界面-->
         <activity
             android:name=".photopicker.PhotoPagerActivity"
             android:screenOrientation="portrait"

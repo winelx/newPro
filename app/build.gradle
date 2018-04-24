@@ -22,8 +22,8 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
+                //极光推送
                 JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
-                //      JPUSH_APPKEY : "15da678acd3913ae41770d50",
                 JPUSH_CHANNEL: "developer-default",
         ]
 
@@ -57,8 +57,8 @@ android {
             minifyEnabled false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
-         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
-        //    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //optimize 默认优化就是这两个文件的区别
         }
 
@@ -82,8 +82,8 @@ dependencies {
     //权限
     //网络框架
     //卡片布局
-    //    //图片预览
-    //    compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
+    //图片预览
+    //compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
     //数据库
     //volley，用其中的图片控件，防止图片错位
     //刷新/上拉加载框架，两个相互使用
@@ -112,5 +112,7 @@ dependencies {
     compile 'com.zxy.android:tiny:0.0.6'
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
+    //阿里热修复
+    compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.2'
     testCompile 'junit:junit:4.12'
 }

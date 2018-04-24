@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 @Override
                 public void onClick(View v) {
                     photoPaths.remove(position);
+                    Dates.deleteFile(photoPaths.get(position));
                     notifyDataSetChanged();
                 }
             });

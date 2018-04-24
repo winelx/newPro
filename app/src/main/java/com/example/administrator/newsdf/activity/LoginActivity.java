@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.forget_password:
-                Toast.makeText(this, "请联系管理员", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请联系管理员11", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(password.getText().toString()) &&
@@ -223,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showLongToast("网络无法连接到internet");
+                        ToastUtils.showLongToast("请确认网络是否通畅");
                     }
                 });
 

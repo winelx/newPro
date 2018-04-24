@@ -7,13 +7,14 @@ package com.example.administrator.newsdf.utils;
  */
 public class Request {
     //公共头  192.168.20.38
-   public static final String networks = "http://192.168.1.119:9090/pzgc/";
-    // public static final String networks = "http://117.187.27.78:8081/baseframe/";
-    //   public static final String networks = "http://120.79.142.15/pzgc/";
+
+    //  public static final String networks = "http://192.168.20.26:8090/pzgc/";
+   public static final String networks = "http://192.168.1.119:8081/pzgc/";
+   //public static final String networks = "http://117.187.27.78:8081/baseframe/";
+//public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 用户登陆
      */
-
     public static final String Login = networks + "admin/login";
     /**
      * 项目成员
@@ -22,31 +23,22 @@ public class Request {
     /**
      * 修改密码
      */
-
-
     public static final String AlterPwd = networks + "iface/mobile/user/alterPwd";
     /**
      * 消息首页
      */
-
-
     public static final String TaskMain = networks + "iface/mobile/taskmsg/findWbsTaskMsgByOrg";
     /**
      * wbs树
      */
-
-
     public static final String WBSTress = networks + "iface/mobile/taskmain/findWbsTree";
     /**
      * wbsid查询任务维护列表
      */
-
-
     public static final String Mission = networks + "iface/mobile/taskmain/findTaskMainList";
     /**
      * 退出登录
      */
-
 
     public static final String BackTo = networks + "iface/mobile/logout";
     /**
@@ -144,8 +136,8 @@ public class Request {
     /**
      * 查询联系人
      */
-
     public static final String UserList = networks + "iface/mobile/user/getStaffList";
+
     /**
      * 版本更新
      */

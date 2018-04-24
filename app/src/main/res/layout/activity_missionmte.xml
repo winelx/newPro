@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@+id/toolbar"
+                android:background="@color/writer"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TabLayout
@@ -87,9 +88,9 @@
                 <RelativeLayout
                     android:id="@+id/tabulation"
                     android:layout_width="0dp"
-                    android:background="@color/writer"
                     android:layout_height="40dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:background="@color/writer">
 
                     <ImageView
                         android:layout_width="25dp"
@@ -105,10 +106,10 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_pager"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/tab_lin" />
+                android:layout_below="@+id/tab_lin"
+                android:layout_marginTop="10dp" />
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -145,7 +146,7 @@
                     android:id="@+id/drawer_layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:divider="@color/textViwe"
+                    android:divider="@color/back"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />
 

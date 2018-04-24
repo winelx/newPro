@@ -9,9 +9,10 @@
     <TextView
         android:id="@+id/pop_task_item"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
         android:gravity="center_vertical"
+        android:minHeight="45dp"
         android:text="dddd" />
 </LinearLayout>

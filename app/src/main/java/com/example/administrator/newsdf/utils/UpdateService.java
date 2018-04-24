@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.administrator.newsdf.camera.ToastUtils;
 
@@ -96,11 +95,9 @@ public class UpdateService extends Service {
             if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 //获取下载的文件id
                 long downId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                Log.d("kodulf", "id=" + downId);
                 //自动安装apk
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     Uri uriForDownloadedFile = manager.getUriForDownloadedFile(downId);
-                    Log.d("kodulf", "uri=" + uriForDownloadedFile);
                     installApkNew(uriForDownloadedFile);
                 }
                 //停止服务并关闭广播
@@ -110,6 +107,7 @@ public class UpdateService extends Service {
 
         //安装apk
         protected void installApkNew(Uri uri) {
+            LogUtil.i("path",uri);
             Intent intent = new Intent();
             //执行动作
             intent.setAction(Intent.ACTION_VIEW);

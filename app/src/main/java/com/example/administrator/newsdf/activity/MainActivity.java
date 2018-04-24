@@ -2,11 +2,11 @@ package com.example.administrator.newsdf.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
@@ -23,15 +23,14 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
+import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
-import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.utils.UpdateService;
 import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -94,30 +93,26 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-    }
-
-    StackTraceElement Stack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
-        setupWindowAnimations();
+
         mContext = this;
         dates = new Dates();
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
-        //设置极光别名Alia
+        //设置极光推送别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
 
             }
         });
+        //屏幕宽度
         width = Utils.getScreenWidth(mContext) / 3;
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
@@ -190,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                     //版本号
                                     String versions = json.getString("version");
                                     //更新地址
-                                    String filePath = json.getString("filePath");
+                                    String filePath = json.getString("downloadUrl");
                                     int lenght = version.compareTo(versions);
                                     if (lenght < 0) {
                                         //提示框
@@ -286,28 +281,27 @@ public class MainActivity extends AppCompatActivity {
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                Intent intent = new Intent(MainActivity.this, UpdateService.class);
-                intent.putExtra("data", path);
-                mContext.startService(intent);
                 selfDialog.dismiss();
             }
         });
-
         selfDialog.setNoOnclickListener("更新", new WbsDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {
-                Intent intent = new Intent(MainActivity.this, UpdateService.class);
-                intent.putExtra("data", path);
-                mContext.startService(intent);
-                selfDialog.dismiss();
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(path);
+                intent.setData(content_url);
+                startActivity(intent);
                 selfDialog.dismiss();
             }
         });
         selfDialog.show();
     }
 
+    //在接受推送消息的广播出调用该方法（service/PushReceiver）
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
+        //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
     }
 

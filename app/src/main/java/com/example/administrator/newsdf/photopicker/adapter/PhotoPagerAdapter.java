@@ -53,11 +53,12 @@ public class PhotoPagerAdapter extends PagerAdapter {
             final RequestOptions options = new RequestOptions();
             options.dontAnimate()
                     .dontTransform()
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                     .error(R.drawable.image_error);
-            mGlide.setDefaultRequestOptions(options).load(path)
-                    .thumbnail(0.1f)
+            mGlide.setDefaultRequestOptions(options)
+                    .load(path)
+                    .thumbnail(0.7f)
                     .into(imageView);
         }
         imageView.setOnClickListener(new View.OnClickListener() {

@@ -22,14 +22,16 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * description: 极光推送数据接收
+ *
  * @author lx
- * date: 2018/3/26 0026 下午 1:30
- * update: 2018/3/26 0026
- * version:
+ *         date: 2018/3/26 0026 下午 1:30
+ *         update: 2018/3/26 0026
+ *         version:
  */
 public class PushReceiver extends BroadcastReceiver {
 
-    Dates dates =new Dates();
+    Dates dates = new Dates();
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -49,18 +51,21 @@ public class PushReceiver extends BroadcastReceiver {
         if (pushAction.equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {
             //处理接收到的信息
             dates.addPut();
-            context=MainActivity.getInstance();
+            context = MainActivity.getInstance();
+            //保存推送消息，
             try {
                 List<Shop> list = LoveDao.JPushCart();
+                //如果还有未读消息，就不往数据库加数据
                 if (list.size() == 0) {
                     Shop shop = new Shop();
                     shop.setType(Shop.TYPE_JPUSH);
                     shop.setName("消息");
                     LoveDao.insertLove(shop);
                 }
+                //调用方法，让Mainactivityu 显示小红点
                 MainActivity activity = (MainActivity) context;
                 activity.getRedPoint();
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
             onReceivedMessage(bundle);

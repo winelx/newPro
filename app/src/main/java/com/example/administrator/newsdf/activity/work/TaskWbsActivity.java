@@ -66,6 +66,7 @@ public class TaskWbsActivity extends Activity {
         setContentView(R.layout.activity_wbs);
         Intent intent = getIntent();
         wbsID = intent.getStringExtra("WbsID");
+        LogUtil.i("WbsID",wbsID);
         wbsname = intent.getExtras().getString("wbsname");
         type = intent.getExtras().getString("type");
         isParent = intent.getExtras().getBoolean("isParent");

@@ -134,7 +134,7 @@ public class NewpushActivity extends AppCompatActivity {
                 } else {
                     reply_button.setEnabled(false);
                     Dates.getDialog(NewpushActivity.this, "推送中");
-                    if (staus == false) {
+                    if (!staus) {
                         okgo();
                         staus = true;
                     }

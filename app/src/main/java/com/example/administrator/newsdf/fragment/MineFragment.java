@@ -107,7 +107,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         dates = new Dates();
         version = AppUtils.getVersionName(getActivity());
         ititData();
-         upload();
+        upload();
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
@@ -266,7 +266,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                                     if (lenght < 0) {
                                         ToastUtils.showShortToast("有新版本需要更新");
                                         mine_uploading.setVisibility(View.VISIBLE);
-                                        show(filePath);
+//                                        show(filePath);
                                     }
                                 }
                             } catch (JSONException e) {
@@ -286,10 +286,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                //这个是使直接下载
-//                intent = new Intent(getActivity(), UpdateService.class);
-//                intent.putExtra("data", path);
-//                mContext.startService(intent);
                 //这个是跳转网页下载
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
