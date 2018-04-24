@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.forget_password:
-                Toast.makeText(this, "请联系管理员", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请联系管理员11", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(password.getText().toString()) &&
@@ -107,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss",s);
                         login(user, passowd);
                     }
                     //这个错误是网络级错误，不是请求失败的错误
