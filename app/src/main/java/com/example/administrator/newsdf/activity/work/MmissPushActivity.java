@@ -350,7 +350,6 @@ public class MmissPushActivity extends AppCompatActivity {
                                 intent.putExtra("titles", "任务下发");
                                 //当前节点名称
                                 intent.putExtra("wbsname", wbsname);
-                                ToastUtils.showLongToast(wbsname);
                                 //当前节点ID
                                 intent.putExtra("id", str);
                                 //当前节点路径

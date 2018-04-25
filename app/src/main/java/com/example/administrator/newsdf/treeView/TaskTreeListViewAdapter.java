@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.LightfaceActivity;
+import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Request;
@@ -121,8 +123,23 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             TaskWbsActivity activity= (TaskWbsActivity) mContext;
-                activity.switchAct(node);
+                switch (status) {
+                    case "mine":
+                        LightfaceActivity lightface = (LightfaceActivity) mContext;
+                        lightface.switchAct(node);
+                        break;
+                    case "all":
+                        ListreadActivity listreadActivity = (ListreadActivity) mContext;
+                        listreadActivity.switchAct(node);
+                        break;
+                    case "task":
+                        TaskWbsActivity taskWbsActivity = (TaskWbsActivity) mContext;
+                        taskWbsActivity.switchAct(node);
+                        break;
+                    default:
+
+                        break;
+                }
             }
         });
         return convertView;

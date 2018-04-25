@@ -364,7 +364,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             ToastUtils.showShortToast("不可改变当前状态");
                         } else {
                             if (status == "3") {
-                                ToastUtils.showShortToast("已经处于当前状态");
+                                ToastUtils.showShortToast("不能直接变更到此状态");
                             } else {
                                 okgo1("3");
                             }

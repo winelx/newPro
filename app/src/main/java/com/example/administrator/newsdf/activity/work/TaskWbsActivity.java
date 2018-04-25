@@ -320,6 +320,7 @@ public class TaskWbsActivity extends Activity {
                 mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
+                mTreeAdapter.getStatus("task");
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

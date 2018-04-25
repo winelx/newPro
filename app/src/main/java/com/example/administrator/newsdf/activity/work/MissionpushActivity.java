@@ -379,7 +379,7 @@ public class MissionpushActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             } else {
-                                ToastUtils.showShortToast(msg);
+                                ToastUtils.showShortToastCenter(msg);
                             }
                             dialog.dismiss();
                         } catch (JSONException e) {

@@ -53,4 +53,23 @@ public class ToastUtils {
             toast.show();
         }
     }
+    /**
+     * 显示短时间Toast
+     *
+     * @param message 消息
+     */
+    public static void showShortToastCenter(String message) {
+        if (baseApplication.getInstance() == null)
+            return;
+        if (toast == null) {
+            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 100);
+            toast.show();
+        } else {
+            toast.setGravity(Gravity.CENTER, 0, 100);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.setText(message);
+            toast.show();
+        }
+    }
 }
