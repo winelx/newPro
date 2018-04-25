@@ -66,7 +66,7 @@ import okhttp3.Response;
 public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress;
-    String wbsId, userID, status, wbsName, wbspath;
+    String wbsId, userID, status, wbsName, wbspath, type;
 
     ArrayList<Audio> mData;
     private PopupWindow popupWindow;
@@ -83,11 +83,10 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private ListView drawer_layout_list;
     private TaskPhotoAdapter taskAdapter;
     private int page = 1;
-    private boolean drew = true;
-    private ArrayList<String> titlename;
+    private boolean drew = true, iswbs, isParent;
+    private ArrayList<String> titlename=new ArrayList<>();
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
-    EditText search;
 
     public NodedetailsActivity() {
     }
@@ -101,9 +100,13 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         //节点ID
+        iswbs = intent.getExtras().getBoolean("iswbs");
+        isParent = intent.getExtras().getBoolean("isParent");
+        type = intent.getExtras().getString("type");
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
-        wbspath = intent.getExtras().getString("Name");
+
+        wbspath = intent.getExtras().getString("wbspath");
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
@@ -544,7 +547,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                titlename = new ArrayList<>();
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
                                     try {
@@ -563,12 +565,23 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     titlename.add(name);
                                 }
                                 Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
+                                //当前节点下任务项ID
                                 intent.putExtra("ids", ids);
+                                //当前节点任务项名
                                 intent.putExtra("title", titlename);
-                                intent.putExtra("titles", "任务配置");
-                                intent.putExtra("wbsPath", wbspath);
+                                intent.putExtra("titles", "任务下发");
+                                //当前节点名称
+                                intent.putExtra("wbsname", wbspath);
+                                //当前节点ID
                                 intent.putExtra("id", str);
-                                intent.putExtra("wbsnam", wbsname);
+                                //当前节点路径
+                                intent.putExtra("wbsPath", wbsname);
+                                //当前节点类型
+                                intent.putExtra("type", type);
+                                //当前节点是否是父节点
+                                intent.putExtra("isParent", isParent);
+                                //当前节点是否是wbs
+                                intent.putExtra("iswbs", iswbs);
                                 startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -577,11 +590,23 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                         } else {
                             ToastUtils.showShortToast("该节点未启动");
                             Intent intent = new Intent(NodedetailsActivity.this, MissionpushActivity.class);
+                            //当前节点下任务项ID
                             intent.putExtra("ids", ids);
-                            intent.putExtra("title", titles);
+                            //当前节点任务项名
+                            intent.putExtra("title", titlename);
+                            intent.putExtra("titles", "任务下发");
+                            //当前节点名称
+                            intent.putExtra("wbsPath", wbsname);
+                            //当前节点ID
                             intent.putExtra("id", str);
-                            intent.putExtra("wbsnam", wbsname);
-                            intent.putExtra("titles", "任务配置");
+                            //当前节点路径
+                            intent.putExtra("wbsname", wbspath);
+                            //当前节点类型
+                            intent.putExtra("type", type);
+                            //当前节点是否是父节点
+                            intent.putExtra("isParent", isParent);
+                            //当前节点是否是wbs
+                            intent.putExtra("iswbs", iswbs);
                             startActivity(intent);
                             Dates.disDialog();
                         }

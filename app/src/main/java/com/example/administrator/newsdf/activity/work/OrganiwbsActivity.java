@@ -236,7 +236,7 @@ public class OrganiwbsActivity extends Activity {
         }
     }
 
-    void getOko(final String str, final String title, final boolean isParent, final String wbsname, final boolean iswbs, final String type) {
+    void getOko(final String str, final String wbspath, final boolean isParent, final String wbsname, final boolean iswbs, final String type) {
         LogUtil.i("wbsID",str);
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
@@ -273,7 +273,7 @@ public class OrganiwbsActivity extends Activity {
                                 //节点ID
                                 intent.putExtra("id", str);
                                 //节点路径
-                                intent.putExtra("wbspath", title);
+                                intent.putExtra("wbspath", wbspath);
                                 //是否是父节点
                                 intent.putExtra("isParent",isParent );
                                 intent.putExtra("wbsname",wbsname );
@@ -296,7 +296,7 @@ public class OrganiwbsActivity extends Activity {
                             //节点ID
                             intent.putExtra("id", str);
                             //节点路径
-                            intent.putExtra("wbspath", title);
+                            intent.putExtra("wbspath", wbspath);
                             //是否是父节点
                             intent.putExtra("isParent",isParent);
                             intent.putExtra("wbsname",wbsname );

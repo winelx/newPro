@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject json = jsonObject.getJSONObject("data");
                                     //版本号
                                     String versions = json.getString("version");
+                                    LogUtil.i("sss",versions);
                                     //更新地址
                                     String filePath = json.getString("downloadUrl");
                                     int lenght = version.compareTo(versions);

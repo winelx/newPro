@@ -50,8 +50,8 @@ public class MmissPushActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<String> ids = new ArrayList<>();
-    private ArrayList<String> titlename;
-    private ArrayList<String> titles = new ArrayList<>();
+    private ArrayList<String> titlename = new ArrayList<>();
+
     private ListView mTree;
     private PushListviewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;
@@ -163,7 +163,6 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 解析SoapObject对象
      *
@@ -171,7 +170,7 @@ public class MmissPushActivity extends AppCompatActivity {
      */
     private void addOrganizationList(String result) {
         if (result.contains("data")) {
-            addOrganizationList =TreeUtlis.parseOrganizationList(result);
+            addOrganizationList = TreeUtlis.parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
                     LogUtil.i("addPosition", addPosition + "");
@@ -250,7 +249,7 @@ public class MmissPushActivity extends AppCompatActivity {
         if (node.iswbs()) {
             switch (org_status) {
                 case "push":
-                    getOko(node.getId(), node.getTitle(), node.getName());
+                    getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
                     break;
                 case "Photo":
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);
@@ -294,7 +293,14 @@ public class MmissPushActivity extends AppCompatActivity {
                     details.putExtra("wbsId", node.getId());
                     //节点名称
                     details.putExtra("Name", node.getName());
+
                     details.putExtra("wbsName", node.getTitle());
+
+                    details.putExtra("wbspath", node.getName());
+                    details.putExtra("type", node.getType());
+                    details.putExtra("iswbs", node.iswbs());
+                    details.putExtra("isParent", node.isperent());
+
                     startActivity(details);
                     break;
                 default:
@@ -307,7 +313,7 @@ public class MmissPushActivity extends AppCompatActivity {
 
     String name, id;
 
-    void getOko(final String str, final String wbsname, final String wbspath) {
+    void getOko(final String str, final String wbspath, final String wbsname, final String type, final boolean isParent, final boolean iswbs) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
         OkGo.post(Request.PUSHList)
                 .params("wbsId", str)
@@ -318,7 +324,7 @@ public class MmissPushActivity extends AppCompatActivity {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                titlename = new ArrayList<>();
+
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
                                     try {
@@ -337,12 +343,24 @@ public class MmissPushActivity extends AppCompatActivity {
                                     titlename.add(name);
                                 }
                                 Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);
+                                //当前节点下任务项ID
                                 intent.putExtra("ids", ids);
+                                //当前节点任务项名
                                 intent.putExtra("title", titlename);
                                 intent.putExtra("titles", "任务下发");
-                                intent.putExtra("wbsPath", wbspath);
+                                //当前节点名称
+                                intent.putExtra("wbsname", wbsname);
+                                ToastUtils.showLongToast(wbsname);
+                                //当前节点ID
                                 intent.putExtra("id", str);
-                                intent.putExtra("wbsnam", wbsname);
+                                //当前节点路径
+                                intent.putExtra("wbsPath", wbspath);
+                                //当前节点类型
+                                intent.putExtra("type", type);
+                                //当前节点是否是父节点
+                                intent.putExtra("isParent", isParent);
+                                //当前节点是否是wbs
+                                intent.putExtra("iswbs", iswbs);
                                 startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -351,11 +369,23 @@ public class MmissPushActivity extends AppCompatActivity {
                         } else {
                             ToastUtils.showShortToast("该节点未启动");
                             Intent intent = new Intent(MmissPushActivity.this, MissionpushActivity.class);
+                            //当前节点下任务项ID
                             intent.putExtra("ids", ids);
-                            intent.putExtra("title", titles);
-                            intent.putExtra("id", str);
-                            intent.putExtra("wbsnam", wbsname);
+                            //当前节点任务项名
+                            intent.putExtra("title", titlename);
                             intent.putExtra("titles", "任务下发");
+                            //当前节点名称
+                            intent.putExtra("wbsname", wbsname);
+                            //当前节点ID
+                            intent.putExtra("id", str);
+                            //当前节点路径
+                            intent.putExtra("wbsPath", wbspath);
+                            //当前节点类型
+                            intent.putExtra("type", type);
+                            //当前节点是否是父节点
+                            intent.putExtra("isParent", isParent);
+                            //当前节点是否是wbs
+                            intent.putExtra("iswbs", iswbs);
                             startActivity(intent);
                             Dates.disDialog();
                         }

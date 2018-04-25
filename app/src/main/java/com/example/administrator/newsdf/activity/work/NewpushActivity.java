@@ -15,10 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -54,7 +55,7 @@ public class NewpushActivity extends AppCompatActivity {
     private IconTextView back;
     private LinearLayout newpush_wbs, newpush_user, newpush_name;
     private EditText newpush_check, push_content;
-    private String Wbsid, wbsname, userid,wbsPath;
+    private String Wbsid, wbsname, userid, wbsPath,id;
     private Context mContent;
     boolean staus = false;
     private int page = 1;
@@ -66,6 +67,8 @@ public class NewpushActivity extends AppCompatActivity {
     private SmartRefreshLayout drawerLayoutSmart;
     private ListView drawerLayoutList;
     private boolean drew = false;
+    String type, wbspath;
+    boolean isParent, iswbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +104,18 @@ public class NewpushActivity extends AppCompatActivity {
         reply_button.setText("推送");
         Intent intent = getIntent();
         //上个界面传递过来的数据
+        isParent = intent.getExtras().getBoolean("isParent");
+        iswbs = intent.getExtras().getBoolean("iswbs");
+        type = intent.getExtras().getString("type");
+        wbspath = intent.getExtras().getString("wbspath");
         //wbsID
         Wbsid = intent.getExtras().getString("wbsID");
+        id = intent.getExtras().getString("wbsID");
         //wbs名称
         wbsname = intent.getExtras().getString("wbsname");
         //wbs路径
-        wbsPath= intent.getExtras().getString("wbsPath");
-        wbs_text.setText(wbsname);
+        wbsPath = intent.getExtras().getString("wbsPath");
+        wbs_text.setText(wbspath);
         //返回键
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +127,13 @@ public class NewpushActivity extends AppCompatActivity {
         newpush_wbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewpushActivity.this, MmissPushActivity.class);
-                intent.putExtra("data", "newpush");
+                Intent intent = new Intent(NewpushActivity.this, TaskWbsActivity.class);
+                intent.putExtra("wbsname", wbsname);
+                intent.putExtra("wbspath", wbspath);
+                intent.putExtra("wbsID", Wbsid);
+                intent.putExtra("type", type);
+                intent.putExtra("isParent", isParent);
+                intent.putExtra("iswbs", iswbs);
                 startActivityForResult(intent, 1);
             }
         });
@@ -158,7 +171,6 @@ public class NewpushActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 drawerLayout.openDrawer(GravityCompat.START);
                 page = 1;
                 drew = true;
@@ -186,10 +198,9 @@ public class NewpushActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //判断是不是Activity的返回，不是就是相机的返回
-        if (requestCode == 1 && resultCode == 1) {
-            Wbsid = data.getStringExtra("wbsId");
-            wbsname = data.getStringExtra("title");
-            wbs_text.setText(wbsname);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            id = data.getStringExtra("id");
+            wbs_text.setText(data.getStringExtra("titles"));
             page = 1;
             photoAdm(Wbsid);
         } else if (requestCode == 1 && resultCode == 2) {
@@ -201,7 +212,7 @@ public class NewpushActivity extends AppCompatActivity {
 
     void okgo() {
         OkGo.post(Request.newPush)
-                .params("wbsId", Wbsid)
+                .params("wbsId", id)
                 .params("leaderId", userid)
                 .params("label", newpush_check.getText().toString())
                 .params("content", push_content.getText().toString())
@@ -241,7 +252,7 @@ public class NewpushActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             if (drew) {
                                 imagePaths.clear();
                             }
@@ -259,7 +270,7 @@ public class NewpushActivity extends AppCompatActivity {
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //    wbspathl
-                                taskAdapter.getData(imagePaths,wbsname);
+                                taskAdapter.getData(imagePaths, wbsname);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -268,7 +279,7 @@ public class NewpushActivity extends AppCompatActivity {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(null, "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
                             }
-                            taskAdapter.getData(imagePaths,wbsname);
+                            taskAdapter.getData(imagePaths, wbsname);
                         }
 
                     }

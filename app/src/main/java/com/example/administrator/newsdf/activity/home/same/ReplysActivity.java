@@ -39,7 +39,7 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.homeUtils;
-import com.example.administrator.newsdf.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -48,6 +48,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -99,7 +100,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<String> pathimg, ids;
     private CheckPermission checkPermission;
     private LinearLayout lin_sdfg;
-    private String content = "", wbsname = "", wbsID = "", id = "", wbstitle = "";
+    private String content = "", wbspath = "", wbsID = "", id = "", wbstitle = "";
     boolean status = false;
     int position;
     private int page = 1;
@@ -114,7 +115,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String titles, type;
+    private String titles, type, wbsname;
     ProgressDialog dialog;
     private boolean isParent, iswbs;
 
@@ -154,7 +155,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //输入内容
             content = intent.getExtras().getString("content");
             //wbs路径
-            wbsname = intent.getExtras().getString("wbsname");
+            wbspath = intent.getExtras().getString("wbspath");
             wbstitle = intent.getExtras().getString("wbstitle");
             //检查点
             check = intent.getStringArrayListExtra("list");
@@ -167,6 +168,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             ids = intent.getExtras().getStringArrayList("ids");
             iswbs = intent.getExtras().getBoolean("iswbs");
             type = intent.getExtras().getString("type");
+            wbsname = intent.getExtras().getString("wbsname");
             //
             isParent = intent.getExtras().getBoolean("isParent");
             //图片字符串
@@ -186,7 +188,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
             title.setText("我很主动");
         }
-        wbsText.setText(wbsname);
+        wbsText.setText(wbspath);
         replyText.setText(content);
         baoxun.setVisibility(View.VISIBLE);
         baoxun.setImageResource(R.mipmap.reply_baocun);
@@ -479,9 +481,13 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             //选择wbs结构
             case R.id.reply_wbs:
-                Intent intent = new Intent(ReplysActivity.this, MmissPushActivity.class);
-                intent.putExtra("data", "reply");
+                Intent intent = new Intent(ReplysActivity.this, TaskWbsActivity.class);
+                intent.putExtra("wbsname", wbstitle);
+                intent.putExtra("wbspath", wbspath);
                 intent.putExtra("wbsID", wbsID);
+                intent.putExtra("type", type);
+                intent.putExtra("isParent", isParent);
+                intent.putExtra("iswbs", iswbs);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
@@ -508,9 +514,10 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         //判断是不是Activity的返回，不是就是相机的返回
         if (requestCode == 1 && resultCode == RESULT_OK) {
             //返回wbs
-            wbsID = data.getStringExtra("position");
-            Title = data.getStringExtra("title");
-            wbsText.setText(Title);
+            id = data.getStringExtra("id");
+            LogUtil.i("result", data.getStringExtra("id"));
+            wbsText.setText(data.getStringExtra("titles"));
+            LogUtil.i("result", data.getStringExtra("titles"));
             //请求图片页数
             page = 1;
             //清除选择项ID

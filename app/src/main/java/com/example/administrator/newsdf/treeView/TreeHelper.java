@@ -144,12 +144,9 @@ public class TreeHelper {
         List<Node> nodes = convertDatas2Nodes(datas);
         // 获得树的根结点
         List<Node> rootNodes = getRootNodes(nodes);
-
         for (Node node : rootNodes) {
             addNode(result, node, defaultExpandLevel, 1);
         }
-
-        Log.e("TAG", result.size() + "");
         return result;
     }
 

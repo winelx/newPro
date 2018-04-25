@@ -56,7 +56,7 @@ public class TaskWbsActivity extends Activity {
     private int addPosition;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    String wbsname, wbsID, type;
+    String wbsname, wbsID, type,wbspath;
     private boolean isParent, iswbs;
 
     @Override
@@ -65,12 +65,13 @@ public class TaskWbsActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
         Intent intent = getIntent();
-        wbsID = intent.getStringExtra("WbsID");
-        LogUtil.i("WbsID",wbsID);
+        wbsID = intent.getStringExtra("wbsID");
         wbsname = intent.getExtras().getString("wbsname");
+        wbspath = intent.getExtras().getString("wbspath");
         type = intent.getExtras().getString("type");
         isParent = intent.getExtras().getBoolean("isParent");
         iswbs = intent.getExtras().getBoolean("iswbs");
+
         mContext = TaskWbsActivity.this;
         refreshLayout = findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -104,7 +105,7 @@ public class TaskWbsActivity extends Activity {
         OrganizationEntity bean = new OrganizationEntity(wbsID, "",
                 wbsname, "0", iswbs,
                 isParent, type, "",
-                "", "", wbsname, "", true);
+                "", "", wbspath, "", true);
         organizationList.add(bean);
         getOrganization(organizationList);
 
@@ -114,9 +115,9 @@ public class TaskWbsActivity extends Activity {
     private void okgo() {
         OkGo.post(Request.WBSTress)
                 .params("nodeid", wbsID)
-                .params("iswbs", false)
+                .params("iswbs", iswbs)
                 .params("isparent", isParent)
-                .params("type", "3,5")
+                .params("type", type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -137,7 +138,6 @@ public class TaskWbsActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-                        LogUtil.i("dddd", result);
                         addOrganizationList(result);
                     }
 
@@ -359,9 +359,8 @@ public class TaskWbsActivity extends Activity {
         if (node.iswbs()) {
             Intent list = new Intent();
             list.putExtra("id", node.getId());
-            list.putExtra("title", node.getName());
             list.putExtra("titles", node.getTitle());
-            list.putExtra("iswbs", node.iswbs());
+            LogUtil.i("result", node.getTitle()+node.getName()+node);
             //回传数据到主Activity
             setResult(RESULT_OK, list);
             //此方法后才能返回主Activity

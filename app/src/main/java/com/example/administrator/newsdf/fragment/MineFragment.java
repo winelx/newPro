@@ -266,7 +266,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                                     if (lenght < 0) {
                                         ToastUtils.showShortToast("有新版本需要更新");
                                         mine_uploading.setVisibility(View.VISIBLE);
-//                                        show(filePath);
+                                      show(filePath);
                                     }
                                 }
                             } catch (JSONException e) {

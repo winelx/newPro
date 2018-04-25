@@ -126,18 +126,13 @@ public class TenanceviewActivity extends AppCompatActivity {
                 //节点名称
                 intent.putExtra("title", "我很主动");
                 //节点名称
-                intent.putExtra("wbsname", wbspath);
-                //检查点列表
-                intent.putStringArrayListExtra("list", titlename);
-                //检查点列表
-                intent.putStringArrayListExtra("ids", ids);
+                intent.putExtra("wbspath", wbspath);
                 //节点ID
                 intent.putExtra("id", id);
                 intent.putExtra("isParent", isParent);
                 intent.putExtra("wbstitle", wbsname);
                 intent.putExtra("iswbs", iswbs);
                 intent.putExtra("type", type);
-
                 startActivityForResult(intent, 1);
             }
         });

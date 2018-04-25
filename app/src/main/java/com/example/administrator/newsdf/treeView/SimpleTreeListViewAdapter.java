@@ -100,9 +100,11 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+
         if (str > 0) {
             holder.taskNum.setVisibility(View.VISIBLE);
         } else {
+            //如果任务消息数量小于0
             holder.taskNum.setVisibility(View.GONE);
         }
         holder.dialog_mine.setOnLongClickListener(new View.OnLongClickListener() {

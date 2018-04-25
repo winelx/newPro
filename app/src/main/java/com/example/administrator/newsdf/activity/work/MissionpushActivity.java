@@ -79,6 +79,9 @@ public class MissionpushActivity extends AppCompatActivity {
     private String titles;
     int pagss = 0;
     ProgressDialog dialog;
+    String type, wbspath, wbsId;
+    boolean isParent, iswbs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,8 @@ public class MissionpushActivity extends AppCompatActivity {
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
+        mViewPager = (ViewPager) findViewById(R.id.vp_pager);
         //侧滑栏关闭手势滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer_layout.setScrimColor(Color.TRANSPARENT);
@@ -108,9 +113,29 @@ public class MissionpushActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         try {
+            //标题
             titles = intent.getExtras().getString("titles");
+            //节点ID（重新选择wbs节点后会变）
             id = intent.getExtras().getString("id");
-            wbsname = intent.getExtras().getString("wbsnam");
+            //节点ID（不变，）
+            wbsId = intent.getExtras().getString("id");
+            //节点名
+            wbsname = intent.getExtras().getString("wbsname");
+            //节点路径
+            wbspath = intent.getExtras().getString("wbsPath");
+            //类型
+            type = intent.getExtras().getString("type");
+            //是否是父节点
+            isParent = intent.getExtras().getBoolean("isParent");
+            //是否是wbs
+            iswbs = intent.getExtras().getBoolean("iswbs");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            ids = intent.getExtras().getStringArrayList("ids");
+            titlename = intent.getExtras().getStringArrayList("title");
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -118,23 +143,12 @@ public class MissionpushActivity extends AppCompatActivity {
         title.setText(titles);
         taskAdapter = new TaskPhotoAdapter(imagePaths, MissionpushActivity.this);
         drawer_layout_list.setAdapter(taskAdapter);
-        mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
-        try {
-            ids = intent.getExtras().getStringArrayList("ids");
-            titlename = intent.getExtras().getStringArrayList("title");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
 
-        }
-        if (titlename.size() > 3) {
-            mTabLayout.setTabMode(0);
-        }
-        mViewPager = (ViewPager) findViewById(R.id.vp_pager);
         mViewPager.setOffscreenPageLimit(6);
         mAdapter = new PushAdapter(getSupportFragmentManager(), titlename);
         mViewPager.setAdapter(mAdapter);
-        mAdapter.getID(id);
         mTabLayout.setupWithViewPager(mViewPager);
+        mAdapter.getID(id);
         //那我们如果真的需要监听tab的点击或者ViewPager的切换,则需要手动配置ViewPager的切换,例如:
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -153,6 +167,9 @@ public class MissionpushActivity extends AppCompatActivity {
 
             }
         });
+        if (titlename.size() > 3) {
+            mTabLayout.setTabMode(0);
+        }
         //列表详情
         tabulation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +185,11 @@ public class MissionpushActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
                 intent.putExtra("wbsname", wbsname);
-                intent.putExtra("wbsID", id);
+                intent.putExtra("wbspath", wbspath);
+                intent.putExtra("wbsID", wbsId);
+                intent.putExtra("type", type);
+                intent.putExtra("isParent", isParent);
+                intent.putExtra("iswbs", iswbs);
                 //节点名称
                 intent.putExtra("title", "下发任务");
                 startActivity(intent);

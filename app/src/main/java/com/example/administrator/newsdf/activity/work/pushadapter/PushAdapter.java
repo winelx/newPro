@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class PushAdapter extends BaseFragmentPagerAdapter {
-    public static ArrayList<String> mData;
     public static String Content;
+    public  ArrayList<String> mData;
     private FragmentManager mFragmentManager;
     private List<String> tagList = new ArrayList<String>();
     public PushAdapter(FragmentManager fm, ArrayList<String> mData) {
@@ -27,7 +27,6 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int arg0) {
-
         PushFrgment fragment = new PushFrgment(arg0);
         return fragment;
     }
