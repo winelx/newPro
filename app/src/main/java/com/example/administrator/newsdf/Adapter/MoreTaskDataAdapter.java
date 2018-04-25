@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,final int position) {
 
         if (holder instanceof MoreTaskDataAdapter.HeadHolder) {
             // 头部
@@ -88,8 +89,15 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myHolders.taskNumber.setText("(" + list.size() + ")");
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 内容
-            MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
+            final MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
             myHolder.itemText.setText(list.get(position - 1));
+            myHolder.itemText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MoretaskActivity activity = (MoretaskActivity) mContext;
+                    activity.onclick(position - 1);
+                }
+            });
         } else { // 尾部
             MoreTaskDataAdapter.FootHolder myHoldered = (MoreTaskDataAdapter.FootHolder) holder;
             if (list.size() != 0) {

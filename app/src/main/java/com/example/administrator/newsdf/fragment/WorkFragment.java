@@ -9,16 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.Adapter.Fr_work_pie;
+import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
-import com.example.administrator.newsdf.Adapter.Fr_work_pie;
-import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Request;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -50,12 +50,11 @@ public class WorkFragment extends Fragment {
     private Context mContext;
     private LinearLayout one, push, pphotoadm, uploade;
     private List<IPieElement> list;
-    private TextView fr_work_dn, fr_work_name;
+    private TextView fr_work_dn, fr_work_name, moreandmore;
     private PieChartOne PieChartOne;
     private List<PieChartBeans> mData;
     private GridView fr_work_grid;
     private SettingAdapter mAdapter;
-    private ListView workList;
     String name = "";
     int num = 0;
     String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
@@ -72,11 +71,15 @@ public class WorkFragment extends Fragment {
             mData = new ArrayList<>();
             list = new ArrayList<>();
             one = rootView.findViewById(R.id.one);
+            moreandmore = rootView.findViewById(R.id.moreandmore);
             fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
             PieChartOne = rootView.findViewById(R.id.piechartone);
             fr_work_dn = rootView.findViewById(R.id.fr_work_dn);
-            workList = rootView.findViewById(R.id.work_list);
             fr_work_name = rootView.findViewById(R.id.fr_work_name);
+            push = (LinearLayout) rootView.findViewById(R.id.push);
+            pphotoadm = (LinearLayout) rootView.findViewById(R.id.pphotoadm);
+            uploade = rootView.findViewById(R.id.uploade);
+
             fr_work_name.setText(SPUtils.getString(mContext, "staffName", null) + ",");
             String data = Dates.getHH();
             int time = Integer.parseInt(data);
@@ -92,9 +95,12 @@ public class WorkFragment extends Fragment {
                 fr_work_dn.setText("早上好 !");
             }
 
-            push = (LinearLayout) rootView.findViewById(R.id.push);
-            pphotoadm = (LinearLayout) rootView.findViewById(R.id.pphotoadm);
-            uploade = rootView.findViewById(R.id.uploade);
+            moreandmore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(mContext, BrightspotActivity.class));
+                }
+            });
 
             one.setOnClickListener(new View.OnClickListener() {
                 @Override

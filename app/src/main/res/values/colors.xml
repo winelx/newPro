@@ -33,6 +33,7 @@
 
     <color name="background">#F7F4F0</color>
     <color name="title_color">#333333</color>
+    <color name="brighr_people">#306bb8</color>
 
     <color name="__picker_pager_bg">#CA000000</color>
     <color name="__picker_selected_bg">#44000000</color>

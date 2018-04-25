@@ -7,83 +7,147 @@
     android:background="@color/back"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimaryDark">
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/com_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center|start"
-            android:gravity="center"
-            android:text="{fa-angle-left}"
-            android:textColor="@color/writer"
-            android:textSize="35sp" />
-
-
-        <TextView
-            android:id="@+id/com_title"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="任务详情"
-            android:textColor="@color/writer"
-            android:textSize="18sp" />
-
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/taskrecord"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center|end"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_gravity="center"
-                android:background="@mipmap/task_log"
-                android:textSize="18sp" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimaryDark">
+
+                <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/com_back"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center|start"
+                    android:gravity="center"
+                    android:text="{fa-angle-left}"
+                    android:textColor="@color/writer"
+                    android:textSize="35sp" />
+
+
+                <TextView
+                    android:id="@+id/com_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="任务详情"
+                    android:textColor="@color/writer"
+                    android:textSize="18sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/taskrecord"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|end"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/task_log"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/newmoretask"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|end"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:background="@mipmap/replytask"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.Toolbar>
+
+            <TextView
+                android:id="@+id/wbsnode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/writer"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="节点层级"
+                android:textColor="@color/textViwe"
+                android:textSize="10sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/task_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/fab"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="45dp"
+                    android:src="@mipmap/drawphoto"
+                    app:backgroundTint="#00B4FF"
+                    app:fabSize="auto"
+                    app:rippleColor="#56abe4" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/newmoretask"
-            android:layout_width="50dp"
+            android:layout_width="220dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center|end"
-            android:gravity="center">
+            android:layout_gravity="left"
+            android:layout_marginTop="50dp"
+            android:background="#fff">
 
-            <ImageView
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:background="@mipmap/replytask"
-                android:textSize="18sp" />
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/drawerLayout_smart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/drawer_layout_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:divider="@color/back"
+                    android:dividerHeight="1px"
+                    android:scrollbars="none" />
+
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
         </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 
-    </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/wbsnode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/writer"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="节点层级"
-        android:textColor="@color/textViwe"
-        android:textSize="10sp" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/task_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </LinearLayout>
