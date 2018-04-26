@@ -24,7 +24,7 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -357,7 +357,7 @@ public class MissionpushActivity extends AppCompatActivity {
      * 推送请求
      */
     void pushOkgo(String str) {
-        OkGo.post(Request.pushOKgo)
+        OkGo.post(Requests.pushOKgo)
                 .params("ids", str)
                 .execute(new StringCallback() {
                     @Override

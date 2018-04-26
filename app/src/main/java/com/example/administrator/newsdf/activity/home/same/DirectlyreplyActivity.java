@@ -39,7 +39,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -209,7 +209,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     //网络请求
     private void Okgo(String address, ArrayList<File> file) {
         userPop();
-        OkGo.post(Request.Uploade)
+        OkGo.post(Requests.Uploade)
                 .params("id", id)
                 .params("uploadContent", reply_text.getText().toString())
                 .params("latitude", Latitude)

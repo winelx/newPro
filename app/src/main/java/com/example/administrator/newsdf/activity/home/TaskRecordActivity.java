@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.bean.Tenanceview;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -69,7 +69,7 @@ public class TaskRecordActivity extends AppCompatActivity {
     }
 
     public void okGo() {
-        OkGo.<String>post(Request.TASKRECORD)
+        OkGo.<String>post(Requests.TASKRECORD)
                 .params("taskId", taskId)
                 .execute(new StringCallback() {
                     @Override

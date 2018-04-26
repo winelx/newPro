@@ -26,7 +26,7 @@ import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LazyFragment;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -263,7 +263,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
      * 请求界面
      */
     void okgo() {
-        OkGo.post(Request.PUSHList)
+        OkGo.post(Requests.PUSHList)
                 .params("wbsId", PushAdapter.Content)
                 .execute(new StringCallback() {
                     @Override
@@ -398,7 +398,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
         selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
-                OkGo.<String>post(Request.WBSCASEPOINT)
+                OkGo.<String>post(Requests.WBSCASEPOINT)
                         .params("id", strids)
                         .params("leaderId", str)
                         .execute(new StringCallback() {

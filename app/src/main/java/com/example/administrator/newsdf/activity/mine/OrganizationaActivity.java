@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -57,7 +57,7 @@ public class OrganizationaActivity extends AppCompatActivity {
     }
 
     private void initDatas() {
-        OkGo.<String>post(Request.Swatchmakeup)
+        OkGo.<String>post(Requests.Swatchmakeup)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -166,7 +166,7 @@ public class OrganizationaActivity extends AppCompatActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name) {
-        OkGo.post(Request.Swatch)
+        OkGo.post(Requests.Swatch)
                 .params("orgId", orgid)
                 .execute(new StringCallback() {
                     @Override

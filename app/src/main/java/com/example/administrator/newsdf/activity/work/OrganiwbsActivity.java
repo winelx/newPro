@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -94,7 +94,7 @@ public class OrganiwbsActivity extends Activity {
         });
     }
     private void okgo() {
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -113,7 +113,7 @@ public class OrganiwbsActivity extends Activity {
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(OrganiwbsActivity.this, "请求数据中");
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
@@ -242,7 +242,7 @@ public class OrganiwbsActivity extends Activity {
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
         Dates.getDialog(OrganiwbsActivity.this, "请求数据中");
-        OkGo.post(Request.WbsTaskGroup)
+        OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", str)
                 .params("isNeedTotal", "true")
                 .execute(new StringCallback() {

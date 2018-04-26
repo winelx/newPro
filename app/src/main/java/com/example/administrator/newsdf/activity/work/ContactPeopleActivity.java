@@ -22,7 +22,7 @@ import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Icon;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.list.XListView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -117,7 +117,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
 
     //网络请求
     void okgo() {
-        OkGo.post(Request.Members)
+        OkGo.post(Requests.Members)
                 .params("orgId","")
                 .execute(new StringCallback() {
                     @Override
@@ -139,7 +139,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                                     moblie = "";
                                 }
                                 String imageUrl = content.getString("imageUrl");
-                                imageUrl = Request.networks + imageUrl;
+                                imageUrl = Requests.networks + imageUrl;
                                 mData.add(new Icon(id, userId, name, moblie, imageUrl));
                             }
                             if (mData.size() != 0) {

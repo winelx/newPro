@@ -5,7 +5,7 @@ package com.example.administrator.newsdf.utils;
  * 时间：2017/11/22 0022:下午 14:33
  * 说明：网络请求端口
  */
-public class Request {
+public class Requests {
     //公共头  192.168.20.38
 
     //  public static final String networks = "http://192.168.20.26:8090/pzgc/";

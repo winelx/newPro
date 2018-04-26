@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -149,7 +149,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
 
 
     void okgo(String staffId) {
-        OkGo.post(Request.Personal)
+        OkGo.post(Requests.Personal)
                 .params("staffId", staffId)
                 .execute(new StringCallback() {
                     @Override

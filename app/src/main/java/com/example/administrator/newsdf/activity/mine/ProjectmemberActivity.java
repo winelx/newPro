@@ -25,7 +25,7 @@ import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -226,7 +226,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
      */
 
     void okgo(final String id) {
-        OkGo.post(Request.Members)
+        OkGo.post(Requests.Members)
                 .params("orgId", id)
                 .execute(new StringCallback() {
                     @Override
@@ -253,7 +253,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
                                     String imageUrl;
                                     try {
                                         imageUrl = content.getString("imageUrl");
-                                        imageUrl = Request.networks + imageUrl;
+                                        imageUrl = Requests.networks + imageUrl;
 
                                     } catch (JSONException e) {
                                         imageUrl = "";

@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -91,7 +91,7 @@ public class Checkpoint extends AppCompatActivity {
     }
 
     void okgo(String str) {
-        OkGo.post(Request.WbsTaskGroup)
+        OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", str)
                 .params("isNeedTotal", "true")
                 .execute(new StringCallback() {

@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -90,7 +90,7 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     private void okgo() {
-        OkGo.post(Request.PhotoList)
+        OkGo.post(Requests.PhotoList)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -107,7 +107,7 @@ public class PhotoListActivity extends AppCompatActivity {
 
     void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, final String type) {
         Dates.getDialogs(PhotoListActivity.this, "请求数据中");
-        OkGo.post(Request.PhotoList)
+        OkGo.post(Requests.PhotoList)
                 .params("nodeid", id)
                 .params("isDrawingGroup", iswbs)
                 .params("isParent", isparent)

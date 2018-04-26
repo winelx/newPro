@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void okgo(final String user, final String passowd) {
-        OkGo.post(Request.networks)
+        OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     void login(final String user, final String password) {
         Dates.getDialog(LoginActivity.this, "登录中...");
-        OkGo.post(Request.Login)
+        OkGo.post(Requests.Login)
                 .params("username", user)
                 .params("password", password)
                 .params("mobileLogin", true)

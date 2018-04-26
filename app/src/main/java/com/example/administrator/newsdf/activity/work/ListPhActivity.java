@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.PhotoadmAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.DividerItemDecoration;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -68,7 +68,7 @@ public class ListPhActivity extends AppCompatActivity {
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
-        OkGo.post(Request.Photo_ce)
+        OkGo.post(Requests.Photo_ce)
                 .params("groupId", wbsid)
                 .execute(new StringCallback() {
                     @Override
@@ -84,7 +84,7 @@ public class ListPhActivity extends AppCompatActivity {
                                 String drawingNumber = (String) json.get("drawingNumber");
                                 String drawingName = (String) json.get("drawingName");
                                 String drawingGroupName = (String) json.get("drawingGroupName");
-                                filePath = Request.networks + filePath;
+                                filePath = Requests.networks + filePath;
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber,
                                         drawingName, drawingGroupName));
                             }

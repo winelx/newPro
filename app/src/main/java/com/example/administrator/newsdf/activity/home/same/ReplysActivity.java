@@ -49,7 +49,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -419,7 +419,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         // 设置在点击Dialog外是否取消Dialog进度条
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-        OkGo.post(Request.Uploade)
+        OkGo.post(Requests.Uploade)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -632,7 +632,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 返回更新数据
      */
     private void setList() {
-        OkGo.post(Request.WbsTaskGroup)
+        OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", id)
                 .params("isNeedTotal", "true")
                 .execute(new StringCallback() {

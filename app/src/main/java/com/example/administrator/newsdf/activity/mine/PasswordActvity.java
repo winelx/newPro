@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.LoginActivity;
 import com.example.administrator.newsdf.activity.MainActivity;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -78,7 +78,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
      * 网络请求
      */
     void okgo(String old, String news) {
-        OkGo.post(Request.AlterPwd)
+        OkGo.post(Requests.AlterPwd)
                 .params("oldPwd", old)
                 .params("newPwd", news)
                 .execute(new StringCallback() {
@@ -109,7 +109,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
      * 退出登录
      */
     private void BackTo() {
-        OkGo.post(Request.BackTo)
+        OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -69,7 +69,7 @@ public class CameDialog {
                 if (str == null || str.isEmpty()) {
                     ToastUtils.showShortToast("回复不能为空");
                 } else {
-                    OkGo.post(Request.commentaries)
+                    OkGo.post(Requests.commentaries)
                             .params("taskId", wtMainid)
                             .params("status", "4")
                             .params("content", str)

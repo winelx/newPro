@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -65,7 +65,7 @@ public class BootupActivity extends AppCompatActivity {
         }
         mContext = BootupActivity.this;
         //清除cooking
-        HttpUrl httpUrl = HttpUrl.parse(Request.networks);
+        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         cookieStore.removeCookie(httpUrl);
         //判断百度地图的key是否正确
@@ -134,7 +134,7 @@ public class BootupActivity extends AppCompatActivity {
 
     //假登录
     private void okgo(final String user, final String passowd) {
-        OkGo.post(Request.networks)
+        OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -160,7 +160,7 @@ public class BootupActivity extends AppCompatActivity {
      * @param password
      */
     private void login(final String user, final String password) {
-        OkGo.post(Request.Login)
+        OkGo.post(Requests.Login)
                 .params("username", user)
                 .params("password", password)
                 .params("mobileLogin", true)
@@ -263,7 +263,7 @@ public class BootupActivity extends AppCompatActivity {
      * 退出登录
      */
     private void BackTo(final String user, final String password) {
-        OkGo.post(Request.BackTo)
+        OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

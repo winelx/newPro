@@ -6,7 +6,7 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -167,7 +167,7 @@ public class homeUtils {
     String result;
 
     public String get() {
-        post(Request.CascadeList)
+        post(Requests.CascadeList)
                 .params("rows", 25)
                 .execute(new StringCallback() {
                     @Override
@@ -201,7 +201,7 @@ public class homeUtils {
                                 final boolean drew,
                                 final TaskPhotoAdapter taskPhotoAdapter,
                                 final String wbsName) {
-        OkGo.post(Request.Photolist)
+        OkGo.post(Requests.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
                 .params("rows", 30)
@@ -222,7 +222,7 @@ public class homeUtils {
                                     String drawingNumber = (String) json.get("drawingNumber");
                                     String drawingName = (String) json.get("drawingName");
                                     String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
+                                    filePath = Requests.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 taskPhotoAdapter.getData(imagePaths, wbsName);

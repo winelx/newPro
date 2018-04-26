@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     //网络请求
     private void Okgo() {
         //请求数据库的数据
-        OkGo.post(Request.TaskMain)
+        OkGo.post(Requests.TaskMain)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

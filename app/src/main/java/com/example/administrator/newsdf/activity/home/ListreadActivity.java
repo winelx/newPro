@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.activity.home;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,9 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +29,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.Adapter.Imageloaders;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.baseApplication;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -40,9 +40,11 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
+import com.example.administrator.newsdf.utils.ScreenUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -54,14 +56,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.baidu.location.g.j.s;
-import static com.lzy.okgo.OkGo.post;
 
 /**
  * description:全部消息的列表界面，
@@ -73,111 +71,74 @@ import static com.lzy.okgo.OkGo.post;
  */
 public class ListreadActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
-    private ListView uslistView;
-    private Imageloaders mAdapter = null;
-    private TaskPhotoAdapter taskAdapter;
-    private TextView Titlew, delete_search;
-    private EditText search_editext;
-    private String id, wbsid, intent_back, name = "";
-    private LinearLayout imageView;
-    private String status = "3";
-    //判断是否刷新还是上拉加载
-    private String notall = "all";
-    private CircleImageView fab;
-    private List<Inface_all_item> Alldata;
-    private LinearLayout listerad_nonumber;
-    private SmartRefreshLayout refreshLayout, drawerLayout_smart;
-    private boolean swip = false;
-    //图册
-    private ArrayList<PhotoBean> imagePaths;
-    private DrawerLayout drawer_layout;
-    private ArrayList<String> paths;
-    private ListView drawer_layout_list;
-    boolean popwind = false;
-    private int pages = 1;
-    int G_whit;
-    int page = 1;
-    private boolean drew = true;
-    private PopupWindow mPopupWindow;
-    private String wbsId;
 
-    private ListView mTree;
+    private TextView Titlew, deleteSearch;
+    private EditText searchEditext;
+    private String id, wbsid, intentBack, name, titles;
+    //
+    private String notall = "3", nodeiD = "1";
+
+    private CircleImageView circle;
+    //主界面适配器
+    private Imageloaders mAdapter;
+    //抽屉控件
+    private DrawerLayout drawerLayout;
+
+    //判断是否是加载更多
+    private boolean swip = false;
+    private boolean drew = true;
+
+    private PopupWindow mPopupWindow;
+
+    private ListView mTree, uslistView, drawerLayoutList;
+    private TaskPhotoAdapter taskAdapter;
+
+    //状态值
+    private int addPosition;
+    private int page = 1;
+    private int pages = 1;
+
+    //图册
+    private ArrayList<String> paths;
+    private List<Inface_all_item> Alldata;
+    private ArrayList<PhotoBean> imagePaths;
+    private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
-    private List<OrganizationEntity> mTreeDatas;
-    private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
-    private int addPosition;
-    private LinearLayout drawer_content;
-    String titles;
 
+    private LinearLayout drawerContent, listeradNonumber, imageViewMeun;
+    private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
+
+    private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
+    private float ste;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
+        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
+        ste = ScreenUtil.getDensity(baseApplication.getInstance());
         Dates.getDialog(ListreadActivity.this, "请求数据中...");
         mContext = getApplicationContext();
-        int whit = Dates.getScreenHeight(mContext);
-        G_whit = whit / 3;
-        Alldata = new ArrayList<>();
-        imagePaths = new ArrayList<>();
-        mTreeDatas = new ArrayList<>();
-        addOrganizationList = new ArrayList<>();
-        organizationList = new ArrayList<>();
         Intent intent = getIntent();
         try {
             id = intent.getExtras().getString("orgId");
-            wbsId = intent.getExtras().getString("orgId");
-            intent_back = intent.getExtras().getString("back");
+            wbsid = intent.getExtras().getString("orgId");
+            intentBack = intent.getExtras().getString("back");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        //获得控件id，初始化id
-        drawer_content = (LinearLayout) findViewById(R.id.drawer_content);
-        drawer_layout_list = (ListView) findViewById(R.id.drawer_layout_list);
-        mTree = (ListView) findViewById(R.id.wbslist);
-        delete_search = (TextView) findViewById(R.id.delete_search);
-        //图册圆形控件
-        fab = (CircleImageView) findViewById(R.id.fab);
-        //侧拉布局
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //关闭边缘滑动
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        //侧滑栏关闭手势滑动
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
-        drawer_layout.setScrimColor(Color.TRANSPARENT);
-        //列表界面listview的下拉
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        //是否在加载的时候禁止列表的操作
-        refreshLayout.setDisableContentWhenLoading(true);
-        //侧拉界面下拉
-        drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        drawerLayout_smart.setEnableRefresh(false);
-        listerad_nonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
-        findViewById(R.id.com_back).setOnClickListener(this);
-        //列表
-        uslistView = (ListView) findViewById(R.id.list_recycler);
-        //标题
-        Titlew = (TextView) findViewById(R.id.com_title);
-        //meun
-        imageView = (LinearLayout) findViewById(R.id.com_img);
-        //搜索
-        search_editext = (EditText) findViewById(R.id.search_editext);
-        Titlew.setText(name);
-        Titlew.setTextSize(17);
-        mAdapter = new Imageloaders(mContext, Alldata);
-        uslistView.setAdapter(mAdapter);
-        fab.setVisibility(View.GONE);
-        taskAdapter = new TaskPhotoAdapter(imagePaths, ListreadActivity.this);
-        drawer_layout_list.setAdapter(taskAdapter);
-        drawer_layout.setScrimColor(Color.TRANSPARENT);
+        //初始化集合
+        initArray();
+        //初始化控件
+        findbyId();
+        initData();
         /**
          *    侧拉listview上拉加载
          */
-        drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
+        drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
@@ -195,20 +156,8 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 swip = false;
-                s = 1;
-                //已处理或未处理
-                if (Objects.equals(notall, "false")) {
-                    okgo(wbsid, status, null, 1);
-                    //已处理或未处理
-                } else if (Objects.equals(notall, "true")) {
-                    okgo(wbsid, status, null, 1);
-                } else if (Objects.equals(notall, "all")) {
-                    //全部
-                    okgoall(wbsid, null, 1);
-                } else if (Objects.equals(notall, "search")) {
-                    //搜索
-                    search(1);
-                }
+                pages = 1;
+                smart();
                 uslistView.setSelection(0);
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
@@ -216,31 +165,17 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         });
         //上拉加载
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 swip = true;
-                if (notall == "false") {
-                    pages = pages + 1;
-                    //已处理或未处理
-                    okgo(null, status, null, pages);
-                } else if (notall == "true") {
-                    pages = pages + 1;
-                    //已处理或未处理
-                    okgo(null, status, null, pages);
-                } else if (notall == "all") {
-                    pages = pages + 1;
-                    //全部
-                    okgoall(null, null, pages);
-                } else if (notall == "search") {
-                    pages = pages + 1;
-                    //搜索
-                    search(pages);
-                }
+                pages++;
+                smart();
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(800);
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
+        circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //加载第一页
@@ -249,14 +184,15 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 drew = true;
                 //网络请求
                 homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
-                drawer_layout.openDrawer(GravityCompat.START);
+                drawerLayout.openDrawer(GravityCompat.START);
 
             }
         });
         /**
          * editext回车键搜索
          */
-        search_editext.setOnKeyListener(new View.OnKeyListener() {
+        searchEditext.setOnKeyListener(new View.OnKeyListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //是否是回车键
@@ -266,42 +202,50 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                             .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
-                    pages = 1;
-                    search(1);
+                    page = 1;
+                    String search = searchEditext.getText().toString();
+                    if (search.length() != 0) {
+                        smart();
+                    } else {
+                        Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
                 }
                 return false;
             }
         });
-        search_editext.setOnFocusChangeListener(new android.view.View.
+        searchEditext.setOnFocusChangeListener(new android.view.View.
                 OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
                     // 触摸移动时的操作
-                    delete_search.setVisibility(View.VISIBLE);
-
+                    deleteSearch.setVisibility(View.VISIBLE);
                 } else {
-                    delete_search.setVisibility(View.GONE);
+                    deleteSearch.setVisibility(View.GONE);
                     // 此处为失去焦点时的处理内容
                 }
             }
         });
         //搜索框的取消按钮
-        delete_search.setOnClickListener(new View.OnClickListener() {
+        deleteSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search_editext.setText("");
+                searchEditext.setText("");
             }
         });
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageViewMeun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search_editext.clearFocus();//失去焦点
+                searchEditext.clearFocus();//失去焦点
                 ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
                                 .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                MeunPop();//打开弹出框
+                //打开弹出框
+                MeunPop();
 
             }
         });
@@ -337,7 +281,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_MOVE:
                         // 触摸移动时的操作
-                        search_editext.clearFocus();//失去焦点
+                        searchEditext.clearFocus();//失去焦点
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                                 .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
                                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -349,14 +293,15 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        okgoall(null, null, 1);
-        OrganizationEntity bean = new OrganizationEntity(wbsId, "",
+        okgoall(null, null, page);
+        OrganizationEntity bean = new OrganizationEntity(wbsid, "",
                 name, "0", false,
                 true, "3,5", "",
                 "", "", name, "", true);
         organizationList.add(bean);
         getOrganization(organizationList);
     }
+
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {
@@ -403,11 +348,11 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-
+    //wsb树的数据
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(ListreadActivity.this, "请求数据中");
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
@@ -454,121 +399,28 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         super.onStart();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void search(final int str) {
-        String searchContext = search_editext.getText().toString().trim();
-        if (TextUtils.isEmpty(searchContext)) {
-            Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
-        } else {
-            if (status == "3") {
-                searchokgo1(wbsid, searchContext, str);
-            } else {
-                searchokgo(wbsid, status, searchContext, str);
-            }
-        }
-    }
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
             //返回
             case R.id.com_back:
-                if (intent_back != null) {
+                if (intentBack != null) {
                     finish();
                 } else {
                     finish();
                 }
                 break;
             case R.id.search_img:
+
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 组织id查询
-     */
-    private void okgo(String wbsId, String msgStatus, String content, int i) {
-        OkGo.post(Request.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("msgStatus", msgStatus)
-                .params("content", content)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        parsingjson(s);
-                    }
-                });
-    }
 
-    /**
-     * 搜索
-     */
-    private void searchokgo(String wbsId, String msgStatus, String content, int i) {
-        notall = "search";
-        OkGo.post(Request.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("msgStatus", msgStatus)
-                .params("content", content)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        parsingjson(s);
-                    }
-                });
-    }
-
-    /**
-     * 搜索
-     */
-    private void searchokgo1(String wbsId, String content, int i) {
-        notall = "search";
-        OkGo.post(Request.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("content", content)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        parsingjson(s);
-                    }
-                });
-    }
-
-    /**
-     * 全部
-     */
-    private void okgoall(String wbsId, String content, int i) {
-        post(Request.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("content", content)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        parsingjson(s);
-                    }
-                });
-    }
-
-
+    //返回back
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -584,11 +436,188 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         refreshLayout.finishRefresh(false);
     }
 
+    //设置pop的点击事件
+
+    private View getPopupWindowContentView() {
+        // 一个自定义的布局，作为显示的内容
+        // 布局ID
+        int layoutId = R.layout.popuplayout;
+        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
+        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (v.getId()) {
+                    case R.id.pop_computer:
+                        drawerLayout.openDrawer(GravityCompat.END);
+                        break;
+                    case R.id.pop_All:
+                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        swip=false;
+                        notall = "3";
+                        uslistView.setSelection(0);
+                        if (nodeiD != "1") {
+                            okgoall(nodeiD, null, pages);
+                        } else {
+                            okgoall(null, null, pages);
+                        }
+                        break;
+                    case R.id.pop_financial:
+                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        swip=false;
+                        notall = "0";
+                        uslistView.setSelection(0);
+                        if (nodeiD != "1") {
+                            okgoall(nodeiD, null, pages);
+                        } else {
+                            okgoall(null, null, pages);
+                        }
+
+                        break;
+                    case R.id.pop_manage:
+                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        swip=false;
+                        notall = "2";
+                        uslistView.setSelection(0);
+                        if (nodeiD != "1") {
+                            okgoall(nodeiD, null, pages);
+                        } else {
+                            okgoall(null, null, pages);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (mPopupWindow != null) {
+                    mPopupWindow.dismiss();
+                }
+            }
+        };
+        contentView.findViewById(R.id.pop_computer).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        return contentView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void taskCallback() {
+        swip = false;
+        pages = 1;
+        okgoall(wbsid, null, page);
+        uslistView.setSelection(0);
+    }
+
     /**
-     * 解析json
-     *
-     * @param s
+     * popWin关闭的事件，主要是为了将背景透明度改回来
      */
+    class poponDismissListener implements PopupWindow.OnDismissListener {
+        @Override
+        public void onDismiss() {
+            backgroundAlpha(1f);
+        }
+    }
+
+    //暴露给adapter调用
+    public void switchAct(Node node) {
+        if (node.iswbs()) {
+            drawerLayout.closeDrawer(drawerContent);
+            titles = node.getTitle();
+            Titlew.setText(node.getName());
+            nodeiD = node.getId();
+            circle.setVisibility(View.VISIBLE);
+            swip = false;
+            page = 1;
+            pages = 1;
+            homeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+            uslistView.setSelection(0);
+            okgoall(nodeiD, null, pages);
+        }
+    }
+
+    //初始化集合
+    private void initArray() {
+        Alldata = new ArrayList<>();
+        imagePaths = new ArrayList<>();
+        mTreeDatas = new ArrayList<>();
+        addOrganizationList = new ArrayList<>();
+        organizationList = new ArrayList<>();
+    }
+
+    //初始化控件
+    private void findbyId() {
+        //获得控件id，初始化id
+        drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        mTree = (ListView) findViewById(R.id.wbslist);
+        deleteSearch = (TextView) findViewById(R.id.delete_search);
+        //图册圆形控件
+        circle = (CircleImageView) findViewById(R.id.fab);
+        //侧拉布局
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+        //列表界面listview的下拉
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
+        //侧拉界面下拉
+        drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+
+        findViewById(R.id.com_back).setOnClickListener(this);
+        //列表
+        uslistView = (ListView) findViewById(R.id.list_recycler);
+        //标题
+        Titlew = (TextView) findViewById(R.id.com_title);
+        //meun
+        imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
+        //搜索
+        searchEditext = (EditText) findViewById(R.id.search_editext);
+    }
+
+    //初始化数据
+    private void initData() {
+        //关闭边缘滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerlayoutSmart.setEnableRefresh(false);
+        //是否在加载的时候禁止列表的操作
+        refreshLayout.setDisableContentWhenLoading(true);
+        //设置标题
+        Titlew.setText(name);
+        //设置标题字体
+        Titlew.setTextSize(17);
+        //主界面适配器
+        mAdapter = new Imageloaders(mContext, Alldata);
+        //主界面
+        uslistView.setAdapter(mAdapter);
+        //打开抽屉控件的圆形控件
+        circle.setVisibility(View.GONE);
+        //图册适配器
+        taskAdapter = new TaskPhotoAdapter(imagePaths, ListreadActivity.this);
+        //图册listview
+        drawerLayoutList.setAdapter(taskAdapter);
+        //抽屉控件打开后背景颜色
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+    }
+
+    //界面亮度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
+    }
+
+    //解析json
     private void parsingjson(String s) {
         String wbsPath;
         String updateDate;
@@ -691,7 +720,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     }
                     try {
                         protrait = json1.getString("portrait");
-                        protrait = Request.networks + protrait;
+                        protrait = Requests.networks + protrait;
                     } catch (JSONException e) {
                         e.printStackTrace();
                         protrait = "";
@@ -723,7 +752,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                             JSONObject jsonfilse = files.getJSONObject(j);
                             String filepath = jsonfilse.getString("filepath");
                             String filename = jsonfilse.getString("filename");
-                            paths.add(Request.networks + filepath);
+                            paths.add(Requests.networks + filepath);
                             pathsname.add(filename);
                         }
                     }
@@ -734,7 +763,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
                     mAdapter.getData(Alldata);
-                    listerad_nonumber.setVisibility(View.GONE);
+                    listeradNonumber.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -748,143 +777,73 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-    /**
-     * 界面亮度
-     *
-     * @param bgAlpha
-     */
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
-    }
-
-
+    //弹出框
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+                Dates.withFontSize(ste), Dates.higtFontSize(ste), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(imageView);
+        mPopupWindow.showAsDropDown(imageViewMeun);
         backgroundAlpha(0.5f);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
-    //设置pop的点击事件
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        // 布局ID
-        int layoutId = R.layout.popuplayout;
-        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_computer:
-                        drawer_layout.openDrawer(GravityCompat.END);
-                        break;
-                    case R.id.pop_All:
-                        uslistView.setSelection(0);
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
-                        search_editext.setText("");
-                        Alldata.clear();
-                        pages = 1;
-                        status = "3";
-                        notall = "all";
-                        uslistView.setSelection(0);
-                        okgoall(wbsid, null, 1);
-                        break;
-                    case R.id.pop_financial:
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
-                        search_editext.setText("");
-                        Alldata.clear();
-                        pages = 1;
-                        notall = "false";
-                        status = "0";
-                        uslistView.setSelection(0);
-                        okgo(wbsid, status, null, 1);
-                        break;
-                    case R.id.pop_manage:
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
-                        search_editext.setText("");
-                        pages = 1;
-                        Alldata.clear();
-                        notall = "true";
-                        status = "2";
-                        uslistView.setSelection(0);
-                        okgo(wbsid, status, null, 1);
-                        break;
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
 
-
-            }
-        };
-        contentView.findViewById(R.id.pop_computer).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
-        return contentView;
-    }
-
+    //请求数据
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void taskCallback() {
-        swip = false;
-        pages = 1;
-        //已处理或未处理
-        if (Objects.equals(notall, "false")) {
-            okgo(wbsid, status, null, 1);
-            //已处理或未处理
-        } else if (Objects.equals(notall, "true")) {
-            okgo(wbsid, status, null, 1);
-        } else if (Objects.equals(notall, "all")) {
-            //全部
-            okgoall(wbsid, null, 1);
-        } else if (Objects.equals(notall, "search")) {
-            //搜索
-            search(1);
+    void smart() {
+        String content = searchEditext.getText().toString();
+        //判断是否需要传内容
+        if (content.length() != 0) {
+            //判断是否有节点ID
+            if (nodeiD != "1") {
+                okgoall(nodeiD, content, pages);
+            }else {
+                okgoall(null, content, pages);
+            }
+        } else {
+            if (nodeiD != "1") {
+                okgoall(nodeiD, null, pages);
+            }else {
+                okgoall(nodeiD, null, pages);
+            }
+
         }
-        uslistView.setSelection(0);
     }
 
     /**
-     * popWin关闭的事件，主要是为了将背景透明度改回来
+     * @param wbsId   wbs ID
+     * @param content 搜索内容
+     * @param i       页数
      */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-        @Override
-        public void onDismiss() {
-            backgroundAlpha(1f);
-        }
-    }
-
-    public void switchAct(Node node) {
-        if (node.iswbs()) {
-            drawer_layout.closeDrawer(drawer_content);
-            titles = node.getTitle();
-            Titlew.setText(node.getName());
-            wbsid = node.getId();
-            popwind = node.iswbs();
-            if (popwind != false) {
-                fab.setVisibility(View.VISIBLE);
-            } else {
-                fab.setVisibility(View.GONE);
-            }
-            swip = false;
-            page = 1;
-            pages = 1;
-            homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
-            uslistView.setSelection(0);
-            okgoall(wbsid, null, 1);
+    private void okgoall(String wbsId, String content, int i) {
+        PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
+                .params("orgId", id)
+                .params("page", i)
+                .params("rows", 25)
+                .params("wbsId", wbsId)
+                .params("isAll", "true")
+                .params("content", content);
+        //如果==3 那么就不传
+        if (notall == "3") {
+            mPostRequest.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    parsingjson(s);
+                }
+            });
+        } else {
+            mPostRequest.params("msgStatus", notall)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            parsingjson(s);
+                        }
+                    });
         }
     }
 }

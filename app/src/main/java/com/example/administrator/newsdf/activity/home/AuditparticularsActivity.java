@@ -32,8 +32,7 @@ import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -131,7 +130,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
             }
-
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -163,9 +161,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         wbspath = (TextView) findViewById(R.id.wbspath);
         back = (LinearLayout) findViewById(R.id.adui_com_back);
         comButton = (TextView) findViewById(R.id.audio_com_button);
-        mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
-        //添加分割线
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
         switch (status) {
@@ -276,13 +272,11 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
      * 完成详细数据
      */
     private void okgo(final String id) {
-        OkGo.post(Request.Detail)
+        OkGo.post(Requests.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("wbsTaskId", s);
-                        LogUtil.i("wbsTaskId", id);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -302,7 +296,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             try {
                                 wbsName = wtMain.getString("wbsName");
                             } catch (JSONException e) {
-
                                 wbsName = "";
                             }
                             try {
@@ -324,7 +317,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             //状态
                             try {
                                 status = wtMain.getString("status");
-
                             } catch (JSONException e) {
 
                                 status = "";
@@ -510,7 +502,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 String userimage;
                                 try {
                                     String path = wtMain.getJSONObject("uploadUser").getString("portrait");
-                                    userimage = Request.networks + path;
+                                    userimage = Requests.networks + path;
                                 } catch (JSONException e) {
                                     userimage = "";
                                 }
@@ -522,7 +514,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                         String path = json.getString("filepath");
                                         String name1 = json.getString("filename");
                                         filename.add(name1);
-                                        attachments.add(Request.networks + path);
+                                        attachments.add(Requests.networks + path);
                                     }
                                 }
                                 aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
@@ -548,14 +540,14 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 }
                                 //回复人头像(路径：comments –> user -> portrait)
                                 String taskId = null;
-                                String comments_status = json.getString("status");
+                                String commentsStatus = json.getString("status");
                                 String statusName = null;
                                 //Pinglun内容说明
-                                String comments_content = json.getString("content");
+                                String commentsContent = json.getString("content");
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
-                                aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, comments_status, statusName,
-                                        comments_content, replyTime));
+                                aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
+                                        commentsContent, replyTime));
                             }
                             if (contents.get(0).getStatus().equals("0")) {
                                 aduioDatas.clear();

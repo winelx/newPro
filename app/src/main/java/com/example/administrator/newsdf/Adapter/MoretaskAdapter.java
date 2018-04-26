@@ -23,11 +23,11 @@ import java.util.ArrayList;
 public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_CONTENT = 0xff01;
     public static final int TYPE_DATA = 0xff02;
-
     private ArrayList<Aduio_content> content;
+    private MoreTaskDataAdapter mAdapter;
     private ArrayList<String> data;
     private Context mContext;
-    private MoreTaskDataAdapter mAdapter;
+
 
     public MoretaskAdapter(Context mContext) {
         this.mContext = mContext;
@@ -74,7 +74,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (position == 1) {
             return TYPE_DATA;
         } else {
-            return TYPE_CONTENT;
+            return TYPE_DATA;
         }
     }
 
@@ -134,10 +134,9 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (data.size() != 0) {
             holder1.setpin.setVisibility(View.VISIBLE);
             holder1.dataRec.setVisibility(View.VISIBLE);
-            holder1.dataRec.setLayoutManager(new LinearLayoutManager(holder1.dataRec.getContext(), LinearLayoutManager.VERTICAL, false));
+            holder1.dataRec.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
             mAdapter = new MoreTaskDataAdapter(mContext);
             holder1.dataRec.setAdapter(mAdapter);
-            holder1.dataRec.setNestedScrollingEnabled(false);
             mAdapter.getData(data);
         } else {
             holder1.setpin.setVisibility(View.GONE);

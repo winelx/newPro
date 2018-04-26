@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.activity.home.LightfaceActivity;
 import com.example.administrator.newsdf.activity.home.ListreadActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -40,7 +40,6 @@ import static com.example.administrator.newsdf.R.id.tree_name;
 public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
     private String status;
-
     public TaskTreeListViewAdapter(ListView tree, Context context,
                                    List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
@@ -176,7 +175,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     }
 
     void okgo(String staffId) {
-        OkGo.post(Request.Personal)
+        OkGo.post(Requests.Personal)
                 .params("staffId", staffId)
                 .execute(new StringCallback() {
                     @Override

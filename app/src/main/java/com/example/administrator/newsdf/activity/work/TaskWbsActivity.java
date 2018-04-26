@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -58,7 +58,7 @@ public class TaskWbsActivity extends Activity {
     private SmartRefreshLayout refreshLayout;
     String wbsname, wbsID, type,wbspath;
     private boolean isParent, iswbs;
-
+    private String DATA="data";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +113,7 @@ public class TaskWbsActivity extends Activity {
 
 
     private void okgo() {
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .params("nodeid", wbsID)
                 .params("iswbs", iswbs)
                 .params("isparent", isParent)
@@ -130,7 +130,7 @@ public class TaskWbsActivity extends Activity {
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(TaskWbsActivity.this, "请求数据中");
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
@@ -279,7 +279,7 @@ public class TaskWbsActivity extends Activity {
      * @return
      */
     private void addOrganizationList(String result) {
-        if (result.contains("data")) {
+        if (result.contains(DATA)) {
             addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {

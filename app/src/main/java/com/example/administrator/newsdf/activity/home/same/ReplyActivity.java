@@ -50,7 +50,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -444,7 +444,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         // 设置在点击Dialog外是否取消Dialog进度条
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-        OkGo.post(Request.Uploade)
+        OkGo.post(Requests.Uploade)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)

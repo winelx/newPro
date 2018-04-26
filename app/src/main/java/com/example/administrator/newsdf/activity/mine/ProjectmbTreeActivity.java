@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -283,7 +283,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
 
     private void addOrganiztion(final String id, final String title, final String number) {
         Dates.getDialogs(ProjectmbTreeActivity.this, "请求数据中");
-        OkGo.<String>post(Request.ORGTREE)
+        OkGo.<String>post(Requests.ORGTREE)
                 .params("orgId", id)
                 .execute(new StringCallback() {
                     @Override
@@ -301,7 +301,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
     }
 
     private void okgo() {
-        OkGo.<String>post(Request.ORGTREE)
+        OkGo.<String>post(Requests.ORGTREE)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.view.IPieElement;
 import com.example.administrator.newsdf.view.PieChartBeans;
@@ -168,7 +168,7 @@ public class WorkFragment extends Fragment {
     private void okgo() {
         mData.clear();
         workpie.clear();
-        OkGo.post(Request.PieChart)
+        OkGo.post(Requests.PieChart)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -220,7 +220,7 @@ public class WorkFragment extends Fragment {
     private void okgo1() {
         mData.clear();
         workpie.clear();
-        OkGo.post(Request.PieChart)
+        OkGo.post(Requests.PieChart)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

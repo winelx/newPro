@@ -39,24 +39,19 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return list.size();
     }
 
-    public boolean isHead(int position) {
-        return HEAD_COUNT != 0 && position == 0;
-    }
 
-    public boolean isFoot(int position) {
-        return FOOT_COUNT != 0 && position == getContentSize() + HEAD_COUNT;
-    }
 
     @Override
     public int getItemViewType(int position) {
         int contentSize = getContentSize();
-        if (HEAD_COUNT != 0 && position == 0) {
+        if (position == 0) {
             // 头部
             return TYPE_HEAD;
-        } else if (FOOT_COUNT != 0 && position == HEAD_COUNT + contentSize) {
+        } else if (position == HEAD_COUNT + contentSize) {
             // 尾部
             return TYPE_FOOTER;
         } else {
+            //内容
             return TYPE_CONTENT;
         }
     }
@@ -108,8 +103,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             myHoldered.footer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, DirectlyreplyActivity.class));
-                    notifyDataSetChanged();
+                    Intent intent =new Intent(mContext, DirectlyreplyActivity.class);
+                    intent.putExtra("id","");
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -134,7 +130,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // 内容
     private class ContentHolder extends RecyclerView.ViewHolder {
         TextView itemText;
-
         public ContentHolder(View itemView) {
             super(itemView);
             itemText = itemView.findViewById(R.id.item_text);
@@ -148,7 +143,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public FootHolder(View itemView) {
             super(itemView);
             footer = itemView.findViewById(R.id.footer);
-
         }
     }
 

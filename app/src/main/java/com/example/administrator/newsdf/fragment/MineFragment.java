@@ -28,7 +28,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -121,7 +121,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     //初始化数据
     private void ititData() {
         //登录人头像
-        String url = Request.networks + SPUtils.getString(mContext, "portrait", null);
+        String url = Requests.networks + SPUtils.getString(mContext, "portrait", null);
         Glide.with(this)
                 .load(url)
                 .thumbnail(Glide.with(this)
@@ -214,7 +214,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
      * 退出登录
      */
     private void Okgo() {
-        OkGo.post(Request.BackTo)
+        OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -247,7 +247,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
      * 自动检测升级
      */
     void upload() {
-        OkGo.<String>post(Request.UpLoading)
+        OkGo.<String>post(Requests.UpLoading)
                 .params("type", 1)
                 .execute(new StringCallback() {
                     @Override

@@ -28,7 +28,7 @@ import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -126,7 +126,7 @@ public class AllMessageFragment extends Fragment implements CallBack,OgranCallba
      */
     public void Okgo() {
         putTop();
-        OkGo.post(Request.TaskMain)
+        OkGo.post(Requests.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

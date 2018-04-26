@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -231,7 +230,6 @@ public class WebActivity extends AppCompatActivity {
             //Android 6.0申请权限
             ActivityCompat.requestPermissions(this, PERMISSION, 1);
         } else {
-            Log.i("权限申请ok", "权限申请ok");
         }
     }
 

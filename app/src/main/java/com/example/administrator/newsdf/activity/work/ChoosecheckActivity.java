@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -77,7 +77,7 @@ public class ChoosecheckActivity extends AppCompatActivity {
     }
 
     private void okGo() {
-        OkGo.post(Request.Members)
+        OkGo.post(Requests.Members)
                 .params("orgId", SPUtils.getString(mContent, "orgId", ""))
                 .execute(new StringCallback() {
                     @Override

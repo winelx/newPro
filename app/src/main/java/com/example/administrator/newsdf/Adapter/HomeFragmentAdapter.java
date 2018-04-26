@@ -130,7 +130,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            //统一自定义控件获标签，都是tv_delete，修改后无法获取，会报错
+            //统一自定义控件获标签，都是tv_delete，修改后无法获取，会报错 如果非要修改，请全部修改，
             //置顶
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
             //控制布局在界面的宽度

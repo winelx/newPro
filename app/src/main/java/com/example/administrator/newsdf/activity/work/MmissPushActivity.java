@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.treeView.PushListviewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -103,7 +103,7 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void okgo() {
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -131,7 +131,7 @@ public class MmissPushActivity extends AppCompatActivity {
 
     void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
-        OkGo.post(Request.WBSTress)
+        OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
@@ -315,7 +315,7 @@ public class MmissPushActivity extends AppCompatActivity {
 
     void getOko(final String str, final String wbspath, final String wbsname, final String type, final boolean isParent, final boolean iswbs) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
-        OkGo.post(Request.PUSHList)
+        OkGo.post(Requests.PUSHList)
                 .params("wbsId", str)
                 .execute(new StringCallback() {
                     @Override

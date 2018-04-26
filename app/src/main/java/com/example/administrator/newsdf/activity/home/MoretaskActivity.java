@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.activity.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,10 +64,21 @@ public class MoretaskActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     private void initdata() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        //侧滑栏关闭
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         //添加分割线
         mAdapter = new MoretaskAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
@@ -76,20 +88,26 @@ public class MoretaskActivity extends AppCompatActivity {
             Dats.add("部位：基础工程" + i);
         }
         mAdapter.getContent(contents, Dats);
+
     }
 
+    //初始化控件ID
     private void initfind() {
+        //wbs路径
         wbsNode = (TextView) findViewById(R.id.wbsnode);
+        //抽屉控件
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //任务内容
         mRecyclerView = (RecyclerView) findViewById(R.id.task_content);
     }
 
+    //初始化集合
     private void initArry() {
         contents = new ArrayList<>();
         Dats = new ArrayList<>();
     }
 
+    //暴露给adapter的方法，给点击事件使用
     public void onclick(int pos) {
         Intent intent = new Intent(mContext, AuditparticularsActivity.class);
         intent.putExtra("frag_id", id);
@@ -97,4 +115,5 @@ public class MoretaskActivity extends AppCompatActivity {
         intent.putExtra("status", status);
         startActivity(intent);
     }
+
 }

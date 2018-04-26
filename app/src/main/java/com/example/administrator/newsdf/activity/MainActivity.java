@@ -30,7 +30,7 @@ import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.utils.WbsDialog;
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     //新本版检测
     private void Uplogding() {
-        OkGo.<String>post(Request.UpLoading)
+        OkGo.<String>post(Requests.UpLoading)
                 .params("type", 1)
                 .execute(new StringCallback() {
                     @Override

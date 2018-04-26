@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -158,7 +158,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
     }
 
     void okgo(String staffId) {
-        OkGo.post(Request.Personal)
+        OkGo.post(Requests.Personal)
                 .params("staffId", staffId)
                 .execute(new StringCallback() {
                     @Override

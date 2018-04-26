@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.Adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.bean.CasePointsBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -138,7 +138,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
      * 请求前置项
      */
     private void CasePoints() {
-        OkGo.<String>post(Request.CASDPOINTD)
+        OkGo.<String>post(Requests.CASDPOINTD)
                 .params("wbsId", wbsId)
                 .execute(new StringCallback() {
                     @Override
@@ -288,7 +288,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
      */
     public void getSubmit() {
         Log.i("preconditions", id + "   " + taskcontent + "   " + userId + "   " + preconditions + pushContent.getText().toString());
-        OkGo.<String>post(Request.WBSCASEPOINTs)
+        OkGo.<String>post(Requests.WBSCASEPOINTs)
                 //任务ID
                 .params("id", id)
                 //任务名称

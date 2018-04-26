@@ -31,7 +31,7 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -178,7 +178,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     void okgo() {
-        OkGo.<String>post(Request.Wbsdetails)
+        OkGo.<String>post(Requests.Wbsdetails)
                 .params("id", wbsId)
                 .execute(new StringCallback() {
                     @Override
@@ -257,7 +257,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      * 获取联系人
      */
     void userdetails() {
-        OkGo.<String>post(Request.UserList)
+        OkGo.<String>post(Requests.UserList)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -389,7 +389,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      * 修改
      */
     void commit() {
-        OkGo.<String>post(Request.WbsTaskConfig)
+        OkGo.<String>post(Requests.WbsTaskConfig)
                 .params("id", wbsId)
                 .params("leaderId", userID)
                 .params("finish", number)
@@ -417,7 +417,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      * 状态修改
      */
     void okgo1(final String str) {
-        OkGo.post(Request.WbsTaskConfig)
+        OkGo.post(Requests.WbsTaskConfig)
                 .params("id", wbsId)
                 .params("optStatus", str)
                 .params("leaderId", userID)
@@ -538,7 +538,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     private void getOko(final String str, final String wbsname) {
         Dates.getDialog(NodedetailsActivity.this, "请求数据中");
-        OkGo.post(Request.PUSHList)
+        OkGo.post(Requests.PUSHList)
                 .params("wbsId", str)
                 .execute(new StringCallback() {
                     @Override

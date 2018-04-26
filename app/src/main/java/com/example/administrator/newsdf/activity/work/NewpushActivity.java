@@ -19,8 +19,7 @@ import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -211,7 +210,7 @@ public class NewpushActivity extends AppCompatActivity {
     }
 
     void okgo() {
-        OkGo.post(Request.newPush)
+        OkGo.post(Requests.newPush)
                 .params("wbsId", id)
                 .params("leaderId", userid)
                 .params("label", newpush_check.getText().toString())
@@ -245,7 +244,7 @@ public class NewpushActivity extends AppCompatActivity {
      */
 
     private void photoAdm(String string) {
-        OkGo.post(Request.Photolist)
+        OkGo.post(Requests.Photolist)
                 .params("WbsId", string)
                 .params("page", page)
                 .params("rows", 30)
@@ -266,7 +265,7 @@ public class NewpushActivity extends AppCompatActivity {
                                     String drawingNumber = (String) json.get("drawingNumber");
                                     String drawingName = (String) json.get("drawingName");
                                     String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Request.networks + filePath;
+                                    filePath = Requests.networks + filePath;
                                     imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                 }
                                 //    wbspathl

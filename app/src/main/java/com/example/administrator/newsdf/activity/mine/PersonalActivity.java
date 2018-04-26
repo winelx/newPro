@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Request;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,7 +45,7 @@ public class PersonalActivity extends AppCompatActivity {
         checkname.setText(SPUtils.getString(mContext, "username", ""));
         //手机号
         userPhone.setText(SPUtils.getString(mContext, "phone", ""));
-        String url = Request.networks + SPUtils.getString(mContext, "portrait", null);
+        String url = Requests.networks + SPUtils.getString(mContext, "portrait", null);
         LogUtil.i("url", url);
         Glide.with(this)
                 .load(url)
