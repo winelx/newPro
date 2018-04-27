@@ -107,7 +107,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
     /**
      * 打开状态选择弹窗
      */
-    private LinearLayout imageView;
+    private LinearLayout imageViewMeun;
     /**
      * 用来判断请求数据的状态
      * 0未完
@@ -139,6 +139,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * 图册适配器
      */
     private TaskPhotoAdapter taskAdapter;
+    private SmartRefreshLayout drawerlayoutSmart;
 
     /**
      * drew  drew
@@ -163,6 +164,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
      * 右侧抽屉布局
      */
     private LinearLayout drawer_content;
+    /**
+     * 任务状态弹出框
+     */
+    private PopupWindow mPopupWindow;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -190,18 +195,20 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
-        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
+        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4（用来设置任务状态弹出框在不同手机宽高）
         ste = ScreenUtil.getDensity(baseApplication.getInstance());
-        //
+        //回调
         TaskCallbackUtils.setCallBack(this);
-        //清除小红点
+
         list = new ArrayList<>();
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
+        //获取用户推送消息
         list = LoveDao.JPushCart();
         Message mes = new Message();
         handler.sendMessage(mes);
+        //清除通知栏所有消息
         JPushInterface.clearAllNotifications(baseApplication.getInstance());
         Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         //拿到上一个界面传递的数据，
@@ -217,51 +224,9 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //图册
         imagePaths = new ArrayList<>();
         //获得控件id，初始化id
-        //返回
-        findViewById(R.id.com_back).setOnClickListener(this);
-        //标题
-        titlew = (TextView) findViewById(R.id.com_title);
-        //查询图册
-        fab = (CircleImageView) findViewById(R.id.fab);
-        //点击pop
-        imageView = (LinearLayout) findViewById(R.id.com_img);
-        //任务列表
-        uslistView = (ListView) findViewById(R.id.list_recycler);
-        //搜索
-        searchEditext = (EditText) findViewById(R.id.search_editext);
-        //侧拉
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        mTree = (ListView) findViewById(R.id.drawer_right_list);
-        drawer_content = (LinearLayout) findViewById(R.id.drawer_content);
-        //任务列表的下拉
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        //侧拉界面的下拉
-        SmartRefreshLayout drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        //禁止下拉
-        drawerlayoutSmart.setEnableRefresh(false);
-        //启用或禁用与所有抽屉的交互。
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        //侧滑栏关闭手势滑动
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        //隐藏图片查看，
-        fab.setVisibility(View.GONE);
-        //界面数据填充
-        mAdapter = new Listinter_Adfapter(mContext, mDatas);
-        //标题
-        titlew.setText(intent.getExtras().getString("name"));
-        //标题文字大小
-        titlew.setTextSize(17);
-        //搜索界面的取消按钮
-        delete_search = (TextView) findViewById(R.id.delete_search);
-        //侧拉界面数据适配
-        taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
-        //侧拉界面数据填充
-        drawerLayoutList.setAdapter(taskAdapter);
-        //任务界面数据填充
-        uslistView.setAdapter(mAdapter);
+        findview();
+        //初始化数据
+        initdata(intent);
         //搜索框
         searchEditext.setOnKeyListener(new View.OnKeyListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -347,8 +312,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 refreshlayout.finishLoadmore(1500);
             }
         });
-
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageViewMeun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MeunPop();//打开弹出框
@@ -448,6 +412,32 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 "", "", intent.getExtras().getString("name"), "", true);
         organizationList.add(bean);
         getOrganization(organizationList);
+    }
+
+    private void initdata(Intent intent) {
+        //禁止下拉
+        drawerlayoutSmart.setEnableRefresh(false);
+        //启用或禁用与所有抽屉的交互。
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        //隐藏图片查看，
+        fab.setVisibility(View.GONE);
+        //界面数据填充
+        mAdapter = new Listinter_Adfapter(mContext, mDatas);
+        //标题
+        titlew.setText(intent.getExtras().getString("name"));
+        //标题文字大小
+        titlew.setTextSize(17);
+
+        //侧拉界面数据适配
+        taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
+        //侧拉界面数据填充
+        drawerLayoutList.setAdapter(taskAdapter);
+        //任务界面数据填充
+        uslistView.setAdapter(mAdapter);
     }
 
 
@@ -680,8 +670,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         getWindow().setAttributes(lp);
     }
 
-    PopupWindow mPopupWindow;
 
+    //任务状态弹出窗
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
@@ -689,8 +679,8 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(imageView);
+        // 显示位置
+        mPopupWindow.showAsDropDown(imageViewMeun);
         backgroundAlpha(0.5f);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
@@ -751,9 +741,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         return contentView;
     }
 
-    /**
-     * 详情页数据状态发生改变，刷新当前界面
-     */
+    //详情页数据状态发生改变，刷新当前界面
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void taskCallback() {
@@ -764,11 +752,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         smart();
     }
 
-    /**
-     * 弹出的popWin关闭的事件，主要是为了将背景透明度改回来
-     *
-     * @author cg
-     */
+    //弹出的popWin关闭的事件，主要是为了将背景透明度改回来
     class poponDismissListener implements PopupWindow.OnDismissListener {
         @Override
         public void onDismiss() {
@@ -795,6 +779,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //下拉上拉抽的网络请求方
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void smart() {
         String content = searchEditext.getText().toString();
@@ -819,5 +804,31 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //初始化控件
+    private void findview() {
+        //返回
+        findViewById(R.id.com_back).setOnClickListener(this);
+        //标题
+        titlew = (TextView) findViewById(R.id.com_title);
+        //查询图册
+        fab = (CircleImageView) findViewById(R.id.fab);
+        //点击pop
+        imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
+        //任务列表
+        uslistView = (ListView) findViewById(R.id.list_recycler);
+        //搜索
+        searchEditext = (EditText) findViewById(R.id.search_editext);
+        //侧拉
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        mTree = (ListView) findViewById(R.id.drawer_right_list);
+        drawer_content = (LinearLayout) findViewById(R.id.drawer_content);
+        //搜索界面的取消按钮
+        delete_search = (TextView) findViewById(R.id.delete_search);
+        //任务列表的下拉
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        //侧拉界面的下拉
+        drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+    }
 
 }

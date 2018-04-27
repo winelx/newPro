@@ -59,7 +59,8 @@ public class LoveDao {
     //用户置顶
     public static List<Shop> MineCart() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_MINE)).list();
-    }//用户置顶
+    }
+    //用户推送
 
     public static List<Shop> JPushCart() {
         return baseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();

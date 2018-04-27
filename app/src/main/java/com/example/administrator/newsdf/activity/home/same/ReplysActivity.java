@@ -83,23 +83,22 @@ import okhttp3.Response;
  */
 public class ReplysActivity extends AppCompatActivity implements View.OnClickListener {
     private PhotosAdapter photoAdapter;
-    private List<String> imagePaths;
+
     private ArrayList<PhotoBean> photoPopPaths;
     private ArrayList<File> files;
     private ArrayList<String> namess;
     private List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem;
-    private ImageView address, baoxun;
+    private TextView repleyAddress, wbsNodeName, Sendtask, title, tvNetSpeed, replyCheckItem;
+    private ImageView Save;
     private String latitude, longitude;
     private EditText replyText;
     private Context mContext;
     private ProgressBar mProgressBar;
     private LinearLayout progessn;
-    private ArrayList<String> pathimg, ids;
+    private ArrayList<String> pathimg;
     private CheckPermission checkPermission;
-    private LinearLayout lin_sdfg;
     private String content = "", wbspath = "", wbsID = "", id = "", wbstitle = "";
     boolean status = false;
     int position;
@@ -108,14 +107,14 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private String Title = "", checkId = "", checkname = "";
     private WbsDialog selfDialog;
     private static final int IMAGE_PICKER = 101;
-    private CircleImageView fab;
+    private CircleImageView Circle;
     private SmartRefreshLayout smartRefreshLayout;
     private ListView drawerLayoutList;
     private DrawerLayout drawer;
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String titles, type, wbsname;
+    private String titles, type;
     ProgressDialog dialog;
     private boolean isParent, iswbs;
 
@@ -124,13 +123,9 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
         mContext = ReplysActivity.this;
-        imagePaths = new ArrayList<>();
-        check = new ArrayList<>();
-        pathimg = new ArrayList<>();
-        ids = new ArrayList<>();
-        photoPopPaths = new ArrayList<>();
-        list = new ArrayList<>();
-        list = LoveDao.queryLove();
+        //初始化集合
+        initArray();
+        //动态请求权限
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -165,19 +160,15 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             id = intent.getExtras().getString("id");
             title.setText(intent.getExtras().getString("title"));
             //检查点id集合
-            ids = intent.getExtras().getStringArrayList("ids");
             iswbs = intent.getExtras().getBoolean("iswbs");
             type = intent.getExtras().getString("type");
-            wbsname = intent.getExtras().getString("wbsname");
+
             //
             isParent = intent.getExtras().getBoolean("isParent");
             //图片字符串
             String Paths = intent.getExtras().getString("Imgpath");
             checkId = intent.getExtras().getString("Checkid");
             checkname = intent.getExtras().getString("Checkname");
-            //转成集合
-            imagePaths = Dates.stringToList(Paths);
-            pathimg.addAll(imagePaths);
             if (checkname.length() < 0) {
                 replyCheckItem.setText("选择检查点");
             } else {
@@ -188,13 +179,23 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
             title.setText("我很主动");
         }
-        wbsText.setText(wbspath);
+        wbsNodeName.setText(wbspath);
         replyText.setText(content);
-        baoxun.setVisibility(View.VISIBLE);
-        baoxun.setImageResource(R.mipmap.reply_baocun);
+        Save.setVisibility(View.VISIBLE);
+        Save.setImageResource(R.mipmap.reply_baocun);
         //定位
         loaction();
         initDate();
+    }
+
+    private void initArray() {
+        //任务项
+        check = new ArrayList<>();
+        //图片地址
+        pathimg = new ArrayList<>();
+        //图册图片路径
+        photoPopPaths = new ArrayList<>();
+
     }
 
     //定位
@@ -217,31 +218,42 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 发现ID
      */
     private void findID() {
+        //图册list
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        //抽屉控件
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        //侧滑栏关闭手势滑动
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        drawer.setScrimColor(Color.TRANSPARENT);
+        //刷新控件
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        smartRefreshLayout.setEnableRefresh(false);
-        fab = (CircleImageView) findViewById(R.id.fabloating);
-        lin_sdfg = (LinearLayout) findViewById(R.id.lin_sdfg);
+        //查看图册控件
+        Circle = (CircleImageView) findViewById(R.id.fabloating);
+        //上传文件大小（未使用）
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
         //图片
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
+        //定位地址
         repleyAddress = (TextView) findViewById(R.id.repley_address);
+        //回复内容
         replyText = (EditText) findViewById(R.id.reply_text);
-        address = (ImageView) findViewById(R.id.address);
-        comButton = (TextView) findViewById(R.id.com_button);
+        //发送任务
+        Sendtask = (TextView) findViewById(R.id.com_button);
+        //检查项名称
         replyCheckItem = (TextView) findViewById(R.id.reply_check_item);
-        baoxun = (ImageView) findViewById(R.id.com_img);
-        wbsText = (TextView) findViewById(R.id.wbs_text);
+        //保存
+        Save = (ImageView) findViewById(R.id.com_img);
+        //节点名
+        wbsNodeName = (TextView) findViewById(R.id.wbs_text);
+        //标题
         title = (TextView) findViewById(R.id.com_title);
+
         findViewById(R.id.reply_wbs).setOnClickListener(this);
         findViewById(R.id.reply_check).setOnClickListener(this);
         progessn = (LinearLayout) findViewById(R.id.Progess);
         mProgressBar = (ProgressBar) findViewById(R.id.reply_bar);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawer.setScrimColor(Color.TRANSPARENT);
+        smartRefreshLayout.setEnableRefresh(false);
         findViewById(R.id.com_back).setOnClickListener(this);
         //上拉加载
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -249,13 +261,13 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
         });
 
-        baoxun.setOnClickListener(new View.OnClickListener() {
+        Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //存放到本地
@@ -269,7 +281,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             Shop shop = new Shop();
                             shop.setType(Shop.TYPE_LOVE);
                             //路径
-                            shop.setName(wbsText.getText().toString());
+                            shop.setName(wbsNodeName.getText().toString());
                             //wbsID
                             shop.setWebsid(wbsID);
                             //时间
@@ -305,7 +317,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             //拿到需要进行修改的记录
                             Shop shop = list.get(position);
                             //标题
-                            shop.setName(wbsText.getText().toString());
+                            shop.setName(wbsNodeName.getText().toString());
                             //内容
                             shop.setContent(replyText.getText().toString());
                             //图片保存路径
@@ -337,7 +349,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         });
-        comButton.setOnClickListener(new View.OnClickListener() {
+        Sendtask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 files = new ArrayList<>();
@@ -347,7 +359,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 if (wbsID == null || wbsID.equals("")) {
                     Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
-                } else if ("".equals(replyText.getText().toString())) {
+                } else if ("" .equals(replyText.getText().toString())) {
                     Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
                 } else {
                     Okgo(files, Bai_address);
@@ -356,12 +368,12 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         });
         mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
         drawerLayoutList.setAdapter(mAdapter);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
             }
         });
@@ -404,7 +416,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         photoAdapter = new PhotosAdapter(this, pathimg);
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setAdapter(photoAdapter);
-        comButton.setBackgroundResource(R.mipmap.reply_commit);
+        Sendtask.setBackgroundResource(R.mipmap.reply_commit);
     }
 
 
@@ -516,7 +528,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //返回wbs
             id = data.getStringExtra("id");
             LogUtil.i("result", data.getStringExtra("id"));
-            wbsText.setText(data.getStringExtra("titles"));
+            wbsNodeName.setText(data.getStringExtra("titles"));
             LogUtil.i("result", data.getStringExtra("titles"));
             //请求图片页数
             page = 1;
@@ -527,7 +539,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //控件显示文字
             replyCheckItem.setText(data.getStringExtra(""));
             //请求图片
-            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点返回
             checkId = data.getStringExtra("id");
