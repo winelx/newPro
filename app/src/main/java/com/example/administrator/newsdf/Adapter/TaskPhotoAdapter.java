@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 /**
- * 所有侧滑界面的适配器
+ * 所有侧滑界面图册的适配器
  * Created by Administrator on 2018/2/7 0007.
  */
 

@@ -9,6 +9,7 @@ import com.example.administrator.newsdf.activity.work.BridhtFragment;
 import java.util.ArrayList;
 
 /**
+ * 亮点展示界面的viewpager的适配器
  * Created by Administrator on 2018/4/20 0020.
  */
 

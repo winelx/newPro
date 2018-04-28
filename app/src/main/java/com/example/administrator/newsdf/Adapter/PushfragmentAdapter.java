@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.bean.Push_item;
 import java.util.ArrayList;
 
 /**
- * 推送界面的适配器
+ * 任务推送界面的适配器（pushFragment）
  * Created by Administrator on 2017/12/18 0018.
  */
 

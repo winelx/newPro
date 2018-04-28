@@ -22,11 +22,12 @@ import java.util.List;
 
 /**
  * description: 离线图片recycler的适配器
+ *
  * @author lx
- * date: 2018/3/22 0022 下午 2:46
- * update: 2018/3/22 0022
- * version:
-*/
+ *         date: 2018/3/22 0022 下午 2:46
+ *         update: 2018/3/22 0022
+ *         version:
+ */
 public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
 
     private Context mContext;
@@ -71,7 +72,7 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
                 activity.deleteDate(position);
             }
         });
-                List<String> list=stringToList(mDatas.get(position).getContent());
+        List<String> list = stringToList(mDatas.get(position).getContent());
 
         holder.photo_name.setText(list.get(0));
         holder.photo_number.setText(list.get(1));
@@ -84,23 +85,25 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
         View view = LayoutInflater.from(mContext).inflate(R.layout.up_ph_item, arg0, false);
         return new MyViewHolder(view);
     }
-   class MyViewHolder extends RecyclerView.ViewHolder {
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView btnSet;
-         TextView btnDelete;
-         TextView photo_name, photo_number,photo_names;
-         RelativeLayout layoutContent;
-         LinearLayout relativeLayout;
+        TextView btnDelete;
+        TextView photo_name, photo_number, photo_names;
+        RelativeLayout layoutContent;
+        LinearLayout relativeLayout;
+
         MyViewHolder(View itemView) {
             super(itemView);
 
-            btnSet =itemView.findViewById(R.id.tv_set);
-            btnDelete =  itemView.findViewById(R.id.tv_delete);
-            layoutContent =  itemView.findViewById(R.id.layout_content);
+            btnSet = itemView.findViewById(R.id.tv_set);
+            btnDelete = itemView.findViewById(R.id.tv_delete);
+            layoutContent = itemView.findViewById(R.id.layout_content);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            photo_name= itemView.findViewById(R.id.photo_name);
-            photo_number= itemView.findViewById(R.id.photo_number);
-            photo_names= itemView.findViewById(R.id.photo_names);
+            photo_name = itemView.findViewById(R.id.photo_name);
+            photo_number = itemView.findViewById(R.id.photo_number);
+            photo_names = itemView.findViewById(R.id.photo_names);
             ((LeftSlideView) itemView).setSlidingButtonListener(UploadPhAdapter.this);
         }
     }

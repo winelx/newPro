@@ -199,7 +199,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         ste = ScreenUtil.getDensity(baseApplication.getInstance());
         //回调
         TaskCallbackUtils.setCallBack(this);
-
         list = new ArrayList<>();
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
@@ -307,7 +306,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                 homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }

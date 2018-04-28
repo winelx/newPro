@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Adapter.Fr_work_pie;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
@@ -19,10 +17,11 @@ import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
+import com.example.administrator.newsdf.bean.Fr_work_pie;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.view.IPieElement;
+import com.example.administrator.newsdf.view.MultiImageView;
 import com.example.administrator.newsdf.view.PieChartBeans;
 import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
@@ -39,6 +38,8 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.pphotoadm;
+
 
 /**
  * @author ：lx
@@ -48,19 +49,39 @@ import okhttp3.Response;
 public class WorkFragment extends Fragment {
     private View rootView;
     private Context mContext;
-    private LinearLayout one, push, pphotoadm, uploade;
-    private List<IPieElement> list;
-    private TextView fr_work_dn, fr_work_name, moreandmore;
+    /**
+     * 饼状图
+     */
     private PieChartOne PieChartOne;
+    /**
+     * 饼状图数据
+     */
     private List<PieChartBeans> mData;
+    /**
+     * 饼状图参数
+     */
     private GridView fr_work_grid;
-    private SettingAdapter mAdapter;
-    String name = "";
-    int num = 0;
-    String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
-    int number = 0;
-    private ArrayList<Fr_work_pie> workpie = new ArrayList<>();
+
+    private String name = "";
+    private int num = 0;
+    private int number = 0;
+
     boolean status = false;
+    /**
+     * 通用适配器
+     */
+    private SettingAdapter mAdapter;
+    private MultiImageView multiImageView;
+    private ArrayList<Fr_work_pie> workpie = new ArrayList<>();
+    private TextView frWorkDn, taskManagement, moreandmore, frWorkName, taskPush, photoManagement, uploade;
+
+    private String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8", "#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
+
+    String url1 = "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_01small_02_2018414191166C.jpg，" +
+            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
+            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
+            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
+            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,31 +90,12 @@ public class WorkFragment extends Fragment {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_work, null);
             mData = new ArrayList<>();
-            list = new ArrayList<>();
-            one = rootView.findViewById(R.id.one);
-            moreandmore = rootView.findViewById(R.id.moreandmore);
-            fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
-            PieChartOne = rootView.findViewById(R.id.piechartone);
-            fr_work_dn = rootView.findViewById(R.id.fr_work_dn);
-            fr_work_name = rootView.findViewById(R.id.fr_work_name);
-            push = (LinearLayout) rootView.findViewById(R.id.push);
-            pphotoadm = (LinearLayout) rootView.findViewById(R.id.pphotoadm);
-            uploade = rootView.findViewById(R.id.uploade);
-
-            fr_work_name.setText(SPUtils.getString(mContext, "staffName", null) + ",");
-            String data = Dates.getHH();
-            int time = Integer.parseInt(data);
-            if (time >= 6 && time < 12) {
-                fr_work_dn.setText("上午好 !");
-            } else if (time >= 12 && time < 14) {
-                fr_work_dn.setText("中午好 !");
-            } else if (time >= 14 && time < 19) {
-                fr_work_dn.setText("下午好 !");
-            } else if (time >= 19 && time <= 23) {
-                fr_work_dn.setText("晚上好 !");
-            } else {
-                fr_work_dn.setText("早上好 !");
-            }
+            //初始化控件Id
+            findId();
+            //设置当前时间的问候
+            setTime();
+            //获取到当前登录人的名字，并展示
+            frWorkName.setText(SPUtils.getString(mContext, "staffName", null) + ",");
 
             moreandmore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,8 +103,8 @@ public class WorkFragment extends Fragment {
                     startActivity(new Intent(mContext, BrightspotActivity.class));
                 }
             });
-
-            one.setOnClickListener(new View.OnClickListener() {
+            //任务管理
+            taskManagement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, OrganiwbsActivity.class);
@@ -110,7 +112,7 @@ public class WorkFragment extends Fragment {
                 }
             });
             //任务下发
-            push.setOnClickListener(new View.OnClickListener() {
+            taskPush.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, PushCheckActivity.class);
@@ -119,14 +121,14 @@ public class WorkFragment extends Fragment {
                 }
             });
             //图册管理
-            pphotoadm.setOnClickListener(new View.OnClickListener() {
+            photoManagement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(mContext, PchooseActivity.class));
 
                 }
             });
-            //树洞任务
+            //下载离线图纸
             uploade.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -134,6 +136,7 @@ public class WorkFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+            //饼状图内容适配器
             mAdapter = new SettingAdapter<PieChartBeans>(mData, R.layout.fr_work_gr_item) {
                 @Override
                 public void bindView(ViewHolder holder, PieChartBeans obj) {
@@ -142,6 +145,7 @@ public class WorkFragment extends Fragment {
                 }
             };
         }
+        //设置饼状图
         PieChartOne.setDate(mData);
         fr_work_grid.setAdapter(mAdapter);
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
@@ -149,7 +153,48 @@ public class WorkFragment extends Fragment {
         if (parent != null) {
             parent.removeView(rootView);
         }
+        String[] urls = url1.split("，");
+        multiImageView.setMaxChildCount(12);
+        multiImageView.setMoreImgBg(R.mipmap.ic_launcher);
+        multiImageView.setImgs(urls, 4);
         return rootView;
+    }
+
+    private void setTime() {
+        String data = Dates.getHH();
+        int time = Integer.parseInt(data);
+        if (time >= 6 && time < 12) {
+            frWorkDn.setText("上午好 !");
+        } else if (time >= 12 && time < 14) {
+            frWorkDn.setText("中午好 !");
+        } else if (time >= 14 && time < 19) {
+            frWorkDn.setText("下午好 !");
+        } else if (time >= 19 && time <= 23) {
+            frWorkDn.setText("晚上好 !");
+        } else {
+            frWorkDn.setText("早上好 !");
+        }
+    }
+
+    private void findId() {
+        fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
+        PieChartOne = rootView.findViewById(R.id.piechartone);
+        //任务管理
+        taskManagement = rootView.findViewById(R.id.task_management);
+        //更多
+        moreandmore = rootView.findViewById(R.id.moreandmore);
+        //当前时间（早上，中午，晚上)
+        frWorkDn = rootView.findViewById(R.id.fr_work_dn);
+        //责任人
+        frWorkName = rootView.findViewById(R.id.fr_work_name);
+        //任务下发
+        taskPush = (TextView) rootView.findViewById(R.id.push);
+        //图册管理
+        photoManagement = (TextView) rootView.findViewById(pphotoadm);
+        //离线图纸
+        uploade = rootView.findViewById(R.id.uploade);
+        multiImageView = rootView.findViewById(R.id.multiImageView);
+
     }
 
     @Override
@@ -181,6 +226,7 @@ public class WorkFragment extends Fragment {
                                 for (int i = 0; i < jsonArray1.length(); i++) {
                                     JSONObject json = jsonArray1.getJSONObject(i);
                                     num = json.getInt("num");
+                                    //获得中的数据
                                     number = number + num;
                                     try {
                                         name = json.getString("name");
@@ -191,6 +237,7 @@ public class WorkFragment extends Fragment {
                                 }
                                 Float numbers = Float.valueOf(number);
                                 for (int i = 0; i < workpie.size(); i++) {
+                                    //将数据转换成float
                                     Float siz = Float.valueOf(workpie.get(i).getNum());
                                     Float sjie = siz / numbers * 100;
                                     BigDecimal b = new BigDecimal(sjie);

@@ -115,6 +115,8 @@ public abstract class CheckPermission {
                 case REQUEST_CODE_PERMISSION_CAMERA:
                     message = activity.getString(R.string.permission_image);
                     break;
+                default:
+                    break;
 
             }
 
@@ -124,7 +126,7 @@ public abstract class CheckPermission {
                 AndPermission.defaultSettingDialog(activity, requestCode)
                         .setTitle(title)
                         .setMessage(message)
-                        .setPositiveButton("好，去设置")
+                        .setPositiveButton("去设置")
                         .setNegativeButton(activity.getString(R.string.cancel_value), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

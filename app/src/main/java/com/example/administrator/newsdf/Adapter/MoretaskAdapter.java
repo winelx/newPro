@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.utils.Dates;
 
 import java.text.ParseException;

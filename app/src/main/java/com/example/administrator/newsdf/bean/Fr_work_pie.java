@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.Adapter;
+package com.example.administrator.newsdf.bean;
 
 /**
  * Created by Administrator on 2018/1/16 0016.

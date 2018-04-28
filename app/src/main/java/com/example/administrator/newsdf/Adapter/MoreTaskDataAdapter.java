@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * head_for_recyclerview   item_for_recycler_view   foot_for_recyclerview
+ * 多任务回复的适配器
  */
 
 public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

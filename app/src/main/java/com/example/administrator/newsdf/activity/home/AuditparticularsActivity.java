@@ -17,9 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.Adapter.Aduio_comm;
-import com.example.administrator.newsdf.Adapter.Aduio_content;
-import com.example.administrator.newsdf.Adapter.Aduio_data;
+import com.example.administrator.newsdf.bean.Aduio_comm;
+import com.example.administrator.newsdf.bean.Aduio_content;
+import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;

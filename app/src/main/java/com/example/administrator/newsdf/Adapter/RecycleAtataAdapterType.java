@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AuditparticularsActivity;
+import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.utils.CameDialog;
 
 import java.util.ArrayList;

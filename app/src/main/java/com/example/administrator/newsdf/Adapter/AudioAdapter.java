@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.Aduio_comm;
+import com.example.administrator.newsdf.bean.Aduio_content;
+import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.utils.Dates;
 
 import java.text.ParseException;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/12/13 0013.
+ * 任务详情
  */
 
 public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

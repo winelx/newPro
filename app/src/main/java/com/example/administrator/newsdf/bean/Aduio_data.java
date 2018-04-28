@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.Adapter;
+package com.example.administrator.newsdf.bean;
 
 import java.util.ArrayList;
 

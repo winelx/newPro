@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Adapter.Aduio_content;
+import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.Adapter.MoretaskAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
