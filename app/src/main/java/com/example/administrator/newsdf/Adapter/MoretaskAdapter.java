@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Aduio_content;
-import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.bean.MoretaskBean;
+import com.example.administrator.newsdf.bean.MoretasklistBean;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -26,14 +26,15 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int TYPE_DATA = 0xff02;
     private ArrayList<Aduio_content> content;
     private MoreTaskDataAdapter mAdapter;
-    private ArrayList<String> data;
+    private ArrayList<MoretasklistBean> data;
     private Context mContext;
-
+    private MoretaskBean moretaskBean;
 
     public MoretaskAdapter(Context mContext) {
         this.mContext = mContext;
         content = new ArrayList<>();
         data = new ArrayList<>();
+        moretaskBean = new MoretaskBean();
     }
 
     /**
@@ -94,34 +95,30 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 holder.detailsTitle.setText("主动上传任务");
             }
-            //创建时间
-            String data = null;
-            try {
-                data = Dates.datato(content.get(posotion).getCreateDate());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            if (content.size() != 0) {
+                holder.linearLayout.setVisibility(View.VISIBLE);
+                holder.detailsContent.setText(content.get(posotion).getContent());
+                holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+                //转交人
+                holder.detailsUser.setText(content.get(posotion).getLeaderName());
+                if (content.get(posotion).getStatus().equals("0")) {
+                    holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + content.get(posotion).getBackdata());
+                    //状态
+                    holder.detailsBoolean.setText("未完成");
+                    //状态
+                    holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
+                } else {
+                    holder.detailsData.setText(content.get(posotion).getCreateDate());
+                    //状态
+                    holder.detailsBoolean.setText("已完成");
+                    //状态 finish_green
+                    holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
 
-            holder.detailsContent.setText(content.get(posotion).getContent());
-            holder.detailsFixedData.setText(content.get(posotion).getBackdata());
-            //转交人
-            holder.detailsUser.setText(content.get(posotion).getLeaderName());
-            if (content.get(posotion).getStatus().equals("0")) {
-                holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + data);
-                //状态
-                holder.detailsBoolean.setText("未完成");
-                //状态
-                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
-
+                }// 转交说明
+                holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
             } else {
-                holder.detailsData.setText(content.get(posotion).getCreateDate());
-                //状态
-                holder.detailsBoolean.setText("已完成");
-                //状态 finish_green
-                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
-
-            }// 转交说明
-            holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
+                holder.linearLayout.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -138,7 +135,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder1.dataRec.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
             mAdapter = new MoreTaskDataAdapter(mContext);
             holder1.dataRec.setAdapter(mAdapter);
-            mAdapter.getData(data);
+            mAdapter.getData(data,moretaskBean);
         } else {
             holder1.setpin.setVisibility(View.GONE);
             holder1.dataRec.setVisibility(View.GONE);
@@ -191,9 +188,10 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * @param content 节点基本信息
      * @param data    节点数据
      */
-    public void getContent(ArrayList<Aduio_content> content, ArrayList<String> data) {
+    public void getContent(ArrayList<Aduio_content> content, ArrayList<MoretasklistBean> data, MoretaskBean moretaskBean) {
         this.content = content;
         this.data = data;
+        this.moretaskBean = moretaskBean;
         notifyDataSetChanged();
     }
 

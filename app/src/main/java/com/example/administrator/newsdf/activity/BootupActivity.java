@@ -75,7 +75,7 @@ public class BootupActivity extends AppCompatActivity {
         //获取保存的用户名和密码
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
         final String password = SPUtils.getString(BootupActivity.this, "password", "");
-        new Handler(new Handler.Callback() {
+        new Handler( new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 //进行是否登录判断

@@ -60,8 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
-
-
     }
     @Override
     public void onClick(View v) {
@@ -80,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.forget_password:
-                Toast.makeText(this, "请联系管理员11", Toast.LENGTH_SHORT).show();
+                ToastUtils.showLongToast("请联系管理员");
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(password.getText().toString()) &&
@@ -241,9 +239,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
-    }
+
 }

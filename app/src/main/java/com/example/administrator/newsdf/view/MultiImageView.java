@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.administrator.newsdf.R;
 
 /**
  * Desc:类似微信朋友圈图片展示
@@ -388,8 +392,18 @@ public class MultiImageView extends ViewGroup {
                 }
                 chileIv.setVisibility(View.VISIBLE);
                 String url = imgs[i];
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .error(R.mipmap.image_error)
+                        .placeholder(R.mipmap.image_loading)
+                        .override(400, 300)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE);
+                Glide.with(getContext())
+                        .load(url)
+                        .apply(options)
+                        .transition(new DrawableTransitionOptions().crossFade(1000))
+                        .into(chileIv);
 
-                Glide.with(getContext()).load(url).into(chileIv);
             } else {
                 chileIv.setVisibility(View.GONE);
             }

@@ -36,8 +36,8 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     private List<Home_item> mDatas = new ArrayList<Home_item>();
 
     private LeftSlideView mMenu = null;
-
-
+    private int Unfinish;
+    private static final int MAX = 99;
     public AllMessageAdapter(Context context) {
         mContext = context;
 
@@ -74,7 +74,6 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
             @Override
             public void onClick(View view) {
                 if (mDatas.get(position).isPutTop()) {
-
                     List<Shop> list = new ArrayList<Shop>();
                     list = LoveDao.ALLCart();
                     // 状态为ture 为置顶状态 点击为取消
@@ -107,14 +106,8 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         } else {
             holder.btn_Delete.setText("置顶");
         }
-        //判断是否有消息
-        String mess = mDatas.get(position).getUnfinish();
-        if (mDatas.get(position).getUnfinish().length() != 0) {
-            holder.home_item_message.setVisibility(View.INVISIBLE);
-            holder.home_item_message.setText(mess);
-        } else {
-            holder.home_item_message.setVisibility(View.GONE);
-        }
+
+
         //随机数，改变标段的颜色
         int Random = (int) (Math.random() * 4) + 1;
         if (Random == 1) {
@@ -136,6 +129,18 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
         //消息量
         holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        //判断是否有消息
+        String message = mDatas.get(position).getUnfinish();
+        try {
+            Unfinish = Integer.parseInt(message);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (Unfinish > MAX) {
+            holder.home_item_message.setText("99+");
+        } else {
+            holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        }
     }
 
     @Override

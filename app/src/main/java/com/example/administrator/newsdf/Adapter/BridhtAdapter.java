@@ -50,7 +50,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void bindContent(Viewholder holder, int position) {
         holder.hrightItemViewgroup.setMaxChildCount(12);
         holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.ic_launcher);
-        String[] urls = mData.get(position).getList().split(",");
+        String[] urls = mData.get(position).getList().split("，");
         holder.hrightItemViewgroup.setImgs(urls, 4);
 //如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
         int length = mData.get(position).getName().length();

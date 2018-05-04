@@ -21,7 +21,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -401,7 +400,7 @@ public class Dates {
             if (first) {
                 first = false;
             } else {
-                result.append(",");
+                result.append("，");
             }
             result.append(string);
         }
@@ -616,15 +615,12 @@ public class Dates {
     public static int withFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-            ToastUtils.showLongToast("1.0");
             return 230;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
-            ToastUtils.showLongToast("2.0");
             return 230;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
-            ToastUtils.showLongToast(" 3.0");
             return 300;
         } else {
             return 300;
@@ -635,15 +631,15 @@ public class Dates {
     public static int higtFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-            ToastUtils.showLongToast("1.0");
+
             return 300;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
-            ToastUtils.showLongToast("2.0");
+
             return 310;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
-            ToastUtils.showLongToast(" 3.0");
+
             return 500;
         } else {
             return 500;

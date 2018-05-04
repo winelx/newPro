@@ -117,12 +117,11 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/home_item_style"
                                 android:gravity="center"
-                                android:text="99+"
+                                android:text="+"
                                 android:textColor="@color/writer"
                                 android:textSize="10sp" />
 
                         </LinearLayout>
-
 
                     </LinearLayout>
 

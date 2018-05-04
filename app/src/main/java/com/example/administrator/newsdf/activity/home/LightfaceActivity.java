@@ -195,33 +195,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
-        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4（用来设置任务状态弹出框在不同手机宽高）
-        ste = ScreenUtil.getDensity(baseApplication.getInstance());
-        //回调
-        TaskCallbackUtils.setCallBack(this);
-        list = new ArrayList<>();
-        mTreeDatas = new ArrayList<>();
-        addOrganizationList = new ArrayList<>();
-        organizationList = new ArrayList<>();
-        //获取用户推送消息
-        list = LoveDao.JPushCart();
-        Message mes = new Message();
-        handler.sendMessage(mes);
-        //清除通知栏所有消息
-        JPushInterface.clearAllNotifications(baseApplication.getInstance());
-        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
-        try {
-            orgId = intent.getExtras().getString("orgId");
-            fixedwbsId = intent.getExtras().getString("orgId");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        //任务列表
-        mDatas = new ArrayList<>();
-        //图册
-        imagePaths = new ArrayList<>();
+        //初始化集合
+        initArray();
         //获得控件id，初始化id
         findview();
         //初始化数据
@@ -306,19 +283,12 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                 homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
         });
-        imageViewMeun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MeunPop();//打开弹出框
-                searchEditext.clearFocus();//失去焦点
 
-            }
-        });
         //listview的点击事件
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -328,18 +298,20 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     case "0":
                         //未上传进入详情
                         Intent intent = new Intent(mContext, MoretaskActivity.class);
-                        //Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        intent.putExtra("frag_id", mDatas.get(position).getTaskId());
+                        //       Intent intent = new Intent(mContext, AuditparticularsActivity.class);
+                        intent.putExtra("TaskId", mDatas.get(position).getTaskId());
                         intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+                        intent.putExtra("id", mDatas.get(position).getId());
                         intent.putExtra("status", "one");
                         startActivity(intent);
                         break;
                     //通过的详情
                     case "1":
-                        Intent audio = new Intent(mContext, MoretaskActivity.class);
-                        // Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        audio.putExtra("frag_id", mDatas.get(position).getTaskId());
+                       Intent audio = new Intent(mContext, MoretaskActivity.class);
+                        //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
+                        audio.putExtra("TaskId", mDatas.get(position).getTaskId());
                         audio.putExtra("wbsid", mDatas.get(position).getWbsId());
+                        audio.putExtra("id", mDatas.get(position).getId());
                         audio.putExtra("status", "two");
                         startActivity(audio);
                         break;
@@ -413,7 +385,37 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         getOrganization(organizationList);
     }
 
+    private void initArray() {
+        list = new ArrayList<>();
+        mTreeDatas = new ArrayList<>();
+        addOrganizationList = new ArrayList<>();
+        organizationList = new ArrayList<>();
+        //任务列表
+        mDatas = new ArrayList<>();
+        //图册
+        imagePaths = new ArrayList<>();
+    }
+
     private void initdata(Intent intent) {
+        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4（用来设置任务状态弹出框在不同手机宽高）
+        ste = ScreenUtil.getDensity(baseApplication.getInstance());
+        //回调
+        TaskCallbackUtils.setCallBack(this);
+        //获取用户推送消息
+        list = LoveDao.JPushCart();
+        Message mes = new Message();
+        handler.sendMessage(mes);
+        //清除通知栏所有消息
+        JPushInterface.clearAllNotifications(baseApplication.getInstance());
+        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+
+        try {
+            orgId = intent.getExtras().getString("orgId");
+            fixedwbsId = intent.getExtras().getString("orgId");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         //禁止下拉
         drawerlayoutSmart.setEnableRefresh(false);
         //启用或禁用与所有抽屉的交互。
@@ -430,7 +432,6 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         titlew.setText(intent.getExtras().getString("name"));
         //标题文字大小
         titlew.setTextSize(17);
-
         //侧拉界面数据适配
         taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
         //侧拉界面数据填充
@@ -542,7 +543,10 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
             case R.id.com_back:
                 finish();
                 break;
-
+            case R.id.com_img:
+                MeunPop();//打开弹出框
+                searchEditext.clearFocus();//失去焦点
+                break;
             default:
                 break;
         }
@@ -813,6 +817,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         fab = (CircleImageView) findViewById(R.id.fab);
         //点击pop
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
+        imageViewMeun.setOnClickListener(this);
         //任务列表
         uslistView = (ListView) findViewById(R.id.list_recycler);
         //搜索

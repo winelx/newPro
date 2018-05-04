@@ -13,9 +13,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -94,9 +94,9 @@
                 android:textSize="10sp" />
 
             <RelativeLayout
-                android:descendantFocusability="blocksDescendants"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/task_content"

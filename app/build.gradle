@@ -20,14 +20,12 @@ android {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
         }
-
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 //极光推送
                 JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
                 JPUSH_CHANNEL: "developer-default",
         ]
-
     }
 
     //greendao配置
@@ -46,7 +44,6 @@ android {
             //显示日志
             buildConfigField("boolean", "LOG_DEBUG", "true");
         }
-
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
@@ -56,15 +53,13 @@ android {
 
             shrinkResources false
             minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//optimize 默认优化就是这两个文件的区别
+                //optimize 默认优化就是这两个文件的区别
         }
-
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']

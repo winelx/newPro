@@ -21,9 +21,13 @@ import okhttp3.Response;
 
 import static com.lzy.okgo.OkGo.post;
 
-/**
- * Created by Administrator on 2018/4/11 0011.
- */
+/** 
+ * description: 解析json和封装了查询图册的
+ * @author lx
+ * date: 2018/5/4 0004 下午 4:06
+ * update: 2018/5/4 0004
+ * version: 
+*/
 
 public class homeUtils {
 

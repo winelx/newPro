@@ -32,6 +32,7 @@ import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -66,22 +67,22 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
  * version:
  */
 public class AuditparticularsActivity extends AppCompatActivity implements DetailsCallback {
-    private RecyclerView mRecyclerView;
-    private LinearLayout linearLayout;
     //界面适配器
     private AudioAdapter mAdapter;
-    private String id, intentBack;
+    private String id;
     private ArrayList<Aduio_content> contents;
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
     private Context mContext;
-    private TextView wbsnam, comTitle, wbspath, comButton;
+    private TextView wbsnam;
+    private TextView wbspath;
+    private TextView comButton;
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     /**
      * 图片查看的圆形图标
      */
-    private CircleImageView fab;
+    private CircleImageView Circle;
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
     private LinearLayout back;
@@ -102,7 +103,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
      */
     private DialogRecAdapter dialogadapter;
     private LinearLayout comImg;
-    private String Titles;
+
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -119,7 +120,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         final Intent intent = getIntent();
         path = new ArrayList<>();
         try {
-            id = intent.getExtras().getString("frag_id");
+            id = intent.getExtras().getString("TaskId");
             status = intent.getExtras().getString("status");
             wbsid = intent.getExtras().getString("wbsid");
         } catch (NullPointerException e) {
@@ -130,6 +131,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
             }
+
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -142,8 +144,12 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        fab = (CircleImageView) findViewById(R.id.fab);
-        mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
+        Circle = (CircleImageView) findViewById(R.id.fab);
+        wbspath = (TextView) findViewById(R.id.wbspath);
+        back = (LinearLayout) findViewById(R.id.adui_com_back);
+        comButton = (TextView) findViewById(R.id.audio_com_button);
+        TextView comTitle = (TextView) findViewById(R.id.audio_com_title);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
         //得到跳转到该Activity的Intent对象
         contents = new ArrayList<>();
         aduioDatas = new ArrayList<>();
@@ -155,12 +161,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //关闭下拉刷新
         drawerLayoutSmart.setEnableRefresh(false);
-        //获取到intent传过来得集合
-        comTitle = (TextView) findViewById(R.id.audio_com_title);
         comTitle.setText("任务详情");
-        wbspath = (TextView) findViewById(R.id.wbspath);
-        back = (LinearLayout) findViewById(R.id.adui_com_back);
-        comButton = (TextView) findViewById(R.id.audio_com_button);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
@@ -202,11 +203,11 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 finish();
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
+        //图册查询
+        Circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 page = 1;
@@ -219,7 +220,9 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
             }
         });
 
-        //任务详情记录
+        /**
+         * 任务详情记录
+         */
         comImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,11 +250,20 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         });
     }
 
-
+    /**
+     * adapter获取ID
+     */
     public String getId() {
         return wtMainid;
     }
 
+    /**
+     * 返回键
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //抛出异常，在任务管理界面返回时不需要刷新数据，
@@ -277,6 +289,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("sss",s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -290,7 +303,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             JSONObject wtMain = data.getJSONObject("wtMain");
                             JSONObject createBy = wtMain.getJSONObject("createBy");
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
-
                             JSONArray comments = data.getJSONArray("comments");
                             //任务详情
                             try {
@@ -308,7 +320,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             try {
                                 ///检查点
                                 name = wtMain.getString("name");
-                                Titles = name;
                             } catch (JSONException e) {
 
                                 name = "";

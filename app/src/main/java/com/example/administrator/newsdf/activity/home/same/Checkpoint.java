@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Makeup;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
@@ -26,22 +25,23 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
 /**
  * description:选择检查项
+ *
  * @author lx
- * date: 2018/2/6 0006 上午 11:07
- * update: 2018/2/6 0006
- * version:
-*/
+ *         date: 2018/2/6 0006 上午 11:07
+ *         update: 2018/2/6 0006
+ *         version:
+ */
 public class Checkpoint extends AppCompatActivity {
-    private ListView list_item;
+    private ListView listItem;
     private String list;
     private ArrayList<Makeup> mData;
     private SettingAdapter mAdapter;
     private Context mContent;
     private SPUtils spUtils;
-    private ImageView backgroud;
-    private IconTextView com_back;
+    private IconTextView comBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class Checkpoint extends AppCompatActivity {
         mContent = Checkpoint.this;
         mData = new ArrayList<>();
         spUtils = new SPUtils();
-        list_item = (ListView) findViewById(R.id.list_item);
+        listItem = (ListView) findViewById(R.id.list_item);
         try {
             Intent intent = getIntent();
             list = intent.getExtras().getString("wbsID");
@@ -61,8 +61,8 @@ public class Checkpoint extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        com_back = (IconTextView) findViewById(R.id.com_back);
-        com_back.setOnClickListener(new View.OnClickListener() {
+        comBack = (IconTextView) findViewById(R.id.com_back);
+        comBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -77,16 +77,20 @@ public class Checkpoint extends AppCompatActivity {
                     public void onClick(View v) {
                         //返回列表
                         Intent intent = new Intent();
-                        intent.putExtra("name", obj.getName());//内容
-                        intent.putExtra("id", obj.getId());//内容
-                        setResult(2, intent);//回传数据到主Activity
-                        finish(); //此方法后才能返回主Activity
+                        //内容
+                        intent.putExtra("name", obj.getName());
+                        //内容
+                        intent.putExtra("id", obj.getId());
+                        //回传数据到主Activity
+                        setResult(2, intent);
+                        //此方法后才能返回主Activity
+                        finish();
                     }
                 });
             }
 
         };
-        list_item.setAdapter(mAdapter);
+        listItem.setAdapter(mAdapter);
 
     }
 

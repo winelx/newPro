@@ -40,7 +40,7 @@ public class TaskRecordActivity extends AppCompatActivity {
     private TaskRecordAdapter mAdapter;
     private ListView task_list;
     private ArrayList<Tenanceview> mData;
-    String taskId;
+    private String taskId;
     private Context mContext;
 
     @Override

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:id="@+id/moretask_content"
     android:orientation="vertical">
 
     <TextView
@@ -58,7 +59,6 @@
         android:layout_marginRight="16dp"
         android:drawablePadding="5dp"
         android:drawableRight="@mipmap/arrow_right"
-        android:text="评论3"
         android:textColor="#808080"
         android:textSize="12sp" />
 

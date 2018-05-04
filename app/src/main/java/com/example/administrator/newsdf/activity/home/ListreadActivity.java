@@ -256,16 +256,16 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                     //回复转发(自己回复或选择转发)
                     //未上传进入详情
                     case "0":
-                        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        intent.putExtra("frag_id", Alldata.get(position).getTaskId());
+                        Intent intent = new Intent(mContext, MoretaskActivity.class);
+                        intent.putExtra("TaskId", Alldata.get(position).getTaskId());
                         intent.putExtra("wbsid", Alldata.get(position).getWbsId());
                         intent.putExtra("status", "one");
                         startActivity(intent);
                         break;
                     //通过的详情
                     case "1":
-                        Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        audio.putExtra("frag_id", Alldata.get(position).getTaskId());
+                        Intent audio = new Intent(mContext, MoretaskActivity.class);
+                        audio.putExtra("TaskId", Alldata.get(position).getTaskId());
                         audio.putExtra("wbsid", Alldata.get(position).getWbsId());
                         audio.putExtra("status", "two");
                         startActivity(audio);

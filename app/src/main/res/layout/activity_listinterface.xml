@@ -54,7 +54,6 @@
                     android:maxEms="10"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="sssssssssssssssssssssssssssssssssss"
                     android:textColor="@color/writer"
                     android:textSize="18sp" />
 

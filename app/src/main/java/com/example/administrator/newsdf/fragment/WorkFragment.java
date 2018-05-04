@@ -77,12 +77,9 @@ public class WorkFragment extends Fragment {
 
     private String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8", "#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
 
-    String url1 = "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_01small_02_2018414191166C.jpg，" +
-            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
-            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
-            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg，" +
-            "http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg";
 
+//
+    ArrayList<String> list;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
@@ -90,6 +87,7 @@ public class WorkFragment extends Fragment {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_work, null);
             mData = new ArrayList<>();
+
             //初始化控件Id
             findId();
             //设置当前时间的问候
@@ -145,6 +143,11 @@ public class WorkFragment extends Fragment {
                 }
             };
         }
+        list =new ArrayList<>();
+        list.add("http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_01small_02_2018414191166C.jpg");
+        list.add("http://img1.gamersky.com/image2018/04/20180428_zl_91_2/gamersky_02origin_03_201842819329E2.jpg");
+        list.add("http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg");
+        String url1=Dates.listToString(list);
         //设置饼状图
         PieChartOne.setDate(mData);
         fr_work_grid.setAdapter(mAdapter);
