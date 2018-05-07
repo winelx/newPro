@@ -53,7 +53,7 @@ import okhttp3.Response;
  *         update: 2018/3/16 0016
  *         version:
  */
-public class AllMessageFragment extends Fragment implements CallBack,OgranCallback{
+public class AllMessageFragment extends Fragment implements CallBack, OgranCallback {
     private View rootView;
     private RecyclerView listView;
     private AllMessageAdapter mAdapter = null;

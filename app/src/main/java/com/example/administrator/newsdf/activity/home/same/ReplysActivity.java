@@ -24,7 +24,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -96,7 +95,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private EditText replyText;
     private Context mContext;
     private ProgressBar mProgressBar;
-    private LinearLayout progessn;
     private ArrayList<String> pathimg;
     private CheckPermission checkPermission;
     private String content = "", wbspath = "", wbsID = "", id = "", wbstitle = "";
@@ -247,7 +245,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.reply_wbs).setOnClickListener(this);
         findViewById(R.id.reply_check).setOnClickListener(this);
-        progessn = (LinearLayout) findViewById(R.id.Progess);
+
         mProgressBar = (ProgressBar) findViewById(R.id.reply_bar);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动

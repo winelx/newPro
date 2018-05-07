@@ -17,11 +17,14 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 
+
 /**
- * Desc:类似微信朋友圈图片展示
- * Author:gcy
- * Date:2016/8/24
- */
+ * description: 类似微信朋友圈图片展示
+ * @author lx
+ * date: 2018/5/4 0004 下午 5:16
+ * update: 2018/5/4 0004
+ * version:
+*/
 
 public class MultiImageView extends ViewGroup {
 

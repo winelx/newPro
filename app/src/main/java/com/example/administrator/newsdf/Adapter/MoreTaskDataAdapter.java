@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
-import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 
 import java.util.ArrayList;
@@ -33,12 +32,11 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final static int TYPE_FOOTER = 2;
     private ArrayList<MoretasklistBean> list;
     private Context mContext;
-    private MoretaskBean moretaskBean;
 
     public MoreTaskDataAdapter(Context mContext) {
         this.mContext = mContext;
         list = new ArrayList<>();
-        moretaskBean = new MoretaskBean();
+
     }
 
     public int getContentSize() {
@@ -87,8 +85,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 myHolders.button.setVisibility(View.GONE);
             }
             myHolders.taskNumber.setText("(" + list.size() + ")");
-            myHolders.moretaskname.setText(moretaskBean.getName());
-//            myHolders.moretaskimage.setText(moretaskBean.getImage());
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 获取holder对象
             MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
@@ -169,9 +165,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public void getData(ArrayList<MoretasklistBean> list, MoretaskBean moretaskBean) {
+    public void getData(ArrayList<MoretasklistBean> list) {
         this.list = list;
-        this.moretaskBean = moretaskBean;
+
         notifyDataSetChanged();
     }
 }

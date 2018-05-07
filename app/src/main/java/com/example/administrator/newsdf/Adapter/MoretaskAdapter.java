@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Aduio_content;
-import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 
 import java.util.ArrayList;
@@ -28,13 +27,16 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private MoreTaskDataAdapter mAdapter;
     private ArrayList<MoretasklistBean> data;
     private Context mContext;
-    private MoretaskBean moretaskBean;
 
+
+    /**
+     * 初始化
+     * @param mContext
+     */
     public MoretaskAdapter(Context mContext) {
         this.mContext = mContext;
         content = new ArrayList<>();
         data = new ArrayList<>();
-        moretaskBean = new MoretaskBean();
     }
 
     /**
@@ -135,7 +137,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder1.dataRec.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
             mAdapter = new MoreTaskDataAdapter(mContext);
             holder1.dataRec.setAdapter(mAdapter);
-            mAdapter.getData(data,moretaskBean);
+            mAdapter.getData(data);
         } else {
             holder1.setpin.setVisibility(View.GONE);
             holder1.dataRec.setVisibility(View.GONE);
@@ -188,10 +190,10 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * @param content 节点基本信息
      * @param data    节点数据
      */
-    public void getContent(ArrayList<Aduio_content> content, ArrayList<MoretasklistBean> data, MoretaskBean moretaskBean) {
+    public void getContent(ArrayList<Aduio_content> content, ArrayList<MoretasklistBean> data) {
         this.content = content;
         this.data = data;
-        this.moretaskBean = moretaskBean;
+
         notifyDataSetChanged();
     }
 

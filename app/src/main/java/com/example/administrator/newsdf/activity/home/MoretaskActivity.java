@@ -23,7 +23,9 @@ import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
+import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,8 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -67,6 +69,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ListView drawerLayoutList;
     private ArrayList<PhotoBean> imagePaths;
     private SmartRefreshLayout drawerLayout_smart;
+    SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * 请求图册的页数
      */
@@ -217,7 +220,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         //请求网络
     public void OkGo() {
         LogUtil.i("result", taskID);
-        OkGo.<String>get("http://192.168.20.80:8090/pzgc/iface/mobile/taskmain/partContentDetail")
+        OkGo.<String>get(Requests.ContentDetail)
                 .params("id", taskID)
                 .execute(new StringCallback() {
                     @Override
@@ -235,20 +238,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 //返回数据
                 JSONObject Data = jsonObject.getJSONObject("data");
                 JSONObject jsonArray = Data.getJSONObject("data");
-
-                try {
-                    JSONObject imgMap = Data.getJSONObject("imgMap");
-                    Iterator<String> image = imgMap.keys();
-                    while (image.hasNext()) {
-                        JSONObject p = (JSONObject) imgMap.get(image.next());
-                        String Id = p.getString("id");
-                        String createdata = p.getString("createDate");
-                        String realname = p.getString("realname");
-                        moretaskBean = new MoretaskBean(realname, createdata);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 //创建时间
                 String createDate;
@@ -355,42 +344,33 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                     wbsId = "";
                 }
-
                 try {
-                    JSONObject parts = Data.getJSONObject("parts");
-                    Iterator<String> keys = parts.keys();
-                    while (keys.hasNext()) {
-                        //获取parts下面的所有keys，将key转成集合遍历取出数据
-                        JSONArray p = (JSONArray) parts.get(keys.next());
-                        for (int i = 0; i < p.length(); i++) {
-                            JSONObject json = p.getJSONObject(i);
-                            String str = json.getString("createDate");
-                            String detection = json.getString("detetionName");
-                            String wbsid= json.getString("wbsId");
-                            String taskId=json.getString("orgId");
-                            String ids = json.getString("id");
-                            Dats.add(new MoretasklistBean(str,detection,wbsid,taskId,ids));
-                        }
+                    JSONArray parts = Data.getJSONArray("parts");
+                    for (int i = 0; i <parts.length() ; i++) {
+                        JSONObject json=parts.getJSONObject(i);
+                       String ids= json.getString("id");
+                       String partContent= json.getString("partContent");
+                       String uploadName= json.getString("uploadName");
+                       String uploadTime= Dates.stampToDate(json.getString("uploadTime")) ;
+                       String portrait= json.getString("portrait");
+                        Dats.add(new MoretasklistBean(uploadTime,uploadName,partContent,portrait,ids));
                     }
+
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
-                mAdapter.getContent(contents, Dats, moretaskBean);
+                mAdapter.getContent(contents, Dats);
                 wbsNode.setText(wbsName);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else
-
-        {
-
         }
     }
 
     //请求图册
     public void getPhoto() {
-        //将请求方法封装到工具类，因为多个地方需要相同的请求
+        //将请求方法封装到工具类，因为多个界面需要相同的请求
         homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
     }
 }
