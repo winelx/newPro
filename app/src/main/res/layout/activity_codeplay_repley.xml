@@ -106,12 +106,14 @@
             android:textSize="15sp" />
 
         <RadioGroup
+            android:id="@+id/codeplay_status"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/codeplay_status_true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="是"
@@ -120,6 +122,7 @@
                 android:theme="@style/RadioButton" />
 
             <RadioButton
+                android:id="@+id/codeplay_status_false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
@@ -154,6 +157,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/partContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"

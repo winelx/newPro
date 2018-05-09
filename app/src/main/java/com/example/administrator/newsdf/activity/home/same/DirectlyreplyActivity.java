@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +79,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private TextView repley_address, wbs_text, title;
     private LinearLayout com_button;
     private String Latitude, Longitude;
-    private EditText reply_text;
+    private EditText reply_text, partContent;
     private Context mContext;
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
@@ -85,6 +87,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     String id = null;
     private static final int IMAGE_PICKER = 101;
     private int num = 0;
+    private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,11 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //发现ID
     private void findID() {
+        //部位名称
+        partContent = (EditText) findViewById(R.id.partContent);
+        //单选
+        mRadioGroup = (RadioGroup) findViewById(R.id.codeplay_status);
+        //标题
         title = (TextView) findViewById(R.id.com_title);
         //图片
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
@@ -161,6 +169,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         reply_text = (EditText) findViewById(R.id.reply_text);
         //提交
         com_button = (LinearLayout) findViewById(reply_button);
+        //返回
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +182,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         com_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 files = new ArrayList<File>();
                 String content = reply_text.getText().toString();
                 for (int i = 0; i < imagePaths.size(); i++) {
@@ -182,15 +190,42 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 LogUtil.d("DirectlyreplyActivity", "files.size():" + files.size());
 
                 if (content.isEmpty()) {
-                    ToastUtils.showShortToast("回复内容为空");
+                    ToastUtils.showShortToast("回复内容不能为空");
                 } else {
                     //保存状态，进行回退判断
                     SPUtils.putString(mContext, "back", "false");
-                    Okgo(Bai_address, files);
+                    if (partContent.getText().toString().length() != 0) {
+                        RadioButton rb = (RadioButton) DirectlyreplyActivity.this.findViewById(mRadioGroup.getCheckedRadioButtonId());
+                        try {
+                            if (rb.getText() != null) {
+                                String str = rb.getText().toString();
+                                if (str == "是") {
+                                } else {
+                                    Okgo(Bai_address, files, false);
+                                }
+                            }
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            ToastUtils.showLongToast("该任务是否已经完成");
+                        }
+                    } else {
+                        ToastUtils.showLongToast("具体部位不能为空");
+                    }
+
                 }
             }
         });
         com_button.setVisibility(View.VISIBLE);
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // getCheckedRadioButtonId()来得到选中的RadioButton的ID，从而得到RadioButton进而获取选中值
+                RadioButton rb = (RadioButton) DirectlyreplyActivity.this.findViewById(mRadioGroup.getCheckedRadioButtonId());
+                ToastUtils.showLongToast(rb.getText() + "");
+            }
+        });
+
     }
 
     //调用相机
@@ -205,23 +240,24 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         photoadd.setAdapter(photoAdapter);
     }
 
-
     //网络请求
-    private void Okgo(String address, ArrayList<File> file) {
+    private void Okgo(String address, ArrayList<File> file, boolean isAllFinished) {
         userPop();
+
         OkGo.post(Requests.Uploade)
                 .params("id", id)
                 .params("uploadContent", reply_text.getText().toString())
                 .params("latitude", Latitude)
                 .params("longitude", Longitude)
+                .params("partContent", partContent.getText().toString())
+                .params("isAllFinished ", isAllFinished)
                 .params("uploadAddr", address)
                 //上传图片
                 .addFileParams("imagesList", file)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        popupWindow.dismiss();
-                        popstatus = false;
+                        ToastUtils.showLongToast(s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -236,6 +272,8 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                                 setResult(RESULT_OK, intent);
                                 finish(); //此方法后才能返回主Activity
                             }
+                            popupWindow.dismiss();
+                            popstatus = false;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -369,9 +407,9 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
 
-        Button btnCamera = (Button) popView.findViewById(R.id.btn_camera_pop_camera);
-        Button btnAlbum = (Button) popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel = (Button) popView.findViewById(R.id.btn_camera_pop_cancel);
+        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
+        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
+        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
         RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;

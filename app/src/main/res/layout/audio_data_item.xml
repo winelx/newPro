@@ -26,7 +26,7 @@
         android:layout_marginTop="17dp"
         android:layout_toEndOf="@+id/audio_acathor"
         android:layout_toRightOf="@+id/audio_acathor"
-        android:text="李白"
+
         android:textColor="@color/blue"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -40,7 +40,6 @@
         android:layout_alignTop="@+id/audio_name"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="15dp"
-        android:text="2017-12-10"
         android:textColor="@color/editext_text"
         android:textSize="12sp" />
 
@@ -54,7 +53,6 @@
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/audio_acathor"
         android:layout_toRightOf="@+id/audio_acathor"
-        android:text="打扫打扫所多所多的方复方法反反复复反反复复"
         android:textColor="@color/textViwe"
         android:textSize="14sp" />
 
@@ -91,7 +89,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:text="贵阳市花溪区"
             android:textSize="10sp" />
     </LinearLayout>
 
@@ -109,24 +106,27 @@
 
 
         <LinearLayout
+            android:id="@+id/givealike"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/givealike_image"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@mipmap/givealike" />
+              />
 
             <TextView
+                android:id="@+id/givealike_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="3dp"
-                android:text="点亮"
-                android:textColor="@color/color646464"
-                android:textSize="15sp" />
+                android:layout_marginLeft="2dp"
+                android:text="@string/givealike"
+                android:textSize="12sp" />
         </LinearLayout>
 
 
@@ -150,8 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
-                android:layout_marginLeft="5dp"
-                android:paddingTop="5dp"
+                android:layout_marginLeft="2dp"
                 android:text="评论"
                 android:textSize="12sp" />
 
@@ -160,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
-                android:paddingTop="5dp"
+                android:layout_marginLeft="2dp"
                 android:text="0"
                 android:textSize="12sp" />
         </LinearLayout>

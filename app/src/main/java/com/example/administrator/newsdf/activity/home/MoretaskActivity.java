@@ -36,12 +36,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
 
 
 /**
@@ -69,7 +67,10 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ListView drawerLayoutList;
     private ArrayList<PhotoBean> imagePaths;
     private SmartRefreshLayout drawerLayout_smart;
-    SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd");
+    /**
+     * 是否需要返回后刷新界面状态
+     */
+    private boolean Refresh = true;
     /**
      * 请求图册的页数
      */
@@ -94,7 +95,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         final Intent intent = getIntent();
         try {
             taskID = intent.getExtras().getString("TaskId");
-            id = intent.getExtras().getString("id");
             status = intent.getExtras().getString("status");
             wbsid = intent.getExtras().getString("wbsid");
         } catch (NullPointerException e) {
@@ -115,8 +115,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         //网络请求
         OkGo();
         //请求图册图片
-        getPhoto();
-        //请求图片
         getPhoto();
         //侧拉listview上拉加载
         drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -194,14 +192,13 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.fab:
                 //打开抽屉控件，查看图册
-
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.newmoretask:
                 //点击回复
                 Intent intent = new Intent(MoretaskActivity.this, DirectlyreplyActivity.class);
-                intent.putExtra("id", id);
-                startActivity(intent);
+                intent.putExtra("id", taskID);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
                 //返回
@@ -210,14 +207,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             case R.id.taskrecord:
                 //任务记录
                 Intent intent1 = new Intent(MoretaskActivity.this, TaskRecordActivity.class);
-                intent1.putExtra("taskId", id);
+                intent1.putExtra("taskId", taskID);
                 startActivity(intent1);
                 break;
             default:
                 break;
         }
     }
-        //请求网络
+
+    //请求网络
     public void OkGo() {
         LogUtil.i("result", taskID);
         OkGo.<String>get(Requests.ContentDetail)
@@ -230,10 +228,13 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     //解析当前页面数据
     public void getJson(String s) {
         if (s.contains(DATA)) {
             try {
+                contents.clear();
+                Dats.clear();
                 JSONObject jsonObject = new JSONObject(s);
                 //返回数据
                 JSONObject Data = jsonObject.getJSONObject("data");
@@ -346,17 +347,17 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 }
                 try {
                     JSONArray parts = Data.getJSONArray("parts");
-                    for (int i = 0; i <parts.length() ; i++) {
-                        JSONObject json=parts.getJSONObject(i);
-                       String ids= json.getString("id");
-                       String partContent= json.getString("partContent");
-                       String uploadName= json.getString("uploadName");
-                       String uploadTime= Dates.stampToDate(json.getString("uploadTime")) ;
-                       String portrait= json.getString("portrait");
-                        Dats.add(new MoretasklistBean(uploadTime,uploadName,partContent,portrait,ids));
+                    for (int i = 0; i < parts.length(); i++) {
+                        JSONObject json = parts.getJSONObject(i);
+                        String ids = json.getString("id");
+                        String partContent = json.getString("partContent");
+                        String uploadName = json.getString("uploadName");
+                        String uploadTime = Dates.stampToDate(json.getString("uploadTime"));
+                        String portrait = json.getString("portrait");
+                        Dats.add(new MoretasklistBean(uploadTime, uploadName, partContent, portrait, ids));
                     }
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
@@ -373,4 +374,18 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         //将请求方法封装到工具类，因为多个界面需要相同的请求
         homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            taskID = data.getStringExtra("frag_id");
+            taskrecord.setVisibility(View.GONE);
+            newmoretask.setVisibility(View.VISIBLE);
+            Refresh = false;
+            OkGo();
+        }
+    }
+
+
 }

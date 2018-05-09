@@ -165,19 +165,8 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
-        switch (status) {
-            case "one":
-                comImg.setVisibility(View.GONE);
-                okgo(id);
-                break;
-            case "two":
-                comButton.setVisibility(View.GONE);
-                comImg.setVisibility(View.VISIBLE);
-                okgo(id);
-                break;
-            default:
-                break;
-        }
+
+        okgo(id);
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, AuditparticularsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
         //回复任务
@@ -289,7 +278,8 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("sss",s);
+                        LogUtil.i("sss", id);
+                        LogUtil.i("sss", s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -328,8 +318,18 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             //状态
                             try {
                                 status = wtMain.getString("status");
+                                switch (status) {
+                                    case "1":
+                                        comImg.setVisibility(View.GONE);
+                                        break;
+                                    case "2":
+                                        comButton.setVisibility(View.GONE);
+                                        comImg.setVisibility(View.VISIBLE);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             } catch (JSONException e) {
-
                                 status = "";
                             }
                             String content;
@@ -510,6 +510,14 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                     //打回说明
                                     callbackId = "";
                                 }
+                                int isSmartProject;
+                                try {//打回人ID
+                                    isSmartProject = Sub.getInt("isSmartProject");
+                                } catch (JSONException e) {
+                                    //打回说明
+                                    isSmartProject = 0;
+                                }
+
                                 String userimage;
                                 try {
                                     String path = wtMain.getJSONObject("uploadUser").getString("portrait");
@@ -530,7 +538,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 }
                                 aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                         subWbsname, uploadContent, updateDate, uploadAddr, subLeadername, subLeaderid, subIscallback,
-                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage, filename));
+                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage, filename, isSmartProject));
                             }
 
                             for (int i = 0; i < comments.length(); i++) {
@@ -581,7 +589,6 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                 });
     }
 
-
     /**
      * startResult返回数据
      */
@@ -615,12 +622,16 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         }
     }
 
-
     /**
      * 回调刷新界面
      */
     @Override
     public void deleteTop() {
         okgo(id);
+    }
+
+
+    public String gettaskId() {
+        return id;
     }
 }

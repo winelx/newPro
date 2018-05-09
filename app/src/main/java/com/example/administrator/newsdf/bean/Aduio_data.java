@@ -28,13 +28,15 @@ public class Aduio_data {
     ArrayList<String> filename;//附件list（
     String commentCount; //评论条数
    String userpath;
+    //提亮
+    int isSmartProject;
 
 
     public Aduio_data(String replyID, String uploadId, String replyUserName,
                       String replyUserHeaderURL, String name, String wbsName, String uploadContent,
                       String updateDate, String uploadAddr, String leaderName, String leaderId,
                       String iscallback, String callbackContent, String callbackTime,
-                      String callbackId, ArrayList<String> attachments, String commentCount,String userpath,   ArrayList<String> filename
+                      String callbackId, ArrayList<String> attachments, String commentCount,String userpath,   ArrayList<String> filename, int isSmartProject
                      ) {
         this.replyID = replyID;
         this.uploadId = uploadId;
@@ -55,6 +57,7 @@ public class Aduio_data {
         this.commentCount = commentCount;
         this.userpath = userpath;
         this.filename = filename;
+        this.isSmartProject = isSmartProject;
 
     }
 
@@ -208,5 +211,13 @@ public class Aduio_data {
 
     public void setFilename(ArrayList<String> filename) {
         this.filename = filename;
+    }
+
+    public int getIsSmartProject() {
+        return isSmartProject;
+    }
+
+    public void setIsSmartProject(int isSmartProject) {
+        this.isSmartProject = isSmartProject;
     }
 }

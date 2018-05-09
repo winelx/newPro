@@ -79,11 +79,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof MoreTaskDataAdapter.HeadHolder) {
             // 头部
             MoreTaskDataAdapter.HeadHolder myHolders = (MoreTaskDataAdapter.HeadHolder) holder;
-            if (list.size() != 0) {
-                myHolders.button.setVisibility(View.VISIBLE);
-            } else {
-                myHolders.button.setVisibility(View.GONE);
-            }
             myHolders.taskNumber.setText("(" + list.size() + ")");
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 获取holder对象
@@ -103,15 +98,7 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else { // 尾部
             MoreTaskDataAdapter.FootHolder myHoldered = (MoreTaskDataAdapter.FootHolder) holder;
-            if (list.size() != 0) {
-                myHoldered.footer.setVisibility(View.VISIBLE);
-            } else {
-                myHoldered.footer.setVisibility(View.GONE);
-            }
-            MoretaskActivity moretaskActivity= (MoretaskActivity) mContext;
-            if ( moretaskActivity.status!="0"){
-                myHoldered.footer.setVisibility(View.GONE);
-            }else {
+
                 myHoldered.footer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -120,7 +107,7 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         mContext.startActivity(intent);
                     }
                 });
-            }
+
 
         }
     }
@@ -132,8 +119,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     // 头部
     private class HeadHolder extends RecyclerView.ViewHolder {
-        private TextView button, taskNumber, moretaskname ;
+        private TextView button, taskNumber, moretaskname;
         private ImageView moretaskimage;
+
         public HeadHolder(View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.head);
@@ -145,13 +133,14 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     // 内容
     private class ContentHolder extends RecyclerView.ViewHolder {
-        TextView itemText,create_time;
+        TextView itemText, create_time;
         RelativeLayout moretask_content;
+
         public ContentHolder(View itemView) {
             super(itemView);
             itemText = itemView.findViewById(R.id.item_text);
             create_time = itemView.findViewById(R.id.create_time);
-            moretask_content=itemView.findViewById(R.id.moretask_content);
+            moretask_content = itemView.findViewById(R.id.moretask_content);
         }
     }
 
