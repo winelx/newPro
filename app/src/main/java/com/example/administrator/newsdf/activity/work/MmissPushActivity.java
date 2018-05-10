@@ -51,7 +51,6 @@ public class MmissPushActivity extends AppCompatActivity {
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<String> ids = new ArrayList<>();
     private ArrayList<String> titlename = new ArrayList<>();
-
     private ListView mTree;
     private PushListviewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;

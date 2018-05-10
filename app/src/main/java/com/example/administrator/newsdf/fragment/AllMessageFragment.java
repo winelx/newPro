@@ -66,7 +66,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private ArrayList<String> placedTop;
 
     @Nullable
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
@@ -218,13 +217,11 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                 });
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
 
     }
-
 
     @Override
     public void onDestroy() {
@@ -242,13 +239,11 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         }
     }
 
-
     //接收适配器的消息，刷新数据
     @Override
     public void deleteTop(int pos, String str) {
         Okgo();
     }
-
 
     @Override
     public void taskCallback() {

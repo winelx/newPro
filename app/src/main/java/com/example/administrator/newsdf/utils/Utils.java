@@ -7,6 +7,8 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 
 public class Utils {
+
+    public final static String DATA = "data";
     public final static String CoorType_GCJ02 = "gcj02";
     public final static String CoorType_BD09LL = "bd09ll";
     public final static String CoorType_BD09MC = "bd09";
@@ -49,7 +51,7 @@ public class Utils {
         return outMetrics.widthPixels;
     }
 
-    public  void showLog(String key,String Value){
-        Log.i(key,Value);
+    public void showLog(String key, String Value) {
+        Log.i(key, Value);
     }
 }

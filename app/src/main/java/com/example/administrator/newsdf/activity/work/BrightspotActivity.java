@@ -53,11 +53,12 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         bridhtGroup.setOnClickListener(this);
         bridhtCompany.setOnClickListener(this);
         bridhtProject.setOnClickListener(this);
-
         //处理数据
         initData();
 
+
     }
+
 
     private void initData() {
         //定义一个视图集合（用来装左右滑动的页面视图）
@@ -70,6 +71,7 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         bridhtViewpager.setAdapter(mAdapter);
         bridhtViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 0;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {
@@ -151,4 +153,6 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         bridhtCompany.setTextColor(Color.parseColor("#646464"));
         bridhtProject.setTextColor(Color.parseColor("#F27F19"));
     }
+
+
 }

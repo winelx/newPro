@@ -351,7 +351,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 files = new ArrayList<>();
-                //讲图片转成file格式
+                //将图片转成file格式
                 for (int i = 0; i < pathimg.size(); i++) {
                     files.add(new File(pathimg.get(i)));
                 }

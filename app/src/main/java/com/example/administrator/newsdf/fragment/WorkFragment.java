@@ -3,7 +3,9 @@ package com.example.administrator.newsdf.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +20,12 @@ import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.bean.Fr_work_pie;
+import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.view.MultiImageView;
+import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.view.PieChartBeans;
 import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
@@ -61,25 +65,76 @@ public class WorkFragment extends Fragment {
      * 饼状图参数
      */
     private GridView fr_work_grid;
-
     private String name = "";
     private int num = 0;
     private int number = 0;
-
     boolean status = false;
+    private ViewPager bridhtgroupViewpager, bridhtcompanyViewpager, bridhtprojectViewpager;
+    //集团亮点
+    private ArrayList<work_fr_bright_bean> bridhtgroupList;
+    //分公司亮点
+    private ArrayList<work_fr_bright_bean> brightcompangList;
+    //项目亮点
+    private ArrayList<work_fr_bright_bean> brightprojectList;
+    private int datatime = 5000;
     /**
      * 通用适配器
      */
     private SettingAdapter mAdapter;
-    private MultiImageView multiImageView;
     private ArrayList<Fr_work_pie> workpie = new ArrayList<>();
     private TextView frWorkDn, taskManagement, moreandmore, frWorkName, taskPush, photoManagement, uploade;
-
+    //饼状图色码
     private String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8", "#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
+    private FragmentBrightAdapter brightViewpagerAdapter, bridhtcompanyAdapter, bridhtprojectAdapter;
+    private ArrayList<work_fr_bright_bean> viewList;
+    private int staus = 1;
+    int time;
+    /**
+     * 消息处理器的应用
+     */
+    Handler mHandler = new Handler();
+    Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            switch (staus) {
+                case 1:
+                    time = bridhtgroupViewpager.getCurrentItem();
+                    if (time + 1 == viewList.size()) {
+                        bridhtgroupViewpager.setCurrentItem(0);
+                    } else {
+                        bridhtgroupViewpager.setCurrentItem(time + 1);
+                    }
+                    staus = 2;
+                    break;
+                case 2:
+                    time = bridhtcompanyViewpager.getCurrentItem();
+                    LogUtil.i("thike", time);
+                    if (time + 1 == viewList.size()) {
+                        bridhtcompanyViewpager.setCurrentItem(0);
+                    } else {
+                        bridhtcompanyViewpager.setCurrentItem(time + 1);
+                    }
+                    staus = 3;
+                    break;
+                case 3:
+                    time = bridhtprojectViewpager.getCurrentItem();
+                    LogUtil.i("thike", time);
+                    if (time + 1 == viewList.size()) {
+                        bridhtprojectViewpager.setCurrentItem(0);
+                    } else {
+                        bridhtprojectViewpager.setCurrentItem(time + 1);
+                    }
+                    staus = 1;
+                    break;
 
+                default:
+                    break;
+            }
+            //每隔3000循环执行run方法
+            mHandler.postDelayed(this, datatime);
+        }
+    };
 
-//
-    ArrayList<String> list;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
@@ -87,7 +142,9 @@ public class WorkFragment extends Fragment {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_work, null);
             mData = new ArrayList<>();
-
+            brightcompangList = new ArrayList<>();
+            bridhtgroupList = new ArrayList<>();
+            brightprojectList = new ArrayList<>();
             //初始化控件Id
             findId();
             //设置当前时间的问候
@@ -143,11 +200,6 @@ public class WorkFragment extends Fragment {
                 }
             };
         }
-        list =new ArrayList<>();
-        list.add("http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_01small_02_2018414191166C.jpg");
-        list.add("http://img1.gamersky.com/image2018/04/20180428_zl_91_2/gamersky_02origin_03_201842819329E2.jpg");
-        list.add("http://img1.gamersky.com/image2018/04/20180414_zl_91_4/gamersky_02small_04_20184141911D6A.jpg");
-        String url1=Dates.listToString(list);
         //设置饼状图
         PieChartOne.setDate(mData);
         fr_work_grid.setAdapter(mAdapter);
@@ -156,12 +208,19 @@ public class WorkFragment extends Fragment {
         if (parent != null) {
             parent.removeView(rootView);
         }
-        String[] urls = url1.split("，");
-        multiImageView.setMaxChildCount(12);
-        multiImageView.setMoreImgBg(R.mipmap.ic_launcher);
-        multiImageView.setImgs(urls, 4);
+
+        brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), bridhtgroupList);
+        bridhtcompanyAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightcompangList);
+        bridhtprojectAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightprojectList);
+
+        bridhtgroupViewpager.setAdapter(brightViewpagerAdapter);
+        bridhtcompanyViewpager.setAdapter(bridhtcompanyAdapter);
+        bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
+        Bright();
+
         return rootView;
     }
+
 
     private void setTime() {
         String data = Dates.getHH();
@@ -196,24 +255,29 @@ public class WorkFragment extends Fragment {
         photoManagement = (TextView) rootView.findViewById(pphotoadm);
         //离线图纸
         uploade = rootView.findViewById(R.id.uploade);
-        multiImageView = rootView.findViewById(R.id.multiImageView);
+        //亮点工程
+        bridhtgroupViewpager = rootView.findViewById(R.id.bridhtGroup_viewpager);
+        bridhtcompanyViewpager = rootView.findViewById(R.id.bridhtCompany_viewpager);
+        bridhtprojectViewpager = rootView.findViewById(R.id.bridhtProject_viewpager);
 
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-        if (status != false) {
-            okgo1();
+        if (status) {
+            Okgo();
         } else {
-            okgo();
+            Okgo1();
             PieChartOne.setDate(mData);
             status = true;
         }
+
     }
 
     //走oncreate
-    private void okgo() {
+    private void Okgo() {
         mData.clear();
         workpie.clear();
         OkGo.post(Requests.PieChart)
@@ -267,7 +331,7 @@ public class WorkFragment extends Fragment {
     }
 
     //走onstart
-    private void okgo1() {
+    private void Okgo1() {
         mData.clear();
         workpie.clear();
         OkGo.post(Requests.PieChart)
@@ -325,5 +389,89 @@ public class WorkFragment extends Fragment {
                         super.onError(call, response, e);
                     }
                 });
+    }
+
+    private void Bright() {
+        OkGo.<String>post(Requests.ListByType)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.contains(Utils.DATA)) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                String id;
+                                try {
+                                    id = json.getString("id");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    id = "";
+                                }
+                                String orgId;
+                                try {
+                                    orgId = json.getString("orgId");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    orgId = "";
+                                }
+                                String orgName;
+                                try {
+                                    orgName = json.getString("orgName");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    orgName = "";
+                                }
+                                String taskName;
+                                try {
+                                    taskName = json.getString("taskName");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    taskName = "";
+                                }
+                                String leadername;
+                                try {
+                                    leadername = json.getString("leadername");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    leadername = "";
+                                }
+                                String leaderImg;
+                                try {
+                                    leaderImg = json.getString("leaderImg");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    leaderImg = "";
+                                }
+                                int type = json.getInt("type");
+                                //判断type。
+                                if (type == 1) {
+                                    //集团的
+                                    bridhtgroupList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                } else if (type == 2) {
+                                    //公司的
+                                    brightcompangList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                } else {
+                                    //项目的
+                                    brightprojectList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                }
+                                brightViewpagerAdapter.getData(bridhtgroupList);
+                                bridhtcompanyAdapter.getData(brightcompangList);
+                                bridhtprojectAdapter.getData(brightprojectList);
+                                mHandler.postDelayed(r, datatime);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //每隔1s循环执行run方法
+        staus = 4;
+        mHandler.postDelayed(r, datatime);
     }
 }

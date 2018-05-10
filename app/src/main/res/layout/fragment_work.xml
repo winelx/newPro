@@ -54,7 +54,6 @@
 
 
         <LinearLayout
-            android:translationZ="3dp"
             android:id="@+id/card_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -63,7 +62,8 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="120dp"
             android:background="@drawable/editext_background_blue"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:translationZ="3dp">
 
 
             <TextView
@@ -187,19 +187,22 @@
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/bridhtGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/btight">
-
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/moreandmore">
 
                     <TextView
+
                         android:layout_width="1.5dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="120dp"
                         android:layout_marginLeft="22dp"
                         android:background="@color/back" />
 
                     <TextView
-                        android:id="@+id/textView16"
+                        android:id="@+id/bridhtGroup_title"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginLeft="9dp"
@@ -211,30 +214,83 @@
                         android:textColor="@color/writer"
                         android:textSize="10sp" />
 
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView16"
-                        android:layout_alignBottom="@+id/textView16"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_toEndOf="@+id/textView16"
-                        android:layout_toRightOf="@+id/textView16"
-                        android:text="回复人  我的回复消息" />
 
-                    <com.example.administrator.newsdf.view.MultiImageView
-                        android:id="@+id/multiImageView"
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtGroup_viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView15"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="15sp"
-                        android:layout_marginTop="10dp" />
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp" />
+                </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/bridhtCompany"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bridhtGroup">
+
+                    <TextView
+                        android:layout_width="1.5dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="22dp"
+                        android:background="@color/back" />
+
+                    <TextView
+                        android:id="@+id/bridhtCompany_title"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginStart="9dp"
+                        android:background="@drawable/home_item_blue"
+                        android:gravity="center"
+                        android:text="项目"
+                        android:textColor="@color/writer"
+                        android:textSize="10sp" />
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtCompany_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_toEndOf="@+id/bridhtCompany_title"
+                        android:layout_toRightOf="@+id/bridhtCompany_title" />
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/bridhtProject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bridhtCompany"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="1.5dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="22dp"
+                        android:background="@color/back" />
+
+                    <TextView
+                        android:id="@+id/bridhtProject_title"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="9dp"
+                        android:background="@drawable/home_item_blue"
+                        android:gravity="center"
+                        android:text="项目"
+                        android:textColor="@color/writer"
+                        android:textSize="10sp" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtProject_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_toEndOf="@+id/bridhtProject_title"
+                        android:layout_toRightOf="@+id/bridhtProject_title" />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -243,6 +299,7 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_below="@+id/brightspot"
             android:layout_marginBottom="20dp"

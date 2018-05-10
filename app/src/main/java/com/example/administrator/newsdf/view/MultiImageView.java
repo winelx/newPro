@@ -147,7 +147,6 @@ public class MultiImageView extends ViewGroup {
     public void setMaxChildCount(int len) {
         removeAllViews();
         mMaxChildCount = len;
-
         for (int i = 0; i < len; i++) {
             ImageView iv = new ImageView(getContext());
             LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -250,7 +249,7 @@ public class MultiImageView extends ViewGroup {
         if (imgSize == 0) {
             return 1;
         }
-        return (imgSize + mLineMaxCount - 1) / mLineMaxCount;
+        return (imgSize + mLineMaxCount ) / mLineMaxCount;
     }
 
     /**
@@ -278,7 +277,7 @@ public class MultiImageView extends ViewGroup {
         int breakLineC = 0; // 断行
         if (visibleChildCount == 4) {
             // 当四张图片时 两张时换行
-            breakLineC = 2;
+            breakLineC = 4;
         } else {
             // 每行三张图片换行
             breakLineC = mLineMaxCount;
@@ -399,7 +398,6 @@ public class MultiImageView extends ViewGroup {
                         .centerCrop()
                         .error(R.mipmap.image_error)
                         .placeholder(R.mipmap.image_loading)
-                        .override(400, 300)
                         .diskCacheStrategy(DiskCacheStrategy.NONE);
                 Glide.with(getContext())
                         .load(url)

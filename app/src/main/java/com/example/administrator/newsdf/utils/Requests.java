@@ -9,7 +9,7 @@ public class Requests {
     //公共头  192.168.20.38
 
     //  public static final String networks = "http://192.168.20.80:8090/pzgc/";
- public static final String networks = "http://192.168.1.119:8081/pzgc/";
+    public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //public static final String networks = "http://117.187.27.78:8081/baseframe/";
     //public static final String networks = "http://120.79.142.15/pzgc/";
     /**
@@ -168,4 +168,6 @@ public class Requests {
     //提亮
     public static final String SartProjectup = networks + "iface/mobile/smartProject/up";
     public static final String SartProjectdown = networks + "iface/mobile/smartProject/down";
+    //亮点工程
+    public static final String ListByType = networks + "iface/mobile/smartProject/getListByType";
 }
