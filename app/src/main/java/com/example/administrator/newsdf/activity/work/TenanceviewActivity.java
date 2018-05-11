@@ -174,7 +174,7 @@ public class TenanceviewActivity extends AppCompatActivity {
             mTabLayout.setTabMode(0);
         }
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
-        mViewPager.setOffscreenPageLimit(6);
+        mViewPager.setOffscreenPageLimit(10);
         mAdapter = new TabAdapter(getSupportFragmentManager(), names);
         mAdapter.getAdate(ids, id);
         mViewPager.setAdapter(mAdapter);

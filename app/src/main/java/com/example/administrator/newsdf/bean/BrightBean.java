@@ -5,57 +5,77 @@ package com.example.administrator.newsdf.bean;
  */
 
 public class BrightBean {
-    String name;
-    String content;
-    String block;
-    String time;
-    String list;
+    String id;
+    String orgId;
+    String orgName;
+    String taskName;
+    String leadername;
+    String leaderImg;
+    String updateDate;
 
-    public BrightBean(String name, String content, String block, String time, String list) {
-        this.name = name;
-        this.content = content;
-        this.block = block;
-        this.time = time;
-        this.list = list;
+    public BrightBean(String id, String orgId, String orgName, String taskName, String leadername, String leaderImg, String updateDate) {
+        this.id = id;
+        this.orgId = orgId;
+        this.orgName = orgName;
+        this.taskName = taskName;
+        this.leadername = leadername;
+        this.leaderImg = leaderImg;
+        this.updateDate = updateDate;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getOrgId() {
+        return orgId;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
-    public String getBlock() {
-        return block;
+    public String getOrgName() {
+        return orgName;
     }
 
-    public void setBlock(String block) {
-        this.block = block;
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
-    public String getTime() {
-        return time;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
-    public String getList() {
-        return list;
+    public String getLeadername() {
+        return leadername;
     }
 
-    public void setList(String list) {
-        this.list = list;
+    public void setLeadername(String leadername) {
+        this.leadername = leadername;
+    }
+
+    public String getLeaderImg() {
+        return leaderImg;
+    }
+
+    public void setLeaderImg(String leaderImg) {
+        this.leaderImg = leaderImg;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

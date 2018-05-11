@@ -17,14 +17,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.bean.Aduio_comm;
-import com.example.administrator.newsdf.bean.Aduio_content;
-import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
+import com.example.administrator.newsdf.bean.Aduio_comm;
+import com.example.administrator.newsdf.bean.Aduio_content;
+import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.DetailsCallback;
 import com.example.administrator.newsdf.callback.DetailsCallbackUtils;
@@ -294,6 +294,9 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             JSONObject createBy = wtMain.getJSONObject("createBy");
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
                             JSONArray comments = data.getJSONArray("comments");
+                            boolean up = data.getBoolean("up");
+                            boolean down = data.getBoolean("down");
+
                             //任务详情
                             try {
                                 wbsName = wtMain.getString("wbsName");
@@ -538,7 +541,8 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 }
                                 aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                         subWbsname, uploadContent, updateDate, uploadAddr, subLeadername, subLeaderid, subIscallback,
-                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "", userimage, filename, isSmartProject));
+                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "",
+                                        userimage, filename, isSmartProject, up, down));
                             }
 
                             for (int i = 0; i < comments.length(); i++) {
@@ -546,7 +550,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 JSONObject user = json.getJSONObject("user");
                                 //回复评论列表
                                 //唯一标识
-                                String comments_id = json.getString("id");
+                                String comments_id = json.getString("id"); 
                                 //回复人ID
                                 String replyId = json.getString("replyId");
                                 //回复人姓名(路径：comments –> user -> realname)

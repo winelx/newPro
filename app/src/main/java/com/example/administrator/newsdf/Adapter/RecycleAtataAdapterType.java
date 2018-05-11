@@ -115,62 +115,67 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View v) {
                 AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
-                 taskId = audio.gettaskId();
+                taskId = audio.gettaskId();
                 if (isSmartProject == 0) {
-                    OkGo.<String>post(Requests.SartProjectup)
-                            .params("taskId", taskId)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(String s, Call call, Response response) {
-                                    LogUtil.i("taskId",taskId);
-                                    LogUtil.i("taskId",s);
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(s);
-                                        ToastUtils.showLongToast(s);
-                                        int ret = jsonObject.getInt("ret");
-                                        if (ret == 0) {
-                                            ToastUtils.showLongToast("成功");
-                                            isSmartProject = 1;
-                                            holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
+                    if (mDatas.get(posotion).isUp()) {
+                        OkGo.<String>post(Requests.SartProjectup)
+                                .params("taskId", taskId)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(s);
+                                            ToastUtils.showLongToast(s);
+                                            int ret = jsonObject.getInt("ret");
+                                            if (ret == 0) {
+                                                ToastUtils.showLongToast("成功");
+                                                isSmartProject = 1;
+                                                holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
 
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
-                                }
-                                @Override
-                                public void onError(Call call, Response response, Exception e) {
-                                    super.onError(call, response, e);
 
-                                }
-                            });
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+
+                                    }
+                                });
+                    }
                 } else {
-                    Dates.disDialog();
-                    OkGo.<String>post(Requests.SartProjectdown)
-                            .params("taskId", taskId)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(String s, Call call, Response response) {
-                                    try {
-                                        LogUtil.i("taskId",taskId);
-                                        LogUtil.i("taskId",s);
-                                        ToastUtils.showLongToast(s);
-                                        JSONObject jsonObject = new JSONObject(s);
-                                        int ret = jsonObject.getInt("ret");
-                                        if (ret == 0) {
-                                            ToastUtils.showLongToast("成功");
-                                            isSmartProject = 0;
-                                            holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
+                    if (mDatas.get(posotion).isDowm()) {
+                        Dates.disDialog();
+                        OkGo.<String>post(Requests.SartProjectdown)
+                                .params("taskId", taskId)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        try {
+                                            LogUtil.i("taskId", taskId);
+                                            LogUtil.i("taskId", s);
+                                            ToastUtils.showLongToast(s);
+                                            JSONObject jsonObject = new JSONObject(s);
+                                            int ret = jsonObject.getInt("ret");
+                                            if (ret == 0) {
+                                                ToastUtils.showLongToast("成功");
+                                                isSmartProject = 0;
+                                                holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
-                                }
-                                @Override
-                                public void onError(Call call, Response response, Exception e) {
-                                    super.onError(call, response, e);
-                                }
-                            });
+
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+                                    }
+                                });
+                    }
+                    ;
                 }
 
             }

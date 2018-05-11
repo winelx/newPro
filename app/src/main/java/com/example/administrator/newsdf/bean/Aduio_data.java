@@ -27,17 +27,19 @@ public class Aduio_data {
     ArrayList<String> attachments;//附件list（
     ArrayList<String> filename;//附件list（
     String commentCount; //评论条数
-   String userpath;
+    String userpath;
     //提亮
     int isSmartProject;
-
+    boolean up;
+    boolean dowm;
 
     public Aduio_data(String replyID, String uploadId, String replyUserName,
                       String replyUserHeaderURL, String name, String wbsName, String uploadContent,
                       String updateDate, String uploadAddr, String leaderName, String leaderId,
                       String iscallback, String callbackContent, String callbackTime,
-                      String callbackId, ArrayList<String> attachments, String commentCount,String userpath,   ArrayList<String> filename, int isSmartProject
-                     ) {
+                      String callbackId, ArrayList<String> attachments, String commentCount, String userpath, ArrayList<String> filename, int isSmartProject
+            ,boolean up ,boolean dowm
+    ) {
         this.replyID = replyID;
         this.uploadId = uploadId;
         this.replyUserName = replyUserName;
@@ -58,6 +60,8 @@ public class Aduio_data {
         this.userpath = userpath;
         this.filename = filename;
         this.isSmartProject = isSmartProject;
+        this.up = up;
+        this.dowm = dowm;
 
     }
 
@@ -219,5 +223,21 @@ public class Aduio_data {
 
     public void setIsSmartProject(int isSmartProject) {
         this.isSmartProject = isSmartProject;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDowm() {
+        return dowm;
+    }
+
+    public void setDowm(boolean dowm) {
+        this.dowm = dowm;
     }
 }

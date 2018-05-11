@@ -50,12 +50,18 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private void bindContent(Viewholder holder, int position) {
         holder.hrightItemViewgroup.setMaxChildCount(12);
         holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.ic_launcher);
-        String[] urls = mData.get(position).getList().split("，");
-        holder.hrightItemViewgroup.setImgs(urls, 5);
+        try {
+            String[] urls = mData.get(position).getLeaderImg().split("，");
+            holder.hrightItemViewgroup.setImgs(urls, 5);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+
 //如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
-        int length = mData.get(position).getName().length();
-        String name = mData.get(position).getName();
-        String content = mData.get(position).getContent();
+        int length = mData.get(position).getLeadername().length();
+        String name = mData.get(position).getLeadername();
+        String content = mData.get(position).getTaskName();
         content = name + " 回复 " + content;
         SpannableString sp1 = new SpannableString(content);
         sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
@@ -66,8 +72,8 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .getColor(R.color.persomal_text)), length + 1,
                 length + 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.content.setText(sp1);
-        holder.brightItemBlock.setText(mData.get(position).getBlock());
-        holder.brightItemTime.setText(mData.get(position).getTime());
+        holder.brightItemBlock.setText(mData.get(position).getOrgName());
+        holder.brightItemTime.setText(mData.get(position).getUpdateDate());
     }
 
     @Override

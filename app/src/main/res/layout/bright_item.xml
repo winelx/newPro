@@ -15,6 +15,7 @@
         android:layout_marginTop="10dp"
         android:lineSpacingMultiplier="1.1"
         android:text="防护"
+        android:textColor="@color/textViwe"
         android:textSize="14sp" />
 
     <com.example.administrator.newsdf.view.MultiImageView
@@ -32,12 +33,15 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="0dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:drawableLeft="@mipmap/bright_block"
+            android:gravity="center"
             android:text="标段:"
             android:textColor="#999999"
             android:textSize="11sp" />
@@ -46,7 +50,12 @@
             android:id="@+id/bright_item_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="7"
+            android:singleLine="true"
             android:text="三独五标"
             android:textColor="#999999"
             android:textSize="11sp" />
@@ -54,19 +63,26 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:drawableLeft="@mipmap/bright_time"
             android:drawablePadding="5dp"
+            android:gravity="center"
             android:text="回复时间:"
             android:textColor="#999999"
             android:textSize="11sp" />
 
         <TextView
             android:id="@+id/bright_item_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:text="2018-4-13 12:30"
+            android:ellipsize="end"
+            android:maxEms="7"
+            android:maxLines="1"
+            android:padding="0dp"
+            android:text="2018-05-11  14:48:30"
             android:textColor="#999999"
             android:textSize="11sp" />
     </LinearLayout>

@@ -68,6 +68,8 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         viewList.add("公司");
         viewList.add("项目");
         mAdapter = new BrightViewpagerAdapter(getSupportFragmentManager(), viewList);
+        //缓存3个界面
+        bridhtViewpager.setOffscreenPageLimit(3);
         bridhtViewpager.setAdapter(mAdapter);
         bridhtViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 0;
