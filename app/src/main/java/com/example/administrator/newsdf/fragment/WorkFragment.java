@@ -25,7 +25,6 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
-import com.example.administrator.newsdf.utils.Utils;
 import com.example.administrator.newsdf.view.PieChartBeans;
 import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
@@ -147,6 +146,7 @@ public class WorkFragment extends Fragment {
             brightprojectList = new ArrayList<>();
             //初始化控件Id
             findId();
+
             //设置当前时间的问候
             setTime();
             //获取到当前登录人的名字，并展示
@@ -208,15 +208,13 @@ public class WorkFragment extends Fragment {
         if (parent != null) {
             parent.removeView(rootView);
         }
-
+        Bright();
         brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), bridhtgroupList);
         bridhtcompanyAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightcompangList);
         bridhtprojectAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightprojectList);
-
         bridhtgroupViewpager.setAdapter(brightViewpagerAdapter);
         bridhtcompanyViewpager.setAdapter(bridhtcompanyAdapter);
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
-        Bright();
 
         return rootView;
     }
@@ -262,7 +260,6 @@ public class WorkFragment extends Fragment {
 
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -273,7 +270,6 @@ public class WorkFragment extends Fragment {
             PieChartOne.setDate(mData);
             status = true;
         }
-
     }
 
     //走oncreate
@@ -391,15 +387,28 @@ public class WorkFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        //每隔1s循环执行run方法
+        staus = 4;
+        mHandler.postDelayed(r, datatime);
+    }
+
     private void Bright() {
         OkGo.<String>post(Requests.ListByType)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains(Utils.DATA)) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                JSONObject json = jsonObject.getJSONObject("data");
+                        brightcompangList.clear();
+                        bridhtgroupList.clear();
+                        brightprojectList.clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
                                 String id;
                                 try {
                                     id = json.getString("id");
@@ -454,24 +463,14 @@ public class WorkFragment extends Fragment {
                                     //项目的
                                     brightprojectList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
                                 }
-                                brightViewpagerAdapter.getData(bridhtgroupList);
-                                bridhtcompanyAdapter.getData(brightcompangList);
-                                bridhtprojectAdapter.getData(brightprojectList);
-                                mHandler.postDelayed(r, datatime);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                            brightViewpagerAdapter.getData(bridhtgroupList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
+
                 });
     }
 
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //每隔1s循环执行run方法
-        staus = 4;
-        mHandler.postDelayed(r, datatime);
-    }
 }

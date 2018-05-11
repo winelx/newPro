@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.example.administrator.newsdf.baseApplication;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.ScreenUtil;
 
 import java.util.List;
@@ -265,15 +264,15 @@ public class PieChartOne extends View {
     public static int adjustFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-            LogUtil.i("ss", "10");
+
             return 10;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
-            LogUtil.i("ss", "20");
+
             return 18;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
-            LogUtil.i("ss", "30");
+
             return 30;
             // 540X960 屏幕
         } else {

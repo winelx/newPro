@@ -23,13 +23,13 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
+import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
@@ -70,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
     private WbsDialog selfDialog;
     private TextView home_img_red;
     List<Shop> list;
+    //集团亮点
+    private ArrayList<work_fr_bright_bean> bridhtgroupList = new ArrayList<>();
+    //分公司亮点
+    private ArrayList<work_fr_bright_bean> brightcompangList = new ArrayList<>();
+    //项目亮点
+    private ArrayList<work_fr_bright_bean> brightprojectList = new ArrayList<>();
 
     public static MainActivity getInstance() {
         return mContext;
@@ -185,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject json = jsonObject.getJSONObject("data");
                                     //版本号
                                     String versions = json.getString("version");
-                                    LogUtil.i("sss",versions);
                                     //更新地址
                                     String filePath = json.getString("downloadUrl");
                                     int lenght = version.compareTo(versions);
@@ -306,5 +311,6 @@ public class MainActivity extends AppCompatActivity {
         //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
     }
+
 
 }

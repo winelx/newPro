@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.view.MultiImageView;
 
-import java.util.ArrayList;
-
 /**
  * Created by Administrator on 2018/5/10 0010.
  */
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 public class WorkBrightFrament extends Fragment {
     private int pos;
     private View view;
-    private FragmentBrightAdapter mdapter;
 
     @SuppressLint("ValidFragment")
     public WorkBrightFrament(int pos) {
@@ -30,7 +27,6 @@ public class WorkBrightFrament extends Fragment {
 
     private MultiImageView multiImageView;
     private TextView content;
-    ArrayList<String> list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -40,6 +36,11 @@ public class WorkBrightFrament extends Fragment {
         multiImageView = view.findViewById(R.id.multiImageView);
         try {
             content.setText(FragmentBrightAdapter.mData.get(pos).getOrgName());
+//            SpannableString sp1 = new SpannableString(content);
+//            sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
+//                            .getColor(R.color.brighr_people)), 0,
+//                    length,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
