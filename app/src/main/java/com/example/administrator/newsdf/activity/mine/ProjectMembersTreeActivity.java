@@ -34,7 +34,7 @@ import okhttp3.Response;
  *         update: 2018/3/21 0021
  *         version:
  */
-public class ProjectmbTreeActivity extends AppCompatActivity {
+public class ProjectMembersTreeActivity extends AppCompatActivity {
     private ListView maberTree;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
@@ -48,7 +48,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmb_tree);
-        mContext = ProjectmbTreeActivity.this;
+        mContext = ProjectMembersTreeActivity.this;
         //树
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
@@ -282,7 +282,7 @@ public class ProjectmbTreeActivity extends AppCompatActivity {
     }
 
     private void addOrganiztion(final String id, final String title, final String number) {
-        Dates.getDialogs(ProjectmbTreeActivity.this, "请求数据中");
+        Dates.getDialogs(ProjectMembersTreeActivity.this, "请求数据中");
         OkGo.<String>post(Requests.ORGTREE)
                 .params("orgId", id)
                 .execute(new StringCallback() {

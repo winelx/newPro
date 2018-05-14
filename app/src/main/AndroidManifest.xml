@@ -114,7 +114,7 @@
             android:screenOrientation="portrait" />
         <!-- 修改密码 -->
         <activity
-            android:name=".activity.home.LightfaceActivity"
+            android:name=".activity.home.MineListmessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
@@ -127,7 +127,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.home.AuditparticularsActivity"
+            android:name=".activity.home.TaskdetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -140,7 +140,7 @@
             android:name=".activity.work.MissionpushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.ListreadActivity"
+            android:name=".activity.home.AllListmessageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.work.OrganiwbsActivity"
@@ -198,7 +198,7 @@
         <activity android:name=".activity.work.UploadPhotoActivity" />
         <activity android:name=".activity.work.TaskWbsActivity" />
         <activity android:name=".activity.work.BrightspotActivity" />
-        <activity android:name=".activity.mine.ProjectmbTreeActivity" />
+        <activity android:name=".activity.mine.ProjectMembersTreeActivity" />
         <activity android:name=".activity.home.TaskRecordActivity" />
 
 

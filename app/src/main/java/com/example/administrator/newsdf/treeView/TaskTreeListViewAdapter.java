@@ -11,8 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.LightfaceActivity;
-import com.example.administrator.newsdf.activity.home.ListreadActivity;
+import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
+import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.utils.Requests;
@@ -124,11 +124,11 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             public void onClick(View v) {
                 switch (status) {
                     case "mine":
-                        LightfaceActivity lightface = (LightfaceActivity) mContext;
+                        MineListmessageActivity lightface = (MineListmessageActivity) mContext;
                         lightface.switchAct(node);
                         break;
                     case "all":
-                        ListreadActivity listreadActivity = (ListreadActivity) mContext;
+                        AllListmessageActivity listreadActivity = (AllListmessageActivity) mContext;
                         listreadActivity.switchAct(node);
                         break;
                     case "task":

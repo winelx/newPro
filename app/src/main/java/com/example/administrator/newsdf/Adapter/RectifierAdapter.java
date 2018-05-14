@@ -18,7 +18,6 @@ import com.example.administrator.newsdf.activity.home.WebActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -101,7 +100,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
             urlpath = urlpath + "_min" + pas;
-            LogUtil.i("_min",urlpath);
             Glide.with(mContext)
                     .load(urlpath)
                     .thumbnail(Glide.with(mContext)

@@ -69,7 +69,7 @@ import okhttp3.Response;
  * update: 2018/2/6 0006
  * version:
  */
-public class ListreadActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class AllListmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
     private TextView Titlew, deleteSearch;
@@ -119,7 +119,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(baseApplication.getInstance());
-        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
         mContext = getApplicationContext();
         Intent intent = getIntent();
         try {
@@ -199,7 +199,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
                     page = 1;
@@ -242,7 +242,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View v) {
                 searchEditext.clearFocus();//失去焦点
                 ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
+                        .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
                                 .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 //打开弹出框
                 MeunPop();
@@ -283,7 +283,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         // 触摸移动时的操作
                         searchEditext.clearFocus();//失去焦点
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(ListreadActivity.this.getCurrentFocus()
+                                .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
                                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         break;
                     default:
@@ -351,7 +351,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
     //wsb树的数据
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
-        Dates.getDialogs(ListreadActivity.this, "请求数据中");
+        Dates.getDialogs(AllListmessageActivity.this, "请求数据中");
         OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
@@ -452,7 +452,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         drawerLayout.openDrawer(GravityCompat.END);
                         break;
                     case R.id.pop_All:
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip=false;
@@ -465,7 +465,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
                         }
                         break;
                     case R.id.pop_financial:
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip=false;
@@ -479,7 +479,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
 
                         break;
                     case R.id.pop_manage:
-                        Dates.getDialog(ListreadActivity.this, "请求数据中...");
+                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip=false;
@@ -603,7 +603,7 @@ public class ListreadActivity extends AppCompatActivity implements View.OnClickL
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
-        taskAdapter = new TaskPhotoAdapter(imagePaths, ListreadActivity.this);
+        taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
         //图册listview
         drawerLayoutList.setAdapter(taskAdapter);
         //抽屉控件打开后背景颜色

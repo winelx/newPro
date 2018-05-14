@@ -73,7 +73,7 @@ import static com.lzy.okgo.OkGo.post;
  * @author lx
  *         我的消息列表界面
  */
-public class LightfaceActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class MineListmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
     private Listinter_Adfapter mAdapter = null;
     /**
@@ -212,7 +212,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     //初始化页数为第一页
                     pages = 1;
@@ -240,7 +240,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                     // 触摸移动时的操作
                     delete_search.setVisibility(View.VISIBLE);
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 } else {
                     delete_search.setVisibility(View.GONE);
@@ -331,7 +331,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         // 触摸移动时的操作
                         searchEditext.clearFocus();//失去焦点
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(LightfaceActivity.this.getCurrentFocus()
+                                .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
                                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         break;
                     default:
@@ -407,7 +407,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         handler.sendMessage(mes);
         //清除通知栏所有消息
         JPushInterface.clearAllNotifications(baseApplication.getInstance());
-        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
 
         try {
             orgId = intent.getExtras().getString("orgId");
@@ -433,7 +433,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
         //标题文字大小
         titlew.setTextSize(17);
         //侧拉界面数据适配
-        taskAdapter = new TaskPhotoAdapter(imagePaths, LightfaceActivity.this);
+        taskAdapter = new TaskPhotoAdapter(imagePaths, MineListmessageActivity.this);
         //侧拉界面数据填充
         drawerLayoutList.setAdapter(taskAdapter);
         //任务界面数据填充
@@ -487,7 +487,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
 
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
-        Dates.getDialogs(LightfaceActivity.this, "请求数据中");
+        Dates.getDialogs(MineListmessageActivity.this, "请求数据中");
         OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
                 .params("iswbs", iswbs)
@@ -703,7 +703,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         drawerLayout.openDrawer(Gravity.END);
                         break;
                     case R.id.pop_All:
-                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         mDatas.clear();
                         pages = 1;
@@ -712,7 +712,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_financial:
-                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         mDatas.clear();
                         pages = 1;
@@ -721,7 +721,7 @@ public class LightfaceActivity extends AppCompatActivity implements View.OnClick
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_manage:
-                        Dates.getDialog(LightfaceActivity.this, "请求数据中...");
+                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         mDatas.clear();

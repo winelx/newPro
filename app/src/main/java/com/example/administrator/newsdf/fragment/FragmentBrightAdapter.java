@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.administrator.newsdf.bean.work_fr_bright_bean;
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -44,7 +43,6 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
         this.mData = mData;
-        ToastUtils.showLongToast(mData.size()+"");
         notifyDataSetChanged();
     }
 

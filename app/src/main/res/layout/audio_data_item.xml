@@ -56,6 +56,18 @@
         android:textColor="@color/textViwe"
         android:textSize="14sp" />
 
+
+    <ImageView
+        android:id="@+id/audio_notimage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@+id/audio_acathor"
+        android:layout_alignStart="@+id/audio_acathor"
+        android:layout_below="@+id/audio_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:src="@mipmap/notimgeview" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/audio_rec"
         android:layout_width="match_parent"
@@ -115,16 +127,15 @@
             <ImageView
                 android:id="@+id/givealike_image"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
-              />
+                android:layout_height="20dp" />
 
             <TextView
                 android:id="@+id/givealike_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
                 android:gravity="center"
                 android:paddingTop="3dp"
-                android:layout_marginLeft="2dp"
                 android:text="@string/givealike"
                 android:textSize="12sp" />
         </LinearLayout>

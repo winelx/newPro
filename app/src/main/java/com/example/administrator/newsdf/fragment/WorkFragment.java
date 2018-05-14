@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
@@ -22,7 +23,6 @@ import com.example.administrator.newsdf.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.bean.Fr_work_pie;
 import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.view.PieChartBeans;
@@ -61,33 +61,33 @@ public class WorkFragment extends Fragment {
      */
     private List<PieChartBeans> mData;
     /**
-     * 饼状图参数
+     * 饼状图参数布局
      */
     private GridView fr_work_grid;
     private String name = "";
-    private int num = 0;
-    private int number = 0;
-    boolean status = false;
+    private int num = 0, number = 0, staus = 1, time;
     private ViewPager bridhtgroupViewpager, bridhtcompanyViewpager, bridhtprojectViewpager;
     //集团亮点
-    private ArrayList<work_fr_bright_bean> bridhtgroupList;
+    private ArrayList<work_fr_bright_bean> groupbridhtList;
     //分公司亮点
-    private ArrayList<work_fr_bright_bean> brightcompangList;
+    private ArrayList<work_fr_bright_bean> compangbrightList;
     //项目亮点
-    private ArrayList<work_fr_bright_bean> brightprojectList;
-    private int datatime = 5000;
+    private ArrayList<work_fr_bright_bean> projectbrightList;
+    //延迟执行时间
+    private int datatime = 4000;
+    //展示轮播图的三个布局
+    private RelativeLayout bridhtCompany, bridhtGroup, bridhtProject;
     /**
      * 通用适配器
      */
     private SettingAdapter mAdapter;
+    //饼状图分类名称集合
     private ArrayList<Fr_work_pie> workpie = new ArrayList<>();
+    //界面文字
     private TextView frWorkDn, taskManagement, moreandmore, frWorkName, taskPush, photoManagement, uploade;
     //饼状图色码
     private String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8", "#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
     private FragmentBrightAdapter brightViewpagerAdapter, bridhtcompanyAdapter, bridhtprojectAdapter;
-    private ArrayList<work_fr_bright_bean> viewList;
-    private int staus = 1;
-    int time;
     /**
      * 消息处理器的应用
      */
@@ -97,31 +97,43 @@ public class WorkFragment extends Fragment {
         public void run() {
             switch (staus) {
                 case 1:
+                    //获取当前所处viewpager的页数
                     time = bridhtgroupViewpager.getCurrentItem();
-                    if (time + 1 == viewList.size()) {
-                        bridhtgroupViewpager.setCurrentItem(0);
-                    } else {
-                        bridhtgroupViewpager.setCurrentItem(time + 1);
+
+                    //判断集合的长度是否等于0，如果等于0就不处理。
+                    if (groupbridhtList.size() != 0) {
+                        //集合的长度不等于0，那就判断获取的页数是否登录当前集合长度，如果等于，那就回到第一页
+                        if (time + 1 == groupbridhtList.size()) {
+                            bridhtgroupViewpager.setCurrentItem(0);
+                        } else {
+                            //如果不等于集合长度，那就在原来的页数上加1，跳转到下一页
+                            bridhtgroupViewpager.setCurrentItem(time + 1);
+                        }
                     }
+                    //设置下次执行的viewpager
                     staus = 2;
                     break;
                 case 2:
                     time = bridhtcompanyViewpager.getCurrentItem();
-                    LogUtil.i("thike", time);
-                    if (time + 1 == viewList.size()) {
-                        bridhtcompanyViewpager.setCurrentItem(0);
-                    } else {
-                        bridhtcompanyViewpager.setCurrentItem(time + 1);
+
+                    if (compangbrightList.size() != 0) {
+                        if (time + 1 == compangbrightList.size()) {
+                            bridhtcompanyViewpager.setCurrentItem(0);
+                        } else {
+                            bridhtcompanyViewpager.setCurrentItem(time + 1);
+                        }
                     }
+
                     staus = 3;
                     break;
                 case 3:
                     time = bridhtprojectViewpager.getCurrentItem();
-                    LogUtil.i("thike", time);
-                    if (time + 1 == viewList.size()) {
-                        bridhtprojectViewpager.setCurrentItem(0);
-                    } else {
-                        bridhtprojectViewpager.setCurrentItem(time + 1);
+                    if (projectbrightList.size() != 0) {
+                        if (time + 1 == projectbrightList.size()) {
+                            bridhtprojectViewpager.setCurrentItem(0);
+                        } else {
+                            bridhtprojectViewpager.setCurrentItem(time + 1);
+                        }
                     }
                     staus = 1;
                     break;
@@ -140,18 +152,17 @@ public class WorkFragment extends Fragment {
         if (rootView == null) {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_work, null);
+            //初始化饼状图集合
             mData = new ArrayList<>();
-            brightcompangList = new ArrayList<>();
-            bridhtgroupList = new ArrayList<>();
-            brightprojectList = new ArrayList<>();
+            compangbrightList = new ArrayList<>();
+            groupbridhtList = new ArrayList<>();
+            projectbrightList = new ArrayList<>();
             //初始化控件Id
             findId();
-
             //设置当前时间的问候
             setTime();
             //获取到当前登录人的名字，并展示
             frWorkName.setText(SPUtils.getString(mContext, "staffName", null) + ",");
-
             moreandmore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -202,20 +213,27 @@ public class WorkFragment extends Fragment {
         }
         //设置饼状图
         PieChartOne.setDate(mData);
+        //饼状图分类gridview的适配器
         fr_work_grid.setAdapter(mAdapter);
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
+        //请求图片轮播数据
         Bright();
-        brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), bridhtgroupList);
-        bridhtcompanyAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightcompangList);
-        bridhtprojectAdapter = new FragmentBrightAdapter(getChildFragmentManager(), brightprojectList);
+        brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), groupbridhtList);
+        bridhtcompanyAdapter = new FragmentBrightAdapter(getChildFragmentManager(), compangbrightList);
+        bridhtprojectAdapter = new FragmentBrightAdapter(getChildFragmentManager(), projectbrightList);
+
         bridhtgroupViewpager.setAdapter(brightViewpagerAdapter);
+
         bridhtcompanyViewpager.setAdapter(bridhtcompanyAdapter);
+
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
 
+        //延时 毫秒
+        mHandler.postDelayed(r, 100);
         return rootView;
     }
 
@@ -257,19 +275,22 @@ public class WorkFragment extends Fragment {
         bridhtgroupViewpager = rootView.findViewById(R.id.bridhtGroup_viewpager);
         bridhtcompanyViewpager = rootView.findViewById(R.id.bridhtCompany_viewpager);
         bridhtprojectViewpager = rootView.findViewById(R.id.bridhtProject_viewpager);
-
+        bridhtCompany = rootView.findViewById(R.id.bridhtCompany);
+        bridhtGroup = rootView.findViewById(R.id.bridhtGroup);
+        bridhtProject = rootView.findViewById(R.id.bridhtProject);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (status) {
-            Okgo();
-        } else {
-            Okgo1();
-            PieChartOne.setDate(mData);
-            status = true;
-        }
+        //饼状图数据请求
+//        if (status) {
+//            Okgo();
+//        } else {
+//            Okgo1();
+//            PieChartOne.setDate(mData);
+//            status = true;
+//        }
     }
 
     //走oncreate
@@ -400,13 +421,13 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        brightcompangList.clear();
-                        bridhtgroupList.clear();
-                        brightprojectList.clear();
+                        //每次请求数据，都需要清除之前的，避免重复
+                        compangbrightList.clear();
+                        groupbridhtList.clear();
+                        projectbrightList.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
                                 String id;
@@ -455,16 +476,35 @@ public class WorkFragment extends Fragment {
                                 //判断type。
                                 if (type == 1) {
                                     //集团的
-                                    bridhtgroupList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
                                 } else if (type == 2) {
                                     //公司的
-                                    brightcompangList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
                                 } else {
                                     //项目的
-                                    brightprojectList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
+                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
                                 }
                             }
-                            brightViewpagerAdapter.getData(bridhtgroupList);
+                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
+                            if (groupbridhtList.size() != 0) {
+                                bridhtGroup.setVisibility(View.VISIBLE);
+                                brightViewpagerAdapter.getData(groupbridhtList);
+                            } else {
+                                bridhtGroup.setVisibility(View.GONE);
+                            }
+                            if (compangbrightList.size() != 0) {
+                                bridhtCompany.setVisibility(View.VISIBLE);
+                                bridhtcompanyAdapter.getData(compangbrightList);
+                            } else {
+                                bridhtCompany.setVisibility(View.GONE);
+                            }
+                            if (projectbrightList.size() != 0) {
+                                bridhtProject.setVisibility(View.VISIBLE);
+                                bridhtprojectAdapter.getData(projectbrightList);
+                            } else {
+                                bridhtProject.setVisibility(View.GONE);
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

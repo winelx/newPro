@@ -59,14 +59,14 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
 
 
 /**
- * description: 审核详情 完成
+ * description: 任务详情
  *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:25
  * update: 2018/2/6 0006
  * version:
  */
-public class AuditparticularsActivity extends AppCompatActivity implements DetailsCallback {
+public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback {
     //界面适配器
     private AudioAdapter mAdapter;
     private String id;
@@ -114,7 +114,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
-        mContext = AuditparticularsActivity.this;
+        mContext = TaskdetailsActivity.this;
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
         final Intent intent = getIntent();
@@ -129,7 +129,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         CheckPermission checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(AuditparticularsActivity.this);
+                CropImageUtils.getInstance().takePhoto(TaskdetailsActivity.this);
             }
 
             @Override
@@ -167,13 +167,13 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         mRecyclerView.setAdapter(mAdapter);
 
         okgo(id);
-        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, AuditparticularsActivity.this);
+        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
         //回复任务
         comButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(AuditparticularsActivity.this, DirectlyreplyActivity.class);
+                Intent intent1 = new Intent(TaskdetailsActivity.this, DirectlyreplyActivity.class);
                 intent1.putExtra("id", id);
                 startActivityForResult(intent1, 1);
             }
@@ -215,7 +215,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
         comImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(AuditparticularsActivity.this, TaskRecordActivity.class);
+                Intent intent1 = new Intent(TaskdetailsActivity.this, TaskRecordActivity.class);
                 intent1.putExtra("taskId", id);
                 startActivity(intent1);
             }
@@ -294,8 +294,17 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                             JSONObject createBy = wtMain.getJSONObject("createBy");
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
                             JSONArray comments = data.getJSONArray("comments");
-                            boolean up = data.getBoolean("up");
-                            boolean down = data.getBoolean("down");
+                            boolean up;
+                            boolean down;
+                            try {
+                                up = data.getBoolean("up");
+                                down = data.getBoolean("down");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                up = false;
+                                down = false;
+                            }
+
 
                             //任务详情
                             try {
@@ -550,7 +559,7 @@ public class AuditparticularsActivity extends AppCompatActivity implements Detai
                                 JSONObject user = json.getJSONObject("user");
                                 //回复评论列表
                                 //唯一标识
-                                String comments_id = json.getString("id"); 
+                                String comments_id = json.getString("id");
                                 //回复人ID
                                 String replyId = json.getString("replyId");
                                 //回复人姓名(路径：comments –> user -> realname)

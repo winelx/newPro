@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.HomeFragmentAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.LightfaceActivity;
+import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //跳转列表界面
-        Intent intent = new Intent(mContext, LightfaceActivity.class);
+        Intent intent = new Intent(mContext, MineListmessageActivity.class);
         intent.putExtra("name", mData.get(position).getOrgname());
         intent.putExtra("orgId", mData.get(position).getOrgid());
         startActivity(intent);

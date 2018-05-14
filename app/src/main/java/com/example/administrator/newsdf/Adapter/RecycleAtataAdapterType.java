@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.AuditparticularsActivity;
+import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
@@ -46,7 +46,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private boolean status;
     private ArrayList<Aduio_data> mDatas;
-    AuditparticularsActivity activity;
+    TaskdetailsActivity activity;
     String str = null;
     int isSmartProject;
     String taskId;
@@ -73,8 +73,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     private void bindContent(final Viewholder holder, final int posotion) {
         if (mDatas.get(posotion).getAttachments().size() != 0) {
             holder.audio_rec.setVisibility(View.VISIBLE);
+            holder.audio_notimage.setVisibility(View.GONE);
         } else {
-            holder.audio_rec.setVisibility(View.GONE);
+            holder.audio_rec.setVisibility(View.INVISIBLE);
+            holder.audio_notimage.setVisibility(View.VISIBLE);
         }
         Glide.with(mContext)
                 .load(mDatas.get(posotion).getUserpath())
@@ -91,7 +93,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.comment_count.setText(mDatas.get(posotion).getCommentCount());
         //评论
         isSmartProject = mDatas.get(posotion).getIsSmartProject();
-        ToastUtils.showLongToast(isSmartProject + "");
         if (isSmartProject == 0) {
             holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
         } else {
@@ -106,7 +107,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.audio_data_comm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
+                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                 CameDialog.setDialog(audio.getId(), audio);
             }
         });
@@ -114,7 +115,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.givealike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuditparticularsActivity audio = (AuditparticularsActivity) mContext;
+                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                 taskId = audio.gettaskId();
                 if (isSmartProject == 0) {
                     if (mDatas.get(posotion).isUp()) {
@@ -193,7 +194,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         private TextView audio_name, audio_content, audio_data, audio_address, comment_count, givealike_text;
         private RecyclerView audio_rec;
         private LinearLayout audio_data_comm, givealike;
-        private ImageView givealike_image;
+        private ImageView givealike_image, audio_notimage;
 
         public Viewholder(View itemView) {
             super(itemView);
@@ -216,6 +217,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             givealike_image = itemView.findViewById(R.id.givealike_image);
             //提亮文字
             givealike_text = itemView.findViewById(R.id.givealike_text);
+            //没有图片
+            audio_notimage = itemView.findViewById(R.id.audio_notimage);
         }
     }
 

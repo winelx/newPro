@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.ListreadActivity;
+import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
@@ -61,7 +61,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 } else {
-                    Intent intent = new Intent(mContext, ListreadActivity.class);
+                    Intent intent = new Intent(mContext, AllListmessageActivity.class);
                     intent.putExtra("name", mDatas.get(position).getOrgname());
                     intent.putExtra("back", mDatas.get(position).getOrgname());
                     intent.putExtra("orgId", mDatas.get(position).getOrgid());

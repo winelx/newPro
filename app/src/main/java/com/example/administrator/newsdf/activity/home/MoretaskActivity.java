@@ -180,7 +180,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
 
     //暴露给adapter的方法，给点击事件使用,跳转界面
     public void onclick(int pos) {
-        Intent intent = new Intent(mContext, AuditparticularsActivity.class);
+        Intent intent = new Intent(mContext, TaskdetailsActivity.class);
         intent.putExtra("TaskId", taskID);
         intent.putExtra("wbsid", wbsid);
         intent.putExtra("status", status);

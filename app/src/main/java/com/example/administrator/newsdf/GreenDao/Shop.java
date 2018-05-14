@@ -42,8 +42,8 @@ public class Shop {
 
     @Generated(hash = 1546035254)
     public Shop(Long id, String user, String project, String name, String timme,
-            String image_url, String content, String websid, String checkname,
-            String checkid, int type) {
+                String image_url, String content, String websid, String checkname,
+                String checkid, int type) {
         this.id = id;
         this.user = user;
         this.project = project;
