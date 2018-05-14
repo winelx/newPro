@@ -9,14 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.ArrayList;
-
 
 
 /**
@@ -69,8 +68,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //删除本地图片
+                    FileUtils.deleteFile(photoPaths.get(position));
+                    //删除集合数据
                     photoPaths.remove(position);
-                    Dates.deleteFile(photoPaths.get(position));
+                    //刷新界面
                     notifyDataSetChanged();
                 }
             });
@@ -81,8 +83,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                     ArrayList<String> imagepath = new ArrayList<String>();
                     paths.addAll(photoPaths);
 
-                   PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
-                           .start((Activity) mContext);
+                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
+                            .start((Activity) mContext);
                 }
             });
         } else {

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
     public static ArrayList<work_fr_bright_bean> mData;
-    private boolean doNotifyDataSetChangedOnce = false;
+
 
     public FragmentBrightcomAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
@@ -32,17 +32,13 @@ public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (doNotifyDataSetChangedOnce) {
-            doNotifyDataSetChangedOnce = false;
-            notifyDataSetChanged();
-        }
+
         return mData.size();
     }
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
         FragmentBrightcomAdapter.mData = mData;
-        doNotifyDataSetChangedOnce = true;
         notifyDataSetChanged();
     }
 

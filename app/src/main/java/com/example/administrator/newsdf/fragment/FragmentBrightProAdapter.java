@@ -10,14 +10,15 @@ import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2018/5/10 0010.
+ *
+ * @author Administrator
+ * @date 2018/5/10 0010
  * 办公
  */
 
 public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
     public static ArrayList<work_fr_bright_bean> mData;
-    private boolean doNotifyDataSetChangedOnce = false;
 
     public FragmentBrightProAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
@@ -32,17 +33,13 @@ public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (doNotifyDataSetChangedOnce) {
-            doNotifyDataSetChangedOnce = false;
-            notifyDataSetChanged();
-        }
+
         return mData.size();
     }
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
         FragmentBrightProAdapter.mData = mData;
-        doNotifyDataSetChangedOnce = true;
         notifyDataSetChanged();
     }
 

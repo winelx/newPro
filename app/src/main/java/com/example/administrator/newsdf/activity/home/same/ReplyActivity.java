@@ -361,7 +361,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 }
                 if (wbsID == null || wbsID.equals("")) {
                     Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
-                } else if ("" .equals(replyText.getText().toString())) {
+                } else if ("".equals(replyText.getText().toString())) {
                     Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
                 } else {
                     Okgo(files, Bai_address);

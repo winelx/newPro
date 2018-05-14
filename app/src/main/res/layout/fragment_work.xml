@@ -244,7 +244,7 @@
                         android:layout_marginStart="9dp"
                         android:background="@drawable/home_item_blue"
                         android:gravity="center"
-                        android:text="项目"
+                        android:text="公司"
                         android:textColor="@color/writer"
                         android:textSize="10sp" />
 

@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -38,7 +37,14 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -53,6 +59,8 @@ import static com.example.administrator.newsdf.R.id.pphotoadm;
 public class WorkFragment extends Fragment {
     private View rootView;
     private Context mContext;
+    Disposable mDisposable;
+    int status = 1;
     /**
      * 饼状图
      */
@@ -91,61 +99,6 @@ public class WorkFragment extends Fragment {
     private FragmentBrightAdapter brightViewpagerAdapter;
     private FragmentBrightcomAdapter bridhtcompanyAdapter;
     private FragmentBrightProAdapter bridhtprojectAdapter;
-    /**
-     * 消息处理器的应用
-     */
-    Handler mHandler = new Handler();
-    Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            switch (staus) {
-                case 1:
-                    //获取当前所处viewpager的页数
-                    time = bridhtgroupViewpager.getCurrentItem();
-
-                    //判断集合的长度是否等于0，如果等于0就不处理。
-                    if (groupbridhtList.size() != 0) {
-                        //集合的长度不等于0，那就判断获取的页数是否登录当前集合长度，如果等于，那就回到第一页
-                        if (time + 1 == groupbridhtList.size()) {
-                            bridhtgroupViewpager.setCurrentItem(0);
-                        } else {
-                            //如果不等于集合长度，那就在原来的页数上加1，跳转到下一页
-                            bridhtgroupViewpager.setCurrentItem(time + 1);
-                        }
-                    }
-                    //设置下次执行的viewpager
-                    staus = 2;
-                    break;
-                case 2:
-                    time = bridhtcompanyViewpager.getCurrentItem();
-                    if (compangbrightList.size() != 0) {
-                        if (time + 1 == compangbrightList.size()) {
-                            bridhtcompanyViewpager.setCurrentItem(0);
-                        } else {
-                            bridhtcompanyViewpager.setCurrentItem(time + 1);
-                        }
-                    }
-                    staus = 3;
-                    break;
-                case 3:
-                    time = bridhtprojectViewpager.getCurrentItem();
-                    if (projectbrightList.size() != 0) {
-                        if (time + 1 == projectbrightList.size()) {
-                            bridhtprojectViewpager.setCurrentItem(0);
-                        } else {
-                            bridhtprojectViewpager.setCurrentItem(time + 1);
-                        }
-                    }
-                    staus = 1;
-                    break;
-
-                default:
-                    break;
-            }
-            //每隔3000循环执行run方法
-            mHandler.postDelayed(this, datatime);
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -231,7 +184,6 @@ public class WorkFragment extends Fragment {
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
         Bright();
         //延时 毫秒
-//        mHandler.postDelayed(r, 100);
         return rootView;
     }
 
@@ -281,6 +233,7 @@ public class WorkFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        startTime();
         //饼状图数据请求
 //        if (status) {
 //            Okgo();
@@ -410,8 +363,7 @@ public class WorkFragment extends Fragment {
     public void onStop() {
         super.onStop();
         //每隔1s循环执行run方法
-        staus = 4;
-        mHandler.postDelayed(r, datatime);
+        closeTimer();
     }
 
     private void Bright() {
@@ -492,7 +444,6 @@ public class WorkFragment extends Fragment {
                             }
 
                             if (compangbrightList.size() != 0) {
-                                ToastUtils.showLongToast(compangbrightList.size() + "");
                                 bridhtcompanyAdapter.getData(compangbrightList);
                                 bridhtCompany.setVisibility(View.VISIBLE);
                             } else {
@@ -514,4 +465,87 @@ public class WorkFragment extends Fragment {
                 });
     }
 
+    /**
+     * 启动定时器
+     */
+    public void startTime() {
+        //总时间
+        final int count_time = 1000000;
+        Observable.interval(0, 5, TimeUnit.SECONDS)
+                //设置总共发送的次数
+                .take(10000000)
+                .map(new Function<Long, Long>() {
+                    @Override
+                    public Long apply(Long aLong) throws Exception {
+                        //aLong从0开始
+                        return count_time - aLong;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Long value) {
+                        if (status == 1) {
+                            //获取当前所处viewpager的页数
+                            time = bridhtgroupViewpager.getCurrentItem();
+                            //判断集合的长度是否等于0，如果等于0就不处理。
+                            if (groupbridhtList.size() != 0) {
+                                //集合的长度不等于0，那就判断获取的页数是否登录当前集合长度，如果等于，那就回到第一页
+                                if (time + 1 == groupbridhtList.size()) {
+                                    bridhtgroupViewpager.setCurrentItem(0);
+                                } else {
+                                    //如果不等于集合长度，那就在原来的页数上加1，跳转到下一页
+                                    bridhtgroupViewpager.setCurrentItem(time + 1);
+                                }
+                            }
+                            //设置下次执行的viewpager
+                            status = 2;
+                        } else if (status == 2) {
+                            time = bridhtcompanyViewpager.getCurrentItem();
+                            if (compangbrightList.size() != 0) {
+                                if (time + 1 == compangbrightList.size()) {
+                                    bridhtcompanyViewpager.setCurrentItem(0);
+                                } else {
+                                    bridhtcompanyViewpager.setCurrentItem(time + 1);
+                                }
+                            }
+                            status = 3;
+                        } else if (status == 3) {
+                            time = bridhtprojectViewpager.getCurrentItem();
+                            if (projectbrightList.size() != 0) {
+                                if (time + 1 == projectbrightList.size()) {
+                                    bridhtprojectViewpager.setCurrentItem(0);
+                                } else {
+                                    bridhtprojectViewpager.setCurrentItem(time + 1);
+                                }
+                            }
+                            status = 1;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        closeTimer();
+                    }
+                });
+    }
+
+    /**
+     * 关闭定时器
+     */
+    public void closeTimer() {
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
+    }
 }

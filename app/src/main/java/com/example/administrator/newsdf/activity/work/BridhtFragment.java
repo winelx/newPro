@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.example.administrator.newsdf.Adapter.BridhtAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.BrightBean;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.example.administrator.newsdf.utils.Dates.stampToDate;
 
 /**
  * description: 亮点展示界面
@@ -69,7 +72,7 @@ public class BridhtFragment extends Fragment {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("BridhtFragment", s);
-                        try {
+                            try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
 
@@ -125,10 +128,10 @@ public class BridhtFragment extends Fragment {
                                 }
                                 String updateDate;
                                 try {
-                                    updateDate = json.getString("updateDate");
+                                    updateDate = stampToDate(json.getString("updateDate"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    updateDate = json.getString("createDate");
+                                    updateDate = Dates.stampToDate(json.getString("createDate"));
                                 }
                                 mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate));
                             }

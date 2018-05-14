@@ -111,6 +111,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +210,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     } else {
                         Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
                     }
-
 
 
                 }
@@ -455,7 +455,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
-                        swip=false;
+                        swip = false;
                         notall = "3";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
@@ -468,7 +468,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
-                        swip=false;
+                        swip = false;
                         notall = "0";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
@@ -482,7 +482,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
-                        swip=false;
+                        swip = false;
                         notall = "2";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
@@ -802,13 +802,13 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             //判断是否有节点ID
             if (nodeiD != "1") {
                 okgoall(nodeiD, content, pages);
-            }else {
+            } else {
                 okgoall(null, content, pages);
             }
         } else {
             if (nodeiD != "1") {
                 okgoall(nodeiD, null, pages);
-            }else {
+            } else {
                 okgoall(nodeiD, null, pages);
             }
 
