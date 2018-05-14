@@ -20,12 +20,12 @@ import com.example.administrator.newsdf.view.MultiImageView;
  * Created by Administrator on 2018/5/10 0010.
  */
 
-public class WorkBrightFrament extends Fragment {
+public class WorkBrightComFrament extends Fragment {
     private int pos;
     private View view;
 
     @SuppressLint("ValidFragment")
-    public WorkBrightFrament(int pos) {
+    public WorkBrightComFrament(int pos) {
         this.pos = pos;
     }
 
@@ -39,17 +39,15 @@ public class WorkBrightFrament extends Fragment {
         content = view.findViewById(R.id.content);
         multiImageView = view.findViewById(R.id.multiImageView);
         try {
-            String Leadername = FragmentBrightAdapter.mData.get(pos).getLeadername();
+            String Leadername = FragmentBrightcomAdapter.mData.get(pos).getLeadername();
             int namelength = Leadername.length();
-            String titme = FragmentBrightAdapter.mData.get(pos).getLeadername() + FragmentBrightAdapter.mData.get(pos).getOrgName();
+            String titme = FragmentBrightcomAdapter.mData.get(pos).getLeadername() + FragmentBrightcomAdapter.mData.get(pos).getOrgName();
             SpannableString sp1 = new SpannableString(titme);
             sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
                             .getColor(R.color.brighr_people)), 0,
                     namelength,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             content.setText(titme);
-
-            content.setText(sp1);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

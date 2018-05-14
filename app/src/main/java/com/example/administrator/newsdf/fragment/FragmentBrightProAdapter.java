@@ -14,19 +14,19 @@ import java.util.ArrayList;
  * 办公
  */
 
-public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
+public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
     public static ArrayList<work_fr_bright_bean> mData;
     private boolean doNotifyDataSetChangedOnce = false;
 
-    public FragmentBrightAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
+    public FragmentBrightProAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
-        FragmentBrightAdapter.mData = name;
+        FragmentBrightProAdapter.mData = name;
     }
 
     @Override
     public Fragment getItem(int arg0) {
-        WorkBrightFrament fragment = new WorkBrightFrament(arg0);
+        WorkBrightProFrament fragment = new WorkBrightProFrament(arg0);
         return fragment;
     }
 
@@ -41,7 +41,7 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
-        FragmentBrightAdapter.mData = mData;
+        FragmentBrightProAdapter.mData = mData;
         doNotifyDataSetChangedOnce = true;
         notifyDataSetChanged();
     }

@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.activity.work.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.bean.Fr_work_pie;
 import com.example.administrator.newsdf.bean.work_fr_bright_bean;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -87,7 +88,9 @@ public class WorkFragment extends Fragment {
     private TextView frWorkDn, taskManagement, moreandmore, frWorkName, taskPush, photoManagement, uploade;
     //饼状图色码
     private String[] color = {"#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8", "#2F4554", "#D48265", "#91C7AE", "#749F83", "#C23531", "#61A0A8", "#61a882", "#68a861", "#618ca8"};
-    private FragmentBrightAdapter brightViewpagerAdapter, bridhtcompanyAdapter, bridhtprojectAdapter;
+    private FragmentBrightAdapter brightViewpagerAdapter;
+    private FragmentBrightcomAdapter bridhtcompanyAdapter;
+    private FragmentBrightProAdapter bridhtprojectAdapter;
     /**
      * 消息处理器的应用
      */
@@ -115,7 +118,6 @@ public class WorkFragment extends Fragment {
                     break;
                 case 2:
                     time = bridhtcompanyViewpager.getCurrentItem();
-
                     if (compangbrightList.size() != 0) {
                         if (time + 1 == compangbrightList.size()) {
                             bridhtcompanyViewpager.setCurrentItem(0);
@@ -123,7 +125,6 @@ public class WorkFragment extends Fragment {
                             bridhtcompanyViewpager.setCurrentItem(time + 1);
                         }
                     }
-
                     staus = 3;
                     break;
                 case 3:
@@ -157,6 +158,7 @@ public class WorkFragment extends Fragment {
             compangbrightList = new ArrayList<>();
             groupbridhtList = new ArrayList<>();
             projectbrightList = new ArrayList<>();
+
             //初始化控件Id
             findId();
             //设置当前时间的问候
@@ -221,19 +223,15 @@ public class WorkFragment extends Fragment {
             parent.removeView(rootView);
         }
         //请求图片轮播数据
-        Bright();
         brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), groupbridhtList);
-        bridhtcompanyAdapter = new FragmentBrightAdapter(getChildFragmentManager(), compangbrightList);
-        bridhtprojectAdapter = new FragmentBrightAdapter(getChildFragmentManager(), projectbrightList);
-
         bridhtgroupViewpager.setAdapter(brightViewpagerAdapter);
-
+        bridhtcompanyAdapter = new FragmentBrightcomAdapter(getChildFragmentManager(), compangbrightList);
         bridhtcompanyViewpager.setAdapter(bridhtcompanyAdapter);
-
+        bridhtprojectAdapter = new FragmentBrightProAdapter(getChildFragmentManager(), projectbrightList);
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
-
+        Bright();
         //延时 毫秒
-        mHandler.postDelayed(r, 100);
+//        mHandler.postDelayed(r, 100);
         return rootView;
     }
 
@@ -485,22 +483,25 @@ public class WorkFragment extends Fragment {
                                     projectbrightList.add(new work_fr_bright_bean(id, orgId, orgName, leadername, leaderImg, type));
                                 }
                             }
-                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
+//                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
                             if (groupbridhtList.size() != 0) {
                                 bridhtGroup.setVisibility(View.VISIBLE);
                                 brightViewpagerAdapter.getData(groupbridhtList);
                             } else {
                                 bridhtGroup.setVisibility(View.GONE);
                             }
+
                             if (compangbrightList.size() != 0) {
-                                bridhtCompany.setVisibility(View.VISIBLE);
+                                ToastUtils.showLongToast(compangbrightList.size() + "");
                                 bridhtcompanyAdapter.getData(compangbrightList);
+                                bridhtCompany.setVisibility(View.VISIBLE);
                             } else {
                                 bridhtCompany.setVisibility(View.GONE);
                             }
+
                             if (projectbrightList.size() != 0) {
-                                bridhtProject.setVisibility(View.VISIBLE);
                                 bridhtprojectAdapter.getData(projectbrightList);
+                                bridhtProject.setVisibility(View.VISIBLE);
                             } else {
                                 bridhtProject.setVisibility(View.GONE);
                             }
