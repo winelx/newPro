@@ -62,6 +62,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
 
         queryDate();
     }
+
     /**
      * 拿到数据
      */
@@ -74,7 +75,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
 
 
     /**
-     *  左滑删除记录
+     * 左滑删除记录
      */
     public void deleteDate(int position) {
         if (!listPath.isEmpty()) {
@@ -85,7 +86,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
     }
 
     /**
-     *  点击条目跳转界面
+     * 点击条目跳转界面
      */
     public void getInt(int position) {
         ArrayList<String> path = new ArrayList<>();

@@ -37,15 +37,14 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-
-
 /**
  * description: 任务维护的wbs树
+ *
  * @author lx
- * date: 2018/3/22 0022 下午 2:39
- * update: 2018/3/22 0022
- * version:
-*/
+ *         date: 2018/3/22 0022 下午 2:39
+ *         update: 2018/3/22 0022
+ *         version:
+ */
 public class OrganiwbsActivity extends Activity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
@@ -84,7 +83,7 @@ public class OrganiwbsActivity extends Activity {
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
-        Dates.getDialogs(OrganiwbsActivity.this,"请求数据中...");
+        Dates.getDialogs(OrganiwbsActivity.this, "请求数据中...");
         okgo();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +92,7 @@ public class OrganiwbsActivity extends Activity {
             }
         });
     }
+
     private void okgo() {
         OkGo.post(Requests.WBSTress)
                 .execute(new StringCallback() {
@@ -101,8 +101,7 @@ public class OrganiwbsActivity extends Activity {
                         mTreeDatas.clear();
                         if (s.contains("data")) {
                             getWorkOrganizationList(s);
-                        }
-                        else {
+                        } else {
                             ToastUtils.showLongToast("数据加载失败");
                         }
                         Dates.disDialog();
@@ -110,6 +109,7 @@ public class OrganiwbsActivity extends Activity {
                     }
                 });
     }
+
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(OrganiwbsActivity.this, "请求数据中");
@@ -143,7 +143,6 @@ public class OrganiwbsActivity extends Activity {
         organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
     }
-
 
 
     /**
@@ -230,14 +229,14 @@ public class OrganiwbsActivity extends Activity {
     public void switchAct(Node node, final String name) {
         wbsname = name;
         if (node.iswbs() != false) {
-            getOko(node.getId(), node.getTitle(),node.isperent(),node.getName(),node.iswbs(),node.getType());
+            getOko(node.getId(), node.getTitle(), node.isperent(), node.getName(), node.iswbs(), node.getType());
         } else {
 //            Toast.makeText(mContext, "不是wbs,无法跳转", Toast.LENGTH_SHORT).show();
         }
     }
 
     void getOko(final String str, final String wbspath, final boolean isParent, final String wbsname, final boolean iswbs, final String type) {
-        LogUtil.i("wbsID",str);
+        LogUtil.i("wbsID", str);
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
@@ -275,10 +274,10 @@ public class OrganiwbsActivity extends Activity {
                                 //节点路径
                                 intent.putExtra("wbspath", wbspath);
                                 //是否是父节点
-                                intent.putExtra("isParent",isParent );
-                                intent.putExtra("wbsname",wbsname );
-                                intent.putExtra("iswbs",iswbs);
-                                intent.putExtra("type",type);
+                                intent.putExtra("isParent", isParent);
+                                intent.putExtra("wbsname", wbsname);
+                                intent.putExtra("iswbs", iswbs);
+                                intent.putExtra("type", type);
                                 startActivity(intent);
                                 Dates.disDialog();
                             } catch (JSONException e) {
@@ -298,10 +297,10 @@ public class OrganiwbsActivity extends Activity {
                             //节点路径
                             intent.putExtra("wbspath", wbspath);
                             //是否是父节点
-                            intent.putExtra("isParent",isParent);
-                            intent.putExtra("wbsname",wbsname );
-                            intent.putExtra("iswbs",iswbs);
-                            intent.putExtra("type",type);
+                            intent.putExtra("isParent", isParent);
+                            intent.putExtra("wbsname", wbsname);
+                            intent.putExtra("iswbs", iswbs);
+                            intent.putExtra("type", type);
                             startActivity(intent);
                             Dates.disDialog();
                         }
@@ -309,7 +308,6 @@ public class OrganiwbsActivity extends Activity {
                     }
                 });
     }
-
 
 
 }

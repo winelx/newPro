@@ -108,9 +108,9 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         pushDialog.setText(label);
         pushContent.setText(content);
         pushDuty.setText(user);
-        if (requirements.length()!=0){
+        if (requirements.length() != 0) {
             conditions.setText(requirements);
-        }else {
+        } else {
             conditions.setText("无");
         }
 
@@ -212,7 +212,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
                 popupWindow.dismiss();
             }
         });
-        PopAdapterDialog adapter = new PopAdapterDialog(mData, PushdialogActivity.this,preconditions);
+        PopAdapterDialog adapter = new PopAdapterDialog(mData, PushdialogActivity.this, preconditions);
         lvList.setAdapter(adapter);
         lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

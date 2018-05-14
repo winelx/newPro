@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -8,9 +9,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.bean.BrightBean;
 import com.example.administrator.newsdf.view.MultiImageView;
@@ -47,7 +50,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         bindContent((Viewholder) holder, position);
     }
 
-    private void bindContent(Viewholder holder, int position) {
+    private void bindContent(Viewholder holder, final int position) {
         holder.hrightItemViewgroup.setMaxChildCount(12);
         holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.ic_launcher);
         try {
@@ -56,13 +59,11 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }catch (NullPointerException e){
             e.printStackTrace();
         }
-
-
 //如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
         int length = mData.get(position).getLeadername().length();
         String name = mData.get(position).getLeadername();
         String content = mData.get(position).getTaskName();
-        content = name + " 回复 " + content;
+        content = name + " 回复: " + content;
         SpannableString sp1 = new SpannableString(content);
         sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
                         .getColor(R.color.brighr_people)), 0,
@@ -70,10 +71,19 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
                         .getColor(R.color.persomal_text)), length + 1,
-                length + 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                length + 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.content.setText(sp1);
         holder.brightItemBlock.setText(mData.get(position).getOrgName());
         holder.brightItemTime.setText(mData.get(position).getUpdateDate());
+        holder.hright_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, TaskdetailsActivity.class);
+                intent.putExtra("TaskId",mData.get(position).getOrgId());
+
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -84,13 +94,14 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class Viewholder extends RecyclerView.ViewHolder {
         MultiImageView hrightItemViewgroup;
         TextView content, brightItemBlock, brightItemTime;
-
+        LinearLayout hright_item;
         public Viewholder(View itemView) {
             super(itemView);
             hrightItemViewgroup = itemView.findViewById(R.id.hright_item_viewgroup);
             content = itemView.findViewById(R.id.content);
             brightItemBlock = itemView.findViewById(R.id.bright_item_block);
             brightItemTime = itemView.findViewById(R.id.bright_item_time);
+            hright_item=itemView.findViewById(R.id.hright_item);
         }
     }
 

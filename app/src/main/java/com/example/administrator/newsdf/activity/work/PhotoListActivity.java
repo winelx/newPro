@@ -215,7 +215,7 @@ public class PhotoListActivity extends AppCompatActivity {
                     }
                     try {
                         //节点层级
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum")+"");
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }

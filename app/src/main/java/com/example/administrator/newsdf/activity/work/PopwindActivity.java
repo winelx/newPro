@@ -10,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-/** 
+
+/**
  * description: wbs树查看联系人信息
+ *
  * @author lx
- * date: 2018/3/26 0026 上午 9:48
- * update: 2018/3/26 0026
- * version: 
-*/
+ *         date: 2018/3/26 0026 上午 9:48
+ *         update: 2018/3/26 0026
+ *         version:
+ */
 public class PopwindActivity extends Activity implements View.OnClickListener {
 
     private ImageView tree_error;

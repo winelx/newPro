@@ -61,7 +61,6 @@ public class BridhtFragment extends Fragment {
         mAdapter = new BridhtAdapter(BrightspotActivity.getInstance());
         brightspot_list.setAdapter(mAdapter);
         Bright();
-
         return view;
     }
 
@@ -72,7 +71,7 @@ public class BridhtFragment extends Fragment {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("BridhtFragment", s);
-                            try {
+                        try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
 
@@ -135,7 +134,6 @@ public class BridhtFragment extends Fragment {
                                 }
                                 mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate));
                             }
-
                             mAdapter.getData(mData);
                         } catch (JSONException e) {
                             e.printStackTrace();

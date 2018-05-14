@@ -21,13 +21,14 @@ import okhttp3.Response;
 
 import static com.lzy.okgo.OkGo.post;
 
-/** 
+/**
  * description: 解析json和封装了查询图册的
+ *
  * @author lx
- * date: 2018/5/4 0004 下午 4:06
- * update: 2018/5/4 0004
- * version: 
-*/
+ *         date: 2018/5/4 0004 下午 4:06
+ *         update: 2018/5/4 0004
+ *         version:
+ */
 
 public class homeUtils {
 
@@ -182,6 +183,7 @@ public class homeUtils {
                             ToastUtils.showShortToast("暂无数据！");
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -193,12 +195,13 @@ public class homeUtils {
 
     /**
      * 查询图册
-     * @param string wbsID
-     * @param page 请求页数
-     * @param imagePaths 集合数据
-     * @param drew  是否删除之前集合数据
+     *
+     * @param string           wbsID
+     * @param page             请求页数
+     * @param imagePaths       集合数据
+     * @param drew             是否删除之前集合数据
      * @param taskPhotoAdapter 适配器
-     * @param wbsName 节点层级
+     * @param wbsName          节点层级
      */
     public static void photoAdm(final String string, int page,
                                 final ArrayList<PhotoBean> imagePaths,

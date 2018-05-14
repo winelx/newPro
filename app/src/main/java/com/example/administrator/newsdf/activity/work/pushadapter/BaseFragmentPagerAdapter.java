@@ -30,7 +30,7 @@ public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object){
+    public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
         tagList.remove(makeFragmentName(container.getId(), getItemId(position)));
     }
@@ -39,13 +39,13 @@ public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
         return "android:switcher:" + viewId + ":" + id;
     }
 
-    public void update(int position){
-        Fragment fragment = (Fragment)mFragmentManager.findFragmentByTag(tagList.get(position));
-        if(fragment == null){
+    public void update(int position) {
+        Fragment fragment = (Fragment) mFragmentManager.findFragmentByTag(tagList.get(position));
+        if (fragment == null) {
             return;
         }
-        if(fragment instanceof UpdateAble){//这里唯一的要求是Fragment要实现UpdateAble接口
-            ((UpdateAble)fragment).update();
+        if (fragment instanceof UpdateAble) {//这里唯一的要求是Fragment要实现UpdateAble接口
+            ((UpdateAble) fragment).update();
         }
     }
 

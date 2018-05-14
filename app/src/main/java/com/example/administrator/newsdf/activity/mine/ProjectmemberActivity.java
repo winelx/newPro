@@ -135,7 +135,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
             @Override
             public void bindView(ViewHolder holder, final Icon obj) {
                 //头像
-                holder.setImages(R.id.memberImageView, obj.getImageUrl(),mContext);
+                holder.setImages(R.id.memberImageView, obj.getImageUrl(), mContext);
                 //名字
                 holder.setText(R.id.member_name, obj.getName());
                 //手机号
@@ -222,7 +222,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
 
     /**
      * 网络请求
-     *   OkGo.post(Request.Members)
+     * OkGo.post(Request.Members)
      */
 
     void okgo(final String id) {
@@ -231,14 +231,14 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("jsonArray",id);
+                        LogUtil.i("jsonArray", id);
                         if (s.contains("data")) {
                             mData.clear();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String str = jsonObject.getString("msg");
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                LogUtil.i("jsonArray",jsonArray.length());
+                                LogUtil.i("jsonArray", jsonArray.length());
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject content = jsonArray.getJSONObject(i);
                                     String id = content.getString("id");

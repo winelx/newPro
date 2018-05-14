@@ -114,6 +114,7 @@ public class PasswordActvity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

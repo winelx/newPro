@@ -67,7 +67,7 @@ public class PchooseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 listPath = LoveDao.queryCart();
                 if (listPath.size() != 0) {
-                  startActivity(new Intent(mContext,UploadPhotoActivity.class));
+                    startActivity(new Intent(mContext, UploadPhotoActivity.class));
                 } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }

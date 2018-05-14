@@ -16,9 +16,10 @@ import java.util.List;
 
 public class PushAdapter extends BaseFragmentPagerAdapter {
     public static String Content;
-    public  ArrayList<String> mData;
+    public ArrayList<String> mData;
     private FragmentManager mFragmentManager;
     private List<String> tagList = new ArrayList<String>();
+
     public PushAdapter(FragmentManager fm, ArrayList<String> mData) {
         super(fm);
         this.mFragmentManager = fm;
@@ -46,6 +47,7 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
         this.Content = Content;
 
     }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         tagList.add(makeFragmentName(container.getId(), getItemId(position))); //把tag存起来
@@ -56,10 +58,11 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
         return "android:switcher:" + viewId + ":" + id;
     }
 
-    public void update(ArrayList<String> datas){
+    public void update(ArrayList<String> datas) {
         this.mData = datas;
         notifyDataSetChanged();
     }
+
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;

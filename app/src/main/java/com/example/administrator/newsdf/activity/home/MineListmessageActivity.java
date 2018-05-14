@@ -307,7 +307,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                         break;
                     //通过的详情
                     case "1":
-                       Intent audio = new Intent(mContext, MoretaskActivity.class);
+                        Intent audio = new Intent(mContext, MoretaskActivity.class);
                         //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
                         audio.putExtra("TaskId", mDatas.get(position).getTaskId());
                         audio.putExtra("wbsid", mDatas.get(position).getWbsId());

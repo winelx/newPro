@@ -54,7 +54,7 @@ public class NewpushActivity extends AppCompatActivity {
     private IconTextView back;
     private LinearLayout newpush_wbs, newpush_user, newpush_name;
     private EditText newpush_check, push_content;
-    private String Wbsid, wbsname, userid, wbsPath,id;
+    private String Wbsid, wbsname, userid, wbsPath, id;
     private Context mContent;
     boolean staus = false;
     private int page = 1;

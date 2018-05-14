@@ -56,9 +56,10 @@ public class TaskWbsActivity extends Activity {
     private int addPosition;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    String wbsname, wbsID, type,wbspath;
+    String wbsname, wbsID, type, wbspath;
     private boolean isParent, iswbs;
-    private String DATA="data";
+    private String DATA = "data";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -361,7 +362,7 @@ public class TaskWbsActivity extends Activity {
             Intent list = new Intent();
             list.putExtra("id", node.getId());
             list.putExtra("titles", node.getTitle());
-            LogUtil.i("result", node.getTitle()+node.getName()+node);
+            LogUtil.i("result", node.getTitle() + node.getName() + node);
             //回传数据到主Activity
             setResult(RESULT_OK, list);
             //此方法后才能返回主Activity

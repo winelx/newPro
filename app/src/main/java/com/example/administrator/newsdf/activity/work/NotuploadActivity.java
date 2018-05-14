@@ -32,7 +32,7 @@ import java.util.List;
  * version:
  */
 
-public class NotuploadActivity extends AppCompatActivity  {
+public class NotuploadActivity extends AppCompatActivity {
     private LinearLayout toolbar_add;
     LinearLayout com_back;
     String wbsID;
@@ -115,7 +115,6 @@ public class NotuploadActivity extends AppCompatActivity  {
         mAdapter.closeMenu();
         queryDate();
     }
-
 
 
     //点击条目跳转界面

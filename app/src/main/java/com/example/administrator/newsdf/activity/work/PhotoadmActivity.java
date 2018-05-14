@@ -94,7 +94,7 @@ public class PhotoadmActivity extends AppCompatActivity {
                                 filePath = Requests.networks + filePath;
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                             }
-                            photoAdapter.getData(imagePaths,Title);
+                            photoAdapter.getData(imagePaths, Title);
                             wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                             Dates.disDialog();
                         } catch (JSONException e) {

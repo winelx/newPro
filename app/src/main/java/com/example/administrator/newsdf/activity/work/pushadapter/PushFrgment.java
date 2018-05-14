@@ -71,7 +71,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     private List<String> deleSelect;
     String
             //内容
-       content,
+            content,
     //ID
     id,
     //标签
@@ -94,6 +94,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     private CheckBox che_all;
     private WbsDialog selfDialog;
     private String strids;
+
     /**
      * 获取当前是第几个界面
      */
@@ -101,6 +102,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     public PushFrgment(int pos) {
         this.pos = pos;
     }
+
     private SmartRefreshLayout refreshLayout;
     private String pushid;
 

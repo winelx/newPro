@@ -84,7 +84,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private TaskPhotoAdapter taskAdapter;
     private int page = 1;
     private boolean drew = true, iswbs, isParent;
-    private ArrayList<String> titlename=new ArrayList<>();
+    private ArrayList<String> titlename = new ArrayList<>();
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
 

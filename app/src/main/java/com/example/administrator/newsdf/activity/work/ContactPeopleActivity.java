@@ -58,6 +58,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     private PopupWindow mPopupWindow;
     private TextView Toolbar;
     private EditText search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,11 +119,11 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     //网络请求
     void okgo() {
         OkGo.post(Requests.Members)
-                .params("orgId","")
+                .params("orgId", "")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("sss",s);
+                        LogUtil.i("sss", s);
                         mData.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);

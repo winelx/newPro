@@ -25,13 +25,15 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
 /**
  * description: 图纸详情
+ *
  * @author lx
- * date: 2018/3/26 0026 上午 9:44
- * update: 2018/3/26 0026
- * version:
-*/
+ *         date: 2018/3/26 0026 上午 9:44
+ *         update: 2018/3/26 0026
+ *         version:
+ */
 public class ListPhActivity extends AppCompatActivity {
     private RecyclerView photo_rec;
     private PhotoadmAdapter photoAdapter;
@@ -88,7 +90,7 @@ public class ListPhActivity extends AppCompatActivity {
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber,
                                         drawingName, drawingGroupName));
                             }
-                            photoAdapter.getData(imagePaths,Title);
+                            photoAdapter.getData(imagePaths, Title);
                             wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                         } catch (JSONException e) {
                             e.printStackTrace();
