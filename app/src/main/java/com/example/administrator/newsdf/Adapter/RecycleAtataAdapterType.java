@@ -71,8 +71,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
+        //判断是否有图片
         if (mDatas.get(posotion).getAttachments().size() != 0) {
+            //有图片展示布局
             holder.audio_rec.setVisibility(View.VISIBLE);
+            //隐藏没有图片的提示图
             holder.audio_notimage.setVisibility(View.GONE);
         } else {
             holder.audio_rec.setVisibility(View.INVISIBLE);
@@ -93,17 +96,31 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.comment_count.setText(mDatas.get(posotion).getCommentCount());
         //评论
         isSmartProject = mDatas.get(posotion).getIsSmartProject();
+        //判断默认状态是提亮还是降亮
         if (isSmartProject == 0) {
-            holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
+            //判断是否有权限提亮
+            if (mDatas.get(posotion).isUp()) {
+                holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
+            } else {
+                //反之隐藏
+                holder.givealike.setVisibility(View.GONE);
+            }
+
         } else {
-            holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
+            //判断是否有权限降亮
+            if (mDatas.get(posotion).isDowm()) {
+                holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
+            } else {
+                //反之隐藏
+                holder.givealike.setVisibility(View.GONE);
+            }
+
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.audio_rec.setLayoutManager(linearLayoutManager);
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
         holder.audio_rec.setAdapter(adapter);
-
         holder.audio_data_comm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
