@@ -51,5 +51,13 @@
     <string name="__picker_over_max_count_tips">你最多可以选择%1$d张图片</string>
     <string name="__picker_image_count">%1$d张</string>
     <string name="givealike">提亮</string>
+    <string name="logout">退出登录</string>
+    <string name="collection">收藏</string>
+    <string name="Checkupdate">检查更新</string>
+    <string name="Clearcache">清除缓存</string>
+    <string name="aboutme">关于我们</string>
+    <string name="Modifypass">修改密码</string>
+    <string name="ProjectMembers">项目成员</string>
+    <string name="switchorganization">切换组织</string>
 
 </resources>

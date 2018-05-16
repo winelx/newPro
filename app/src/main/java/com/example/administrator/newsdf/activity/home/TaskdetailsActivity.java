@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.Adapter.AudioAdapter;
-import com.example.administrator.newsdf.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
@@ -32,6 +31,8 @@ import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.utils.CameDialog;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -49,13 +50,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
 
 
 /**
@@ -66,17 +66,17 @@ import static com.example.administrator.newsdf.R.id.drawerLayout_smart;
  * update: 2018/2/6 0006
  * version:
  */
-public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback {
+public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback, View.OnClickListener {
     //界面适配器
     private AudioAdapter mAdapter;
     private String id;
     private ArrayList<Aduio_content> contents;
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
-    private Context mContext;
+    private static TaskdetailsActivity mContext;
     private TextView wbsnam;
     private TextView wbspath;
-    private TextView comButton;
+    private TextView comButton, comTitle;
     private String wtMainid = null, status, wbsid;
     private String wbsName = null, usernma;
     /**
@@ -85,7 +85,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private CircleImageView Circle;
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
-    private LinearLayout back;
     /**
      * 侧滑界面的listview的适配器
      */
@@ -97,35 +96,27 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private ListView drawerLayoutList;
     private boolean drew;
     private static final int IMAGE_PICKER = 101;
-    private ArrayList<String> path;
+
     /**
      * 任务回复时展示图片的适配器
      */
-    private DialogRecAdapter dialogadapter;
     private LinearLayout comImg;
-
+    private RecyclerView mRecyclerView;
     /**
      * 是否需要返回后刷新界面状态
      */
     private boolean Refresh = true;
+
+    public static TaskdetailsActivity getInstance() {
+        return mContext;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
-        mContext = TaskdetailsActivity.this;
-        DetailsCallbackUtils.setCallBack(this);
-        usernma = SPUtils.getString(mContext, "staffName", null);
-        final Intent intent = getIntent();
-        path = new ArrayList<>();
-        try {
-            id = intent.getExtras().getString("TaskId");
-            status = intent.getExtras().getString("status");
-            wbsid = intent.getExtras().getString("wbsid");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        mContext = this;
         CheckPermission checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -139,22 +130,19 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
-        comImg = (LinearLayout) findViewById(R.id.com_img);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
-        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        Circle = (CircleImageView) findViewById(R.id.fab);
-        wbspath = (TextView) findViewById(R.id.wbspath);
-        back = (LinearLayout) findViewById(R.id.adui_com_back);
-        comButton = (TextView) findViewById(R.id.audio_com_button);
-        TextView comTitle = (TextView) findViewById(R.id.audio_com_title);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
-        //得到跳转到该Activity的Intent对象
-        contents = new ArrayList<>();
-        aduioDatas = new ArrayList<>();
-        aduioComms = new ArrayList<>();
-        imagePaths = new ArrayList<>();
+        DetailsCallbackUtils.setCallBack(this);
+        usernma = SPUtils.getString(mContext, "staffName", null);
+        final Intent intent = getIntent();
+        newArray();
+        try {
+            id = intent.getExtras().getString("TaskId");
+            status = intent.getExtras().getString("status");
+            wbsid = intent.getExtras().getString("wbsid");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        finById();
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -165,61 +153,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
-
         okgo(id);
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
-        //回复任务
-        comButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(TaskdetailsActivity.this, DirectlyreplyActivity.class);
-                intent1.putExtra("id", id);
-                startActivityForResult(intent1, 1);
-            }
-        });
-        //返回
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //抛出异常，在任务管理界面返回时不需要刷新数据，
-                try {
-                    //判断状态是否改变
-                    if (!Refresh) {
-                        //改变了，调用刷新数据方法
-                        TaskCallbackUtils.removeCallBackMethod();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                finish();
-            }
-        });
-        //图册查询
-        Circle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                /**
-                 *查询当前任务节点图册
-                 */
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-        /**
-         * 任务详情记录
-         */
-        comImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(TaskdetailsActivity.this, TaskRecordActivity.class);
-                intent1.putExtra("taskId", id);
-                startActivity(intent1);
-            }
-        });
 
         /**
          *    侧拉listview上拉加载
@@ -237,6 +173,31 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 refreshlayout.finishLoadmore(1500);
             }
         });
+    }
+
+    private void finById() {
+        comImg = (LinearLayout) findViewById(R.id.com_img);
+        comImg.setOnClickListener(this);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+        drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        findViewById(R.id.fab).setOnClickListener(this);
+        wbspath = (TextView) findViewById(R.id.wbspath);
+        findViewById(R.id.taskManagement).setOnClickListener(this);
+        comButton = (TextView) findViewById(R.id.audio_com_button);
+        comButton.setOnClickListener(this);
+        comTitle = (TextView) findViewById(R.id.audio_com_title);
+        mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
+        findViewById(R.id.adui_com_back).setOnClickListener(this);
+    }
+
+    private void newArray() {
+        //得到跳转到该Activity的Intent对象
+        contents = new ArrayList<>();
+        aduioDatas = new ArrayList<>();
+        aduioComms = new ArrayList<>();
+        imagePaths = new ArrayList<>();
     }
 
     /**
@@ -267,6 +228,95 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         }
         finish();
         return true;
+    }
+
+
+    /**
+     * startResult返回数据
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String id = data.getStringExtra("frag_id");
+            comButton.setVisibility(View.GONE);
+            comImg.setVisibility(View.VISIBLE);
+            Refresh = false;
+            okgo(id);
+        } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (data != null && requestCode == IMAGE_PICKER) {
+                ArrayList<ImageItem> images =
+                        (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                //循环取出数据
+                for (int i = 0; i < images.size(); i++) {
+                    //获取图片大小
+                    double mdouble = Dates.getDirSize(new File(images.get(i).path));
+                    //如果图片大小不等于0.0，说明图片正常，如果等于这个值，那说明图片是损坏的
+                    if (mdouble != 0.0) {
+                        //图片正常压缩
+                        ToastUtils.showLongToast("ss");
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                            @Override
+                            public void callback(boolean isSuccess, String outfile) {
+
+                                CameDialog.path.add(outfile);
+                                //回复任务选择的图片
+                                CameDialog.Dialogadapter.getData(CameDialog.path);
+                            }
+                        });
+                    }
+                }
+            } else {
+                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
+     * 回调刷新界面
+     */
+    @Override
+    public void deleteTop() {
+        okgo(id);
+    }
+
+
+    public String gettaskId() {
+        return id;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.adui_com_back:
+                finish();
+                break;
+            case R.id.fab:
+                page = 1;
+                drew = true;
+                /**
+                 *查询当前任务节点图册
+                 */
+                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.com_img:
+                Intent intent1 = new Intent(TaskdetailsActivity.this, TaskRecordActivity.class);
+                intent1.putExtra("taskId", id);
+                startActivity(intent1);
+                break;
+            case R.id.audio_com_button:
+                Intent intent = new Intent(TaskdetailsActivity.this, DirectlyreplyActivity.class);
+                intent.putExtra("id", id);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.taskManagement:
+                homeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -539,6 +589,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                                 ArrayList<String> attachments = new ArrayList<>();
                                 ArrayList<String> filename = new ArrayList<>();
+                                //任务回复图片
                                 if (hments.length() > 0) {
                                     for (int j = 0; j < hments.length(); j++) {
                                         JSONObject json = hments.getJSONObject(j);
@@ -572,10 +623,21 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                                 //回复人头像(路径：comments –> user -> portrait)
                                 String taskId = null;
-                                String commentsStatus = json.getString("status");
+                                String commentsStatus;
+                                try {
+                                    commentsStatus = json.getString("status");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    commentsStatus = "";
+                                }
                                 String statusName = null;
                                 //Pinglun内容说明
-                                String commentsContent = json.getString("content");
+                                String commentsContent;
+                                try {
+                                    commentsContent = json.getString("content");
+                                } catch (JSONException e) {
+                                    commentsContent = "";
+                                }
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
                                 aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
@@ -602,49 +664,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 });
     }
 
-    /**
-     * startResult返回数据
-     */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String id = data.getStringExtra("frag_id");
-            comButton.setVisibility(View.GONE);
-            comImg.setVisibility(View.VISIBLE);
-            Refresh = false;
-            okgo(id);
-        } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            if (data != null && requestCode == IMAGE_PICKER) {
-                ArrayList<ImageItem> images =
-                        (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                for (int i = 0; i < images.size(); i++) {
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            path.add(outfile);
-                            //回复任务是选择的图片
-                            dialogadapter.getData(path);
-                        }
-                    });
-                }
-            } else {
-                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
+    protected void onStop() {
+        super.onStop();
+        if (CameDialog.path.size() != 0) {
+            for (int i = 0; i < CameDialog.path.size(); i++) {
+                FileUtils.deleteFile(CameDialog.path.get(i));
             }
         }
-    }
-
-    /**
-     * 回调刷新界面
-     */
-    @Override
-    public void deleteTop() {
-        okgo(id);
-    }
-
-
-    public String gettaskId() {
-        return id;
     }
 }

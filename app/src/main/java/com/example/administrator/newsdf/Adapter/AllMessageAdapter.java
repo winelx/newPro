@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBackUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
@@ -38,6 +39,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     private LeftSlideView mMenu = null;
     private int Unfinish;
     private static final int MAX = 99;
+
     public AllMessageAdapter(Context context) {
         mContext = context;
 
@@ -106,7 +108,14 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         } else {
             holder.btn_Delete.setText("置顶");
         }
-
+        holder.tv_set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showLongToast("收藏");
+                holder.tv_set.setBackgroundResource(R.color.back);
+                holder.tv_set.setText("已收藏");
+            }
+        });
 
         //随机数，改变标段的颜色
         int Random = (int) (Math.random() * 4) + 1;
@@ -152,7 +161,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView btn_Delete;
+        public TextView btn_Delete, tv_set;
         public RelativeLayout layout_content;
         public RelativeLayout relativeLayout;
         public TextView home_item_img;
@@ -165,6 +174,8 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
             super(itemView);
             //置顶
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
+            tv_set = (TextView) itemView.findViewById(R.id.tv_set);
+
             //控制布局在界面的宽度
             layout_content = itemView.findViewById(R.id.layout_content);
             //控制布局大小

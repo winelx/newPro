@@ -47,7 +47,6 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -419,69 +418,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
 
 
     /**
-     * 网络请求
-     */
-    private void Okgo(ArrayList<File> file, final String address) {
-        dialog = new ProgressDialog(mContext);
-        dialog.setMessage("提交数据中...");
-        // 设置是否可以通过点击Back键取消
-        dialog.setCancelable(true);
-        // 设置在点击Dialog外是否取消Dialog进度条
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        OkGo.post(Requests.Uploade)
-                .params("wbsId", wbsID)
-                .params("uploadContent", replyText.getText().toString())
-                .params("latitude", latitude)
-                .params("longitude", longitude)
-                .params("uploadAddr", address)
-                .params("wbsqastaffId", checkId)
-                //上传图片
-                .addFileParams("imagesList", file)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            String msg = jsonObject.getString("msg");
-                            if (ret == 0) {
-                                //删除上传的图片
-                                for (int i = 0; i < pathimg.size(); i++) {
-                                    Dates.deleteFile(pathimg.get(i));
-                                }
-                                ToastUtils.showShortToast(msg);
-                                if (!list.isEmpty() && position != -1) {
-                                    LoveDao.deleteLove(list.get(position).getId());
-                                }
-                                setList();
-                            } else {
-                                ToastUtils.showShortToast(msg);
-                            }
-                            dialog.dismiss();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        dialog.dismiss();
-                    }
-
-                    //进度条
-                    @Override
-                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
-                        mProgressBar.setProgress((int) (100 * progress));
-                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
-                    }
-                });
-    }
-
-    /**
      * 点击事件判断
      *
      * @param v
@@ -525,9 +461,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         if (requestCode == 1 && resultCode == RESULT_OK) {
             //返回wbs
             id = data.getStringExtra("id");
-            LogUtil.i("result", data.getStringExtra("id"));
             wbsNodeName.setText(data.getStringExtra("titles"));
-            LogUtil.i("result", data.getStringExtra("titles"));
             //请求图片页数
             page = 1;
             //清除选择项ID
@@ -756,6 +690,69 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         }
         finish();
         return false;
+    }
+
+    /**
+     * 网络请求
+     */
+    private void Okgo(ArrayList<File> file, final String address) {
+        dialog = new ProgressDialog(mContext);
+        dialog.setMessage("提交数据中...");
+        // 设置是否可以通过点击Back键取消
+        dialog.setCancelable(true);
+        // 设置在点击Dialog外是否取消Dialog进度条
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        OkGo.post(Requests.Uploade)
+                .params("wbsId", wbsID)
+                .params("uploadContent", replyText.getText().toString())
+                .params("latitude", latitude)
+                .params("longitude", longitude)
+                .params("uploadAddr", address)
+                .params("wbsqastaffId", checkId)
+                //上传图片
+                .addFileParams("imagesList", file)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            String msg = jsonObject.getString("msg");
+                            if (ret == 0) {
+                                //删除上传的图片
+                                for (int i = 0; i < pathimg.size(); i++) {
+                                    Dates.deleteFile(pathimg.get(i));
+                                }
+                                ToastUtils.showShortToast(msg);
+                                if (!list.isEmpty() && position != -1) {
+                                    LoveDao.deleteLove(list.get(position).getId());
+                                }
+                                setList();
+                            } else {
+                                ToastUtils.showShortToast(msg);
+                            }
+                            dialog.dismiss();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        dialog.dismiss();
+                    }
+
+                    //进度条
+                    @Override
+                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
+                        mProgressBar.setProgress((int) (100 * progress));
+                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
+                    }
+                });
     }
 }
 

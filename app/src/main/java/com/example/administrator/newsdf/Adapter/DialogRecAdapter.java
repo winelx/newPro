@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.utils.Dates;
@@ -58,6 +59,7 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View v) {
                 mData.remove(position);
+                FileUtils.deleteFile(mData.get(position));
                 notifyDataSetChanged();
             }
         });

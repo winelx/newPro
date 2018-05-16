@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,16 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.pchoose.PshooseFragAdapte;
 import com.example.administrator.newsdf.callback.JPushCallBack;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
+import com.example.administrator.newsdf.fragment.homepage.AllMessageFragment;
+import com.example.administrator.newsdf.fragment.homepage.CollectionFragment;
+import com.example.administrator.newsdf.fragment.homepage.CommentsFragment;
+import com.example.administrator.newsdf.fragment.homepage.HomeMineFragment;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.administrator.newsdf.R.id.index_point_red;
 
 
 /**
@@ -31,12 +35,10 @@ import static com.example.administrator.newsdf.R.id.index_point_red;
  *         update: 2018/3/27 0027
  *         version:
  */
-public class IndexFrament extends Fragment implements View.OnClickListener, JPushCallBack {
+public class IndexFrament extends Fragment implements JPushCallBack, View.OnClickListener {
     private View rootView;
-    private HomeFragment home;
-    private AllMessageFragment message;
-    TextView mMessage, aMessage, pointRed;
-
+    private ViewPager homeageViewpager;
+    private TextView homepageAll, homepageMine, homepageCollection, homepageComments;
     private Context mContext;
     private Handler handler = new Handler() {
         @Override
@@ -44,7 +46,7 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    pointRed.setVisibility(View.VISIBLE);
+
                     break;
                 default:
                     break;
@@ -57,27 +59,80 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_index, null);
-            //全部
-            mMessage = rootView.findViewById(R.id.fr_index_mm);
-            //我的
-            aMessage = rootView.findViewById(R.id.fr_index_am);
-            pointRed = rootView.findViewById(index_point_red);
             mContext = getActivity();
-            mMessage.setOnClickListener(this);
-            aMessage.setOnClickListener(this);
+            findById();
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
+        //构造适配器
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(new AllMessageFragment());
+        fragments.add(new HomeMineFragment());
+        fragments.add(new CollectionFragment());
+        fragments.add(new CommentsFragment());
+        PshooseFragAdapte adapter = new PshooseFragAdapte(getChildFragmentManager(), fragments);
+        //设定适配器
+        homeageViewpager.setAdapter(adapter);
         //Mianactivity接收极光推送的接口回调
         JPushCallUtils.setCallBack(this);
-        //第一次初始化首页默认显示第一个fragment
-        initFragment2();
+        homeageViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private int currentPosition = 0;
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position > currentPosition) {
+                    //右滑
+                    currentPosition = position;
+                } else if (position < currentPosition) {
+                    //左滑
+                    currentPosition = position;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        homeAll();
+                        break;
+                    case 1:
+                        homeMine();
+                        break;
+                    case 2:
+                        homeCollection();
+                        break;
+                    case 3:
+                        homeComments();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+        });
         return rootView;
     }
 
+    //初始化控件
+    private void findById() {
+        homeageViewpager = rootView.findViewById(R.id.homeage_viewpager);
+        homepageAll = rootView.findViewById(R.id.homepage_all);
+        homepageMine = rootView.findViewById(R.id.homepage_mine);
+        homepageCollection = rootView.findViewById(R.id.homepage_collection);
+        homepageComments = rootView.findViewById(R.id.homepage_comments);
+        homepageAll.setOnClickListener(this);
+        homepageMine.setOnClickListener(this);
+        homepageCollection.setOnClickListener(this);
+        homepageComments.setOnClickListener(this);
+    }
 
     @Override
     public void onStart() {
@@ -85,61 +140,11 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         List<Shop> list = LoveDao.JPushCart();
         if (list.size() > 0) {
 
-            pointRed.setVisibility(View.VISIBLE);
         } else {
-            pointRed.setVisibility(View.GONE);
+
         }
     }
 
-    //显示第一个fragment
-    private void initFragment1() {
-        //这是文字颜色
-        mMessage.setTextColor(Color.parseColor("#5096F8"));
-        aMessage.setTextColor(Color.parseColor("#f5f4f4"));
-        //设置背景样式
-        aMessage.setBackgroundResource(R.drawable.fr_home_mm_f);
-        mMessage.setBackgroundResource(R.drawable.fr_home_am);
-
-        //开启事务，fragment的控制是由事务来实现的
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        //第二种方式(replace)，初始化fragment
-        if (home == null) {
-            home = new HomeFragment();
-        }
-        transaction.replace(R.id.main_frame_layout, home);
-        //提交事务
-        transaction.commit();
-    }
-
-    /**
-     * 显示第一个fragment
-     */
-    private void initFragment2() {
-        aMessage.setTextColor(Color.parseColor("#5096F8"));
-        mMessage.setTextColor(Color.parseColor("#f5f4f4"));
-        aMessage.setBackgroundResource(R.drawable.fr_home_mm);
-        mMessage.setBackgroundResource(R.drawable.fr_home_am_f);
-
-        //开启事务，fragment的控制是由事务来实现的
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        //第二种方式(replace)，初始化fragment
-        if (message == null) {
-            message = new AllMessageFragment();
-        }
-        transaction.replace(R.id.main_frame_layout, message);
-        //提交事务
-        transaction.commit();
-    }
-
-    //时间点击
-    @Override
-    public void onClick(View v) {
-        if (v == mMessage) {
-            initFragment1();
-        } else if (v == aMessage) {
-            initFragment2();
-        }
-    }
 
     //更新界面
     @Override
@@ -147,5 +152,53 @@ public class IndexFrament extends Fragment implements View.OnClickListener, JPus
         Message message = new Message();
         message.what = 1;
         handler.sendMessage(message);
+    }
+
+    private void homeAll() {
+        homepageAll.setTextColor(Color.parseColor("#F27F19"));
+        homepageMine.setTextColor(Color.parseColor("#646464"));
+        homepageCollection.setTextColor(Color.parseColor("#646464"));
+        homepageComments.setTextColor(Color.parseColor("#646464"));
+    }
+
+    private void homeMine() {
+        homepageAll.setTextColor(Color.parseColor("#646464"));
+        homepageMine.setTextColor(Color.parseColor("#F27F19"));
+        homepageCollection.setTextColor(Color.parseColor("#646464"));
+        homepageComments.setTextColor(Color.parseColor("#646464"));
+    }
+
+    private void homeCollection() {
+        homepageAll.setTextColor(Color.parseColor("#646464"));
+        homepageMine.setTextColor(Color.parseColor("#646464"));
+        homepageCollection.setTextColor(Color.parseColor("#F27F19"));
+        homepageComments.setTextColor(Color.parseColor("#646464"));
+    }
+
+    private void homeComments() {
+        homepageAll.setTextColor(Color.parseColor("#646464"));
+        homepageMine.setTextColor(Color.parseColor("#646464"));
+        homepageCollection.setTextColor(Color.parseColor("#646464"));
+        homepageComments.setTextColor(Color.parseColor("#F27F19"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.homepage_all:
+                homeageViewpager.setCurrentItem(0);
+                break;
+            case R.id.homepage_mine:
+                homeageViewpager.setCurrentItem(1);
+                break;
+            case R.id.homepage_collection:
+                homeageViewpager.setCurrentItem(2);
+                break;
+            case R.id.homepage_comments:
+                homeageViewpager.setCurrentItem(3);
+                break;
+            default:
+                break;
+        }
     }
 }

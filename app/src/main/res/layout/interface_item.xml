@@ -23,12 +23,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:padding="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxEms="8"
                 android:maxLines="1"
+                android:padding="0dp"
                 android:text="技术：安装盖板"
                 android:textColor="@color/textViwe"
                 android:textSize="16sp"
@@ -52,13 +52,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/inter_title"
-                android:layout_marginTop="2dp"
-                android:padding="0dp"
                 android:layout_marginLeft="0dp"
+                android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/item_inface_remind"
                 android:layout_toRightOf="@+id/item_inface_remind"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:padding="0dp"
                 android:text="2017-03-01"
                 android:textColor="@color/editext_text"
                 android:textSize="12sp" />
@@ -234,8 +234,8 @@
 
                     <RelativeLayout
                         android:layout_width="0dp"
-                        android:layout_marginLeft="3dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="3dp"
                         android:layout_weight="1">
 
                         <com.android.volley.toolbox.NetworkImageView
@@ -379,26 +379,20 @@
                         android:layout_marginTop="2dp"
                         android:background="@color/back" />
 
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@mipmap/view_positioning" />
 
                     <TextView
                         android:id="@+id/inface_loation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_backview_back"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginTop="3dp"
                         android:layout_toEndOf="@+id/imageView"
                         android:layout_toRightOf="@+id/imageView"
+                        android:drawableLeft="@mipmap/view_positioning"
+                        android:drawablePadding="5dp"
                         android:text="贵阳市云岩区"
                         android:textSize="10sp" />
 
@@ -406,9 +400,10 @@
                     <ImageView
                         android:layout_width="13dp"
                         android:layout_height="13dp"
+                        android:layout_below="@+id/view_backview_back"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="4dp"
                         android:layout_toLeftOf="@+id/textView4"
                         android:layout_toStartOf="@+id/textView4"
                         android:background="@mipmap/message" />
@@ -419,6 +414,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
+                        android:layout_below="@+id/view_backview_back"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:layout_marginEnd="14dp"

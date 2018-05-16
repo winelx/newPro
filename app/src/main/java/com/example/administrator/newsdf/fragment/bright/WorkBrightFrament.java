@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.fragment;
+package com.example.administrator.newsdf.fragment.bright;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

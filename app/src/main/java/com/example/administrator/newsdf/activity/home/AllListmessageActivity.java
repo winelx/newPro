@@ -97,7 +97,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private int addPosition;
     private int page = 1;
     private int pages = 1;
-
     //图册
     private ArrayList<String> paths;
     private List<Inface_all_item> Alldata;

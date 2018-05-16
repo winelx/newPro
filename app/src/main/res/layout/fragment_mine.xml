@@ -25,14 +25,15 @@
                     android:id="@+id/mine_setting"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:visibility="gone"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    android:visibility="gone">
+
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                        android:layout_centerInParent="true"
                         android:src="@mipmap/mine_setting" />
                 </RelativeLayout>
 
@@ -40,11 +41,11 @@
                     android:id="@+id/mine_avatar"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="40dp"
-                    android:src="@mipmap/mine_avatar"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    android:src="@mipmap/mine_avatar" />
 
                 <TextView
                     android:id="@+id/staffName"
@@ -71,7 +72,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-
                         android:text="所属组织："
                         android:textColor="@color/writer"
                         android:textSize="15sp" />
@@ -114,7 +114,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img"
                     android:layout_toRightOf="@+id/mine_img"
-                    android:text="切换组织"
+                    android:text="@string/switchorganization"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -161,7 +161,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img2"
                     android:layout_toRightOf="@+id/mine_img2"
-                    android:text="项目成员"
+                    android:text="@string/ProjectMembers"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -178,8 +178,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/back"></View>
+                android:layout_height="1dp"
+                android:background="@color/back" />
+
 
             <RelativeLayout
                 android:id="@+id/changepassword"
@@ -191,12 +192,12 @@
                     android:id="@+id/mine_img3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="21dp"
-                    android:background="@mipmap/changepassword"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="21dp" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginStart="21dp"
+                    android:background="@mipmap/changepassword" />
 
                 <TextView
                     android:id="@+id/mine_text3"
@@ -207,7 +208,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img3"
                     android:layout_toRightOf="@+id/mine_img3"
-                    android:text="修改密码"
+                    android:text="@string/Modifypass"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -297,7 +298,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img5"
                     android:layout_toRightOf="@+id/mine_img5"
-                    android:text="关于我们"
+                    android:text="@string/aboutme"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -340,7 +341,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img6"
                     android:layout_toRightOf="@+id/mine_img6"
-                    android:text="清除缓存"
+                    android:text="@string/Clearcache"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -358,7 +359,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back"></View>
+                android:background="@color/back" />
 
             <RelativeLayout
                 android:id="@+id/newversion"
@@ -383,7 +384,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/version_img7"
                     android:layout_toRightOf="@+id/version_img7"
-                    android:text="新版本检查"
+                    android:text="@string/Checkupdate"
                     android:textColor="#323232" />
 
                 <TextView
@@ -393,12 +394,10 @@
                     android:layout_marginTop="18sp"
                     android:layout_toEndOf="@+id/version_text"
                     android:layout_toRightOf="@+id/version_text"
-                    android:background="@drawable/uploading"
                     android:gravity="center"
-                    android:text="有新版本"
-                    android:textColor="@color/writer"
-                    android:textSize="8sp"
-                    android:visibility="gone" />
+                    android:text="（当前版本：1.2.1）"
+                    android:textColor="@color/red"
+                    android:textSize="8sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
                     android:layout_width="wrap_content"
@@ -441,7 +440,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/mine_img7"
                     android:layout_toRightOf="@+id/mine_img7"
-                    android:text="退出登录"
+                    android:text="@string/logout"
                     android:textColor="#323232" />
 
                 <com.joanzapata.iconify.widget.IconTextView

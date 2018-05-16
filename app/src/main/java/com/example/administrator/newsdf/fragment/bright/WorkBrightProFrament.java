@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.fragment;
+package com.example.administrator.newsdf.fragment.bright;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,18 +14,19 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
+import com.example.administrator.newsdf.fragment.bright.FragmentBrightProAdapter;
 import com.example.administrator.newsdf.view.MultiImageView;
 
 /**
  * Created by Administrator on 2018/5/10 0010.
  */
 
-public class WorkBrightComFrament extends Fragment {
+public class WorkBrightProFrament extends Fragment {
     private int pos;
     private View view;
 
     @SuppressLint("ValidFragment")
-    public WorkBrightComFrament(int pos) {
+    public WorkBrightProFrament(int pos) {
         this.pos = pos;
     }
 
@@ -39,15 +40,15 @@ public class WorkBrightComFrament extends Fragment {
         content = view.findViewById(R.id.content);
         multiImageView = view.findViewById(R.id.multiImageView);
         try {
-            String Leadername = FragmentBrightcomAdapter.mData.get(pos).getLeadername();
+            String Leadername = FragmentBrightProAdapter.mData.get(pos).getLeadername();
             int namelength = Leadername.length();
-            String titme = FragmentBrightcomAdapter.mData.get(pos).getLeadername() + FragmentBrightcomAdapter.mData.get(pos).getOrgName();
+            String titme = FragmentBrightProAdapter.mData.get(pos).getLeadername() + FragmentBrightProAdapter.mData.get(pos).getOrgName();
             SpannableString sp1 = new SpannableString(titme);
             sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
                             .getColor(R.color.brighr_people)), 0,
                     namelength,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            content.setText(titme);
+            content.setText(sp1);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

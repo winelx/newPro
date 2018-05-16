@@ -1,8 +1,10 @@
-package com.example.administrator.newsdf.fragment;
+package com.example.administrator.newsdf.fragment.homepage;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +12,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Adapter.HomeFragmentAdapter;
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
+import com.example.administrator.newsdf.activity.MainActivity;
+import com.example.administrator.newsdf.Adapter.AllMessageAdapter;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.callback.CallBack;
+import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -40,44 +45,51 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
-
 /**
+ * description: 全部消息
+ *
  * @author lx
- *         Created by Administrator on 2017/11/21 0021.
+ *         date: 2018/3/16 0016 下午 1:45
+ *         update: 2018/3/16 0016
+ *         version:
  */
-
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback {
+public class AllMessageFragment extends Fragment implements CallBack, OgranCallback {
     private View rootView;
     private RecyclerView listView;
-    private HomeFragmentAdapter mAdapter;
-    private ArrayList<Home_item> mData = null;
+    private AllMessageAdapter mAdapter = null;
+    private ArrayList<Home_item> mData;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
-    private List<String> placedTop;
+    private ArrayList<String> placedTop;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_home, null);
-            Dates.getDialog(getActivity(), "请求数据中...");
-            listView = (RecyclerView) rootView.findViewById(R.id.home_list);
-            home_frag_img = rootView.findViewById(R.id.home_frag_img);
+            mContext = getActivity();
+            listView = rootView.findViewById(R.id.home_list);
             home_img_nonews = rootView.findViewById(R.id.home_img_nonews);
+            home_frag_img = rootView.findViewById(R.id.home_frag_img);
             home_img_text = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
+            //设置在listview上下拉刷新的监听
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
+        mContext = MainActivity.getInstance();
+        //控件处理
+        CallBackUtils.setCallBack(this);
         OgranCallbackUtils.setCallBack(this);
-        mContext = getActivity();
         init();
+        //网络请求
+        Okgo();
         return rootView;
     }
 
@@ -86,10 +98,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置适配器
-        mAdapter = new HomeFragmentAdapter(mContext);
+        listView.setAdapter(mAdapter = new AllMessageAdapter(mContext));
         //设置控制Item增删的动画
         listView.setItemAnimator(new DefaultItemAnimator());
-        listView.setAdapter(mAdapter);
+        //没有网络的时候点击界面刷新数据
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,25 +109,31 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 Okgo();
             }
         });
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (mAdapter.menuIsOpen()) {
+                    mAdapter.closeMenu();
+                }
                 Okgo();
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(1200);
+                refreshlayout.finishRefresh(2000);
             }
         });
-        Okgo();
     }
 
-    //网络请求
-    private void Okgo() {
-        //请求数据库的数据
+    /**
+     * 网络请求
+     */
+    public void Okgo() {
+        putTop();
         OkGo.post(Requests.TaskMain)
+                .params("isAll", "true")
                 .execute(new StringCallback() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Dates.disDialog();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -138,10 +156,38 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
+                                    if (placedTop.size() > 0) {
+                                        if (placedTop.contains(id)) {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, true));
+                                        } else {
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                        }
+                                    } else {
                                         mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                    }
+
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
+                                    //数据库是否有数据
+                                    if (placedTop.size() != 0) {
+                                        try {
+                                            for (int i = 0; i < placedTop.size(); i++) {
+                                                String str = placedTop.get(i);
+                                                for (int j = 0; j < mData.size(); j++) {
+                                                    String id = mData.get(j).getId();
+                                                    if (str.equals(id)) {
+                                                        Home_item home_item = mData.get(j);
+                                                        mData.add(0, home_item);
+                                                        mData.remove(j + 1);
+                                                    }
+                                                }
+                                            }
+
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
 
@@ -165,7 +211,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
                         home_frag_img.setVisibility(View.VISIBLE);
                         home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
@@ -176,32 +221,33 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //跳转列表界面
-        Intent intent = new Intent(mContext, MineListmessageActivity.class);
-        intent.putExtra("name", mData.get(position).getOrgname());
-        intent.putExtra("orgId", mData.get(position).getOrgid());
-        startActivity(intent);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //关闭dialog和刷新
-        Dates.disDialog();
+        //关闭刷新
         refreshLayout.finishRefresh(false);
     }
 
+    public void putTop() {
+        placedTop = new ArrayList<>();
+        List<Shop> list = new ArrayList<>();
+        list = LoveDao.ALLCart();
+        for (int i = 0; i < list.size(); i++) {
+            placedTop.add(list.get(i).getWebsid());
+        }
+    }
 
+    //接收适配器的消息，刷新数据
+    @Override
+    public void deleteTop(int pos, String str) {
+        Okgo();
+    }
 
-
-
-    //切换组织后刷新
     @Override
     public void taskCallback() {
         Okgo();

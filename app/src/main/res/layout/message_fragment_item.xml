@@ -14,41 +14,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
-        <TextView
-            android:id="@+id/tv_set"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/layout_content"
-            android:background="@drawable/orange_background"
-            android:gravity="center"
-            android:text="设置"
-            android:textColor="#DDFFFFFF"
-            android:textSize="25dp"
-            android:visibility="gone" />
-
-
         <TextView
             android:id="@+id/tv_delete"
             android:layout_width="70dp"
-            android:layout_marginRight="10dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/tv_set"
             android:background="@color/red"
             android:gravity="center"
             android:text="置顶"
             android:textColor="#DDFFFFFF"
-            android:textSize="18dp" />
+            android:textSize="16dp"  />
+
+        <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
+        <TextView
+            android:id="@+id/tv_set"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/layout_content"
+            android:background="@drawable/orange_background"
+            android:gravity="center"
+            android:text="收藏"
+            android:textColor="#DDFFFFFF"
+            android:textSize="16dp" />
 
 
         <RelativeLayout
             android:id="@+id/layout_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/relativeLayout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -157,7 +155,5 @@
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
-
-
     </RelativeLayout>
 </com.example.administrator.newsdf.utils.LeftSlideView>

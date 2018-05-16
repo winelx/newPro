@@ -1,6 +1,10 @@
 package com.example.administrator.newsdf.activity.home;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -248,5 +252,77 @@ public class homeUtils {
                 });
     }
 
+    public static void getOko(final String wbsid, final String wbspath, final boolean isParent, final String wbsname, final boolean iswbs, final String type, final Activity activity) {
+        final ArrayList<String> namess = new ArrayList<>();
+        final ArrayList<String> ids = new ArrayList<>();
+        final ArrayList<String> titlename = new ArrayList<>();
+        Dates.getDialog(activity, "请求数据中");
+        OkGo.post(Requests.WbsTaskGroup)
+                .params("wbsId", wbsid)
+                .params("isNeedTotal", "true")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.contains("data")) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id = json.getString("id");
+                                    String name = json.getString("detectionName");
+                                    String totalNum = json.getString("totalNum");
+                                    namess.add(name + "(" + totalNum + ")");
+                                    ids.add(id);
+                                    titlename.add(name);
+
+                                }
+                                Intent intent = new Intent(activity, TenanceviewActivity.class);
+                                //加了任务数量的检查点
+                                intent.putExtra("name", namess);
+
+                                //检查点ID
+                                intent.putExtra("ids", ids);
+                                //检查点名称
+                                intent.putExtra("title", titlename);
+                                //节点ID
+                                intent.putExtra("id", wbsid);
+                                //节点路径
+                                intent.putExtra("wbspath", wbspath);
+                                //是否是父节点
+                                intent.putExtra("isParent", isParent);
+                                intent.putExtra("wbsname", wbsname);
+                                intent.putExtra("iswbs", iswbs);
+                                intent.putExtra("type", type);
+                                activity.startActivity(intent);
+                                Dates.disDialog();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            ToastUtils.showShortToast("该节点未启动");
+                            Intent intent = new Intent(activity, TenanceviewActivity.class);
+                            //加了任务数量的检查点
+                            intent.putExtra("name", namess);
+                            //检查点ID
+                            intent.putExtra("ids", ids);
+                            //检查点名称
+                            intent.putExtra("title", titlename);
+                            //节点ID
+                            intent.putExtra("id", wbsid);
+                            //节点路径
+                            intent.putExtra("wbspath", wbspath);
+                            //是否是父节点
+                            intent.putExtra("isParent", isParent);
+                            intent.putExtra("wbsname", wbsname);
+                            intent.putExtra("iswbs", iswbs);
+                            intent.putExtra("type", type);
+                            activity.startActivity(intent);
+                            Dates.disDialog();
+                        }
+
+                    }
+                });
+    }
 
 }

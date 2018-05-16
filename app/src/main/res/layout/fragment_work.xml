@@ -112,7 +112,7 @@
                 android:drawablePadding="10dp"
                 android:drawableTop="@mipmap/fr_work_photo"
                 android:gravity="center"
-                android:text="图纸查看"
+                android:text="图纸标准"
                 android:textColor="@color/textViwe"
                 android:textSize="14sp" />
 
@@ -299,13 +299,13 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_below="@+id/brightspot"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             app:cardCornerRadius="5dp">
 
             <RelativeLayout

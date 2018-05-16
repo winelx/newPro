@@ -128,7 +128,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 CameDialog.setDialog(audio.getId(), audio);
             }
         });
-
+        //提亮
         holder.givealike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

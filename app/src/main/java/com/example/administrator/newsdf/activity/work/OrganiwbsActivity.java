@@ -17,7 +17,6 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
@@ -236,7 +235,6 @@ public class OrganiwbsActivity extends Activity {
     }
 
     void getOko(final String str, final String wbspath, final boolean isParent, final String wbsname, final boolean iswbs, final String type) {
-        LogUtil.i("wbsID", str);
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
@@ -248,7 +246,6 @@ public class OrganiwbsActivity extends Activity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.contains("data")) {
-                            System.out.println("有数据");
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

@@ -50,7 +50,7 @@
 
                 <LinearLayout
                     android:id="@+id/taskrecord"
-                    android:layout_width="50dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|end"
                     android:gravity="center">
@@ -64,9 +64,10 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:id="@+id/newmoretask"
-                    android:layout_width="50dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|end"
                     android:gravity="center">
@@ -82,20 +83,49 @@
 
             </android.support.v7.widget.Toolbar>
 
-            <TextView
-                android:id="@+id/wbsnode"
+            <LinearLayout
+                android:id="@+id/taskManagement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/writer"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="节点层级"
-                android:textColor="@color/textViwe"
-                android:textSize="10sp" />
+                android:gravity="center"
+                android:minHeight="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wbsnode"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_weight="8"
+                    android:background="@color/writer"
+                    android:lineSpacingExtra="4dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="3dp"
+                    android:text="‘’‘’‘"
+                    android:textColor="@color/textViwe"
+                    android:textSize="13dp" />
+
+                <com.joanzapata.iconify.widget.IconTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/mine_text"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center"
+                    android:text="{fa-angle-right}"
+                    android:textColor="@color/inconfy"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="3dp"
                 android:descendantFocusability="blocksDescendants">
 
                 <android.support.v7.widget.RecyclerView

@@ -36,8 +36,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/ic_menu_camera"
-                android:padding="0dp"
-                android:visibility="gone" />
+                android:padding="0dp" />
 
             <EditText
                 android:id="@+id/par_editext"
@@ -65,5 +64,11 @@
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
     </LinearLayout>
+
+    <TextView
+        android:text="111111"
+        android:id="@+id/tvNetSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

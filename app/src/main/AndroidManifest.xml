@@ -177,7 +177,7 @@
         </activity>
         <activity android:name=".activity.home.same.Checkpoint" />
         <activity android:name=".activity.work.PushdialogActivity" />
-        <activity android:name=".activity.work.PchooseActivity" />
+        <activity android:name=".activity.work.pchoose.PchooseActivity" />
         <activity android:name=".activity.work.PhotoListActivity" />
         <activity android:name=".activity.work.ListPhActivity" />
         <activity android:name=".activity.work.PushCheckActivity" />

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.fragment;
+package com.example.administrator.newsdf.fragment.bright;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -10,39 +10,36 @@ import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2018/5/10 0010.
+ *
+ * @author Administrator
+ * @date 2018/5/10 0010
  * 办公
  */
 
-public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
+public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
     public static ArrayList<work_fr_bright_bean> mData;
-    private boolean doNotifyDataSetChangedOnce = false;
 
-    public FragmentBrightAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
+    public FragmentBrightProAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
-        FragmentBrightAdapter.mData = name;
+        FragmentBrightProAdapter.mData = name;
     }
 
     @Override
     public Fragment getItem(int arg0) {
-        WorkBrightFrament fragment = new WorkBrightFrament(arg0);
+        WorkBrightProFrament fragment = new WorkBrightProFrament(arg0);
         return fragment;
     }
 
     @Override
     public int getCount() {
-        if (doNotifyDataSetChangedOnce) {
-            doNotifyDataSetChangedOnce = false;
-            notifyDataSetChanged();
-        }
+
         return mData.size();
     }
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
-        FragmentBrightAdapter.mData = mData;
-        doNotifyDataSetChangedOnce = true;
+        FragmentBrightProAdapter.mData = mData;
         notifyDataSetChanged();
     }
 

@@ -118,6 +118,9 @@ public class TenanceviewActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        if (type == null) {
+            com_img.setVisibility(View.GONE);
+        }
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

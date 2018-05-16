@@ -66,9 +66,8 @@ public class LeftSlideView extends HorizontalScrollView {
         super.onLayout(changed, l, t, r, b);
         if (changed) {
             this.scrollTo(0, 0);
-
             //获取水平滚动条可以滑动的范围，即右侧“设置”、“删除”按钮的总宽度
-            mScrollWidth = mTextView_Delete.getWidth();
+            mScrollWidth = mTextView_Delete.getWidth()+mTextView_Set.getWidth();
         }
     }
 
