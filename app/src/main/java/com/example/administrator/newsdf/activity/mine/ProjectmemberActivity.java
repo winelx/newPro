@@ -231,7 +231,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("jsonArray", id);
+                        LogUtil.i("jsonArray", s);
                         if (s.contains("data")) {
                             mData.clear();
                             try {
@@ -262,14 +262,17 @@ public class ProjectmemberActivity extends AppCompatActivity {
                                 }
                                 if (mData.size() != 0) {
                                     mAdapter.getData(mData);
+                                    uslistView.setVisibility(View.VISIBLE);
                                     homeBackgroud.setVisibility(View.GONE);
                                 } else {
+                                    mAdapter.getData(mData);
                                     homeBackgroud.setVisibility(View.VISIBLE);
                                     homeBackgroudText.setText(R.string.text_nupoint);
                                 }
                                 Dates.disDialog();
                             } catch (JSONException e) {
                                 e.printStackTrace();
+
                             }
                         } else {
                             mData.clear();

@@ -166,6 +166,8 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         taskrecord = (LinearLayout) findViewById(R.id.taskrecord);
         findViewById(R.id.fab).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(this);
+        findViewById(R.id.taskManagement).setOnClickListener(this);
+
     }
 
     //初始化集合
@@ -206,6 +208,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent1 = new Intent(MoretaskActivity.this, TaskRecordActivity.class);
                 intent1.putExtra("taskId", taskID);
                 startActivity(intent1);
+                break;
+            case R.id.taskManagement:
+                homeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
                 break;
 
             default:

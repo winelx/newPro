@@ -6,6 +6,7 @@
 
 
     <RelativeLayout
+        android:translationZ="3dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimaryDark">
@@ -22,12 +23,14 @@
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:background="@color/writer"
             android:orientation="horizontal"
-            android:translationZ="3dp">
+            android:padding="1dp"
+          >
 
             <TextView
                 android:id="@+id/fr_Pchoose_am"
@@ -36,7 +39,7 @@
                 android:background="@color/writer"
                 android:gravity="center"
                 android:text="图片"
-                android:textColor="@color/brighr_people"
+                android:textColor="@color/colorAccent"
                 android:textSize="15sp" />
 
 
@@ -44,6 +47,7 @@
                 android:id="@+id/fr_Pchoose_mm"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:text="标准"
                 android:textColor="@color/writer"

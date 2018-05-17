@@ -35,12 +35,12 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.homeUtils;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
@@ -117,7 +117,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private int num = 0;
     private String titlename;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,10 +172,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if (wbsname != null && wbsname.length() != 0) {
             wbsText.setText(wbsname);
         }
-        //根据wbsname的长度判断默认是否展示图册按钮
-        if (TextUtils.isEmpty(wbsID)) {
-            fab.setVisibility(View.GONE);
-        }
+//        //根据wbsname的长度判断默认是否展示图册按钮
+//        if (TextUtils.isEmpty(wbsID)) {
+//            fab.setVisibility(View.GONE);
+//        }
         //展示专递过来的回复数据
         replyText.setText(content);
         Save.setVisibility(View.VISIBLE);
@@ -218,15 +217,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         drawer.setScrimColor(Color.TRANSPARENT);
         //图册查看按钮
         fab = (CircleImageView) findViewById(R.id.fabloating);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
+        fab.setOnClickListener(this);
+        fab.setVisibility(View.VISIBLE);
         //下拉控件，禁止下拉，只允许上拉加载更多
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         smartRefreshLayout.setEnableRefresh(false);
@@ -239,6 +231,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         replyText = (EditText) findViewById(R.id.reply_text);
         //上传数据
         comButton = (TextView) findViewById(R.id.com_button);
+        comButton.setOnClickListener(this);
         //检查项
         replyCheckItem = (TextView) findViewById(R.id.reply_check_item);
         //保存
@@ -348,24 +341,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     });
                     selfDialog.show();
                 }
-
-            }
-        });
-        comButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                files = new ArrayList<>();
-                //讲图片转成file格式
-                for (int i = 0; i < pathimg.size(); i++) {
-                    files.add(new File(pathimg.get(i)));
-                }
-                if (wbsID == null || wbsID.equals("")) {
-                    Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
-                } else if ("".equals(replyText.getText().toString())) {
-                    Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
-                } else {
-                    Okgo(files, Bai_address);
-                }
             }
         });
 
@@ -393,6 +368,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 调用相机
      */
+
     public void Cream() {
         showPopwindow();
     }
@@ -484,11 +460,12 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             //wbs结构
             case R.id.reply_wbs:
-                Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
+              Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
                 //标签，用来判读该进入那个界面，
                 intent.putExtra("data", "reply");
                 intent.putExtra("wbsID", wbsID);
                 startActivityForResult(intent, 1);
+
                 break;
             case R.id.com_back:
                 for (int i = 0; i < pathimg.size(); i++) {
@@ -496,11 +473,31 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 }
                 finish();
                 break;
+            case R.id.fabloating:
+                page = 1;
+                drew = true;
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                drawer.openDrawer(GravityCompat.START);
+                break;
             //选择检查项
             case R.id.reply_check:
                 Intent intent1 = new Intent(ReplyActivity.this, Checkpoint.class);
                 intent1.putExtra("wbsID", wbsID);
                 startActivityForResult(intent1, 1);
+                break;
+            case R.id.com_button:
+                files = new ArrayList<>();
+                //讲图片转成file格式
+                for (int i = 0; i < pathimg.size(); i++) {
+                    files.add(new File(pathimg.get(i)));
+                }
+                if (wbsID == null || wbsID.equals("")) {
+                    Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
+                } else if ("".equals(replyText.getText().toString())) {
+                    Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
+                } else {
+                    Okgo(files, Bai_address);
+                }
                 break;
             default:
                 break;
@@ -526,12 +523,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
             checkId = data.getStringExtra("id");
-
             replyCheckItem.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-
                 for (int i = 0; i < images.size(); i++) {
                     double mdouble = Dates.getDirSize(new File(images.get(i).path));
                     if (mdouble != 0.0) {
@@ -623,7 +618,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    //选择图片
+    //添加图片
     private void showPopwindow() {
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(ReplyActivity.this.getCurrentFocus()
@@ -663,12 +658,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                         break;
                     //
                     case R.id.btn_camera_pop_cancel:
-
-                        break;
-                    //关闭pop
+                        //关闭pop
                     case R.id.btn_pop_add:
-                        break;
                     default:
+                        popWindow.dismiss();
                         break;
                 }
                 popWindow.dismiss();

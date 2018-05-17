@@ -124,7 +124,6 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
         mTree = (ListView) findViewById(R.id.wbs_listview);
     }
 

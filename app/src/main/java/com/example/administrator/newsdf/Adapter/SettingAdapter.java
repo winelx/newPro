@@ -41,7 +41,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
 
     public void getData(List<T> mData) {
         this.mData = mData;
-        notifyDataSetInvalidated();
+        notifyDataSetChanged();
     }
 
     @Override

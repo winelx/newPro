@@ -8,10 +8,12 @@
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
+        android:translationZ="3dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -80,14 +82,12 @@
             </android.support.v7.widget.Toolbar>
 
             <RelativeLayout
-
                 android:id="@+id/list_search"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:translationZ="3dp">
 
                 <LinearLayout
                     android:id="@+id/search_lin"
@@ -97,6 +97,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/editext_background_blue"
                     android:focusable="true"
@@ -209,6 +211,7 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginStart="24dp"
                 android:src="@mipmap/drawphoto"
+                android:translationZ="3dp"
                 app:backgroundTint="#00B4FF"
                 app:fabSize="auto"
                 app:rippleColor="#56abe4" />

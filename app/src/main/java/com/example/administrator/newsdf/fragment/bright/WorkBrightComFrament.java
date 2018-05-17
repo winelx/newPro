@@ -16,10 +16,15 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.view.MultiImageView;
 
-/**
- * Created by Administrator on 2018/5/10 0010.
- */
 
+/**
+ * description:
+ *
+ * @author lx
+ *         date: 2018/5/17 0017 上午 11:00
+ *         update: 2018/5/17 0017
+ *         version:
+ */
 public class WorkBrightComFrament extends Fragment {
     private int pos;
     private View view;

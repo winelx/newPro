@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -114,6 +115,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private String titles, type;
     ProgressDialog dialog;
     private boolean isParent, iswbs;
+    private LinearLayout drawer_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +217,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 发现ID
      */
     private void findID() {
+        drawer_right = (LinearLayout) findViewById(R.id.drawer_right);
         //图册list
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //抽屉控件
@@ -244,14 +247,37 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.reply_wbs).setOnClickListener(this);
         findViewById(R.id.reply_check).setOnClickListener(this);
-
+        findViewById(R.id.com_back).setOnClickListener(this);
+        Circle.setOnClickListener(this);
+        Save.setOnClickListener(this);
+        Sendtask.setOnClickListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.reply_bar);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer.setScrimColor(Color.TRANSPARENT);
+        mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
+        drawerLayoutList.setAdapter(mAdapter);
         smartRefreshLayout.setEnableRefresh(false);
-        findViewById(R.id.com_back).setOnClickListener(this);
+        replyText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    num++;
+                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+                    if (num % 2 != 0) {
+                        String s = replyText.getText().toString();
+                        if (!TextUtils.isEmpty(s)) {
+                            replyText.setText("" + s.substring(0, s.length() - 1));
+                            //将光标移到最后
+                            replyText.setSelection(replyText.getText().length());
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         //上拉加载
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -264,10 +290,80 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        Save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //存放到本地
+    }
+
+    /**
+     * 调用相机图册
+     */
+    public void Cream() {
+        showPopwindow();
+    }
+
+    /**
+     * 初始化recyclerview
+     */
+    private void initDate() {
+        if (pathimg.size() == 0 || pathimg.get(0) == "") {
+            pathimg.clear();
+        }
+        photoAdapter = new PhotosAdapter(this, pathimg);
+        photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        photoadd.setAdapter(photoAdapter);
+        Sendtask.setBackgroundResource(R.mipmap.reply_commit);
+    }
+
+    /**
+     * 点击事件判断
+     *
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fabloating:
+                page = 1;
+                drew = true;
+                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case R.id.com_button:
+                files = new ArrayList<>();
+                //将图片转成file格式
+                for (int i = 0; i < pathimg.size(); i++) {
+                    files.add(new File(pathimg.get(i)));
+                }
+                if (wbsID == null || wbsID.equals("")) {
+                    Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
+                } else if ("".equals(replyText.getText().toString())) {
+                    Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
+                } else {
+                    Okgo(files, Bai_address);
+                }
+                break;
+            //选择wbs结构
+            case R.id.reply_wbs:
+                Intent intent = new Intent(ReplysActivity.this, TaskWbsActivity.class);
+                intent.putExtra("wbsname", wbstitle);
+                intent.putExtra("wbspath", wbspath);
+                intent.putExtra("wbsID", wbsID);
+                intent.putExtra("type", type);
+                intent.putExtra("isParent", isParent);
+                intent.putExtra("iswbs", iswbs);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.com_back:
+                for (int i = 0; i < pathimg.size(); i++) {
+                    Dates.deleteFile(pathimg.get(i));
+                }
+                finish();
+                break;
+            //选择检查项
+            case R.id.reply_check:
+                Intent intent1 = new Intent(ReplysActivity.this, Checkpoint.class);
+                intent1.putExtra("wbsID", wbsID);
+                startActivityForResult(intent1, 1);
+                break;
+            case R.mipmap.reply_baocun:
                 if (!status) {
                     selfDialog = new WbsDialog(ReplysActivity.this);
                     selfDialog.setMessage("是否保存本地");
@@ -344,109 +440,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                     });
                     selfDialog.show();
                 }
-            }
-        });
-        Sendtask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                files = new ArrayList<>();
-                //将图片转成file格式
-                for (int i = 0; i < pathimg.size(); i++) {
-                    files.add(new File(pathimg.get(i)));
-                }
-                if (wbsID == null || wbsID.equals("")) {
-                    Toast.makeText(mContext, "没有选择wbs节点", Toast.LENGTH_SHORT).show();
-                } else if ("".equals(replyText.getText().toString())) {
-                    Toast.makeText(mContext, "请输入具体内容描述", Toast.LENGTH_SHORT).show();
-                } else {
-                    Okgo(files, Bai_address);
-                }
-            }
-        });
-        mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
-        drawerLayoutList.setAdapter(mAdapter);
-        Circle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
-        replyText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    num++;
-                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-                    if (num % 2 != 0) {
-                        String s = replyText.getText().toString();
-                        if (!TextUtils.isEmpty(s)) {
-                            replyText.setText("" + s.substring(0, s.length() - 1));
-                            //将光标移到最后
-                            replyText.setSelection(replyText.getText().length());
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    /**
-     * 调用相机图册
-     */
-    public void Cream() {
-        showPopwindow();
-    }
-
-    /**
-     * 初始化recyclerview
-     */
-
-    private void initDate() {
-        if (pathimg.size() == 0 || pathimg.get(0) == "") {
-            pathimg.clear();
-        }
-        photoAdapter = new PhotosAdapter(this, pathimg);
-        photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        photoadd.setAdapter(photoAdapter);
-        Sendtask.setBackgroundResource(R.mipmap.reply_commit);
-    }
-
-
-    /**
-     * 点击事件判断
-     *
-     * @param v
-     */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            //选择wbs结构
-            case R.id.reply_wbs:
-                Intent intent = new Intent(ReplysActivity.this, TaskWbsActivity.class);
-                intent.putExtra("wbsname", wbstitle);
-                intent.putExtra("wbspath", wbspath);
-                intent.putExtra("wbsID", wbsID);
-                intent.putExtra("type", type);
-                intent.putExtra("isParent", isParent);
-                intent.putExtra("iswbs", iswbs);
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.com_back:
-                for (int i = 0; i < pathimg.size(); i++) {
-                    Dates.deleteFile(pathimg.get(i));
-                }
-                finish();
-                break;
-            //选择检查项
-            case R.id.reply_check:
-                Intent intent1 = new Intent(ReplysActivity.this, Checkpoint.class);
-                intent1.putExtra("wbsID", wbsID);
-                startActivityForResult(intent1, 1);
                 break;
             default:
                 break;
