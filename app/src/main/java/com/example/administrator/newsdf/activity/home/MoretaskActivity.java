@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
@@ -201,6 +202,16 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.com_back:
                 //返回
+                //抛出异常，在任务管理界面返回时不需要刷新数据，
+                try {
+                    //判断状态是否改变
+                    if (!Refresh) {
+                        //改变了，调用刷新数据方法
+                        TaskCallbackUtils.removeCallBackMethod();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 finish();
                 break;
             case R.id.taskrecord:

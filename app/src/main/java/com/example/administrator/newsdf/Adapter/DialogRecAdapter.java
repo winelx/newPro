@@ -23,7 +23,7 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ArrayList<String> mData;
     private boolean blean;
 
-    public DialogRecAdapter(Context mContext, ArrayList<String> listA, boolean blean) {
+    public DialogRecAdapter(Context mContext, ArrayList<String> listA) {
         this.mContext = mContext;
         this.mData = listA;
     }
@@ -46,20 +46,30 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Glide.with(mContext)
                 .load(mData.get(position))
                 .into(holder.img);
-        if (blean) {
-            holder.error.setVisibility(View.VISIBLE);
-        } else {
-            holder.error.setVisibility(View.GONE);
-        }
+
         holder.error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mData.remove(position);
                 FileUtils.deleteFile(mData.get(position));
+                mData.remove(position);
                 notifyDataSetChanged();
             }
         });
-
+//        holder.img.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).
+//                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(paths)
+//                        .start((Activity) mContext);
+//            }
+//        }); holder.img.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).
+//                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(paths)
+//                        .start((Activity) mContext);
+//            }
+//        });
     }
 
     @Override

@@ -65,10 +65,5 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <TextView
-        android:text="111111"
-        android:id="@+id/tvNetSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -96,7 +96,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private ListView drawerLayoutList;
     private boolean drew;
     private static final int IMAGE_PICKER = 101;
-
     /**
      * 任务回复时展示图片的适配器
      */
@@ -260,7 +259,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
-
                                 CameDialog.path.add(outfile);
                                 //回复任务选择的图片
                                 CameDialog.Dialogadapter.getData(CameDialog.path);
@@ -693,13 +691,15 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 });
     }
 
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         if (CameDialog.path.size() != 0) {
             for (int i = 0; i < CameDialog.path.size(); i++) {
                 FileUtils.deleteFile(CameDialog.path.get(i));
             }
         }
+        CameDialog.path.clear();
     }
 }
