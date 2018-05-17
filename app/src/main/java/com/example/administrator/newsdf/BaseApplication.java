@@ -34,10 +34,10 @@ import cn.jpush.android.api.JPushInterface;
  *         Created by Administrator on 2017/11/21 0021.
  */
 
-public class baseApplication extends Application {
-    private static baseApplication instance;
+public class BaseApplication extends Application {
+    private static BaseApplication instance;
 
-    public static baseApplication getInstance() {
+    public static BaseApplication getInstance() {
         return instance;
     }
 
@@ -66,13 +66,13 @@ public class baseApplication extends Application {
                         // 补丁加载回调通知
                         if (code == PatchStatus.CODE_LOAD_SUCCESS) {
                             // 表明补丁加载成功
-                            Toast.makeText(baseApplication.this, "补丁修复成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.this, "补丁修复成功", Toast.LENGTH_SHORT).show();
                         } else if (code == PatchStatus.CODE_LOAD_RELAUNCH) {
-                            Toast.makeText(baseApplication.this, "补丁修复成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.this, "补丁修复成功", Toast.LENGTH_SHORT).show();
                             // 表明新补丁生效需要重启. 开发者可提示用户或者强制重启;
                             // 建议: 用户可以监听进入后台事件, 然后调用killProcessSafely自杀，以此加快应用补丁，详见1.3.2.3
                         } else {
-                            Toast.makeText(baseApplication.this, "失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.this, "失败", Toast.LENGTH_SHORT).show();
                             // 其它错误信息, 查看PatchStatus类说明
                         }
                     }

@@ -19,7 +19,6 @@ import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.bean.Aduio_content;
-import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -60,7 +59,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     public String id, status, wbsid, taskID;
     private DrawerLayout drawerLayout;
     private String DATA = "data";
-    private ArrayList<Aduio_data> aduioDatas;
     private MoretaskBean moretaskBean;
     private LinearLayout newmoretask, taskrecord;
     private TaskPhotoAdapter taskPhotoAdapter;
@@ -172,16 +170,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
 
     //初始化集合
     private void initArry() {
-        contents = new ArrayList<>();
         Dats = new ArrayList<>();
-        aduioDatas = new ArrayList<>();
+        contents = new ArrayList<>();
         imagePaths = new ArrayList<>();
     }
 
     //暴露给adapter的方法，给点击事件使用,跳转界面
     public void onclick(int pos) {
         Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-        intent.putExtra("TaskId", taskID);
+        intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         intent.putExtra("status", status);
         startActivity(intent);
@@ -347,6 +344,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     wbsId = "";
                 }
                 try {
+
                     JSONArray parts = Data.getJSONArray("parts");
                     for (int i = 0; i < parts.length(); i++) {
                         JSONObject json = parts.getJSONObject(i);

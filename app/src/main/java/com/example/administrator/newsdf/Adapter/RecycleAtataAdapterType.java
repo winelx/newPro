@@ -50,10 +50,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     String str = null;
     int isSmartProject;
     String taskId;
-
+    CameDialog cameDialog;
     public RecycleAtataAdapterType(Context mContext, boolean status) {
         this.mContext = mContext;
         this.status = status;
+        cameDialog=new CameDialog();
         mDatas = new ArrayList<>();
     }
 
@@ -125,7 +126,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                CameDialog.setDialog(audio.getId(), audio);
+                cameDialog.setDialog(audio.getId(), audio);
             }
         });
         //提亮

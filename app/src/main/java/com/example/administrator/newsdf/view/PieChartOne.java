@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.utils.ScreenUtil;
 
 import java.util.List;
@@ -85,7 +85,7 @@ public class PieChartOne extends View {
 
     private void init() {
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
-        float ste = ScreenUtil.getDensity(baseApplication.getInstance());
+        float ste = ScreenUtil.getDensity(BaseApplication.getInstance());
         paint = new Paint();
         paint.setColor(PAINT_COLOR);
         paint.setAntiAlias(true);

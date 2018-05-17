@@ -182,14 +182,15 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        findViewById(R.id.fab).setOnClickListener(this);
         wbspath = (TextView) findViewById(R.id.wbspath);
-        findViewById(R.id.taskManagement).setOnClickListener(this);
         comButton = (TextView) findViewById(R.id.audio_com_button);
-        comButton.setOnClickListener(this);
         comTitle = (TextView) findViewById(R.id.audio_com_title);
         mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
+        findViewById(R.id.taskManagement).setOnClickListener(this);
         findViewById(R.id.adui_com_back).setOnClickListener(this);
+        findViewById(R.id.fab).setOnClickListener(this);
+        comButton.setOnClickListener(this);
+
     }
 
     private void newArray() {
@@ -638,10 +639,38 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 } catch (JSONException e) {
                                     commentsContent = "";
                                 }
+                                //回复压缩图
+                                ArrayList<String> filePathsMin = new ArrayList<String>();
+                                String PathsMin;
+                                try {
+                                    JSONArray pathsMin = json.getJSONArray("filePathsMin");
+                                    for (int j = 0; j < pathsMin.length(); j++) {
+                                        JSONObject pathjson = pathsMin.getJSONObject(j);
+                                         PathsMin = pathjson.getString("filepath");
+                                        PathsMin = Requests.networks + PathsMin;
+                                        filePathsMin.add(PathsMin);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                //回复原图
+                                ArrayList<String> filePaths = new ArrayList<String>();
+                                String imagePath;
+                                try {
+                                    JSONArray paths = json.getJSONArray("filePaths");
+                                    for (int j = 0; j < paths.length(); j++) {
+                                        JSONObject pathjson = paths.getJSONObject(j);
+                                        imagePath = pathjson.getString("filepath");
+                                        imagePath = Requests.networks + imagePath;
+                                        filePaths.add(imagePath);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
                                 aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
-                                        commentsContent, replyTime));
+                                        commentsContent, replyTime,filePathsMin,filePaths));
                             }
                             if (contents.get(0).getStatus().equals("0")) {
                                 aduioDatas.clear();

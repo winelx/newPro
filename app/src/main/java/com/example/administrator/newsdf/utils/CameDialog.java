@@ -44,8 +44,8 @@ public class CameDialog {
     public static DialogRecAdapter Dialogadapter;
     public static ArrayList<String> path  = new ArrayList<>();
     private static final int IMAGE_PICKER = 101;
-
-    public static void setDialog(final String wtMainid, final Activity activity) {
+    private ArrayList<File> files;
+    public  void setDialog(final String wtMainid, final Activity activity) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
         LinearLayout root = (LinearLayout) LayoutInflater.from(activity).inflate(
                 R.layout.dialog_custom, null);
@@ -74,10 +74,15 @@ public class CameDialog {
                 if (str == null || str.isEmpty()) {
                     ToastUtils.showShortToast("回复不能为空");
                 } else {
-                    ArrayList<File> files = new ArrayList<>();
-                    for (int i = 0; i < path.size(); i++) {
-                        files.add(new File(path.get(i)));
+                    files = new ArrayList<>();
+                    if (path.size()!=0){
+                        for (int i = 0; i < path.size(); i++) {
+                            files.add(new File(path.get(i)));
+                        }
+                    }else {
+
                     }
+
                     OkGo.<String>post(Requests.SAVECOMMENT)
                             .params("taskId", wtMainid)
                             .addFileParams("files", files)

@@ -59,5 +59,6 @@
     <string name="Modifypass">修改密码</string>
     <string name="ProjectMembers">项目成员</string>
     <string name="switchorganization">切换组织</string>
+    <string name="fa_angle_right">{fa-angle-right}</string>
 
 </resources>

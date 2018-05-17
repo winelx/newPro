@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.bean;
 
+import java.util.ArrayList;
+
 /**
  * Created by Administrator on 2017/12/13 0013.
  * 详情回复
@@ -15,8 +17,13 @@ public class Aduio_comm {
     String statusName;//
     String content;//Pinglun内容说明
     String replyTime;//评论时间
+    ArrayList<String> filePathsMin;
+    ArrayList<String> filePaths;
 
-    public Aduio_comm(String id, String replyId, String replyUserName, String replyUserHeaderURL, String taskId, String status, String statusName, String content, String replyTime) {
+    public Aduio_comm(String id, String replyId, String replyUserName,
+                      String replyUserHeaderURL, String taskId, String status,
+                      String statusName, String content, String replyTime, ArrayList<String> filePathsMin,
+                      ArrayList<String> filePaths) {
         this.id = id;
         this.replyId = replyId;
         this.replyUserName = replyUserName;
@@ -26,6 +33,9 @@ public class Aduio_comm {
         this.statusName = statusName;
         this.content = content;
         this.replyTime = replyTime;
+        this.filePathsMin = filePathsMin;
+        this.filePaths = filePaths;
+
     }
 
     public String getId() {
@@ -98,5 +108,21 @@ public class Aduio_comm {
 
     public void setReplyTime(String replyTime) {
         this.replyTime = replyTime;
+    }
+
+    public ArrayList<String> getFilePathsMin() {
+        return filePathsMin;
+    }
+
+    public void setFilePathsMin(ArrayList<String> filePathsMin) {
+        this.filePathsMin = filePathsMin;
+    }
+
+    public ArrayList<String> getFilePaths() {
+        return filePaths;
+    }
+
+    public void setFilePaths(ArrayList<String> filePaths) {
+        this.filePaths = filePaths;
     }
 }

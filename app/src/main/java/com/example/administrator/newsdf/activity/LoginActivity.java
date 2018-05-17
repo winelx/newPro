@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 判断用户是否记住密码
      */
-
     private boolean status = true;
     //用户名密码1
     private EditText username, password;
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mContext = baseApplication.getInstance();
+        mContext = BaseApplication.getInstance();
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);

@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,21 +11,24 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 
 /**
- * 任务详情回复时展示图片的recyclervuiew的适配器
+ * 评论图片的recyclervuiew的适配器
  * Created by Administrator on 2018/3/12 0012.
  */
 
-public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentsRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<String> mData;
+    private ArrayList<String> imgpath;
     private boolean blean;
-
-    public DialogRecAdapter(Context mContext, ArrayList<String> listA, boolean blean) {
+    private  ArrayList<String> path =new ArrayList<>();
+    public CommentsRecAdapter(Context mContext, ArrayList<String> listA,ArrayList<String> imgpath, boolean blean) {
         this.mContext = mContext;
+        this.imgpath = imgpath;
         this.mData = listA;
     }
 
@@ -59,7 +63,14 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 notifyDataSetChanged();
             }
         });
-
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoPreview.builder().setPhotos(imgpath).setCurrentItem(position).
+                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(path)
+                        .start((Activity) mContext);
+            }
+        });
     }
 
     @Override
@@ -78,8 +89,9 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void getData(ArrayList<String> mData) {
+    public void getData(ArrayList<String> mData,ArrayList<String> path) {
         this.mData = mData;
+        this.path = path;
         notifyDataSetChanged();
     }
 

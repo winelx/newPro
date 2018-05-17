@@ -3,7 +3,7 @@ package com.example.administrator.newsdf.camera;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.baseApplication;
+import com.example.administrator.newsdf.BaseApplication;
 
 /**
  * Created by solexit04 on 2016/12/20.
@@ -19,11 +19,11 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showLongToast(String message) {
-        if (baseApplication.getInstance() == null) {
+        if (BaseApplication.getInstance() == null) {
             return;
         }
         if (toast == null) {
-            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_LONG);
+            toast = Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.BOTTOM, 0, 100);
             toast.show();
         } else {
@@ -40,10 +40,10 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showShortToast(String message) {
-        if (baseApplication.getInstance() == null)
+        if (BaseApplication.getInstance() == null)
             return;
         if (toast == null) {
-            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.BOTTOM, 0, 100);
             toast.show();
         } else {
@@ -59,10 +59,10 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showShortToastCenter(String message) {
-        if (baseApplication.getInstance() == null)
+        if (BaseApplication.getInstance() == null)
             return;
         if (toast == null) {
-            toast = Toast.makeText(baseApplication.getInstance(), message, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 100);
             toast.show();
         } else {

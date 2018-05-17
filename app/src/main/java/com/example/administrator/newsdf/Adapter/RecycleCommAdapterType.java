@@ -46,8 +46,11 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.image_viewpager.setLayoutManager(linearLayoutManager);
+        ArrayList<String> pathMin = new ArrayList<>();
         ArrayList<String> path = new ArrayList<>();
-        DialogRecAdapter adapter = new DialogRecAdapter(mContext, path, false);
+        pathMin.addAll(mDatas.get(posotion).getFilePathsMin());
+        path.addAll(mDatas.get(posotion).getFilePaths());
+        CommentsRecAdapter adapter = new CommentsRecAdapter(mContext, pathMin,path,false);
         holder.image_viewpager.setAdapter(adapter);
     }
 
