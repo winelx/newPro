@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.fragment.bright;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
+import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.view.MultiImageView;
 
 
@@ -28,7 +31,7 @@ import com.example.administrator.newsdf.view.MultiImageView;
 public class WorkBrightComFrament extends Fragment {
     private int pos;
     private View view;
-
+    private LinearLayout brightspot;
     @SuppressLint("ValidFragment")
     public WorkBrightComFrament(int pos) {
         this.pos = pos;
@@ -43,6 +46,7 @@ public class WorkBrightComFrament extends Fragment {
         view = inflater.inflate(R.layout.wrok_bright_fragment, container, false);
         content = view.findViewById(R.id.content);
         multiImageView = view.findViewById(R.id.multiImageView);
+        brightspot=view.findViewById(R.id.brightspot);
         try {
             String Leadername = FragmentBrightcomAdapter.mData.get(pos).getLeadername();
             int namelength = Leadername.length();
@@ -56,6 +60,15 @@ public class WorkBrightComFrament extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        brightspot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(MainActivity.getInstance(), MoretaskActivity.class);
+                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
+                intent.putExtra("status","one");
+                startActivity(intent);
+            }
+        });
         return view;
     }
 }

@@ -8,14 +8,19 @@ public class work_fr_bright_bean {
     String id;
     String orgid;
     String orgName;
+    String taskName;
+    String taskId;
     String leadername;
     String laederImg;
     int type;
 
-    public work_fr_bright_bean(String id, String orgid, String orgName, String leadername, String laederImg, int type) {
+
+    public work_fr_bright_bean(String id, String orgid, String orgName, String taskName, String taskId, String leadername, String laederImg, int type) {
         this.id = id;
         this.orgid = orgid;
         this.orgName = orgName;
+        this.taskName = taskName;
+        this.taskId = taskId;
         this.leadername = leadername;
         this.laederImg = laederImg;
         this.type = type;
@@ -67,5 +72,21 @@ public class work_fr_bright_bean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 }
