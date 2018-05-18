@@ -19,13 +19,13 @@ import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.bean.Aduio_content;
-import com.example.administrator.newsdf.bean.MoretaskBean;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -57,15 +57,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private MoretaskAdapter mAdapter;
     private ArrayList<Aduio_content> contents;
     private ArrayList<MoretasklistBean> Dats;
-    public String id, status, wbsid, taskID;
+    public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
     private String DATA = "data";
-    private MoretaskBean moretaskBean;
     private LinearLayout newmoretask, taskrecord;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
     private ArrayList<PhotoBean> imagePaths;
     private SmartRefreshLayout drawerLayout_smart;
+    private IconTextView iconTextView;
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -94,23 +94,17 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         final Intent intent = getIntent();
         try {
             taskID = intent.getExtras().getString("TaskId");
-            status = intent.getExtras().getString("status");
             wbsid = intent.getExtras().getString("wbsid");
+            status = intent.getExtras().getString("status");
+            if (status.equals("true")) {
+                iconTextView.setVisibility(View.VISIBLE);
+            } else {
+                iconTextView.setVisibility(View.GONE);
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        //根据传递status状态确定控件的显示隐藏
-        switch (status) {
-            case "one":
-                taskrecord.setVisibility(View.GONE);
-                break;
-            case "two":
-                newmoretask.setVisibility(View.GONE);
-                taskrecord.setVisibility(View.VISIBLE);
-                break;
-            default:
-                break;
-        }
+
         //网络请求
         OkGo();
         //请求图册图片
@@ -150,6 +144,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
 
     //初始化控件ID
     private void initfind() {
+        //wbs路径
+        iconTextView = (IconTextView) findViewById(R.id.iconTextView);
+        //图册界面上拉控件
         drawerLayout_smart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         //wbs路径
         wbsNode = (TextView) findViewById(R.id.wbsnode);
@@ -184,6 +181,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         intent.putExtra("status", status);
+
         startActivity(intent);
     }
 
@@ -221,7 +219,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent1);
                 break;
             case R.id.taskManagement:
-                homeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
+                if (status.equals("true")) {
+                    homeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
+                }
                 break;
 
             default:
@@ -347,6 +347,16 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 String status;
                 try {
                     status = jsonArray.getString("status");
+                    switch (status) {
+                        case "1":
+                            newmoretask.setVisibility(View.VISIBLE);
+                            break;
+                        case "2":
+                            newmoretask.setVisibility(View.GONE);
+                            break;
+                        default:
+                            break;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     status = "";
@@ -395,7 +405,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             taskID = data.getStringExtra("frag_id");
-            taskrecord.setVisibility(View.GONE);
             newmoretask.setVisibility(View.VISIBLE);
             Refresh = false;
             OkGo();

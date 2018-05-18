@@ -8,14 +8,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.PhotoadmAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class ListPhActivity extends AppCompatActivity {
     private ArrayList<PhotoBean> imagePaths;
     private TextView number, com_title, wbsname;
     private IconTextView comback;
+    PostRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,9 @@ public class ListPhActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_ph);
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
-        final String wbsid = intent.getExtras().getString("groupId");
+        final String groupId = intent.getExtras().getString("groupId");
         final String Title = intent.getExtras().getString("title");
+
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
@@ -62,7 +65,6 @@ public class ListPhActivity extends AppCompatActivity {
                     }
                 }
         );
-
         //GridLayout 3列
         photo_rec.setLayoutManager(new StaggeredGridLayoutManager(1,
                 StaggeredGridLayoutManager.VERTICAL));
@@ -70,33 +72,34 @@ public class ListPhActivity extends AppCompatActivity {
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
-        OkGo.post(Requests.Photo_ce)
-                .params("groupId", wbsid)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject json = jsonArray.getJSONObject(i);
-                                String id = (String) json.get("id");
-                                String filePath = (String) json.get("filePath");
-                                String drawingNumber = (String) json.get("drawingNumber");
-                                String drawingName = (String) json.get("drawingName");
-                                String drawingGroupName = (String) json.get("drawingGroupName");
-                                filePath = Requests.networks + filePath;
-                                imagePaths.add(new PhotoBean(id, filePath, drawingNumber,
-                                        drawingName, drawingGroupName));
+            OkGo.post(Requests.Photo_ce)
+                    .params("groupId", groupId)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id = (String) json.get("id");
+                                    String filePath = (String) json.get("filePath");
+                                    String drawingNumber = (String) json.get("drawingNumber");
+                                    String drawingName = (String) json.get("drawingName");
+                                    String drawingGroupName = (String) json.get("drawingGroupName");
+                                    filePath = Requests.networks + filePath;
+                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber,
+                                            drawingName, drawingGroupName));
+                                }
+                                photoAdapter.getData(imagePaths, Title, true);
+                                wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            photoAdapter.getData(imagePaths, Title);
-                            wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+                    });
+
 
     }
 }

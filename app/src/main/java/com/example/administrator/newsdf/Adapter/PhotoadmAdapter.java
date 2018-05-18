@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.utils.Dates;
 
@@ -31,6 +31,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Dates dates = new Dates();
     ArrayList<String> path;
     private String tiltle;
+    private boolean lean;
 
     public PhotoadmAdapter(Context mContext) {
         this.mContext = mContext;
@@ -57,19 +58,24 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.lin_photo_adm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                path = new ArrayList<>();
-                ArrayList imagepath = new ArrayList();
-                for (int i = 0; i < mData.size(); i++) {
-                    path.add(mData.get(i).getFilePath());
-                    imagepath.add(tiltle + ">>" + mData.get(i).getDrawingNumber() + ">>" + mData.get(i).getDrawingName());
+                if (lean){
+                    path = new ArrayList<>();
+                    ArrayList imagepath = new ArrayList();
+                    for (int i = 0; i < mData.size(); i++) {
+                        path.add(mData.get(i).getFilePath());
+                        imagepath.add(tiltle + ">>" + mData.get(i).getDrawingNumber() + ">>" + mData.get(i).getDrawingName());
+                    }
+                    PhotoPreview.builder()
+                            .setPhotos(path)
+                            .setCurrentItem(position)
+                            .setShowDeleteButton(false)
+                            .setShowUpLoadeButton(true)
+                            .setImagePath(imagepath)
+                            .start((Activity) mContext);
+                }else {
+
                 }
-                PhotoPreview.builder()
-                        .setPhotos(path)
-                        .setCurrentItem(position)
-                        .setShowDeleteButton(false)
-                        .setShowUpLoadeButton(true)
-                        .setImagePath(imagepath)
-                        .start((Activity) mContext);
+
             }
         });
     }
@@ -92,9 +98,10 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void getData(ArrayList<PhotoBean> mData, String title) {
+    public void getData(ArrayList<PhotoBean> mData, String title, boolean lean) {
         this.mData = mData;
         this.tiltle = title;
+        this.lean = lean;
         notifyDataSetChanged();
     }
 

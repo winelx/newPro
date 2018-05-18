@@ -5,50 +5,51 @@ package com.example.administrator.newsdf.bean;
  */
 
 public class MoretasklistBean {
-    String createDate;
-    String detetionName;
-    String wbsId;
-    String orgId;
+    String uploadTime;
+    String uploadName;
+    String partContent;
+    String portrait;
     String id;
 
-    public MoretasklistBean(String createDate, String detetionName, String wbsId, String orgId, String id) {
-        this.createDate = createDate;
-        this.detetionName = detetionName;
-        this.wbsId = wbsId;
-        this.orgId = orgId;
+
+    public MoretasklistBean(String uploadTime, String uploadName, String partContent, String portrait, String id) {
+        this.uploadTime = uploadTime;
+        this.uploadName = uploadName;
+        this.partContent = partContent;
+        this.portrait = portrait;
         this.id = id;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getUploadTime() {
+        return uploadTime;
     }
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
+    public void setUploadTime(String uploadTime) {
+        this.uploadTime = uploadTime;
     }
 
-    public String getDetetionName() {
-        return detetionName;
+    public String getUploadName() {
+        return uploadName;
     }
 
-    public void setDetetionName(String detetionName) {
-        this.detetionName = detetionName;
+    public void setUploadName(String uploadName) {
+        this.uploadName = uploadName;
     }
 
-    public String getWbsId() {
-        return wbsId;
+    public String getPartContent() {
+        return partContent;
     }
 
-    public void setWbsId(String wbsId) {
-        this.wbsId = wbsId;
+    public void setPartContent(String partContent) {
+        this.partContent = partContent;
     }
 
-    public String getOrgId() {
-        return orgId;
+    public String getPortrait() {
+        return portrait;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 
     public String getId() {

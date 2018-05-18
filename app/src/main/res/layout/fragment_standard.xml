@@ -1,6 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/standard_wbs"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer">
+
+
+        <TextView
+            android:id="@+id/standard_wbs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@mipmap/standardclassification"
+            android:drawablePadding="10dp"
+            android:text="按标准分类查看"
+            android:textColor="#323232" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/back" />
+
+    <RelativeLayout
+        android:id="@+id/standard_project"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/pchoose_wbs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@mipmap/pchoose_wbs"
+            android:drawablePadding="10dp"
+            android:text="按分部分项查看"
+            android:textColor="#323232" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/back" />
+
+    <RelativeLayout
+        android:id="@+id/uploading_photo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/pchoose_Local_text"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@mipmap/local_photo"
+            android:drawablePadding="10dp"
+            android:text="离线标准"
+            android:textColor="#323232" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
+    </RelativeLayout>
 
 </LinearLayout>

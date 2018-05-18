@@ -54,11 +54,11 @@ android {
 
             shrinkResources false
             minifyEnabled false
-                //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                //optimize 默认优化就是这两个文件的区别
+            //optimize 默认优化就是这两个文件的区别
         }
     }
     sourceSets {
@@ -87,6 +87,7 @@ dependencies {
     //相册选图
     //极光推送
     compile files('libs/BaiduLBS_Android.jar')
+    //阿里热修复
     compile 'me.weyye.hipermission:library:1.0.7'
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -110,7 +111,6 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.0'
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    //阿里热修复
     compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.2'
     compile 'com.blankj:utilcode:1.15.0'
     testCompile 'junit:junit:4.12'

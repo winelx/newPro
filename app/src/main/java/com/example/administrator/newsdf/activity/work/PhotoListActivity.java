@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
@@ -18,6 +19,7 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -31,6 +33,8 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.lzy.okgo.OkGo.post;
 
 /**
  * description:选择图册wbs树
@@ -50,6 +54,8 @@ public class PhotoListActivity extends AppCompatActivity {
     private int addPosition;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
+    private String stauts;
+    PostRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ public class PhotoListActivity extends AppCompatActivity {
                 refreshlayout.finishRefresh(2000);
             }
         });
+        Intent intent = getIntent();
+        stauts = intent.getExtras().getString("stauts");
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择图册");
@@ -82,24 +90,28 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     private void okgo() {
-        OkGo.post(Requests.PhotoList)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        mTreeDatas.clear();
-                        getWorkOrganizationList(s);
-                    }
+        if (stauts.equals("standard")) {
+            request = OkGo.<String>post(Requests.STANDARD_TREE).params("nodeid", "");
+        } else {
+            request = OkGo.<String>post(Requests.PhotoList).params("nodeid", "");
+        }
+        request.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                mTreeDatas.clear();
+                getWorkOrganizationList(s);
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+        });
     }
 
-    void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, final String type) {
+    private void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, final String type) {
         Dates.getDialogs(PhotoListActivity.this, "请求数据中");
-        OkGo.post(Requests.PhotoList)
+        post(Requests.PhotoList)
                 .params("nodeid", id)
                 .params("isDrawingGroup", iswbs)
                 .params("isParent", isparent)
@@ -311,10 +323,20 @@ public class PhotoListActivity extends AppCompatActivity {
 
     public void switchAct(Node node) {
         if (node.isDrawingGroup() == true) {
-            Intent intent1 = new Intent(mContext, ListPhActivity.class);
-            intent1.putExtra("groupId", node.getId());
-            intent1.putExtra("title", node.getName());
-            startActivity(intent1);
+            if (stauts.equals("standard")) {
+                Intent intent1 = new Intent(mContext, StandardActivity.class);
+                intent1.putExtra("groupId", node.getId());
+                intent1.putExtra("title", node.getName());
+                intent1.putExtra("stauts","PhotoList");
+                startActivity(intent1);
+            }else {
+                Intent intent1 = new Intent(mContext, ListPhActivity.class);
+                intent1.putExtra("groupId", node.getId());
+                intent1.putExtra("title", node.getName());
+                startActivity(intent1);
+
+            }
+
         }
     }
 }

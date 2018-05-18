@@ -48,7 +48,6 @@ public class PchooseActivity extends AppCompatActivity implements View.OnClickLi
         frPchooseAm.setOnClickListener(this);
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

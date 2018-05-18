@@ -293,32 +293,13 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (mDatas.get(position).getIsFinish() + "") {
-                    //回复转发(自己回复或选择转发)
-                    case "0":
-                        //未上传进入详情
-                        Intent intent = new Intent(mContext, MoretaskActivity.class);
-                        //       Intent intent = new Intent(mContext, AuditparticularsActivity.class);
-                        intent.putExtra("TaskId", mDatas.get(position).getTaskId());
-                        intent.putExtra("wbsid", mDatas.get(position).getWbsId());
-                        intent.putExtra("id", mDatas.get(position).getId());
-                        intent.putExtra("status", "one");
-                        startActivity(intent);
-                        break;
-                    //通过的详情
-                    case "1":
-                        Intent audio = new Intent(mContext, MoretaskActivity.class);
-                        //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                        audio.putExtra("TaskId", mDatas.get(position).getTaskId());
-                        audio.putExtra("wbsid", mDatas.get(position).getWbsId());
-                        audio.putExtra("id", mDatas.get(position).getId());
-                        audio.putExtra("status", "two");
-                        startActivity(audio);
-                        break;
-                    default:
-                        break;
-
-                }
+                Intent audio = new Intent(mContext, MoretaskActivity.class);
+                //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
+                audio.putExtra("TaskId", mDatas.get(position).getTaskId());
+                audio.putExtra("wbsid", mDatas.get(position).getWbsId());
+                audio.putExtra("id", mDatas.get(position).getId());
+                audio.putExtra("status", "true");
+                startActivity(audio);
                 backgroundAlpha(1f);
             }
         });

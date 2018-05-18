@@ -84,9 +84,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // 获取holder对象
             MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
             //设置部位名称
-            myHolder.itemText.setText(list.get(position - 1).getDetetionName());
+            myHolder.itemText.setText(list.get(position - 1).getPartContent());
             //设置创建时间
-            myHolder.create_time.setText(list.get(position - 1).getCreateDate());
+            myHolder.create_time.setText(list.get(position - 1).getUploadTime());
             //设置点击事件
             myHolder.moretask_content.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,7 +98,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else { // 尾部
             MoreTaskDataAdapter.FootHolder myHoldered = (MoreTaskDataAdapter.FootHolder) holder;
-
                 myHoldered.footer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,7 +155,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void getData(ArrayList<MoretasklistBean> list) {
         this.list = list;
-
         notifyDataSetChanged();
     }
 }

@@ -28,14 +28,13 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.DetailsCallback;
 import com.example.administrator.newsdf.callback.DetailsCallbackUtils;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.camera.CheckPermission;
-import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.okgo.OkGo;
@@ -77,7 +76,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private TextView wbsnam;
     private TextView wbspath;
     private TextView comButton, comTitle;
-    private String wtMainid = null, status, wbsid;
+    private String wtMainid = null,  wbsid,status;
     private String wbsName = null, usernma;
     /**
      * 图片查看的圆形图标
@@ -101,6 +100,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     private LinearLayout comImg;
     private RecyclerView mRecyclerView;
+    private IconTextView iconTextView;
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -116,27 +116,20 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
         mContext = this;
-        CheckPermission checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(TaskdetailsActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
+        //权限
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
         final Intent intent = getIntent();
         newArray();
         try {
             id = intent.getExtras().getString("TaskId");
-            status = intent.getExtras().getString("status");
             wbsid = intent.getExtras().getString("wbsid");
+            status= intent.getExtras().getString("status");
+            if (status.equals("true")) {
+                iconTextView.setVisibility(View.VISIBLE);
+            } else {
+                iconTextView.setVisibility(View.GONE);
+            }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -175,6 +168,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     }
 
     private void finById() {
+        iconTextView= (IconTextView) findViewById(R.id.task_iconTextView);
         comImg = (LinearLayout) findViewById(R.id.com_img);
         comImg.setOnClickListener(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -189,6 +183,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         findViewById(R.id.adui_com_back).setOnClickListener(this);
         findViewById(R.id.fab).setOnClickListener(this);
         comButton.setOnClickListener(this);
+        comButton.setVisibility(View.GONE);
 
     }
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TabAdapters;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -101,34 +101,14 @@ public class TabFragment extends LazyFragment {
         listVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String str = mData.get(position).getStatus1();
+                Intent intent = new Intent(mContext, MoretaskActivity.class);
+                intent.putExtra("id", mData.get(position).getId());
+                intent.putExtra("name", mData.get(position).getUser());
+                intent.putExtra("frag_id", mData.get(position).getId());
+                intent.putExtra("status", "false");
+                intent.putExtra("wbsid", wbeID);
+                startActivity(intent);
 
-                switch (str) {
-                    case "0":
-                        Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                        intent.putExtra("id", mData.get(position).getId());
-                        intent.putExtra("name", mData.get(position).getUser());
-                        intent.putExtra("frag_id", mData.get(position).getId());
-                        intent.putExtra("status", "one");
-                        intent.putExtra("wbsid", wbeID);
-                        startActivity(intent);
-                        break;
-                    case "1":
-                        Intent intent1 = new Intent(mContext, TaskdetailsActivity.class);
-                        intent1.putExtra("frag_id", mData.get(position).getId());
-                        intent1.putExtra("wbsid", wbeID);
-                        startActivity(intent1);
-                        break;
-                    case "2":
-                        Intent intent2 = new Intent(mContext, TaskdetailsActivity.class);
-                        intent2.putExtra("frag_id", mData.get(position).getId());
-                        intent2.putExtra("status", "two");
-                        intent2.putExtra("wbsid", wbeID);
-                        startActivity(intent2);
-                        break;
-                    default:
-                        break;
-                }
             }
         });
 

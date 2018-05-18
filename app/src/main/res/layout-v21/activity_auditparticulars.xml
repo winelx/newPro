@@ -115,7 +115,6 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingTop="3dp"
-                        android:text="‘’‘’‘"
                         android:textColor="@color/textViwe"
                         android:textSize="13dp" />
 

@@ -60,7 +60,7 @@ public class WorkBrightProFrament extends Fragment {
             public void onClick(View v) {
                 Intent intent =new Intent(MainActivity.getInstance(), MoretaskActivity.class);
                 intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
-                intent.putExtra("status","one");
+
                 startActivity(intent);
             }
         });

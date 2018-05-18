@@ -64,7 +64,9 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.pchoose_atlas:
-                startActivity(new Intent(getActivity(), PhotoListActivity.class));
+                Intent standard = new Intent(getActivity(), PhotoListActivity.class);
+                standard.putExtra("stauts", "PhotoList");
+                startActivity(standard);
                 break;
             default:
                 break;

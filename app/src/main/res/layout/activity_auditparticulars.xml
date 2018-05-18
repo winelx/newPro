@@ -64,7 +64,8 @@
                     android:gravity="center"
                     android:text="回复"
                     android:textColor="@color/writer"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
 
                 <LinearLayout
@@ -114,11 +115,11 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingTop="3dp"
-                        android:text="‘’‘’‘"
                         android:textColor="@color/textViwe"
                         android:textSize="13dp" />
 
                     <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/task_iconTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"

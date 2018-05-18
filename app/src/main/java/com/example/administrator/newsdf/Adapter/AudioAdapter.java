@@ -133,6 +133,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
+        }else {
+            holder.linearLayout.setVisibility(View.GONE);
         }
     }
 

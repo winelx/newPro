@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.treeView.Node;
@@ -22,6 +23,7 @@ import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -102,25 +104,30 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     private void okgo() {
-        OkGo.post(Requests.WBSTress)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        mTreeDatas.clear();
-                        if (s.contains("data")) {
-                            getWorkOrganizationList(s);
-                        } else {
-                            ToastUtils.showLongToast("数据加载失败");
-                        }
-                        Dates.disDialog();
-                    }
+        PostRequest PostRequest;
+        if (org_status.equals("standard")) {
+            PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
+        } else {
+            PostRequest = OkGo.post(Requests.WBSTress).params("nodeid", "");
+        }
+        PostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                mTreeDatas.clear();
+                if (s.contains("data")) {
+                    getWorkOrganizationList(s);
+                } else {
+                    ToastUtils.showLongToast("数据加载失败");
+                }
+                Dates.disDialog();
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        Dates.disDialog();
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+            }
+        });
     }
 
     private void initView() {
@@ -248,6 +255,14 @@ public class MmissPushActivity extends AppCompatActivity {
             switch (org_status) {
                 case "push":
                     getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
+                    break;
+                case "standard":
+                    Intent standard = new Intent(mContext, StandardActivity.class);
+                    standard.putExtra("wbsId", node.getId());
+                    LogUtil.i("standard", node.getId());
+                    standard.putExtra("title", node.getName());
+                    standard.putExtra("status", "standard");
+                    startActivity(standard);
                     break;
                 case "Photo":
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);
