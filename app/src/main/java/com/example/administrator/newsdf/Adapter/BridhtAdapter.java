@@ -9,16 +9,19 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.bean.BrightBean;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.view.MultiImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -51,12 +54,20 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private void bindContent(Viewholder holder, final int position) {
-        holder.hrightItemViewgroup.setMaxChildCount(12);
+        if (mData.get(position).getPos() == 1) {
+            holder.brightFrMark.setBackgroundResource(R.mipmap.marktwo);
+        } else if (mData.get(position).getPos() == 2) {
+            holder.brightFrMark.setBackgroundResource(R.mipmap.markone);
+        } else {
+            holder.brightFrMark.setBackgroundResource(R.mipmap.markthree);
+        }
+        holder.hrightItemViewgroup.setMaxChildCount(5);
         holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.ic_launcher);
         try {
-            String[] urls = mData.get(position).getLeaderImg().split("，");
+            List<String> impath = mData.get(position).getList();
+            String[] urls = Dates.listToString(impath).split("，");
             holder.hrightItemViewgroup.setImgs(urls, 5);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 //如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
@@ -78,8 +89,9 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.hright_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, TaskdetailsActivity.class);
-                intent.putExtra("TaskId",mData.get(position).getOrgId());
+                Intent intent = new Intent(mContext, MoretaskActivity.class);
+                intent.putExtra("TaskId", mData.get(position).getTaskId());
+                intent.putExtra("status", "true");
 
                 mContext.startActivity(intent);
             }
@@ -94,14 +106,17 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class Viewholder extends RecyclerView.ViewHolder {
         MultiImageView hrightItemViewgroup;
         TextView content, brightItemBlock, brightItemTime;
-        LinearLayout hright_item;
+        RelativeLayout hright_item;
+        private ImageView brightFrMark;
+
         public Viewholder(View itemView) {
             super(itemView);
             hrightItemViewgroup = itemView.findViewById(R.id.hright_item_viewgroup);
             content = itemView.findViewById(R.id.content);
             brightItemBlock = itemView.findViewById(R.id.bright_item_block);
             brightItemTime = itemView.findViewById(R.id.bright_item_time);
-            hright_item=itemView.findViewById(R.id.hright_item);
+            hright_item = itemView.findViewById(R.id.hright_item);
+            brightFrMark = itemView.findViewById(R.id.bright_fr_mark);
         }
     }
 

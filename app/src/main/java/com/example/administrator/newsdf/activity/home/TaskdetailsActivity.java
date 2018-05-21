@@ -115,26 +115,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
+        newArray();
+        finById();
         mContext = this;
         //权限
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
-        final Intent intent = getIntent();
-        newArray();
-        try {
-            id = intent.getExtras().getString("TaskId");
-            wbsid = intent.getExtras().getString("wbsid");
-            status= intent.getExtras().getString("status");
-            if (status.equals("true")) {
-                iconTextView.setVisibility(View.VISIBLE);
-            } else {
-                iconTextView.setVisibility(View.GONE);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
-        finById();
+
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -145,9 +133,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
-        okgo(id);
-        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
-        drawerLayoutList.setAdapter(taskPhotoAdapter);
+
 
         /**
          *    侧拉listview上拉加载
@@ -165,11 +151,27 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 refreshlayout.finishLoadmore(1500);
             }
         });
+        final Intent intent = getIntent();
+        try {
+            id = intent.getExtras().getString("TaskId");
+            wbsid = intent.getExtras().getString("wbsid");
+            status = intent.getExtras().getString("status");
+            if (status.equals("true")) {
+                iconTextView.setVisibility(View.VISIBLE);
+            } else {
+                iconTextView.setVisibility(View.GONE);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        okgo(id);
+        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
+        drawerLayoutList.setAdapter(taskPhotoAdapter);
     }
 
     private void finById() {
-        iconTextView= (IconTextView) findViewById(R.id.task_iconTextView);
         comImg = (LinearLayout) findViewById(R.id.com_img);
+        iconTextView= (IconTextView) findViewById(R.id.task_icontextview);
         comImg.setOnClickListener(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -184,7 +186,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         findViewById(R.id.fab).setOnClickListener(this);
         comButton.setOnClickListener(this);
         comButton.setVisibility(View.GONE);
-
     }
 
     private void newArray() {
@@ -306,7 +307,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 startActivityForResult(intent, 1);
                 break;
             case R.id.taskManagement:
-                homeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
+                if (status.equals("true")) {
+                    homeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
+                }
                 break;
             default:
                 break;

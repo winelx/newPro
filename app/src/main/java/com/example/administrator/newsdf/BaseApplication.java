@@ -85,6 +85,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setupDatabase();
+        setCollection();
         instance = this;
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
         //网络加载库
@@ -153,7 +154,15 @@ public class BaseApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
-
+    /**
+     * 配置数据库
+     */
+    private void setCollection() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "collection.db", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
     public static DaoSession getDaoInstant() {
         return daoSession;
     }

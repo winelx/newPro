@@ -125,6 +125,13 @@ public class BridhtFragment extends Fragment {
                                     e.printStackTrace();
                                     leaderImg = "";
                                 }
+                                String TaskId;
+                                try {
+                                    TaskId = json.getString("taskId");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    TaskId = "";
+                                }
                                 String updateDate;
                                 try {
                                     updateDate = stampToDate(json.getString("updateDate"));
@@ -132,7 +139,19 @@ public class BridhtFragment extends Fragment {
                                     e.printStackTrace();
                                     updateDate = Dates.stampToDate(json.getString("createDate"));
                                 }
-                                mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate));
+                                ArrayList<String> ImagePaths=new ArrayList<String>();
+                                try{
+
+                                    JSONArray filePaths =json.getJSONArray("filePaths");
+                                    for (int j = 0; j < filePaths.length(); j++) {
+                                        String path=Requests.networks+ filePaths.get(j);
+                                        ImagePaths.add(path);
+                                    }
+
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                                mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate,TaskId,pos,ImagePaths));
                             }
                             mAdapter.getData(mData);
                         } catch (JSONException e) {

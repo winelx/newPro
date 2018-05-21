@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.bean;
 
+import java.util.ArrayList;
+
 /**
  * Created by Administrator on 2018/4/25 0025.
  */
@@ -12,8 +14,10 @@ public class BrightBean {
     String leadername;
     String leaderImg;
     String updateDate;
-
-    public BrightBean(String id, String orgId, String orgName, String taskName, String leadername, String leaderImg, String updateDate) {
+    String TaskId;
+    int pos;
+    ArrayList<String> list;
+    public BrightBean(String id, String orgId, String orgName, String taskName, String leadername, String leaderImg, String updateDate, String TaskId, int pos,ArrayList<String> list) {
         this.id = id;
         this.orgId = orgId;
         this.orgName = orgName;
@@ -21,6 +25,9 @@ public class BrightBean {
         this.leadername = leadername;
         this.leaderImg = leaderImg;
         this.updateDate = updateDate;
+        this.TaskId = TaskId;
+        this.pos = pos;
+        this.list = list;
     }
 
     public String getId() {
@@ -77,5 +84,29 @@ public class BrightBean {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public ArrayList<String> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<String> list) {
+        this.list = list;
+    }
+
+    public String getTaskId() {
+        return TaskId;
+    }
+
+    public void setTaskId(String taskId) {
+        TaskId = taskId;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 }

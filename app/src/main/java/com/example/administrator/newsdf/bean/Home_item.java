@@ -22,6 +22,7 @@ public class Home_item {
         this.orgname = orgname;
         this.unfinish = unfinish;
         this.putTop = putTop;
+
     }
 
     public String getContent() {
@@ -78,4 +79,5 @@ public class Home_item {
     public void setPutTop(boolean putTop) {
         this.putTop = putTop;
     }
+
 }

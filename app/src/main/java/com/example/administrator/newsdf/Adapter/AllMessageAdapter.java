@@ -20,7 +20,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
 
@@ -52,9 +51,48 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
+        if (mDatas.get(position).isPutTop()) {
+            holder.btn_Delete.setText("取消置顶");
+        } else {
+            holder.btn_Delete.setText("置顶");
+        }
+
+        //随机数，改变标段的颜色
+        int Random = (int) (Math.random() * 4) + 1;
+        if (Random == 1) {
+            holder.home_item_img.setBackgroundResource(R.drawable.home_item_blue);
+        } else if (Random == 2) {
+            holder.home_item_img.setBackgroundResource(R.drawable.home_item_yello);
+        } else if (Random == 3) {
+            holder.home_item_img.setBackgroundResource(R.drawable.home_item_style);
+        } else if (Random == 4) {
+            holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
+        }
+        //前面圆圈
+        holder.home_item_img.setText(mDatas.get(position).getOrgname());
+        //所属组织
+        holder.home_item_name.setText(mDatas.get(position).getOrgname());
+        //最后一条消息
+        holder.home_item_content.setText(mDatas.get(position).getContent());
+        //最后一条消息时间
+        holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
+        //消息量
+        holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        //判断是否有消息
+        String message = mDatas.get(position).getUnfinish();
+        try {
+            Unfinish = Integer.parseInt(message);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (Unfinish > MAX) {
+            holder.home_item_message.setText("99+");
+        } else {
+            holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        }
+
         //item正文点击事件
         holder.layout_content.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,58 +136,19 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                     LoveDao.insertLove(shop);
                     CallBackUtils.removeCallBackMethod(position, "增加");
                 }
-                if (menuIsOpen()) {
-                    closeMenu();//关闭菜单
-                }
+                closeMenu();
             }
         });
-        if (mDatas.get(position).isPutTop()) {
-            holder.btn_Delete.setText("取消置顶");
-        } else {
-            holder.btn_Delete.setText("置顶");
-        }
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showLongToast("收藏");
+                //添加收藏
                 holder.tv_set.setBackgroundResource(R.color.back);
                 holder.tv_set.setText("已收藏");
+
             }
         });
 
-        //随机数，改变标段的颜色
-        int Random = (int) (Math.random() * 4) + 1;
-        if (Random == 1) {
-            holder.home_item_img.setBackgroundResource(R.drawable.home_item_blue);
-        } else if (Random == 2) {
-            holder.home_item_img.setBackgroundResource(R.drawable.home_item_yello);
-        } else if (Random == 3) {
-            holder.home_item_img.setBackgroundResource(R.drawable.home_item_style);
-        } else if (Random == 4) {
-            holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
-        }
-        //前面圆圈
-        holder.home_item_img.setText(mDatas.get(position).getOrgname());
-        //所属组织
-        holder.home_item_name.setText(mDatas.get(position).getOrgname());
-        //最后一条消息
-        holder.home_item_content.setText(mDatas.get(position).getContent());
-        //最后一条消息时间
-        holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
-        //消息量
-        holder.home_item_message.setText(mDatas.get(position).getUnfinish());
-        //判断是否有消息
-        String message = mDatas.get(position).getUnfinish();
-        try {
-            Unfinish = Integer.parseInt(message);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        if (Unfinish > MAX) {
-            holder.home_item_message.setText("99+");
-        } else {
-            holder.home_item_message.setText(mDatas.get(position).getUnfinish());
-        }
     }
 
     @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/brightspot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,9 +13,16 @@
         android:textSize="12sp" />
 
     <com.example.administrator.newsdf.view.MultiImageView
+        android:layout_below="@+id/content"
         android:id="@+id/multiImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp" />
-
-</LinearLayout>
+    <ImageView
+        android:id="@+id/brightmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/multiImageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

@@ -56,13 +56,13 @@ public class LoveDao {
         return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_ALL)).list();
     }
 
-    //用户置顶
-    public static List<Shop> MineCart() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_MINE)).list();
+    //用户收藏
+    public static List<Shop> MineHide() {
+        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_HIDE)).list();
     }
     //用户推送
-
     public static List<Shop> JPushCart() {
         return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();
     }
+
 }

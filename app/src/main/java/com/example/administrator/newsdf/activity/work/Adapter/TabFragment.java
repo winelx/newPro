@@ -104,10 +104,13 @@ public class TabFragment extends LazyFragment {
                 Intent intent = new Intent(mContext, MoretaskActivity.class);
                 intent.putExtra("id", mData.get(position).getId());
                 intent.putExtra("name", mData.get(position).getUser());
-                intent.putExtra("frag_id", mData.get(position).getId());
+                intent.putExtra("TaskId", mData.get(position).getId());
                 intent.putExtra("status", "false");
                 intent.putExtra("wbsid", wbeID);
                 startActivity(intent);
+//                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+//                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+//                intent.putExtra("status", "true");
 
             }
         });
@@ -131,10 +134,9 @@ public class TabFragment extends LazyFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
-                        if (s.indexOf("data") != -1) {
+                        if (s.contains("data")) {
                             try {
-                                if (status == true) {
+                                if (status) {
                                     mData.clear();
                                 }
                                 JSONObject jsonObject = new JSONObject(s);

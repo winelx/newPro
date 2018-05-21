@@ -14,7 +14,7 @@ public class Shop {
     public static final int TYPE_CART = 0x01;
     public static final int TYPE_LOVE = 0x02;
     public static final int TYPE_ALL = 0x03;
-    public static final int TYPE_MINE = 0x04;
+    public static final int TYPE_HIDE = 0x04;
     public static final int TYPE_JPUSH = 0x05;
     //不能用int
     @Id(autoincrement = true)

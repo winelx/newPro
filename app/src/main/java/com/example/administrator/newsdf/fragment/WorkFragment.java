@@ -17,14 +17,15 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
-import com.example.administrator.newsdf.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
+import com.example.administrator.newsdf.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.bean.Fr_work_pie;
 import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightAdapter;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightProAdapter;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightcomAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.view.PieChartBeans;
@@ -373,7 +374,7 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        LogUtil.i("result",s);
                         //每次请求数据，都需要清除之前的，避免重复
                         compangbrightList.clear();
                         groupbridhtList.clear();
@@ -420,7 +421,7 @@ public class WorkFragment extends Fragment {
                                 }
                                 String leadername;
                                 try {
-                                    leadername = json.getString("leadername");
+                                    leadername = json.getString("leaderName");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     leadername = "";
@@ -432,17 +433,29 @@ public class WorkFragment extends Fragment {
                                     e.printStackTrace();
                                     leaderImg = "";
                                 }
+                                ArrayList<String> ImagePaths=new ArrayList<String>();
+                                try{
+
+                                    JSONArray filePaths =json.getJSONArray("filePaths");
+                                    for (int j = 0; j < filePaths.length(); j++) {
+                                        String path=Requests.networks+ filePaths.get(j);
+                                        ImagePaths.add(path);
+                                    }
+
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
                                 int type = json.getInt("type");
                                 //判断type。
                                 if (type == 1) {
                                     //集团的
-                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type));
+                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
                                 } else if (type == 2) {
                                     //公司的
-                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type));
+                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
                                 } else {
                                     //项目的
-                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type));
+                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
                                 }
                             }
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面

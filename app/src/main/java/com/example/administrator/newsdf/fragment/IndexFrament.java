@@ -76,6 +76,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         PshooseFragAdapte adapter = new PshooseFragAdapte(getChildFragmentManager(), fragments);
         //设定适配器
         homeageViewpager.setAdapter(adapter);
+         homeageViewpager.setOffscreenPageLimit(4);
         //Mianactivity接收极光推送的接口回调
         JPushCallUtils.setCallBack(this);
         homeageViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

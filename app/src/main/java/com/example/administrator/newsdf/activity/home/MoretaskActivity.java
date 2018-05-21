@@ -181,7 +181,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         intent.putExtra("status", status);
-
         startActivity(intent);
     }
 

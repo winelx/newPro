@@ -10,15 +10,17 @@ import android.view.ViewGroup;
 import com.example.administrator.newsdf.R;
 
 /**
- * Created by Administrator on 2018/5/16 0016.
+ * @author lx
+ * @date 2018/5/16 0016
+ * 评论
  */
 
 public class CommentsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_standard, container, false);
         return view;
 
     }

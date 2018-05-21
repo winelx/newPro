@@ -43,6 +43,7 @@ import okhttp3.Response;
 /**
  * @author lx
  *         Created by Administrator on 2017/11/21 0021.
+ *         我的消息
  */
 
 public class HomeMineFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback {
@@ -55,8 +56,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //避免重复绘制界面
@@ -79,7 +78,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         init();
         return rootView;
     }
-
     private void init() {
         mData = new ArrayList<>();
         //设置布局管理器
@@ -106,7 +104,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         });
         Okgo();
     }
-
     //网络请求
     private void Okgo() {
         //请求数据库的数据
@@ -137,7 +134,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
@@ -195,10 +192,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         Dates.disDialog();
         refreshLayout.finishRefresh(false);
     }
-
-
-
-
 
     //切换组织后刷新
     @Override

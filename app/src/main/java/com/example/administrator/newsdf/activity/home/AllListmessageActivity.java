@@ -209,8 +209,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     } else {
                         Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
                 return false;
             }

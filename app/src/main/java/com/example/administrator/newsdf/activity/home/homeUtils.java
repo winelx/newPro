@@ -294,6 +294,8 @@ public class homeUtils {
                                 intent.putExtra("wbsname", wbsname);
                                 intent.putExtra("iswbs", iswbs);
                                 intent.putExtra("type", type);
+                                intent.putExtra("status","More");
+
                                 activity.startActivity(intent);
                                 Dates.disDialog();
                             } catch (JSONException e) {

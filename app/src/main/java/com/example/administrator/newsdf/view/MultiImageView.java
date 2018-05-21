@@ -36,7 +36,7 @@ public class MultiImageView extends ViewGroup {
     /**
      * 这里是九宫图
      */
-    public final static int MAX_IMG_COUNT = 9;
+    public final static int MAX_IMG_COUNT = 5;
 
     /**
      * 每行最大图片数

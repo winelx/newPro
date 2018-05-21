@@ -1,107 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/hright_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/writer"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:lineSpacingMultiplier="1.1"
-        android:text="防护"
-        android:textColor="@color/textViwe"
-        android:textSize="14sp" />
-
-    <com.example.administrator.newsdf.view.MultiImageView
-        android:id="@+id/hright_item_viewgroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:padding="0dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:lineSpacingMultiplier="1.1"
+            android:text="防护"
+            android:textColor="@color/textViwe"
+            android:textSize="14sp" />
+
+        <com.example.administrator.newsdf.view.MultiImageView
+            android:id="@+id/hright_item_viewgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="0dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/bright_block"
-                android:gravity="center"
-                android:text="标段:"
-                android:textColor="#999999"
-                android:textSize="11sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/bright_item_block"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxEms="7"
-                android:singleLine="true"
-                android:text="三独五标"
-                android:textColor="#999999"
-                android:textSize="11sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@mipmap/bright_block"
+                    android:gravity="center"
+                    android:text="标段:"
+                    android:textColor="#999999"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/bright_item_block"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxEms="7"
+                    android:singleLine="true"
+                    android:text="三独五标"
+                    android:textColor="#999999"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:drawableLeft="@mipmap/bright_time"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="回复时间:"
+                    android:textColor="#999999"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/bright_item_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxEms="7"
+                    android:maxLines="1"
+                    android:padding="0dp"
+                    android:text="2018-05-11  14:48:30"
+                    android:textColor="#999999"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:drawableLeft="@mipmap/bright_time"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:text="回复时间:"
-                android:textColor="#999999"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/bright_item_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:ellipsize="end"
-                android:maxEms="7"
-                android:maxLines="1"
-                android:padding="0dp"
-                android:text="2018-05-11  14:48:30"
-                android:textColor="#999999"
-                android:textSize="11sp" />
-        </LinearLayout>
-
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/bright_fr_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/markthree" />
+</RelativeLayout>
