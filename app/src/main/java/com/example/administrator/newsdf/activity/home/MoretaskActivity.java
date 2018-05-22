@@ -25,6 +25,7 @@ import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -57,9 +58,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private MoretaskAdapter mAdapter;
     private ArrayList<Aduio_content> contents;
     private ArrayList<MoretasklistBean> Dats;
-    public String id, wbsid, status, taskID;
+    public String id, wbsid, status, taskID,bright="null";
     private DrawerLayout drawerLayout;
-    private String DATA = "data";
+    private String DATA = "data",usernma;
     private LinearLayout newmoretask, taskrecord;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
@@ -84,6 +85,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
+
         mContext = this;
         //初始化集合
         initArry();
@@ -96,6 +98,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             taskID = intent.getExtras().getString("TaskId");
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
+            bright = intent.getExtras().getString("bright");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -103,8 +106,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
+            bright="null";
         }
-
+        usernma = SPUtils.getString(mContext, "staffName", null);
         //网络请求
         OkGo();
         //请求图册图片
@@ -181,6 +185,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         intent.putExtra("status", status);
+        intent.putExtra("bright", bright);
         startActivity(intent);
     }
 
@@ -219,7 +224,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.taskManagement:
                 if (status.equals("true")) {
-                    homeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
+                    HomeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
                 }
                 break;
 
@@ -252,7 +257,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 //返回数据
                 JSONObject Data = jsonObject.getJSONObject("data");
                 JSONObject jsonArray = Data.getJSONObject("data");
-
                 //创建时间
                 String createDate;
                 try {
@@ -346,16 +350,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 String status;
                 try {
                     status = jsonArray.getString("status");
-                    switch (status) {
-                        case "1":
-                            newmoretask.setVisibility(View.VISIBLE);
-                            break;
-                        case "2":
-                            newmoretask.setVisibility(View.GONE);
-                            break;
-                        default:
-                            break;
-                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     status = "";
@@ -380,11 +375,30 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         String portrait = json.getString("portrait");
                         Dats.add(new MoretasklistBean(uploadTime, uploadName, partContent, portrait, ids));
                     }
-
+                    if (usernma.equals(leaderName)) {
+                        switch (status) {
+                            case "0":
+                            case "1":
+                                newmoretask.setVisibility(View.VISIBLE);
+                                break;
+                            case "2":
+                                newmoretask.setVisibility(View.GONE);
+                                break;
+                            case "3":
+                                break;
+                            case "4":
+                                break;
+                            default:
+                                newmoretask.setVisibility(View.GONE);
+                                break;
+                        }
+                    } else {
+                        newmoretask.setVisibility(View.GONE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
+                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr,bright));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(wbsName);
             } catch (JSONException e) {
@@ -396,7 +410,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     //请求图册
     public void getPhoto() {
         //将请求方法封装到工具类，因为多个界面需要相同的请求
-        homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+        HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
     }
 
     @Override

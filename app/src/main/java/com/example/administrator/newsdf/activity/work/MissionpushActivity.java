@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.homeUtils;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.bean.Push_item;
@@ -208,7 +208,7 @@ public class MissionpushActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
                 drawer_layout.openDrawer(GravityCompat.START);
             }
         });
@@ -221,7 +221,7 @@ public class MissionpushActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }

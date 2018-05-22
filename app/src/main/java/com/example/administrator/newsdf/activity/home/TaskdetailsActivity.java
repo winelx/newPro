@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.activity.home;
 
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -76,7 +77,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private TextView wbsnam;
     private TextView wbspath;
     private TextView comButton, comTitle;
-    private String wtMainid = null,  wbsid,status;
+    private String wtMainid = null,  wbsid,status,bright="null";
     private String wbsName = null, usernma;
     /**
      * 图片查看的圆形图标
@@ -146,7 +147,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 /**
                  *查询当前任务节点图册
                  */
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -156,6 +157,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             id = intent.getExtras().getString("TaskId");
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
+            bright = intent.getExtras().getString("bright");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -293,7 +295,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 /**
                  *查询当前任务节点图册
                  */
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.com_img:
@@ -308,7 +310,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 break;
             case R.id.taskManagement:
                 if (status.equals("true")) {
-                    homeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
+                    HomeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
                 }
                 break;
             default:
@@ -451,7 +453,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
-                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata));
+                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata,bright));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
@@ -700,4 +702,5 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         }
         CameDialog.path.clear();
     }
+
 }

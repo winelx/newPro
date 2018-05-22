@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +18,6 @@ import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
-import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -164,42 +164,63 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 });
                     }
-                } else {
-                    if (mDatas.get(posotion).isDowm()) {
-                        Dates.disDialog();
-                        OkGo.<String>post(Requests.SartProjectdown)
-                                .params("taskId", taskId)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(String s, Call call, Response response) {
-                                        try {
-                                            LogUtil.i("taskId", taskId);
-                                            LogUtil.i("taskId", s);
-                                            ToastUtils.showLongToast(s);
-                                            JSONObject jsonObject = new JSONObject(s);
-                                            int ret = jsonObject.getInt("ret");
-                                            if (ret == 0) {
-                                                ToastUtils.showLongToast("成功");
-                                                isSmartProject = 0;
-                                                holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Call call, Response response, Exception e) {
-                                        super.onError(call, response, e);
-                                    }
-                                });
-                    }
-                    ;
                 }
+
 
             }
         });
+       holder.givealike.setOnLongClickListener(new View.OnLongClickListener() {
+           @Override
+           public boolean onLongClick(View v) {
 
+               if (mDatas.get(posotion).isDowm()) {
+                   AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                   builder.setMessage("撤亮当前任务?")
+                           .setCancelable(false)
+                           .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int id) {
+                                   OkGo.<String>post(Requests.SartProjectdown)
+                                           .params("taskId", taskId)
+                                           .execute(new StringCallback() {
+                                               @Override
+                                               public void onSuccess(String s, Call call, Response response) {
+                                                   try {
+                                                       JSONObject jsonObject = new JSONObject(s);
+                                                       ToastUtils.showLongToast(s);
+                                                       int ret = jsonObject.getInt("ret");
+                                                       if (ret == 0) {
+                                                           ToastUtils.showLongToast("成功");
+                                                           isSmartProject = 1;
+                                                           holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
+
+                                                       }
+                                                   } catch (JSONException e) {
+                                                       e.printStackTrace();
+                                                   }
+                                               }
+
+                                               @Override
+                                               public void onError(Call call, Response response, Exception e) {
+                                                   super.onError(call, response, e);
+
+                                               }
+                                           });
+                               }
+                           })
+                           .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int id) {
+                                   dialog.cancel();
+                               }
+                           });
+                   builder.show();
+               }else {
+                    ToastUtils.showLongToast("没有权限");
+               }
+               return false;
+           }
+       });
     }
 
     @Override

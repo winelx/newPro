@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.bean.BrightBean;
 import com.example.administrator.newsdf.utils.Dates;
@@ -89,10 +89,22 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.hright_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
+             int poss=   mData.get(position).getPos()+1;
+                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
                 intent.putExtra("TaskId", mData.get(position).getTaskId());
-                intent.putExtra("status", "true");
-
+                intent.putExtra("status", "false");
+                intent.putExtra("bright",""+poss);
+                mContext.startActivity(intent);
+            }
+        });
+        holder.hrightItemViewgroup.setClickCallback(new MultiImageView.ClickCallback() {
+            @Override
+            public void callback(int index, String[] str) {
+                int poss= mData.get(position).getPos()+1;
+                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                intent.putExtra("TaskId", mData.get(position).getTaskId());
+                intent.putExtra("status", "false");
+                intent.putExtra("bright",""+poss);
                 mContext.startActivity(intent);
             }
         });

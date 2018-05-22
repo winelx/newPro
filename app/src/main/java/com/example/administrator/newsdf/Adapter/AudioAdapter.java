@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -133,6 +134,19 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
+            String bright=content.get(posotion).getBright();
+            if (bright != null) {
+                if ("1".equals(bright)) {
+                    holder.moretask_Image.setBackgroundResource(R.mipmap.markthree);
+                } else if ("2".equals(bright)) {
+                    holder.moretask_Image.setBackgroundResource(R.mipmap.marktwo);
+                } else {
+                    holder.moretask_Image.setBackgroundResource(R.mipmap.markone);
+                }
+                holder.moretask_Image.setVisibility(View.VISIBLE);
+            } else {
+                holder.moretask_Image.setVisibility(View.GONE);
+            }
         }else {
             holder.linearLayout.setVisibility(View.GONE);
         }
@@ -185,7 +199,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 detailsUser, detailsBoolean,
                 handoverStatusDescription, handoverHuifu,
                 detailsContent, detailsFixedData, handoversText;
-
+    private ImageView moretask_Image;
         public TypeBannerHolder(View itemView) {
             super(itemView);
             linearLayout = itemView.findViewById(R.id.linearLayout);
@@ -196,6 +210,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
             detailsContent = itemView.findViewById(R.id.details_content);
+            moretask_Image = itemView.findViewById(R.id.moretask_Image);
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }

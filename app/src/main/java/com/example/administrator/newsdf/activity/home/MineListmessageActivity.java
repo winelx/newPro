@@ -283,7 +283,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -327,7 +327,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -345,7 +345,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -499,11 +499,11 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             /**
              * 解析数据
              */
-            addOrganizationList = homeUtils.parseOrganizationList(result);
+            addOrganizationList = HomeUtils.parseOrganizationList(result);
             /**
              * 动态添加
              */
-            homeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
+            HomeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
             Dates.disDialog();
         } else {
             Dates.disDialog();
@@ -756,7 +756,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             swip = false;
             page = 1;
             pages = 1;
-            homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+            HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
             uslistView.setSelection(0);
             status = "0";
             okgo(wbsid, status, null, pages);

@@ -39,7 +39,7 @@ import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.homeUtils;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
@@ -253,7 +253,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -476,7 +476,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             case R.id.fabloating:
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
                 break;
             //选择检查项
@@ -516,7 +516,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
             drew = true;
-            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
             checkId = "";
 
             replyCheckItem.setText(data.getStringExtra(""));

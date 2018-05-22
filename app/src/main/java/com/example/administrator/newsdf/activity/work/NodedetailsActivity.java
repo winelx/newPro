@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.homeUtils;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -156,7 +156,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
                 drawer_layout.openDrawer(GravityCompat.START);
             }
         });
@@ -168,7 +168,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
                 taskAdapter.getData(imagePaths, wbsName);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);

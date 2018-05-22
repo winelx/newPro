@@ -34,7 +34,7 @@ import static com.lzy.okgo.OkGo.post;
  *         version:
  */
 
-public class homeUtils {
+public class HomeUtils {
 
     /**
      * 组织机构

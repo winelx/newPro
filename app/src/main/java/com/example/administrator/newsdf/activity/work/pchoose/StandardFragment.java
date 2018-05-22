@@ -33,7 +33,7 @@ public class StandardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent standard = new Intent(getActivity(), PhotoListActivity.class);
-                standard.putExtra("stauts", "standard");
+                standard.putExtra("status", "standard");
                 startActivity(standard);
             }
         });

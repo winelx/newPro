@@ -38,7 +38,7 @@ import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.homeUtils;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -284,7 +284,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -323,7 +323,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.fabloating:
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
                 break;
             case R.id.com_button:
@@ -464,7 +464,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //控件显示文字
             replyCheckItem.setText(data.getStringExtra(""));
             //请求图片
-            homeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点返回
             checkId = data.getStringExtra("id");

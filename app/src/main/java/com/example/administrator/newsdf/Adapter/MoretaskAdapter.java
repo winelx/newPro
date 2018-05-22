@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +17,8 @@ import com.example.administrator.newsdf.bean.MoretasklistBean;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2018/4/16 0016.
+ * @author lx
+ * @date 2018/4/16 0016
  * 多任务上传界面adapter （）
  */
 
@@ -27,7 +29,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private MoreTaskDataAdapter mAdapter;
     private ArrayList<MoretasklistBean> data;
     private Context mContext;
-
+    private String status;
 
     /**
      * 初始化
@@ -105,12 +107,14 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 //转交人
                 holder.detailsUser.setText(content.get(posotion).getLeaderName());
                 if (content.get(posotion).getStatus().equals("0")) {
+                    status="2";
                     holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + content.get(posotion).getBackdata());
                     //状态
                     holder.detailsBoolean.setText("未完成");
                     //状态
                     holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
                 } else {
+                    status="1";
                     holder.detailsData.setText(content.get(posotion).getCreateDate());
                     //状态
                     holder.detailsBoolean.setText("已完成");
@@ -119,6 +123,19 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 }// 转交说明
                 holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
+                String bright = content.get(posotion).getBright();
+                if (bright != null) {
+                    if ("1".equals(bright)) {
+                        holder.moretaskImage.setBackgroundResource(R.mipmap.markthree);
+                    } else if ("2".equals(bright)) {
+                        holder.moretaskImage.setBackgroundResource(R.mipmap.marktwo);
+                    } else {
+                        holder.moretaskImage.setBackgroundResource(R.mipmap.markone);
+                    }
+                    holder.moretaskImage.setVisibility(View.VISIBLE);
+                } else {
+                    holder.moretaskImage.setVisibility(View.GONE);
+                }
             } else {
                 holder.linearLayout.setVisibility(View.GONE);
             }
@@ -136,7 +153,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder1.setpin.setVisibility(View.VISIBLE);
             holder1.dataRec.setVisibility(View.VISIBLE);
             holder1.dataRec.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-            mAdapter = new MoreTaskDataAdapter(mContext);
+            mAdapter = new MoreTaskDataAdapter(mContext,status,content.get(0).getLeaderName());
             holder1.dataRec.setAdapter(mAdapter);
             mAdapter.getData(data);
         } else {
@@ -159,6 +176,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 detailsUser, detailsBoolean,
                 handoverStatusDescription,
                 detailsContent, detailsFixedData;
+        ImageView moretaskImage;
 
         public ViewholderContent(View itemView) {
             super(itemView);
@@ -170,6 +188,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
             detailsContent = itemView.findViewById(R.id.details_content);
+            moretaskImage = itemView.findViewById(R.id.moretask_Image);
         }
     }
 

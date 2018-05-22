@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
-import com.example.administrator.newsdf.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.view.MultiImageView;
 
@@ -75,12 +75,23 @@ public class WorkBrightFrament extends Fragment {
         }catch (NullPointerException e){
             e.printStackTrace();
         }
-
+        multiImageView.setClickCallback(new MultiImageView.ClickCallback() {
+            @Override
+            public void callback(int index, String[] str) {
+                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
+                intent.putExtra("bright", "1");
+                intent.putExtra("status", "true");
+                startActivity(intent);
+            }
+        });
         brightspot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(MainActivity.getInstance(), MoretaskActivity.class);
+                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
                 intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
+                intent.putExtra("bright", "1");
+                intent.putExtra("status", "false");
                 startActivity(intent);
             }
         });

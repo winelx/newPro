@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.homeUtils;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -150,7 +150,7 @@ public class TenanceviewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 page = 1;
                 drew = true;
-                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -162,7 +162,7 @@ public class TenanceviewActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 taskAdapter.getData(imagePaths, wbspath);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);

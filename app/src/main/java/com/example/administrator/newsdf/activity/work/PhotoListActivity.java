@@ -71,7 +71,7 @@ public class PhotoListActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        stauts = intent.getExtras().getString("stauts");
+        stauts = intent.getExtras().getString("status");
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择图册");
@@ -322,12 +322,12 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     public void switchAct(Node node) {
-        if (node.isDrawingGroup() == true) {
-            if (stauts.equals("standard")) {
+        if (node.isDrawingGroup()) {
+            if ("standard".equals(stauts)) {
                 Intent intent1 = new Intent(mContext, StandardActivity.class);
                 intent1.putExtra("groupId", node.getId());
                 intent1.putExtra("title", node.getName());
-                intent1.putExtra("stauts","PhotoList");
+                intent1.putExtra("status","PhotoList");
                 startActivity(intent1);
             }else {
                 Intent intent1 = new Intent(mContext, ListPhActivity.class);
@@ -336,7 +336,6 @@ public class PhotoListActivity extends AppCompatActivity {
                 startActivity(intent1);
 
             }
-
         }
     }
 }

@@ -55,6 +55,7 @@ public class TaskRecordActivity extends AppCompatActivity {
         com_title.setText("查看记录");
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
+        LogUtil.i("ss",taskId);
         com_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

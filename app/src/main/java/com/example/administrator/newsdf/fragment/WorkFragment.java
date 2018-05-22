@@ -449,7 +449,7 @@ public class WorkFragment extends Fragment {
                                 //判断type。
                                 if (type == 1) {
                                     //集团的
-                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
+                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type,ImagePaths));
                                 } else if (type == 2) {
                                     //公司的
                                     compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));

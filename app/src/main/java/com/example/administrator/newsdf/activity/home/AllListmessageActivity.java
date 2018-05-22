@@ -143,7 +143,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -183,7 +183,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                homeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
 
             }
@@ -365,11 +365,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             /**
              * 解析数据
              */
-            addOrganizationList = homeUtils.parseOrganizationList(result);
+            addOrganizationList = HomeUtils.parseOrganizationList(result);
             /**
              * 动态添加
              */
-            homeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
+            HomeUtils.addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
             Dates.disDialog();
         } else {
             Dates.disDialog();
@@ -519,7 +519,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             swip = false;
             page = 1;
             pages = 1;
-            homeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+            HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
             uslistView.setSelection(0);
             okgoall(nodeiD, null, pages);
         }
@@ -618,130 +618,137 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray1.length(); i++) {
-                    JSONObject json = jsonArray1.getJSONObject(i);
-                    JSONObject json1 = new JSONObject();
-                    JSONArray json2 = new JSONArray();
-                    try {
-                        json1 = json.getJSONObject("children");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        json2 = json.getJSONArray("comments");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JSONArray files = new JSONArray();
-                    try {
-                        files = json1.getJSONArray("file");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        wbsPath = json.getString("wbsPath");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        wbsPath = "";
-                    }
-                    try {
-                        wbsId = json.getString("wbsId");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        wbsId = "";
-                    }
-                    try {
-                        updateDate = json.getString("updateDate");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        updateDate = "";
-                    }
-                    try {
-                        taskId = json.getString("taskId");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        taskId = "";
-                    }
-
-                    try {
-                        isFinish = json.getInt("isFinish");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        isFinish = 0;
-                    }
-                    try {
-                        id = json.getString("id");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        id = "";
-                    }
-                    try {
-                        groupName = json.getString("pointName");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        groupName = "";
-                    }
-                    try {
-                        createTime = json.getString("createTime");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        createTime = "";
-                    }
-                    try {
-                        content = json.getString("content");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        content = "";
-                    }
-                    String userId = "", protrait = "", upload_addr = "", upload_content = "", upload_time = "", uploador = "";
-                    //个人信息
-                    try {
-                        userId = json1.getString("id");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        userId = "";
-                    }
-                    try {
-                        protrait = json1.getString("portrait");
-                        protrait = Requests.networks + protrait;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        protrait = "";
-                    }
-                    try {
-                        upload_addr = json1.getString("upload_addr");
-                    } catch (JSONException e) {
-                        upload_addr = "";
-                    }
-                    try {
-                        upload_time = json1.getString("upload_time");
-                    } catch (JSONException e) {
-                        upload_time = "";
-                    }
-                    try {
-                        uploador = json1.getString("uploador");
-                    } catch (JSONException e) {
-                        uploador = "";
-                    }
-                    try {
-                        upload_content = json1.getString("upload_content");
-                    } catch (JSONException e) {
-                        upload_content = "";
-                    }
-                    paths = new ArrayList<>();
-                    ArrayList<String> pathsname = new ArrayList<>();
-                    if (files.length() > 0) {
-                        for (int j = 0; j < files.length(); j++) {
-                            JSONObject jsonfilse = files.getJSONObject(j);
-                            String filepath = jsonfilse.getString("filepath");
-                            String filename = jsonfilse.getString("filename");
-                            paths.add(Requests.networks + filepath);
-                            pathsname.add(filename);
+                if (jsonArray1.length()!=0) {
+                    for (int i = 0; i < jsonArray1.length(); i++) {
+                        JSONObject json = jsonArray1.getJSONObject(i);
+                        JSONObject json1 = new JSONObject();
+                        JSONArray json2 = new JSONArray();
+                        try {
+                            json1 = json.getJSONObject("children");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        try {
+                            json2 = json.getJSONArray("comments");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONArray files = new JSONArray();
+                        try {
+                            files = json1.getJSONArray("file");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            wbsPath = json.getString("wbsPath");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            wbsPath = "";
+                        }
+                        try {
+                            wbsId = json.getString("wbsId");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            wbsId = "";
+                        }
+                        try {
+                            updateDate = json.getString("updateDate");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            updateDate = "";
+                        }
+                        try {
+                            taskId = json.getString("taskId");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            taskId = "";
+                        }
+
+                        try {
+                            isFinish = json.getInt("isFinish");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            isFinish = 0;
+                        }
+                        try {
+                            id = json.getString("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            id = "";
+                        }
+                        try {
+                            groupName = json.getString("pointName");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            groupName = "";
+                        }
+                        try {
+                            createTime = json.getString("createTime");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            createTime = "";
+                        }
+                        try {
+                            content = json.getString("content");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            content = "";
+                        }
+                        String userId = "", protrait = "", upload_addr = "", upload_content = "", upload_time = "", uploador = "";
+                        //个人信息
+                        try {
+                            userId = json1.getString("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            userId = "";
+                        }
+                        try {
+                            protrait = json1.getString("portrait");
+                            protrait = Requests.networks + protrait;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            protrait = "";
+                        }
+                        try {
+                            upload_addr = json1.getString("upload_addr");
+                        } catch (JSONException e) {
+                            upload_addr = "";
+                        }
+                        try {
+                            upload_time = json1.getString("upload_time");
+                        } catch (JSONException e) {
+                            upload_time = "";
+                        }
+                        try {
+                            uploador = json1.getString("uploador");
+                        } catch (JSONException e) {
+                            uploador = "";
+                        }
+                        try {
+                            upload_content = json1.getString("upload_content");
+                        } catch (JSONException e) {
+                            upload_content = "";
+                        }
+                        paths = new ArrayList<>();
+                        ArrayList<String> pathsname = new ArrayList<>();
+                        if (files.length() > 0) {
+                            for (int j = 0; j < files.length(); j++) {
+                                JSONObject jsonfilse = files.getJSONObject(j);
+                                String filepath = jsonfilse.getString("filepath");
+                                String filename = jsonfilse.getString("filename");
+                                paths.add(Requests.networks + filepath);
+                                pathsname.add(filename);
+                            }
+                        }
+                        int comments = json2.length();
+                        Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
+                                groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
-                    int comments = json2.length();
-                    Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
-                            groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
+                }else {
+                    if (!swip) {
+                        Alldata.clear();
+                    }
+                    mAdapter.getData(Alldata);
                 }
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
