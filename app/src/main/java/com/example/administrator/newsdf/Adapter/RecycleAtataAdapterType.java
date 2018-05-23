@@ -152,7 +152,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                                     ToastUtils.showLongToast("成功");
                                                     TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                                     activity.deleteTop();
-                                                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
                                                 }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -197,6 +196,9 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                                             isSmartProject = 1;
                                                             holder.givealikeText.setText("提亮");
                                                             holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                                                            TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                                            activity.deleteTop();
+
                                                         }
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();

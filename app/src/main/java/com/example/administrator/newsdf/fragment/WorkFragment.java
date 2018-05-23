@@ -208,7 +208,6 @@ public class WorkFragment extends Fragment {
             frWorkDn.setText("早上好 !");
         }
     }
-
     private void findId() {
         fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
         PieChartOne = rootView.findViewById(R.id.piechartone);

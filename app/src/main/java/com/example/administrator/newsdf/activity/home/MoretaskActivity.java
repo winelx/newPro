@@ -375,28 +375,22 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         String portrait = json.getString("portrait");
                         Dats.add(new MoretasklistBean(uploadTime, uploadName, partContent, portrait, ids));
                     }
-                    if (usernma.equals(leaderName)) {
-                        switch (status) {
-                            case "0":
-                            case "1":
-                                newmoretask.setVisibility(View.VISIBLE);
-                                break;
-                            case "2":
-                                newmoretask.setVisibility(View.GONE);
-                                break;
-                            case "3":
-                                break;
-                            case "4":
-                                break;
-                            default:
-                                newmoretask.setVisibility(View.GONE);
-                                break;
-                        }
-                    } else {
+                    if (!leaderName.equals(usernma)) {
                         newmoretask.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+                switch (status) {
+                    case "1":
+                        newmoretask.setVisibility(View.VISIBLE);
+                        break;
+                    case "2":
+                        newmoretask.setVisibility(View.GONE);
+                        break;
+                    default:
+                        newmoretask.setVisibility(View.GONE);
+                        break;
                 }
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);

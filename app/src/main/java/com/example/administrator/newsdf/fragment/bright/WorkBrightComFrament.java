@@ -89,6 +89,7 @@ public class WorkBrightComFrament extends Fragment {
                 String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
+                intent.putExtra("bright", "true");
                 startActivity(intent);
 
             }
@@ -100,6 +101,7 @@ public class WorkBrightComFrament extends Fragment {
                 String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
+                intent.putExtra("bright", "true");
                 startActivity(intent);
             }
         });

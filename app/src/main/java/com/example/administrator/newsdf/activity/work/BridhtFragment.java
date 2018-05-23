@@ -13,7 +13,6 @@ import com.example.administrator.newsdf.Adapter.BridhtAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.BrightBean;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -65,12 +64,13 @@ public class BridhtFragment extends Fragment {
     }
 
     private void Bright() {
+
         OkGo.<String>post(Requests.ListByType)
-                .params("type", pos)
+                .params("type", pos+1)
+                .params("page",1 )
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("BridhtFragment", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

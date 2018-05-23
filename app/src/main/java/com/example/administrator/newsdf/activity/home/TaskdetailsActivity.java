@@ -105,6 +105,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      * 是否需要返回后刷新界面状态
      */
     private boolean Refresh = true;
+    public String smartProjectType;
 
     public static TaskdetailsActivity getInstance() {
         return mContext;
@@ -134,7 +135,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
 
-
         /**
          *    侧拉listview上拉加载
          */
@@ -154,10 +154,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         Intent intent = getIntent();
         try {
             TaskId = intent.getExtras().getString("TaskId");
-            LogUtil.i("TaskId",TaskId);
+            LogUtil.i("TaskId", TaskId);
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
-            bright = intent.getExtras().getString("bright");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -165,7 +164,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-            audioComMark.setVisibility(View.GONE);
+
         }
 
         okgo(TaskId);
@@ -382,27 +381,39 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
                                 name = "";
                             }
-                            //任务亮点等级
-                            String smartProjectType;
-                            try {
-                                ///检查点
-                                 smartProjectType = String.valueOf(wtMain.getString("smartProjectType"));
-                                switch (smartProjectType) {
-                                    case "1":
-                                        audioComMark.setBackgroundResource(R.mipmap.markthree);
+                            int isSmartProject;
+                            try {//打回人ID
+                                isSmartProject = wtMain.getInt("isSmartProject");
+                                switch (isSmartProject) {
+                                    case 0:
+                                        audioComMark.setVisibility(View.GONE);
                                         break;
-                                    case "2":
-                                        audioComMark.setBackgroundResource(R.mipmap.marktwo);
-                                        break;
-                                    case "3":
-                                        audioComMark.setBackgroundResource(R.mipmap.markone);
+                                    case 1:
+                                        audioComMark.setVisibility(View.VISIBLE);
+                                        ///检查点
+                                        smartProjectType = String.valueOf(wtMain.getString("smartProjectType"));
+                                        switch (smartProjectType) {
+                                            case "1":
+                                                audioComMark.setBackgroundResource(R.mipmap.markthree);
+                                                break;
+                                            case "2":
+                                                audioComMark.setBackgroundResource(R.mipmap.marktwo);
+                                                break;
+                                            case "3":
+                                                audioComMark.setBackgroundResource(R.mipmap.markone);
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                         break;
                                     default:
                                         break;
                                 }
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                //打回说明
+                                isSmartProject = 0;
                             }
+
                             String status;
                             //状态
                             try {
@@ -599,13 +610,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     //打回说明
                                     callbackId = "";
                                 }
-                                int isSmartProject;
-                                try {//打回人ID
-                                    isSmartProject = Sub.getInt("isSmartProject");
-                                } catch (JSONException e) {
-                                    //打回说明
-                                    isSmartProject = 0;
-                                }
+
 
                                 String userimage;
                                 try {
