@@ -38,12 +38,12 @@ public class Aduio_content {
     String changeId;
     //最后时间
     String backdata;
-    String bright;
+
 
     public Aduio_content(String id, String name, String status, String content, String leaderName,
                          String leaderId, String isread, String createByUserID,
                          String iscallback, String createDate,
-                         String wbsName, String changeId, String backdata, String bright) {
+                         String wbsName, String changeId, String backdata) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -57,7 +57,7 @@ public class Aduio_content {
         this.wbsName = wbsName;
         this.changeId = changeId;
         this.backdata = backdata;
-        this.bright = bright;
+
 
     }
 
@@ -165,11 +165,4 @@ public class Aduio_content {
         this.backdata = backdata;
     }
 
-    public String getBright() {
-        return bright;
-    }
-
-    public void setBright(String bright) {
-        this.bright = bright;
-    }
 }

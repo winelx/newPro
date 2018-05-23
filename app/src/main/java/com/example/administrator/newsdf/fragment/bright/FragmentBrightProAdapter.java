@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
-    public static ArrayList<work_fr_bright_bean> mData;
+    public static ArrayList<work_fr_bright_bean> mDataPro;
 
     public FragmentBrightProAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
-        FragmentBrightProAdapter.mData = name;
+        FragmentBrightProAdapter.mDataPro = name;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class FragmentBrightProAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
 
-        return mData.size();
+        return mDataPro.size();
     }
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
-        FragmentBrightProAdapter.mData = mData;
+        FragmentBrightProAdapter.mDataPro = mData;
         notifyDataSetChanged();
     }
 

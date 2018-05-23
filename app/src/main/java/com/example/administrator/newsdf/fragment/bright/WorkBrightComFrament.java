@@ -24,6 +24,8 @@ import com.example.administrator.newsdf.view.MultiImageView;
 
 import java.util.List;
 
+import static com.example.administrator.newsdf.fragment.bright.FragmentBrightcomAdapter.mDataCom;
+
 
 /**
  * description:分公司
@@ -37,6 +39,7 @@ public class WorkBrightComFrament extends Fragment {
     private int pos;
     private View view;
     private RelativeLayout brightspot;
+
     @SuppressLint("ValidFragment")
     public WorkBrightComFrament(int pos) {
         this.pos = pos;
@@ -45,18 +48,19 @@ public class WorkBrightComFrament extends Fragment {
     private MultiImageView multiImageView;
     private TextView content;
     private ImageView brightmark;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.wrok_bright_fragment, container, false);
         content = view.findViewById(R.id.content);
         multiImageView = view.findViewById(R.id.multiImageView);
-        brightspot=view.findViewById(R.id.brightspot);
-        brightmark=view.findViewById(R.id.brightmark);
+        brightspot = view.findViewById(R.id.brightspot);
+        brightmark = view.findViewById(R.id.brightmark);
         brightmark.setBackgroundResource(R.mipmap.marktwo);
         try {
-            String Leadername = FragmentBrightProAdapter.mData.get(pos).getLeadername();
-            String titme = FragmentBrightProAdapter.mData.get(pos).getLeadername() + FragmentBrightProAdapter.mData.get(pos).getOrgName();
+            String Leadername = mDataCom.get(pos).getLeadername();
+            String titme = mDataCom.get(pos).getLeadername() + mDataCom.get(pos).getOrgName();
             SpannableString sp1 = new SpannableString(titme);
             sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
                             .getColor(R.color.brighr_people)), 0,
@@ -70,30 +74,31 @@ public class WorkBrightComFrament extends Fragment {
         multiImageView.setMaxChildCount(5);
         multiImageView.setMoreImgBg(R.mipmap.image_error);
         try {
-            List<String> path= FragmentBrightAdapter.mData.get(pos).getList();
-                String imagepath= Dates.listToString(path);
-                String[] urls =imagepath.split("，");
-                multiImageView.setImgs(urls, 5);
-        }catch (NullPointerException e){
+            List<String> path = FragmentBrightAdapter.mData.get(pos).getList();
+            String imagepath = Dates.listToString(path);
+            String[] urls = imagepath.split("，");
+            multiImageView.setImgs(urls, 5);
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 //如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
         multiImageView.setClickCallback(new MultiImageView.ClickCallback() {
             @Override
             public void callback(int index, String[] str) {
-                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
-                intent.putExtra("bright", "2");
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
                 startActivity(intent);
+
             }
         });
         brightspot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
-                intent.putExtra("bright", "2");
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
                 startActivity(intent);
             }

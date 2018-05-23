@@ -441,6 +441,86 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                     selfDialog.show();
                 }
                 break;
+            case R.id.com_img:
+                //存放到本地
+                if (!status) {
+                    selfDialog = new WbsDialog(ReplysActivity.this);
+                    selfDialog.setMessage("是否保存本地");
+                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            selfDialog.dismiss();
+                            Shop shop = new Shop();
+                            shop.setType(Shop.TYPE_LOVE);
+                            //路径
+                            shop.setName(wbsNodeName.getText().toString());
+                            //wbsID
+                            shop.setWebsid(wbsID);
+                            //时间
+                            shop.setTimme(Dates.getDate());
+                            //内容
+                            shop.setContent(replyText.getText().toString());
+                            shop.setImage_url(Dates.listToString(pathimg));
+                            shop.setCheckid(checkId);
+                            //检查点
+                            if (replyCheckItem.getText().toString().length() != 0) {
+                                shop.setCheckname(replyCheckItem.getText().toString());
+                            } else {
+                                shop.setCheckname("自定义");
+                            }
+                            LoveDao.insertLove(shop);
+                            finish();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.show();
+                } else {
+                    selfDialog = new WbsDialog(ReplysActivity.this);
+                    selfDialog.setMessage("是否保存本地");
+                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            selfDialog.dismiss();
+                            //更新数据库数据
+                            //拿到需要进行修改的记录
+                            Shop shop = list.get(position);
+                            shop.setName(wbsNodeName.getText().toString());
+                            //内容
+                            shop.setContent(replyText.getText().toString());
+                            //图片保存路径
+                            shop.setImage_url(Dates.listToString(pathimg));
+                            //wbsid
+                            shop.setWebsid(wbsID);
+                            //时间
+                            shop.setTimme(Dates.getDate());
+                            //checkid
+                            shop.setCheckid(checkId);
+                            //checkname
+                            shop.setCheckname(replyCheckItem.getText().toString());
+                            //更新
+                            LoveDao.updateLove(shop);
+                            //返回之前的界面
+                            Intent intent = new Intent();
+                            //回传数据到主Activity
+                            setResult(RESULT_OK, intent);
+                            //此方法后才能返回主Activity
+                            finish();
+                        }
+                    });
+                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            selfDialog.dismiss();
+                        }
+                    });
+                    selfDialog.show();
+                }
+                break;
             default:
                 break;
         }

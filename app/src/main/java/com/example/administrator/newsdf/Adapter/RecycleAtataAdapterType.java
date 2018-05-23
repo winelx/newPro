@@ -48,13 +48,15 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     private ArrayList<Aduio_data> mDatas;
     TaskdetailsActivity activity;
     String str = null;
-    int isSmartProject;
+    int isSmartProject, bright;
     String taskId;
     CameDialog cameDialog;
-    public RecycleAtataAdapterType(Context mContext, boolean status) {
+
+    public RecycleAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
         this.status = status;
-        cameDialog=new CameDialog();
+        this.bright = bright;
+        cameDialog = new CameDialog();
         mDatas = new ArrayList<>();
     }
 
@@ -75,54 +77,52 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         //判断是否有图片
         if (mDatas.get(posotion).getAttachments().size() != 0) {
             //有图片展示布局
-            holder.audio_rec.setVisibility(View.VISIBLE);
+            holder.audioRec.setVisibility(View.VISIBLE);
             //隐藏没有图片的提示图
-            holder.audio_notimage.setVisibility(View.GONE);
+            holder.audioNotimage.setVisibility(View.GONE);
         } else {
-            holder.audio_rec.setVisibility(View.INVISIBLE);
-            holder.audio_notimage.setVisibility(View.VISIBLE);
+            holder.audioRec.setVisibility(View.INVISIBLE);
+            holder.audioNotimage.setVisibility(View.VISIBLE);
         }
         Glide.with(mContext)
                 .load(mDatas.get(posotion).getUserpath())
-                .into(holder.audio_acathor);
+                .into(holder.audioAcathor);
         //上传人
-        holder.audio_name.setText(mDatas.get(posotion).getReplyUserName());
+        holder.audioName.setText(mDatas.get(posotion).getReplyUserName());
         //附加内容
-        holder.audio_content.setText(mDatas.get(posotion).getUploadContent());
+        holder.audioContent.setText(mDatas.get(posotion).getUploadContent());
         //上传时间
-        holder.audio_data.setText(mDatas.get(posotion).getUpdateDate());
+        holder.audioData.setText(mDatas.get(posotion).getUpdateDate());
         //上传地点
-        holder.audio_address.setText(mDatas.get(posotion).getUploadAddr());
+        holder.audioAddress.setText(mDatas.get(posotion).getUploadAddr());
         //评论条数
-        holder.comment_count.setText(mDatas.get(posotion).getCommentCount());
+        holder.commentCount.setText(mDatas.get(posotion).getCommentCount());
         //评论
         isSmartProject = mDatas.get(posotion).getIsSmartProject();
         //判断默认状态是提亮还是降亮
         if (isSmartProject == 0) {
-            //判断是否有权限提亮
             if (mDatas.get(posotion).isUp()) {
-                holder.givealike_image.setBackgroundResource(R.mipmap.givealike);
-            } else {
-                //反之隐藏
+                holder.givealikeText.setText("提亮");
+                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+            }else {
                 holder.givealike.setVisibility(View.GONE);
             }
 
         } else {
             //判断是否有权限降亮
             if (mDatas.get(posotion).isDowm()) {
-                holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
-            } else {
-                //反之隐藏
+                holder.givealikeText.setText("降亮");
+                holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+            }else {
                 holder.givealike.setVisibility(View.GONE);
             }
-
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        holder.audio_rec.setLayoutManager(linearLayoutManager);
+        holder.audioRec.setLayoutManager(linearLayoutManager);
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
-        holder.audio_rec.setAdapter(adapter);
-        holder.audio_data_comm.setOnClickListener(new View.OnClickListener() {
+        holder.audioRec.setAdapter(adapter);
+        holder.audioDataComm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
@@ -133,94 +133,97 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.givealike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                taskId = audio.gettaskId();
-                if (isSmartProject == 0) {
-                    if (mDatas.get(posotion).isUp()) {
-                        OkGo.<String>post(Requests.SartProjectup)
-                                .params("taskId", taskId)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(String s, Call call, Response response) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(s);
-                                            ToastUtils.showLongToast(s);
-                                            int ret = jsonObject.getInt("ret");
-                                            if (ret == 0) {
-                                                ToastUtils.showLongToast("成功");
-                                                isSmartProject = 1;
-                                                holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
-
+                //判断是否有权限提亮
+                if (mDatas.get(posotion).isUp()) {
+                    TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+                    taskId = audio.gettaskId();
+                    if (isSmartProject == 0) {
+                        if (mDatas.get(posotion).isUp()) {
+                            OkGo.<String>post(Requests.SartProjectup)
+                                    .params("taskId", taskId)
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(String s, Call call, Response response) {
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(s);
+                                                ToastUtils.showLongToast(s);
+                                                int ret = jsonObject.getInt("ret");
+                                                if (ret == 0) {
+                                                    ToastUtils.showLongToast("成功");
+                                                    TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                                    activity.deleteTop();
+                                                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
                                         }
-                                    }
 
-                                    @Override
-                                    public void onError(Call call, Response response, Exception e) {
-                                        super.onError(call, response, e);
+                                        @Override
+                                        public void onError(Call call, Response response, Exception e) {
+                                            super.onError(call, response, e);
 
-                                    }
-                                });
+                                        }
+                                    });
+                        }
                     }
+
                 }
-
-
             }
         });
-       holder.givealike.setOnLongClickListener(new View.OnLongClickListener() {
-           @Override
-           public boolean onLongClick(View v) {
+        holder.givealike.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+                taskId = audio.gettaskId();
+                if (mDatas.get(posotion).isDowm()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage("撤亮当前任务?")
+                            .setCancelable(false)
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    OkGo.<String>post(Requests.SartProjectdown)
+                                            .params("taskId", taskId)
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(String s, Call call, Response response) {
+                                                    try {
+                                                        JSONObject jsonObject = new JSONObject(s);
+                                                        ToastUtils.showLongToast(s);
+                                                        int ret = jsonObject.getInt("ret");
+                                                        if (ret == 0) {
+                                                            ToastUtils.showLongToast("成功");
+                                                            isSmartProject = 1;
+                                                            holder.givealikeText.setText("提亮");
+                                                            holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
 
-               if (mDatas.get(posotion).isDowm()) {
-                   AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                   builder.setMessage("撤亮当前任务?")
-                           .setCancelable(false)
-                           .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int id) {
-                                   OkGo.<String>post(Requests.SartProjectdown)
-                                           .params("taskId", taskId)
-                                           .execute(new StringCallback() {
-                                               @Override
-                                               public void onSuccess(String s, Call call, Response response) {
-                                                   try {
-                                                       JSONObject jsonObject = new JSONObject(s);
-                                                       ToastUtils.showLongToast(s);
-                                                       int ret = jsonObject.getInt("ret");
-                                                       if (ret == 0) {
-                                                           ToastUtils.showLongToast("成功");
-                                                           isSmartProject = 1;
-                                                           holder.givealike_image.setBackgroundResource(R.mipmap.givealikenew);
+                                                @Override
+                                                public void onError(Call call, Response response, Exception e) {
+                                                    super.onError(call, response, e);
 
-                                                       }
-                                                   } catch (JSONException e) {
-                                                       e.printStackTrace();
-                                                   }
-                                               }
-
-                                               @Override
-                                               public void onError(Call call, Response response, Exception e) {
-                                                   super.onError(call, response, e);
-
-                                               }
-                                           });
-                               }
-                           })
-                           .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int id) {
-                                   dialog.cancel();
-                               }
-                           });
-                   builder.show();
-               }else {
+                                                }
+                                            });
+                                }
+                            })
+                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.show();
+                } else {
                     ToastUtils.showLongToast("没有权限");
-               }
-               return false;
-           }
-       });
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -229,35 +232,35 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private class Viewholder extends RecyclerView.ViewHolder {
-        private CircleImageView audio_acathor;
-        private TextView audio_name, audio_content, audio_data, audio_address, comment_count, givealike_text;
-        private RecyclerView audio_rec;
-        private LinearLayout audio_data_comm, givealike;
-        private ImageView givealike_image, audio_notimage;
+        private CircleImageView audioAcathor;
+        private TextView audioName, audioContent, audioData, audioAddress, commentCount, givealikeText;
+        private RecyclerView audioRec;
+        private LinearLayout audioDataComm, givealike;
+        private ImageView givealikeImage, audioNotimage;
 
         public Viewholder(View itemView) {
             super(itemView);
             //头像
-            audio_acathor = (CircleImageView) itemView.findViewById(R.id.audio_acathor);
+            audioAcathor = (CircleImageView) itemView.findViewById(R.id.audio_acathor);
             //文字内容
-            audio_name = (TextView) itemView.findViewById(R.id.audio_name);
-            audio_content = (TextView) itemView.findViewById(R.id.audio_content);
-            audio_data = (TextView) itemView.findViewById(R.id.audio_data);
-            audio_address = (TextView) itemView.findViewById(R.id.audio_address);
+            audioName = (TextView) itemView.findViewById(R.id.audio_name);
+            audioContent = (TextView) itemView.findViewById(R.id.audio_content);
+            audioData = (TextView) itemView.findViewById(R.id.audio_data);
+            audioAddress = (TextView) itemView.findViewById(R.id.audio_address);
             //图片
-            audio_rec = (RecyclerView) itemView.findViewById(R.id.audio_rec);
+            audioRec = (RecyclerView) itemView.findViewById(R.id.audio_rec);
             //评论
-            audio_data_comm = (LinearLayout) itemView.findViewById(R.id.audio_data_comm);
+            audioDataComm = (LinearLayout) itemView.findViewById(R.id.audio_data_comm);
             //评论数量
-            comment_count = (TextView) itemView.findViewById(R.id.audio_data_commom_count);
+            commentCount = (TextView) itemView.findViewById(R.id.audio_data_commom_count);
             //提亮
             givealike = itemView.findViewById(R.id.givealike);
             //提交图标
-            givealike_image = itemView.findViewById(R.id.givealike_image);
+            givealikeImage = itemView.findViewById(R.id.givealike_image);
             //提亮文字
-            givealike_text = itemView.findViewById(R.id.givealike_text);
+            givealikeText = itemView.findViewById(R.id.givealike_text);
             //没有图片
-            audio_notimage = itemView.findViewById(R.id.audio_notimage);
+            audioNotimage = itemView.findViewById(R.id.audio_notimage);
         }
     }
 

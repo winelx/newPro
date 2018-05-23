@@ -6,13 +6,6 @@
     android:background="@color/back"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/back"
-        android:dividerHeight="0.5dp"
-        android:scrollbars="none" />
 
     <RelativeLayout
         android:id="@+id/home_frag_img"
@@ -52,6 +45,16 @@
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/home_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/back"
+            android:dividerHeight="0.5dp"
+            android:scrollbars="none" />
+
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

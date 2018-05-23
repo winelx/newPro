@@ -42,14 +42,15 @@ public class WorkBrightFrament extends Fragment {
     private TextView content;
     private RelativeLayout brightspot;
     private ImageView brightmark;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.wrok_bright_fragment, container, false);
         content = view.findViewById(R.id.content);
         multiImageView = view.findViewById(R.id.multiImageView);
-        brightspot=view.findViewById(R.id.brightspot);
-        brightmark=view.findViewById(R.id.brightmark);
+        brightspot = view.findViewById(R.id.brightspot);
+        brightmark = view.findViewById(R.id.brightmark);
         brightmark.setBackgroundResource(R.mipmap.markthree);
         try {
             String Leadername = FragmentBrightAdapter.mData.get(pos).getLeadername();
@@ -68,29 +69,30 @@ public class WorkBrightFrament extends Fragment {
         multiImageView.setMaxChildCount(5);
         multiImageView.setMoreImgBg(R.mipmap.image_error);
         try {
-       List<String> path= FragmentBrightAdapter.mData.get(pos).getList();
-            String imagepath= Dates.listToString(path);
-            String[] urls =imagepath.split("，");
+            List<String> path = FragmentBrightAdapter.mData.get(pos).getList();
+            String imagepath = Dates.listToString(path);
+            String[] urls = imagepath.split("，");
             multiImageView.setImgs(urls, 5);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         multiImageView.setClickCallback(new MultiImageView.ClickCallback() {
             @Override
             public void callback(int index, String[] str) {
-                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
-                intent.putExtra("bright", "1");
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightAdapter.mData.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
                 startActivity(intent);
+
             }
         });
         brightspot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                intent.putExtra("TaskId", FragmentBrightAdapter.mData.get(pos).getTaskId());
-                intent.putExtra("bright", "1");
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightAdapter.mData.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "false");
                 startActivity(intent);
             }

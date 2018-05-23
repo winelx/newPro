@@ -58,7 +58,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private MoretaskAdapter mAdapter;
     private ArrayList<Aduio_content> contents;
     private ArrayList<MoretasklistBean> Dats;
-    public String id, wbsid, status, taskID,bright="null";
+    public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
     private String DATA = "data",usernma;
     private LinearLayout newmoretask, taskrecord;
@@ -67,6 +67,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<PhotoBean> imagePaths;
     private SmartRefreshLayout drawerLayout_smart;
     private IconTextView iconTextView;
+
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -98,7 +99,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             taskID = intent.getExtras().getString("TaskId");
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
-            bright = intent.getExtras().getString("bright");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -106,7 +106,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-            bright="null";
+
         }
         usernma = SPUtils.getString(mContext, "staffName", null);
         //网络请求
@@ -184,8 +184,8 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(mContext, TaskdetailsActivity.class);
         intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
+        //判断能否可以跳转任务管理
         intent.putExtra("status", status);
-        intent.putExtra("bright", bright);
         startActivity(intent);
     }
 
@@ -398,7 +398,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr,bright));
+                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(wbsName);
             } catch (JSONException e) {

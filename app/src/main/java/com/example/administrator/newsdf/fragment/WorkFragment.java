@@ -181,8 +181,10 @@ public class WorkFragment extends Fragment {
         //请求图片轮播数据
         brightViewpagerAdapter = new FragmentBrightAdapter(getChildFragmentManager(), groupbridhtList);
         bridhtgroupViewpager.setAdapter(brightViewpagerAdapter);
+
         bridhtcompanyAdapter = new FragmentBrightcomAdapter(getChildFragmentManager(), compangbrightList);
         bridhtcompanyViewpager.setAdapter(bridhtcompanyAdapter);
+
         bridhtprojectAdapter = new FragmentBrightProAdapter(getChildFragmentManager(), projectbrightList);
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
         Bright();
@@ -225,12 +227,16 @@ public class WorkFragment extends Fragment {
         //离线图纸
         uploade = rootView.findViewById(R.id.uploade);
         //亮点工程
+        //集团
         bridhtgroupViewpager = rootView.findViewById(R.id.bridhtGroup_viewpager);
+        //分公司
         bridhtcompanyViewpager = rootView.findViewById(R.id.bridhtCompany_viewpager);
+        //项目
         bridhtprojectViewpager = rootView.findViewById(R.id.bridhtProject_viewpager);
         bridhtCompany = rootView.findViewById(R.id.bridhtCompany);
         bridhtGroup = rootView.findViewById(R.id.bridhtGroup);
         bridhtProject = rootView.findViewById(R.id.bridhtProject);
+
     }
 
     @Override
@@ -371,10 +377,12 @@ public class WorkFragment extends Fragment {
 
     private void Bright() {
         OkGo.<String>post(Requests.ListByType)
+                .params("page", 1)
+                .params("size", 20)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("result",s);
+                        LogUtil.i("result", s);
                         //每次请求数据，都需要清除之前的，避免重复
                         compangbrightList.clear();
                         groupbridhtList.clear();
@@ -400,7 +408,7 @@ public class WorkFragment extends Fragment {
                                 }
                                 String orgName;
                                 try {
-                                    orgName = json.getString("orgName");
+                                    orgName = json.getString("detectionName");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     orgName = "";
@@ -433,29 +441,30 @@ public class WorkFragment extends Fragment {
                                     e.printStackTrace();
                                     leaderImg = "";
                                 }
-                                ArrayList<String> ImagePaths=new ArrayList<String>();
-                                try{
+                                ArrayList<String> ImagePaths = new ArrayList<String>();
+                                try {
 
-                                    JSONArray filePaths =json.getJSONArray("filePaths");
+                                    JSONArray filePaths = json.getJSONArray("filePaths");
                                     for (int j = 0; j < filePaths.length(); j++) {
-                                        String path=Requests.networks+ filePaths.get(j);
+                                        String path = Requests.networks + filePaths.get(j);
                                         ImagePaths.add(path);
                                     }
 
-                                }catch (JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                                 int type = json.getInt("type");
                                 //判断type。
                                 if (type == 1) {
                                     //集团的
-                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type,ImagePaths));
+                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
                                 } else if (type == 2) {
                                     //公司的
-                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
+                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
                                 } else {
                                     //项目的
-                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, taskId, orgName, leadername, leaderImg, type,ImagePaths));
+                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
                                 }
                             }
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -123,22 +122,8 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 }// 转交说明
                 holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
-                String bright = content.get(posotion).getBright();
-                if (bright != null) {
-                    if ("1".equals(bright)) {
-                        holder.moretaskImage.setBackgroundResource(R.mipmap.markthree);
-                    } else if ("2".equals(bright)) {
-                        holder.moretaskImage.setBackgroundResource(R.mipmap.marktwo);
-                    } else {
-                        holder.moretaskImage.setBackgroundResource(R.mipmap.markone);
-                    }
-                    holder.moretaskImage.setVisibility(View.VISIBLE);
-                } else {
-                    holder.moretaskImage.setVisibility(View.GONE);
+
                 }
-            } else {
-                holder.linearLayout.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -176,7 +161,6 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 detailsUser, detailsBoolean,
                 handoverStatusDescription,
                 detailsContent, detailsFixedData;
-        ImageView moretaskImage;
 
         public ViewholderContent(View itemView) {
             super(itemView);
@@ -188,7 +172,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
             detailsContent = itemView.findViewById(R.id.details_content);
-            moretaskImage = itemView.findViewById(R.id.moretask_Image);
+
         }
     }
 

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,7 +37,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private RecycleCommAdapterType commlistBTypeAdapter;
     private Context mContext;
     private boolean status = false;
-
+    int bright;
     //构造
     public AudioAdapter(Context mContext) {
         this.mContext = mContext;
@@ -73,7 +72,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else if (holder instanceof TypeGridHolder && datas.size() != 0) {
             bindGrid((TypeGridHolder) holder);
         } else if (holder instanceof TypeListHolder && comms.size() != 0) {
-            bindList((TypeListHolder) holder, position);
+            bindList((TypeListHolder) holder);
         }
     }
 
@@ -134,19 +133,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
-            String bright=content.get(posotion).getBright();
-            if (bright != null) {
-                if ("1".equals(bright)) {
-                    holder.moretask_Image.setBackgroundResource(R.mipmap.markthree);
-                } else if ("2".equals(bright)) {
-                    holder.moretask_Image.setBackgroundResource(R.mipmap.marktwo);
-                } else {
-                    holder.moretask_Image.setBackgroundResource(R.mipmap.markone);
-                }
-                holder.moretask_Image.setVisibility(View.VISIBLE);
-            } else {
-                holder.moretask_Image.setVisibility(View.GONE);
-            }
+
         }else {
             holder.linearLayout.setVisibility(View.GONE);
         }
@@ -161,7 +148,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (datas.size() != 0) {
             holder.setpin.setVisibility(View.VISIBLE);
             holder.dataRec.setLayoutManager(new LinearLayoutManager(holder.dataRec.getContext(), LinearLayoutManager.VERTICAL, false));
-            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status);
+            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status,bright);
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         } else {
@@ -174,9 +161,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      * 评论
      *
      * @param holder
-     * @param posotion
      */
-    private void bindList(TypeListHolder holder, final int posotion) {
+    private void bindList(TypeListHolder holder) {
         if (comms.size() != 0) {
             holder.textView.setVisibility(View.VISIBLE);
             holder.ListRec.setLayoutManager(new GridLayoutManager(holder.
@@ -199,7 +185,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 detailsUser, detailsBoolean,
                 handoverStatusDescription, handoverHuifu,
                 detailsContent, detailsFixedData, handoversText;
-    private ImageView moretask_Image;
+
         public TypeBannerHolder(View itemView) {
             super(itemView);
             linearLayout = itemView.findViewById(R.id.linearLayout);
@@ -210,7 +196,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
             detailsContent = itemView.findViewById(R.id.details_content);
-            moretask_Image = itemView.findViewById(R.id.moretask_Image);
+
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }

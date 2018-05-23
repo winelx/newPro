@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,7 +54,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -69,7 +69,7 @@ import okhttp3.Response;
 public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback, View.OnClickListener {
     //界面适配器
     private AudioAdapter mAdapter;
-    private String id;
+    private String TaskId;
     private ArrayList<Aduio_content> contents;
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
@@ -77,14 +77,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private TextView wbsnam;
     private TextView wbspath;
     private TextView comButton, comTitle;
-    private String wtMainid = null,  wbsid,status,bright="null";
+    private String wtMainid = null, wbsid, status;
+    public String bright;
     private String wbsName = null, usernma;
-    /**
-     * 图片查看的圆形图标
-     */
-    private CircleImageView Circle;
+
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
+    private ImageView audioComMark;
     /**
      * 侧滑界面的listview的适配器
      */
@@ -152,9 +151,10 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 refreshlayout.finishLoadmore(1500);
             }
         });
-        final Intent intent = getIntent();
+        Intent intent = getIntent();
         try {
-            id = intent.getExtras().getString("TaskId");
+            TaskId = intent.getExtras().getString("TaskId");
+            LogUtil.i("TaskId",TaskId);
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
             bright = intent.getExtras().getString("bright");
@@ -165,15 +165,19 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
+            audioComMark.setVisibility(View.GONE);
         }
-        okgo(id);
+
+        okgo(TaskId);
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
+
     }
 
     private void finById() {
+        audioComMark = (ImageView) findViewById(R.id.audio_com_mark);
         comImg = (LinearLayout) findViewById(R.id.com_img);
-        iconTextView= (IconTextView) findViewById(R.id.task_icontextview);
+        iconTextView = (IconTextView) findViewById(R.id.task_icontextview);
         comImg.setOnClickListener(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -275,18 +279,18 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     @Override
     public void deleteTop() {
-        okgo(id);
+        okgo(TaskId);
     }
 
-
     public String gettaskId() {
-        return id;
+        return TaskId;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.adui_com_back:
+                //返回
                 finish();
                 break;
             case R.id.fab:
@@ -299,16 +303,19 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.com_img:
+                //任务详情界面
                 Intent intent1 = new Intent(TaskdetailsActivity.this, TaskRecordActivity.class);
-                intent1.putExtra("taskId", id);
+                intent1.putExtra("taskId", TaskId);
                 startActivity(intent1);
                 break;
             case R.id.audio_com_button:
+                //任务回复界面
                 Intent intent = new Intent(TaskdetailsActivity.this, DirectlyreplyActivity.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", TaskId);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.taskManagement:
+                //跳转界面到到任务管理
                 if (status.equals("true")) {
                     HomeUtils.getOko(wbsid, null, false, null, false, null, TaskdetailsActivity.this);
                 }
@@ -327,8 +334,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("sss", id);
-                        LogUtil.i("sss", s);
+                        LogUtil.i("TaskId", id);
+                        LogUtil.i("TaskId", s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -374,6 +381,27 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             } catch (JSONException e) {
 
                                 name = "";
+                            }
+                            //任务亮点等级
+                            String smartProjectType;
+                            try {
+                                ///检查点
+                                 smartProjectType = String.valueOf(wtMain.getString("smartProjectType"));
+                                switch (smartProjectType) {
+                                    case "1":
+                                        audioComMark.setBackgroundResource(R.mipmap.markthree);
+                                        break;
+                                    case "2":
+                                        audioComMark.setBackgroundResource(R.mipmap.marktwo);
+                                        break;
+                                    case "3":
+                                        audioComMark.setBackgroundResource(R.mipmap.markone);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                             String status;
                             //状态
@@ -453,7 +481,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
-                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata,bright));
+                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
@@ -644,7 +672,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     JSONArray pathsMin = json.getJSONArray("filePathsMin");
                                     for (int j = 0; j < pathsMin.length(); j++) {
                                         JSONObject pathjson = pathsMin.getJSONObject(j);
-                                         PathsMin = pathjson.getString("filepath");
+                                        PathsMin = pathjson.getString("filepath");
                                         PathsMin = Requests.networks + PathsMin;
                                         filePathsMin.add(PathsMin);
                                     }
@@ -668,7 +696,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
                                 aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
-                                        commentsContent, replyTime,filePathsMin,filePaths));
+                                        commentsContent, replyTime, filePathsMin, filePaths));
                             }
                             if (contents.get(0).getStatus().equals("0")) {
                                 aduioDatas.clear();
@@ -690,7 +718,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                     }
                 });
     }
-
 
     @Override
     protected void onDestroy() {
