@@ -18,27 +18,32 @@ public class Aduio_data {
     String uploadContent;//上传内容说明
     String updateDate;//上传时间
     String uploadAddr;//上传地点
-    String leaderName;//任务负责人人
-    String leaderId;//任务负责人id
-    String iscallback;//是否被打回
-    String callbackContent;//打回说明
-    String callbackTime;//打回说明
-    String callbackId;//打回人ID
+    //第一级
+    boolean smartprojectMain1Down;
+    boolean smartprojectMain1Up;
+    //第二级
+    boolean smartprojectMain2Down;
+    boolean smartprojectMain2Up;
+    //第三级
+    boolean smartprojectMain3Down;//打回s
+    boolean smartprojectMain3Up;//打回人ID
+
     ArrayList<String> attachments;//附件list（
     ArrayList<String> filename;//附件list（
     String commentCount; //评论条数
     String userpath;
     //提亮
     int isSmartProject;
-    boolean up;
-    boolean dowm;
+    //是否收藏
+    boolean isFavorite;
+    int smartProjectType;
 
     public Aduio_data(String replyID, String uploadId, String replyUserName,
                       String replyUserHeaderURL, String name, String wbsName, String uploadContent,
-                      String updateDate, String uploadAddr, String leaderName, String leaderId,
-                      String iscallback, String callbackContent, String callbackTime,
-                      String callbackId, ArrayList<String> attachments, String commentCount, String userpath, ArrayList<String> filename, int isSmartProject
-            ,boolean up ,boolean dowm
+                      String updateDate, String uploadAddr, boolean smartprojectMain1Down, boolean smartprojectMain1Up,
+                      boolean smartprojectMain2Down, boolean smartprojectMain2Up, boolean smartprojectMain3Down,
+                      boolean smartprojectMain3Up, ArrayList<String> attachments, String commentCount, String userpath, ArrayList<String> filename, int isSmartProject
+            , boolean isFavorite, int smartProjectType
     ) {
         this.replyID = replyID;
         this.uploadId = uploadId;
@@ -49,20 +54,19 @@ public class Aduio_data {
         this.uploadContent = uploadContent;
         this.updateDate = updateDate;
         this.uploadAddr = uploadAddr;
-        this.leaderName = leaderName;
-        this.leaderId = leaderId;
-        this.iscallback = iscallback;
-        this.callbackContent = callbackContent;
-        this.callbackTime = callbackTime;
-        this.callbackId = callbackId;
+        this.smartprojectMain1Down = smartprojectMain1Down;
+        this.smartprojectMain1Up = smartprojectMain1Up;
+        this.smartprojectMain2Down = smartprojectMain2Down;
+        this.smartprojectMain2Up = smartprojectMain2Up;
+        this.smartprojectMain3Down = smartprojectMain3Down;
+        this.smartprojectMain3Up = smartprojectMain3Up;
         this.attachments = attachments;
         this.commentCount = commentCount;
         this.userpath = userpath;
         this.filename = filename;
         this.isSmartProject = isSmartProject;
-        this.up = up;
-        this.dowm = dowm;
-
+        this.isFavorite = isFavorite;
+        this.smartProjectType = smartProjectType;
     }
 
     public String getCommentCount() {
@@ -145,52 +149,52 @@ public class Aduio_data {
         this.uploadAddr = uploadAddr;
     }
 
-    public String getLeaderName() {
-        return leaderName;
+    public boolean isSmartprojectMain1Down() {
+        return smartprojectMain1Down;
     }
 
-    public void setLeaderName(String leaderName) {
-        this.leaderName = leaderName;
+    public void setSmartprojectMain1Down(boolean smartprojectMain1Down) {
+        this.smartprojectMain1Down = smartprojectMain1Down;
     }
 
-    public String getLeaderId() {
-        return leaderId;
+    public boolean isSmartprojectMain1Up() {
+        return smartprojectMain1Up;
     }
 
-    public void setLeaderId(String leaderId) {
-        this.leaderId = leaderId;
+    public void setSmartprojectMain1Up(boolean smartprojectMain1Up) {
+        this.smartprojectMain1Up = smartprojectMain1Up;
     }
 
-    public String getIscallback() {
-        return iscallback;
+    public boolean isSmartprojectMain2Down() {
+        return smartprojectMain2Down;
     }
 
-    public void setIscallback(String iscallback) {
-        this.iscallback = iscallback;
+    public void setSmartprojectMain2Down(boolean smartprojectMain2Down) {
+        this.smartprojectMain2Down = smartprojectMain2Down;
     }
 
-    public String getCallbackContent() {
-        return callbackContent;
+    public boolean isSmartprojectMain2Up() {
+        return smartprojectMain2Up;
     }
 
-    public void setCallbackContent(String callbackContent) {
-        this.callbackContent = callbackContent;
+    public void setSmartprojectMain2Up(boolean smartprojectMain2Up) {
+        this.smartprojectMain2Up = smartprojectMain2Up;
     }
 
-    public String getCallbackTime() {
-        return callbackTime;
+    public boolean isSmartprojectMain3Down() {
+        return smartprojectMain3Down;
     }
 
-    public void setCallbackTime(String callbackTime) {
-        this.callbackTime = callbackTime;
+    public void setSmartprojectMain3Down(boolean smartprojectMain3Down) {
+        this.smartprojectMain3Down = smartprojectMain3Down;
     }
 
-    public String getCallbackId() {
-        return callbackId;
+    public boolean isSmartprojectMain3Up() {
+        return smartprojectMain3Up;
     }
 
-    public void setCallbackId(String callbackId) {
-        this.callbackId = callbackId;
+    public void setSmartprojectMain3Up(boolean smartprojectMain3Up) {
+        this.smartprojectMain3Up = smartprojectMain3Up;
     }
 
     public ArrayList<String> getAttachments() {
@@ -225,19 +229,20 @@ public class Aduio_data {
         this.isSmartProject = isSmartProject;
     }
 
-    public boolean isUp() {
-        return up;
+    public boolean getIsFavorite() {
+        return isFavorite;
     }
 
-    public void setUp(boolean up) {
-        this.up = up;
+    public void setIsFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
-    public boolean isDowm() {
-        return dowm;
+
+    public int getSmartProjectType() {
+        return smartProjectType;
     }
 
-    public void setDowm(boolean dowm) {
-        this.dowm = dowm;
+    public void setSmartProjectType(int smartProjectType) {
+        this.smartProjectType = smartProjectType;
     }
 }

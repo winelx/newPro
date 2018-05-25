@@ -36,9 +36,9 @@
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
-        android:resizeableActivity="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -224,8 +224,8 @@
         </receiver>
 
         <activity android:name=".activity.home.MoretaskActivity" />
-        <activity android:name=".activity.work.pchoose.StanderActivity" />
-        <activity android:name=".activity.work.pchoose.StandardActivity"></activity>
+        <activity android:name=".activity.work.pchoose.StandardActivity" />
+        <activity android:name=".Main22Activity"/>
     </application>
 
 </manifest>

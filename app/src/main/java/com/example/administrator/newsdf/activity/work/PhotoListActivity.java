@@ -34,8 +34,6 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.lzy.okgo.OkGo.post;
-
 /**
  * description:选择图册wbs树
  *
@@ -111,17 +109,31 @@ public class PhotoListActivity extends AppCompatActivity {
 
     private void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, final String type) {
         Dates.getDialogs(PhotoListActivity.this, "请求数据中");
-        post(Requests.PhotoList)
-                .params("nodeid", id)
-                .params("isDrawingGroup", iswbs)
-                .params("isParent", isparent)
-                .params("type", type)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String result, Call call, Response response) {
-                        addOrganizationList(result);
-                    }
-                });
+        if (stauts.equals("standard")) {
+            OkGo.<String>post(Requests.STANDARD_TREE)
+                    .params("nodeid", id)
+                    .params("isDrawingGroup", iswbs)
+                    .params("isParent", isparent)
+                    .params("type", type)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String result, Call call, Response response) {
+                            addOrganizationList(result);
+                        }
+                    });
+        } else {
+           OkGo.<String>post(Requests.PhotoList)
+                    .params("nodeid", id)
+                    .params("isDrawingGroup", iswbs)
+                    .params("isParent", isparent)
+                    .params("type", type)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String result, Call call, Response response) {
+                            addOrganizationList(result);
+                        }
+                    });
+        }
     }
 
     /**
@@ -322,14 +334,14 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     public void switchAct(Node node) {
-        if (node.isDrawingGroup()) {
-            if ("standard".equals(stauts)) {
+            if (stauts.equals("standard")) {
                 Intent intent1 = new Intent(mContext, StandardActivity.class);
                 intent1.putExtra("groupId", node.getId());
-                intent1.putExtra("title", node.getName());
-                intent1.putExtra("status","PhotoList");
+                intent1.putExtra("title", "标准分类图册");
+                intent1.putExtra("status", "PhotoList");
                 startActivity(intent1);
-            }else {
+            } else {
+                if (node.isDrawingGroup()) {
                 Intent intent1 = new Intent(mContext, ListPhActivity.class);
                 intent1.putExtra("groupId", node.getId());
                 intent1.putExtra("title", node.getName());

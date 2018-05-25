@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.work.PhotoListActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -75,6 +76,7 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToastUtils.showLongToast("dianji ");
                 PhotoListActivity activity = (PhotoListActivity) context;
                 activity.switchAct(node);
             }
@@ -101,13 +103,7 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
                 }
             }
         });
-        holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String userid = node.getUserId();
-                return true;
-            }
-        });
+
         holder.mText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

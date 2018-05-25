@@ -10,10 +10,10 @@
 
 
     <RelativeLayout
-        android:background="@drawable/selector_backgroud"
         android:id="@+id/item_not"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_backgroud">
 
         <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
         <TextView
@@ -32,8 +32,8 @@
         <TextView
             android:id="@+id/tv_delete"
             android:layout_width="70dp"
-            android:layout_marginRight="10dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/tv_set"
             android:background="@color/red"
             android:gravity="center"

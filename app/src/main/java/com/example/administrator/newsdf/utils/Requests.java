@@ -8,8 +8,8 @@ package com.example.administrator.newsdf.utils;
 public class Requests {
     //公共头  192.168.20.38
 
-   // public static final String networks = "http://192.168.20.80:8090/pzgc/";
-public static final String networks = "http://192.168.1.119:8081/pzgc/";
+  public static final String networks = "http://192.168.20.80:8090/pzgc/";
+ // public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //public static final String networks = "http://117.187.27.78:8081/baseframe/";
     //public static final String networks = "http://120.79.142.15/pzgc/";
     /**
@@ -172,10 +172,23 @@ public static final String networks = "http://192.168.1.119:8081/pzgc/";
     public static final String ListByType = networks + "iface/mobile/smartProject/getListByType";
     //评论回复
     public static final String SAVECOMMENT = networks + "/iface/mobile/taskmain/saveComment";
-  //标准
-   public static final String StandardList = networks +  "/iface/mobile/standard/findStandardList";
-  //
-   public static final String STANDARD_TREE = networks +  "/iface/mobile/standard/findStandardTree";
-   public static final String STANDARD_BY_GROUP = networks +  "iface/mobile/standard/findStandardByGroup";
+    //标准分部分项
+    public static final String StandardList = networks + "/iface/mobile/standard/findStandardList";
+    //标准分类标准
+    public static final String STANDARD_TREE = networks + "/iface/mobile/standard/findStandardTree";
+    public static final String STANDARD_BY_GROUP = networks + "iface/mobile/standard/findStandardByGroup";
 
+    //收藏
+    /**
+     *任务
+     */
+    public static final String SAVECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/save";
+    public static final String DELETECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/delete";
+
+ public static final String GET_LIS = networks +"iface/mobile/wbs/taskmain/favorite/getList";
+   public static final String GET_MY_LIST= networks +"/iface/mobile/wbs/cacheable/getMyList";
+  /**
+   * 标段收藏
+   */
+  public static final String WBSSAVE=networks +"/iface/mobile/wbs/favorite/save";
 }

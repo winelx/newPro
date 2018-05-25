@@ -23,6 +23,8 @@ import com.example.administrator.newsdf.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
+import com.example.administrator.newsdf.activity.work.inface.CollectionInterface;
+import com.example.administrator.newsdf.activity.work.inface.CollectionIpm;
 import com.example.administrator.newsdf.bean.Aduio_comm;
 import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.Aduio_data;
@@ -83,7 +85,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
-    private ImageView audioComMark;
+    public ImageView audioComMark;
     /**
      * 侧滑界面的listview的适配器
      */
@@ -105,11 +107,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      * 是否需要返回后刷新界面状态
      */
     private boolean Refresh = true;
-    public String smartProjectType;
+
 
     public static TaskdetailsActivity getInstance() {
         return mContext;
     }
+
+    private CollectionInterface anInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +126,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         //权限
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
-
+        anInterface = new CollectionIpm();
 
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -349,17 +353,32 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             JSONObject createBy = wtMain.getJSONObject("createBy");
                             JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
                             JSONArray comments = data.getJSONArray("comments");
-                            boolean up;
-                            boolean down;
-                            try {
-                                up = data.getBoolean("up");
-                                down = data.getBoolean("down");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                up = false;
-                                down = false;
-                            }
 
+                            //判断提亮降亮权限
+                            boolean smartType1Down, smartType2Down, smartType3Down,
+                                    smartType1Up, smartType2Up, smartType3Up;
+                            try {
+                                smartType1Down = data.getBoolean("smartProject_main1_down");
+                                smartType2Down = data.getBoolean("smartProject_main2_down");
+                                smartType3Down = data.getBoolean("smartProject_main3_down");
+                                smartType1Up = data.getBoolean("smartProject_main1_up");
+                                smartType2Up = data.getBoolean("smartProject_main2_up");
+                                smartType3Up = data.getBoolean("smartProject_main3_up");
+                            } catch (JSONException e) {
+                                smartType1Down = false;
+                                smartType2Down = false;
+                                smartType3Down = false;
+                                smartType1Up = false;
+                                smartType2Up = false;
+                                smartType3Up = false;
+                            }
+                            int smartProjectType;
+                            try {
+                                smartProjectType = data.getInt("smartProjectType");
+
+                            } catch (JSONException e) {
+                                smartProjectType = 0;
+                            }
 
                             //任务详情
                             try {
@@ -381,32 +400,20 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
                                 name = "";
                             }
+                            //是否是提亮
                             int isSmartProject;
-                            try {//打回人ID
+                            try {
                                 isSmartProject = wtMain.getInt("isSmartProject");
                                 switch (isSmartProject) {
                                     case 0:
+                                        ToastUtils.showLongToast("0");
                                         audioComMark.setVisibility(View.GONE);
                                         break;
                                     case 1:
                                         audioComMark.setVisibility(View.VISIBLE);
-                                        ///检查点
-                                        smartProjectType = String.valueOf(wtMain.getString("smartProjectType"));
-                                        switch (smartProjectType) {
-                                            case "1":
-                                                audioComMark.setBackgroundResource(R.mipmap.markthree);
-                                                break;
-                                            case "2":
-                                                audioComMark.setBackgroundResource(R.mipmap.marktwo);
-                                                break;
-                                            case "3":
-                                                audioComMark.setBackgroundResource(R.mipmap.markone);
-                                                break;
-                                            default:
-                                                break;
-                                        }
                                         break;
                                     default:
+                                        audioComMark.setVisibility(View.VISIBLE);
                                         break;
                                 }
                             } catch (JSONException e) {
@@ -497,8 +504,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
                                         subName, subWbsname,
-                                        uploadContent, updateDate, uploadAddr, subLeadername,
-                                        subLeaderid, subIscallback, callbackContent;
+                                        uploadContent, updateDate, uploadAddr;
                                 JSONArray hments = new JSONArray();
                                 try {
                                     hments = Sub.getJSONArray("attachments");
@@ -554,6 +560,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     e.printStackTrace();
                                     replyUserName = "";
                                 }
+                                //头像
                                 try {
                                     replyUserHeaderURL = wtMain.getJSONObject("uploadUser").getString("portrait");
                                 } catch (JSONException e) {
@@ -567,51 +574,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     e.printStackTrace();
                                     uploadAddr = "";
                                 }
+                                boolean isFavorite;
                                 try {
-                                    //任务负责人人
-                                    subLeadername = Sub.getString("leaderName");
+                                    isFavorite = wtMain.getBoolean("isFavorite");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    subLeadername = "";
+                                    isFavorite = false;
                                 }
-                                try {
-                                    //任务负责人id
-                                    subLeaderid = Sub.getString("leaderId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    subLeaderid = "";
-                                }
-                                try {
-                                    //是否被打回
-                                    subIscallback = Sub.getString("iscallback");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    subIscallback = "";
-                                }
-                                try {
-                                    //打回说明
-                                    callbackContent = Sub.getString("callbackContent");
-                                } catch (JSONException e) {
-//打回说明
-                                    callbackContent = "";
-                                }
-                                String callbackTime;
-                                try {
-                                    //打回说明
-                                    callbackTime = Sub.getString("callbackTime");
-                                } catch (JSONException e) {
-//打回说明
-                                    callbackTime = ("");
-                                }
-                                String callbackId;
-                                try {//打回人ID
-                                    callbackId = Sub.getString("callbackId");
-                                } catch (JSONException e) {
-                                    //打回说明
-                                    callbackId = "";
-                                }
-
-
                                 String userimage;
                                 try {
                                     String path = wtMain.getJSONObject("uploadUser").getString("portrait");
@@ -619,6 +588,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 } catch (JSONException e) {
                                     userimage = "";
                                 }
+
+
                                 ArrayList<String> attachments = new ArrayList<>();
                                 ArrayList<String> filename = new ArrayList<>();
                                 //任务回复图片
@@ -632,11 +603,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     }
                                 }
                                 aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
-                                        subWbsname, uploadContent, updateDate, uploadAddr, subLeadername, subLeaderid, subIscallback,
-                                        callbackContent, callbackTime, callbackId, attachments, comments.length() + "",
-                                        userimage, filename, isSmartProject, up, down));
+                                        subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
+                                        smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
+                                        userimage, filename, isSmartProject, isFavorite, smartProjectType));
                             }
-
+                            /**
+                             * 回复评论
+                             */
                             for (int i = 0; i < comments.length(); i++) {
                                 JSONObject json = comments.getJSONObject(i);
                                 JSONObject user = json.getJSONObject("user");
@@ -735,4 +708,30 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         CameDialog.path.clear();
     }
 
+    //收藏
+    public int getsave(String taskId) {
+        return anInterface.saveCollection(taskId);
+    }
+
+    //取消收藏
+    public int getdelete(String taskId) {
+        return anInterface.deleteCollection(taskId);
+    }
+
+    public void markimage(int smartProjectType) {
+        switch (smartProjectType) {
+            case 1:
+                audioComMark.setBackgroundResource(R.mipmap.markthree);
+                break;
+            case 2:
+                audioComMark.setBackgroundResource(R.mipmap.marktwo);
+                break;
+            case 3:
+                audioComMark.setBackgroundResource(R.mipmap.markone);
+                break;
+            default:
+                audioComMark.setBackgroundResource(R.mipmap.markone);
+                break;
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.activity.work.pchoose;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +15,14 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.DividerItemDecoration;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,23 +39,28 @@ public class StandardActivity extends AppCompatActivity {
     private ArrayList<PhotoBean> imagePaths;
     private TextView number, com_title, wbsname;
     private IconTextView comback;
-    PostRequest request;
+    private SmartRefreshLayout refreshlayout;
+    private PostRequest request;
+    private String wbsid, groupId, Title, status;
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photoadm);
+        setContentView(R.layout.activity_standard);
         Dates.getDialog(StandardActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
-        final String wbsid = intent.getExtras().getString("wbsId");
-        final String groupId = intent.getExtras().getString("groupId");
-        final String Title = intent.getExtras().getString("title");
-        final String status = intent.getExtras().getString("status");
+        wbsid = intent.getExtras().getString("wbsId");
+        groupId = intent.getExtras().getString("groupId");
+        Title = intent.getExtras().getString("title");
+        status = intent.getExtras().getString("status");
+
+        refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("分部分项图纸");
+        com_title.setText(Title);
         comback = (IconTextView) findViewById(R.id.com_back);
         comback.setOnClickListener(
                 new View.OnClickListener() {
@@ -61,27 +70,48 @@ public class StandardActivity extends AppCompatActivity {
                     }
                 }
         );
-
+        //是否在加载的时候禁止列表的操作
+        refreshlayout.setDisableContentWhenLoading(true);
+        //是否启用下拉刷新功能
+        refreshlayout.setEnableRefresh(false);
+        //是否启用上拉加载功能
+        refreshlayout.setEnableLoadmore(true);
         //GridLayout 3列
         photo_rec.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         photoAdapter = new PhotoadmAdapter(this);
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
+        OkGo();
+        //上拉加载
+        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                OkGo();
+                //传入false表示加载失败
+                refreshlayout.finishLoadmore(800);
+            }
+        });
+
+    }
+
+    public void OkGo() {
         if (status.equals("standard")) {
             request = OkGo.post(Requests.StandardList)
-                    .params("WbsId", wbsid)
-                    .params("page", 1)
-                    .params("rows", 50);
+                    .params("WbsId", wbsid);
+
         } else {
             request = OkGo.post(Requests.STANDARD_BY_GROUP)
                     .params("groupId", groupId);
         }
-
-        request.execute(new StringCallback() {
+        request
+                .params("page", page)
+                .params("rows", 10).execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
-                LogUtil.i("photo", s);
+
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -110,7 +140,7 @@ public class StandardActivity extends AppCompatActivity {
                         filePath = Requests.networks + filePath;
                         imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                     }
-                    photoAdapter.getData(imagePaths, Title, false);
+                    photoAdapter.getData(imagePaths, Title, true);
                     wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                     Dates.disDialog();
                 } catch (JSONException e) {

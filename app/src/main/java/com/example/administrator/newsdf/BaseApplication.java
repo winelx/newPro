@@ -154,6 +154,7 @@ public class BaseApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
+
     /**
      * 配置数据库
      */
@@ -163,6 +164,7 @@ public class BaseApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
+
     public static DaoSession getDaoInstant() {
         return daoSession;
     }

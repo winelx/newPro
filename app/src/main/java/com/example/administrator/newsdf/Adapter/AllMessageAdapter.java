@@ -21,10 +21,19 @@ import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 全部消息界面的适配器
@@ -143,8 +152,25 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
             @Override
             public void onClick(View v) {
                 //添加收藏
-                holder.tv_set.setBackgroundResource(R.color.back);
-                holder.tv_set.setText("已收藏");
+                OkGo.post(Requests.WBSSAVE)
+                        .params("wbsId", mDatas.get(position).getOrgid())
+                        .params("type", 2)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    if (ret==0){
+                                        holder.tv_set.setBackgroundResource(R.color.back);
+                                        holder.tv_set.setText("已收藏");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
 
             }
         });

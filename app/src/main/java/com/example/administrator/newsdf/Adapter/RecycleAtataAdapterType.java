@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.camera.ToastUtils.showLongToast;
+
 
 /**
  * description:任务详情回复内容适配器
@@ -46,11 +49,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private boolean status;
     private ArrayList<Aduio_data> mDatas;
-    TaskdetailsActivity activity;
     String str = null;
     int isSmartProject, bright;
     String taskId;
     CameDialog cameDialog;
+    boolean isFavorite;
 
     public RecycleAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
@@ -95,27 +98,64 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.audioData.setText(mDatas.get(posotion).getUpdateDate());
         //上传地点
         holder.audioAddress.setText(mDatas.get(posotion).getUploadAddr());
+        //收藏
+
         //评论条数
         holder.commentCount.setText(mDatas.get(posotion).getCommentCount());
         //评论
         isSmartProject = mDatas.get(posotion).getIsSmartProject();
-        //判断默认状态是提亮还是降亮
+        //提亮等级
+        final int SmartProjectType = mDatas.get(posotion).getSmartProjectType();
+        TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+        audio.markimage(SmartProjectType);
+        //  判断当前责任人等级是多少级
         if (isSmartProject == 0) {
-            if (mDatas.get(posotion).isUp()) {
-                holder.givealikeText.setText("提亮");
-                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
-            }else {
-                holder.givealike.setVisibility(View.GONE);
-            }
 
-        } else {
-            //判断是否有权限降亮
-            if (mDatas.get(posotion).isDowm()) {
-                holder.givealikeText.setText("降亮");
-                holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
-            }else {
+            holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+            if (SmartProjectType == 1) {
+                //判断是否有权限，
+                if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                    holder.givealike.setVisibility(View.VISIBLE);
+                } else {
+                    //如果没有权限，那么就无法看到提亮功能
+                    holder.givealike.setVisibility(View.GONE);
+                }
+                //判断当前责任人等级是多少级
+            } else if (SmartProjectType == 2) {
+                //判断是否有权限，
+                if (mDatas.get(posotion).isSmartprojectMain2Up()) {
+                    //判断当前是否提亮
+
+                    holder.givealike.setVisibility(View.VISIBLE);
+                } else {
+
+                    holder.givealike.setVisibility(View.GONE);
+                }
+                //判断当前责任人等级是多少级
+            } else if (SmartProjectType == 3) {
+                //判断是否有权限，
+                if (mDatas.get(posotion).isSmartprojectMain3Up()) {
+                    //判断当前是否提亮
+                    holder.givealike.setVisibility(View.VISIBLE);
+                } else {
+
+                    holder.givealike.setVisibility(View.GONE);
+                }
+            } else {
                 holder.givealike.setVisibility(View.GONE);
             }
+        } else {
+
+            holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+            holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+        }
+        //收藏
+        isFavorite = mDatas.get(posotion).getIsFavorite();
+        if (isFavorite) {
+            holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
+            holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
+        } else {
+            holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -129,42 +169,73 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 cameDialog.setDialog(audio.getId(), audio);
             }
         });
+        holder.collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+                if (isFavorite) {
+                    holder.collection.setClickable(false);
+                    int ret = audio.getdelete(mDatas.get(posotion).getReplyID());
+                    if (ret == 0) {
+                        isFavorite = false;
+                        ToastUtils.showLongToast("取消收藏");
+                        holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
+                        holder.collectionText.setTextColor(Color.parseColor("#808080"));
+                        holder.collection.setClickable(true);
+                    } else {
+                        holder.collection.setClickable(true);
+                    }
+                } else {
+                    holder.collection.setClickable(false);
+                    int ret = audio.getsave(mDatas.get(posotion).getReplyID());
+                    if (ret == 0) {
+                        ToastUtils.showLongToast("收藏");
+                        holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
+                        holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
+                        holder.collection.setClickable(true);
+                        isFavorite = true;
+                    } else {
+                        holder.collection.setClickable(true);
+                    }
+                }
+            }
+        });
         //提亮
         holder.givealike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //判断是否有权限提亮
-                if (mDatas.get(posotion).isUp()) {
-                    TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                    taskId = audio.gettaskId();
-                    if (isSmartProject == 0) {
-                        if (mDatas.get(posotion).isUp()) {
-                            OkGo.<String>post(Requests.SartProjectup)
-                                    .params("taskId", taskId)
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onSuccess(String s, Call call, Response response) {
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(s);
-                                                ToastUtils.showLongToast(s);
-                                                int ret = jsonObject.getInt("ret");
-                                                if (ret == 0) {
-                                                    ToastUtils.showLongToast("成功");
-                                                    TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
-                                                    activity.deleteTop();
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Call call, Response response, Exception e) {
-                                            super.onError(call, response, e);
-
-                                        }
-                                    });
+                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+                taskId = audio.gettaskId();
+                //是否提亮
+                if (isSmartProject == 0) {
+                    int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+                    if (smartprojecttype == 1) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                            brightUp();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("没有操作权限");
                         }
+                    } else if (smartprojecttype == 2) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain2Up()) {
+                            brightUp();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("没有操作权限");
+                        }
+                    } else if (smartprojecttype == 3) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain3Up()) {
+                            brightUp();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("没有操作权限");
+                        }
+                    } else {
+                        ToastUtils.showLongToast("没有操作权限");
                     }
 
                 }
@@ -175,54 +246,52 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             public boolean onLongClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                 taskId = audio.gettaskId();
-                if (mDatas.get(posotion).isDowm()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setMessage("撤亮当前任务?")
-                            .setCancelable(false)
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    OkGo.<String>post(Requests.SartProjectdown)
-                                            .params("taskId", taskId)
-                                            .execute(new StringCallback() {
-                                                @Override
-                                                public void onSuccess(String s, Call call, Response response) {
-                                                    try {
-                                                        JSONObject jsonObject = new JSONObject(s);
-                                                        ToastUtils.showLongToast(s);
-                                                        int ret = jsonObject.getInt("ret");
-                                                        if (ret == 0) {
-                                                            ToastUtils.showLongToast("成功");
-                                                            isSmartProject = 1;
-                                                            holder.givealikeText.setText("提亮");
-                                                            holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
-                                                            TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
-                                                            activity.deleteTop();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage("撤亮当前任务?")
+                        .setCancelable(false)
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+                                if (smartprojecttype == 1) {
+                                    //判断是否有权限，
+                                    if (mDatas.get(posotion).isSmartprojectMain1Down()) {
+                                        brightDown();
+                                    } else {
+                                        //如果没有权限，那么就无法看到提亮功能
+                                        ToastUtils.showLongToast("没有操作权限");
+                                    }
+                                } else if (smartprojecttype == 2) {
+                                    //判断是否有权限，
+                                    if (mDatas.get(posotion).isSmartprojectMain2Down()) {
+                                        brightDown();
+                                    } else {
+                                        //如果没有权限，那么就无法看到提亮功能
+                                        ToastUtils.showLongToast("没有操作权限");
+                                    }
+                                } else if (smartprojecttype == 3) {
+                                    //判断是否有权限，
+                                    if (mDatas.get(posotion).isSmartprojectMain3Down()) {
+                                        brightDown();
+                                    } else {
+                                        //如果没有权限，那么就无法看到提亮功能
+                                        ToastUtils.showLongToast("没有操作权限");
+                                    }
+                                } else {
+                                    ToastUtils.showLongToast("没有操作权限");
 
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onError(Call call, Response response, Exception e) {
-                                                    super.onError(call, response, e);
-
-                                                }
-                                            });
                                 }
-                            })
-                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    builder.show();
-                } else {
-                    ToastUtils.showLongToast("没有权限");
-                }
+
+                            }
+                        })
+                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
+
                 return false;
             }
         });
@@ -235,10 +304,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
     private class Viewholder extends RecyclerView.ViewHolder {
         private CircleImageView audioAcathor;
-        private TextView audioName, audioContent, audioData, audioAddress, commentCount, givealikeText;
+        private TextView audioName, audioContent, audioData, audioAddress, commentCount, givealikeText, collectionText;
         private RecyclerView audioRec;
         private LinearLayout audioDataComm, givealike;
-        private ImageView givealikeImage, audioNotimage;
+        private ImageView givealikeImage, audioNotimage, collectionImage;
+        private LinearLayout collection;
 
         public Viewholder(View itemView) {
             super(itemView);
@@ -263,6 +333,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             givealikeText = itemView.findViewById(R.id.givealike_text);
             //没有图片
             audioNotimage = itemView.findViewById(R.id.audio_notimage);
+            //收藏
+            collection = itemView.findViewById(R.id.collection);
+            //收藏图标
+            collectionImage = itemView.findViewById(R.id.collection_image);
+            collectionText =itemView.findViewById(R.id.collection_text);
         }
     }
 
@@ -271,5 +346,55 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
+    public void brightDown() {
+        OkGo.<String>post(Requests.SartProjectdown)
+                .params("taskId", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                activity.deleteTop();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
 
+                    }
+                });
+    }
+
+    public void brightUp() {
+        OkGo.<String>post(Requests.SartProjectup)
+                .params("taskId", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                showLongToast("提亮成功");
+                                TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                activity.deleteTop();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
+                    }
+                });
+    }
 }

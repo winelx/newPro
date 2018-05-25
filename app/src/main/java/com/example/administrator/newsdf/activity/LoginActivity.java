@@ -104,7 +104,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
-
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -123,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
-
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");

@@ -106,6 +106,7 @@ public class MmissPushActivity extends AppCompatActivity {
     private void okgo() {
         PostRequest PostRequest;
         if (org_status.equals("standard")) {
+            LogUtil.i("reswulte",wbsID);
             PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {
             PostRequest = OkGo.post(Requests.WBSTress).params("nodeid", "");
@@ -136,23 +137,24 @@ public class MmissPushActivity extends AppCompatActivity {
 
     void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
-        OkGo.post(Requests.WBSTress)
-                .params("nodeid", id)
-                .params("iswbs", iswbs)
-                .params("isparent", isparent)
-                .params("type", type)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String result, Call call, Response response) {
-                        addOrganizationList(result);
-                    }
+            OkGo.post(Requests.WBSTress)
+                    .params("nodeid", id)
+                    .params("iswbs", iswbs)
+                    .params("isparent", isparent)
+                    .params("type", type)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String result, Call call, Response response) {
+                            addOrganizationList(result);
+                        }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        Dates.disDialog();
-                    }
-                });
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            Dates.disDialog();
+                        }
+                    });
+
 
     }
 

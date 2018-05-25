@@ -123,6 +123,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
         //消息量
         holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        holder.home_item_message.setVisibility(View.GONE);
         //判断是否有消息
         String message = mDatas.get(position).getUnfinish();
         try {
@@ -130,11 +131,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (Unfinish > MAX) {
-            holder.home_item_message.setText("99+");
-        } else {
-            holder.home_item_message.setText(mDatas.get(position).getUnfinish());
-        }
+
     }
 
     @Override

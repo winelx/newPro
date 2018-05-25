@@ -30,6 +30,7 @@ import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -68,6 +69,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private ArrayList<String> placedTop;
     private ArrayList<String> Hidearray;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
             //设置在listview上下拉刷新的监听
         }
+
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
@@ -99,7 +102,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
 
     private void init() {
         mData = new ArrayList<>();
-
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置适配器
@@ -133,12 +135,14 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
      */
     public void Okgo() {
         putTop();
+
         OkGo.post(Requests.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("result", s);
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -165,11 +169,8 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                     if (placedTop.size() > 0) {
                                         //判断当前id是否在数据库
                                         if (placedTop.contains(id)) {
-
                                             mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, true));
-
                                         } else {
-
                                             mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
 
                                         }
@@ -282,6 +283,5 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     public void deleteTop() {
         Okgo();
     }
-
 
 }
