@@ -48,7 +48,7 @@ public class WorkBrightComFrament extends Fragment {
     private MultiImageView multiImageView;
     private TextView content;
     private ImageView brightmark;
-
+    List<String> path;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class WorkBrightComFrament extends Fragment {
         multiImageView.setMaxChildCount(5);
         multiImageView.setMoreImgBg(R.mipmap.image_error);
         try {
-            List<String> path = FragmentBrightAdapter.mData.get(pos).getList();
+            List<String> path = FragmentBrightcomAdapter.mDataCom.get(pos).getList();
             String imagepath = Dates.listToString(path);
             String[] urls = imagepath.split("，");
             multiImageView.setImgs(urls, 5);
@@ -86,10 +86,9 @@ public class WorkBrightComFrament extends Fragment {
             @Override
             public void callback(int index, String[] str) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getOrgid();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
-                intent.putExtra("bright", "true");
                 startActivity(intent);
 
             }
@@ -98,10 +97,9 @@ public class WorkBrightComFrament extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getOrgid();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
-                intent.putExtra("bright", "true");
                 startActivity(intent);
             }
         });

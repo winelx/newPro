@@ -54,14 +54,29 @@
             android:layout_marginTop="5dp"
             android:background="#d4d4d4" />
 
-        <TextView
-            android:id="@+id/homepage_mine"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="我的"
-            android:textColor="#646464" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/homepage_mine_red"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"
+                android:background="@drawable/home_item_red" />
+
+            <TextView
+                android:id="@+id/homepage_mine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="我的"
+                android:textColor="#646464" />
+        </RelativeLayout>
+
 
         <TextView
             android:layout_width="1dp"

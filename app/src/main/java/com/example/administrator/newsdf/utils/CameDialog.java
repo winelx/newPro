@@ -81,7 +81,6 @@ public class CameDialog {
                 } else {
                     send.setClickable(false);
                     send.setTextColor(Color.parseColor("#F0F0F0"));
-                    Dates.getDialogs(TaskdetailsActivity.getInstance(), "发送个数据");
                     files = new ArrayList<>();
                     PostRequest mRequest = post(Requests.SAVECOMMENT)
                             //强制使用multipart/form-data
@@ -102,6 +101,7 @@ public class CameDialog {
                                         try {
                                             JSONObject jsonObject = new JSONObject(s);
                                             int ret = jsonObject.getInt("ret");
+                                            //提示消息
                                             ToastUtils.showLongToast(jsonObject.getString("msg"));
                                             if (ret == 0) {
                                                 path.clear();
@@ -131,6 +131,7 @@ public class CameDialog {
                                         try {
                                             JSONObject jsonObject = new JSONObject(s);
                                             int ret = jsonObject.getInt("ret");
+                                            //提示消息
                                             ToastUtils.showLongToast(jsonObject.getString("msg"));
                                             if (ret == 0) {
                                                 path.clear();

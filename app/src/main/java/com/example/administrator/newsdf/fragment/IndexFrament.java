@@ -40,13 +40,14 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
     private ViewPager homeageViewpager;
     private TextView homepageAll, homepageMine, homepageCollection, homepageComments;
     private Context mContext;
+    private TextView homepage_mine_red;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-
+                    homepage_mine_red.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -59,6 +60,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_index, null);
+            homepage_mine_red = rootView.findViewById(R.id.homepage_mine_red);
             mContext = getActivity();
             findById();
         }
@@ -76,7 +78,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         PshooseFragAdapte adapter = new PshooseFragAdapte(getChildFragmentManager(), fragments);
         //设定适配器
         homeageViewpager.setAdapter(adapter);
-         homeageViewpager.setOffscreenPageLimit(4);
+        homeageViewpager.setOffscreenPageLimit(4);
         //Mianactivity接收极光推送的接口回调
         JPushCallUtils.setCallBack(this);
         homeageViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -140,14 +142,14 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         super.onStart();
         List<Shop> list = LoveDao.JPushCart();
         if (list.size() > 0) {
-
+            homepage_mine_red.setVisibility(View.VISIBLE);
         } else {
-
+            homepage_mine_red.setVisibility(View.GONE);
         }
     }
 
 
-    //更新界面
+    //推送消息后更新界面
     @Override
     public void doSomeThing(String string) {
         Message message = new Message();
@@ -187,16 +189,16 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.homepage_all:
-                homeageViewpager.setCurrentItem(0);
+                homeageViewpager.setCurrentItem(0, false);
                 break;
             case R.id.homepage_mine:
-                homeageViewpager.setCurrentItem(1);
+                homeageViewpager.setCurrentItem(1, false);
                 break;
             case R.id.homepage_collection:
-                homeageViewpager.setCurrentItem(2);
+                homeageViewpager.setCurrentItem(2, false);
                 break;
             case R.id.homepage_comments:
-                homeageViewpager.setCurrentItem(3);
+                homeageViewpager.setCurrentItem(3, false);
                 break;
             default:
                 break;

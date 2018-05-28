@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.administrator.newsdf.activity.work.BridhtFragment;
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ public class BrightViewpagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int arg0) {
-        ToastUtils.showLongToast(""+arg0);
         BridhtFragment fragment = new BridhtFragment(arg0);
         return fragment;
     }

@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/5/10 0010.
- * 办公
+ * 分公司
  */
 
 public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
     private FragmentManager fm;
     public static ArrayList<work_fr_bright_bean> mDataCom;
-
+    private boolean doNotifyDataSetChangedOnce = false;
 
     public FragmentBrightcomAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
@@ -32,7 +32,10 @@ public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-
+        if (doNotifyDataSetChangedOnce) {
+            doNotifyDataSetChangedOnce = false;
+            notifyDataSetChanged();
+        }
         return mDataCom.size();
     }
 

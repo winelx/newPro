@@ -102,7 +102,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             public void callback(int index, String[] str) {
                 LogUtil.i("TaskId", mData.get(position).getTaskId());
                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                intent.putExtra("TaskId", mData.get(position).getTaskId());
+                intent.putExtra("TaskId", mData.get(position).getOrgId());
                 intent.putExtra("status", "false");
                 mContext.startActivity(intent);
             }

@@ -55,8 +55,6 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         bridhtProject.setOnClickListener(this);
         //处理数据
         initData();
-
-
     }
 
 

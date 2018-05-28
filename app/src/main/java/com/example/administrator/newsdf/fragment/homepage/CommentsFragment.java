@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.CommentsAdapter;
 import com.example.administrator.newsdf.R;
@@ -54,6 +57,9 @@ public class CommentsFragment extends Fragment {
      * 显示数据控件
      */
     private RecyclerView listView;
+    private RelativeLayout home_frag_img;
+    private ImageView home_img_nonews;
+    private TextView home_img_text;
 
     @Nullable
     @Override
@@ -62,6 +68,9 @@ public class CommentsFragment extends Fragment {
         mContext = getActivity();
         mData = new ArrayList<>();
         mAdapter = new CommentsAdapter(mContext);
+        home_frag_img = view.findViewById(R.id.home_frag_img);
+        home_img_text = view.findViewById(R.id.home_img_text);
+        home_img_nonews = view.findViewById(R.id.home_img_nonews);
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         listView = view.findViewById(R.id.home_list);
         listView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -90,7 +99,14 @@ public class CommentsFragment extends Fragment {
                 refreshlayout.finishLoadmore(800);
             }
         });
-
+        //加载数据
+        home_frag_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dates.getDialogs(getActivity(), "请求数据中");
+                Okgo();
+            }
+        });
         Okgo();
         return view;
 
@@ -101,6 +117,7 @@ public class CommentsFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -154,11 +171,13 @@ public class CommentsFragment extends Fragment {
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                 }
                                 mAdapter.getData(mData);
+                                home_frag_img.setVisibility(View.GONE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            ToastUtils.showShortToast("没有更多数据");
+                            home_frag_img.setVisibility(View.VISIBLE);
+                            home_img_text.setText("暂无数据，点击刷新");
                         }
 
                     }
@@ -166,7 +185,11 @@ public class CommentsFragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
+                        home_frag_img.setVisibility(View.VISIBLE);
+                        home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
+                        home_img_text.setText("请求确认网络是否通畅，点击再次请求");
                     }
 
                 });

@@ -56,6 +56,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //避免重复绘制界面
@@ -78,6 +79,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         init();
         return rootView;
     }
+
     private void init() {
         mData = new ArrayList<>();
         //设置布局管理器
@@ -104,6 +106,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         });
         Okgo();
     }
+
     //网络请求
     private void Okgo() {
         //请求数据库的数据
@@ -140,20 +143,17 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                 if (mData.size() != 0) {
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
-
                                 } else {
                                     home_frag_img.setVisibility(View.VISIBLE);
                                     home_img_text.setText("数据为空，点击刷新");
-
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-
                             ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
-                            home_img_text.setText("数据为空，点击刷新");
+                            home_img_text.setText("暂无数据，点击刷新");
 
                         }
                     }

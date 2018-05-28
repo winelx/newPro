@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CollectionCallbackUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
@@ -59,22 +57,22 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-        //item正文点击事件
-        holder.layout_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //判断是否有删除菜单打开
-                if (menuIsOpen()) {
-                    closeMenu();//关闭菜单
-                } else {
-                    Intent intent = new Intent(mContext, AllListmessageActivity.class);
-                    intent.putExtra("name", mDatas.get(position).getOrgname());
-                    intent.putExtra("back", mDatas.get(position).getOrgname());
-                    intent.putExtra("orgId", mDatas.get(position).getOrgid());
-                    mContext.startActivity(intent);
-                }
-            }
-        });
+//        //item正文点击事件
+//        holder.layout_content.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //判断是否有删除菜单打开
+//                if (menuIsOpen()) {
+//                    closeMenu();//关闭菜单
+//                } else {
+//                    Intent intent = new Intent(mContext, AllListmessageActivity.class);
+//                    intent.putExtra("name", mDatas.get(position).getOrgname());
+//                    intent.putExtra("back", mDatas.get(position).getOrgname());
+//                    intent.putExtra("orgId", mDatas.get(position).getOrgid());
+//                    mContext.startActivity(intent);
+//                }
+//            }
+//        });
         //左滑置顶点击事件
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/5/10 0010.
- * 办公
+ * 集团
  */
 
 public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
@@ -42,7 +42,6 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
         FragmentBrightAdapter.mData = mData;
-        doNotifyDataSetChangedOnce = true;
         notifyDataSetChanged();
     }
 

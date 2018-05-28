@@ -120,7 +120,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //截取doc+1后面的字符串，包括doc+1；
                     String strs = urlpath.substring(doc + 1);
                     //图片可能为jpg 也可能是png
-                    if (strs.equals("jpg") || strs.equals("png") || strs.equals("JPG") || strs.equals("PNG")) {
+                    if (!strs.equals("xls") || strs.equals("xlsx") || strs.equals("pdf") || strs.equals("PNG") || strs.equals("doc") || strs.equals("docx")) {
                         path.add(mData.get(i));
                     }
                 }

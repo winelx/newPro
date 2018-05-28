@@ -32,7 +32,6 @@ import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.DetailsCallback;
 import com.example.administrator.newsdf.callback.DetailsCallbackUtils;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
@@ -100,7 +99,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     /**
      * 任务回复时展示图片的适配器
      */
-    private LinearLayout comImg;
+    private LinearLayout comImg, taskManagement;
     private RecyclerView mRecyclerView;
     private IconTextView iconTextView;
     /**
@@ -127,7 +126,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
         anInterface = new CollectionIpm();
-
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -158,7 +156,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         Intent intent = getIntent();
         try {
             TaskId = intent.getExtras().getString("TaskId");
-            LogUtil.i("TaskId", TaskId);
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
             if (status.equals("true")) {
@@ -190,7 +187,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         comButton = (TextView) findViewById(R.id.audio_com_button);
         comTitle = (TextView) findViewById(R.id.audio_com_title);
         mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
-        findViewById(R.id.taskManagement).setOnClickListener(this);
+        taskManagement = (LinearLayout) findViewById(R.id.taskManagement);
+        taskManagement.setOnClickListener(this);
         findViewById(R.id.adui_com_back).setOnClickListener(this);
         findViewById(R.id.fab).setOnClickListener(this);
         comButton.setOnClickListener(this);
@@ -259,7 +257,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                     //如果图片大小不等于0.0，说明图片正常，如果等于这个值，那说明图片是损坏的
                     if (mdouble != 0.0) {
                         //图片正常压缩
-                        ToastUtils.showLongToast("ss");
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
@@ -374,7 +371,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             int smartProjectType;
                             try {
-                                smartProjectType = data.getInt("smartProjectType");
+                                smartProjectType = wtMain.getInt("smartProjectType");
 
                             } catch (JSONException e) {
                                 smartProjectType = 0;
@@ -406,7 +403,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 isSmartProject = wtMain.getInt("isSmartProject");
                                 switch (isSmartProject) {
                                     case 0:
-                                        ToastUtils.showLongToast("0");
                                         audioComMark.setVisibility(View.GONE);
                                         break;
                                     case 1:
@@ -692,7 +688,10 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        wbspath.setText(wbsName);
+                        if (wbsName.length() != 0) {
+                            taskManagement.setVisibility(View.VISIBLE);
+                            wbspath.setText(wbsName);
+                        }
                     }
                 });
     }
@@ -715,6 +714,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
     //取消收藏
     public int getdelete(String taskId) {
+
         return anInterface.deleteCollection(taskId);
     }
 

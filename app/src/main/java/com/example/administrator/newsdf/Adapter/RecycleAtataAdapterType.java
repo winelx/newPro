@@ -175,6 +175,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                 if (isFavorite) {
                     holder.collection.setClickable(false);
+                    //请求数据，返回状态
                     int ret = audio.getdelete(mDatas.get(posotion).getReplyID());
                     if (ret == 0) {
                         isFavorite = false;
@@ -187,6 +188,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else {
                     holder.collection.setClickable(false);
+                    //请求数据，返回状态
                     int ret = audio.getsave(mDatas.get(posotion).getReplyID());
                     if (ret == 0) {
                         ToastUtils.showLongToast("收藏");

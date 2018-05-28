@@ -121,6 +121,7 @@ public class WorkFragment extends Fragment {
             setTime();
             //获取到当前登录人的名字，并展示
             frWorkName.setText(SPUtils.getString(mContext, "staffName", null) + ",");
+            //更多
             moreandmore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -208,6 +209,7 @@ public class WorkFragment extends Fragment {
             frWorkDn.setText("早上好 !");
         }
     }
+
     private void findId() {
         fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
         PieChartOne = rootView.findViewById(R.id.piechartone);
@@ -370,10 +372,10 @@ public class WorkFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        //每隔1s循环执行run方法
         closeTimer();
     }
 
+    //亮点工程
     private void Bright() {
         OkGo.<String>post(Requests.ListByType)
                 .params("page", 1)

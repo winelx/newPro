@@ -81,10 +81,9 @@ public class WorkBrightProFrament extends Fragment {
             @Override
             public void callback(int index, String[] str) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-              String taskId=   FragmentBrightProAdapter.mDataPro.get(pos).getTaskId();
+                String taskId = FragmentBrightAdapter.mData.get(pos).getOrgid();
                 intent.putExtra("TaskId",taskId );
                 intent.putExtra("status", "true");
-                intent.putExtra("bright", "true");
                 startActivity(intent);
             }
         });
@@ -92,10 +91,9 @@ public class WorkBrightProFrament extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                String taskId=   FragmentBrightProAdapter.mDataPro.get(pos).getTaskId();
+                String taskId = FragmentBrightAdapter.mData.get(pos).getOrgid();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "false");
-                intent.putExtra("bright", "true");
                 startActivity(intent);
             }
         });

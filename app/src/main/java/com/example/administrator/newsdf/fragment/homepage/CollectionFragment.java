@@ -12,7 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.CollectionFrAdapter;
 import com.example.administrator.newsdf.R;
@@ -47,10 +49,6 @@ import okhttp3.Response;
 
 public class CollectionFragment extends Fragment implements HideCallback {
     /**
-     * 没有数据界面
-     */
-    private RelativeLayout home_frag_img;
-    /**
      * 下拉控件
      */
     private SmartRefreshLayout refreshLayout;
@@ -65,6 +63,9 @@ public class CollectionFragment extends Fragment implements HideCallback {
     private Context mContext;
     private int page = 1;
     private int size = 20;
+    private RelativeLayout home_frag_img;
+    private ImageView home_img_nonews;
+    private TextView home_img_text;
 
     @Nullable
     @Override
@@ -75,6 +76,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
         Okgo();
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         listView = view.findViewById(R.id.home_list);
+        home_frag_img = view.findViewById(R.id.home_frag_img);
+        home_img_text = view.findViewById(R.id.home_img_text);
+        home_img_nonews = view.findViewById(R.id.home_img_nonews);
+
         HideCallbackUtils.setCallBack(this);
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -93,7 +98,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                     mAdapter.closeMenu();
                 }
                 mData.clear();
-               Okgo();
+                Okgo();
                 refreshlayout.finishRefresh(1200);
             }
         });
@@ -104,11 +109,18 @@ public class CollectionFragment extends Fragment implements HideCallback {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 //传入false表示加载失败
-                 Okgo();
+                Okgo();
                 refreshlayout.finishLoadmore(800);
             }
         });
-
+        //加载数据
+        home_frag_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dates.getDialogs(getActivity(), "请求数据中");
+                Okgo();
+            }
+        });
         return view;
     }
 
@@ -131,6 +143,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -147,7 +160,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     String createTime;
                                     try {
                                         createTime = json.getString("changeReviewTime");
-                                        createTime= Dates.stampToDates(createTime);
+                                        createTime = Dates.stampToDates(createTime);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         createTime = "";
@@ -184,11 +197,13 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
                                 }
                                 mAdapter.getData(mData);
+                                home_frag_img.setVisibility(View.GONE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            ToastUtils.showShortToast("没有更多数据");
+                            home_frag_img.setVisibility(View.VISIBLE);
+                            home_img_text.setText("暂无数据，点击刷新");
                         }
 
                     }
@@ -196,7 +211,11 @@ public class CollectionFragment extends Fragment implements HideCallback {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
+                        home_frag_img.setVisibility(View.VISIBLE);
+                        home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
+                        home_img_text.setText("请求确认网络是否通畅，点击再次请求");
                     }
 
                 });

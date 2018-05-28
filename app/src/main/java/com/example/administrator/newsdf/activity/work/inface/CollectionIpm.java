@@ -19,7 +19,7 @@ import okhttp3.Response;
  */
 
 public class CollectionIpm implements CollectionInterface {
-    int ret;
+    int ret=-1;
     private ArrayList<Home_item> list ;
     @Override
     public int saveCollection(String taskId) {
