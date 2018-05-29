@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * update: 2018/2/6 0006
  * version:
  */
-public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PhotolabelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<PhotoBean> mData;
     private Dates dates = new Dates();
@@ -33,7 +33,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private String tiltle;
     private boolean lean;
 
-    public PhotoadmAdapter(Context mContext) {
+    public PhotolabelAdapter(Context mContext) {
         this.mContext = mContext;
         mData = new ArrayList<>();
     }
@@ -70,7 +70,7 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                     PhotoPreview.builder()
                             .setPhotos(path)
-                            .setShowLABEL(true)
+                            .setShowLABEL(false)
                             .setCurrentItem(position)
                             .setShowDeleteButton(false)
                             .setShowUpLoadeButton(true)

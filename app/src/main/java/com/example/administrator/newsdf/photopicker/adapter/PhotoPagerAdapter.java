@@ -29,7 +29,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
     private List<String> paths = new ArrayList<>();
     private RequestManager mGlide;
-
+     ImageView imageView;
     public PhotoPagerAdapter(RequestManager glide, List<String> paths) {
         this.paths = paths;
         this.mGlide = glide;
@@ -40,7 +40,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         final Context context = container.getContext();
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.__picker_picker_item_pager, container, false);
-        final ImageView imageView = itemView.findViewById(R.id.iv_pager);
+        imageView = itemView.findViewById(R.id.iv_pager);
         final String path = paths.get(position);
 //        if (path.startsWith("http")==true) {
 //            uri = Uri.parse(path);
@@ -55,10 +55,11 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     .dontTransform()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
+                    .override(320, 320)
                     .error(R.drawable.image_error);
             mGlide.setDefaultRequestOptions(options)
                     .load(path)
-                    .thumbnail(0.7f)
+                    .thumbnail(0.8f)
                     .into(imageView);
         }
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +91,13 @@ public class PhotoPagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
         mGlide.clear((View) object);
+
     }
 
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
+
 
 }

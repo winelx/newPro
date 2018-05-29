@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.activity.work;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
@@ -33,13 +35,32 @@ public class UploadPhotoActivity extends AppCompatActivity {
     private List<Shop> listPath;
     private Context mContext;
     private UploadPhAdapter mAdapter;
+    private TextView upload_name, upload_photo, upload_number, Up_ph_title;
+    private String status;
+    ArrayList<Shop> path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photo);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mContext = UploadPhotoActivity.this;
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        //名称
+        upload_name = (TextView) findViewById(R.id.upload_name);
+        //图片
+        upload_photo = (TextView) findViewById(R.id.upload_photo);
+        //编号
+        upload_number = (TextView) findViewById(R.id.upload_number);
+        Up_ph_title = (TextView) findViewById(R.id.Up_ph_title);
+        Intent intent = getIntent();
+        status = intent.getExtras().getString("status");
+        if ("standard".equals(status)) {
+            upload_name.setText("标准名称");
+            upload_photo.setText("所属标准分类");
+            upload_number.setText("标准编号");
+            Up_ph_title.setText("离线标准");
+        }
+
         //设置布局管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //设置适配器
@@ -59,7 +80,6 @@ public class UploadPhotoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         queryDate();
     }
 
@@ -67,10 +87,32 @@ public class UploadPhotoActivity extends AppCompatActivity {
      * 拿到数据
      */
     private void queryDate() {
-        listPath = new ArrayList<>();
-        //或者指定数据
-        listPath = LoveDao.queryCart();
-        mAdapter.getData(listPath);
+        if ("standard".equals(status)) {
+            listPath = new ArrayList<>();
+            //或者指定数据
+            listPath = LoveDao.queryCart();
+            path = new ArrayList<>();
+            for (Shop shop : listPath) {
+                String str = shop.getProject();
+                if ("standard".equals(str)) {
+                    path.add(shop);
+                }
+            }
+            mAdapter.getData(path);
+        } else {
+            listPath = new ArrayList<>();
+            //或者指定数据
+            listPath = LoveDao.queryCart();
+            path = new ArrayList<>();
+            for (Shop shop : listPath) {
+                shop.getProject();
+                if (shop.getProject() == null) {
+                    path.add(shop);
+                }
+            }
+            mAdapter.getData(path);
+        }
+
     }
 
 
@@ -78,8 +120,8 @@ public class UploadPhotoActivity extends AppCompatActivity {
      * 左滑删除记录
      */
     public void deleteDate(int position) {
-        if (!listPath.isEmpty()) {
-            LoveDao.deleteLove(listPath.get(position).getId());
+        if (!path.isEmpty()) {
+            LoveDao.deleteLove(path.get(position).getId());
         }
         mAdapter.closeMenu();
         queryDate();

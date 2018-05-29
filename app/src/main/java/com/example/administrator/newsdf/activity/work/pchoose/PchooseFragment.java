@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 /**
  * description:  图册
  *
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class PchooseFragment extends Fragment implements View.OnClickListener {
     private List<Shop> listPath;
+    private List<Shop> listPaths;
     private View view;
 
     @Nullable
@@ -37,6 +40,7 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_pchoose, container, false);
         listPath = new ArrayList<>();
+        listPaths = new ArrayList<>();
         //图册
         view.findViewById(R.id.pchoose_atlas).setOnClickListener(this);
         //分部分项
@@ -57,8 +61,15 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.uploading_photo:
                 listPath = LoveDao.queryCart();
+                for (Shop shop : listPath) {
+                    if ("standard".equals(shop.getProject())) {
+                        listPaths.add(shop);
+                    }
+                }
                 if (listPath.size() != 0) {
-                    startActivity(new Intent(getActivity(), UploadPhotoActivity.class));
+                    Intent standard = new Intent(getActivity(), UploadPhotoActivity.class);
+                    standard.putExtra("status", "Photo");
+                    startActivity(standard);
                 } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }

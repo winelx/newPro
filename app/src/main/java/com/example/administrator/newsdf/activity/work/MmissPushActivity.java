@@ -71,6 +71,7 @@ public class MmissPushActivity extends AppCompatActivity {
             wbsID = intent.getExtras().getString("wbsID");
         } catch (NullPointerException e) {
             e.printStackTrace();
+            e.printStackTrace();
         }
         wbsID = intent.getExtras().
                 getString("wbsID");
@@ -106,7 +107,6 @@ public class MmissPushActivity extends AppCompatActivity {
     private void okgo() {
         PostRequest PostRequest;
         if (org_status.equals("standard")) {
-            LogUtil.i("reswulte",wbsID);
             PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {
             PostRequest = OkGo.post(Requests.WBSTress).params("nodeid", "");
@@ -308,9 +308,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     details.putExtra("wbsId", node.getId());
                     //节点名称
                     details.putExtra("Name", node.getName());
-
                     details.putExtra("wbsName", node.getTitle());
-
                     details.putExtra("wbspath", node.getName());
                     details.putExtra("type", node.getType());
                     details.putExtra("iswbs", node.iswbs());
@@ -406,6 +404,8 @@ public class MmissPushActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    public  String getstatus(){
+       return org_status;
+    }
 
 }

@@ -45,6 +45,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
     public View getConvertView(final Node node, final int position, View convertView,
                                ViewGroup parent) {
         PushListviewAdapter.ViewHolder holder = null;
+
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item, parent, false);
             holder = new PushListviewAdapter.ViewHolder();
@@ -62,17 +63,20 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         } else {
             holder = (PushListviewAdapter.ViewHolder) convertView.getTag();
         }
+        MmissPushActivity activity = (MmissPushActivity) mContext;
+        String  status=activity.getstatus();
+
         if (!node.isperent()) {
             holder.mIcon.setVisibility(View.INVISIBLE);
         } else {
             holder.mIcon.setVisibility(View.VISIBLE);
             holder.mIcon.setImageResource(node.getIcon());
         }
-        if (node.getUsername().length() == 0) {
-            holder.Lin_WBS.setVisibility(View.GONE);
-        }else {
-            holder.Lin_WBS.setVisibility(View.VISIBLE);
-        }
+//        if (node.getUsername().length() == 0) {
+//            holder.Lin_WBS.setVisibility(View.GONE);
+//        }else {
+//            holder.Lin_WBS.setVisibility(View.VISIBLE);
+//        }
         holder.tree_name.setText(node.getUsername());
 
         holder.tree_progress.setText(node.getNumber() + "%");
@@ -103,11 +107,18 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (str > 0) {
-            holder.taskNum.setVisibility(View.VISIBLE);
-        } else {
+        if (status.equals("push")|| status.equals("details") ){
+            holder.Lin_WBS.setVisibility(View.VISIBLE);
+            if (str > 0) {
+                holder.taskNum.setVisibility(View.VISIBLE);
+            } else {
+                holder.taskNum.setVisibility(View.GONE);
+            }
+        }else {
+            holder.Lin_WBS.setVisibility(View.GONE);
             holder.taskNum.setVisibility(View.GONE);
         }
+
         //长按出现联系人信息
         holder.Lin_WBS.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

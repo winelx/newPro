@@ -115,10 +115,13 @@ public class ImagePagerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         paths.clear();
         paths = null;
         if (mViewPager != null) {
             mViewPager.setAdapter(null);
         }
     }
+
+
 }

@@ -88,6 +88,7 @@ public class PhotoListActivity extends AppCompatActivity {
     }
 
     private void okgo() {
+        //判断是那个入口进入的
         if (stauts.equals("standard")) {
             request = OkGo.<String>post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {

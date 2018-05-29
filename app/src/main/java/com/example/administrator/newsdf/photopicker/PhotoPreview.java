@@ -22,6 +22,7 @@ public class PhotoPreview {
     public final static String EXTRA_PHOTOS = "photos";
     public final static String EXTRA_SHOW_DELETE = "show_delete";
     public final static String EXTRA_SHOW_UPLOADE = "show_uploade";
+    public final static String EXTRA_SHOW_LABEL = "show_label";
 
     public static PhotoPreviewBuilder builder() {
         return new PhotoPreviewBuilder();
@@ -101,6 +102,12 @@ public class PhotoPreview {
             return this;
         }
 
+        //标记，判断是图册还是标准
+        public PhotoPreviewBuilder setShowLABEL(boolean showDeleteButton) {
+            mPreviewOptionsBundle.putBoolean(EXTRA_SHOW_LABEL, showDeleteButton);
+            return this;
+        }
+
         public PhotoPreviewBuilder setShowUpLoadeButton(boolean showDeleteButton) {
             mPreviewOptionsBundle.putBoolean(EXTRA_SHOW_UPLOADE, showDeleteButton);
             return this;
@@ -116,5 +123,6 @@ public class PhotoPreview {
             mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
             return this;
         }
+
     }
 }

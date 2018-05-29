@@ -10,7 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Adapter.PhotoadmAdapter;
+import com.example.administrator.newsdf.Adapter.PhotolabelAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
@@ -35,7 +35,7 @@ import okhttp3.Response;
 
 public class StandardActivity extends AppCompatActivity {
     private RecyclerView photo_rec;
-    private PhotoadmAdapter photoAdapter;
+    private PhotolabelAdapter photoAdapter;
     private ArrayList<PhotoBean> imagePaths;
     private TextView number, com_title, wbsname;
     private IconTextView comback;
@@ -78,7 +78,7 @@ public class StandardActivity extends AppCompatActivity {
         refreshlayout.setEnableLoadmore(true);
         //GridLayout 3列
         photo_rec.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        photoAdapter = new PhotoadmAdapter(this);
+        photoAdapter = new PhotolabelAdapter(this);
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
@@ -101,7 +101,6 @@ public class StandardActivity extends AppCompatActivity {
         if (status.equals("standard")) {
             request = OkGo.post(Requests.StandardList)
                     .params("WbsId", wbsid);
-
         } else {
             request = OkGo.post(Requests.STANDARD_BY_GROUP)
                     .params("groupId", groupId);
@@ -111,7 +110,6 @@ public class StandardActivity extends AppCompatActivity {
                 .params("rows", 10).execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
-
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray jsonArray = jsonObject.getJSONArray("data");

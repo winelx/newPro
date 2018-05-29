@@ -14,6 +14,7 @@
         android:layout_height="50dp">
 
         <TextView
+            android:id="@+id/Up_ph_title"
             android:text="离线图纸管理"
             android:textSize="18sp"
             android:textColor="@color/writer"
@@ -47,6 +48,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/upload_photo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -63,6 +65,7 @@
             android:background="@color/gray" />
 
         <TextView
+            android:id="@+id/upload_number"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -79,6 +82,7 @@
             android:background="@color/gray" />
 
         <TextView
+            android:id="@+id/upload_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"

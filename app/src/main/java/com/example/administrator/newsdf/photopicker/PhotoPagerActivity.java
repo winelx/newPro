@@ -23,18 +23,17 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.fragment.ImagePagerFragment;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.zxy.tiny.Tiny;
-import com.zxy.tiny.callback.FileCallback;
+import com.zxy.tiny.callback.FileWithBitmapCallback;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.photopicker.PhotoPicker.EXTRA_ORIGINAL_TITLE;
@@ -42,6 +41,7 @@ import static com.example.administrator.newsdf.photopicker.PhotoPicker.KEY_SELEC
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_CURRENT_ITEM;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_PHOTOS;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
+import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_LABEL;
 import static com.example.administrator.newsdf.photopicker.PhotoPreview.EXTRA_SHOW_UPLOADE;
 import static com.example.administrator.newsdf.utils.Dates.getDate;
 
@@ -58,6 +58,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
     private String path;
     private ActionBar actionBar;
     private boolean showDelete;
+    private boolean showLabel;
     private TextView picker_title;
     private LinearLayout upload;
     private List<Shop> listPath;
@@ -80,29 +81,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 case 1:
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(bytes).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            LogUtil.i("ss", outfile);
-                            if (outfile.length()!=0){
-                                //设置系统时间为文件名
-                                Shop shop = new Shop();
-                                shop.setType(Shop.TYPE_CART);
-                                shop.setImage_url(outfile);
-                                shop.setName(result);
-                                shop.setContent(Title);
-                                shop.setTimme(getDate());
-                                LoveDao.insertLove(shop);
 
-                                ToastUtils.showShortToast("已保存");
-                            }else {
-
-                                ToastUtils.showShortToast("下载失败");
-                            }
-                            Dates.disDialog();
-                        }
-                    });
                     break;
                 case 2:
                     //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
@@ -122,9 +101,11 @@ public class PhotoPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.__picker_activity_photo_pager);
+
         int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
         paths = getIntent().getStringArrayListExtra(EXTRA_PHOTOS);
         showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE, true);
+        showLabel = getIntent().getBooleanExtra(EXTRA_SHOW_LABEL, false);
         boolean showUploade = getIntent().getBooleanExtra(EXTRA_SHOW_UPLOADE, true);
         imagepath = getIntent().getStringArrayListExtra(EXTRA_ORIGINAL_TITLE);
         if (pagerFragment == null) {
@@ -183,9 +164,12 @@ public class PhotoPagerActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                care();
+                if (showLabel) {
+                    care();
+                } else {
+                    standard();
+                }
                 path = paths.get(pagerFragment.getViewPager().getCurrentItem());
-                LogUtil.i("ssss", path);
                 //根据'/'切割地址，
                 String[] strs = path.split("/");
                 //拿到图片名称
@@ -254,26 +238,36 @@ public class PhotoPagerActivity extends AppCompatActivity {
     }
 
     private void asyncGet(String imageUrl) {
-        client = new OkHttpClient();
-        final Request request = new Request.Builder().get()
-                .url(imageUrl)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //下载失败
-                e.printStackTrace();
-            }
+        OkGo.get(imageUrl)
+                .execute(new FileCallback() {
+                    @Override
+                    public void onSuccess(File file, Call call, Response response) {
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        Tiny.getInstance().source(file).asFile().withOptions(options).compress(new FileWithBitmapCallback() {
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //下载成功 在handler中保存数据
-                Message message = new Message();
-                message.what = 1;
-                message.obj = response.body().bytes();
-                handler.sendMessage(message);
-            }
-        });
+                            @Override
+                            public void callback(boolean isSuccess, Bitmap bitmap, String outfile) {
+                                if (isSuccess) {
+                                    //设置系统时间为文件名
+                                    Shop shop = new Shop();
+                                    shop.setType(Shop.TYPE_CART);
+                                    shop.setImage_url(outfile);
+                                    if (!showLabel) {
+                                        shop.setProject("standard");
+                                    }
+                                    shop.setName(result);
+                                    shop.setContent(Title);
+                                    shop.setTimme(getDate());
+                                    LoveDao.insertLove(shop);
+                                    ToastUtils.showShortToast("已保存");
+                                } else {
+                                    ToastUtils.showShortToast("下载失败");
+                                }
+                                Dates.disDialog();
+                            }
+                        });
+                    }
+                });
     }
 
     public void care() {
@@ -281,7 +275,22 @@ public class PhotoPagerActivity extends AppCompatActivity {
         pathname.clear();
         listPath = LoveDao.queryCart();
         for (int i = 0; i < listPath.size(); i++) {
-            pathname.add(listPath.get(i).getName());
+          String standard=  listPath.get(i).getProject();
+            if (!"standard".equals(standard)) {
+                pathname.add(listPath.get(i).getName());
+            }
+        }
+    }
+
+    public void standard() {
+        //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
+        pathname.clear();
+        listPath = LoveDao.queryCart();
+        for (int i = 0; i < listPath.size(); i++) {
+            String standard=  listPath.get(i).getProject();
+            if ("standard".equals(standard)) {
+                pathname.add(listPath.get(i).getName());
+            }
         }
     }
 }
