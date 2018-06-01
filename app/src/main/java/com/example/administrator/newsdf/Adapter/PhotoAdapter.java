@@ -82,7 +82,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                     ArrayList<String> paths = new ArrayList<String>();
                     ArrayList<String> imagepath = new ArrayList<String>();
                     paths.addAll(photoPaths);
-
                     PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                             .start((Activity) mContext);
                 }

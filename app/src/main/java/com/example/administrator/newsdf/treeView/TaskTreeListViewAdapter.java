@@ -75,15 +75,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.mIcon.setVisibility(View.VISIBLE);
             holder.mIcon.setImageResource(node.getIcon());
         }
-        try {
-            if (node.getUsername().length() == 0) {
-                holder.Lin_WBS.setVisibility(View.GONE);
-            } else {
-                holder.Lin_WBS.setVisibility(View.VISIBLE);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+         holder.Lin_WBS.setVisibility(View.GONE);
         holder.handover_status_recycler.setHorizontalScrollBarEnabled(false);
         String num = node.getPhone();
         int str = 0;
@@ -92,11 +84,8 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (str > 0) {
-            holder.taskNum.setVisibility(View.VISIBLE);
-        } else {
+
             holder.taskNum.setVisibility(View.GONE);
-        }
 
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");

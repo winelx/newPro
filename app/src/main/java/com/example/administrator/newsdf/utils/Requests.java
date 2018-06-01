@@ -8,10 +8,10 @@ package com.example.administrator.newsdf.utils;
 public class Requests {
     //公共头  192.168.20.38
 
-  //   public static final String networks = "http://192.168.20.80:8090/pzgc/";
- // public static final String networks = "http://192.168.1.119:8081/pzgc/";
+//  public static final String networks = "http://192.168.20.80:8090/pzgc/";
+//   public static final String networks = "http://192.168.1.119:8081/pzgc/";
 public static final String networks = "http://117.187.27.78:58081/pzgc/";
-    //public static final String networks = "http://120.79.142.15/pzgc/";
+ //    public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 用户登陆
      */
@@ -83,7 +83,7 @@ public static final String networks = "http://117.187.27.78:58081/pzgc/";
     public static final String PUSHList = networks + "iface/mobile/taskmain/findWbsCascadePoint";
 
     /**
-     * 根据组织查询消息列表
+     * 根据
      */
     public static final String CascadeList = networks + "iface/mobile/taskmsg/findWbsTaskMsgByWbs";
 
@@ -163,7 +163,7 @@ public static final String networks = "http://117.187.27.78:58081/pzgc/";
      * 查看记录
      */
     public static final String TASKRECORD = networks + "iface/mobile/taskmain/findWbsBrowseRecord";
-    //
+    //多任务回复界面
     public static final String ContentDetail = networks + "iface/mobile/taskmain/partContentDetail";
     //提亮
     public static final String SartProjectup = networks + "iface/mobile/smartProject/up";
@@ -177,8 +177,6 @@ public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //标准分类标准
     public static final String STANDARD_TREE = networks + "/iface/mobile/standard/findStandardTree";
     public static final String STANDARD_BY_GROUP = networks + "iface/mobile/standard/findStandardByGroup";
-
-    //收藏
     /**
      *任务
      */

@@ -79,10 +79,6 @@ public class CommentsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                //传入false表示刷新失败
-                if (mAdapter.menuIsOpen()) {
-                    mAdapter.closeMenu();
-                }
                 mData.clear();
                 Okgo();
                 refreshlayout.finishRefresh(1200);
@@ -93,13 +89,12 @@ public class CommentsFragment extends Fragment {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-
                 //传入false表示加载失败
                 Okgo();
                 refreshlayout.finishLoadmore(800);
             }
         });
-        //加载数据
+        //无数据加载数据
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +104,6 @@ public class CommentsFragment extends Fragment {
         });
         Okgo();
         return view;
-
     }
 
     private void Okgo() {

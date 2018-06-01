@@ -32,15 +32,14 @@ import android.widget.Toast;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.Adapter.DirectlyreplyAdapter;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -88,6 +87,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private static final int IMAGE_PICKER = 101;
     private int num = 0;
     private RadioGroup mRadioGroup;
+    private RadioButton codeplay_status_true, codeplay_status_false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,10 +155,12 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //发现ID
     private void findID() {
+
+        codeplay_status_false = (RadioButton) findViewById(R.id.codeplay_status_false);
+        codeplay_status_true = (RadioButton) findViewById(R.id.codeplay_status_true);
         //部位名称
         partContent = (EditText) findViewById(R.id.partContent);
         //单选
-        mRadioGroup = (RadioGroup) findViewById(R.id.codeplay_status);
         //标题
         title = (TextView) findViewById(R.id.com_title);
         //图片
@@ -187,26 +189,18 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 for (int i = 0; i < imagePaths.size(); i++) {
                     files.add(new File(imagePaths.get(i)));
                 }
-                LogUtil.d("DirectlyreplyActivity", "files.size():" + files.size());
-
                 if (content.isEmpty()) {
                     ToastUtils.showShortToast("回复内容不能为空");
                 } else {
                     //保存状态，进行回退判断
                     SPUtils.putString(mContext, "back", "false");
                     if (partContent.getText().toString().length() != 0) {
-                        RadioButton rb = (RadioButton) DirectlyreplyActivity.this.findViewById(mRadioGroup.getCheckedRadioButtonId());
-                        try {
-                            if (rb.getText() != null) {
-                                String str = rb.getText().toString();
-                                if (str == "是") {
-                                } else {
-                                    Okgo(Bai_address, files, false);
-                                }
-                            }
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                            ToastUtils.showLongToast("该任务是否已经完成");
+                        if (codeplay_status_false.isChecked()) {
+                            ToastUtils.showLongToast("否");
+                            Okgo(Bai_address, files, false);
+                        }
+                        if (codeplay_status_true.isChecked()) {
+                            Okgo(Bai_address, files, true);
                         }
                     } else {
                         ToastUtils.showLongToast("具体部位不能为空");
@@ -216,16 +210,20 @@ public class DirectlyreplyActivity extends AppCompatActivity {
             }
         });
         com_button.setVisibility(View.VISIBLE);
-
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        codeplay_status_false.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // getCheckedRadioButtonId()来得到选中的RadioButton的ID，从而得到RadioButton进而获取选中值
-                RadioButton rb = (RadioButton) DirectlyreplyActivity.this.findViewById(mRadioGroup.getCheckedRadioButtonId());
-                ToastUtils.showLongToast(rb.getText() + "");
+            public void onClick(View v) {
+                codeplay_status_false.setChecked(true);
+                codeplay_status_true.setChecked(false);
             }
         });
-
+        codeplay_status_true.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codeplay_status_false.setChecked(false);
+                codeplay_status_true.setChecked(true);
+            }
+        });
     }
 
     //调用相机
@@ -243,8 +241,8 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     //网络请求
     private void Okgo(String address, ArrayList<File> file, boolean isAllFinished) {
         userPop();
-
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("id", id)
                 .params("uploadContent", reply_text.getText().toString())
                 .params("latitude", Latitude)

@@ -15,6 +15,12 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
+        initOkGo();
+    }
+
+    private void initOkGo() {
+
         OkGo.init(this);
         //网络加载库配置
         OkGo.getInstance()

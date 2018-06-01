@@ -122,7 +122,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 }// 转交说明
                 holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
-
+                holder.detailsFixedBoolean.setText("任务状态:");
                 }
         }
     }
@@ -160,10 +160,11 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView detailsTitle, detailsData,
                 detailsUser, detailsBoolean,
                 handoverStatusDescription,
-                detailsContent, detailsFixedData;
+                detailsContent, detailsFixedData, detailsFixedBoolean;
 
         public ViewholderContent(View itemView) {
             super(itemView);
+            detailsFixedBoolean =itemView.findViewById(R.id.details_fixed_boolean);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);

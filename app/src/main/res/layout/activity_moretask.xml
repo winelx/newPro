@@ -48,22 +48,6 @@
                     android:textSize="18sp" />
 
 
-                <LinearLayout
-                    android:id="@+id/taskrecord"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|end"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:layout_gravity="center"
-                        android:background="@mipmap/task_log"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/newmoretask"

@@ -114,13 +114,12 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         //前面圆圈
         holder.home_item_img.setText(mDatas.get(position).getOrgname());
         //所属组织
-        holder.home_item_name.setText(mDatas.get(position).getOrgname());
+        holder.home_item_name.setText(mDatas.get(position).getUnfinish());
         //最后一条消息
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
         //消息量
-        holder.home_item_message.setText(mDatas.get(position).getUnfinish());
         holder.home_item_message.setVisibility(View.GONE);
         //判断是否有消息
         String message = mDatas.get(position).getUnfinish();

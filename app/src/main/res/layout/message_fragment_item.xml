@@ -95,9 +95,8 @@
                             android:layout_marginTop="3dp"
                             android:layout_weight="7"
                             android:ellipsize="end"
-                            android:maxEms="14"
+                            android:maxEms="10"
                             android:singleLine="true"
-                            android:text="所属组织所属所属组织所属所属组织所属组织组织所属组织所属组织组织"
                             android:textColor="@color/textViwe"
                             android:textSize="15sp" />
 

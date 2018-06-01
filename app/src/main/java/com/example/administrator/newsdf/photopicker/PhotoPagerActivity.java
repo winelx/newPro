@@ -101,12 +101,17 @@ public class PhotoPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.__picker_activity_photo_pager);
-
+        //当前位置
         int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
+        //图片集合
         paths = getIntent().getStringArrayListExtra(EXTRA_PHOTOS);
+        //是否显示删除按钮
         showDelete = getIntent().getBooleanExtra(EXTRA_SHOW_DELETE, true);
+        //判断是标准还是图册进入
         showLabel = getIntent().getBooleanExtra(EXTRA_SHOW_LABEL, false);
+        //是否显示下载按钮
         boolean showUploade = getIntent().getBooleanExtra(EXTRA_SHOW_UPLOADE, true);
+        //图片路径
         imagepath = getIntent().getStringArrayListExtra(EXTRA_ORIGINAL_TITLE);
         if (pagerFragment == null) {
             pagerFragment =
@@ -146,7 +151,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 actionBar.setElevation(25);
             }
         }
-
         pagerFragment.getViewPager().addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -275,7 +279,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         pathname.clear();
         listPath = LoveDao.queryCart();
         for (int i = 0; i < listPath.size(); i++) {
-          String standard=  listPath.get(i).getProject();
+            String standard = listPath.get(i).getProject();
             if (!"standard".equals(standard)) {
                 pathname.add(listPath.get(i).getName());
             }
@@ -287,7 +291,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         pathname.clear();
         listPath = LoveDao.queryCart();
         for (int i = 0; i < listPath.size(); i++) {
-            String standard=  listPath.get(i).getProject();
+            String standard = listPath.get(i).getProject();
             if ("standard".equals(standard)) {
                 pathname.add(listPath.get(i).getName());
             }

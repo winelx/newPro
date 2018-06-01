@@ -38,6 +38,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
     private boolean status = false;
     int bright;
+
     //构造
     public AudioAdapter(Context mContext) {
         this.mContext = mContext;
@@ -133,8 +134,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             }// 转交说明
             holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
-
-        }else {
+            holder.detailsFixedBoolean.setText("部位状态:");
+        } else {
             holder.linearLayout.setVisibility(View.GONE);
         }
     }
@@ -148,7 +149,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (datas.size() != 0) {
             holder.setpin.setVisibility(View.VISIBLE);
             holder.dataRec.setLayoutManager(new LinearLayoutManager(holder.dataRec.getContext(), LinearLayoutManager.VERTICAL, false));
-            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status,bright);
+            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status, bright);
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         } else {
@@ -184,10 +185,11 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private TextView detailsTitle, detailsData,
                 detailsUser, detailsBoolean,
                 handoverStatusDescription, handoverHuifu,
-                detailsContent, detailsFixedData, handoversText;
+                detailsContent, detailsFixedData, handoversText, detailsFixedBoolean;
 
         public TypeBannerHolder(View itemView) {
             super(itemView);
+            detailsFixedBoolean = itemView.findViewById(R.id.details_fixed_boolean);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);

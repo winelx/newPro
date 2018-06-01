@@ -424,6 +424,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 switch (status) {
                                     case "1":
                                         comImg.setVisibility(View.GONE);
+                                        comButton.setVisibility(View.VISIBLE);
                                         break;
                                     case "2":
                                         comButton.setVisibility(View.GONE);
@@ -447,6 +448,11 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             //负责人
                             try {
                                 leaderName = wtMain.getString("leaderName");
+//                                if (usernma.equals(leaderName)) {
+//                                    comButton.setVisibility(View.VISIBLE);
+//                                } else {
+//                                    comButton.setVisibility(View.GONE);
+//                                }
                             } catch (JSONException e) {
 
                                 leaderName = "";
@@ -675,11 +681,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             if (contents.get(0).getStatus().equals("0")) {
                                 aduioDatas.clear();
                                 aduioComms.clear();
-                                if (usernma.equals(wtMain.getString("leaderName"))) {
-                                    comButton.setVisibility(View.VISIBLE);
-                                } else {
-                                    comButton.setVisibility(View.GONE);
-                                }
+
                             }
                             mAdapter.setmBanner(contents);
                             mAdapter.getmListA(aduioDatas);

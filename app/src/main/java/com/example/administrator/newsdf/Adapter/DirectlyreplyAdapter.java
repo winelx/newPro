@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
@@ -56,7 +57,6 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
-
         if (getItemViewType(position) == TYPE_PHOTO) {
             Glide.with(mContext)
                     .load(photoPaths.get(position))
@@ -65,11 +65,15 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //删除本地图片
+                    FileUtils.deleteFile(photoPaths.get(position));
+                    //删除集合数据
                     photoPaths.remove(position);
-                    Dates.deleteFile(photoPaths.get(position));
+                    //刷新界面
                     notifyDataSetChanged();
                 }
             });
+
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

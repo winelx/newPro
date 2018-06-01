@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/com_content"
         android:background="@color/writer"
-        android:visibility="gone"
+
         android:orientation="vertical"
         >
 

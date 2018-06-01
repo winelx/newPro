@@ -90,54 +90,51 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:paddingRight="15dp"
         android:background="@color/writer"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:drawablePadding="5dp"
             android:drawableLeft="@mipmap/taskcheckbox"
+            android:drawablePadding="5dp"
             android:gravity="center"
             android:text="该任务是否全部完成"
             android:textSize="15sp" />
 
-        <RadioGroup
-            android:id="@+id/codeplay_status"
+
+        <RadioButton
+            android:id="@+id/codeplay_status_true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:checked="false"
+            android:text="是"
+            android:textColor="@color/unfinish_gray"
+            android:textSize="15sp"
+            android:theme="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/codeplay_status_false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/codeplay_status_true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="是"
-                android:textColor="@color/unfinish_gray"
-                android:textSize="15sp"
-                android:theme="@style/RadioButton" />
-
-            <RadioButton
-                android:id="@+id/codeplay_status_false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/unfinish_gray"
-                android:text="否"
-                android:textSize="15sp"
-                android:theme="@style/RadioButton" />
-        </RadioGroup>
+            android:checked="true"
+            android:text="否"
+            android:textColor="@color/unfinish_gray"
+            android:textSize="15sp"
+            android:theme="@style/RadioButton" />
 
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/back" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -150,8 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
-            android:drawablePadding="5dp"
             android:drawableLeft="@mipmap/specificparts"
+            android:drawablePadding="5dp"
             android:gravity="center"
             android:text="具体部位:"
             android:textSize="15sp" />
@@ -161,17 +158,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:background="@null"
             android:layout_marginRight="15dp"
+            android:background="@null"
             android:hint="输入部位名称"
             android:textColorHint="@color/color646464"
             android:textSize="15sp" />
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/back" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

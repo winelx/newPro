@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.MoretaskActivity;
-import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
-import com.example.administrator.newsdf.utils.SPUtils;
 
 import java.util.ArrayList;
 
@@ -33,13 +30,13 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final static int TYPE_FOOTER = 2;
     private ArrayList<MoretasklistBean> list;
     private Context mContext;
-    private String status,usernma;
+    private String status, usernma;
 
-    public MoreTaskDataAdapter(Context mContext,String status,String username) {
+    public MoreTaskDataAdapter(Context mContext, String status, String username) {
         this.mContext = mContext;
         this.status = status;
         list = new ArrayList<>();
-        this.usernma =username;
+        this.usernma = username;
 
 
     }
@@ -104,24 +101,9 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
         } else { // 尾部
-
             MoreTaskDataAdapter.FootHolder myHoldered = (MoreTaskDataAdapter.FootHolder) holder;
             //根据传递的过来的任务状态判断显隐
-            if (status=="1"){
-                myHoldered.footer.setVisibility(View.GONE);
-            }
-           String  user = SPUtils.getString(mContext, "staffName", null);
-            if (!usernma.equals(user)){
-                myHoldered.footer.setVisibility(View.GONE);
-            }
-                myHoldered.footer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, DirectlyreplyActivity.class);
-                        intent.putExtra("id", "");
-                        mContext.startActivity(intent);
-                    }
-                });
+            myHoldered.footer.setVisibility(View.GONE);
         }
     }
 

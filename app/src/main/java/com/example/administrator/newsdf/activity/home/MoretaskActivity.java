@@ -61,7 +61,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
     private String DATA = "data",usernma;
-    private LinearLayout newmoretask, taskrecord;
+    private LinearLayout newmoretask;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
     private ArrayList<PhotoBean> imagePaths;
@@ -164,8 +164,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         newmoretask.setOnClickListener(this);
         //图册侧拉界面
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        findViewById(R.id.taskrecord).setOnClickListener(this);
-        taskrecord = (LinearLayout) findViewById(R.id.taskrecord);
         findViewById(R.id.fab).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.taskManagement).setOnClickListener(this);
@@ -215,12 +213,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 }
                 finish();
-                break;
-            case R.id.taskrecord:
-                //任务记录
-                Intent intent1 = new Intent(MoretaskActivity.this, TaskRecordActivity.class);
-                intent1.putExtra("taskId", taskID);
-                startActivity(intent1);
                 break;
             case R.id.taskManagement:
                 if (status.equals("true")) {
@@ -389,7 +381,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         newmoretask.setVisibility(View.GONE);
                         break;
                     default:
-                        newmoretask.setVisibility(View.GONE);
+                        newmoretask.setVisibility(View.VISIBLE);
                         break;
                 }
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));

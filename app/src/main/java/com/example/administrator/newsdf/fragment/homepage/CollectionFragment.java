@@ -79,7 +79,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
         home_frag_img = view.findViewById(R.id.home_frag_img);
         home_img_text = view.findViewById(R.id.home_img_text);
         home_img_nonews = view.findViewById(R.id.home_img_nonews);
-
         HideCallbackUtils.setCallBack(this);
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
