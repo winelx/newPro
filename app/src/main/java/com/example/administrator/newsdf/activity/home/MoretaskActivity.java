@@ -249,6 +249,12 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 //返回数据
                 JSONObject Data = jsonObject.getJSONObject("data");
                 JSONObject jsonArray = Data.getJSONObject("data");
+                try {
+                    wbsName = Data.getString("WbsName");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    wbsName = "";
+                }
                 //创建时间
                 String createDate;
                 try {
@@ -299,12 +305,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 }
                 //wbsname
 
-                try {
-                    wbsName = jsonArray.getString("wbsName");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    wbsName = "";
-                }
+
                 //创建人ID
                 String createByUserID;
                 try {

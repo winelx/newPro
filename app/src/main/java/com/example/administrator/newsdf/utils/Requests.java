@@ -8,9 +8,9 @@ package com.example.administrator.newsdf.utils;
 public class Requests {
     //公共头  192.168.20.38
 
-//  public static final String networks = "http://192.168.20.80:8090/pzgc/";
+  public static final String networks = "http://192.168.20.33:8080/";
 //   public static final String networks = "http://192.168.1.119:8081/pzgc/";
-public static final String networks = "http://117.187.27.78:58081/pzgc/";
+//public static final String networks = "http://117.187.27.78:58081/pzgc/";
  //    public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 用户登陆
@@ -182,8 +182,9 @@ public static final String networks = "http://117.187.27.78:58081/pzgc/";
      */
     public static final String SAVECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/save";
     public static final String DELETECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/delete";
-
+ //收藏
  public static final String GET_LIS = networks +"iface/mobile/wbs/taskmain/favorite/getList";
+ //评论
    public static final String GET_MY_LIST= networks +"/iface/mobile/wbs/cacheable/getMyList";
   /**
    * 标段收藏
