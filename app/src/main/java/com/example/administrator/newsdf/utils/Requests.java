@@ -7,9 +7,8 @@ package com.example.administrator.newsdf.utils;
  */
 public class Requests {
     //公共头  192.168.20.38
-
-  public static final String networks = "http://192.168.20.33:8080/";
-//   public static final String networks = "http://192.168.1.119:8081/pzgc/";
+   public static final String networks = "http://192.168.20.33:8080/";
+//public static final String networks = "http://192.168.1.119:8081/pzgc/";
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
  //    public static final String networks = "http://120.79.142.15/pzgc/";
     /**
@@ -83,7 +82,7 @@ public class Requests {
     public static final String PUSHList = networks + "iface/mobile/taskmain/findWbsCascadePoint";
 
     /**
-     * 根据
+     * 根据orgID查询任务列表
      */
     public static final String CascadeList = networks + "iface/mobile/taskmsg/findWbsTaskMsgByWbs";
 
@@ -182,12 +181,21 @@ public class Requests {
      */
     public static final String SAVECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/save";
     public static final String DELETECOLLECTION = networks + "/iface/mobile/wbs/taskmain/favorite/delete";
- //收藏
- public static final String GET_LIS = networks +"iface/mobile/wbs/taskmain/favorite/getList";
- //评论
+ //收藏界面列表
+ public static final String GET_LIS = networks +"iface/mobile/taskmsg/findWbsFavoriteOrg";
+ //评论首页标段
    public static final String GET_MY_LIST= networks +"/iface/mobile/wbs/cacheable/getMyList";
+ //评论列表
+ public static final String GETMyPAGELIST= networks + "iface/mobile/wbs/cacheable/getMyPageList";
+ //收藏列表
+ public static final String FAVORITETASKMSGBYWBS = networks + "iface/mobile/taskmsg/findFavoriteTaskMsgByWbs";
   /**
    * 标段收藏
    */
   public static final String WBSSAVE=networks +"/iface/mobile/wbs/favorite/save";
+
+ /**
+  * 评论列表界面tree
+  */
+ public static final String GETMYTREE=networks+"iface/mobile/wbs/cacheable/getMyTree";
 }

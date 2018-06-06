@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
+import com.example.administrator.newsdf.fragment.homepage.CommentmessageActivity;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -40,6 +41,7 @@ import static com.example.administrator.newsdf.R.id.tree_name;
 public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
     private String status;
+
     public TaskTreeListViewAdapter(ListView tree, Context context,
                                    List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
@@ -75,17 +77,12 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.mIcon.setVisibility(View.VISIBLE);
             holder.mIcon.setImageResource(node.getIcon());
         }
-         holder.Lin_WBS.setVisibility(View.GONE);
+        holder.Lin_WBS.setVisibility(View.GONE);
         holder.handover_status_recycler.setHorizontalScrollBarEnabled(false);
         String num = node.getPhone();
-        int str = 0;
-        try {
-            str = Integer.parseInt(num);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
 
-            holder.taskNum.setVisibility(View.GONE);
+
+        holder.taskNum.setVisibility(View.GONE);
 
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
@@ -124,6 +121,9 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         TaskWbsActivity taskWbsActivity = (TaskWbsActivity) mContext;
                         taskWbsActivity.switchAct(node);
                         break;
+                    case "Comment":
+                        CommentmessageActivity Commentmessage = (CommentmessageActivity) mContext;
+                        Commentmessage.switchAct(node);
                     default:
 
                         break;

@@ -42,7 +42,7 @@ public class HomeUtils {
      * @param json 字符串
      * @return 实体
      */
-    public static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+    public static ArrayList<OrganizationEntity>  parseOrganizationList(String json) {
         if (json == null) {
             return null;
         } else {

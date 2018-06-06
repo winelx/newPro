@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.fragment.homepage;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -48,7 +51,7 @@ import okhttp3.Response;
 public class CommentsFragment extends Fragment {
     private CommentsAdapter mAdapter;
     private Context mContext;
-    private List<Home_item> mData;
+    List<Home_item> setList;
     /**
      * 下拉控件
      */
@@ -66,7 +69,7 @@ public class CommentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = getActivity();
-        mData = new ArrayList<>();
+
         mAdapter = new CommentsAdapter(mContext);
         home_frag_img = view.findViewById(R.id.home_frag_img);
         home_img_text = view.findViewById(R.id.home_img_text);
@@ -79,7 +82,7 @@ public class CommentsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                mData.clear();
+                ;
                 Okgo();
                 refreshlayout.finishRefresh(1200);
             }
@@ -102,6 +105,16 @@ public class CommentsFragment extends Fragment {
                 Okgo();
             }
         });
+
+        mAdapter.setOnItemClickListener(new CommentsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, CommentmessageActivity.class);
+                intent.putExtra("name", setList.get(position).getOrgname());
+                intent.putExtra("orgId", setList.get(position).getId());
+                startActivity(intent);
+            }
+        });
         Okgo();
         return view;
     }
@@ -116,6 +129,9 @@ public class CommentsFragment extends Fragment {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                Map<String, Object> map = new HashMap<String, Object>();
+
+                                setList = new ArrayList<Home_item>();
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
                                     String content;
@@ -133,43 +149,35 @@ public class CommentsFragment extends Fragment {
                                         e.printStackTrace();
                                         createTime = "";
                                     }
-                                    String id;
-                                    try {
-                                        id = json.getString("id");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        id = "";
-                                    }
+                                    String id = "";
                                     String orgId;
                                     try {
-                                        orgId = json.getString("orgId");
+                                        orgId = json.getString("sysId");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgId = "";
                                     }
                                     String orgName;
                                     try {
-                                        orgName = json.getString("orgName");
+                                        orgName = json.getString("sysName");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgName = "";
                                     }
-                                    String unfinish;
-                                    try {
-                                        unfinish = json.getString("wbsName");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        unfinish = "";
-                                    }
-                                    //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                    String unfinish = "";
+                                    //去重
+                                    setList.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", false));
+
                                 }
-                                mAdapter.getData(mData);
+
+                                mAdapter.getData(setList);
                                 home_frag_img.setVisibility(View.GONE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } else {
+                        } else
+
+                        {
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("暂无数据，点击刷新");
                         }
@@ -188,4 +196,6 @@ public class CommentsFragment extends Fragment {
 
                 });
     }
+
+
 }

@@ -777,6 +777,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -805,7 +806,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             } else {
                                 ToastUtils.showShortToast(msg);
                             }
-                            dialog.dismiss();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

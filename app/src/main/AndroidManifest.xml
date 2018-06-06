@@ -225,7 +225,8 @@
 
         <activity android:name=".activity.home.MoretaskActivity" />
         <activity android:name=".activity.work.pchoose.StandardActivity" />
-        <activity android:name=".Main22Activity"/>
+        <activity android:name=".fragment.homepage.CommentmessageActivity" />
+        <activity android:name=".fragment.homepage.CollectionlistActivity" />
     </application>
 
 </manifest>

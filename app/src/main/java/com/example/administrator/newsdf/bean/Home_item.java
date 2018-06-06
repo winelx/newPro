@@ -13,14 +13,16 @@ public class Home_item {
     String orgid;
     String orgname;
     String unfinish;
+    String isfavorite;
     boolean putTop;
-    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish,boolean putTop) {
+    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish,String isfavorite,boolean putTop) {
         this.content = content;
         this.creaeTime = creaeTime;
         this.id = id;
         this.orgid = orgid;
         this.orgname = orgname;
         this.unfinish = unfinish;
+        this.isfavorite = isfavorite;
         this.putTop = putTop;
 
     }
@@ -80,4 +82,11 @@ public class Home_item {
         this.putTop = putTop;
     }
 
+    public String getIsfavorite() {
+        return isfavorite;
+    }
+
+    public void setIsfavorite(String isfavorite) {
+        this.isfavorite = isfavorite;
+    }
 }

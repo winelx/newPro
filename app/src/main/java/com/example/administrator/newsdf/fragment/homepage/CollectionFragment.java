@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.fragment.homepage;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -120,6 +121,16 @@ public class CollectionFragment extends Fragment implements HideCallback {
                 Okgo();
             }
         });
+        mAdapter.setOnItemClickListener(new CollectionFrAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, CollectionlistActivity.class);
+                intent.putExtra("name", mData.get(position).getOrgname());
+                intent.putExtra("orgId", mData.get(position).getOrgid());
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -158,8 +169,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     }
                                     String createTime;
                                     try {
-                                        createTime = json.getString("changeReviewTime");
-                                        createTime = Dates.stampToDates(createTime);
+                                        createTime = json.getString("createTime");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         createTime = "";
@@ -173,7 +183,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     }
                                     String orgId;
                                     try {
-                                        orgId = json.getString("orgId");
+                                        orgId = json.getString("org_id");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgId = "";
@@ -193,7 +203,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         unfinish = "";
                                     }
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,"", false));
                                 }
                                 mAdapter.getData(mData);
                                 home_frag_img.setVisibility(View.GONE);

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.activity.home;
+package com.example.administrator.newsdf.fragment.homepage;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -28,8 +28,10 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.Adapter.Imageloaders;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
+import com.example.administrator.newsdf.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -43,6 +45,7 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
+import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -70,12 +73,12 @@ import okhttp3.Response;
  * update: 2018/2/6 0006
  * version:
  */
-public class AllListmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class CommentmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
     private TextView Titlew, deleteSearch;
     private EditText searchEditext;
-    private String id, wbsid, intentBack, name, titles;
+    private String id, wbsid, name, titles;
     //
     private String notall = "3", nodeiD = "1";
 
@@ -111,6 +114,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
+    PostRequest PostRequest;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -120,13 +124,12 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(BaseApplication.getInstance());
-        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
+        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
         mContext = getApplicationContext();
         Intent intent = getIntent();
         try {
             id = intent.getExtras().getString("orgId");
             wbsid = intent.getExtras().getString("orgId");
-            intentBack = intent.getExtras().getString("back");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -200,7 +203,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
+                            .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
                     page = 1;
@@ -214,7 +217,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 return false;
             }
         });
-        searchEditext.setOnFocusChangeListener(new android.view.View.
+        searchEditext.setOnFocusChangeListener(new View.
                 OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -240,7 +243,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 searchEditext.clearFocus();//失去焦点
                 ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
+                        .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
                                 .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 //打开弹出框
                 MeunPop();
@@ -267,7 +270,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         // 触摸移动时的操作
                         searchEditext.clearFocus();//失去焦点
                         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
+                                .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
                                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         break;
                     default:
@@ -277,12 +280,38 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             }
         });
 
-        okgoall(null, null, page);
-        OrganizationEntity bean = new OrganizationEntity(wbsid, "",
-                name, "0", false,
-                true, "3,5", "",
-                "", "", name, "", true);
-        organizationList.add(bean);
+
+        PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
+        PostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                mTreeDatas.clear();
+                if (s.contains("data")) {
+                    getWorkOrganizationList(s);
+                } else {
+                    ToastUtils.showLongToast("数据加载失败");
+                }
+                Dates.disDialog();
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+            }
+        });
+        okgoall(null, null, pages);
+
+    }
+
+    /**
+     * 解析组织机构对象
+     *
+     * @param result
+     * @return
+     */
+    private void getWorkOrganizationList(String result) {
+        organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
     }
 
@@ -301,7 +330,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                mTreeAdapter.getStatus("all");
+                mTreeAdapter.getStatus("Comment");
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -313,7 +342,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private void initEvent() {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
-            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+            public void onClick(Node node, int position) {
                 //判断是否是字节点，
                 if (node.isLeaf()) {
                 } else {
@@ -335,15 +364,16 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //wsb树的数据
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
-        Dates.getDialogs(AllListmessageActivity.this, "请求数据中");
-        OkGo.post(Requests.WBSTress)
-                .params("nodeid", id)
+        Dates.getDialogs(CommentmessageActivity.this, "请求数据中");
+        OkGo.get(Requests.GETMYTREE)
+                .params("parentId", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
                 .params("type", type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
+                        ToastUtils.showLongToast("第一次");
                         addOrganizationList(result);
                     }
 
@@ -389,14 +419,9 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         switch (id) {
             //返回
             case R.id.com_back:
-                if (intentBack != null) {
-                    finish();
-                } else {
-                    finish();
-                }
+                finish();
                 break;
             case R.id.search_img:
-
                 break;
             default:
                 break;
@@ -430,13 +455,12 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switch (v.getId()) {
                     case R.id.pop_computer:
                         drawerLayout.openDrawer(GravityCompat.END);
                         break;
                     case R.id.pop_All:
-                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
+                        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
@@ -449,7 +473,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         }
                         break;
                     case R.id.pop_financial:
-                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
+                        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
@@ -463,7 +487,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
                         break;
                     case R.id.pop_manage:
-                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
+                        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
@@ -511,6 +535,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     //暴露给adapter调用
     public void switchAct(Node node) {
+        ToastUtils.showLongToast("ss");
         if (node.iswbs()) {
             drawerLayout.closeDrawer(drawerContent);
             titles = node.getTitle();
@@ -587,7 +612,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
-        taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
+        taskAdapter = new TaskPhotoAdapter(imagePaths, CommentmessageActivity.this);
         //图册listview
         drawerLayoutList.setAdapter(taskAdapter);
         //抽屉控件打开后背景颜色
@@ -619,7 +644,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                if (jsonArray1.length()!=0) {
+                if (jsonArray1.length() != 0) {
                     for (int i = 0; i < jsonArray1.length(); i++) {
                         JSONObject json = jsonArray1.getJSONObject(i);
                         JSONObject json1 = new JSONObject();
@@ -745,7 +770,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
-                }else {
+                } else {
                     if (!swip) {
                         Alldata.clear();
                     }
@@ -812,31 +837,15 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
-        PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("content", content);
-        //如果==3 那么就不传
-        if (notall == "3") {
+        PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST);
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew",pages);
+                    LogUtil.i("comment",s);
                     parsingjson(s);
                 }
             });
-        } else {
-            mPostRequest.params("msgStatus", notall)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            parsingjson(s);
-                        }
-                    });
-        }
+
     }
 }
 

@@ -388,112 +388,124 @@ public class WorkFragment extends Fragment {
                         compangbrightList.clear();
                         groupbridhtList.clear();
                         projectbrightList.clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject json = jsonArray.getJSONObject(i);
-                                String id;
-                                try {
-                                    id = json.getString("id");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    id = "";
-                                }
-                                String orgId;
-                                try {
-                                    orgId = json.getString("orgId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    orgId = "";
-                                }
-                                String orgName;
-                                try {
-                                    orgName = json.getString("detectionName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    orgName = "";
-                                }
-                                String taskName;
-                                try {
-                                    taskName = json.getString("taskName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    taskName = "";
-                                }
-                                String taskId;
-                                try {
-                                    taskId = json.getString("taskId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    taskId = "";
-                                }
-                                String leadername;
-                                try {
-                                    leadername = json.getString("leaderName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    leadername = "";
-                                }
-                                String leaderImg;
-                                try {
-                                    leaderImg = json.getString("leaderImg");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    leaderImg = "";
-                                }
-                                ArrayList<String> ImagePaths = new ArrayList<String>();
-                                try {
+                        if (s.contains("data")) {
 
-                                    JSONArray filePaths = json.getJSONArray("filePaths");
-                                    for (int j = 0; j < filePaths.length(); j++) {
-                                        String path = Requests.networks + filePaths.get(j);
-                                        ImagePaths.add(path);
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id;
+                                    try {
+                                        id = json.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        id = "";
+                                    }
+                                    String orgId;
+                                    try {
+                                        orgId = json.getString("orgId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        orgId = "";
+                                    }
+                                    String orgName;
+                                    try {
+                                        orgName = json.getString("detectionName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        orgName = "";
+                                    }
+                                    String taskName;
+                                    try {
+                                        taskName = json.getString("taskName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        taskName = "";
+                                    }
+                                    String taskId;
+                                    try {
+                                        taskId = json.getString("taskId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        taskId = "";
+                                    }
+                                    String leadername;
+                                    try {
+                                        leadername = json.getString("leaderName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        leadername = "";
+                                    }
+                                    String leaderImg;
+                                    try {
+                                        leaderImg = json.getString("leaderImg");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        leaderImg = "";
+                                    }
+                                    ArrayList<String> ImagePaths = new ArrayList<String>();
+                                    try {
+
+                                        JSONArray filePaths = json.getJSONArray("filePaths");
+                                        for (int j = 0; j < filePaths.length(); j++) {
+                                            String path = Requests.networks + filePaths.get(j);
+                                            ImagePaths.add(path);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    int type = json.getInt("type");
+                                    //判断type。
+                                    if (type == 1) {
+                                        //集团的
+                                        groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
+                                    } else if (type == 2) {
+                                        //公司的
+                                        compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
+                                    } else {
+                                        //项目的
+                                        projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
+                                    }
                                 }
 
-                                int type = json.getInt("type");
-                                //判断type。
-                                if (type == 1) {
-                                    //集团的
-                                    groupbridhtList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
-                                } else if (type == 2) {
-                                    //公司的
-                                    compangbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
-                                } else {
-                                    //项目的
-                                    projectbrightList.add(new work_fr_bright_bean(id, orgId, taskName, orgName, taskId, leadername, leaderImg, type, ImagePaths));
+                                if (groupbridhtList.size() == 0 && compangbrightList.size() == 0 && projectbrightList.size() == 0) {
+                                    //如果返回的数据为空，定时器不启动
+                                    closeTimer();
                                 }
-                            }
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
-                            if (groupbridhtList.size() != 0) {
-                                bridhtGroup.setVisibility(View.VISIBLE);
-                                brightViewpagerAdapter.getData(groupbridhtList);
-                            } else {
-                                bridhtGroup.setVisibility(View.GONE);
-                            }
+                                if (groupbridhtList.size() != 0) {
+                                    bridhtGroup.setVisibility(View.VISIBLE);
+                                    brightViewpagerAdapter.getData(groupbridhtList);
+                                } else {
+                                    bridhtGroup.setVisibility(View.GONE);
+                                }
 
-                            if (compangbrightList.size() != 0) {
-                                bridhtcompanyAdapter.getData(compangbrightList);
-                                bridhtCompany.setVisibility(View.VISIBLE);
-                            } else {
-                                bridhtCompany.setVisibility(View.GONE);
-                            }
+                                if (compangbrightList.size() != 0) {
+                                    bridhtcompanyAdapter.getData(compangbrightList);
+                                    bridhtCompany.setVisibility(View.VISIBLE);
+                                } else {
+                                    bridhtCompany.setVisibility(View.GONE);
+                                }
 
-                            if (projectbrightList.size() != 0) {
-                                bridhtprojectAdapter.getData(projectbrightList);
-                                bridhtProject.setVisibility(View.VISIBLE);
-                            } else {
-                                bridhtProject.setVisibility(View.GONE);
-                            }
+                                if (projectbrightList.size() != 0) {
+                                    bridhtprojectAdapter.getData(projectbrightList);
+                                    bridhtProject.setVisibility(View.VISIBLE);
+                                } else {
+                                    bridhtProject.setVisibility(View.GONE);
+                                }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            //如果返回的数据为空，定时器不启动
+                            closeTimer();
                         }
                     }
+
 
                 });
     }

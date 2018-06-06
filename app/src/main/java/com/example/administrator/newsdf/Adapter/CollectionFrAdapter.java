@@ -57,6 +57,15 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
+        if (mOnItemClickListener != null) {
+            holder.layout_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
 //        //item正文点击事件
 //        holder.layout_content.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -114,21 +123,14 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         //前面圆圈
         holder.home_item_img.setText(mDatas.get(position).getOrgname());
         //所属组织
-        holder.home_item_name.setText(mDatas.get(position).getUnfinish());
+        holder.home_item_name.setText(mDatas.get(position).getOrgname());
         //最后一条消息
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
-        holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
-        //消息量
+       String str= mDatas.get(position).getCreaeTime();
+        str=str.substring(0,11);
+        holder.home_item_time.setText(str);
         holder.home_item_message.setVisibility(View.GONE);
-        //判断是否有消息
-        String message = mDatas.get(position).getUnfinish();
-        try {
-            Unfinish = Integer.parseInt(message);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -217,5 +219,13 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         mDatas = shops;
         notifyDataSetChanged();
     }
+    private OnItemClickListener mOnItemClickListener;//声明接口
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
 }

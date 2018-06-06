@@ -48,6 +48,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     private LeftSlideView mMenu = null;
     private int Unfinish;
     private static final int MAX = 99;
+    private static final String isfavorite = "0";
 
     public AllMessageAdapter(Context context) {
         mContext = context;
@@ -92,6 +93,13 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         holder.home_item_message.setText(mDatas.get(position).getUnfinish());
         //判断是否有消息
         String message = mDatas.get(position).getUnfinish();
+        if (mDatas.get(position).getIsfavorite() == isfavorite) {
+            holder.tv_set.setBackgroundResource(R.color.Orange);
+            holder.tv_set.setText("收藏");
+        } else {
+            holder.tv_set.setBackgroundResource(R.color.back);
+            holder.tv_set.setText("已收藏");
+        }
         try {
             Unfinish = Integer.parseInt(message);
         } catch (NumberFormatException e) {
@@ -152,28 +160,31 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //添加收藏
-                OkGo.post(Requests.WBSSAVE)
-                        .params("wbsId", mDatas.get(position).getOrgid())
-                        .params("type", 1)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    int ret = jsonObject.getInt("ret");
-                                    ToastUtils.showLongToast(jsonObject.getString("msg"));
-                                    if (ret==0){
-                                        holder.tv_set.setBackgroundResource(R.color.back);
-                                        holder.tv_set.setText("已收藏");
+                String Isfavorite = mDatas.get(position).getIsfavorite();
+                if (Isfavorite == "0") {
+                    //添加收藏
+                    OkGo.post(Requests.WBSSAVE)
+                            .params("wbsId", mDatas.get(position).getOrgid())
+                            .params("type", 1)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                        if (ret == 0) {
+                                            holder.tv_set.setBackgroundResource(R.color.back);
+                                            holder.tv_set.setText("已收藏");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        });
-
-
+                            });
+                }else {
+                    ToastUtils.showLongToast("在收藏界面取消收藏");
+                }
             }
         });
 
@@ -202,7 +213,6 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
             //置顶
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
             tv_set = (TextView) itemView.findViewById(R.id.tv_set);
-
             //控制布局在界面的宽度
             layout_content = itemView.findViewById(R.id.layout_content);
             //控制布局大小

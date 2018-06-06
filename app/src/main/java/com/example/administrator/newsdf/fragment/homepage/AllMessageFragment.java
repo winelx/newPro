@@ -135,7 +135,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
      */
     public void Okgo() {
         putTop();
-
         OkGo.post(Requests.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
@@ -162,6 +161,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                         createTime = "";
                                     }
                                     String id = json.getString("id");
+                                    String isfavorite = json.getString("isfavorite");
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
@@ -169,14 +169,14 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                     if (placedTop.size() > 0) {
                                         //判断当前id是否在数据库
                                         if (placedTop.contains(id)) {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, true));
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, true));
                                         } else {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
 
                                         }
                                     } else {
                                         //没有数据，那么所有数据都是未置顶的
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, false));
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
                                     }
                                 }
                                 //将数据重新排序，将置顶的放在集合前面

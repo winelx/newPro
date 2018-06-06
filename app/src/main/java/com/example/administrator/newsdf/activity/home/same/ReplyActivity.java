@@ -398,6 +398,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -441,6 +442,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+
                         dialog.dismiss();
                     }
 
@@ -460,7 +462,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             //wbs结构
             case R.id.reply_wbs:
-              Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
+                Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
                 //标签，用来判读该进入那个界面，
                 intent.putExtra("data", "reply");
                 intent.putExtra("wbsID", wbsID);

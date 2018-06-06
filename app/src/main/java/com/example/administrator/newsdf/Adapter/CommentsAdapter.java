@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Utils;
@@ -29,7 +30,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     private LeftSlideView mMenu = null;
 
     public CommentsAdapter(Context context) {
-        mContext = context;
+        mContext = MainActivity.getInstance();
     }
 
     int number;
@@ -45,30 +46,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-//        //item正文点击事件
-//        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //判断是否有删除菜单打开
-//                if (menuIsOpen()) {
-//                    closeMenu();//关闭菜单
-//                } else {
-//                    Intent intent = new Intent(mContext, MineListmessageActivity.class);
-//                    intent.putExtra("name", mDatas.get(position).getOrgname());
-//                    intent.putExtra("back", mDatas.get(position).getOrgname());
-//                    intent.putExtra("orgId", mDatas.get(position).getOrgid());
-//                    mContext.startActivity(intent);
-//                }
-//            }
-//        });
-
+        if (mOnItemClickListener != null) {
+            holder.layout_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
         /**
          *
          *
          * 有状态未添加
          */
         //判断是否有消息
-            holder.home_item_message.setVisibility(View.GONE);
+        holder.home_item_message.setVisibility(View.GONE);
         int Random = (int) (Math.random() * 4) + 1;
         if (Random == 1) {
             holder.home_item_img.setBackgroundResource(R.drawable.home_item_blue);
@@ -82,17 +75,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         //前面圆圈
         holder.home_item_img.setText(mDatas.get(position).getOrgname());
         //所属组织
-        holder.home_item_name.setText(mDatas.get(position).getUnfinish());
+        holder.home_item_name.setText(mDatas.get(position).getOrgname());
         //最后一条消息
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
-        String str = mDatas.get(position).getUnfinish();
-        try {
-            number = Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -101,6 +89,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.home_fragment_item, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
+
         return holder;
     }
 
@@ -187,4 +176,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         notifyDataSetChanged();
     }
 
+
+
+    private OnItemClickListener mOnItemClickListener;//声明接口
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
 }
