@@ -611,7 +611,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         String wbsId;
         String createTime;
         String groupName;
-        int isFinish;//状态
+        int isFinish = 0;//状态
         if (!swip) {
             Alldata.clear();
         }
@@ -619,7 +619,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                if (jsonArray1.length()!=0) {
+                if (jsonArray1.length() != 0) {
                     for (int i = 0; i < jsonArray1.length(); i++) {
                         JSONObject json = jsonArray1.getJSONObject(i);
                         JSONObject json1 = new JSONObject();
@@ -664,7 +664,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                             e.printStackTrace();
                             taskId = "";
                         }
-
                         try {
                             isFinish = json.getInt("isFinish");
                         } catch (JSONException e) {
@@ -745,7 +744,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
-                }else {
+                } else {
                     if (!swip) {
                         Alldata.clear();
                     }
@@ -824,7 +823,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew",pages);
+                    LogUtil.i("sesfdsew", pages);
                     parsingjson(s);
                 }
             });

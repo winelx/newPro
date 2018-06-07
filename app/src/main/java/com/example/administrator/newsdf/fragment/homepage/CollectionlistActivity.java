@@ -66,7 +66,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:全部消息的列表界面，
+ * description:收藏的列表界面，
  *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:43
@@ -114,7 +114,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
-    PostRequest PostRequest;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -282,28 +282,12 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             }
         });
 
-
-        PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
-        PostRequest.execute(new StringCallback() {
-            @Override
-            public void onSuccess(String s, Call call, Response response) {
-                mTreeDatas.clear();
-                if (s.contains("data")) {
-                    getWorkOrganizationList(s);
-                } else {
-                    ToastUtils.showLongToast("数据加载失败");
-                }
-                Dates.disDialog();
-            }
-
-            @Override
-            public void onError(Call call, Response response, Exception e) {
-                super.onError(call, response, e);
-                Dates.disDialog();
-            }
-        });
-
-
+        OrganizationEntity bean = new OrganizationEntity(wbsid, "",
+                name, "0", false,
+                true, "3,5", "",
+                "", "", name, "", true);
+        organizationList.add(bean);
+        getOrganization(organizationList);
     }
 
     /**
@@ -332,7 +316,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                mTreeAdapter.getStatus("Comment");
+                mTreeAdapter.getStatus("Collect");
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -367,15 +351,14 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(CollectionlistActivity.this, "请求数据中");
-        OkGo.get(Requests.GETMYTREE)
-                .params("parentId", id)
+        OkGo.get(Requests.FavoriteWbsTree)
+                .params("orgId", id)
                 .params("iswbs", iswbs)
                 .params("isparent", isparent)
                 .params("type", type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-                        ToastUtils.showLongToast("第一次");
                         addOrganizationList(result);
                     }
 
@@ -535,22 +518,21 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         }
     }
 
-    //暴露给adapter调用
+    /**
+     * 暴露给图册adapter调用
+     */
     public void switchAct(Node node) {
-        ToastUtils.showLongToast("ss");
-        if (node.iswbs()) {
-            drawerLayout.closeDrawer(drawerContent);
-            titles = node.getTitle();
-            Titlew.setText(node.getName());
-            nodeiD = node.getId();
-            circle.setVisibility(View.VISIBLE);
-            swip = false;
-            page = 1;
-            pages = 1;
-            HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-            uslistView.setSelection(0);
-            okgoall(nodeiD, null, pages);
-        }
+        drawerLayout.closeDrawer(drawerContent);
+        titles = node.getTitle();
+        Titlew.setText(node.getName());
+        nodeiD = node.getId();
+        circle.setVisibility(View.VISIBLE);
+        swip = false;
+        HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+        uslistView.setSelection(0);
+        page = 1;
+        pages = 1;
+        okgoall(node.getId(), null, pages);
     }
 
     //初始化集合
@@ -573,8 +555,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         circle = (CircleImageView) findViewById(R.id.fab);
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
@@ -851,7 +831,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew",s);
+                    LogUtil.i("sesfdsew", s);
                     parsingjson(s);
                 }
             });
@@ -860,7 +840,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtil.i("sesfdsew",s);
+                            LogUtil.i("sesfdsew", s);
                             parsingjson(s);
                         }
                     });

@@ -48,6 +48,7 @@ import com.example.administrator.newsdf.utils.ScreenUtil;
 import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -66,7 +67,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:全部消息的列表界面，
+ * description:评论列表界面，
  *
  * @author: lx
  * date: 2018/2/6 0006 上午 9:43
@@ -139,6 +140,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         //初始化控件
         findbyId();
         initData();
+        okgoall(null, null, pages);
         /**
          *    侧拉listview上拉加载
          */
@@ -300,7 +302,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 Dates.disDialog();
             }
         });
-        okgoall(null, null, pages);
+
 
     }
 
@@ -535,20 +537,19 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     //暴露给adapter调用
     public void switchAct(Node node) {
-        ToastUtils.showLongToast("ss");
-        if (node.iswbs()) {
-            drawerLayout.closeDrawer(drawerContent);
-            titles = node.getTitle();
-            Titlew.setText(node.getName());
-            nodeiD = node.getId();
-            circle.setVisibility(View.VISIBLE);
-            swip = false;
-            page = 1;
-            pages = 1;
-            HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-            uslistView.setSelection(0);
-            okgoall(nodeiD, null, pages);
-        }
+
+        drawerLayout.closeDrawer(drawerContent);
+        titles = node.getTitle();
+        Titlew.setText(node.getName());
+        nodeiD = node.getId();
+        circle.setVisibility(View.VISIBLE);
+        swip = false;
+        page = 1;
+        pages = 1;
+        HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+        uslistView.setSelection(0);
+        okgoall(nodeiD, null, pages);
+
     }
 
     //初始化集合
@@ -643,10 +644,11 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                if (jsonArray1.length() != 0) {
-                    for (int i = 0; i < jsonArray1.length(); i++) {
-                        JSONObject json = jsonArray1.getJSONObject(i);
+                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                JSONArray jsonArray = jsonObject1.getJSONArray("results");
+                if (jsonArray.length() != 0) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = jsonArray.getJSONObject(i);
                         JSONObject json1 = new JSONObject();
                         JSONArray json2 = new JSONArray();
                         try {
@@ -691,7 +693,12 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                         }
 
                         try {
-                            isFinish = json.getInt("isFinish");
+                            int status = Integer.parseInt(json.getString("status"));
+                            if (status == 2) {
+                                isFinish = 1;
+                            } else {
+                                isFinish = 0;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             isFinish = 0;
@@ -837,14 +844,16 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
-        PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST);
-            mPostRequest.execute(new StringCallback() {
-                @Override
-                public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("comment",s);
-                    parsingjson(s);
-                }
-            });
+        GetRequest mPostRequest = OkGo.<String>get(Requests.GETMyPAGELIST)
+                .params("page", pages)
+                .params("rows", 20);
+        mPostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                LogUtil.i("comment", s);
+                parsingjson(s);
+            }
+        });
 
     }
 }

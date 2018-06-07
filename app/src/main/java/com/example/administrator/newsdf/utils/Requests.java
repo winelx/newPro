@@ -188,12 +188,15 @@ public class Requests {
  //评论列表
  public static final String GETMyPAGELIST= networks + "iface/mobile/wbs/cacheable/getMyPageList";
  //收藏列表
- public static final String FAVORITETASKMSGBYWBS = networks + "iface/mobile/taskmsg/findFavoriteTaskMsgByWbs";
+  public static final String FAVORITETASKMSGBYWBS = networks + "iface/mobile/taskmsg/findFavoriteTaskMsgByWbs";
   /**
    * 标段收藏
    */
   public static final String WBSSAVE=networks +"/iface/mobile/wbs/favorite/save";
-
+/**
+ * 收藏列表界面的tree
+ */
+public static final String FavoriteWbsTree=networks+"iface/mobile/taskmain/selectFavoriteWbsTree";
  /**
   * 评论列表界面tree
   */

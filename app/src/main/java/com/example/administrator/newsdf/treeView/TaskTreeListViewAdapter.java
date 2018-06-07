@@ -11,10 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
+import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.activity.work.PopwindActivity;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
+import com.example.administrator.newsdf.fragment.homepage.CollectionlistActivity;
 import com.example.administrator.newsdf.fragment.homepage.CommentmessageActivity;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -124,6 +125,11 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                     case "Comment":
                         CommentmessageActivity Commentmessage = (CommentmessageActivity) mContext;
                         Commentmessage.switchAct(node);
+                        break;
+                    case "Collect":
+                        CollectionlistActivity Collectionlist = (CollectionlistActivity) mContext;
+                        Collectionlist.switchAct(node);
+
                     default:
 
                         break;
