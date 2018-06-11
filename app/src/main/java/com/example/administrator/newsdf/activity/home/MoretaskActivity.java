@@ -22,7 +22,6 @@ import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -80,7 +79,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
      * 判断状态，是上拉还是下拉
      */
     private boolean drew = true;
-    private String wbsName;
+    private String wbsName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,9 +302,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                     isread = "";
                 }
-                //wbsname
-
-
                 //创建人ID
                 String createByUserID;
                 try {
@@ -334,7 +330,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 String content;
                 try {
                     content = jsonArray.getString("content");
-                    LogUtil.i("ss", content);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     content = "";
@@ -364,7 +359,13 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         String ids = json.getString("id");
                         String partContent = json.getString("partContent");
                         String uploadName = json.getString("uploadName");
-                        String uploadTime = Dates.stampToDate(json.getString("uploadTime"));
+                        String uploadTime="";
+//                        try {
+//                            String updata=json.getString("uploadTime");
+//                             uploadTime = Dates.stampToDate(updata);
+//                        } catch (JSONException e) {
+//                            uploadTime="";
+//                        }
                         String portrait = json.getString("portrait");
                         Dats.add(new MoretasklistBean(uploadTime, uploadName, partContent, portrait, ids));
                     }
@@ -387,7 +388,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 }
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);
-                wbsNode.setText(wbsName);
+                wbsNode.setText(Data.getString("WbsName"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

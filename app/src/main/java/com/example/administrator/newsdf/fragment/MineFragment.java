@@ -14,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.LoginActivity;
 import com.example.administrator.newsdf.activity.mine.AboutmeActivity;
@@ -27,19 +25,17 @@ import com.example.administrator.newsdf.activity.mine.SettingActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.AppUtils;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -64,8 +60,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private SPUtils spUtils;
     private Dates dates;
     private TextView mine_organization, staffName;
-    private List<Shop> list;
-    private Intent intent;
+
     String version;
     private TextView mine_uploading;
     private WbsDialog selfDialog;
@@ -75,6 +70,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mine, null);
+            SmartRefreshLayout smartRefreshLayout = rootView.findViewById(R.id.mineRefreshLayout);
+            smartRefreshLayout.setEnableLoadmore(false);//禁止上拉
+            smartRefreshLayout.setEnableRefresh(false);
+            smartRefreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+            smartRefreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
             //我的组织
             rootView.findViewById(R.id.organizationa).setOnClickListener(this);
             //项目成员
@@ -131,8 +131,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         mine_organization.setText(SPUtils.getString(mContext, "username", ""));
         //组织
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
-        list = new ArrayList<>();
-        list = LoveDao.queryLove();
+
     }
 
 
@@ -168,7 +167,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
                     @Override
                     public void gotResult(int i, String s, Set<String> set) {
-                        LogUtil.d("tag", "set Alias result is" + i);
                     }
                 });
                 startActivity(new Intent(mContext, LoginActivity.class));
@@ -266,7 +264,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                                     if (lenght < 0) {
                                         ToastUtils.showShortToast("有新版本需要更新");
                                         mine_uploading.setVisibility(View.VISIBLE);
-                                      show(filePath);
+                                        show(filePath);
                                     }
                                 }
                             } catch (JSONException e) {

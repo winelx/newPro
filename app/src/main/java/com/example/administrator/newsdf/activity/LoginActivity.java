@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
+
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -230,10 +231,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
+            Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+            MyIntent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(MyIntent);
+            finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
             return true;
         }
         return super.onKeyDown(keyCode, event);

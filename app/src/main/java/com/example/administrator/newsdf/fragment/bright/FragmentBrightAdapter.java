@@ -49,6 +49,7 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
+
     @Override
     public Parcelable saveState() {
         return null;

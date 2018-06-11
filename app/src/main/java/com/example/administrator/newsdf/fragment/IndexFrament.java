@@ -73,8 +73,8 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new AllMessageFragment());
         fragments.add(new HomeMineFragment());
-        fragments.add(new CollectionFragment());
         fragments.add(new CommentsFragment());
+        fragments.add(new CollectionFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getChildFragmentManager(), fragments);
         //设定适配器
         homeageViewpager.setAdapter(adapter);
@@ -105,10 +105,10 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
                         homeMine();
                         break;
                     case 2:
-                        homeCollection();
+                        homeComments();
                         break;
                     case 3:
-                        homeComments();
+                        homeCollection();
                         break;
                     default:
                         break;
@@ -151,7 +151,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
 
     //推送消息后更新界面
     @Override
-    public void doSomeThing(String string) {
+    public void doSomeThing() {
         Message message = new Message();
         message.what = 1;
         handler.sendMessage(message);
@@ -174,15 +174,17 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
     private void homeCollection() {
         homepageAll.setTextColor(Color.parseColor("#646464"));
         homepageMine.setTextColor(Color.parseColor("#646464"));
-        homepageCollection.setTextColor(Color.parseColor("#F27F19"));
-        homepageComments.setTextColor(Color.parseColor("#646464"));
+        homepageCollection.setTextColor(Color.parseColor("#646464"));
+        homepageComments.setTextColor(Color.parseColor("#F27F19"));
+
     }
 
     private void homeComments() {
+
         homepageAll.setTextColor(Color.parseColor("#646464"));
         homepageMine.setTextColor(Color.parseColor("#646464"));
-        homepageCollection.setTextColor(Color.parseColor("#646464"));
-        homepageComments.setTextColor(Color.parseColor("#F27F19"));
+        homepageCollection.setTextColor(Color.parseColor("#F27F19"));
+        homepageComments.setTextColor(Color.parseColor("#646464"));
     }
 
     @Override

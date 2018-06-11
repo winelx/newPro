@@ -49,6 +49,7 @@ public class WorkBrightComFrament extends Fragment {
     private TextView content;
     private ImageView brightmark;
     List<String> path;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

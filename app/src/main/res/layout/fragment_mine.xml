@@ -1,455 +1,448 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mineRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back"
-    android:orientation="vertical">
+    android:background="@color/back">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
+            android:background="@mipmap/mine_toolbar_bg"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@mipmap/mine_toolbar_bg"
-                android:orientation="vertical">
+                android:id="@+id/mine_setting"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:visibility="gone">
 
-                <RelativeLayout
-                    android:id="@+id/mine_setting"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:visibility="gone">
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/mine_setting" />
-                </RelativeLayout>
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/mine_avatar"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="40dp"
-                    android:src="@mipmap/mine_avatar" />
-
-                <TextView
-                    android:id="@+id/staffName"
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/mine_avatar"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/mine_setting" />
+            </RelativeLayout>
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mine_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:src="@mipmap/mine_avatar" />
+
+            <TextView
+                android:id="@+id/staffName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mine_avatar"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+
+                android:textColor="@color/writer"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/staffName"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="所属组织："
                     android:textColor="@color/writer"
                     android:textSize="15sp" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/mine_organization"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/staffName"
-                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="所属组织："
-                        android:textColor="@color/writer"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/mine_organization"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textColor="@color/writer"
-                        android:textSize="15sp" />
-                </LinearLayout>
+                    android:textColor="@color/writer"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
 
-            </RelativeLayout>
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/organizationa"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/writer">
+        <RelativeLayout
+            android:id="@+id/organizationa"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/writer">
 
-                <ImageView
-                    android:id="@+id/mine_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/organizationalmanagement" />
+            <ImageView
+                android:id="@+id/mine_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/organizationalmanagement" />
 
-                <TextView
-                    android:id="@+id/mine_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img"
-                    android:layout_toRightOf="@+id/mine_img"
-                    android:text="@string/switchorganization"
-                    android:textColor="#323232" />
+            <TextView
+                android:id="@+id/mine_text"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img"
+                android:layout_toRightOf="@+id/mine_img"
+                android:text="@string/switchorganization"
+                android:textColor="#323232" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back" />
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-            <RelativeLayout
-                android:id="@+id/projectmember"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
+        <RelativeLayout
+            android:id="@+id/projectmember"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
-                <ImageView
-                    android:id="@+id/mine_img2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginStart="20dp"
-                    android:background="@mipmap/projectmember" />
+            <ImageView
+                android:id="@+id/mine_img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@mipmap/projectmember" />
 
-                <TextView
-                    android:id="@+id/mine_text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img2"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img2"
-                    android:layout_toRightOf="@+id/mine_img2"
-                    android:text="@string/ProjectMembers"
-                    android:textColor="#323232" />
+            <TextView
+                android:id="@+id/mine_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img2"
+                android:layout_toRightOf="@+id/mine_img2"
+                android:text="@string/ProjectMembers"
+                android:textColor="#323232" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text2"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text2"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
+        <RelativeLayout
+            android:id="@+id/changepassword"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
-            <RelativeLayout
-                android:id="@+id/changepassword"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
+            <ImageView
+                android:id="@+id/mine_img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:background="@mipmap/changepassword" />
 
-                <ImageView
-                    android:id="@+id/mine_img3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="21dp"
-                    android:layout_marginStart="21dp"
-                    android:background="@mipmap/changepassword" />
+            <TextView
+                android:id="@+id/mine_text3"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img3"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img3"
+                android:layout_toRightOf="@+id/mine_img3"
+                android:text="@string/Modifypass"
+                android:textColor="#323232" />
 
-                <TextView
-                    android:id="@+id/mine_text3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img3"
-                    android:layout_toRightOf="@+id/mine_img3"
-                    android:text="@string/Modifypass"
-                    android:textColor="#323232" />
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text3"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text3"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back"/>
+        <RelativeLayout
 
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer"
+            android:visibility="gone">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/mine_img4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/systemsettings" />
 
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer"
-                android:visibility="gone">
+            <TextView
+                android:id="@+id/mine_text4"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img4"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img4"
+                android:layout_toRightOf="@+id/mine_img4"
+                android:text="系统设置"
+                android:textColor="#323232" />
 
-                <ImageView
-                    android:id="@+id/mine_img4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/systemsettings" />
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text4"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="30sp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/mine_text4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img4"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img4"
-                    android:layout_toRightOf="@+id/mine_img4"
-                    android:text="系统设置"
-                    android:textColor="#323232" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text4"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="30sp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/about_us"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back"/>
+            <ImageView
+                android:id="@+id/mine_img5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/aboutus" />
 
-            <RelativeLayout
-                android:id="@+id/about_us"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
+            <TextView
+                android:id="@+id/mine_text5"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img5"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img5"
+                android:layout_toRightOf="@+id/mine_img5"
+                android:text="@string/aboutme"
+                android:textColor="#323232" />
 
-                <ImageView
-                    android:id="@+id/mine_img5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/aboutus" />
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text5"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/mine_text5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img5"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img5"
-                    android:layout_toRightOf="@+id/mine_img5"
-                    android:text="@string/aboutme"
-                    android:textColor="#323232" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text5"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/mine_Thecache"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back" />
+            <ImageView
+                android:id="@+id/mine_img6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/clearcache" />
 
-            <RelativeLayout
-                android:id="@+id/mine_Thecache"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
+            <TextView
+                android:id="@+id/mine_text6"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img6"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img6"
+                android:layout_toRightOf="@+id/mine_img6"
+                android:text="@string/Clearcache"
+                android:textColor="#323232" />
 
-                <ImageView
-                    android:id="@+id/mine_img6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/clearcache" />
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text6"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/mine_text6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img6"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img6"
-                    android:layout_toRightOf="@+id/mine_img6"
-                    android:text="@string/Clearcache"
-                    android:textColor="#323232" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text6"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/newversion"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back" />
+            <ImageView
+                android:id="@+id/version_img7"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/new_version" />
 
-            <RelativeLayout
-                android:id="@+id/newversion"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
+            <TextView
+                android:id="@+id/version_text"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/version_img7"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/version_img7"
+                android:layout_toRightOf="@+id/version_img7"
+                android:text="@string/Checkupdate"
+                android:textColor="#323232" />
 
-                <ImageView
-                    android:id="@+id/version_img7"
-                    android:layout_width="25dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:background="@mipmap/new_version" />
+            <TextView
+                android:id="@+id/mine_uploadings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18sp"
+                android:layout_toEndOf="@+id/version_text"
+                android:layout_toRightOf="@+id/version_text"
+                android:gravity="center"
+                android:text="（当前版本：）"
+                android:textColor="@color/red"
+                android:textSize="8sp" />
 
-                <TextView
-                    android:id="@+id/version_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/version_img7"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/version_img7"
-                    android:layout_toRightOf="@+id/version_img7"
-                    android:text="@string/Checkupdate"
-                    android:textColor="#323232" />
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/version_text"
+                android:layout_marginRight="15dp"
+                android:text="@string/fa_angle_right"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/mine_uploadings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18sp"
-                    android:layout_toEndOf="@+id/version_text"
-                    android:layout_toRightOf="@+id/version_text"
-                    android:gravity="center"
-                    android:text="（当前版本：1.2.1）"
-                    android:textColor="@color/red"
-                    android:textSize="8sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/version_text"
-                    android:layout_marginRight="15dp"
-                    android:text="@string/fa_angle_right"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/BackTo"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
 
+            <ImageView
+                android:id="@+id/mine_img7"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="21dp"
+                android:background="@mipmap/exit" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/back" />
+            <TextView
+                android:id="@+id/mine_text7"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_img7"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_img7"
+                android:layout_toRightOf="@+id/mine_img7"
+                android:text="@string/logout"
+                android:textColor="#323232" />
 
-            <RelativeLayout
-                android:id="@+id/BackTo"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/writer">
-
-                <ImageView
-                    android:id="@+id/mine_img7"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="21dp"
-                    android:background="@mipmap/exit" />
-
-                <TextView
-                    android:id="@+id/mine_text7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignBottom="@+id/mine_img7"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/mine_img7"
-                    android:layout_toRightOf="@+id/mine_img7"
-                    android:text="@string/logout"
-                    android:textColor="#323232" />
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/mine_text7"
-                    android:layout_marginRight="15dp"
-                    android:text="{fa-angle-right}"
-                    android:textColor="@color/inconfy"
-                    android:textSize="25sp" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-</ScrollView>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text7"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

@@ -88,7 +88,9 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
-
+        if (node.isLeaf()){
+            holder.image_ll.setVisibility(View.GONE);
+        }
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +131,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                     case "Collect":
                         CollectionlistActivity Collectionlist = (CollectionlistActivity) mContext;
                         Collectionlist.switchAct(node);
-
                     default:
 
                         break;

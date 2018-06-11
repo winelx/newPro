@@ -70,7 +70,7 @@ public class WorkBrightProFrament extends Fragment {
         multiImageView.setMaxChildCount(5);
         multiImageView.setMoreImgBg(R.mipmap.image_error);
         try {
-            List<String> path =mDataPro.get(pos).getList();
+            List<String> path = mDataPro.get(pos).getList();
             String imagepath = Dates.listToString(path);
             String[] urls = imagepath.split("，");
             multiImageView.setImgs(urls, 5);
@@ -82,7 +82,7 @@ public class WorkBrightProFrament extends Fragment {
             public void callback(int index, String[] str) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
                 String taskId = mDataPro.get(pos).getOrgid();
-                intent.putExtra("TaskId",taskId );
+                intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "true");
                 startActivity(intent);
             }
@@ -91,7 +91,7 @@ public class WorkBrightProFrament extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
-                String taskId =mDataPro.get(pos).getOrgid();
+                String taskId = mDataPro.get(pos).getOrgid();
                 intent.putExtra("TaskId", taskId);
                 intent.putExtra("status", "false");
                 startActivity(intent);

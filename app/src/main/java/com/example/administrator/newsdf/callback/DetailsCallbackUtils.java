@@ -6,7 +6,6 @@ package com.example.administrator.newsdf.callback;
 
 public class DetailsCallbackUtils {
     private static DetailsCallback detailsCallback;
-
     public static void setCallBack(DetailsCallback callBack) {
         detailsCallback = callBack;
     }

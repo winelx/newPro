@@ -79,6 +79,7 @@ public class CameDialog {
                 if (str == null || str.isEmpty()) {
                     ToastUtils.showShortToast("回复不能为空");
                 } else {
+                    Dates.getDialogs(activity,"上传数据中");
                     send.setClickable(false);
                     send.setTextColor(Color.parseColor("#F0F0F0"));
                     files = new ArrayList<>();
@@ -111,6 +112,7 @@ public class CameDialog {
                                             e.printStackTrace();
                                         }
                                         mCameraDialog.dismiss();
+                                        Dates.disDialog();
                                     }
 
                                     @Override
@@ -119,6 +121,7 @@ public class CameDialog {
                                         Dates.disDialog();
                                         send.setClickable(true);
                                         send.setTextColor(Color.parseColor("#5096F8"));
+
                                     }
                                 });
                     } else {

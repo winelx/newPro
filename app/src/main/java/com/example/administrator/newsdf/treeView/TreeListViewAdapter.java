@@ -9,6 +9,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.example.administrator.newsdf.camera.ToastUtils;
+
 import java.util.List;
 
 public abstract class TreeListViewAdapter<T> extends BaseAdapter {
@@ -70,6 +72,8 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
             n.setExpand(!n.isExpand());
             mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
             notifyDataSetChanged();
+        }else {
+            ToastUtils.showLongToast("为空");
         }
     }
 

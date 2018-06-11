@@ -151,7 +151,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+           />
         <activity
             android:name=".activity.work.MmissPushActivity"
             android:screenOrientation="portrait" />

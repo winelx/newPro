@@ -5,5 +5,5 @@ package com.example.administrator.newsdf.callback;
  */
 
 public interface JPushCallBack {
-    void doSomeThing(String string);
+    void doSomeThing();
 }

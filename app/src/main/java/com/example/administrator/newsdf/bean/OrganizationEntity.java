@@ -201,4 +201,6 @@ public class  OrganizationEntity {
     public void setDrawingGroup(boolean drawingGroup) {
         isDrawingGroup = drawingGroup;
     }
+
+
 }

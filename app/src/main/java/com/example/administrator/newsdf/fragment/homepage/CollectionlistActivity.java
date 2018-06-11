@@ -45,7 +45,6 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
-import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -79,7 +78,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private TextView Titlew, deleteSearch;
     private EditText searchEditext;
     private String id, wbsid, name, titles;
-    //
     private String notall = "3", nodeiD = "1";
 
     private CircleImageView circle;
@@ -115,7 +113,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
 
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +126,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         Intent intent = getIntent();
         try {
             id = intent.getExtras().getString("orgId");
-
             wbsid = intent.getExtras().getString("orgId");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
@@ -139,6 +135,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         initArray();
         //初始化控件
         findbyId();
+        //初始化数据
         initData();
         okgoall(null, null, pages);
         /**
@@ -283,21 +280,10 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         });
 
         OrganizationEntity bean = new OrganizationEntity(wbsid, "",
-                name, "0", false,
+                name, "0", true,
                 true, "3,5", "",
                 "", "", name, "", true);
         organizationList.add(bean);
-        getOrganization(organizationList);
-    }
-
-    /**
-     * 解析组织机构对象
-     *
-     * @param result
-     * @return
-     */
-    private void getWorkOrganizationList(String result) {
-        organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
     }
 
@@ -329,33 +315,39 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(Node node, int position) {
-                //判断是否是字节点，
+                //判断是否是子节点，
+                //  如果不是，判断该节点是否有数据，
                 if (node.isLeaf()) {
+                    ToastUtils.showLongToast("不是isLeaf");
                 } else {
-                    //  如果不是，判断该节点是否有数据，
                     if (node.getChildren().size() == 0) {
                         //  如果没有，就请求数据，
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
                             //从拿到该节点的名称和id
-                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
+                            int wbsIndex = 0;
+                            try {
+                                wbsIndex = Integer.parseInt(node.getTitle());
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }
+                            addOrganiztion(node.getId(), node.getPhone(), wbsIndex);
                         }
                     }
+
                 }
             }
         });
     }
 
     //wsb树的数据
-    void addOrganiztion(final String id, final boolean iswbs,
-                        final boolean isparent, String type) {
+    void addOrganiztion(final String orgId, String nodeid, int wbsIndex) {
         Dates.getDialogs(CollectionlistActivity.this, "请求数据中");
         OkGo.get(Requests.FavoriteWbsTree)
-                .params("orgId", id)
-                .params("iswbs", iswbs)
-                .params("isparent", isparent)
-                .params("type", type)
+                .params("orgId", orgId)
+                .params("nodeid", nodeid)
+                .params("wbsIndex", wbsIndex)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
@@ -381,7 +373,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             /**
              * 解析数据
              */
-            addOrganizationList = HomeUtils.parseOrganizationList(result);
+            addOrganizationList = HomeUtils.parseOrganizationLists(result);
             /**
              * 动态添加
              */
@@ -431,7 +423,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     }
 
     //设置pop的点击事件
-
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
@@ -525,17 +516,19 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         drawerLayout.closeDrawer(drawerContent);
         titles = node.getTitle();
         Titlew.setText(node.getName());
-        nodeiD = node.getId();
+        nodeiD = node.getPhone();
         circle.setVisibility(View.VISIBLE);
         swip = false;
         HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
         uslistView.setSelection(0);
         page = 1;
         pages = 1;
-        okgoall(node.getId(), null, pages);
+        okgoall(nodeiD, null, pages);
     }
 
-    //初始化集合
+    /**
+     * 初始化集合
+     */
     private void initArray() {
         Alldata = new ArrayList<>();
         imagePaths = new ArrayList<>();
@@ -544,7 +537,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         organizationList = new ArrayList<>();
     }
 
-    //初始化控件
+    /**
+     * 初始化控件
+     */
     private void findbyId() {
         //获得控件id，初始化id
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
@@ -572,7 +567,10 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         searchEditext = (EditText) findViewById(R.id.search_editext);
     }
 
-    //初始化数据
+
+    /**
+     * //初始化数据
+     */
     private void initData() {
         //关闭边缘滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -601,14 +599,20 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         drawerLayout.setScrimColor(Color.TRANSPARENT);
     }
 
-    //界面亮度
+
+    /**
+     * //界面亮度
+     */
     public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
     }
 
-    //解析json
+    /**
+     * 解析json
+     */
+
     private void parsingjson(String s) {
         String wbsPath;
         String updateDate;
@@ -775,7 +779,10 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         }
     }
 
-    //弹出框
+    /**
+     * /弹出框
+     */
+
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
@@ -791,7 +798,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     }
 
 
-    //请求数据
+    /**
+     * 请求数据
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void smart() {
         String content = searchEditext.getText().toString();

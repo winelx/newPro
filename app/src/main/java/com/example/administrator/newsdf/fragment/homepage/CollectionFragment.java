@@ -1,9 +1,7 @@
 package com.example.administrator.newsdf.fragment.homepage;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +27,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
@@ -76,6 +73,9 @@ public class CollectionFragment extends Fragment implements HideCallback {
         mData = new ArrayList<>();
         Okgo();
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
+        refreshLayout.setEnableLoadmore(false);//禁止上拉
+        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         listView = view.findViewById(R.id.home_list);
         home_frag_img = view.findViewById(R.id.home_frag_img);
         home_img_text = view.findViewById(R.id.home_img_text);
@@ -100,17 +100,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
                 mData.clear();
                 Okgo();
                 refreshlayout.finishRefresh(1200);
-            }
-        });
-        //上拉加载
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
-                //传入false表示加载失败
-                Okgo();
-                refreshlayout.finishLoadmore(800);
             }
         });
         //加载数据
@@ -145,7 +134,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
     //收藏全部任务后刷新该界面
     @Override
     public void deleteTop() {
-
+        Okgo();
     }
 
     public void Okgo() {
@@ -154,6 +143,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         Dates.disDialog();
+                        mData.clear();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -203,7 +193,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         unfinish = "";
                                     }
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish,"", false));
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", false));
                                 }
                                 mAdapter.getData(mData);
                                 home_frag_img.setVisibility(View.GONE);

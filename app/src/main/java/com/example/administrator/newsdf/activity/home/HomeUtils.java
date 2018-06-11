@@ -85,7 +85,7 @@ public class HomeUtils {
                         organization.setIsparent(obj.getBoolean("isParent"));
                     } catch (JSONException e) {
 
-                        organization.setIsparent(false);
+                        organization.setIsparent(true);
                     }
                     try {
                         boolean isParentFlag = obj.getBoolean("isParent");
@@ -161,7 +161,7 @@ public class HomeUtils {
                     OrganizationEntity organization = new OrganizationEntity();
                     try {
                         //节点id
-                        organization.setId(obj.getString("id"));
+                        organization.setId(obj.getString("org_id"));
                     } catch (JSONException e) {
 
                         organization.setId("");
@@ -177,41 +177,36 @@ public class HomeUtils {
                         //组织类型
                         organization.setTypes(obj.getString("type"));
                     } catch (JSONException e) {
-                        organization.setTypes("");
+                        organization.setTypes("3,5");
                     }
-                    try {
-                        //是否swbs
-                        organization.setIswbs(obj.getBoolean("iswbs"));
-                    } catch (JSONException e) {
-                        organization.setIswbs(false);
-                    }
+
+                        organization.setIswbs(true);
+
 
                     try {
                         //是否是父节点
                         organization.setIsparent(obj.getBoolean("isParent"));
                     } catch (JSONException e) {
-
-                        organization.setIsparent(false);
+                        organization.setIsparent(true);
                     }
                     try {
-
-                        int hasChildren = obj.getInt("hasChildren");
-                        if (hasChildren > 0) {
-                            //不是叶子节点
+                        int isParentFlag = obj.getInt("hasChildren");
+                        if (isParentFlag > 0) {
+                            //是叶子节点
                             organization.setIsleaf("0");
                         } else {
-                            //是叶子节点
                             organization.setIsleaf("1");
+                            //不是叶子节点
                         }
                     } catch (JSONException e) {
-
                         organization.setIsleaf("");
                     }
                     try {
                         //组织机构父级节点
-                        organization.setParentId(obj.getString("parentId"));
-                    } catch (JSONException e) {
+                     String str= obj.getString("parent_id");
+                        organization.setParentId(str);
 
+                    } catch (JSONException e) {
                         organization.setParentId("");
                     }
 
@@ -235,12 +230,12 @@ public class HomeUtils {
                     }
                     try {
                         //节点层级
-                        organization.setTitle(obj.getString("title"));
+                        organization.setTitle(obj.getString("wbsIndex"));
                     } catch (JSONException e) {
                         organization.setTitle("");
                     }
                     try {
-                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
+                        organization.setPhone(obj.getString("id"));
                     } catch (JSONException e) {
                         organization.setPhone("");
                     }
@@ -254,6 +249,7 @@ public class HomeUtils {
             }
         }
     }
+
 
     /**
      * 动态添加数据

@@ -24,8 +24,6 @@ import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBack;
 import com.example.administrator.newsdf.callback.CallBackUtils;
-import com.example.administrator.newsdf.callback.CollectionCallback;
-import com.example.administrator.newsdf.callback.CollectionCallbackUtils;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -56,7 +54,7 @@ import okhttp3.Response;
  *         update: 2018/3/16 0016
  *         version:
  */
-public class AllMessageFragment extends Fragment implements CallBack, OgranCallback, CollectionCallback {
+public class AllMessageFragment extends Fragment implements CallBack, OgranCallback {
     private View rootView;
     private RecyclerView listView;
     private AllMessageAdapter mAdapter = null;
@@ -81,7 +79,9 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             home_frag_img = rootView.findViewById(R.id.home_frag_img);
             home_img_text = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
-            //设置在listview上下拉刷新的监听
+            refreshLayout.setEnableLoadmore(false);//禁止上拉
+            refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+            refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         }
 
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
@@ -91,9 +91,10 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         }
         mContext = MainActivity.getInstance();
         //控件处理
+        //推送的接口回调（）
         CallBackUtils.setCallBack(this);
+        //切换组织接口回调（OrganizationaActivity）
         OgranCallbackUtils.setCallBack(this);
-        CollectionCallbackUtils.setCallBack(this);
         init();
         //网络请求
         Okgo();
@@ -134,7 +135,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
      * 网络请求
      */
     public void Okgo() {
-        putTop();
+//        putTop();
         OkGo.post(Requests.TaskMain)
                 .params("isAll", "true")
                 .execute(new StringCallback() {
@@ -165,45 +166,46 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    //判断数据库是否有数据
-                                    if (placedTop.size() > 0) {
-                                        //判断当前id是否在数据库
-                                        if (placedTop.contains(id)) {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, true));
-                                        } else {
-                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
-
-                                        }
-                                    } else {
-                                        //没有数据，那么所有数据都是未置顶的
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
-                                    }
+//                                    //判断数据库是否有数据
+//                                    if (placedTop.size() > 0) {
+//                                        //判断当前id是否在数据库
+//                                        if (placedTop.contains(id)) {
+//                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, true));
+//                                        } else {
+//                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
+//
+//                                        }
+//                                    } else {
+//                                        //没有数据，那么所有数据都是未置顶的
+//                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
+//                                    }
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
                                 }
                                 //将数据重新排序，将置顶的放在集合前面
                                 //是否有数据
                                 if (mData.size() != 0) {
-                                    //数据库是否有数据
-                                    if (placedTop.size() != 0) {
-                                        try {
-                                            //循环集合
-                                            for (int j = 0; j < mData.size(); j++) {
-                                                //取出isputTop
-                                                boolean PutTop = mData.get(j).isPutTop();
-                                                //如果是true
-                                                if (PutTop) {
-                                                    //拿到当前位置数据对象
-                                                    Home_item home_item = mData.get(j);
-                                                    //添加到第一个
-                                                    mData.add(0, home_item);
-                                                    //并删除原来位置的数据，由于先在最前面加了一个，原来的数据的位置就增加了一位
-                                                    mData.remove(j + 1);
-                                                }
-                                            }
-
-                                        } catch (NullPointerException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
+//                                    //数据库是否有数据
+//                                    if (placedTop.size() != 0) {
+//                                        try {
+//                                            //循环集合
+//                                            for (int j = 0; j < mData.size(); j++) {
+//                                                //取出isputTop
+//                                                boolean PutTop = mData.get(j).isPutTop();
+//                                                //如果是true
+//                                                if (PutTop) {
+//                                                    //拿到当前位置数据对象
+//                                                    Home_item home_item = mData.get(j);
+//                                                    //添加到第一个
+//                                                    mData.add(0, home_item);
+//                                                    //并删除原来位置的数据，由于先在最前面加了一个，原来的数据的位置就增加了一位
+//                                                    mData.remove(j + 1);
+//                                                }
+//                                            }
+//
+//                                        } catch (NullPointerException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
                                     //刷新数据
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);
@@ -216,7 +218,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                 e.printStackTrace();
                             }
                         } else {
-
                             ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("数据为空，点击刷新");
@@ -267,21 +268,15 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         }
     }
 
-    //接收适配器的消息，刷新数据
-    @Override
-    public void deleteTop(int pos, String str) {
-        Okgo();
-    }
-
-    @Override
-    public void taskCallback() {
-        Okgo();
-    }
-
-    //收藏界面
+    //接收推送的消息，刷新数据
     @Override
     public void deleteTop() {
         Okgo();
     }
 
+    //切换组织刷新界面
+    @Override
+    public void taskCallback() {
+        Okgo();
+    }
 }

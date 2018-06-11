@@ -7,7 +7,7 @@ package com.example.administrator.newsdf.utils;
  */
 public class Requests {
     //公共头  192.168.20.38
-   public static final String networks = "http://192.168.20.33:8080/";
+public static final String networks = "http://192.168.20.33:8080/";
 //public static final String networks = "http://192.168.1.119:8081/pzgc/";
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
  //    public static final String networks = "http://120.79.142.15/pzgc/";
@@ -184,11 +184,13 @@ public class Requests {
  //收藏界面列表
  public static final String GET_LIS = networks +"iface/mobile/taskmsg/findWbsFavoriteOrg";
  //评论首页标段
-   public static final String GET_MY_LIST= networks +"/iface/mobile/wbs/cacheable/getMyList";
+   public static final String GET_MY_LIST= networks +"iface/mobile/taskmsg/findWbsCommentOrg";
  //评论列表
- public static final String GETMyPAGELIST= networks + "iface/mobile/wbs/cacheable/getMyPageList";
+ public static final String GETMyPAGELIST= networks + "iface/mobile/taskmsg/findCommentTaskMsgByWbs";
  //收藏列表
   public static final String FAVORITETASKMSGBYWBS = networks + "iface/mobile/taskmsg/findFavoriteTaskMsgByWbs";
+ //收藏删除
+ public static final String delete = networks + "iface/mobile/wbs/favorite/delete";
   /**
    * 标段收藏
    */
@@ -200,5 +202,5 @@ public static final String FavoriteWbsTree=networks+"iface/mobile/taskmain/selec
  /**
   * 评论列表界面tree
   */
- public static final String GETMYTREE=networks+"iface/mobile/wbs/cacheable/getMyTree";
+ public static final String GETMYTREE=networks+"iface/mobile/taskmain/selectCommentWbsTree";
 }

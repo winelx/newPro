@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.example.administrator.newsdf.view.PieChartBeans;
 import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +64,8 @@ import static com.example.administrator.newsdf.R.id.pphotoadm;
 public class WorkFragment extends Fragment {
     private View rootView;
     private Context mContext;
-    Disposable mDisposable;
+    private Disposable mDisposable;
+    private CardView mCardView;
     int status = 1;
     /**
      * 饼状图
@@ -102,6 +105,7 @@ public class WorkFragment extends Fragment {
     private FragmentBrightAdapter brightViewpagerAdapter;
     private FragmentBrightcomAdapter bridhtcompanyAdapter;
     private FragmentBrightProAdapter bridhtprojectAdapter;
+    private SmartRefreshLayout smartRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,11 +192,9 @@ public class WorkFragment extends Fragment {
 
         bridhtprojectAdapter = new FragmentBrightProAdapter(getChildFragmentManager(), projectbrightList);
         bridhtprojectViewpager.setAdapter(bridhtprojectAdapter);
-        Bright();
         //延时 毫秒
         return rootView;
     }
-
 
     private void setTime() {
         String data = Dates.getHH();
@@ -211,6 +213,12 @@ public class WorkFragment extends Fragment {
     }
 
     private void findId() {
+        SmartRefreshLayout smartRefreshLayout = rootView.findViewById(R.id.worlRefreshLayout);
+        smartRefreshLayout.setEnableLoadmore(false);//禁止上拉
+        smartRefreshLayout.setEnableRefresh(false);
+        smartRefreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+        smartRefreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        mCardView = rootView.findViewById(R.id.brightspot);
         fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
         PieChartOne = rootView.findViewById(R.id.piechartone);
         //任务管理
@@ -244,6 +252,7 @@ public class WorkFragment extends Fragment {
     public void onStart() {
         super.onStart();
         startTime();
+        Bright();
         //饼状图数据请求
 //        if (status) {
 //            Okgo();
@@ -332,7 +341,6 @@ public class WorkFragment extends Fragment {
                                     } catch (JSONException e) {
                                         number = 0;
                                     }
-
                                     try {
                                         name = json.getString("name");
                                     } catch (JSONException e) {
@@ -474,7 +482,11 @@ public class WorkFragment extends Fragment {
                                 if (groupbridhtList.size() == 0 && compangbrightList.size() == 0 && projectbrightList.size() == 0) {
                                     //如果返回的数据为空，定时器不启动
                                     closeTimer();
+                                    mCardView.setVisibility(View.GONE);
+                                } else {
+                                    mCardView.setVisibility(View.VISIBLE);
                                 }
+
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
                                 if (groupbridhtList.size() != 0) {
                                     bridhtGroup.setVisibility(View.VISIBLE);
@@ -501,6 +513,7 @@ public class WorkFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         } else {
+                            mCardView.setVisibility(View.GONE);
                             //如果返回的数据为空，定时器不启动
                             closeTimer();
                         }

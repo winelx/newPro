@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf;
 
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
 import android.content.Context;
@@ -27,6 +28,9 @@ import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 import com.zxy.tiny.Tiny;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -36,12 +40,11 @@ import cn.jpush.android.api.JPushInterface;
 
 public class BaseApplication extends Application {
     private static BaseApplication instance;
+    private List<Activity> oList;//用于存放所有启动的Activity的集合
 
     public static BaseApplication getInstance() {
         return instance;
     }
-
-
     private static DaoSession daoSession;
     public LocationService locationService;
     public Vibrator mVibrator;
@@ -50,6 +53,7 @@ public class BaseApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         String appVersion;
+
         try {
             appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
         } catch (Exception e) {
@@ -84,6 +88,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        oList = new ArrayList<Activity>();
         setupDatabase();
         setCollection();
         instance = this;
@@ -142,6 +147,37 @@ public class BaseApplication extends Application {
             LogUtil.init(true, Log.VERBOSE);
         } else {
             LogUtil.init(false);
+        }
+    }
+
+    /**
+     * 添加Activity
+     */
+    public void addActivity_(Activity activity) {
+// 判断当前集合中不存在该Activity
+        if (!oList.contains(activity)) {
+            oList.add(activity);//把当前Activity添加到集合中
+        }
+    }
+
+    /**
+     * 销毁单个Activity
+     */
+    public void removeActivity_(Activity activity) {
+//判断当前集合中存在该Activity
+        if (oList.contains(activity)) {
+            oList.remove(activity);//从集合中移除
+            activity.finish();//销毁当前Activity
+        }
+    }
+
+    /**
+     * 销毁所有的Activity
+     */
+    public void removeALLActivity_() {
+        //通过循环，把集合中的所有Activity销毁
+        for (Activity activity : oList) {
+            activity.finish();
         }
     }
 

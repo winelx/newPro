@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.activity.mine;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +27,7 @@ import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +36,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionItem;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -69,7 +67,7 @@ public class ProjectmemberActivity extends AppCompatActivity {
     private List<String> listPath;
     private List<String> listIds;
     private ProjectmemberAdapter memberAdapter;
-
+    private SmartRefreshLayout drawerLayout_smart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,15 +101,6 @@ public class ProjectmemberActivity extends AppCompatActivity {
         /**
          *  权限配置
          */
-
-        //存储权限的集合
-        List<PermissionItem> permissonItems = new ArrayList<PermissionItem>();
-        //添加权限，将一条权限想成一条数据并添加剂  （权限，请求权限时界面显示给用户的说明。 该权限请求时界面显示的图标）
-        permissonItems.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-        //提示所需的权限
-        HiPermission.create(ProjectmemberActivity.this)
-                .permissions(permissonItems)
-                .checkMutiPermission(null);
         //标题
         mb_title = (TextView) findViewById(R.id.mb_title);
         //搜索输入框
@@ -122,6 +111,11 @@ public class ProjectmemberActivity extends AppCompatActivity {
         homeBackgroudText = (TextView) findViewById(R.id.mine_backgroud_text);
         //recycler，显示数据控件，用来显示节点层级的
         mRecycler = (RecyclerView) findViewById(tree_path);
+        //下拉
+        drawerLayout_smart= (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+        drawerLayout_smart.setEnableRefresh(false);//禁止下拉
+        drawerLayout_smart.setEnableOverScrollBounce(true);//仿ios越界
+        drawerLayout_smart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         //返回键
         comback = (LinearLayout) findViewById(R.id.com_back);
         //设置标题

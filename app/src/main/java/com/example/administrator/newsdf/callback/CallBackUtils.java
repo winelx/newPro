@@ -10,8 +10,8 @@ public class CallBackUtils {
         mCallBack = callBack;
     }
 
-    public static void removeCallBackMethod(int pos,String str){
-        mCallBack.deleteTop(pos, str);
+    public static void removeCallBackMethod(){
+        mCallBack.deleteTop();
     }
 
 }

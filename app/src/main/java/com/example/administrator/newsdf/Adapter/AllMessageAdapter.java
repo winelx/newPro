@@ -14,12 +14,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.callback.CallBackUtils;
+import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Requests;
@@ -64,12 +62,8 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
-        if (mDatas.get(position).isPutTop()) {
-            holder.btn_Delete.setText("取消置顶");
-        } else {
-            holder.btn_Delete.setText("置顶");
-        }
 
+        holder.btn_Delete.setVisibility(View.GONE);
         //随机数，改变标段的颜色
         int Random = (int) (Math.random() * 4) + 1;
         if (Random == 1) {
@@ -127,36 +121,36 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                 }
             }
         });
-        //左滑置顶点击事件
-        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDatas.get(position).isPutTop()) {
-                    List<Shop> list = new ArrayList<Shop>();
-                    list = LoveDao.ALLCart();
-                    // 状态为ture 为置顶状态 点击为取消
-                    //删除置顶
-                    String str = mDatas.get(position).getId();
-                    for (int i = 0; i < list.size(); i++) {
-                        String wbsID = list.get(i).getWebsid();
-                        if (str.equals(wbsID)) {
-                            LoveDao.deleteLove(list.get(i).getId());
-                            CallBackUtils.removeCallBackMethod(position, "删除");
-                        }
-                    }
-                } else {
-                    //状态为false 点击为置顶
-                    //添加置顶
-                    Shop shop = new Shop();
-                    //保存ID
-                    shop.setWebsid(mDatas.get(position).getId());
-                    shop.setType(Shop.TYPE_ALL);
-                    LoveDao.insertLove(shop);
-                    CallBackUtils.removeCallBackMethod(position, "增加");
-                }
-                closeMenu();
-            }
-        });
+//        //左滑置顶点击事件
+//        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (mDatas.get(position).isPutTop()) {
+//                    List<Shop> list = new ArrayList<Shop>();
+//                    list = LoveDao.ALLCart();
+//                    // 状态为ture 为置顶状态 点击为取消
+//                    //删除置顶
+//                    String str = mDatas.get(position).getId();
+//                    for (int i = 0; i < list.size(); i++) {
+//                        String wbsID = list.get(i).getWebsid();
+//                        if (str.equals(wbsID)) {
+//                            LoveDao.deleteLove(list.get(i).getId());
+//                            CallBackUtils.removeCallBackMethod();
+//                        }
+//                    }
+//                } else {
+//                    //状态为false 点击为置顶
+//                    //添加置顶
+//                    Shop shop = new Shop();
+//                    //保存ID
+//                    shop.setWebsid(mDatas.get(position).getId());
+//                    shop.setType(Shop.TYPE_ALL);
+//                    LoveDao.insertLove(shop);
+//
+//                }
+//                closeMenu();
+//            }
+//        });
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,13 +170,14 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                                         if (ret == 0) {
                                             holder.tv_set.setBackgroundResource(R.color.back);
                                             holder.tv_set.setText("已收藏");
+                                            HideCallbackUtils.removeCallBackMethod();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
-                }else {
+                } else {
                     ToastUtils.showLongToast("在收藏界面取消收藏");
                 }
             }

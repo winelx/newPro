@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         list = new ArrayList<>();
         list = LoveDao.JPushCart();
-
         if (list.size() > 0) {
             Message msg = new Message();
             msg.what = 1;
@@ -269,7 +268,11 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
+                Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+                MyIntent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(MyIntent);
                 finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
             return true;
         }
@@ -303,7 +306,10 @@ public class MainActivity extends AppCompatActivity {
         selfDialog.show();
     }
 
-    //在接受推送消息的广播出调用该方法（service/PushReceiver）
+    /**
+     *
+     */
+
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
         //向indexfragemnt 发送消息，显示推送小红点

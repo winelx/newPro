@@ -45,10 +45,8 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
-import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -115,7 +113,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
-    PostRequest PostRequest;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -282,38 +280,11 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             }
         });
 
-
-        PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
-        PostRequest.execute(new StringCallback() {
-            @Override
-            public void onSuccess(String s, Call call, Response response) {
-                mTreeDatas.clear();
-                if (s.contains("data")) {
-                    getWorkOrganizationList(s);
-                } else {
-                    ToastUtils.showLongToast("数据加载失败");
-                }
-                Dates.disDialog();
-            }
-
-            @Override
-            public void onError(Call call, Response response, Exception e) {
-                super.onError(call, response, e);
-                Dates.disDialog();
-            }
-        });
-
-
-    }
-
-    /**
-     * 解析组织机构对象
-     *
-     * @param result
-     * @return
-     */
-    private void getWorkOrganizationList(String result) {
-        organizationList = TreeUtlis.parseOrganizationList(result);
+        OrganizationEntity bean = new OrganizationEntity(wbsid, "",
+                name, "0", true,
+                true, "3,5", "",
+                "", "", name, "", true);
+        organizationList.add(bean);
         getOrganization(organizationList);
     }
 
@@ -345,37 +316,40 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
             public void onClick(Node node, int position) {
-                //判断是否是字节点，
-                if (node.isLeaf()) {
-                } else {
-                    //  如果不是，判断该节点是否有数据，
+                //判断是否是子节点，
+                //  如果不是，判断该节点是否有数据，
+                if (!node.isLeaf()) {
                     if (node.getChildren().size() == 0) {
                         //  如果没有，就请求数据，
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
                             //从拿到该节点的名称和id
-                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
+                            int wbsIndex = 0;
+                            try {
+                                wbsIndex = Integer.parseInt(node.getTitle());
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }
+                            addOrganiztion(node.getId(), node.getPhone(), wbsIndex);
                         }
                     }
+
                 }
             }
         });
     }
 
     //wsb树的数据
-    void addOrganiztion(final String id, final boolean iswbs,
-                        final boolean isparent, String type) {
+    void addOrganiztion(final String orgId, String nodeid, int wbsIndex) {
         Dates.getDialogs(CommentmessageActivity.this, "请求数据中");
         OkGo.get(Requests.GETMYTREE)
-                .params("parentId", id)
-                .params("iswbs", iswbs)
-                .params("isparent", isparent)
-                .params("type", type)
+                .params("orgId", orgId)
+                .params("nodeid", nodeid)
+                .params("wbsIndex", wbsIndex)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
-                        ToastUtils.showLongToast("第一次");
                         addOrganizationList(result);
                     }
 
@@ -398,7 +372,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             /**
              * 解析数据
              */
-            addOrganizationList = HomeUtils.parseOrganizationList(result);
+            addOrganizationList = HomeUtils.parseOrganizationLists(result);
             /**
              * 动态添加
              */
@@ -535,21 +509,22 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         }
     }
 
-    //暴露给adapter调用
+    /**
+     * 暴露给图册adapter调用
+     */
     public void switchAct(Node node) {
-
         drawerLayout.closeDrawer(drawerContent);
         titles = node.getTitle();
         Titlew.setText(node.getName());
-        nodeiD = node.getId();
+        //由于收藏和评论的orgid和id反了，用phone来保存nodeId
+        nodeiD = node.getPhone();
         circle.setVisibility(View.VISIBLE);
         swip = false;
-        page = 1;
-        pages = 1;
         HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
         uslistView.setSelection(0);
+        page = 1;
+        pages = 1;
         okgoall(nodeiD, null, pages);
-
     }
 
     //初始化集合
@@ -572,8 +547,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         circle = (CircleImageView) findViewById(R.id.fab);
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
@@ -644,11 +617,10 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
-                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                JSONArray jsonArray = jsonObject1.getJSONArray("results");
-                if (jsonArray.length() != 0) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject json = jsonArray.getJSONObject(i);
+                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
+                if (jsonArray1.length() != 0) {
+                    for (int i = 0; i < jsonArray1.length(); i++) {
+                        JSONObject json = jsonArray1.getJSONObject(i);
                         JSONObject json1 = new JSONObject();
                         JSONArray json2 = new JSONArray();
                         try {
@@ -693,12 +665,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                         }
 
                         try {
-                            int status = Integer.parseInt(json.getString("status"));
-                            if (status == 2) {
-                                isFinish = 1;
-                            } else {
-                                isFinish = 0;
-                            }
+                            isFinish = json.getInt("isFinish");
                         } catch (JSONException e) {
                             e.printStackTrace();
                             isFinish = 0;
@@ -844,17 +811,31 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
-        GetRequest mPostRequest = OkGo.<String>get(Requests.GETMyPAGELIST)
-                .params("page", pages)
-                .params("rows", 20);
-        mPostRequest.execute(new StringCallback() {
-            @Override
-            public void onSuccess(String s, Call call, Response response) {
-                LogUtil.i("comment", s);
-                parsingjson(s);
-            }
-        });
-
+        PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST)
+                .params("orgId", id)
+                .params("page", i)
+                .params("rows", 25)
+                .params("wbsId", wbsId)
+                .params("isAll", "true")
+                .params("content", content);
+        //如果==3 那么就不传
+        if (notall == "3") {
+            mPostRequest.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    LogUtil.i("sesfdsew", s);
+                    parsingjson(s);
+                }
+            });
+        } else {
+            mPostRequest.params("msgStatus", notall)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtil.i("sesfdsew", s);
+                            parsingjson(s);
+                        }
+                    });
+        }
     }
 }
-

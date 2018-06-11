@@ -91,7 +91,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="收藏"
+            android:text="评论"
             android:textColor="#646464" />
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="评论"
+            android:text="收藏"
             android:textColor="#646464" />
     </LinearLayout>
 

@@ -1,9 +1,7 @@
 package com.example.administrator.newsdf.fragment.homepage;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,7 +25,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
@@ -79,24 +76,18 @@ public class CommentsFragment extends Fragment {
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(mAdapter);
+        refreshLayout.setEnableLoadmore(false);//禁止上拉
+        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                ;
                 Okgo();
                 refreshlayout.finishRefresh(1200);
             }
         });
-        //上拉加载
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                //传入false表示加载失败
-                Okgo();
-                refreshlayout.finishLoadmore(800);
-            }
-        });
+
         //无数据加载数据
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +102,7 @@ public class CommentsFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(mContext, CommentmessageActivity.class);
                 intent.putExtra("name", setList.get(position).getOrgname());
-                intent.putExtra("orgId", setList.get(position).getId());
+                intent.putExtra("orgId", setList.get(position).getOrgid());
                 startActivity(intent);
             }
         });
@@ -143,8 +134,8 @@ public class CommentsFragment extends Fragment {
                                     }
                                     String createTime;
                                     try {
-                                        createTime = json.getString("changeReviewTime");
-                                        createTime = Dates.stampToDates(createTime);
+                                        createTime = json.getString("updateDate");
+                                        createTime = createTime.substring(0, 10);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         createTime = "";
@@ -152,21 +143,21 @@ public class CommentsFragment extends Fragment {
                                     String id = "";
                                     String orgId;
                                     try {
-                                        orgId = json.getString("sysId");
+                                        orgId = json.getString("orgId");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgId = "";
                                     }
                                     String orgName;
                                     try {
-                                        orgName = json.getString("sysName");
+                                        orgName = json.getString("orgName");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgName = "";
                                     }
-                                    String unfinish = "";
+
                                     //去重
-                                    setList.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", false));
+                                    setList.add(new Home_item(content, createTime, id, orgId, orgName, "", "", false));
 
                                 }
 

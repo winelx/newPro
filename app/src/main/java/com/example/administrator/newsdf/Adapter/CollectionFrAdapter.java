@@ -8,16 +8,24 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Home_item;
-import com.example.administrator.newsdf.callback.CollectionCallbackUtils;
+import com.example.administrator.newsdf.callback.CallBackUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/5/21 0021.
@@ -66,49 +74,35 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
                 }
             });
         }
-//        //item正文点击事件
-//        holder.layout_content.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //判断是否有删除菜单打开
-//                if (menuIsOpen()) {
-//                    closeMenu();//关闭菜单
-//                } else {
-//                    Intent intent = new Intent(mContext, AllListmessageActivity.class);
-//                    intent.putExtra("name", mDatas.get(position).getOrgname());
-//                    intent.putExtra("back", mDatas.get(position).getOrgname());
-//                    intent.putExtra("orgId", mDatas.get(position).getOrgid());
-//                    mContext.startActivity(intent);
-//                }
-//            }
-//        });
-        //左滑置顶点击事件
-        holder.tv_set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                List<Shop> list = new ArrayList<Shop>();
-                list = LoveDao.MineHide();
-                // 状态为ture 为置顶状态 点击为取消
-                //删除置顶
-                String str = mDatas.get(position).getId();
-                for (int i = 0; i < list.size(); i++) {
-                    String wbsID = list.get(i).getCheckid();
-                    if (str.equals(wbsID)) {
-                        LoveDao.deleteLove(list.get(i).getId());
-                    }
-                }
-                mDatas.remove(position);
-                CollectionCallbackUtils.removeCallBackMethod();
-                if (menuIsOpen()) {
-                    closeMenu();//关闭菜单
-                }
-                notifyDataSetChanged();
-            }
-        });
         holder.btn_Delete.setVisibility(View.GONE);
         holder.tv_set.setBackgroundResource(R.color.back);
         holder.tv_set.setText("已收藏");
+        //收藏点击事件
+        holder.tv_set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OkGo.get(Requests.delete)
+                        .params("wbsId", mDatas.get(position).getOrgid())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    if (ret == 0) {
+                                        ToastUtils.showLongToast("取消成功");
+                                        mDatas.remove(position);
+                                        notifyDataSetChanged();
+                                        CallBackUtils.removeCallBackMethod();
+                                        closeMenu();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+            }
+        });
         //随机数，改变标段的颜色
         int Random = (int) (Math.random() * 4) + 1;
         if (Random == 1) {
@@ -127,8 +121,8 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         //最后一条消息
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
-       String str= mDatas.get(position).getCreaeTime();
-        str=str.substring(0,11);
+        String str = mDatas.get(position).getCreaeTime();
+        str = str.substring(0, 11);
         holder.home_item_time.setText(str);
         holder.home_item_message.setVisibility(View.GONE);
     }
@@ -219,6 +213,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         mDatas = shops;
         notifyDataSetChanged();
     }
+
     private OnItemClickListener mOnItemClickListener;//声明接口
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

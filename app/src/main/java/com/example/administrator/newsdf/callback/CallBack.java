@@ -5,5 +5,5 @@ package com.example.administrator.newsdf.callback;
  */
 
 public interface CallBack {
-    void deleteTop(int pos,String str);
+    void deleteTop();
 }

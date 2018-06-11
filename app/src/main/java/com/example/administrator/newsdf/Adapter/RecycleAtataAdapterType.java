@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.bean.Aduio_data;
+import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
 import com.example.administrator.newsdf.utils.Requests;
@@ -110,7 +111,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         audio.markimage(SmartProjectType);
         //  判断当前责任人等级是多少级
         if (isSmartProject == 0) {
-
             holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
             if (SmartProjectType == 1) {
                 //判断是否有权限，
@@ -183,6 +183,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
                         holder.collectionText.setTextColor(Color.parseColor("#808080"));
                         holder.collection.setClickable(true);
+                        HideCallbackUtils.removeCallBackMethod();
                     } else {
                         holder.collection.setClickable(true);
                     }
@@ -196,6 +197,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
                         holder.collection.setClickable(true);
                         isFavorite = true;
+                        HideCallbackUtils.removeCallBackMethod();
                     } else {
                         holder.collection.setClickable(true);
                     }
@@ -339,7 +341,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             collection = itemView.findViewById(R.id.collection);
             //收藏图标
             collectionImage = itemView.findViewById(R.id.collection_image);
-            collectionText =itemView.findViewById(R.id.collection_text);
+            collectionText = itemView.findViewById(R.id.collection_text);
         }
     }
 
@@ -366,6 +368,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -392,6 +395,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

@@ -547,13 +547,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-
         findViewById(R.id.com_back).setOnClickListener(this);
         //列表
         uslistView = (ListView) findViewById(R.id.list_recycler);

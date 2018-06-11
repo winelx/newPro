@@ -68,6 +68,9 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
             home_img_nonews = rootView.findViewById(R.id.home_img_nonews);
             home_img_text = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
+            refreshLayout.setEnableLoadmore(false);//禁止上拉
+            refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+            refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
