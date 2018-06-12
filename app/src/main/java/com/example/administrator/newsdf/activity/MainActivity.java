@@ -23,7 +23,6 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
-import com.example.administrator.newsdf.bean.work_fr_bright_bean;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
@@ -70,12 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private WbsDialog selfDialog;
     private TextView home_img_red;
     List<Shop> list;
-    //集团亮点
-    private ArrayList<work_fr_bright_bean> bridhtgroupList = new ArrayList<>();
-    //分公司亮点
-    private ArrayList<work_fr_bright_bean> brightcompangList = new ArrayList<>();
-    //项目亮点
-    private ArrayList<work_fr_bright_bean> brightprojectList = new ArrayList<>();
 
     public static MainActivity getInstance() {
         return mContext;
@@ -301,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setData(content_url);
                 startActivity(intent);
                 selfDialog.dismiss();
+
             }
         });
         selfDialog.show();

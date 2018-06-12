@@ -21,8 +21,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,14 +58,10 @@ public class PhotoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_list);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                okgo();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(2000);
-            }
-        });
+        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableLoadmore(false);//禁止上拉
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
         Intent intent = getIntent();
         stauts = intent.getExtras().getString("status");
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);

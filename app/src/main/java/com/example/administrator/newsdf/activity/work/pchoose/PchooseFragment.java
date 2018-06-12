@@ -60,6 +60,7 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.uploading_photo:
+                //离线图纸
                 listPath = LoveDao.queryCart();
                 for (Shop shop : listPath) {
                     if ("standard".equals(shop.getProject())) {
@@ -75,6 +76,7 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.pchoose_atlas:
+                //
                 Intent standard = new Intent(getActivity(), PhotoListActivity.class);
                 standard.putExtra("status", "PhotoList");
                 startActivity(standard);

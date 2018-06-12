@@ -84,7 +84,7 @@ public class CameDialog {
                     send.setTextColor(Color.parseColor("#F0F0F0"));
                     files = new ArrayList<>();
                     PostRequest mRequest = post(Requests.SAVECOMMENT)
-                            //强制使用multipart/form-data
+                            //强制使用multipart/form-data 表单提交
                             .isMultipart(true)
                             .params("taskId", wtMainid)
                             .params("content", str);
@@ -145,7 +145,6 @@ public class CameDialog {
                                         }
                                         mCameraDialog.dismiss();
                                     }
-
                                     @Override
                                     public void onError(Call call, Response response, Exception e) {
                                         super.onError(call, response, e);

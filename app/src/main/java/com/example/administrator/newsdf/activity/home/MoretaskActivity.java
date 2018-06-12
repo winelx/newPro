@@ -263,13 +263,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                     createDate = "";
                 }
-                //任务名称
-                String detectionName;
-                try {
-                    detectionName = jsonArray.getString("detectionName");
-                } catch (JSONException e) {
-                    detectionName = "";
-                }
+
                 //推送天数
                 String sendedTimeStr;
                 try {
@@ -295,21 +289,10 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     leaderId = "";
                 }
                 //是否已读
-                String isread;
-                try {
-                    isread = jsonArray.getString("leaderId");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    isread = "";
-                }
+                String isread ="";
                 //创建人ID
-                String createByUserID;
-                try {
-                    createByUserID = jsonArray.getJSONObject("createBy").getString("id");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    createByUserID = "";
-                }
+                String createByUserID= "";
+
                 //标题名称
                 String name;
                 try {

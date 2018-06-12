@@ -87,7 +87,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
         holder.home_item_message.setText(mDatas.get(position).getUnfinish());
         //判断是否有消息
         String message = mDatas.get(position).getUnfinish();
-        if (mDatas.get(position).getIsfavorite() == isfavorite) {
+        if (isfavorite.equals(mDatas.get(position).getIsfavorite())) {
             holder.tv_set.setBackgroundResource(R.color.Orange);
             holder.tv_set.setText("收藏");
         } else {
@@ -155,7 +155,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
             @Override
             public void onClick(View v) {
                 String Isfavorite = mDatas.get(position).getIsfavorite();
-                if (Isfavorite == "0") {
+                if (Isfavorite.equals("0")) {
                     //添加收藏
                     OkGo.post(Requests.WBSSAVE)
                             .params("wbsId", mDatas.get(position).getOrgid())

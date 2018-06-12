@@ -146,7 +146,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -186,7 +186,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
 
             }

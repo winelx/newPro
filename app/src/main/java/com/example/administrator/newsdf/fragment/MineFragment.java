@@ -30,7 +30,6 @@ import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,11 +69,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mine, null);
-            SmartRefreshLayout smartRefreshLayout = rootView.findViewById(R.id.mineRefreshLayout);
-            smartRefreshLayout.setEnableLoadmore(false);//禁止上拉
-            smartRefreshLayout.setEnableRefresh(false);
-            smartRefreshLayout.setEnableOverScrollBounce(true);//仿ios越界
-            smartRefreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
             //我的组织
             rootView.findViewById(R.id.organizationa).setOnClickListener(this);
             //项目成员
@@ -98,6 +92,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             //退出
             rootView.findViewById(R.id.BackTo).setOnClickListener(this);
             mine_uploading = rootView.findViewById(R.id.mine_uploadings);
+
             mine_avatar = rootView.findViewById(R.id.mine_avatar);
             mine_organization = rootView.findViewById(R.id.mine_organization);
             staffName = rootView.findViewById(R.id.staffName);
@@ -106,8 +101,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         spUtils = new SPUtils();
         dates = new Dates();
         version = AppUtils.getVersionName(getActivity());
+        mine_uploading.setText("(当前版本:" + version + ")");
         ititData();
-        upload();
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
@@ -263,9 +258,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                                     int lenght = version.compareTo(versions);
                                     if (lenght < 0) {
                                         ToastUtils.showShortToast("有新版本需要更新");
-                                        mine_uploading.setVisibility(View.VISIBLE);
                                         show(filePath);
                                     }
+                                } else {
+                                    ToastUtils.showLongToast("已是最新版本");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -273,6 +269,12 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         } else {
 
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
                     }
                 });
     }

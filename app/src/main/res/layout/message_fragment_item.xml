@@ -115,6 +115,7 @@
                                 android:background="@drawable/home_item_style"
                                 android:gravity="center"
                                 android:text="+"
+                                android:visibility="gone"
                                 android:textColor="@color/writer"
                                 android:textSize="10sp" />
 

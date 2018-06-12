@@ -33,7 +33,6 @@ import com.example.administrator.newsdf.view.PieChartBeans;
 import com.example.administrator.newsdf.view.PieChartOne;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -105,7 +104,7 @@ public class WorkFragment extends Fragment {
     private FragmentBrightAdapter brightViewpagerAdapter;
     private FragmentBrightcomAdapter bridhtcompanyAdapter;
     private FragmentBrightProAdapter bridhtprojectAdapter;
-    private SmartRefreshLayout smartRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -213,11 +212,6 @@ public class WorkFragment extends Fragment {
     }
 
     private void findId() {
-        SmartRefreshLayout smartRefreshLayout = rootView.findViewById(R.id.worlRefreshLayout);
-        smartRefreshLayout.setEnableLoadmore(false);//禁止上拉
-        smartRefreshLayout.setEnableRefresh(false);
-        smartRefreshLayout.setEnableOverScrollBounce(true);//仿ios越界
-        smartRefreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         mCardView = rootView.findViewById(R.id.brightspot);
         fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
         PieChartOne = rootView.findViewById(R.id.piechartone);
@@ -397,7 +391,6 @@ public class WorkFragment extends Fragment {
                         groupbridhtList.clear();
                         projectbrightList.clear();
                         if (s.contains("data")) {
-
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");

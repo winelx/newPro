@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * description: 图纸查看
+ * description: 图纸查看界面（图册\标准）
  *
  * @author lx
  *         date: 2018/3/8 0008 下午 4:43
@@ -34,13 +34,14 @@ public class PchooseActivity extends AppCompatActivity implements View.OnClickLi
         mContext = PchooseActivity.this;
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
+        //图册
         fragments.add(new PchooseFragment());
+        //标准
         fragments.add(new StandardFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), fragments);
         //设定适配器
         vp = (ViewPager) findViewById(R.id.possse_viewpager);
         vp.setAdapter(adapter);
-
         frPchooseAm = (TextView) findViewById(R.id.fr_Pchoose_am);
         frPchooseMm = (TextView) findViewById(R.id.fr_Pchoose_mm);
         findViewById(R.id.com_back).setOnClickListener(this);

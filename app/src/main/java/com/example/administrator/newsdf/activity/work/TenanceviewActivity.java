@@ -50,20 +50,22 @@ public class TenanceviewActivity extends AppCompatActivity {
     private RelativeLayout tabulation;
     private TextView title;
     private LinearLayout com_img;
-    private ArrayList<String> ids = null,
-            names = null,
-            titlename = null;
+
     private int msg = 0, page = 1;
     private String id, wbspath, wbsname, type;
     private CircleImageView fab;
     private SmartRefreshLayout drawerlayoutSmart;
     private DrawerLayout drawerLayout;
-    private ArrayList<PhotoBean> imagePaths = null;
+
     private TaskPhotoAdapter taskAdapter;
     private ListView drawerLayoutList;
     private boolean drew = true;
     private boolean isParent, iswbs;
-    ArrayList<String> replly = new ArrayList<>();
+    ArrayList<String> replly;
+    private ArrayList<PhotoBean> imagePaths;
+    private ArrayList<String> ids,
+            names,
+            titlename;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +210,7 @@ public class TenanceviewActivity extends AppCompatActivity {
         //新增任务返回处理
         if (requestCode == 1 && resultCode == RESULT_OK) {
             msg = data.getIntExtra("position", 1);
+            replly = new ArrayList<>();
             replly = data.getStringArrayListExtra("name");
             mViewPager.setCurrentItem(msg);
             mAdapter.getData(replly);

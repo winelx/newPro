@@ -22,7 +22,7 @@ import java.util.List;
 
 
 /**
- * description: 图册标准
+ * description: 标准
  *
  * @author lx
  *         date: 2018/5/16 0016 下午 3:45

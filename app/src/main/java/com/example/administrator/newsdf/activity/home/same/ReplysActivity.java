@@ -33,14 +33,15 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.Adapter.PhotosAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.work.TaskWbsActivity;
-import com.example.administrator.newsdf.BaseApplication;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
@@ -73,6 +74,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
 /**
  * description:新增推送界面
  * autour: lx
@@ -102,7 +104,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     int position;
     private int page = 1;
     private ArrayList<String> check;
-    private String Title = "", checkId = "", checkname = "";
+    private String checkId = "", checkname = "";
     private WbsDialog selfDialog;
     private static final int IMAGE_PICKER = 101;
     private CircleImageView Circle;
@@ -112,7 +114,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String titles, type;
+    private String type;
     ProgressDialog dialog;
     private boolean isParent, iswbs;
     private LinearLayout drawer_right;
@@ -188,6 +190,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initArray() {
+        list = LoveDao.queryLove();
         //任务项
         check = new ArrayList<>();
         //图片地址
@@ -328,7 +331,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.com_button:
                 files = new ArrayList<>();
-                //将图片转成file格式
+                //讲图片转成file格式
                 for (int i = 0; i < pathimg.size(); i++) {
                     files.add(new File(pathimg.get(i)));
                 }
@@ -540,15 +543,12 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //清除选择项ID
             checkId = "";
             //清除选择项名称
-            titles = "";
             //控件显示文字
             replyCheckItem.setText(data.getStringExtra(""));
             //请求图片
-            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点返回
             checkId = data.getStringExtra("id");
-            titles = data.getStringExtra("name");
             replyCheckItem.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //相册返回数据
@@ -597,7 +597,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
                             //删除原图
-                            Dates.deleteFile(path);
+                            FileUtils.deleteFile(path);
+
                         }
                     });
                 }
@@ -665,7 +666,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                     String id = json.getString("id");
                                     String name = json.getString("detectionName");
                                     String totalNum = json.getString("totalNum");
-                                    namess.add("   " + name + "(" + totalNum + ")" + "       ");
+                                    namess.add("   " + name + "(" + totalNum + ")" + "     ");
                                 }
                                 //返回列表
                                 Intent intent = new Intent();
@@ -796,7 +797,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             if (ret == 0) {
                                 //删除上传的图片
                                 for (int i = 0; i < pathimg.size(); i++) {
-                                    Dates.deleteFile(pathimg.get(i));
+                                    FileUtils.deleteFile(pathimg.get(position));
                                 }
                                 ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {

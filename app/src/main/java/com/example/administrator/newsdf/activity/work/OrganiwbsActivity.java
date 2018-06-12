@@ -22,8 +22,6 @@ import com.example.administrator.newsdf.utils.TreeUtlis;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,14 +63,10 @@ public class OrganiwbsActivity extends Activity {
         setContentView(R.layout.activity_wbs);
         mContext = OrganiwbsActivity.this;
         refreshLayout = findViewById(R.id.SmartRefreshLayout);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                okgo();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(2000);
-            }
-        });
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
+        refreshLayout.setEnableLoadmore(false);//禁止上拉
+        refreshLayout.setEnableRefresh(false);
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = findViewById(R.id.com_title);
         com_title.setText("选择WBS节点");

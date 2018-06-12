@@ -42,7 +42,6 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
 import com.lzy.okgo.OkGo;
@@ -77,7 +76,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     private TextView Titlew, deleteSearch;
     private EditText searchEditext;
-    private String id, wbsid, name, titles;
+    private String orgid, wbsid, name, titles;
     //
     private String notall = "3", nodeiD = "1";
 
@@ -127,7 +126,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mContext = getApplicationContext();
         Intent intent = getIntent();
         try {
-            id = intent.getExtras().getString("orgId");
+            orgid = intent.getExtras().getString("orgId");
             wbsid = intent.getExtras().getString("orgId");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
@@ -147,7 +146,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
@@ -187,7 +186,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
 
             }
@@ -520,7 +519,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         nodeiD = node.getPhone();
         circle.setVisibility(View.VISIBLE);
         swip = false;
-        HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
         uslistView.setSelection(0);
         page = 1;
         pages = 1;
@@ -782,7 +780,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
-
     //请求数据
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void smart() {
@@ -812,7 +809,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
      */
     private void okgoall(String wbsId, String content, int i) {
         PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST)
-                .params("orgId", id)
+                .params("orgId", orgid)
                 .params("page", i)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
@@ -823,7 +820,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew", s);
+
                     parsingjson(s);
                 }
             });
@@ -832,7 +829,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtil.i("sesfdsew", s);
+
                             parsingjson(s);
                         }
                     });

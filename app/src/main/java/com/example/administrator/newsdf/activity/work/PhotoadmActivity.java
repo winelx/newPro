@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.activity.work;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +11,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.Adapter.PhotoadmAdapter;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.DividerItemDecoration;
@@ -19,6 +21,9 @@ import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +48,9 @@ public class PhotoadmActivity extends AppCompatActivity {
     private ArrayList<PhotoBean> imagePaths;
     private TextView number, com_title, wbsname;
     private IconTextView comback;
+    private int pages = 1;
+    private String wbsid, Title;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +59,14 @@ public class PhotoadmActivity extends AppCompatActivity {
         Dates.getDialog(PhotoadmActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
-        final String wbsid = intent.getExtras().getString("wbsId");
-        final String Title = intent.getExtras().getString("title");
+        wbsid = intent.getExtras().getString("wbsId");
+        Title = intent.getExtras().getString("title");
+        SmartRefreshLayout refreshLayout = (SmartRefreshLayout) findViewById(R.id.photo_refreshLayout);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
+        refreshLayout.setEnableRefresh(false);
+        //仿ios越界
+        refreshLayout.setEnableOverScrollBounce(true);
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
@@ -66,16 +80,29 @@ public class PhotoadmActivity extends AppCompatActivity {
                     }
                 }
         );
-
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                pages++;
+                okgo();
+                //传入false表示加载失败
+                refreshlayout.finishLoadmore(800);
+            }
+        });
         //GridLayout 3列
         photo_rec.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         photoAdapter = new PhotoadmAdapter(this);
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
+    }
+
+    public void okgo() {
         OkGo.post(Requests.Photolist)
                 .params("WbsId", wbsid)
-                .params("page", 1)
+                .params("page", pages)
                 .params("rows", 50)
                 .execute(new StringCallback() {
                     @Override
@@ -94,7 +121,7 @@ public class PhotoadmActivity extends AppCompatActivity {
                                 filePath = Requests.networks + filePath;
                                 imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                             }
-                            photoAdapter.getData(imagePaths, Title,true);
+                            photoAdapter.getData(imagePaths, Title, true);
                             wbsname.setText(Title + ":" + "共有" + imagePaths.size() + "张图纸");
                             Dates.disDialog();
                         } catch (JSONException e) {
@@ -102,6 +129,5 @@ public class PhotoadmActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 }

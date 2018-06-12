@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
+//标准图纸列表界面（图册的在photoadmActivity）
 public class StandardActivity extends AppCompatActivity {
     private RecyclerView photo_rec;
     private PhotolabelAdapter photoAdapter;
@@ -57,6 +57,8 @@ public class StandardActivity extends AppCompatActivity {
         status = intent.getExtras().getString("status");
 
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
+        //仿ios越界
+        refreshlayout.setEnableOverScrollBounce(true);
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
