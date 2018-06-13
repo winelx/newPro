@@ -48,12 +48,12 @@
                     android:textSize="18sp" />
 
 
-
                 <LinearLayout
                     android:id="@+id/newmoretask"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|end"
+                    android:visibility="gone"
                     android:gravity="center">
 
                     <ImageView

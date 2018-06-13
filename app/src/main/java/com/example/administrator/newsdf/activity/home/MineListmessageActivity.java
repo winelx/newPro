@@ -611,6 +611,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         if (!swip) {
             mDatas.clear();
         }
+
         if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
@@ -653,7 +654,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
     }
-
 
     //任务状态弹出窗
     private void MeunPop() {

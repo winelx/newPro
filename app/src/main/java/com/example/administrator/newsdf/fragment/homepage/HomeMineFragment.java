@@ -140,7 +140,9 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
                                     String unfinish = json.getString("unfinish");
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", false));
+                                    String parentid = json.getString("parent_id");
+                                    String parentname = json.getString("parent_name");
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", parentname, parentid, false));
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {

@@ -192,8 +192,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         e.printStackTrace();
                                         unfinish = "";
                                     }
+                                    String parentid = json.getString("parent_id");
+                                    String parentname = json.getString("parent_name");
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", false));
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", parentname, parentid, false));
                                 }
                                 mAdapter.getData(mData);
                                 home_frag_img.setVisibility(View.GONE);

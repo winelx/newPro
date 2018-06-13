@@ -41,7 +41,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -143,6 +145,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("result", s);
+                        ArrayList<String> parentlist = new ArrayList<String>();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -165,47 +168,30 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                                     String isfavorite = json.getString("isfavorite");
                                     String orgId = json.getString("orgId");
                                     String orgName = json.getString("orgName");
+                                    String parentid = json.getString("parent_id");
+                                    String parentname = json.getString("parent_name");
                                     String unfinish = json.getString("unfinish");
-//                                    //判断数据库是否有数据
-//                                    if (placedTop.size() > 0) {
-//                                        //判断当前id是否在数据库
-//                                        if (placedTop.contains(id)) {
-//                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, true));
-//                                        } else {
-//                                            mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
-//
-//                                        }
-//                                    } else {
-//                                        //没有数据，那么所有数据都是未置顶的
-//                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
-//                                    }
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, false));
+                                    //将组织所属公司添加到集合
+                                    if (!parentlist.contains(parentname)) {
+                                        parentlist.add(parentname);
+                                    }
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
                                 }
-                                //将数据重新排序，将置顶的放在集合前面
+
+
                                 //是否有数据
                                 if (mData.size() != 0) {
-//                                    //数据库是否有数据
-//                                    if (placedTop.size() != 0) {
-//                                        try {
-//                                            //循环集合
-//                                            for (int j = 0; j < mData.size(); j++) {
-//                                                //取出isputTop
-//                                                boolean PutTop = mData.get(j).isPutTop();
-//                                                //如果是true
-//                                                if (PutTop) {
-//                                                    //拿到当前位置数据对象
-//                                                    Home_item home_item = mData.get(j);
-//                                                    //添加到第一个
-//                                                    mData.add(0, home_item);
-//                                                    //并删除原来位置的数据，由于先在最前面加了一个，原来的数据的位置就增加了一位
-//                                                    mData.remove(j + 1);
-//                                                }
-//                                            }
-//
-//                                        } catch (NullPointerException e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
+                                    Map<String, List<Home_item>> hasMap = new HashMap<String, List<Home_item>>();
+                                    for (String str : parentlist) {
+                                        ArrayList<Home_item> list = new ArrayList<Home_item>();
+                                        for (Home_item item : mData) {
+                                            String name = item.getParentname();
+                                            if (str.equals(name)) {
+                                                list.add(item);
+                                                hasMap.put(str, list);
+                                            }
+                                        }
+                                    }
                                     //刷新数据
                                     mAdapter.getData(mData);
                                     home_frag_img.setVisibility(View.GONE);

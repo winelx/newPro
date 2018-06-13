@@ -36,7 +36,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -59,7 +62,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<MoretasklistBean> Dats;
     public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
-    private String DATA = "data",usernma;
+    private String DATA = "data", usernma;
     private LinearLayout newmoretask;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
@@ -79,13 +82,18 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
      * 判断状态，是上拉还是下拉
      */
     private boolean drew = true;
-    private String wbsName="";
+    private String wbsName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
-
+        try {
+            String ste = dateToStamp("2018-05-27 11:29:02.0");
+            LogUtil.i("sdfe", ste);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mContext = this;
         //初始化集合
         initArry();
@@ -107,7 +115,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
 
         }
-        usernma = SPUtils.getString(mContext, "staffName", null);
+        usernma = SPUtils.getString(mContext, "id", null);
         //网络请求
         OkGo();
         //请求图册图片
@@ -248,22 +256,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 //返回数据
                 JSONObject Data = jsonObject.getJSONObject("data");
                 JSONObject jsonArray = Data.getJSONObject("data");
-                try {
-                    wbsName = Data.getString("WbsName");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    wbsName = "";
-                }
+
                 //创建时间
                 String createDate;
                 try {
                     createDate = jsonArray.getString("createDate");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     createDate = "";
                 }
-
                 //推送天数
                 String sendedTimeStr;
                 try {
@@ -289,10 +290,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     leaderId = "";
                 }
                 //是否已读
-                String isread ="";
+                String isread = "";
                 //创建人ID
-                String createByUserID= "";
-
+                String createByUserID = "";
                 //标题名称
                 String name;
                 try {
@@ -321,7 +321,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 String status;
                 try {
                     status = jsonArray.getString("status");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     status = "";
@@ -335,43 +334,37 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     wbsId = "";
                 }
                 try {
-
                     JSONArray parts = Data.getJSONArray("parts");
                     for (int i = 0; i < parts.length(); i++) {
                         JSONObject json = parts.getJSONObject(i);
                         String ids = json.getString("id");
                         String partContent = json.getString("partContent");
-                        String uploadName = json.getString("uploadName");
-                        String uploadTime="";
-//                        try {
-//                            String updata=json.getString("uploadTime");
-//                             uploadTime = Dates.stampToDate(updata);
-//                        } catch (JSONException e) {
-//                            uploadTime="";
-//                        }
-                        String portrait = json.getString("portrait");
-                        Dats.add(new MoretasklistBean(uploadTime, uploadName, partContent, portrait, ids));
+                        String uploadDate = json.getString("createDate");
+                        Dats.add(new MoretasklistBean(uploadDate, partContent, ids));
                     }
-                    if (!leaderName.equals(usernma)) {
-                        newmoretask.setVisibility(View.GONE);
+
+                    switch (status) {
+                        case "2":
+                            newmoretask.setVisibility(View.GONE);
+                            break;
+                        case "0":
+                            if (!leaderId.equals(usernma)) {
+                                newmoretask.setVisibility(View.GONE);
+                            }else {
+                                newmoretask.setVisibility(View.VISIBLE);
+                         }
+                            break;
+                        default:
+                            newmoretask.setVisibility(View.GONE);
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                switch (status) {
-                    case "1":
-                        newmoretask.setVisibility(View.VISIBLE);
-                        break;
-                    case "2":
-                        newmoretask.setVisibility(View.GONE);
-                        break;
-                    default:
-                        newmoretask.setVisibility(View.VISIBLE);
-                        break;
-                }
+
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);
-                wbsNode.setText(Data.getString("WbsName"));
+                wbsNode.setText(jsonArray.getString("WbsName"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -395,5 +388,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
+    /**
+     * 将时间转换为时间戳
+     */
+    public static String dateToStamp(String s) throws ParseException {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
+    }
 }

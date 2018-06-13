@@ -1,36 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.winelx.z.expression.demo.MainActivity">
-
+    android:orientation="vertical">
     <TextView
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:padding="@dimen/dp10"
+        android:text="扩展BaseExpandableListAdapter展示ExpandableListView"/>
 
+    <!--这个默认的GroupIndicator 还是直接置空吧，默认的太鸡肋-->
+    <ExpandableListView
+        android:id="@+id/elv_01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#ff0000"
+        android:dividerHeight="@dimen/dp2"
+        android:groupIndicator="@null">
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="登录"
-        tools:layout_editor_absoluteY="152dp"
-        tools:layout_editor_absoluteX="109dp" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="退出"
-        tools:layout_editor_absoluteX="100dp"
-        tools:layout_editor_absoluteY="0dp" />
-
+    </ExpandableListView>
 </LinearLayout>

@@ -6,16 +6,49 @@ package com.example.administrator.newsdf.bean;
  * 说明：
  */
 public class Home_item {
+    /**
+     * 内存
+     */
 
     String content;
+    /**
+     * 创建时间
+     */
     String creaeTime;
+    /**
+     * id
+     */
     String id;
+    /**
+     * 组织ID
+     */
     String orgid;
+    /**
+     * 组织名称
+     */
     String orgname;
+    /**
+     * 消息数量
+     */
     String unfinish;
+    /**
+     * 是否收藏
+     */
     String isfavorite;
+    /**
+     * 是否置顶
+     */
     boolean putTop;
-    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish,String isfavorite,boolean putTop) {
+    /**
+     * 组织所属公司
+     */
+    String parentname;
+    /**
+     * 组织所属公司Id
+     */
+    String parentid;
+
+    public Home_item(String content, String creaeTime, String id, String orgid, String orgname, String unfinish, String isfavorite, String parentname, String parentid, boolean putTop) {
         this.content = content;
         this.creaeTime = creaeTime;
         this.id = id;
@@ -24,6 +57,9 @@ public class Home_item {
         this.unfinish = unfinish;
         this.isfavorite = isfavorite;
         this.putTop = putTop;
+        this.parentname = parentname;
+        this.parentid = parentid;
+
 
     }
 
@@ -78,6 +114,7 @@ public class Home_item {
     public boolean isPutTop() {
         return putTop;
     }
+
     public void setPutTop(boolean putTop) {
         this.putTop = putTop;
     }
@@ -88,5 +125,21 @@ public class Home_item {
 
     public void setIsfavorite(String isfavorite) {
         this.isfavorite = isfavorite;
+    }
+
+    public String getParentname() {
+        return parentname;
+    }
+
+    public void setParentname(String parentname) {
+        this.parentname = parentname;
+    }
+
+    public String getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(String parentid) {
+        this.parentid = parentid;
     }
 }

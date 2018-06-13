@@ -155,7 +155,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //发现ID
     private void findID() {
-
         codeplay_status_false = (RadioButton) findViewById(R.id.codeplay_status_false);
         codeplay_status_true = (RadioButton) findViewById(R.id.codeplay_status_true);
         //部位名称
