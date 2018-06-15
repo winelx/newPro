@@ -21,7 +21,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -34,16 +33,13 @@ import okhttp3.Response;
 
 public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
     private Context mContext;
-
-    private List<Home_item> mDatas = new ArrayList<Home_item>();
-
+    private List<Home_item> mDatas;
     private LeftSlideView mMenu = null;
-    private int Unfinish;
-    private static final int MAX = 99;
 
-    public CollectionFrAdapter(Context context) {
+
+    public CollectionFrAdapter(Context context, List<Home_item> mDatas) {
         mContext = context;
-
+        this.mDatas = mDatas;
     }
 
     /**
@@ -209,12 +205,13 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         }
     }
 
-    public void getData(List<Home_item> shops) {
-        mDatas = shops;
+    public void getData(List<Home_item> mDatas) {
+        this.mDatas = mDatas;
         notifyDataSetChanged();
     }
 
-    private OnItemClickListener mOnItemClickListener;//声明接口
+    //声明接口
+    private OnItemClickListener mOnItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;

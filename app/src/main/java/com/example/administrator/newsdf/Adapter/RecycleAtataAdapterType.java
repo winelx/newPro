@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
+import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -51,7 +52,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     private boolean status;
     private ArrayList<Aduio_data> mDatas;
     String str = null;
-    int isSmartProject, bright;
+    int isSmartProject = -1, bright;
     String taskId;
     CameDialog cameDialog;
     boolean isFavorite;
@@ -99,55 +100,82 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.audioData.setText(mDatas.get(posotion).getUpdateDate());
         //上传地点
         holder.audioAddress.setText(mDatas.get(posotion).getUploadAddr());
-        //收藏
-
         //评论条数
         holder.commentCount.setText(mDatas.get(posotion).getCommentCount());
-        //评论
+        //是否被提亮
         isSmartProject = mDatas.get(posotion).getIsSmartProject();
         //提亮等级
         final int SmartProjectType = mDatas.get(posotion).getSmartProjectType();
         TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+        //设置图标
         audio.markimage(SmartProjectType);
-        //  判断当前责任人等级是多少级
-        if (isSmartProject == 0) {
-            holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
-            if (SmartProjectType == 1) {
-                //判断是否有权限，
-                if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                    holder.givealike.setVisibility(View.VISIBLE);
-                } else {
-                    //如果没有权限，那么就无法看到提亮功能
-                    holder.givealike.setVisibility(View.GONE);
-                }
-                //判断当前责任人等级是多少级
-            } else if (SmartProjectType == 2) {
-                //判断是否有权限，
-                if (mDatas.get(posotion).isSmartprojectMain2Up()) {
-                    //判断当前是否提亮
+        holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+        holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+        holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+        //提亮逻辑
+        //未提亮
+        if (SmartProjectType == 0) {
 
-                    holder.givealike.setVisibility(View.VISIBLE);
-                } else {
-
-                    holder.givealike.setVisibility(View.GONE);
-                }
-                //判断当前责任人等级是多少级
-            } else if (SmartProjectType == 3) {
-                //判断是否有权限，
-                if (mDatas.get(posotion).isSmartprojectMain3Up()) {
-                    //判断当前是否提亮
-                    holder.givealike.setVisibility(View.VISIBLE);
-                } else {
-
-                    holder.givealike.setVisibility(View.GONE);
-                }
+            //如果提亮的等级为0，说明没有提亮
+            if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                //判断是否有集团提亮
+                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                holder.givealikeText.setTextColor(Color.parseColor("#808080"));
+            } else if (mDatas.get(posotion).isSmartprojectMain2Up()) {
+                //判断是否有分公司提亮
+                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                holder.givealikeText.setTextColor(Color.parseColor("#808080"));
+            } else if (mDatas.get(posotion).isSmartprojectMain2Up()) {
+                //判断是否有项目提亮
+                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                holder.givealikeText.setTextColor(Color.parseColor("#808080"));
             } else {
+                //如果都有权限，不给提亮按钮
                 holder.givealike.setVisibility(View.GONE);
             }
         } else {
 
-            holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
-            holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+            //如果被提亮了
+            if (SmartProjectType == 3) {
+                //如果等级为3项目提亮，判断是否有集团和分公司权限
+                if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
+                    //如果有其中一种权限，那也显示为未提亮权限
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                    holder.givealikeText.setTextColor(Color.parseColor("#808080"));
+                } else if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                    //判断是否有本级提亮权限
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+                } else {
+                    //都没有权限隐藏
+                    holder.givealike.setVisibility(View.GONE);
+                }
+            } else if (SmartProjectType == 2) {
+                //如果等级为2，为分公司权限 判断是否有分公司权限，
+                if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                    //如果有分公司权限，显示为未提亮状态
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
+                    holder.givealikeText.setTextColor(Color.parseColor("#808080"));
+                } else if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
+                    //判断是否有本级提亮权限
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+                } else {
+                    //都没有权限隐藏
+                    holder.givealike.setVisibility(View.GONE);
+                }
+            } else {
+                LogUtil.i("result", "提亮了1");
+                //提亮权限为1.集团提亮
+                if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                    //如果有集团权限，显示为提亮状态
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+                } else {
+                    //都没有权限隐藏
+                    holder.givealike.setVisibility(View.GONE);
+                }
+            }
         }
         //收藏
         isFavorite = mDatas.get(posotion).getIsFavorite();
@@ -212,36 +240,35 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                 taskId = audio.gettaskId();
                 //是否提亮
-                if (isSmartProject == 0) {
-                    int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
-                    if (smartprojecttype == 1) {
-                        //判断是否有权限，
-                        if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                            brightUp();
-                        } else {
-                            //如果没有权限，那么就无法看到提亮功能
-                            ToastUtils.showLongToast("没有操作权限");
-                        }
-                    } else if (smartprojecttype == 2) {
-                        //判断是否有权限，
-                        if (mDatas.get(posotion).isSmartprojectMain2Up()) {
-                            brightUp();
-                        } else {
-                            //如果没有权限，那么就无法看到提亮功能
-                            ToastUtils.showLongToast("没有操作权限");
-                        }
-                    } else if (smartprojecttype == 3) {
-                        //判断是否有权限，
-                        if (mDatas.get(posotion).isSmartprojectMain3Up()) {
-                            brightUp();
-                        } else {
-                            //如果没有权限，那么就无法看到提亮功能
-                            ToastUtils.showLongToast("没有操作权限");
-                        }
+                //提亮权限，1为集团，2为分公司，3项目
+                int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+                if (smartprojecttype == 1) {
+                    //判断是否有权限，
+                    if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                        brightUp();
                     } else {
+                        //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("没有操作权限");
                     }
-
+                } else if (smartprojecttype == 2) {
+                    //判断是否有权限，
+                    if (mDatas.get(posotion).isSmartprojectMain2Up()) {
+                        brightUp();
+                    } else {
+                        //如果没有权限，那么就无法看到提亮功能
+                        ToastUtils.showLongToast("没有操作权限");
+                    }
+                } else if (smartprojecttype == 3) {
+                    //判断是否有权限，
+                    if (mDatas.get(posotion).isSmartprojectMain3Up()) {
+                        brightUp();
+                    } else {
+                        //如果没有权限，那么就无法看到提亮功能
+                        ToastUtils.showLongToast("没有操作权限");
+                    }
+                } else {
+                    brightUp();
+                    ToastUtils.showLongToast("没有操作权限");
                 }
             }
         });
@@ -257,6 +284,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+
                                 if (smartprojecttype == 1) {
                                     //判断是否有权限，
                                     if (mDatas.get(posotion).isSmartprojectMain1Down()) {
@@ -267,7 +295,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 } else if (smartprojecttype == 2) {
                                     //判断是否有权限，
-                                    if (mDatas.get(posotion).isSmartprojectMain2Down()) {
+                                    if (mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
                                         brightDown();
                                     } else {
                                         //如果没有权限，那么就无法看到提亮功能
@@ -275,7 +303,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 } else if (smartprojecttype == 3) {
                                     //判断是否有权限，
-                                    if (mDatas.get(posotion).isSmartprojectMain3Down()) {
+                                    if (mDatas.get(posotion).isSmartprojectMain3Down() || mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
                                         brightDown();
                                     } else {
                                         //如果没有权限，那么就无法看到提亮功能
@@ -283,7 +311,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 } else {
                                     ToastUtils.showLongToast("没有操作权限");
-
                                 }
 
                             }

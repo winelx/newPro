@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.BaseApplication;
@@ -125,6 +124,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         mContext = ReplyActivity.this;
         pathimg = new ArrayList<>();
         photoPopPaths = new ArrayList<>();
+        list = LoveDao.queryLove();
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -155,6 +155,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             titlename = intent.getExtras().getString("title");
             title.setText(titlename);
             //图片字符串
+            String Paths = intent.getExtras().getString("Imgpath");
+            List<String> path=new ArrayList<>();
+            path=Dates.stringToList(Paths);
+            pathimg.addAll(path);
             checkId = intent.getExtras().getString("Checkid");
             checkname = intent.getExtras().getString("Checkname");
             if (checkname.length() < 0) {
@@ -221,8 +225,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         //下拉控件，禁止下拉，只允许上拉加载更多
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         smartRefreshLayout.setEnableRefresh(false);
-        //是否启用越界拖动（仿苹果效果）1.0.4
-        smartRefreshLayout.setEnableOverScrollDrag(true);
 
         //进度条
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
@@ -399,7 +401,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
-                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -418,7 +419,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             if (ret == 0) {
                                 //删除单闯的图片
                                 for (int i = 0; i < pathimg.size(); i++) {
-                                    FileUtils.deleteFile(pathimg.get(i));
+                                    Dates.deleteFile(pathimg.get(i));
                                 }
                                 ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {
@@ -467,6 +468,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("data", "reply");
                 intent.putExtra("wbsID", wbsID);
                 startActivityForResult(intent, 1);
+
                 break;
             case R.id.com_back:
                 for (int i = 0; i < pathimg.size(); i++) {
@@ -517,7 +519,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
             drew = true;
+            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
             checkId = "";
+
             replyCheckItem.setText(data.getStringExtra(""));
         } else if (requestCode == 1 && resultCode == 2) {
             //节点

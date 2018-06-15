@@ -156,7 +156,7 @@ public class WorkFragment extends Fragment {
 
                 }
             });
-            //下载离线图纸
+            //未上传界面
             uploade.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

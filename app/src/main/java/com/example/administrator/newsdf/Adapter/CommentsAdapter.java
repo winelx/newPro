@@ -85,11 +85,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
-
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.home_fragment_item, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
-
         return holder;
     }
 

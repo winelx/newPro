@@ -61,6 +61,7 @@ public class Home_item {
         this.parentid = parentid;
 
 
+
     }
 
     public String getContent() {
@@ -142,4 +143,5 @@ public class Home_item {
     public void setParentid(String parentid) {
         this.parentid = parentid;
     }
+
 }

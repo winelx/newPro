@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.activity.work;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,10 +14,14 @@ import android.view.ViewGroup;
 import com.example.administrator.newsdf.Adapter.BridhtAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.BrightBean;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,16 +48,24 @@ public class BridhtFragment extends Fragment {
     private BridhtAdapter mAdapter;
     private RecyclerView brightspot_list;
     private ArrayList<BrightBean> mData = new ArrayList<>();
+    private SmartRefreshLayout refreshlayout;
 
     public BridhtFragment(int pos) {
         this.pos = pos;
     }
+
+    int page = 1;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bright_list_view, container, false);
         brightspot_list = view.findViewById(R.id.brightspot_list);
+        refreshlayout = view.findViewById(R.id.refreshlayout);
+        refreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        refreshlayout.setEnableLoadmore(false);//禁止上拉
+        refreshlayout.setEnableRefresh(false);
+        refreshlayout.setEnableOverScrollBounce(true);//仿ios越界
         LinearLayoutManager linearLayout = new LinearLayoutManager(BrightspotActivity.getInstance());
         //添加Android自带的分割线
         brightspot_list.addItemDecoration(new DividerItemDecoration(BrightspotActivity.getInstance(), DividerItemDecoration.VERTICAL));
@@ -60,24 +74,33 @@ public class BridhtFragment extends Fragment {
         mAdapter = new BridhtAdapter(BrightspotActivity.getInstance());
         brightspot_list.setAdapter(mAdapter);
         Bright();
+        //上拉加载
+        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                Bright();
+                //传入false表示加载失败
+                refreshlayout.finishLoadmore(800);
+            }
+        });
         return view;
     }
 
     private void Bright() {
-
+        ToastUtils.showLongToast(page + "");
         OkGo.<String>post(Requests.ListByType)
-                .params("type", pos+1)
-                .params("page",1 )
+                //pos 是从0开始的，而传递的数据从1开始
+                .params("type", pos + 1)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
-                                //id
                                 String id;
                                 try {
                                     id = json.getString("id");
@@ -139,19 +162,19 @@ public class BridhtFragment extends Fragment {
                                     e.printStackTrace();
                                     updateDate = Dates.stampToDate(json.getString("createDate"));
                                 }
-                                ArrayList<String> ImagePaths=new ArrayList<String>();
-                                try{
+                                ArrayList<String> ImagePaths = new ArrayList<String>();
+                                try {
 
-                                    JSONArray filePaths =json.getJSONArray("filePaths");
+                                    JSONArray filePaths = json.getJSONArray("filePaths");
                                     for (int j = 0; j < filePaths.length(); j++) {
-                                        String path=Requests.networks+ filePaths.get(j);
+                                        String path = Requests.networks + filePaths.get(j);
                                         ImagePaths.add(path);
                                     }
 
-                                }catch (JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate,TaskId,pos,ImagePaths));
+                                mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, pos, ImagePaths));
                             }
                             mAdapter.getData(mData);
                         } catch (JSONException e) {

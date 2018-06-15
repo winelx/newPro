@@ -5,10 +5,17 @@
     android:background="@color/back"
     android:orientation="vertical">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/brightspot_list"
-        android:layout_marginTop="@dimen/dp10"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/brightspot_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp10" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

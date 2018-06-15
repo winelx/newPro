@@ -60,6 +60,7 @@ public class LoveDao {
     public static List<Shop> MineHide() {
         return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_HIDE)).list();
     }
+
     //用户推送
     public static List<Shop> JPushCart() {
         return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();

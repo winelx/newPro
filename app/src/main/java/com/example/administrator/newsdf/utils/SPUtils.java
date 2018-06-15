@@ -48,13 +48,13 @@ public class SPUtils {
         return sp.getBoolean(key, defValue);
     }
 
-    //刪除 单个
+    //刪除单个
     public static void deleShare(Context mContext, String key) {
         SharedPreferences sp = mContext.getSharedPreferences(NAME, Context.MODE_PRIVATE);
         sp.edit().remove(key).commit();
     }
 
-    //刪除 全部
+    //刪除全部
     public static void deleAll(Context mContext) {
         SharedPreferences sp = mContext.getSharedPreferences(NAME, Context.MODE_PRIVATE);
         sp.edit().clear().commit();

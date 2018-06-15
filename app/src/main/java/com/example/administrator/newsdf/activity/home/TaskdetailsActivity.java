@@ -132,7 +132,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //关闭下拉刷新
         drawerLayoutSmart.setEnableRefresh(false);
-        comTitle.setText("任务详情");
+        comTitle.setText("部位详情");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
@@ -329,6 +329,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      * 完成详细数据
      */
     private void okgo(final String id) {
+        Dates.getDialogs(TaskdetailsActivity.this, "请求数据中");
         OkGo.post(Requests.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {
@@ -372,7 +373,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             int smartProjectType;
                             try {
                                 smartProjectType = wtMain.getInt("smartProjectType");
-
                             } catch (JSONException e) {
                                 smartProjectType = 0;
                             }
@@ -681,12 +681,11 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             if (contents.get(0).getStatus().equals("0")) {
                                 aduioDatas.clear();
                                 aduioComms.clear();
-
                             }
                             mAdapter.setmBanner(contents);
                             mAdapter.getmListA(aduioDatas);
                             mAdapter.getmListB(aduioComms);
-
+                            Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -694,6 +693,12 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             taskManagement.setVisibility(View.VISIBLE);
                             wbspath.setText(wbsName);
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

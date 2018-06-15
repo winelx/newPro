@@ -23,8 +23,6 @@ import com.example.administrator.newsdf.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
-import com.zxy.tiny.Tiny;
-import com.zxy.tiny.callback.FileCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +53,8 @@ public class BootupActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bootup);
-        //防止重复创建的问题，第一次安装完成启动，和home键退出点击launcher icon启动会重复
+        //第一次安装完成启动，和home键退出点击launcher icon启动会重复
+        // 此代码防止重复创建的问题，
         if (!isTaskRoot()
                 && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
                 && getIntent().getAction() != null
@@ -82,7 +81,6 @@ public class BootupActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
-
                     finish();
                 } else {
                     //如果已经存在，
@@ -101,16 +99,6 @@ public class BootupActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(password)) {
                     //实现页面跳转
                     startActivity(new Intent(BootupActivity.this, LoginActivity.class));
-                    //创建文件路径，
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    Tiny.getInstance().source(R.mipmap.add).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            //不需要压缩后的图，删除
-                            Dates.deleteFile(outfile);
-                        }
-                    });
-                    Dates.createmkdir();
                     finish();
                 } else {
                     //如果已经存在，
@@ -234,21 +222,6 @@ public class BootupActivity extends AppCompatActivity {
         }
     }
 
-    @TargetApi(23)
-    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
-        // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
-        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(permission)) {
-                return true;
-            } else {
-                permissionsList.add(permission);
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
 
     /**
      * 退出登录
@@ -265,7 +238,6 @@ public class BootupActivity extends AppCompatActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        LogUtil.i("ss", "");
                         startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                         finish();
                     }

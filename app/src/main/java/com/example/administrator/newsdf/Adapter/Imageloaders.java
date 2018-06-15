@@ -124,11 +124,12 @@ public class Imageloaders extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        if (list.get(position).getGroupName().length() != 0) {
-//            holder.inter_title.setText(list.get(position).getGroupName());
-//        } else {
-//            holder.inter_title.setText("主动上传任务 ");
-//        }
+        //标题
+        if (list.get(position).getGroupName().length() != 0) {
+            holder.inter_title.setText(list.get(position).getGroupName());
+        } else {
+            holder.inter_title.setText("主动上传任务 ");
+        }
         holder.inface_wbs_path.setText(list.get(position).getWbsPath());
         holder.inter_content.setText(list.get(position).getContent());
         holder.inface_username.setText(list.get(position).getUploador());

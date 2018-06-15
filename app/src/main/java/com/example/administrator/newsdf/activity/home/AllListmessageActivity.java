@@ -608,7 +608,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         String id;
         String wbsId;
         String createTime;
-        String groupName;
+        String pointName;
         int isFinish = 0;//状态
         if (!swip) {
             Alldata.clear();
@@ -675,10 +675,10 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                             id = "";
                         }
                         try {
-                            groupName = json.getString("pointName");
+                            pointName = json.getString("pointName");
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            groupName = "";
+                            pointName = "";
                         }
                         try {
                             createTime = json.getString("createTime");
@@ -740,7 +740,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         }
                         int comments = json2.length();
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
-                                groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
+                                pointName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
                 } else {
                     if (!swip) {

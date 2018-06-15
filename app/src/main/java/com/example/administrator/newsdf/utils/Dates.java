@@ -74,6 +74,7 @@ public class Dates {
         res = simpleDateFormat.format(date);
         return res;
     }
+
     /**
      * 时间戳转时间
      */
@@ -129,8 +130,6 @@ public class Dates {
         String str = formatter.format(curDate);
         return str;
     }
-
-
 
 
     public static String getHH() {
@@ -245,24 +244,23 @@ public class Dates {
         file.delete();
     }
 
-   /**
+    /**
      * 复制文件
+     *
      * @param fromFile
-     * @param toFile
-     * <br/>
+     * @param toFile   <br/>
      */
-    public void copyFile(File fromFile,File toFile) throws IOException{
+    public void copyFile(File fromFile, File toFile) throws IOException {
         FileInputStream ins = new FileInputStream(fromFile);
         FileOutputStream out = new FileOutputStream(toFile);
         byte[] b = new byte[1024];
-        int n=0;
-        while((n=ins.read(b))!=-1){
+        int n = 0;
+        while ((n = ins.read(b)) != -1) {
             out.write(b, 0, n);
         }
         ins.close();
         out.close();
     }
-
 
 
     public static String downloadPhoto(Bitmap bmp, String Title) {
@@ -291,8 +289,7 @@ public class Dates {
 
     }
 
-    public static String  saveBitmap(Bitmap bitmap,String bitName) throws IOException
-    {
+    public static String saveBitmap(Bitmap bitmap, String bitName) throws IOException {
         String strpaths = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
         File appDir = new File(strpaths, "picker");
         if (!appDir.exists()) {
@@ -300,28 +297,23 @@ public class Dates {
         }
 
         String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
-        File file = new File(strpath+bitName);
-        if(file.exists()){
+        File file = new File(strpath + bitName);
+        if (file.exists()) {
             file.delete();
         }
         FileOutputStream out;
-        try{
+        try {
             out = new FileOutputStream(file);
-            if(bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out))
-            {
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)) {
                 out.flush();
                 out.close();
             }
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return strpath+bitName;
+        return strpath + bitName;
     }
 
 
@@ -414,7 +406,7 @@ public class Dates {
         if (strs == "" && strs.isEmpty()) {
 
         } else {
-            String str[] = strs.split(",");
+            String str[] = strs.split("，");
             return Arrays.asList(str);
         }
         return null;
@@ -427,7 +419,6 @@ public class Dates {
      * @return
      */
     public static boolean isSoftInputShow(Activity activity) {
-
         // 虚拟键盘隐藏 判断view是否为空
         View view = activity.getWindow().peekDecorView();
         if (view != null) {
@@ -574,13 +565,14 @@ public class Dates {
     }
 
 
-    public static  void  createmkdir(){
+    public static void createmkdir() {
         String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
         File appDir = new File(strpath, "picker");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
     }
+
     public static double getDirSize(File file) {
         //判断文件是否存在
         if (file.exists()) {
@@ -600,17 +592,19 @@ public class Dates {
             return 0.0;
         }
     }
+
     /**
      * 屏幕亮度
      *
      * @param bgAlpha
      */
-    public void backgroundAlpha(float bgAlpha ,Activity activity) {
+    public void backgroundAlpha(float bgAlpha, Activity activity) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         //0.0-1.0
         lp.alpha = bgAlpha;
         activity.getWindow().setAttributes(lp);
     }
+
     //根据bii返回当前分辨率下该设置宽度
     public static int withFontSize(float screenWidth) {
         // 240X320 屏幕
@@ -627,6 +621,7 @@ public class Dates {
 
         }
     }
+
     //根据bii返回当前分辨率下该设置高度
     public static int higtFontSize(float screenWidth) {
         // 240X320 屏幕

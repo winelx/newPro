@@ -3,6 +3,8 @@ package com.example.administrator.newsdf.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -12,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.GreenDao.LoveDao;
+import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -22,6 +26,8 @@ import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -124,13 +130,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
                         try {
+
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");
                             String msg = jsonObject.getString("msg");
                             ToastUtils.showLongToast(msg);
-                            if (ret != 0) {
-                                Dates.disDialog();
-                            }
+                            //删除数据库红点
+                            greedao();
+                            SPUtils.deleAll(mContext);
                             JSONObject jsom = jsonObject.getJSONObject("data");
                             String id;
                             try {
@@ -188,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 e.printStackTrace();
                                 moblie = "";
                             }
-                            SPUtils.deleAll(mContext);
+
                             //职员ID
                             SPUtils.putString(mContext, "staffId", staffId);
                             //所在组织名称
@@ -241,5 +248,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
+    List<Shop> list;
 
+    private void greedao() {
+        list = LoveDao.JPushCart();
+        Message mes = new Message();
+        handler.sendMessage(mes);
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            /**
+             * 删除数据库数据，改变状态
+             */
+            for (int i = 0; i < list.size(); i++) {
+                LoveDao.deleteLove(list.get(i).getId());
+            }
+        }
+    };
 }

@@ -84,7 +84,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置适配器
-        mAdapter = new CollectionFrAdapter(mContext);
+        mAdapter = new CollectionFrAdapter(mContext,mData);
         listView.setAdapter(mAdapter);
         //设置控制Item增删的动画
         listView.setItemAnimator(new DefaultItemAnimator());
@@ -119,7 +119,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
                 startActivity(intent);
             }
         });
-
         return view;
     }
 
@@ -164,16 +163,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         e.printStackTrace();
                                         createTime = "";
                                     }
-                                    String id;
-                                    try {
-                                        id = json.getString("id");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        id = "";
-                                    }
+                                    String id="";
                                     String orgId;
                                     try {
-                                        orgId = json.getString("org_id");
+                                        orgId = json.getString("orgId");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         orgId = "";
@@ -185,17 +178,9 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         e.printStackTrace();
                                         orgName = "";
                                     }
-                                    String unfinish;
-                                    try {
-                                        unfinish = json.getString("wbsName");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        unfinish = "";
-                                    }
-                                    String parentid = json.getString("parent_id");
-                                    String parentname = json.getString("parent_name");
+                                    String unfinish="";
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", parentname, parentid, false));
+                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "","","" ,false));
                                 }
                                 mAdapter.getData(mData);
                                 home_frag_img.setVisibility(View.GONE);

@@ -46,16 +46,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/home_list"
+        <ExpandableListView
+            android:id="@+id/expandable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/writer"
             android:divider="@color/back"
-            android:dividerHeight="0.5dp"
-            android:scrollbars="none"
- />
-
+            android:dividerHeight="@null"
+            android:groupIndicator="@color/colorAccent" />
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter
             android:layout_width="match_parent"

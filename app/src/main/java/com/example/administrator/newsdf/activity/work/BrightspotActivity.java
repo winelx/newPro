@@ -57,7 +57,6 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         initData();
     }
 
-
     private void initData() {
         //定义一个视图集合（用来装左右滑动的页面视图）
         ArrayList<String> viewList = new ArrayList<String>();

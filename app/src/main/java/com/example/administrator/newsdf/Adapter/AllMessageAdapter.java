@@ -121,36 +121,7 @@ public class AllMessageAdapter extends RecyclerView.Adapter<AllMessageAdapter.My
                 }
             }
         });
-//        //左滑置顶点击事件
-//        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (mDatas.get(position).isPutTop()) {
-//                    List<Shop> list = new ArrayList<Shop>();
-//                    list = LoveDao.ALLCart();
-//                    // 状态为ture 为置顶状态 点击为取消
-//                    //删除置顶
-//                    String str = mDatas.get(position).getId();
-//                    for (int i = 0; i < list.size(); i++) {
-//                        String wbsID = list.get(i).getWebsid();
-//                        if (str.equals(wbsID)) {
-//                            LoveDao.deleteLove(list.get(i).getId());
-//                            CallBackUtils.removeCallBackMethod();
-//                        }
-//                    }
-//                } else {
-//                    //状态为false 点击为置顶
-//                    //添加置顶
-//                    Shop shop = new Shop();
-//                    //保存ID
-//                    shop.setWebsid(mDatas.get(position).getId());
-//                    shop.setType(Shop.TYPE_ALL);
-//                    LoveDao.insertLove(shop);
-//
-//                }
-//                closeMenu();
-//            }
-//        });
+
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

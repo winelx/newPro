@@ -1,24 +1,18 @@
 package com.example.administrator.newsdf.fragment.homepage;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.Adapter.AllMessageAdapter;
-import com.example.administrator.newsdf.GreenDao.LoveDao;
-import com.example.administrator.newsdf.GreenDao.Shop;
+import com.example.administrator.newsdf.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.bean.Home_item;
@@ -26,27 +20,16 @@ import com.example.administrator.newsdf.callback.CallBack;
 import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.fragment.presenter.AllmessagePer;
+import com.example.administrator.newsdf.fragment.view.UiAllMessageView;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
-import com.example.administrator.newsdf.utils.Requests;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * description: 全部消息
@@ -56,34 +39,34 @@ import okhttp3.Response;
  *         update: 2018/3/16 0016
  *         version:
  */
-public class AllMessageFragment extends Fragment implements CallBack, OgranCallback {
+public class AllMessageFragment extends Fragment implements CallBack, OgranCallback, UiAllMessageView {
     private View rootView;
-    private RecyclerView listView;
-    private AllMessageAdapter mAdapter = null;
-    private ArrayList<Home_item> mData;
+    private MyExpandableListAdapter mAdapter;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
     private RelativeLayout home_frag_img;
     private TextView home_img_text;
     private ImageView home_img_nonews;
     private ArrayList<String> placedTop;
-    private ArrayList<String> Hidearray;
-
+    private ExpandableListView expandable;
+    private View.OnClickListener ivGoToChildClickListener;
+    Map<String, List<Home_item>> map;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_home, null);
+            rootView = inflater.inflate(R.layout.fragment_allmessage, null);
             mContext = getActivity();
-            listView = rootView.findViewById(R.id.home_list);
             home_img_nonews = rootView.findViewById(R.id.home_img_nonews);
             home_frag_img = rootView.findViewById(R.id.home_frag_img);
             home_img_text = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
-            refreshLayout.setEnableLoadmore(false);//禁止上拉
-            refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
-            refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+            expandable = rootView.findViewById(R.id.expandable);
+            //禁止上拉
+            refreshLayout.setEnableLoadmore(false);
+            //仿ios越界
+            refreshLayout.setEnableOverScrollBounce(true);
         }
 
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
@@ -91,150 +74,48 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         if (parent != null) {
             parent.removeView(rootView);
         }
-        mContext = MainActivity.getInstance();
-        //控件处理
-        //推送的接口回调（）
-        CallBackUtils.setCallBack(this);
-        //切换组织接口回调（OrganizationaActivity）
-        OgranCallbackUtils.setCallBack(this);
-        init();
-        //网络请求
-        Okgo();
+        initdata();
+        Onclick();
         return rootView;
     }
 
-    private void init() {
-        mData = new ArrayList<>();
-        //设置布局管理器
-        listView.setLayoutManager(new LinearLayoutManager(mContext));
-        //设置适配器
-        listView.setAdapter(mAdapter = new AllMessageAdapter(mContext));
-        //设置控制Item增删的动画
-        listView.setItemAnimator(new DefaultItemAnimator());
-        //没有网络的时候点击界面刷新数据
-        home_frag_img.setOnClickListener(new View.OnClickListener() {
+    private void Onclick() {
+        //网络请求
+        ivGoToChildClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(getActivity(), "请求数据中");
-                Okgo();
+                //获取被点击图标所在的group的索引
+                Map<String, Object> map = (Map<String, Object>) v.getTag();
+                int groupPosition = (int) map.get("groupPosition");
+                //判断分组是否展开
+                boolean isExpand = expandable.isGroupExpanded(groupPosition);
+                if (isExpand) {
+                    //收缩
+                    expandable.collapseGroup(groupPosition);
+
+                } else {
+                    //展开
+                    expandable.expandGroup(groupPosition);
+                }
             }
-        });
+        };
+
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                if (mAdapter.menuIsOpen()) {
-                    mAdapter.closeMenu();
-                }
-                Okgo();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(2000);
+                Intent();
             }
         });
     }
 
-    /**
-     * 网络请求
-     */
-    public void Okgo() {
-//        putTop();
-        OkGo.post(Requests.TaskMain)
-                .params("isAll", "true")
-                .execute(new StringCallback() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("result", s);
-                        ArrayList<String> parentlist = new ArrayList<String>();
-                        if (s.contains("data")) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int code = jsonObject.getInt("ret");
-                                if (code == 0) {
-                                    listView.setVisibility(View.VISIBLE);
-                                    mData.clear();
-                                }
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String content = json.getString("content");
-                                    String createTime = json.getString("createTime");
-                                    if (createTime != null && !"".equals(createTime)) {
-                                        createTime = createTime.substring(0, 10);
-                                    } else {
-                                        createTime = "";
-                                    }
-                                    String id = json.getString("id");
-                                    String isfavorite = json.getString("isfavorite");
-                                    String orgId = json.getString("orgId");
-                                    String orgName = json.getString("orgName");
-                                    String parentid = json.getString("parent_id");
-                                    String parentname = json.getString("parent_name");
-                                    String unfinish = json.getString("unfinish");
-                                    //将组织所属公司添加到集合
-                                    if (!parentlist.contains(parentname)) {
-                                        parentlist.add(parentname);
-                                    }
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
-                                }
+    private void initdata() {
+        new AllmessagePer(this).getMode();
+        //推送的接口回调（）
+        CallBackUtils.setCallBack(this);
+        //切换组织接口回调（OrganizationaActivity）
+        OgranCallbackUtils.setCallBack(this);
 
-
-                                //是否有数据
-                                if (mData.size() != 0) {
-                                    Map<String, List<Home_item>> hasMap = new HashMap<String, List<Home_item>>();
-                                    for (String str : parentlist) {
-                                        ArrayList<Home_item> list = new ArrayList<Home_item>();
-                                        for (Home_item item : mData) {
-                                            String name = item.getParentname();
-                                            if (str.equals(name)) {
-                                                list.add(item);
-                                                hasMap.put(str, list);
-                                            }
-                                        }
-                                    }
-                                    //刷新数据
-                                    mAdapter.getData(mData);
-                                    home_frag_img.setVisibility(View.GONE);
-
-                                } else {
-                                    home_frag_img.setVisibility(View.VISIBLE);
-                                    home_img_text.setText("数据为空，点击刷新");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            ToastUtils.showShortToast("没有更多数据");
-                            home_frag_img.setVisibility(View.VISIBLE);
-                            home_img_text.setText("数据为空，点击刷新");
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        ToastUtils.showShortToast("网络连接失败");
-                        home_frag_img.setVisibility(View.VISIBLE);
-                        home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
-                        home_img_text.setText("请确认网络是否正常，点击再次请求");
-
-                    }
-                });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAdapter.menuIsOpen()) {
-            mAdapter.closeMenu();
-        }
     }
 
     @Override
@@ -244,25 +125,43 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         refreshLayout.finishRefresh(false);
     }
 
-    public void putTop() {
-        placedTop = new ArrayList<>();
-        Hidearray = new ArrayList<>();
-        List<Shop> list = new ArrayList<>();
-        list = LoveDao.ALLCart();
-        for (int i = 0; i < list.size(); i++) {
-            placedTop.add(list.get(i).getWebsid());
-        }
-    }
-
     //接收推送的消息，刷新数据
     @Override
     public void deleteTop() {
-        Okgo();
+        Intent();
     }
 
     //切换组织刷新界面
     @Override
     public void taskCallback() {
-        Okgo();
+        Intent();
+    }
+
+    /**
+     * 将数据放到适配器中
+     *
+     * @param list
+     * @param map
+     */
+    @Override
+    public void setAdapter(List<String> list, Map<String, List<Home_item>> map) {
+        this.map=map;
+
+        mAdapter = new MyExpandableListAdapter(list, map, mContext,
+                ivGoToChildClickListener);
+        expandable.setAdapter(mAdapter);
+        expandable.setAdapter(mAdapter);
+        //默认展开第一个分组
+        expandable.expandGroup(0);
+        refreshLayout.finishRefresh(false);
+    }
+
+    @Override
+    public void showLoding() {
+        Dates.getDialog(MainActivity.getInstance(), "请求数据中");
+    }
+
+    public void Intent() {
+        new AllmessagePer(this).getMode();
     }
 }

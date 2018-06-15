@@ -794,18 +794,17 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             String msg = jsonObject.getString("msg");
+                            ToastUtils.showShortToast(msg);
                             if (ret == 0) {
-                                //删除上传的图片
+                                //删除上传的原图图片
                                 for (int i = 0; i < pathimg.size(); i++) {
-                                    FileUtils.deleteFile(pathimg.get(position));
+                                    Dates.deleteFile(pathimg.get(position));
                                 }
-                                ToastUtils.showShortToast(msg);
+                                //删除数据库数据
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
                                 setList();
-                            } else {
-                                ToastUtils.showShortToast(msg);
                             }
 
                         } catch (JSONException e) {

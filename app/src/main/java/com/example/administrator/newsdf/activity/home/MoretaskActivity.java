@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -62,7 +63,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<MoretasklistBean> Dats;
     public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
-    private String DATA = "data", usernma;
+    private String DATA = "data", userId;
     private LinearLayout newmoretask;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
@@ -88,12 +89,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
-        try {
-            String ste = dateToStamp("2018-05-27 11:29:02.0");
-            LogUtil.i("sdfe", ste);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         mContext = this;
         //初始化集合
         initArry();
@@ -115,7 +110,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
 
         }
-        usernma = SPUtils.getString(mContext, "id", null);
+        userId = SPUtils.getString(mContext, "staffId", null);
         //网络请求
         OkGo();
         //请求图册图片
@@ -235,6 +230,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     //请求网络
     public void OkGo() {
         LogUtil.i("result", taskID);
+        Dates.getDialogs(MoretaskActivity.this, "请求数据中");
         OkGo.<String>get(Requests.ContentDetail)
                 .params("id", taskID)
                 .execute(new StringCallback() {
@@ -242,6 +238,12 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("result", s);
                         getJson(s);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }
@@ -338,21 +340,33 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     for (int i = 0; i < parts.length(); i++) {
                         JSONObject json = parts.getJSONObject(i);
                         String ids = json.getString("id");
-                        String partContent = json.getString("partContent");
-                        String uploadDate = json.getString("createDate");
+
+                        String partContent;
+                        try {
+                            partContent = json.getString("partContent");
+                        } catch (JSONException e) {
+                            partContent = "";
+                        }
+                        String uploadDate;
+                        try {
+                            uploadDate = json.getString("createDate");
+                        } catch (JSONException e) {
+                            uploadDate = "";
+                        }
                         Dats.add(new MoretasklistBean(uploadDate, partContent, ids));
                     }
-
                     switch (status) {
                         case "2":
+                            //已完成不需要回复
                             newmoretask.setVisibility(View.GONE);
                             break;
                         case "0":
-                            if (!leaderId.equals(usernma)) {
+                            //未完成，判断责任人ID和登录人的ID是否相同
+                            if (!leaderId.equals(userId)) {
                                 newmoretask.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 newmoretask.setVisibility(View.VISIBLE);
-                         }
+                            }
                             break;
                         default:
                             newmoretask.setVisibility(View.GONE);
@@ -365,10 +379,12 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
+                Dates.disDialog();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
     }
 
     //请求图册
