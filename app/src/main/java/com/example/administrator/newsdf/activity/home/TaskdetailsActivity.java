@@ -394,7 +394,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 ///检查点
                                 name = wtMain.getString("name");
                             } catch (JSONException e) {
-
                                 name = "";
                             }
                             //是否是提亮
@@ -479,12 +478,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
                                 createByUserID = "";
                             }
-                            //是否被打回过
-                            String iscallback;
+                            //标准
+                            String checkStandard;
                             try {
-                                iscallback = wtMain.getString("iscallback");
+                                checkStandard = wtMain.getString("checkStandard");
                             } catch (JSONException e) {
-                                iscallback = "";
+                                e.printStackTrace();
+                                checkStandard = "";
                             }
                             //更新时间
                             String createDate = wtMain.getString("createDate");
@@ -501,7 +501,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
-                                    createByUserID, iscallback, createDate, wbsName, changeId, backdata));
+                                    createByUserID, checkStandard, createDate, wbsName, changeId, backdata));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
@@ -682,9 +682,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 aduioDatas.clear();
                                 aduioComms.clear();
                             }
-                            mAdapter.setmBanner(contents);
-                            mAdapter.getmListA(aduioDatas);
-                            mAdapter.getmListB(aduioComms);
+                            mAdapter.setmBanner(contents,aduioDatas,aduioComms);
                             Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -721,7 +719,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
 
     //取消收藏
     public int getdelete(String taskId) {
-
         return anInterface.deleteCollection(taskId);
     }
 

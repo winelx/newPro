@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -68,10 +68,10 @@ public class SettingActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     setting_message.setVisibility(View.VISIBLE);
-                    JPushInterface.resumePush(BaseApplication.getInstance());
+                    JPushInterface.resumePush(App.getInstance());
                 } else {
                     setting_message.setVisibility(View.GONE);
-                    JPushInterface.stopPush(BaseApplication.getInstance());
+                    JPushInterface.stopPush(App.getInstance());
                 }
             }
         });

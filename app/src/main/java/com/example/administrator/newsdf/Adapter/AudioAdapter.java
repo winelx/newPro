@@ -116,6 +116,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             holder.detailsContent.setText(content.get(posotion).getContent());
             holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+            holder.details_checkStandard.setText(content.get(posotion).getCheckStandard());
             //转交人
             holder.detailsUser.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {
@@ -182,7 +183,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //ViewHolder初始化控件
     public class TypeBannerHolder extends RecyclerView.ViewHolder {
         private LinearLayout linearLayout;
-        private TextView detailsTitle, detailsData,
+        private TextView detailsTitle, detailsData, details_checkStandard,
                 detailsUser, detailsBoolean,
                 handoverStatusDescription, handoverHuifu,
                 detailsContent, detailsFixedData, handoversText, detailsFixedBoolean;
@@ -190,6 +191,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public TypeBannerHolder(View itemView) {
             super(itemView);
             detailsFixedBoolean = itemView.findViewById(R.id.details_fixed_boolean);
+            details_checkStandard = itemView.findViewById(R.id.details_checkStandard);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);
@@ -228,17 +230,9 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     /**
      * 数据源
      */
-    public void setmBanner(ArrayList<Aduio_content> content) {
+    public void setmBanner(ArrayList<Aduio_content> content, ArrayList<Aduio_data> datas, ArrayList<Aduio_comm> comms) {
         this.content = content;
-        notifyDataSetChanged();
-    }
-
-    public void getmListA(ArrayList<Aduio_data> datas) {
         this.datas = datas;
-        notifyDataSetChanged();
-    }
-
-    public void getmListB(ArrayList<Aduio_comm> comms) {
         this.comms = comms;
         notifyDataSetChanged();
     }

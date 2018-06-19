@@ -34,7 +34,7 @@ import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -379,7 +379,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
 
     private void initdata(Intent intent) {
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4（用来设置任务状态弹出框在不同手机宽高）
-        ste = ScreenUtil.getDensity(BaseApplication.getInstance());
+        ste = ScreenUtil.getDensity(App.getInstance());
         //回调
         TaskCallbackUtils.setCallBack(this);
         //获取用户推送消息
@@ -387,7 +387,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         Message mes = new Message();
         handler.sendMessage(mes);
         //清除通知栏所有消息
-        JPushInterface.clearAllNotifications(BaseApplication.getInstance());
+        JPushInterface.clearAllNotifications(App.getInstance());
         Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
 
         try {

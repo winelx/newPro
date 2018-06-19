@@ -328,12 +328,12 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     status = "";
                 }
                 //状态
-                String wbsId;
+                String checkStandard;
                 try {
-                    wbsId = jsonArray.getString("wbsId");
+                    checkStandard = jsonArray.getString("checkStandard");
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    wbsId = "";
+                    checkStandard = "";
                 }
                 try {
                     JSONArray parts = Data.getJSONArray("parts");
@@ -376,7 +376,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 }
 
-                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, "1", createDate, wbsName, null, sendedTimeStr));
+                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID,checkStandard, createDate, wbsName, null, sendedTimeStr));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
                 Dates.disDialog();

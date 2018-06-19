@@ -35,7 +35,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
@@ -175,10 +175,10 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if (wbsname != null && wbsname.length() != 0) {
             wbsText.setText(wbsname);
         }
-//        //根据wbsname的长度判断默认是否展示图册按钮
-//        if (TextUtils.isEmpty(wbsID)) {
-//            fab.setVisibility(View.GONE);
-//        }
+        //根据wbsname的长度判断默认是否展示图册按钮
+        if (TextUtils.isEmpty(wbsID)) {
+            fab.setVisibility(View.GONE);
+        }
         //展示专递过来的回复数据
         replyText.setText(content);
         Save.setVisibility(View.VISIBLE);
@@ -193,7 +193,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
 
     private void loaction() {
         //定位初始化
-        locationService = ((BaseApplication) getApplication()).locationService;
+        locationService = ((App) getApplication()).locationService;
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
         //注册监听
@@ -414,46 +414,32 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            String msg = jsonObject.getString("msg");
                             int ret = jsonObject.getInt("ret");
+                            String msg = jsonObject.getString("msg");
+                            ToastUtils.showShortToast(msg);
                             if (ret == 0) {
-                                //删除单闯的图片
+                                //删除上传的原图图片
                                 for (int i = 0; i < pathimg.size(); i++) {
                                     Dates.deleteFile(pathimg.get(i));
                                 }
-                                ToastUtils.showShortToast(msg);
+                                //删除数据库数据
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
-                                //返回列表
-                                Intent intent = new Intent();
-                                //回传数据到主Activity
-                                setResult(RESULT_OK, intent);
-                                //此方法后才能返回主Activity
-                                finish();
-                            } else {
-                                ToastUtils.showShortToast(msg);
                             }
-                            dialog.dismiss();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        ToastUtils.showLongToast("1212");
                         dialog.dismiss();
                     }
 
-                    //进度条
-                    @Override
-                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
-                        mProgressBar.setProgress((int) (100 * progress));
-                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
-                    }
                 });
 
     }
@@ -468,7 +454,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("data", "reply");
                 intent.putExtra("wbsID", wbsID);
                 startActivityForResult(intent, 1);
-
                 break;
             case R.id.com_back:
                 for (int i = 0; i < pathimg.size(); i++) {

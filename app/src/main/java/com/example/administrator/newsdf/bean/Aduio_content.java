@@ -29,7 +29,7 @@ public class Aduio_content {
     //创建人ID  (路径：wtMain –> createBy -> id)
     String createByUserID;
     //是否被打回过
-    String iscallback;
+    String checkStandard;
     //创建时间
     String createDate;
     //wbsname
@@ -42,7 +42,7 @@ public class Aduio_content {
 
     public Aduio_content(String id, String name, String status, String content, String leaderName,
                          String leaderId, String isread, String createByUserID,
-                         String iscallback, String createDate,
+                         String checkStandard, String createDate,
                          String wbsName, String changeId, String backdata) {
         this.id = id;
         this.name = name;
@@ -52,7 +52,7 @@ public class Aduio_content {
         this.leaderId = leaderId;
         this.isread = isread;
         this.createByUserID = createByUserID;
-        this.iscallback = iscallback;
+        this.checkStandard = checkStandard;
         this.createDate = createDate;
         this.wbsName = wbsName;
         this.changeId = changeId;
@@ -125,12 +125,12 @@ public class Aduio_content {
         this.createByUserID = createByUserID;
     }
 
-    public String getIscallback() {
-        return iscallback;
+    public String getCheckStandard() {
+        return checkStandard;
     }
 
-    public void setIscallback(String iscallback) {
-        this.iscallback = iscallback;
+    public void setCheckStandard(String iscallback) {
+        this.checkStandard = iscallback;
     }
 
     public String getCreateDate() {

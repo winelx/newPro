@@ -36,7 +36,7 @@ import com.baidu.location.BDLocation;
 import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.Adapter.PhotosAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
@@ -84,7 +84,6 @@ import okhttp3.Response;
  */
 public class ReplysActivity extends AppCompatActivity implements View.OnClickListener {
     private PhotosAdapter photoAdapter;
-
     private ArrayList<PhotoBean> photoPopPaths;
     private ArrayList<File> files;
     private ArrayList<String> namess;
@@ -203,7 +202,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     //定位
     private void loaction() {
         //定位初始化
-        locationService = ((BaseApplication) getApplication()).locationService;
+        locationService = ((App) getApplication()).locationService;
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
         //注册监听
@@ -798,7 +797,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             if (ret == 0) {
                                 //删除上传的原图图片
                                 for (int i = 0; i < pathimg.size(); i++) {
-                                    Dates.deleteFile(pathimg.get(position));
+
+                                    FileUtils.deleteFile(pathimg.get(i));
                                 }
                                 //删除数据库数据
                                 if (!list.isEmpty() && position != -1) {
@@ -819,13 +819,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                         dialog.dismiss();
                     }
 
-                    //进度条
-                    @Override
-                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
-                        mProgressBar.setProgress((int) (100 * progress));
-                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
-                    }
+
                 });
     }
 }

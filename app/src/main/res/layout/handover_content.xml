@@ -10,9 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/com_content"
         android:background="@color/writer"
-        android:visibility="gone"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +51,19 @@
             android:layout_marginTop="3dp"
             android:text="时间"
             android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/details_checkStandard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/details_data"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:lineSpacingExtra="4dp"
+            android:text="标准"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/details_content"
@@ -197,5 +208,5 @@
                 android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
-c
+    c
 </RelativeLayout>

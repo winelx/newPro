@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mContext = BaseApplication.getInstance();
+        mContext = App.getInstance();
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);

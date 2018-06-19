@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.Adapter.Imageloaders;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -119,7 +119,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
-        ste = ScreenUtil.getDensity(BaseApplication.getInstance());
+        ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
         mContext = getApplicationContext();
         Intent intent = getIntent();

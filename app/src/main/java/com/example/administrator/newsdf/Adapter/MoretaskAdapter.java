@@ -105,15 +105,16 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.detailsFixedData.setText(content.get(posotion).getBackdata());
                 //转交人
                 holder.detailsUser.setText(content.get(posotion).getLeaderName());
+                holder.details_checkStandard.setText(content.get(posotion).getCheckStandard());
                 if (content.get(posotion).getStatus().equals("0")) {
-                    status="2";
+                    status = "2";
                     holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + content.get(posotion).getBackdata());
                     //状态
                     holder.detailsBoolean.setText("未完成");
                     //状态
                     holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
                 } else {
-                    status="1";
+                    status = "1";
                     holder.detailsData.setText(content.get(posotion).getCreateDate());
                     //状态
                     holder.detailsBoolean.setText("已完成");
@@ -123,7 +124,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }// 转交说明
                 holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
                 holder.detailsFixedBoolean.setText("任务状态:");
-                }
+            }
         }
     }
 
@@ -138,7 +139,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder1.setpin.setVisibility(View.VISIBLE);
             holder1.dataRec.setVisibility(View.VISIBLE);
             holder1.dataRec.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-            mAdapter = new MoreTaskDataAdapter(mContext,status,content.get(0).getLeaderName());
+            mAdapter = new MoreTaskDataAdapter(mContext, status, content.get(0).getLeaderName());
             holder1.dataRec.setAdapter(mAdapter);
             mAdapter.getData(data);
         } else {
@@ -157,14 +158,15 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     private class ViewholderContent extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
-        TextView detailsTitle, detailsData,
+        TextView detailsTitle, detailsData, details_checkStandard,
                 detailsUser, detailsBoolean,
                 handoverStatusDescription,
                 detailsContent, detailsFixedData, detailsFixedBoolean;
 
         public ViewholderContent(View itemView) {
             super(itemView);
-            detailsFixedBoolean =itemView.findViewById(R.id.details_fixed_boolean);
+            detailsFixedBoolean = itemView.findViewById(R.id.details_fixed_boolean);
+            details_checkStandard = itemView.findViewById(R.id.details_checkStandard);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);
@@ -198,7 +200,6 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void getContent(ArrayList<Aduio_content> content, ArrayList<MoretasklistBean> data) {
         this.content = content;
         this.data = data;
-
         notifyDataSetChanged();
     }
 

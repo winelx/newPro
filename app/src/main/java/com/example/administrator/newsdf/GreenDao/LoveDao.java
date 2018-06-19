@@ -1,6 +1,6 @@
 package com.example.administrator.newsdf.GreenDao;
 
-import com.example.administrator.newsdf.BaseApplication;
+import com.example.administrator.newsdf.App;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class LoveDao {
      * @param shop
      */
     public static void insertLove(Shop shop) {
-        BaseApplication.getDaoInstant().getShopDao().insert(shop);
+        App.getDaoInstant().getShopDao().insert(shop);
     }
 
     /**
@@ -24,7 +24,7 @@ public class LoveDao {
      * @param id
      */
     public static void deleteLove(long id) {
-        BaseApplication.getDaoInstant().getShopDao().deleteByKey(id);
+        App.getDaoInstant().getShopDao().deleteByKey(id);
     }
 
     /**
@@ -33,7 +33,7 @@ public class LoveDao {
      * @param shop
      */
     public static void updateLove(Shop shop) {
-        BaseApplication.getDaoInstant().getShopDao().update(shop);
+        App.getDaoInstant().getShopDao().update(shop);
     }
 
     /**
@@ -43,27 +43,27 @@ public class LoveDao {
      */
     //未上传
     public static List<Shop> queryLove() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_LOVE)).list();
+        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_LOVE)).list();
     }
 
     // 下载图片
     public static List<Shop> queryCart() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
+        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
     }
 
     //用户置顶
     public static List<Shop> ALLCart() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_ALL)).list();
+        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_ALL)).list();
     }
 
     //用户收藏
     public static List<Shop> MineHide() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_HIDE)).list();
+        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_HIDE)).list();
     }
 
     //用户推送
     public static List<Shop> JPushCart() {
-        return BaseApplication.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();
+        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();
     }
 
 }

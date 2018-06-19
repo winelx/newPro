@@ -61,6 +61,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
 
         if (getItemViewType(position) == TYPE_PHOTO) {
+            //加载图片
             Glide.with(mContext)
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)
@@ -87,10 +88,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 }
             });
         } else {
+            //添加照片
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ReplyActivity reply = (ReplyActivity) mContext;
+                    //调用相机
                     reply.Cream();
                 }
             });
@@ -99,6 +102,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public int getItemCount() {
+
         int count = photoPaths.size() + 1;
         if (count > MAX) {
             count = MAX;
@@ -115,7 +119,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         private ImageView ivPhoto;
         private ImageView vSelected;
         private ImageView img_add;
-
         public PhotoViewHolder(View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_photo);
