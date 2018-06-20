@@ -486,6 +486,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 e.printStackTrace();
                                 checkStandard = "";
                             }
+                            //部位
+                            String partContent;
+                            try {
+                                partContent = wtMain.getString("partContent");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                partContent = "";
+                            }
                             //更新时间
                             String createDate = wtMain.getString("createDate");
                             //wbsname
@@ -501,7 +509,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
-                                    createByUserID, checkStandard, createDate, wbsName, changeId, backdata));
+                                    createByUserID, checkStandard, createDate, wbsName, changeId,
+                                    backdata,partContent));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,

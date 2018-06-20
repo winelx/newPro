@@ -59,17 +59,22 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
             pushDuty, sendtimes,
     //前置条件
     conditions;
+    private TextView checkstandard;
 
-    private RelativeLayout push_duty, push_conditions;
     private String wbsId, content, user, userId, label, requirements,
-            sendTimes, preconditions, id;
+            sendTimes, preconditions, id, Standard;
     private String taskcontent, pushcontent;
+
+    public PushdialogActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushdialog);
         com_back = findViewById(R.id.com_back);
+        //标准
+        checkstandard = findViewById(R.id.pushdialog_checkStandard);
         //任务内容
         pushDialog = findViewById(R.id.pushdialog_item_content);
         //负责人
@@ -80,6 +85,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         pushContent = findViewById(R.id.push_item_content);
         //推送次数
         sendtimes = findViewById(R.id.pushdialog_sendnumber);
+
         findViewById(R.id.push_conditions).setOnClickListener(this);
         findViewById(R.id.push_duty).setOnClickListener(this);
         Intent intent = getIntent();
@@ -100,6 +106,8 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
             sendTimes = intent.getStringExtra("sendTimes");
             //前置项ID
             preconditions = intent.getStringExtra("preconditions");
+            //标准
+            Standard = intent.getStringExtra("checkStandard");
             //任务ID
             id = intent.getStringExtra("id");
         } catch (NullPointerException e) {
@@ -108,12 +116,17 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         pushDialog.setText(label);
         pushContent.setText(content);
         pushDuty.setText(user);
+        if (Standard.isEmpty()) {
+            checkstandard.setText("无");
+        } else {
+            checkstandard.setText(Standard);
+        }
+
         if (requirements.length() != 0) {
             conditions.setText(requirements);
         } else {
             conditions.setText("无");
         }
-
         sendtimes.setText(sendTimes);
         com_back.setOnClickListener(new View.OnClickListener() {
             @Override

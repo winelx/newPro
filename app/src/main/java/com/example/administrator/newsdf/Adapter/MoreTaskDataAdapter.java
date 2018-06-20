@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +38,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.status = status;
         list = new ArrayList<>();
         this.usernma = username;
-
-
     }
 
     public int getContentSize() {
@@ -87,10 +86,21 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 获取holder对象
             MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
-            //设置部位名称
-            myHolder.itemText.setText(list.get(position - 1).getPartContent());
+
             //设置创建时间
             myHolder.create_time.setText(list.get(position - 1).getUploadTime());
+            MoretaskActivity activity = (MoretaskActivity) mContext;
+            String taskId = activity.getId();
+            String Id = list.get(position - 1).getId();
+            if (taskId.equals(Id)) {
+                //设置部位名称
+                myHolder.itemText.setText(list.get(position - 1).getPartContent());
+                myHolder.itemText.setTextColor(Color.parseColor("#f44949"));
+            } else {
+                //设置部位名称
+                myHolder.itemText.setText(list.get(position - 1).getPartContent());
+            }
+
             //设置点击事件
             myHolder.moretask_content.setOnClickListener(new View.OnClickListener() {
                 @Override

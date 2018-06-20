@@ -25,10 +25,13 @@ public class Push_item {
     private String leaderId;
     //前置项ID
     private String preconditions;
+    //标准
+    private String checkStandard;
 
 
     public Push_item(String content, String id, String label, String preconditionsName,
-                     String leaderName, String sendTime, String sendTimes, Boolean checked, String leaderId, String preconditions) {
+                     String leaderName, String sendTime, String sendTimes, Boolean checked,
+                     String leaderId, String preconditions,String checkStandard) {
         this.content = content;
         this.id = id;
         this.label = label;
@@ -39,6 +42,7 @@ public class Push_item {
         this.checked = checked;
         this.leaderId = leaderId;
         this.preconditions = preconditions;
+        this.checkStandard = checkStandard;
     }
 
     public String getContent() {
@@ -119,5 +123,13 @@ public class Push_item {
 
     public void setPreconditions(String preconditions) {
         this.preconditions = preconditions;
+    }
+
+    public String getCheckStandard() {
+        return checkStandard;
+    }
+
+    public void setCheckStandard(String checkStandard) {
+        this.checkStandard = checkStandard;
     }
 }

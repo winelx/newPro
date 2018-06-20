@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
@@ -51,8 +50,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.example.administrator.newsdf.R.id.pphotoadm;
 
 
 /**
@@ -128,7 +125,8 @@ public class WorkFragment extends Fragment {
             moreandmore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mContext, BrightspotActivity.class));
+//                    startActivity(new Intent(mContext, BrightspotActivity.class));
+//                    startActivity(new Intent(mContext, UnifiedActivity.class));
                 }
             });
             //任务管理
@@ -226,7 +224,7 @@ public class WorkFragment extends Fragment {
         //任务下发
         taskPush = (TextView) rootView.findViewById(R.id.push);
         //图册管理
-        photoManagement = (TextView) rootView.findViewById(pphotoadm);
+        photoManagement = (TextView) rootView.findViewById(R.id.pphotoadm);
         //离线图纸
         uploade = rootView.findViewById(R.id.uploade);
         //亮点工程
@@ -311,7 +309,7 @@ public class WorkFragment extends Fragment {
                 });
     }
 
-    //走onstart
+    //走onstart 的饼状图
     private void Okgo1() {
         mData.clear();
         workpie.clear();

@@ -253,7 +253,8 @@ public class MmissPushActivity extends AppCompatActivity {
                 case "push":
                     getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
                     break;
-                case "standard":
+                case "standrard":
+                    //标准
                     Intent standard = new Intent(mContext, StandardActivity.class);
                     standard.putExtra("wbsId", node.getId());
                     LogUtil.i("standard", node.getId());
@@ -262,12 +263,14 @@ public class MmissPushActivity extends AppCompatActivity {
                     startActivity(standard);
                     break;
                 case "Photo":
+                    //图册界面
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);
                     intent1.putExtra("wbsId", node.getId());
                     intent1.putExtra("title", node.getName());
                     startActivity(intent1);
                     break;
                 case "reply":
+                    //主动任务
                     Intent reply = new Intent();
                     reply.putExtra("position", node.getId());
                     reply.putExtra("title", node.getTitle());
@@ -277,6 +280,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     finish();
                     break;
                 case "List":
+
                     Intent list = new Intent();
                     list.putExtra("id", node.getId());
                     list.putExtra("title", node.getName());
@@ -288,6 +292,7 @@ public class MmissPushActivity extends AppCompatActivity {
                     finish();
                     break;
                 case "newpush":
+                    //新增推送界面
                     Intent newpush = new Intent();
                     newpush.putExtra("wbsId", node.getId());
                     newpush.putExtra("title", node.getTitle());
@@ -320,7 +325,6 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     String name, id;
-
     void getOko(final String str, final String wbspath, final String wbsname, final String type, final boolean isParent, final boolean iswbs) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
         OkGo.post(Requests.PUSHList)

@@ -87,7 +87,9 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
     //用户ID
     leaderId,
     //前置项ID
-    preconditions;
+    preconditions,
+    //标准
+    checkStandard;
     private View mEmptyView;
     private TextView push_jing;
     private Button head_modify;
@@ -188,7 +190,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                 } else {
                     ArrayList<String> list = new ArrayList<String>();
                     MissionpushActivity missionpush = (MissionpushActivity) mContext;
-
                     missionpush.getAllPush(list, false);
                 }
 
@@ -217,6 +218,8 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                 intent.putExtra("sendTimes", data.get(position).getSendTimes());
                 //前置项ID
                 intent.putExtra("preconditions", data.get(position).getPreconditions());
+                //标准
+                intent.putExtra("checkStandard", data.get(position).getCheckStandard());
                 //任务ID
                 pushid = data.get(position).getId();
                 intent.putExtra("id", data.get(position).getId());
@@ -334,8 +337,15 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                                             e.printStackTrace();
                                             preconditions = "";
                                         }
+                                        try {
+                                            checkStandard = josn1.getString("checkStandard");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            checkStandard = "";
+                                        }
+
                                         data.add(new Push_item(content, id, label, preconditionsName,
-                                                leaderName, sendTime, sendTimes, false, leaderId, preconditions));
+                                                leaderName, sendTime, sendTimes, false, leaderId, preconditions,checkStandard));
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);
@@ -364,7 +374,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
 
     @Override
     public void LazyLoad() {
-
+    //懒加载，如果需要在加载界面前处理的
     }
 
     /**

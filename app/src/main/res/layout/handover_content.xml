@@ -135,6 +135,31 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/details_parts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="部位:"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/details_part"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/details_content"
+                android:layout_marginLeft="10dp"
+                android:text=""
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

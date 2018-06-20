@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
-    android:padding="0dp"
     android:background="@color/back"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="0dp">
 
 
     <android.support.v7.widget.Toolbar
@@ -136,6 +136,42 @@
             android:textSize="15sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/pushdialog_task_context"
+        android:layout_marginTop="0.5dp"
+        android:background="@color/writer">
+
+        <TextView
+
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:padding="0dp"
+            android:singleLine="true"
+            android:text="标准"
+            android:textColor="@color/editext_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pushdialog_checkStandard"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@+id/textView1"
+            android:layout_toRightOf="@+id/textView1"
+            android:gravity="center"
+            android:textColor="@color/textViwe"
+            android:textSize="15sp" />
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/push_duty"
         android:layout_width="match_parent"
@@ -251,10 +287,10 @@
         android:id="@+id/push_content"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/writer"
-        android:layout_below="@+id/push_conditions"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/push_conditions"
+        android:background="@color/writer">
 
         <TextView
             android:id="@+id/textView3"
@@ -266,9 +302,9 @@
             android:ellipsize="end"
             android:padding="0dp"
             android:singleLine="true"
-            android:textSize="15sp"
             android:text="推送内容:"
-            android:textColor="@color/editext_text" />
+            android:textColor="@color/editext_text"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/push_item_content"

@@ -84,11 +84,19 @@ public class PhotolistViewAdapter<T> extends TreeListViewAdapter<T> {
 
         String num = node.getPhone();
         int str = 0;
-        try {
-            str = Integer.parseInt(num);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (num.isEmpty()){
+//                ToastUtils.showLongToast("you ");
+////                str = Integer.parseInt(num);
+//            }else {
+//                ToastUtils.showLongToast("miey ");
+////                str=-1;
+//            }
+//
+//        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+//            str=-1;
+//        }
         if (str > 0) {
             holder.taskNum.setVisibility(View.VISIBLE);
         } else {

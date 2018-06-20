@@ -24,7 +24,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -116,7 +115,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private String type;
     ProgressDialog dialog;
     private boolean isParent, iswbs;
-    private LinearLayout drawer_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +187,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initArray() {
+        //数据库数据
         list = LoveDao.queryLove();
         //任务项
         check = new ArrayList<>();
@@ -219,7 +218,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 发现ID
      */
     private void findID() {
-        drawer_right = (LinearLayout) findViewById(R.id.drawer_right);
+
         //图册list
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //抽屉控件

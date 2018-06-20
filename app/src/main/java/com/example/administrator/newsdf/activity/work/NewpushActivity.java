@@ -50,11 +50,11 @@ import static com.example.administrator.newsdf.R.id.drawer_layout_list;
  * version:
  */
 public class NewpushActivity extends AppCompatActivity {
-    private TextView com_button, push_username, wbs_text, reply_button;
+    private TextView comButton, pushUsername, wbsText, replyButton;
     private IconTextView back;
-    private LinearLayout newpush_wbs, newpush_user, newpush_name;
-    private EditText newpush_check, push_content;
-    private String Wbsid, wbsname, userid, wbsPath, id;
+    private LinearLayout newpushWbs, newpushUser;
+    private EditText newpushCheck, pushContent, pushCheckstandard;
+    private String wbsid, wbsname, userid, wbsPath, id;
     private Context mContent;
     boolean staus = false;
     private int page = 1;
@@ -81,26 +81,28 @@ public class NewpushActivity extends AppCompatActivity {
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
         drawerLayoutSmart.setEnableRefresh(false);
         drawerLayoutList = (ListView) findViewById(drawer_layout_list);
-        com_button = (TextView) findViewById(R.id.newpush_title);
-        reply_button = (TextView) findViewById(R.id.newpush_button);
+        comButton = (TextView) findViewById(R.id.newpush_title);
+        replyButton = (TextView) findViewById(R.id.newpush_button);
         //wbs名字
-        wbs_text = (TextView) findViewById(R.id.newpush_text);
+        wbsText = (TextView) findViewById(R.id.newpush_text);
         //推送人名字
-        push_username = (TextView) findViewById(R.id.push_username);
+        pushUsername = (TextView) findViewById(R.id.push_username);
         //选择推送人
-        newpush_wbs = (LinearLayout) findViewById(R.id.newpush_wbs);
+        newpushWbs = (LinearLayout) findViewById(R.id.newpush_wbs);
         //选择推送人
-        newpush_user = (LinearLayout) findViewById(R.id.newpush_user);
+        newpushUser = (LinearLayout) findViewById(R.id.newpush_user);
+        //标准
+        pushCheckstandard = (EditText) findViewById(R.id.push_checkstandard);
         //推送任务名字
-        newpush_check = (EditText) findViewById(R.id.newpush_check);
+        newpushCheck = (EditText) findViewById(R.id.newpush_check);
         //送内容
-        push_content = (EditText) findViewById(R.id.push_content);
+        pushContent = (EditText) findViewById(R.id.push_content);
         back = (IconTextView) findViewById(R.id.newpush_back);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        com_button.setText("下发任务");
-        reply_button.setText("推送");
+        comButton.setText("下发任务");
+        replyButton.setText("推送");
         Intent intent = getIntent();
         //上个界面传递过来的数据
         isParent = intent.getExtras().getBoolean("isParent");
@@ -108,13 +110,13 @@ public class NewpushActivity extends AppCompatActivity {
         type = intent.getExtras().getString("type");
         wbspath = intent.getExtras().getString("wbspath");
         //wbsID
-        Wbsid = intent.getExtras().getString("wbsID");
+        wbsid = intent.getExtras().getString("wbsID");
         id = intent.getExtras().getString("wbsID");
         //wbs名称
         wbsname = intent.getExtras().getString("wbsname");
         //wbs路径
         wbsPath = intent.getExtras().getString("wbsPath");
-        wbs_text.setText(wbspath);
+        wbsText.setText(wbspath);
         //返回键
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,13 +125,13 @@ public class NewpushActivity extends AppCompatActivity {
             }
         });
         //选择wbs
-        newpush_wbs.setOnClickListener(new View.OnClickListener() {
+        newpushWbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewpushActivity.this, TaskWbsActivity.class);
                 intent.putExtra("wbsname", wbsname);
                 intent.putExtra("wbspath", wbspath);
-                intent.putExtra("wbsID", Wbsid);
+                intent.putExtra("wbsID", wbsid);
                 intent.putExtra("type", type);
                 intent.putExtra("isParent", isParent);
                 intent.putExtra("iswbs", iswbs);
@@ -137,14 +139,14 @@ public class NewpushActivity extends AppCompatActivity {
             }
         });
         //推送
-        reply_button.setOnClickListener(new View.OnClickListener() {
+        replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Content = push_content.getText().toString();
-                if (TextUtils.isEmpty(userid) && TextUtils.isEmpty(Content) && TextUtils.isEmpty(Wbsid)) {
+                String Content = pushContent.getText().toString();
+                if (TextUtils.isEmpty(userid) && TextUtils.isEmpty(Content) && TextUtils.isEmpty(wbsid)) {
                     Toast.makeText(mContent, "还有未填项", Toast.LENGTH_SHORT).show();
                 } else {
-                    reply_button.setEnabled(false);
+                    replyButton.setEnabled(false);
                     Dates.getDialog(NewpushActivity.this, "推送中");
                     if (!staus) {
                         okgo();
@@ -158,7 +160,7 @@ public class NewpushActivity extends AppCompatActivity {
         taskAdapter = new TaskPhotoAdapter(imagePaths, NewpushActivity.this);
         drawerLayoutList.setAdapter(taskAdapter);
         //选择联系人
-        newpush_user.setOnClickListener(new View.OnClickListener() {
+        newpushUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NewpushActivity.this, ContactPeopleActivity.class);
@@ -173,7 +175,7 @@ public class NewpushActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 page = 1;
                 drew = true;
-                photoAdm(Wbsid);
+                photoAdm(wbsid);
 
             }
         });
@@ -185,12 +187,12 @@ public class NewpushActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(Wbsid);
+                photoAdm(wbsid);
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
             }
         });
-        photoAdm(Wbsid);
+        photoAdm(wbsid);
     }
 
     @Override
@@ -199,22 +201,23 @@ public class NewpushActivity extends AppCompatActivity {
         //判断是不是Activity的返回，不是就是相机的返回
         if (requestCode == 1 && resultCode == RESULT_OK) {
             id = data.getStringExtra("id");
-            wbs_text.setText(data.getStringExtra("titles"));
+            wbsText.setText(data.getStringExtra("titles"));
             page = 1;
-            photoAdm(Wbsid);
+            photoAdm(wbsid);
         } else if (requestCode == 1 && resultCode == 2) {
             String name = data.getStringExtra("name");
             userid = data.getStringExtra("userId");
-            push_username.setText(name);
+            pushUsername.setText(name);
         }
     }
 
     void okgo() {
         OkGo.post(Requests.newPush)
                 .params("wbsId", id)
+                .params("checkStandard", pushCheckstandard.getText().toString())
                 .params("leaderId", userid)
-                .params("label", newpush_check.getText().toString())
-                .params("content", push_content.getText().toString())
+                .params("label", newpushCheck.getText().toString())
+                .params("content", pushContent.getText().toString())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -229,8 +232,8 @@ public class NewpushActivity extends AppCompatActivity {
                                 staus = false;
                                 Toast.makeText(mContent, str, Toast.LENGTH_SHORT).show();
                             }
-                            newpush_check.setText("");
-                            reply_button.setEnabled(true);
+                            newpushCheck.setText("");
+                            replyButton.setEnabled(true);
                             Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();

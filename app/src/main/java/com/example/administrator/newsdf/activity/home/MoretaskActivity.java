@@ -37,10 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -128,6 +125,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    //初始化数据
     private void initdata() {
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -349,7 +347,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         }
                         String uploadDate;
                         try {
-                            uploadDate = json.getString("createDate");
+                            uploadDate = json.getString("updateDate");
                         } catch (JSONException e) {
                             uploadDate = "";
                         }
@@ -376,7 +374,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     e.printStackTrace();
                 }
 
-                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID,checkStandard, createDate, wbsName, null, sendedTimeStr));
+                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
                 Dates.disDialog();
@@ -404,15 +402,8 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * 将时间转换为时间戳
-     */
-    public static String dateToStamp(String s) throws ParseException {
-        String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = simpleDateFormat.parse(s);
-        long ts = date.getTime();
-        res = String.valueOf(ts);
-        return res;
+    //判断id
+    public String getId() {
+        return taskID;
     }
 }

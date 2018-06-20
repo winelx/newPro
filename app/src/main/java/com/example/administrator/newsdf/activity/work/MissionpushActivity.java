@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.activity.work;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
-import com.example.administrator.newsdf.bean.Push_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
@@ -60,12 +58,8 @@ public class MissionpushActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private PushAdapter mAdapter;
-    int msg = 0;
-    int page = 1;
-    private ArrayList<ArrayList<Push_item>> push;
+    int msg = 0, page = 1, pagss = 0;
     private ArrayList<String> titlename;
-    private ArrayList<String> ids = new ArrayList<>();
-    private Context mContext;
     private String id, wbsname;
     private ArrayList<PhotoBean> imagePaths;
     private CircleImageView fab;
@@ -77,18 +71,14 @@ public class MissionpushActivity extends AppCompatActivity {
     //保存每个节目推送的ID
     private Map<String, List<String>> pushMap;
     private String titles;
-    int pagss = 0;
-    ProgressDialog dialog;
-    String type, wbspath, wbsId;
+    private ProgressDialog dialog;
+    private String type, wbspath, wbsId;
     boolean isParent, iswbs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missionpush);
-        mContext = MissionpushActivity.this;
-        push = new ArrayList<>();
         pushMap = new HashMap<>();
         //获取到intent传过来得集合
         titlename = new ArrayList<>();
@@ -133,9 +123,7 @@ public class MissionpushActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            ids = intent.getExtras().getStringArrayList("ids");
             titlename = intent.getExtras().getStringArrayList("title");
-
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -159,12 +147,10 @@ public class MissionpushActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
         if (titlename.size() > 3) {
@@ -202,7 +188,6 @@ public class MissionpushActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,7 +218,6 @@ public class MissionpushActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //拿到当前的Viewpager的页数
                 String type = String.valueOf(mViewPager.getCurrentItem());
                 List<String> list = new ArrayList<String>();
@@ -259,10 +243,6 @@ public class MissionpushActivity extends AppCompatActivity {
         });
     }
 
-    private void initView() {
-
-    }
-
     /**
      * 接受activity返回的数据
      */
@@ -273,11 +253,6 @@ public class MissionpushActivity extends AppCompatActivity {
             msg = data.getIntExtra("position", 1);
             mViewPager.setCurrentItem(msg);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     /**
@@ -351,7 +326,6 @@ public class MissionpushActivity extends AppCompatActivity {
             pushMap.remove(type);
         }
     }
-
 
     /**
      * 推送请求

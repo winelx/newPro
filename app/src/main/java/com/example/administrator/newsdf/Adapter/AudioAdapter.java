@@ -113,7 +113,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            holder.detailsParts.setVisibility(View.VISIBLE);
+         holder.detailspart.setText(content.get(posotion).getPartContent());
             holder.detailsContent.setText(content.get(posotion).getContent());
             holder.detailsFixedData.setText(content.get(posotion).getBackdata());
             holder.details_checkStandard.setText(content.get(posotion).getCheckStandard());
@@ -182,9 +183,9 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     //ViewHolder初始化控件
     public class TypeBannerHolder extends RecyclerView.ViewHolder {
-        private LinearLayout linearLayout;
+        private LinearLayout linearLayout, detailsParts;
         private TextView detailsTitle, detailsData, details_checkStandard,
-                detailsUser, detailsBoolean,
+                detailsUser, detailsBoolean, detailspart,
                 handoverStatusDescription, handoverHuifu,
                 detailsContent, detailsFixedData, handoversText, detailsFixedBoolean;
 
@@ -192,6 +193,8 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             detailsFixedBoolean = itemView.findViewById(R.id.details_fixed_boolean);
             details_checkStandard = itemView.findViewById(R.id.details_checkStandard);
+            detailsParts = itemView.findViewById(R.id.details_parts);
+            detailspart = itemView.findViewById(R.id.details_part);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);

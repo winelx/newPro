@@ -3,13 +3,15 @@ package com.example.administrator.newsdf.bean;
 /**
  * Created by Administrator on 2017/12/13 0013.
  */
+
 /**
  * description:详情回复内容
+ *
  * @author lx
- * date: 2018/2/6 0006 下午 1:58
- * update: 2018/2/6 0006
- * version:
-*/
+ *         date: 2018/2/6 0006 下午 1:58
+ *         update: 2018/2/6 0006
+ *         version:
+ */
 
 public class Aduio_content {
     //唯一标识
@@ -38,12 +40,13 @@ public class Aduio_content {
     String changeId;
     //最后时间
     String backdata;
-
+    //标准
+    String partContent;
 
     public Aduio_content(String id, String name, String status, String content, String leaderName,
                          String leaderId, String isread, String createByUserID,
                          String checkStandard, String createDate,
-                         String wbsName, String changeId, String backdata) {
+                         String wbsName, String changeId, String backdata, String partContent) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -57,6 +60,7 @@ public class Aduio_content {
         this.wbsName = wbsName;
         this.changeId = changeId;
         this.backdata = backdata;
+        this.partContent = partContent;
 
 
     }
@@ -165,4 +169,11 @@ public class Aduio_content {
         this.backdata = backdata;
     }
 
+    public String getPartContent() {
+        return partContent;
+    }
+
+    public void setPartContent(String partContent) {
+        this.partContent = partContent;
+    }
 }

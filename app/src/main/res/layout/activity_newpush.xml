@@ -186,11 +186,39 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:layout_marginRight="10dp"
-                        android:textColor="@color/back"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:text="{fa-angle-right}"
+                        android:textColor="@color/back"
                         android:textSize="25sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/push_standard"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/writer"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:background="@mipmap/checkstandard" />
+
+                    <EditText
+                        android:id="@+id/push_checkstandard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="8"
+                        android:background="@null"
+                        android:hint="标准"
+                        android:padding="10dp"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/textViwe"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -257,7 +285,6 @@
                     android:divider="@color/back"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />
-
 
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:layout_width="match_parent"
