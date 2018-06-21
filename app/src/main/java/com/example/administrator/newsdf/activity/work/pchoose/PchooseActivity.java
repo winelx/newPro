@@ -68,7 +68,6 @@ public class PchooseActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     case 1:
                         photo();
-
                         break;
                     default:
                         break;

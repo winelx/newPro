@@ -454,7 +454,6 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
             }
         });
         selfDialog.show();
-
     }
 
     @Override

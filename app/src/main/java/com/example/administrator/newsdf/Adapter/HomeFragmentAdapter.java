@@ -88,7 +88,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
         }
         //前面圆圈
-        holder.home_item_img.setText(mDatas.get(position).getOrgname());
+        holder.home_item_img.setText(mDatas.get(position).getParentname());
         //所属组织
         holder.home_item_name.setText(mDatas.get(position).getOrgname());
         //最后一条消息

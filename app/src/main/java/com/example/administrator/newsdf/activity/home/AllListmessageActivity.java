@@ -430,7 +430,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switch (v.getId()) {
                     case R.id.pop_computer:
                         drawerLayout.openDrawer(GravityCompat.END);

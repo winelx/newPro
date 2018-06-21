@@ -347,25 +347,25 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        replyText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    num++;
-                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-                    if (num % 2 != 0) {
-                        String s = replyText.getText().toString();
-                        if (!TextUtils.isEmpty(s)) {
-                            replyText.setText("" + s.substring(0, s.length() - 1));
-                            //将光标移到最后
-                            replyText.setSelection(replyText.getText().length());
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+//        replyText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_DEL) {
+//                    num++;
+//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+//                    if (num % 2 != 0) {
+//                        String s = replyText.getText().toString();
+//                        if (!TextUtils.isEmpty(s)) {
+//                            replyText.setText("" + s.substring(0, s.length() - 1));
+//                            //将光标移到最后
+//                            replyText.setSelection(replyText.getText().length());
+//                        }
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     /**
@@ -426,6 +426,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
+                                finish();
                             }
 
                         } catch (JSONException e) {

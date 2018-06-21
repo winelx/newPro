@@ -50,14 +50,14 @@ public class MmissPushActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<String> ids = new ArrayList<>();
-    private ArrayList<String> titlename = new ArrayList<>();
+
     private ListView mTree;
     private PushListviewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;
     private Context mContext;
     String org_status, wbsID;
     private SmartRefreshLayout refreshLayout;
-
+    ArrayList<String> titlename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -313,7 +313,6 @@ public class MmissPushActivity extends AppCompatActivity {
                     details.putExtra("type", node.getType());
                     details.putExtra("iswbs", node.iswbs());
                     details.putExtra("isParent", node.isperent());
-
                     startActivity(details);
                     break;
                 default:
@@ -327,6 +326,7 @@ public class MmissPushActivity extends AppCompatActivity {
     String name, id;
     void getOko(final String str, final String wbspath, final String wbsname, final String type, final boolean isParent, final boolean iswbs) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
+        titlename = new ArrayList<>();
         OkGo.post(Requests.PUSHList)
                 .params("wbsId", str)
                 .execute(new StringCallback() {

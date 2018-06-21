@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -260,25 +259,25 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
         drawerLayoutList.setAdapter(mAdapter);
         smartRefreshLayout.setEnableRefresh(false);
-        replyText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    num++;
-                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-                    if (num % 2 != 0) {
-                        String s = replyText.getText().toString();
-                        if (!TextUtils.isEmpty(s)) {
-                            replyText.setText("" + s.substring(0, s.length() - 1));
-                            //将光标移到最后
-                            replyText.setSelection(replyText.getText().length());
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+//        replyText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_DEL) {
+//                    num++;
+//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+//                    if (num % 2 != 0) {
+//                        String s = replyText.getText().toString();
+//                        if (!TextUtils.isEmpty(s)) {
+//                            replyText.setText("" + s.substring(0, s.length() - 1));
+//                            //将光标移到最后
+//                            replyText.setSelection(replyText.getText().length());
+//                        }
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         //上拉加载
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override

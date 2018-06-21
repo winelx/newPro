@@ -137,6 +137,7 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
         findViewById(R.id.com_button).setOnClickListener(this);
         //存放前置选项的集合
         mData = new ArrayList<>();
+        mData.add(new CasePointsBean("","无","无"));
         conditions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

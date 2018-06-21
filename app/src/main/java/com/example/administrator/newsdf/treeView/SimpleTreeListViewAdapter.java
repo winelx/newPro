@@ -52,7 +52,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.tree_progress = convertView.findViewById(R.id.tree_progress);
             holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
-            holder.taskNum=convertView.findViewById(R.id.taskNum);
+            holder.taskNum = convertView.findViewById(R.id.taskNum);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -64,9 +64,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.mIcon.setImageResource(node.getIcon());
         }
         try {
-            if (node.getUsername().length() == 0) {
-                holder.Lin_WBS.setVisibility(View.GONE);
-            }else {
+            if (node.getUsername().length() > 0) {
                 holder.Lin_WBS.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
@@ -119,7 +117,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
 
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress,taskNum;
+        public TextView mText, tree_name, tree_progress, taskNum;
         LinearLayout Lin_WBS;
         LinearLayout dialog_mine, image_ll;
     }

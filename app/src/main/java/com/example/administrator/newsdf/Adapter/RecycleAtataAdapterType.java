@@ -17,10 +17,11 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.bean.Aduio_data;
+import com.example.administrator.newsdf.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
-import com.example.administrator.newsdf.utils.LogUtil;
+import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -63,6 +64,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         this.bright = bright;
         cameDialog = new CameDialog();
         mDatas = new ArrayList<>();
+
     }
 
     @Override
@@ -115,7 +117,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         //提亮逻辑
         //未提亮
         if (SmartProjectType == 0) {
-
             //如果提亮的等级为0，说明没有提亮
             if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                 //判断是否有集团提亮
@@ -134,11 +135,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 holder.givealike.setVisibility(View.GONE);
             }
         } else {
-
             //如果被提亮了
             if (SmartProjectType == 3) {
                 //如果等级为3项目提亮，判断是否有集团和分公司权限
-                if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
+                if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                     //如果有其中一种权限，那也显示为未提亮权限
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                     holder.givealikeText.setTextColor(Color.parseColor("#808080"));
@@ -165,7 +165,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     holder.givealike.setVisibility(View.GONE);
                 }
             } else {
-                LogUtil.i("result", "提亮了1");
+
                 //提亮权限为1.集团提亮
                 if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                     //如果有集团权限，显示为提亮状态
@@ -197,38 +197,64 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 cameDialog.setDialog(audio.getId(), audio);
             }
         });
+        /**
+         * 收藏/取消收藏
+         */
         holder.collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                if (isFavorite) {
-                    holder.collection.setClickable(false);
+                Dates.getDialogs(audio, "请求数据中");
+                boolean isFavorites = mDatas.get(posotion).getIsFavorite();
+                if (isFavorites) {
                     //请求数据，返回状态
-                    int ret = audio.getdelete(mDatas.get(posotion).getReplyID());
-                    if (ret == 0) {
-                        isFavorite = false;
-                        ToastUtils.showLongToast("取消收藏");
-                        holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
-                        holder.collectionText.setTextColor(Color.parseColor("#808080"));
-                        holder.collection.setClickable(true);
-                        HideCallbackUtils.removeCallBackMethod();
-                    } else {
-                        holder.collection.setClickable(true);
-                    }
+                    OkGo.<String>post(Requests.DELETECOLLECTION)
+                            .params("taskId", audio.gettaskId())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        if (ret == 0) {
+                                            ToastUtils.showLongToast("取消收藏");
+                                            holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
+                                            holder.collectionText.setTextColor(Color.parseColor("#808080"));
+                                            mDatas.get(posotion).setIsFavorite(false);
+                                            HideCallbackUtils.removeCallBackMethod();
+                                            Dates.disDialog();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    Dates.disDialog();
                 } else {
-                    holder.collection.setClickable(false);
-                    //请求数据，返回状态
-                    int ret = audio.getsave(mDatas.get(posotion).getReplyID());
-                    if (ret == 0) {
-                        ToastUtils.showLongToast("收藏");
-                        holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
-                        holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
-                        holder.collection.setClickable(true);
-                        isFavorite = true;
-                        HideCallbackUtils.removeCallBackMethod();
-                    } else {
-                        holder.collection.setClickable(true);
-                    }
+//                    //请求数据，返回状态
+                    ToastUtils.showLongToast(isFavorite + "");
+                    OkGo.<String>post(Requests.SAVECOLLECTION)
+                            .params("taskId", audio.gettaskId())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        if (ret == 0) {
+                                            ToastUtils.showLongToast("收藏");
+                                            holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
+                                            holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
+                                            mDatas.get(posotion).setIsFavorite(true);
+                                            HideCallbackUtils.removeCallBackMethod();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                    Dates.disDialog();
                 }
             }
         });
@@ -268,7 +294,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else {
                     brightUp();
-                    ToastUtils.showLongToast("没有操作权限");
                 }
             }
         });
@@ -284,7 +309,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
-
                                 if (smartprojecttype == 1) {
                                     //判断是否有权限，
                                     if (mDatas.get(posotion).isSmartprojectMain1Down()) {
@@ -390,6 +414,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
+                              BrightCallBackUtils.removeCallBackMethod();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -417,6 +442,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 showLongToast("提亮成功");
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
+                                 BrightCallBackUtils.removeCallBackMethod();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

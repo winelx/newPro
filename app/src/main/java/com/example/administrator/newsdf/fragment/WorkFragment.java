@@ -21,6 +21,8 @@ import com.example.administrator.newsdf.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.bean.Fr_work_pie;
 import com.example.administrator.newsdf.bean.work_fr_bright_bean;
+import com.example.administrator.newsdf.callback.BrightCallBack;
+import com.example.administrator.newsdf.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightAdapter;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightProAdapter;
 import com.example.administrator.newsdf.fragment.bright.FragmentBrightcomAdapter;
@@ -57,7 +59,7 @@ import okhttp3.Response;
  *         时间：2017/11/23 0023:下午 15:37
  *         说明：
  */
-public class WorkFragment extends Fragment {
+public class WorkFragment extends Fragment implements BrightCallBack {
     private View rootView;
     private Context mContext;
     private Disposable mDisposable;
@@ -114,7 +116,7 @@ public class WorkFragment extends Fragment {
             compangbrightList = new ArrayList<>();
             groupbridhtList = new ArrayList<>();
             projectbrightList = new ArrayList<>();
-
+            BrightCallBackUtils.setCallBack(this);
             //初始化控件Id
             findId();
             //设置当前时间的问候
@@ -596,5 +598,10 @@ public class WorkFragment extends Fragment {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+    }
+
+    @Override
+    public void bright() {
+        Bright();
     }
 }

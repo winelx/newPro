@@ -97,6 +97,8 @@ public class PhotoadmActivity extends AppCompatActivity {
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
+
+        okgo();
     }
 
     public void okgo() {

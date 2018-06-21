@@ -1,8 +1,6 @@
 package com.example.administrator.newsdf.activity.work.pchoose;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -21,8 +19,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,8 +53,7 @@ public class StandardActivity extends AppCompatActivity {
         status = intent.getExtras().getString("status");
 
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
-        //仿ios越界
-        refreshlayout.setEnableOverScrollBounce(true);
+        refreshlayout.setEnableOverScrollBounce(true);//仿ios越界
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
@@ -77,7 +72,7 @@ public class StandardActivity extends AppCompatActivity {
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(false);
         //是否启用上拉加载功能
-        refreshlayout.setEnableLoadmore(true);
+        refreshlayout.setEnableLoadmore(false);
         //GridLayout 3列
         photo_rec.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         photoAdapter = new PhotolabelAdapter(this);
@@ -85,17 +80,17 @@ public class StandardActivity extends AppCompatActivity {
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
         OkGo();
-        //上拉加载
-        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
-                OkGo();
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
+//        //上拉加载
+//        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+//            @TargetApi(Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onLoadmore(RefreshLayout refreshlayout) {
+//                page++;
+//                OkGo();
+//                //传入false表示加载失败
+//                refreshlayout.finishLoadmore(800);
+//            }
+//        });
 
     }
 

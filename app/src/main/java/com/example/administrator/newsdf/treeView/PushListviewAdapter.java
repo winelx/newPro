@@ -64,21 +64,21 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
             holder = (PushListviewAdapter.ViewHolder) convertView.getTag();
         }
         MmissPushActivity activity = (MmissPushActivity) mContext;
-        String  status=activity.getstatus();
-
+        String status = activity.getstatus();
         if (!node.isperent()) {
             holder.mIcon.setVisibility(View.INVISIBLE);
         } else {
             holder.mIcon.setVisibility(View.VISIBLE);
             holder.mIcon.setImageResource(node.getIcon());
         }
-//        if (node.getUsername().length() == 0) {
-//            holder.Lin_WBS.setVisibility(View.GONE);
-//        }else {
-//            holder.Lin_WBS.setVisibility(View.VISIBLE);
-//        }
+        try {
+            if (node.getUsername().length() > 0) {
+                holder.Lin_WBS.setVisibility(View.VISIBLE);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         holder.tree_name.setText(node.getUsername());
-
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
         //点击跳转界面
@@ -107,14 +107,13 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (status.equals("push")|| status.equals("details") ){
-            holder.Lin_WBS.setVisibility(View.VISIBLE);
+        if (status.equals("push") || status.equals("details")) {
             if (str > 0) {
                 holder.taskNum.setVisibility(View.VISIBLE);
             } else {
                 holder.taskNum.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             holder.Lin_WBS.setVisibility(View.GONE);
             holder.taskNum.setVisibility(View.GONE);
         }

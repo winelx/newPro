@@ -6,9 +6,10 @@ package com.example.administrator.newsdf.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-  public static final String networks = "http://192.168.20.33:8080/";
-//public static final String networks = "http://192.168.1.119:8081/pzgc/";
-  // public static final String networks = "http://117.187.27.78:58081/pzgc/";
+//public static final String networks = "http://192.168.20.33:8080/";
+//public static final String networks = "http://192.168.20.35:8080/baseframe/";
+public static final String networks = "http://192.168.1.119:8081/pzgc/";
+// public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * 登录
@@ -42,7 +43,6 @@ public class Requests {
     /**
      * 退出登录
      */
-
     public static final String BackTo = networks + "iface/mobile/logout";
 
     /**

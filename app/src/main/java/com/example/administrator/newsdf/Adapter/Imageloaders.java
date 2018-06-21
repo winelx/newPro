@@ -161,7 +161,7 @@ public class Imageloaders extends BaseAdapter {
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
                 try {
-                    String strtime = dateToStamp(list.get(position).getCreateTime());
+                    String strtime = dateToStamp(list.get(position).getUpdateDate());
                     holder.inter_time.setText(Dates.stampToDates(strtime));
                 } catch (ParseException e) {
                     e.printStackTrace();

@@ -13,5 +13,4 @@ public class CallBackUtils {
     public static void removeCallBackMethod(){
         mCallBack.deleteTop();
     }
-
 }

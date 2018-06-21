@@ -134,6 +134,7 @@
                 android:layout_marginLeft="2dp"
                 android:gravity="center"
                 android:paddingTop="3dp"
+
                 android:text="@string/givealike"
                 android:textColor="@color/persomal_text"
                 android:textSize="12sp" />
@@ -159,6 +160,7 @@
                 android:layout_marginLeft="2dp"
                 android:gravity="center"
                 android:paddingTop="3dp"
+                android:textColor="@color/persomal_text"
                 android:text="@string/collection"
                 android:textSize="12sp" />
         </LinearLayout>

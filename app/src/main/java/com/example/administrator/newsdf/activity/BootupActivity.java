@@ -167,7 +167,14 @@ public class BootupActivity extends AppCompatActivity {
                                 ;//所在组织名称
                                 String orgName = jsom.getString("orgName");
                                 //真实姓名
-                                String staffName = jsom.getString("staffName");
+                                String staffName;
+                                try {
+                                    staffName = jsom.getString("staffName");
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                    staffName="";
+                                }
+
                                 //所在组织id
                                 String orgId = jsom.getString("orgId");
                                 //手机号

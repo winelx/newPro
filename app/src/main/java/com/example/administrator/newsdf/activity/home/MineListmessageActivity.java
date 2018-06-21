@@ -277,17 +277,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             }
         });
 
-        //侧拉listview上拉加载
-        drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
-                drew = false;
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
-            }
-        });
 
         //listview的点击事件
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -353,7 +342,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         /**
          * 请求任务列表
          */
-        okgo(wbsid, status, null, 1);
+        okgo(wbsid, status, null, pages);
         /**
          * 拼接 选择wbs的节点
          */
@@ -543,6 +532,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * @param pages     页数
      */
     private void okgo(String wbsId, String msgStatus, String content, int pages) {
+        ToastUtils.showLongToast(pages + "");
         PostRequest mRequest = post(Requests.CascadeList)
                 .params("orgId", orgId)
                 .params("page", pages)
@@ -611,7 +601,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         if (!swip) {
             mDatas.clear();
         }
-
         if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
@@ -769,22 +758,21 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         String content = searchEditext.getText().toString();
         //搜索框是否有数据
         if (content.length() != 0) {
-            //有数就 判断是否有wbsid
+            //有数就判断是否有wbsid
             if (wbsid != "5") {
                 //有wbsid
-                okgo(wbsid, status, content, page);
+                okgo(wbsid, status, content, pages);
             } else {
-                okgo(null, status, content, page);
+                okgo(null, status, content, pages);
             }
         } else {
             //搜索框没有数据
             if (wbsid != "5") {
                 //判断wbsid是否有
-                okgo(wbsid, status, null, page);
+                okgo(wbsid, status, null, pages);
             } else {
-                okgo(null, status, null, page);
+                okgo(null, status, null, pages);
             }
-
         }
     }
 

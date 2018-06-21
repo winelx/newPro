@@ -61,7 +61,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="3dp"
             android:lineSpacingExtra="4dp"
-            android:text="标准"
+            android:text="标准:"
             android:textColor="@color/textViwe"
             android:textSize="15sp" />
 
@@ -74,7 +74,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="3dp"
             android:lineSpacingExtra="4dp"
-            android:text="内容"
+            android:text="内容："
             android:textColor="@color/textViwe"
             android:textSize="15sp" />
 
@@ -140,8 +140,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

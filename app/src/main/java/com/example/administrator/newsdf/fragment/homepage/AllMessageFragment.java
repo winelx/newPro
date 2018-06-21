@@ -50,7 +50,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private ArrayList<String> placedTop;
     private ExpandableListView expandable;
     private View.OnClickListener ivGoToChildClickListener;
-    Map<String, List<Home_item>> map;
+   private Map<String, List<Home_item>> map;
 
     @Nullable
     @Override

@@ -569,7 +569,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 intent.putExtra("ids", ids);
                                 //当前节点任务项名
                                 intent.putExtra("title", titlename);
-                                intent.putExtra("titles", "任务下发");
+                                intent.putExtra("titles", "任务配置");
                                 //当前节点名称
                                 intent.putExtra("wbsname", wbspath);
                                 //当前节点ID
@@ -594,7 +594,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             intent.putExtra("ids", ids);
                             //当前节点任务项名
                             intent.putExtra("title", titlename);
-                            intent.putExtra("titles", "任务下发");
+                            intent.putExtra("titles", "任务配置");
                             //当前节点名称
                             intent.putExtra("wbsPath", wbsname);
                             //当前节点ID

@@ -114,10 +114,12 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 e.printStackTrace();
             }
             holder.detailsParts.setVisibility(View.VISIBLE);
-         holder.detailspart.setText(content.get(posotion).getPartContent());
-            holder.detailsContent.setText(content.get(posotion).getContent());
+            holder.detailspart.setText(content.get(posotion).getPartContent());
+            String str = content.get(posotion).getContent();
+            holder.detailsContent.setText("内容：" + str);
             holder.detailsFixedData.setText(content.get(posotion).getBackdata());
-            holder.details_checkStandard.setText(content.get(posotion).getCheckStandard());
+            String stand = content.get(posotion).getCheckStandard();
+            holder.details_checkStandard.setText("标准:" + stand);
             //转交人
             holder.detailsUser.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {

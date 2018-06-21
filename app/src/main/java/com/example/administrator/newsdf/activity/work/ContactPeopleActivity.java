@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Icon;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.list.XListView;
 import com.lzy.okgo.OkGo;
@@ -58,6 +57,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
     private PopupWindow mPopupWindow;
     private TextView Toolbar;
     private EditText search;
+    String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,15 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
         searchData = new ArrayList<>();
+        Intent intent = getIntent();
+        try {
+            str = intent.getExtras().getString("data");
+            if (str.equals("newpush")) {
+                mData.add(new Icon("", "", "无", "无", "无"));
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         okgo();
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
@@ -87,8 +96,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
             public void onClick(View v) {
                 dialog();
             }
-
-
         });
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.contact_item) {
             @Override
@@ -123,8 +130,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("sss", s);
-                        mData.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

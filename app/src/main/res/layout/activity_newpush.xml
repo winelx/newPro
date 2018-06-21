@@ -104,8 +104,8 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="@color/back"
                         android:text="{fa-angle-right}"
+                        android:textColor="@color/back"
                         android:textSize="25sp" />
                 </LinearLayout>
 
@@ -145,9 +145,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|end"
                         android:layout_marginRight="10dp"
-                        android:textColor="@color/back"
                         android:layout_weight="1"
                         android:gravity="end"
+                        android:textColor="@color/back"
                         android:textSize="25sp" />
                 </LinearLayout>
 
@@ -192,6 +192,7 @@
                         android:textColor="@color/back"
                         android:textSize="25sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/push_standard"
                     android:layout_width="match_parent"

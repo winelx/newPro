@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -114,25 +113,25 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         };
         findID();   //发现ID
         title.setText("任务回复");
-        reply_text.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    num++;
-                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-                    if (num % 2 != 0) {
-                        String s = reply_text.getText().toString();
-                        if (!TextUtils.isEmpty(s)) {
-                            reply_text.setText("" + s.substring(0, s.length() - 1));
-                            //将光标移到最后
-                            reply_text.setSelection(reply_text.getText().length());
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+//        reply_text.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_DEL) {
+//                    num++;
+//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
+//                    if (num % 2 != 0) {
+//                        String s = reply_text.getText().toString();
+//                        if (!TextUtils.isEmpty(s)) {
+//                            reply_text.setText("" + s.substring(0, s.length() - 1));
+//                            //将光标移到最后
+//                            reply_text.setSelection(reply_text.getText().length());
+//                        }
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         loaction();//定位
         initDate();//recycclerView
     }
@@ -188,7 +187,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                     files.add(new File(imagePaths.get(i)));
                 }
                 LogUtil.d("DirectlyreplyActivity", "files.size():" + files.size());
-
                 if (content.isEmpty()) {
                     ToastUtils.showShortToast("回复内容不能为空");
                 } else {
@@ -234,7 +232,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     //网络请求
     private void Okgo(String address, ArrayList<File> file, boolean isAllFinished) {
         userPop();
-
         OkGo.post(Requests.Uploade)
                 .params("id", id)
                 .params("uploadContent", reply_text.getText().toString())
@@ -276,13 +273,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                         popstatus = false;
                     }
 
-                    //进度条
-                    @Override
-                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
-//                        mProgressBar.setProgress((int) (100 * progress));
-//                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
-                    }
+
                 });
     }
 
@@ -467,13 +458,17 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (popstatus) {
-        } else {
-            for (int i = 0; i < imagePaths.size(); i++) {
-                Dates.deleteFile(imagePaths.get(i));
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //返回事件
+            if (popstatus) {
+            } else {
+                for (int i = 0; i < imagePaths.size(); i++) {
+                    Dates.deleteFile(imagePaths.get(i));
+                }
+                finish();
             }
-            finish();
         }
+
         return false;
 
     }

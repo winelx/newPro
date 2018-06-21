@@ -16,11 +16,12 @@ import java.util.List;
 public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private FragmentManager mFragmentManager;
-    private List<String> tagList = new ArrayList<String>();
+    private List<String> tagList ;
 
     public BaseFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
         this.mFragmentManager = fm;
+        tagList  = new ArrayList<String>();
     }
 
     @Override

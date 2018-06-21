@@ -23,8 +23,6 @@ import com.example.administrator.newsdf.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.same.DirectlyreplyActivity;
-import com.example.administrator.newsdf.activity.work.inface.CollectionInterface;
-import com.example.administrator.newsdf.activity.work.inface.CollectionIpm;
 import com.example.administrator.newsdf.bean.Aduio_comm;
 import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.Aduio_data;
@@ -112,7 +110,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         return mContext;
     }
 
-    private CollectionInterface anInterface;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +123,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         //权限
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
-        anInterface = new CollectionIpm();
+
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -719,16 +717,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             }
         }
         CameDialog.path.clear();
-    }
-
-    //收藏
-    public int getsave(String taskId) {
-        return anInterface.saveCollection(taskId);
-    }
-
-    //取消收藏
-    public int getdelete(String taskId) {
-        return anInterface.deleteCollection(taskId);
     }
 
     public void markimage(int smartProjectType) {

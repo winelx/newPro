@@ -224,22 +224,25 @@ public class MissionpushActivity extends AppCompatActivity {
                 list = pushMap.get(type);
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
-                if (strids != null) {
-                    dialog = new ProgressDialog(MissionpushActivity.this);
-                    // 设置进度条的形式为圆形转动的进度条
-                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    dialog.setMessage("推送任务中...");
-                    // 设置是否可以通过点击Back键取消
-                    dialog.setCancelable(true);
-                    // 设置在点击Dialog外是否取消Dialog进度条
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-                    pushOkgo(strids);
-                } else {
-                    Dates.disDialog();
-                    ToastUtils.showShortToast("请选择推送项");
-                }
+
+                    if (strids != null) {
+                        dialog = new ProgressDialog(MissionpushActivity.this);
+                        // 设置进度条的形式为圆形转动的进度条
+                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        dialog.setMessage("推送任务中...");
+                        // 设置是否可以通过点击Back键取消
+                        dialog.setCancelable(true);
+                        // 设置在点击Dialog外是否取消Dialog进度条
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                        pushOkgo(strids);
+                    } else {
+                        Dates.disDialog();
+                        ToastUtils.showShortToast("请选择推送项");
+                    }
+
             }
+
         });
     }
 
@@ -373,4 +376,9 @@ public class MissionpushActivity extends AppCompatActivity {
         return id;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

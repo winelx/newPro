@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.utils.AnimationUtil;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -67,7 +70,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<PhotoBean> imagePaths;
     private SmartRefreshLayout drawerLayout_smart;
     private IconTextView iconTextView;
-
+    private CircleImageView Circlephoto, fab, Circlestandard, delete;
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -164,10 +167,32 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         newmoretask.setOnClickListener(this);
         //图册侧拉界面
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
-        findViewById(R.id.fab).setOnClickListener(this);
+        fab = (CircleImageView) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+        Circlephoto = (CircleImageView) findViewById(R.id.Circlephoto);
+        delete = (CircleImageView) findViewById(R.id.delete);
+        Circlestandard = (CircleImageView) findViewById(R.id.Circlestandard);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.taskManagement).setOnClickListener(this);
-
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete.setAnimation(AnimationUtil.moveToViewBottom());
+                Circlephoto.setAnimation(AnimationUtil.moveToViewBottom());
+                Circlestandard.setAnimation(AnimationUtil.moveToViewBottom());
+                Circlephoto.setVisibility(View.GONE);
+                Circlestandard.setVisibility(View.GONE);
+                delete.setVisibility(View.GONE);
+                new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(Message msg) {
+                        fab.setVisibility(View.VISIBLE);
+                        return false;
+                        //延迟发送任务
+                    }
+                }).sendEmptyMessageDelayed(0, 500);
+            }
+        });
     }
 
     //初始化集合
@@ -192,7 +217,14 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.fab:
                 //打开抽屉控件，查看图册
-                drawerLayout.openDrawer(GravityCompat.START);
+//                drawerLayout.openDrawer(GravityCompat.START);
+                Circlephoto.setVisibility(View.VISIBLE);
+                Circlestandard.setVisibility(View.VISIBLE);
+                delete.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.GONE);
+                delete.setAnimation(AnimationUtil.moveToViewLocation());
+                Circlephoto.setAnimation(AnimationUtil.moveToViewLocation());
+                Circlestandard.setAnimation(AnimationUtil.moveToViewLocation());
                 break;
             case R.id.newmoretask:
                 //点击回复

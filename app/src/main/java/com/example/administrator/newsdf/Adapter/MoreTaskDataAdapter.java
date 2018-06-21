@@ -92,13 +92,24 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             MoretaskActivity activity = (MoretaskActivity) mContext;
             String taskId = activity.getId();
             String Id = list.get(position - 1).getId();
+            String content = list.get(position - 1).getPartContent();
             if (taskId.equals(Id)) {
                 //设置部位名称
-                myHolder.itemText.setText(list.get(position - 1).getPartContent());
+                if (content.isEmpty()) {
+                    myHolder.itemText.setText("未填写部位");
+                } else {
+                    myHolder.itemText.setText(list.get(position - 1).getPartContent());
+
+                }
                 myHolder.itemText.setTextColor(Color.parseColor("#f44949"));
             } else {
                 //设置部位名称
-                myHolder.itemText.setText(list.get(position - 1).getPartContent());
+                if (content.isEmpty()) {
+                    myHolder.itemText.setText("未填写部位");
+                } else {
+                    myHolder.itemText.setText(list.get(position - 1).getPartContent());
+
+                }
             }
 
             //设置点击事件
