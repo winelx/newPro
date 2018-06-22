@@ -101,11 +101,13 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             if (content.size() != 0) {
                 holder.linearLayout.setVisibility(View.VISIBLE);
-                holder.detailsContent.setText(content.get(posotion).getContent());
                 holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+                String stand = content.get(posotion).getCheckStandard();
+                holder.details_checkStandard.setText("标准:" + stand);
+                String str = content.get(posotion).getContent();
+                holder.detailsContent.setText("内容：" + str);
                 //转交人
                 holder.detailsUser.setText(content.get(posotion).getLeaderName());
-                holder.details_checkStandard.setText(content.get(posotion).getCheckStandard());
                 if (content.get(posotion).getStatus().equals("0")) {
                     status = "2";
                     holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + content.get(posotion).getBackdata());

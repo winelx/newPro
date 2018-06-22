@@ -551,7 +551,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                                 try {
                                     //上传时间
-                                    updateDate = Sub.getString("updateDate");
+                                    updateDate = Sub.getString("uploadTime");
                                 } catch (JSONException e) {
                                     updateDate = "";
                                 }

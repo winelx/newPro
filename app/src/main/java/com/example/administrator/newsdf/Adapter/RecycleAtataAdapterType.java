@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.bean.Aduio_data;
 import com.example.administrator.newsdf.callback.BrightCallBackUtils;
@@ -57,6 +58,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     String taskId;
     CameDialog cameDialog;
     boolean isFavorite;
+    //判断workfragment是否初始化，如果没有，提亮的时候就不用刷新界面
+    boolean workbright;
 
     public RecycleAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
@@ -64,7 +67,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         this.bright = bright;
         cameDialog = new CameDialog();
         mDatas = new ArrayList<>();
-
+        MainActivity mian = MainActivity.getInstance();
+        workbright = mian.wbright();
     }
 
     @Override
@@ -118,37 +122,32 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         //未提亮
         if (SmartProjectType == 0) {
             //如果提亮的等级为0，说明没有提亮
-            if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                 //判断是否有集团提亮
                 holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                 holder.givealikeText.setTextColor(Color.parseColor("#808080"));
-            } else if (mDatas.get(posotion).isSmartprojectMain2Up()) {
-                //判断是否有分公司提亮
-                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
-                holder.givealikeText.setTextColor(Color.parseColor("#808080"));
-            } else if (mDatas.get(posotion).isSmartprojectMain2Up()) {
-                //判断是否有项目提亮
-                holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
-                holder.givealikeText.setTextColor(Color.parseColor("#808080"));
             } else {
-                //如果都有权限，不给提亮按钮
+                //如果都有没权限，不给提亮按钮
                 holder.givealike.setVisibility(View.GONE);
             }
         } else {
             //如果被提亮了
             if (SmartProjectType == 3) {
-                //如果等级为3项目提亮，判断是否有集团和分公司权限
-                if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                //如果等级为3项目提亮，判断是否有集团和分公司权限,如果没有，就判断本级
+                if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
                     //如果有其中一种权限，那也显示为未提亮权限
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                     holder.givealikeText.setTextColor(Color.parseColor("#808080"));
-                } else if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                    //判断是否有本级提亮权限
-                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
-                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
                 } else {
-                    //都没有权限隐藏
-                    holder.givealike.setVisibility(View.GONE);
+                    if (mDatas.get(posotion).isSmartprojectMain3Up()) {
+                        //判断是否有本级提亮权限
+                        holder.givealike.setVisibility(View.VISIBLE);
+                        holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                        holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+                    } else {
+                        //都没有权限隐藏
+                        holder.givealike.setVisibility(View.GONE);
+                    }
                 }
             } else if (SmartProjectType == 2) {
                 //如果等级为2，为分公司权限 判断是否有分公司权限，
@@ -156,21 +155,20 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     //如果有分公司权限，显示为未提亮状态
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                     holder.givealikeText.setTextColor(Color.parseColor("#808080"));
-                } else if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
-                    //判断是否有本级提亮权限
-                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
-                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
                 } else {
-                    //都没有权限隐藏
-                    holder.givealike.setVisibility(View.GONE);
+                    if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                        //判断是否有本级提亮权限
+                        holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                        holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+                    } else {
+                        //都没有权限隐藏
+                        holder.givealike.setVisibility(View.GONE);
+                    }
                 }
-            } else {
-
+            } else if (SmartProjectType == 1) {
                 //提亮权限为1.集团提亮
                 if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                     //如果有集团权限，显示为提亮状态
-                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
-                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
                 } else {
                     //都没有权限隐藏
                     holder.givealike.setVisibility(View.GONE);
@@ -292,6 +290,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("没有操作权限");
                     }
+                } else if (smartprojecttype == 0) {
+                    if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                        brightUp();
+                    }
                 } else {
                     brightUp();
                 }
@@ -365,21 +367,21 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         private ImageView givealikeImage, audioNotimage, collectionImage;
         private LinearLayout collection;
 
-        public Viewholder(View itemView) {
+        Viewholder(View itemView) {
             super(itemView);
             //头像
-            audioAcathor = (CircleImageView) itemView.findViewById(R.id.audio_acathor);
+            audioAcathor = itemView.findViewById(R.id.audio_acathor);
             //文字内容
-            audioName = (TextView) itemView.findViewById(R.id.audio_name);
-            audioContent = (TextView) itemView.findViewById(R.id.audio_content);
-            audioData = (TextView) itemView.findViewById(R.id.audio_data);
-            audioAddress = (TextView) itemView.findViewById(R.id.audio_address);
+            audioName = itemView.findViewById(R.id.audio_name);
+            audioContent = itemView.findViewById(R.id.audio_content);
+            audioData = itemView.findViewById(R.id.audio_data);
+            audioAddress = itemView.findViewById(R.id.audio_address);
             //图片
-            audioRec = (RecyclerView) itemView.findViewById(R.id.audio_rec);
+            audioRec = itemView.findViewById(R.id.audio_rec);
             //评论
-            audioDataComm = (LinearLayout) itemView.findViewById(R.id.audio_data_comm);
+            audioDataComm = itemView.findViewById(R.id.audio_data_comm);
             //评论数量
-            commentCount = (TextView) itemView.findViewById(R.id.audio_data_commom_count);
+            commentCount = itemView.findViewById(R.id.audio_data_commom_count);
             //提亮
             givealike = itemView.findViewById(R.id.givealike);
             //提交图标
@@ -401,7 +403,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public void brightDown() {
+    private void brightDown() {
         OkGo.<String>post(Requests.SartProjectdown)
                 .params("taskId", taskId)
                 .execute(new StringCallback() {
@@ -414,7 +416,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
-                              BrightCallBackUtils.removeCallBackMethod();
+                                if (workbright) {
+                                    BrightCallBackUtils.removeCallBackMethod();
+                                }
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -429,7 +434,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 });
     }
 
-    public void brightUp() {
+    private void brightUp() {
         OkGo.<String>post(Requests.SartProjectup)
                 .params("taskId", taskId)
                 .execute(new StringCallback() {
@@ -440,9 +445,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 showLongToast("提亮成功");
+
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
-                                 BrightCallBackUtils.removeCallBackMethod();
+                                if (workbright) {
+                                    BrightCallBackUtils.removeCallBackMethod();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -204,7 +206,12 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             }
                         } catch (NullPointerException e) {
                             e.printStackTrace();
-                            ToastUtils.showLongToast("该任务是否已经完成");
+                            ImageView img = new ImageView(DirectlyreplyActivity.this);
+                            img.setImageResource(R.mipmap.directlyreply_dialog);
+                            new AlertDialog.Builder(DirectlyreplyActivity.this)
+                                    .setView(img)
+                                    .setPositiveButton("去选择", null)
+                                    .show();
                         }
                     } else {
                         ToastUtils.showLongToast("具体部位不能为空");

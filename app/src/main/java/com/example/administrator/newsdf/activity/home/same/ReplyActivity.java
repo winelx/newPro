@@ -156,8 +156,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             title.setText(titlename);
             //图片字符串
             String Paths = intent.getExtras().getString("Imgpath");
-            List<String> path=new ArrayList<>();
-            path=Dates.stringToList(Paths);
+            List<String> path = new ArrayList<>();
+            path = Dates.stringToList(Paths);
             pathimg.addAll(path);
             checkId = intent.getExtras().getString("Checkid");
             checkname = intent.getExtras().getString("Checkname");
@@ -210,6 +210,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
+
         //侧拉界面listview
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //侧拉界面
@@ -225,7 +226,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         //下拉控件，禁止下拉，只允许上拉加载更多
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         smartRefreshLayout.setEnableRefresh(false);
-
         //进度条
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
         //图片
@@ -347,25 +347,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-//        replyText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_DEL) {
-//                    num++;
-//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-//                    if (num % 2 != 0) {
-//                        String s = replyText.getText().toString();
-//                        if (!TextUtils.isEmpty(s)) {
-//                            replyText.setText("" + s.substring(0, s.length() - 1));
-//                            //将光标移到最后
-//                            replyText.setSelection(replyText.getText().length());
-//                        }
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+
     }
 
     /**
@@ -465,8 +447,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             case R.id.fabloating:
                 page = 1;
                 drew = true;
-                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 break;
             //选择检查项
             case R.id.reply_check:
@@ -675,12 +657,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (popstatus) {
-        } else {
-            for (int i = 0; i < pathimg.size(); i++) {
-                Dates.deleteFile(pathimg.get(i));
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!popstatus) {
+                for (int i = 0; i < pathimg.size(); i++) {
+                    Dates.deleteFile(pathimg.get(i));
+                }
+                finish();
             }
-            finish();
         }
         return false;
     }

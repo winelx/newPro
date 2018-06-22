@@ -14,14 +14,15 @@ import java.io.File;
  */
 
 
-/** 
+/**
  * description:
+ *
  * @author: lx
  * date: 2018/2/5 0005 下午 5:24
  * update: 2018/2/5 0005
  * version:
  * 图片加载框架的
-*/
+ */
 
 public class PicassoImageLoader implements ImageLoader {
 

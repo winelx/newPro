@@ -1,18 +1,27 @@
 package com.example.administrator.newsdf.activity.home;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.MoretaskAdapter;
@@ -23,7 +32,6 @@ import com.example.administrator.newsdf.bean.Aduio_content;
 import com.example.administrator.newsdf.bean.MoretasklistBean;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.utils.AnimationUtil;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
@@ -71,6 +79,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private SmartRefreshLayout drawerLayout_smart;
     private IconTextView iconTextView;
     private CircleImageView Circlephoto, fab, Circlestandard, delete;
+
     /**
      * 是否需要返回后刷新界面状态
      */
@@ -84,12 +93,15 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
      */
     private boolean drew = true;
     private String wbsName = "";
+    Animation scaleAnimation;
+    boolean anim = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
         mContext = this;
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.translate);
         //初始化集合
         initArry();
         //初始化ID
@@ -169,30 +181,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
-        Circlephoto = (CircleImageView) findViewById(R.id.Circlephoto);
-        delete = (CircleImageView) findViewById(R.id.delete);
-        Circlestandard = (CircleImageView) findViewById(R.id.Circlestandard);
-        findViewById(R.id.com_back).setOnClickListener(this);
-        findViewById(R.id.taskManagement).setOnClickListener(this);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                delete.setAnimation(AnimationUtil.moveToViewBottom());
-                Circlephoto.setAnimation(AnimationUtil.moveToViewBottom());
-                Circlestandard.setAnimation(AnimationUtil.moveToViewBottom());
-                Circlephoto.setVisibility(View.GONE);
-                Circlestandard.setVisibility(View.GONE);
-                delete.setVisibility(View.GONE);
-                new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message msg) {
-                        fab.setVisibility(View.VISIBLE);
-                        return false;
-                        //延迟发送任务
-                    }
-                }).sendEmptyMessageDelayed(0, 500);
-            }
-        });
     }
 
     //初始化集合
@@ -216,16 +204,24 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                //打开抽屉控件，查看图册
+                popwindow();
+//                //加载第一页
+//                page = 1;
+//                //请求数据时清除之前的
+//                drew = true;
+//                //网络请求
+//                getPhoto();
 //                drawerLayout.openDrawer(GravityCompat.START);
-                Circlephoto.setVisibility(View.VISIBLE);
-                Circlestandard.setVisibility(View.VISIBLE);
-                delete.setVisibility(View.VISIBLE);
-                fab.setVisibility(View.GONE);
-                delete.setAnimation(AnimationUtil.moveToViewLocation());
-                Circlephoto.setAnimation(AnimationUtil.moveToViewLocation());
-                Circlestandard.setAnimation(AnimationUtil.moveToViewLocation());
+
+//                if (anim) {
+//                    doclickt(Circlephoto, Circlestandard);
+//                    anim = false;
+//                } else {
+//                    doclicktclose(Circlephoto, Circlestandard);
+//                    anim = true;
+//                }
                 break;
+
             case R.id.newmoretask:
                 //点击回复
                 Intent intent = new Intent(MoretaskActivity.this, DirectlyreplyActivity.class);
@@ -437,5 +433,160 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     //判断id
     public String getId() {
         return taskID;
+    }
+
+
+//    public void Translate() {
+//        AnimationSet animationSet = new AnimationSet(true);
+//        TranslateAnimation translateAnimation = new TranslateAnimation(
+//                //X轴的开始位置
+//                Animation.RELATIVE_TO_SELF, 0f,
+//                //X轴的结束位置
+//                Animation.RELATIVE_TO_SELF, 0f,
+//                //Y轴的开始位置
+//                Animation.RELATIVE_TO_SELF, 0f,
+//                //Y轴的结束位置
+//                Animation.RELATIVE_TO_SELF, -1.0f);
+//        //执行时间
+//        translateAnimation.setDuration(1500);
+//        animationSet.addAnimation(translateAnimation);
+//        //插值器
+//        animationSet.setInterpolator(new AccelerateInterpolator());
+//
+//        //置如果为true，则动画执行完之后效果定格在执行完之后的状态
+//        animationSet.setFillAfter(true);
+//        //设置如果为false，则动画执行完之后效果定格在执行完之后的状态
+//        animationSet.setFillBefore(false);
+//        //设置的是一个long类型的值，是指动画延迟多少毫秒之后执行
+//        animationSet.setStartOffset(100);
+//        //动画重复几次执行
+//        animationSet.setDuration(1);
+//        Circlephoto.startAnimation(animationSet);
+//    }
+
+    public void doclickt(View view, View view2) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 0f, -150f);
+        ObjectAnimator translation2 = ObjectAnimator.ofFloat(view2, "translationY", -150f, -300f);
+        translation.setDuration(300);
+        translation2.setDuration(300);
+        // 可以设置重复次数
+        translation.setRepeatCount(0);
+        translation2.setRepeatCount(0);
+        //  可以设置插值器,使之按照一定的规律运动
+        translation.setInterpolator(new BounceInterpolator());
+        translation2.setInterpolator(new BounceInterpolator());
+        // 开始方法
+        animatorSet.play(translation2).with(translation);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            //动画开始
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                fab.setVisibility(View.GONE);
+            }
+        });
+        animatorSet.start();
+    }
+
+    public void doclicktclose(View view, View view2) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", -150f, 0f);
+        ObjectAnimator translation2 = ObjectAnimator.ofFloat(view2, "translationY", -300f, 0f);
+        translation.setDuration(100);
+        translation2.setDuration(100);
+        // 可以设置重复次数
+        translation.setRepeatCount(0);
+        translation2.setRepeatCount(0);
+        //  可以设置插值器,使之按照一定的规律运动
+        translation.setInterpolator(new BounceInterpolator());
+        translation2.setInterpolator(new BounceInterpolator());
+        // 开始方法
+        animatorSet.play(translation).with(translation2);
+        //为动画设置监听
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            //动画开始
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                fab.setVisibility(View.VISIBLE);
+            }
+
+
+        });
+        animatorSet.start();
+    }
+
+    private PopupWindow mPopupWindow;
+
+    public void popwindow() {
+        View contentView = getPopupWindowContentView();
+        mPopupWindow = new PopupWindow(contentView,
+                300, 800, true);
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+        // 默认在mButton2的左下角显示
+        mPopupWindow.showAsDropDown(fab);
+        backgroundAlpha(0.5f);
+        //添加pop窗口关闭事件
+        mPopupWindow.setOnDismissListener(new poponDismissListener());
+        fab.setVisibility(View.GONE);
+    }
+
+    private View getPopupWindowContentView() {
+        // 一个自定义的布局，作为显示的内容
+        // 布局ID
+        int layoutId = R.layout.floatbuttonmeun_anim;
+        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
+        final View view1 = contentView.findViewById(R.id.photo_meun);
+        final View view2 = contentView.findViewById(R.id.stard_meun);
+        final View view3 = contentView.findViewById(R.id.dismiss_meun);
+        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.stard_meun:
+
+                        break;
+                    case R.id.photo_meun:
+
+                        break;
+                    case R.id.dismiss_meun:
+                        doclicktclose(view1, view2);
+                    default:
+
+                        break;
+                }
+                if (mPopupWindow != null) {
+                    mPopupWindow.dismiss();
+                }
+            }
+        };
+
+        view1.setOnClickListener(menuItemOnClickListener);
+        view2.setOnClickListener(menuItemOnClickListener);
+        view3.setOnClickListener(menuItemOnClickListener);
+        return contentView;
+
+    }
+
+
+    //界面亮度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
+    }
+
+    /**
+     * popWin关闭的事件，主要是为了将背景透明度改回来
+     */
+    class poponDismissListener implements PopupWindow.OnDismissListener {
+        @Override
+        public void onDismiss() {
+            backgroundAlpha(1f);
+            fab.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -519,7 +519,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             swip = false;
             page = 1;
             pages = 1;
-
             uslistView.setSelection(0);
             okgoall(nodeiD, null, pages);
         }
@@ -545,7 +544,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         circle = (CircleImageView) findViewById(R.id.fab);
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);

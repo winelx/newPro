@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private String version;
     private WbsDialog selfDialog;
     private TextView home_img_red;
-    List<Shop> list;
+    private List<Shop> list;
+    private boolean workbtight;
 
     public static MainActivity getInstance() {
         return mContext;
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
         mContext = this;
+        workbtight = false;
         dates = new Dates();
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
@@ -310,4 +312,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public boolean wbright() {
+        return workbtight;
+    }
+
+    private void brightnew() {
+        workbtight = true;
+    }
 }

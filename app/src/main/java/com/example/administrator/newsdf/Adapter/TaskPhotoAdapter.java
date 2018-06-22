@@ -34,7 +34,6 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
         this.imagePaths = imagePaths;
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
-
     }
 
     @Override
@@ -78,9 +77,10 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
                 PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
                         setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
                         .start((Activity) mContext);
-
             }
         });
+
+
         return convertView;
     }
 

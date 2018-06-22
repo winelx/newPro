@@ -72,7 +72,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         }
         holder.btn_Delete.setVisibility(View.GONE);
         holder.tv_set.setBackgroundResource(R.color.back);
-        holder.tv_set.setText("已收藏");
+        holder.tv_set.setText("取消收藏");
         //收藏点击事件
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
             @Override

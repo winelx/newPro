@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.Adapter.PhotosAdapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
@@ -72,7 +71,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-
 /**
  * description:新增推送界面
  * autour: lx
@@ -82,6 +80,7 @@ import okhttp3.Response;
  */
 public class ReplysActivity extends AppCompatActivity implements View.OnClickListener {
     private PhotosAdapter photoAdapter;
+
     private ArrayList<PhotoBean> photoPopPaths;
     private ArrayList<File> files;
     private ArrayList<String> namess;
@@ -101,7 +100,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     int position;
     private int page = 1;
     private ArrayList<String> check;
-    private String checkId = "", checkname = "";
+    private String Title = "", checkId = "", checkname = "";
     private WbsDialog selfDialog;
     private static final int IMAGE_PICKER = 101;
     private CircleImageView Circle;
@@ -111,8 +110,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private TaskPhotoAdapter mAdapter;
     private boolean drew = true;
     private int num = 0;
-    private String type;
-    ProgressDialog dialog;
+    private String titles, type;
+    private ProgressDialog dialog;
     private boolean isParent, iswbs;
 
     @Override
@@ -186,8 +185,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initArray() {
-        //数据库数据
-        list = LoveDao.queryLove();
         //任务项
         check = new ArrayList<>();
         //图片地址
@@ -259,25 +256,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
         drawerLayoutList.setAdapter(mAdapter);
         smartRefreshLayout.setEnableRefresh(false);
-//        replyText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_DEL) {
-//                    num++;
-//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-//                    if (num % 2 != 0) {
-//                        String s = replyText.getText().toString();
-//                        if (!TextUtils.isEmpty(s)) {
-//                            replyText.setText("" + s.substring(0, s.length() - 1));
-//                            //将光标移到最后
-//                            replyText.setSelection(replyText.getText().length());
-//                        }
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
         //上拉加载
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -328,7 +306,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.com_button:
                 files = new ArrayList<>();
-                //讲图片转成file格式
+                //将图片转成file格式
                 for (int i = 0; i < pathimg.size(); i++) {
                     files.add(new File(pathimg.get(i)));
                 }
@@ -363,163 +341,42 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                 intent1.putExtra("wbsID", wbsID);
                 startActivityForResult(intent1, 1);
                 break;
-            case R.mipmap.reply_baocun:
-                if (!status) {
-                    selfDialog = new WbsDialog(ReplysActivity.this);
-                    selfDialog.setMessage("是否保存本地");
-                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            selfDialog.dismiss();
-                            Shop shop = new Shop();
-                            shop.setType(Shop.TYPE_LOVE);
-                            //路径
-                            shop.setName(wbsNodeName.getText().toString());
-                            //wbsID
-                            shop.setWebsid(wbsID);
-                            //时间
-                            shop.setTimme(Dates.getDate());
-                            shop.setContent(replyText.getText().toString());
-                            shop.setImage_url(Dates.listToString(pathimg));
-                            shop.setCheckid(checkId);
-                            //检查点
-                            if (replyCheckItem.getText().toString().length() != 0) {
-                                shop.setCheckname(replyCheckItem.getText().toString());
-                            } else {
-                                shop.setCheckname("自定义");
-                            }
-                            LoveDao.insertLove(shop);
-                            finish();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.show();
-                } else {
-                    selfDialog = new WbsDialog(ReplysActivity.this);
-                    selfDialog.setMessage("是否保存本地");
-                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            selfDialog.dismiss();
-                            //更新数据库数据
-                            //拿到需要进行修改的记录
-                            Shop shop = list.get(position);
-                            //标题
-                            shop.setName(wbsNodeName.getText().toString());
-                            //内容
-                            shop.setContent(replyText.getText().toString());
-                            //图片保存路径
-                            shop.setImage_url(Dates.listToString(pathimg));
-                            //wbsid
-                            shop.setWebsid(wbsID);
-                            //时间
-                            shop.setTimme(Dates.getDate());
-                            //checkid
-                            shop.setCheckid(checkId);
-                            //checkname
-                            shop.setCheckname(replyCheckItem.getText().toString());
-                            //更新
-                            LoveDao.updateLove(shop);
-                            //返回之前的界面
-                            Intent intent = new Intent();
-                            //回传数据到主Activity
-                            setResult(RESULT_OK, intent);
-                            finish(); //此方法后才能返回主Activity
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.show();
-                }
-                break;
             case R.id.com_img:
-                //存放到本地
-                if (!status) {
-                    selfDialog = new WbsDialog(ReplysActivity.this);
-                    selfDialog.setMessage("是否保存本地");
-                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            selfDialog.dismiss();
-                            Shop shop = new Shop();
-                            shop.setType(Shop.TYPE_LOVE);
-                            //路径
-                            shop.setName(wbsNodeName.getText().toString());
-                            //wbsID
-                            shop.setWebsid(wbsID);
-                            //时间
-                            shop.setTimme(Dates.getDate());
-                            //内容
-                            shop.setContent(replyText.getText().toString());
-                            shop.setImage_url(Dates.listToString(pathimg));
-                            shop.setCheckid(checkId);
-                            //检查点
-                            if (replyCheckItem.getText().toString().length() != 0) {
-                                shop.setCheckname(replyCheckItem.getText().toString());
-                            } else {
-                                shop.setCheckname("自定义");
-                            }
-                            LoveDao.insertLove(shop);
-                            finish();
-                        }
-                    });
-                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.show();
-                } else {
-                    selfDialog = new WbsDialog(ReplysActivity.this);
-                    selfDialog.setMessage("是否保存本地");
-                    selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                        @Override
-                        public void onYesClick() {
-                            selfDialog.dismiss();
-                            //更新数据库数据
-                            //拿到需要进行修改的记录
-                            Shop shop = list.get(position);
-                            shop.setName(wbsNodeName.getText().toString());
-                            //内容
-                            shop.setContent(replyText.getText().toString());
-                            //图片保存路径
-                            shop.setImage_url(Dates.listToString(pathimg));
-                            //wbsid
-                            shop.setWebsid(wbsID);
-                            //时间
-                            shop.setTimme(Dates.getDate());
-                            //checkid
-                            shop.setCheckid(checkId);
-                            //checkname
+                selfDialog = new WbsDialog(ReplysActivity.this);
+                selfDialog.setMessage("是否保存本地");
+                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        selfDialog.dismiss();
+                        Shop shop = new Shop();
+                        shop.setType(Shop.TYPE_LOVE);
+                        //路径
+                        shop.setName(wbsNodeName.getText().toString());
+                        //wbsID
+                        shop.setWebsid(wbsID);
+                        //时间
+                        shop.setTimme(Dates.getDate());
+                        //内容
+                        shop.setContent(replyText.getText().toString());
+                        shop.setImage_url(Dates.listToString(pathimg));
+                        shop.setCheckid(checkId);
+                        //检查点
+                        if (replyCheckItem.getText().toString().length() != 0) {
                             shop.setCheckname(replyCheckItem.getText().toString());
-                            //更新
-                            LoveDao.updateLove(shop);
-                            //返回之前的界面
-                            Intent intent = new Intent();
-                            //回传数据到主Activity
-                            setResult(RESULT_OK, intent);
-                            //此方法后才能返回主Activity
-                            finish();
+                        } else {
+                            shop.setCheckname("自定义");
                         }
-                    });
-                    selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                        @Override
-                        public void onNoClick() {
-                            selfDialog.dismiss();
-                        }
-                    });
-                    selfDialog.show();
-                }
+                        LoveDao.insertLove(shop);
+                        finish();
+                    }
+                });
+                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        selfDialog.dismiss();
+                    }
+                });
+                selfDialog.show();
                 break;
             default:
                 break;
@@ -540,12 +397,15 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //清除选择项ID
             checkId = "";
             //清除选择项名称
+            titles = "";
             //控件显示文字
             replyCheckItem.setText(data.getStringExtra(""));
             //请求图片
+            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
         } else if (requestCode == 1 && resultCode == 2) {
             //检查点返回
             checkId = data.getStringExtra("id");
+            titles = data.getStringExtra("name");
             replyCheckItem.setText(data.getStringExtra("name"));
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             //相册返回数据
@@ -594,8 +454,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             //填入listview，刷新界面
                             photoAdapter.getData(pathimg);
                             //删除原图
-                            FileUtils.deleteFile(path);
-
+                            Dates.deleteFile(path);
                         }
                     });
                 }
@@ -646,7 +505,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     /**
      * 返回更新数据
      */
-    private void setList() {
+    private void Updata() {
         OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", id)
                 .params("isNeedTotal", "true")
@@ -663,7 +522,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                     String id = json.getString("id");
                                     String name = json.getString("detectionName");
                                     String totalNum = json.getString("totalNum");
-                                    namess.add("   " + name + "(" + totalNum + ")" + "     ");
+                                    namess.add("   " + name + "(" + totalNum + ")" + "       ");
                                 }
                                 //返回列表
                                 Intent intent = new Intent();
@@ -775,7 +634,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
-                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -791,20 +649,20 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             String msg = jsonObject.getString("msg");
-                            ToastUtils.showShortToast(msg);
                             if (ret == 0) {
-                                //删除上传的原图图片
+                                //删除上传的图片
                                 for (int i = 0; i < pathimg.size(); i++) {
-
-                                    FileUtils.deleteFile(pathimg.get(i));
+                                    Dates.deleteFile(pathimg.get(i));
                                 }
-                                //删除数据库数据
+                                ToastUtils.showShortToast(msg);
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
-                                setList();
+                                Updata();
+                            } else {
+                                ToastUtils.showShortToast(msg);
                             }
-
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -817,8 +675,13 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                         dialog.dismiss();
                     }
 
-
+                    //进度条
+                    @Override
+                    public void upProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+                        super.upProgress(currentSize, totalSize, progress, networkSpeed);
+                        mProgressBar.setProgress((int) (100 * progress));
+                        tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
+                    }
                 });
     }
 }
-

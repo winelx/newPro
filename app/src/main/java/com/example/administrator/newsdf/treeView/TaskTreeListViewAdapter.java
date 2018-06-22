@@ -81,7 +81,19 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.Lin_WBS.setVisibility(View.GONE);
         holder.handover_status_recycler.setHorizontalScrollBarEnabled(false);
         String num = node.getPhone();
-
+        int str = 0;
+        try {
+            str = Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        if (status.equals("push") || status.equals("details")) {
+            if (str > 0) {
+                holder.taskNum.setVisibility(View.VISIBLE);
+            } else {
+                holder.taskNum.setVisibility(View.GONE);
+            }
+        }
 
         holder.taskNum.setVisibility(View.GONE);
 

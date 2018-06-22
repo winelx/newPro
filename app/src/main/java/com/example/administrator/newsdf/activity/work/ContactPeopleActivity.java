@@ -71,7 +71,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         try {
             str = intent.getExtras().getString("data");
             if (str.equals("newpush")) {
-                mData.add(new Icon("", "", "无", "无", "无"));
+                mData.add(new Icon("", "", "", "无", ""));
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

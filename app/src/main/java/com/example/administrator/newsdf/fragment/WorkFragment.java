@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.activity.work.PushCheckActivity;
@@ -127,7 +128,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
             moreandmore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    startActivity(new Intent(mContext, BrightspotActivity.class));
+                    startActivity(new Intent(mContext, BrightspotActivity.class));
 //                    startActivity(new Intent(mContext, UnifiedActivity.class));
                 }
             });

@@ -38,7 +38,7 @@
                 android:layout_height="35dp"
                 android:background="@color/writer"
                 android:gravity="center"
-                android:text="图片"
+                android:text="图纸"
                 android:textColor="@color/colorAccent"
                 android:textSize="15sp" />
 
