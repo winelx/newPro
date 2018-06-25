@@ -123,7 +123,7 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
                         .error(R.drawable.image_error);
                 glide.setDefaultRequestOptions(options)
                         .load(new File(photo.getPath()))
-                        .thumbnail(0.8f)
+                        .thumbnail(1f)
                         .into(holder.ivPhoto);
             }
 

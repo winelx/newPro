@@ -17,7 +17,6 @@
         android:layout_marginLeft="10dp"
         android:background="@mipmap/photo_meun"
         android:elevation="10dp"
-        android:visibility="gone"
         app:backgroundTint="#00B4FF"
         app:fabSize="auto"
         app:rippleColor="#56abe4" />
@@ -33,7 +32,6 @@
         android:layout_marginLeft="10dp"
         android:background="@mipmap/strand_meun"
         android:elevation="10dp"
-        android:visibility="gone"
         app:backgroundTint="#00B4FF"
         app:fabSize="auto"
         app:rippleColor="#56abe4" />

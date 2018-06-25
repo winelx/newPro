@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -49,7 +51,7 @@ import static com.example.administrator.newsdf.R.id.drawer_layout_list;
  * update: 2018/2/6 0006
  * version:
  */
-public class NewpushActivity extends AppCompatActivity {
+public class NewpushActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView comButton, pushUsername, wbsText, replyButton;
     private IconTextView back;
     private LinearLayout newpushWbs, newpushUser;
@@ -61,7 +63,6 @@ public class NewpushActivity extends AppCompatActivity {
     private ArrayList<PhotoBean> imagePaths;
     private TaskPhotoAdapter taskAdapter;
 
-    private CircleImageView fab;
     private DrawerLayout drawerLayout;
     private SmartRefreshLayout drawerLayoutSmart;
     private ListView drawerLayoutList;
@@ -69,13 +70,26 @@ public class NewpushActivity extends AppCompatActivity {
     String type, wbspath;
     boolean isParent, iswbs;
 
+
+    //弹出框
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newpush);
         mContent = NewpushActivity.this;
+        floatMeunAnims = new FloatMeunAnims();
         imagePaths = new ArrayList<>();
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         drawerLayout = (DrawerLayout) findViewById(drawer_layout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(drawerLayout_smart);
@@ -168,17 +182,7 @@ public class NewpushActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-        //图册查看
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
-                page = 1;
-                drew = true;
-                photoAdm(wbsid);
 
-            }
-        });
         /**
          *    侧拉listview上拉加载
          */
@@ -187,12 +191,15 @@ public class NewpushActivity extends AppCompatActivity {
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                photoAdm(wbsid);
                 //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                if (liststatus) {
+                    HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
+                } else {
+                    HomeUtils.getStard(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
-        photoAdm(wbsid);
     }
 
     @Override
@@ -289,5 +296,47 @@ public class NewpushActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+//打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(NewpushActivity.this, "请求数据中...");
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
+                //上拉加载的状态判断
+                liststatus = true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(NewpushActivity.this, "请求数据中...");
+                HomeUtils.getStard(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            default:
+                break;
+        }
+    }
 }
 

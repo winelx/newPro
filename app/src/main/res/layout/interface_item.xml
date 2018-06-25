@@ -173,6 +173,16 @@
                     android:text="定义定义定义定义定义定义"
                     android:textSize="15sp" />
 
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/inface_no_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/inface_pcontent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/notimgeview"
+                    />
 
                 <LinearLayout
                     android:id="@+id/inface_image"
@@ -357,8 +367,6 @@
                                     android:textColor="@color/writer"
                                     android:textSize="30sp" />
                             </LinearLayout>
-
-
                         </RelativeLayout>
                     </RelativeLayout>
 
@@ -369,7 +377,7 @@
                     android:layout_height="20dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/inface_image"
+                    android:layout_below="@+id/inface_no_image"
                     android:gravity="center">
 
                     <View

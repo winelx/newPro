@@ -120,7 +120,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         String str = mDatas.get(position).getCreaeTime();
         str = str.substring(0, 11);
         holder.home_item_time.setText(str);
-        holder.home_item_message.setVisibility(View.GONE);
+        holder.home_item_message.setText(mDatas.get(position).getUnfinish());
     }
 
     @Override

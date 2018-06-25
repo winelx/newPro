@@ -155,10 +155,11 @@ public class CommentsFragment extends Fragment {
                                         e.printStackTrace();
                                         orgName = "";
                                     }
+                                    String contentNumBer= json.getString("task_counts");
                                     String parentid = json.getString("parent_id");
                                     String parentname = json.getString("parent_name");
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
-                                    setList.add(new Home_item(content, createTime, id, orgId, orgName, "", "", parentname, parentid, false));
+                                    setList.add(new Home_item(content, createTime, id, orgId, orgName, contentNumBer, "", parentname, parentid, false));
 
                                 }
 

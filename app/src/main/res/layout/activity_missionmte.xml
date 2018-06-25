@@ -111,22 +111,7 @@
                 android:layout_below="@+id/tab_lin"
                 android:layout_marginTop="10dp" />
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/fab"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="45dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:src="@mipmap/drawphoto"
-                app:backgroundTint="#00B4FF"
-                app:fabSize="auto"
-                app:rippleColor="#56abe4" />
-
+            <include layout="@layout/floating_meun_button" />
 
         </RelativeLayout>
 

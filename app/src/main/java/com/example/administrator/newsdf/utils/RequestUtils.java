@@ -19,24 +19,7 @@ public class RequestUtils {
     int result = -1;
     public int collection(String wbsId) {
         //添加收藏
-        OkGo.post(Requests.WBSSAVE)
-                .params("wbsId",wbsId )
-                .params("type", 1)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            ToastUtils.showLongToast(jsonObject.getString("msg"));
-                            if (ret == 0) {
-                                result = 0;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+
         return result;
     }
 }

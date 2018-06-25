@@ -92,7 +92,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                 if (isExpand) {
                     //收缩
                     expandable.collapseGroup(groupPosition);
-
                 } else {
                     //展开
                     expandable.expandGroup(groupPosition);

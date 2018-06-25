@@ -32,6 +32,7 @@ import com.example.administrator.newsdf.callback.DetailsCallbackUtils;
 import com.example.administrator.newsdf.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.utils.CameDialog;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
@@ -53,8 +54,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
+
+
 
 
 /**
@@ -105,11 +109,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     private boolean Refresh = true;
 
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
 
     public static TaskdetailsActivity getInstance() {
         return mContext;
     }
-
 
 
     @Override
@@ -117,13 +124,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
+        floatMeunAnims=new FloatMeunAnims();
         newArray();
         finById();
         mContext = this;
         //权限
         DetailsCallbackUtils.setCallBack(this);
         usernma = SPUtils.getString(mContext, "staffName", null);
-
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -188,9 +195,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         taskManagement = (LinearLayout) findViewById(R.id.taskManagement);
         taskManagement.setOnClickListener(this);
         findViewById(R.id.adui_com_back).setOnClickListener(this);
-        findViewById(R.id.fab).setOnClickListener(this);
+        fab = (CircleImageView) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         comButton.setOnClickListener(this);
         comButton.setVisibility(View.GONE);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
     }
 
     private void newArray() {
@@ -291,14 +303,38 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 //返回
                 finish();
                 break;
-            case R.id.fab:
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
                 page = 1;
+                //请求数据时清除之前的
                 drew = true;
-                /**
-                 *查询当前任务节点图册
-                 */
+                //网络请求
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                //上拉加载的状态判断
+                liststatus = true;
                 drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
                 break;
             case R.id.com_img:
                 //任务详情界面
@@ -508,7 +544,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             contents.add(new Aduio_content(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
                                     createByUserID, checkStandard, createDate, wbsName, changeId,
-                                    backdata,partContent));
+                                    backdata, partContent));
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
@@ -689,7 +725,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 aduioDatas.clear();
                                 aduioComms.clear();
                             }
-                            mAdapter.setmBanner(contents,aduioDatas,aduioComms);
+                            mAdapter.setmBanner(contents, aduioDatas, aduioComms);
                             Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();

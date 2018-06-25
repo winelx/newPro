@@ -82,7 +82,7 @@ public class TaskWbsActivity extends Activity {
         });
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = findViewById(R.id.com_title);
-        com_title.setText(intent.getExtras().getString("wbsname"));
+        com_title.setText("选择wbs");
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = TaskWbsActivity.this;
         mTreeDatas = new ArrayList<>();

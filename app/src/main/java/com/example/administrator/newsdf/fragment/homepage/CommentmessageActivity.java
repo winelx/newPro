@@ -42,6 +42,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
 import com.lzy.okgo.OkGo;
@@ -113,12 +114,18 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
 
+    //动画类
+    private FloatMeunAnims floatMeunAnims;
+    private CircleImageView meun_standard, meun_photo;
+    private boolean liststatus = true;
+    boolean anim = true;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
+        floatMeunAnims = new FloatMeunAnims();
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
@@ -146,9 +153,14 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                if (liststatus) {
+                    HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
         /**
@@ -178,19 +190,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 refreshlayout.finishLoadmore(800);
             }
         });
-        circle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //加载第一页
-                page = 1;
-                //请求数据时清除之前的
-                drew = true;
-                //网络请求
-                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-                drawerLayout.openDrawer(GravityCompat.START);
 
-            }
-        });
         /**
          * editext回车键搜索
          */
@@ -396,7 +396,39 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             case R.id.com_back:
                 finish();
                 break;
-            case R.id.search_img:
+            case R.id.fab:
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, circle);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, circle);
+                    anim = true;
+                }
+                break;
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(CommentmessageActivity.this,"请求数据中...");
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(CommentmessageActivity.this,"请求数据中...");
+                HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
                 break;
@@ -543,6 +575,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         deleteSearch = (TextView) findViewById(R.id.delete_search);
         //图册圆形控件
         circle = (CircleImageView) findViewById(R.id.fab);
+        circle.setVisibility(View.GONE);
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
@@ -560,6 +593,13 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard.setVisibility(View.GONE);
+        meun_photo.setVisibility(View.GONE);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
+        circle.setOnClickListener(this);
     }
 
     //初始化数据

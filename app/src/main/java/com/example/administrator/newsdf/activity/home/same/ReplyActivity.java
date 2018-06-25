@@ -26,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +47,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -72,6 +72,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.drawer_layout;
 import static com.example.administrator.newsdf.utils.Dates.compressPixel;
 
 
@@ -94,7 +95,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private String latitude, longitude;
     private EditText replyText;
     private Context mContext;
-    private ProgressBar mProgressBar;
+
     private ArrayList<String> pathimg;
     private CheckPermission checkPermission;
     private String content = "", wbsname = "", wbsID = "", id = "";
@@ -107,8 +108,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private Bitmap textBitmap = null;
     private boolean popstatus = false;
     private int page = 1;
-    private CircleImageView fab;
-    private ArrayList<PhotoBean> photoPopPaths;
+    private ArrayList<PhotoBean> photoPopPaths,stardPaths;
     private DrawerLayout drawer;
     private SmartRefreshLayout smartRefreshLayout;
     private ListView drawerLayoutList;
@@ -117,12 +117,20 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private int num = 0;
     private String titlename;
 
+    //弹出框
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
+        floatMeunAnims = new FloatMeunAnims();
         mContext = ReplyActivity.this;
         pathimg = new ArrayList<>();
+        stardPaths = new ArrayList<>();
         photoPopPaths = new ArrayList<>();
         list = LoveDao.queryLove();
         checkPermission = new CheckPermission(this) {
@@ -130,7 +138,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
             }
-
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -210,17 +217,20 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
-
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
         //侧拉界面listview
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //侧拉界面
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer.setScrimColor(Color.TRANSPARENT);
         //图册查看按钮
-        fab = (CircleImageView) findViewById(R.id.fabloating);
+        fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
         fab.setVisibility(View.VISIBLE);
         //下拉控件，禁止下拉，只允许上拉加载更多
@@ -246,7 +256,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.reply_wbs).setOnClickListener(this);
         findViewById(R.id.reply_check).setOnClickListener(this);
         //进度条
-        mProgressBar = (ProgressBar) findViewById(R.id.reply_bar);
         findViewById(R.id.com_back).setOnClickListener(this);
         /**
          *  上拉加载
@@ -256,9 +265,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
+                if (liststatus){
+                    HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                }else {
+                    HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
+                }
             }
         });
         mAdapter = new TaskPhotoAdapter(photoPopPaths, mContext);
@@ -383,6 +396,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -419,7 +433,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showLongToast("1212");
                         dialog.dismiss();
                     }
 
@@ -444,13 +457,43 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 }
                 finish();
                 break;
-            case R.id.fabloating:
-                page = 1;
-                drew = true;
-                drawer.openDrawer(GravityCompat.START);
-                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
                 break;
             //选择检查项
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(ReplyActivity.this,"请求数据中...");
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
+                //上拉加载的状态判断
+                liststatus = true;
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(ReplyActivity.this,"请求数据中...");
+                HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
+                drawer.openDrawer(GravityCompat.START);
+                break;
+
             case R.id.reply_check:
                 Intent intent1 = new Intent(ReplyActivity.this, Checkpoint.class);
                 intent1.putExtra("wbsID", wbsID);
@@ -486,6 +529,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             Title = data.getStringExtra("title");
             wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
+            meun_photo.setVisibility(View.VISIBLE);
+            meun_standard.setVisibility(View.VISIBLE);
             drew = true;
             HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
             checkId = "";

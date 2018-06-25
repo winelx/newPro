@@ -46,6 +46,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.service.LocationService;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -81,7 +82,7 @@ import okhttp3.Response;
 public class ReplysActivity extends AppCompatActivity implements View.OnClickListener {
     private PhotosAdapter photoAdapter;
 
-    private ArrayList<PhotoBean> photoPopPaths;
+    private ArrayList<PhotoBean> photoPopPaths, stardPaths;
     private ArrayList<File> files;
     private ArrayList<String> namess;
     private List<Shop> list;
@@ -114,11 +115,18 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private ProgressDialog dialog;
     private boolean isParent, iswbs;
 
+    //弹出框
+    private CircleImageView meun_standard, meun_photo;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
         mContext = ReplysActivity.this;
+        floatMeunAnims = new FloatMeunAnims();
         //初始化集合
         initArray();
         //动态请求权限
@@ -162,7 +170,6 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             //
             isParent = intent.getExtras().getBoolean("isParent");
             //图片字符串
-            String Paths = intent.getExtras().getString("Imgpath");
             checkId = intent.getExtras().getString("Checkid");
             checkname = intent.getExtras().getString("Checkname");
             if (checkname.length() < 0) {
@@ -191,7 +198,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         pathimg = new ArrayList<>();
         //图册图片路径
         photoPopPaths = new ArrayList<>();
-
+        stardPaths = new ArrayList<>();
     }
 
     //定位
@@ -214,7 +221,10 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 发现ID
      */
     private void findID() {
-
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
         //图册list
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //抽屉控件
@@ -222,7 +232,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         //刷新控件
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //查看图册控件
-        Circle = (CircleImageView) findViewById(R.id.fabloating);
+        Circle = (CircleImageView) findViewById(R.id.fab);
         //上传文件大小（未使用）
         tvNetSpeed = (TextView) findViewById(R.id.tvNetSpeed);
         //图片
@@ -262,9 +272,13 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
+                if (liststatus) {
+                    HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                } else {
+                    HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                }
             }
         });
 
@@ -298,12 +312,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fabloating:
-                page = 1;
-                drew = true;
-                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
-                drawer.openDrawer(GravityCompat.START);
-                break;
+
             case R.id.com_button:
                 files = new ArrayList<>();
                 //将图片转成file格式
@@ -377,6 +386,44 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
                 selfDialog.show();
+                break;
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, Circle);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, Circle);
+                    anim = true;
+                }
+                break;
+            //选择检查项
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(ReplysActivity.this, "请求数据中...");
+
+                HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                //上拉加载的状态判断
+                liststatus = true;
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(ReplysActivity.this, "请求数据中...");
+
+                HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsNodeName.getText().toString());
+                drawer.openDrawer(GravityCompat.START);
                 break;
             default:
                 break;
@@ -615,10 +662,12 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        for (int i = 0; i < pathimg.size(); i++) {
-            Dates.deleteFile(pathimg.get(i));
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            for (int i = 0; i < pathimg.size(); i++) {
+                Dates.deleteFile(pathimg.get(i));
+            }
+            finish();
         }
-        finish();
         return false;
     }
 
@@ -634,6 +683,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("wbsId", wbsID)
                 .params("uploadContent", replyText.getText().toString())
                 .params("latitude", latitude)
@@ -655,7 +705,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                                     Dates.deleteFile(pathimg.get(i));
                                 }
                                 ToastUtils.showShortToast(msg);
-                                if (!list.isEmpty() && position != -1) {
+                                if (position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
                                 Updata();

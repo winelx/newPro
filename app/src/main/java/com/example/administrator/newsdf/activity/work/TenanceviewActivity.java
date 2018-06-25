@@ -22,6 +22,8 @@ import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -40,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *         update: 2018/2/8 0008
  *         version:
  */
-public class TenanceviewActivity extends AppCompatActivity {
+public class TenanceviewActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "TenanceviewActivity";
     private Context mContext;
     private ViewPager mViewPager;
@@ -53,7 +55,6 @@ public class TenanceviewActivity extends AppCompatActivity {
 
     private int msg = 0, page = 1;
     private String id, wbspath, wbsname, type;
-    private CircleImageView fab;
     private SmartRefreshLayout drawerlayoutSmart;
     private DrawerLayout drawerLayout;
 
@@ -66,12 +67,18 @@ public class TenanceviewActivity extends AppCompatActivity {
     private ArrayList<String> ids,
             names,
             titlename;
+    //弹出框
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
         setContentView(R.layout.activity_missionmte);
         mContext = TenanceviewActivity.this;
+        floatMeunAnims = new FloatMeunAnims();
         //获取到intent传过来得集合
         names = new ArrayList<>();
         ids = new ArrayList<>();
@@ -104,6 +111,12 @@ public class TenanceviewActivity extends AppCompatActivity {
         //侧滑栏关闭手势滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         fab = (CircleImageView) findViewById(R.id.fab);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        fab = (CircleImageView) findViewById(R.id.fab);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
+        fab.setOnClickListener(this);
         com_img = (LinearLayout) findViewById(R.id.tenac_img);
         tabulation = (RelativeLayout) findViewById(R.id.tabulation);
         title = (TextView) findViewById(R.id.com_title);
@@ -112,6 +125,9 @@ public class TenanceviewActivity extends AppCompatActivity {
         taskAdapter = new TaskPhotoAdapter(imagePaths, TenanceviewActivity.this);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayoutList.setAdapter(taskAdapter);
+        /**
+         * 检查项
+         */
         tabulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,27 +163,23 @@ public class TenanceviewActivity extends AppCompatActivity {
                 finish();
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+
         /**
          *    侧拉listview上拉加载
          */
         drawerlayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
                 drew = false;
-                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
-                taskAdapter.getData(imagePaths, wbspath);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                page++;
+                if (liststatus) {
+                    HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
         initView();
@@ -239,4 +251,46 @@ public class TenanceviewActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
+                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

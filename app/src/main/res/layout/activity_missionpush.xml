@@ -100,8 +100,8 @@
                     android:background="@color/writer"
                     app:tabBackground="@color/writer"
                     app:tabIndicatorColor="@color/colorAccent"
-                    app:tabMode="fixed"
                     app:tabIndicatorHeight="3dp"
+                    app:tabMode="fixed"
                     app:tabSelectedTextColor="@color/colorPrimaryDark"
                     app:tabTextColor="@color/colorPrimary" />
 
@@ -128,22 +128,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/push_draw_lin" />
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/fab"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="45dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:src="@mipmap/drawphoto"
-                app:backgroundTint="#00B4FF"
-                app:fabSize="auto"
-                app:rippleColor="#56abe4" />
-
+            <include layout="@layout/floating_meun_button" />
 
         </RelativeLayout>
 

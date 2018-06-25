@@ -195,7 +195,7 @@ public class TabFragment extends LazyFragment {
                                     Dates.disDialog();
                                     ToastUtils.showShortToast("没有更多数据了！");
                                     tab_frag_img.setVisibility(View.VISIBLE);
-                                    tab_img_text.setText("没有数据");
+                                    tab_img_text.setText("暂无数据");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -206,7 +206,7 @@ public class TabFragment extends LazyFragment {
                                 ToastUtils.showShortToast("没有更多数据了！");
                             } else {
                                 tab_frag_img.setVisibility(View.VISIBLE);
-                                tab_img_text.setText("没有数据");
+                                tab_img_text.setText("暂无数据");
                             }
                         }
                     }

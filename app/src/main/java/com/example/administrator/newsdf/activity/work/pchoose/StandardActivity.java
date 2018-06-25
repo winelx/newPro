@@ -49,15 +49,13 @@ public class StandardActivity extends AppCompatActivity {
         Intent intent = getIntent();
         wbsid = intent.getExtras().getString("wbsId");
         groupId = intent.getExtras().getString("groupId");
-        Title = intent.getExtras().getString("title");
         status = intent.getExtras().getString("status");
-
-        refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
-        refreshlayout.setEnableOverScrollBounce(true);//仿ios越界
+        refreshlayout= (SmartRefreshLayout) findViewById(R.id.refreshlayout);
+        refreshlayout.setEnableOverScrollBounce(true);
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText(Title);
+        com_title.setText("标准");
         comback = (IconTextView) findViewById(R.id.com_back);
         comback.setOnClickListener(
                 new View.OnClickListener() {

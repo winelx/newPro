@@ -41,7 +41,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:maxLines="1"
-            android:text="图册"
+            android:text="图纸名称"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:maxLines="1"
-            android:text="图纸名称"
+            android:text="图册"
             android:textColor="@color/black"
             android:textStyle="bold" />
 

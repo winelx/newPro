@@ -118,6 +118,7 @@ public class Imageloaders extends BaseAdapter {
             holder.inface_relat2_icon = convertView.findViewById(R.id.inface_relat2_icon);
             holder.inface_relat3_icon = convertView.findViewById(R.id.inface_relat3_icon);
             holder.view = convertView.findViewById(R.id.view);
+            holder.inface_no_image=convertView.findViewById(R.id.inface_no_image);
             //多图片时显示图片数量
             holder.ic_loading_bg = convertView.findViewById(R.id.ic_loading_bg);
             convertView.setTag(holder);
@@ -380,6 +381,7 @@ public class Imageloaders extends BaseAdapter {
                         }
                     }
                 } else {
+                    holder.inface_no_image.setVisibility(View.VISIBLE);
                     holder.inface_image.setVisibility(View.GONE);
                 }
             default:
@@ -389,7 +391,7 @@ public class Imageloaders extends BaseAdapter {
     }
 
     class ViewHolder {
-        NetworkImageView inface_image3, inface_image2, inface_imag1;
+        NetworkImageView inface_image3, inface_image2, inface_imag1,inface_no_image;
         CircleImageView user_auathor;
         RelativeLayout inface_status_true;
         TextView inter_title;

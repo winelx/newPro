@@ -55,9 +55,9 @@ public class PhotoadmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (position == 1) {
 
         }
-        holder.photo_name.setText(mData.get(position).getDrawingGroupName());
+        holder.photo_name.setText(mData.get(position).getDrawingName());
         holder.photo_number.setText(mData.get(position).getDrawingNumber());
-        holder.photo_names.setText(mData.get(position).getDrawingName());
+        holder.photo_names.setText(mData.get(position).getDrawingGroupName());
         holder.lin_photo_adm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

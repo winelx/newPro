@@ -31,10 +31,10 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.Adapter.Listinter_Adfapter;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.bean.List_interface;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -45,6 +45,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
 import com.lzy.okgo.OkGo;
@@ -103,7 +104,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     /**
      * 侧拉界面数据集合
      */
-    private ArrayList<PhotoBean> imagePaths;
+    private ArrayList<PhotoBean> imagePaths,stardPaths;
     /**
      * 打开状态选择弹窗
      */
@@ -131,10 +132,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * 下拉刷新控件
      */
     private SmartRefreshLayout refreshLayout;
-    /**
-     * 图册按钮
-     */
-    private CircleImageView fab;
     /**
      * 图册适配器
      */
@@ -188,6 +185,11 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;
     float ste;
+    //动画类
+    private FloatMeunAnims floatMeunAnims;
+    private CircleImageView meun_standard, meun_photo, fab;
+    private boolean liststatus = true;
+    boolean anim = true;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -195,6 +197,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+        floatMeunAnims = new FloatMeunAnims();
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
         //初始化集合
@@ -282,13 +285,11 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent audio = new Intent(mContext, MoretaskActivity.class);
-                //    Intent audio = new Intent(mContext, AuditparticularsActivity.class);
-                audio.putExtra("TaskId", mDatas.get(position).getTaskId());
-                audio.putExtra("wbsid", mDatas.get(position).getWbsId());
-                audio.putExtra("id", mDatas.get(position).getId());
-                audio.putExtra("status", "true");
-                startActivity(audio);
+                Intent intent = new Intent(mContext, MoretaskActivity.class);
+                intent.putExtra("TaskId", mDatas.get(position).getTaskId());
+                intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+                intent.putExtra("status", "true");
+                startActivity(intent);
                 backgroundAlpha(1f);
             }
         });
@@ -310,16 +311,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 return false;
             }
         });
-        //图册查看按钮，如果有弹窗，先关闭弹窗
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+
         delete_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,9 +326,15 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                if (liststatus) {
+                    HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(wbsid, page, stardPaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
+
             }
         });
         /**
@@ -346,7 +344,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         /**
          * 拼接 选择wbs的节点
          */
-
         OrganizationEntity bean = new OrganizationEntity(fixedwbsId, "",
                 intent.getExtras().getString("name"), "0", false,
                 true, "3,5", "",
@@ -364,6 +361,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         mDatas = new ArrayList<>();
         //图册
         imagePaths = new ArrayList<>();
+        stardPaths = new ArrayList<>();
     }
 
     private void initdata(Intent intent) {
@@ -517,6 +515,41 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 MeunPop();//打开弹出框
                 searchEditext.clearFocus();//失去焦点
                 break;
+            case R.id.fab:
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
+                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
+                HomeUtils.getStard(wbsid, page, stardPaths, drew, taskAdapter, titles);
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
             default:
                 break;
         }
@@ -532,7 +565,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * @param pages     页数
      */
     private void okgo(String wbsId, String msgStatus, String content, int pages) {
-        ToastUtils.showLongToast(pages + "");
         PostRequest mRequest = post(Requests.CascadeList)
                 .params("orgId", orgId)
                 .params("page", pages)
@@ -802,6 +834,14 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //侧拉界面的下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard.setVisibility(View.GONE);
+        meun_photo.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
+        fab.setOnClickListener(this);
     }
 
 }

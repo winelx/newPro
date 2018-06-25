@@ -17,11 +17,22 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.callback.HideCallbackUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
+import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 这里未上传资料的recycler的适配器
@@ -43,14 +54,13 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
     public int getItemCount() {
         return mDatas.size();
     }
-
+    private String zero = "0";
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
         //设置内容布局的宽为屏幕宽度
         holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext);
         //item正文点击事件
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.layout_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //判断是否有删除菜单打开
@@ -67,7 +77,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         });
 
         /**
-         *
          *
          * 有状态未添加
          */
@@ -106,6 +115,39 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         } else {
             holder.home_item_message.setText(mDatas.get(position).getUnfinish());
         }
+        holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String isfavorite =mDatas.get(position).getIsfavorite();
+                String wbsId = mDatas.get(position).getOrgid();
+                if (isfavorite.equals(zero)) {
+                    OkGo.post(Requests.WBSSAVE)
+                            .params("wbsId",wbsId )
+                            .params("type", 1)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                        if (ret == 0) {
+                                            holder.btn_Delete.setBackgroundResource(R.color.back);
+                                            holder.btn_Delete.setText("已收藏");
+                                            HideCallbackUtils.removeCallBackMethod();
+                                         mDatas.get(position).setIsfavorite("1");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                } else {
+                    ToastUtils.showLongToast("在收藏界面取消收藏");
+                }
+            }
+        });
     }
 
     @Override
@@ -121,7 +163,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
 
         public TextView btn_Delete;
         public RelativeLayout layout_content;
-        public RelativeLayout relativeLayout;
         public TextView home_item_img;
         public TextView home_item_name;
         public TextView home_item_content;
@@ -135,8 +176,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
             //控制布局在界面的宽度
             layout_content = itemView.findViewById(R.id.layout_content);
-            //控制布局大小
-            relativeLayout = itemView.findViewById(R.id.relativeLayout);
             //标段
             home_item_img = (TextView) itemView.findViewById(R.id.home_item_img);
             //所属组织
@@ -147,6 +186,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             home_item_time = (TextView) itemView.findViewById(R.id.home_item_time);
             //消息数据
             home_item_message = (TextView) itemView.findViewById(R.id.home_item_message);
+            ((LeftSlideView) itemView).setSlidingButtonListener(HomeFragmentAdapter.this);
         }
     }
 

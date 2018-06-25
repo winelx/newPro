@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -50,7 +51,7 @@ import okhttp3.Response;
  *         update: 2018/3/22 0022
  *         version:
  */
-public class MissionpushActivity extends AppCompatActivity {
+public class MissionpushActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView title;
     private LinearLayout button;
     private LinearLayout com_img;
@@ -62,7 +63,7 @@ public class MissionpushActivity extends AppCompatActivity {
     private ArrayList<String> titlename;
     private String id, wbsname;
     private ArrayList<PhotoBean> imagePaths;
-    private CircleImageView fab;
+
     private SmartRefreshLayout smartRefreshLayout;
     private DrawerLayout drawer_layout;
     private ListView drawer_layout_list;
@@ -75,10 +76,17 @@ public class MissionpushActivity extends AppCompatActivity {
     private String type, wbspath, wbsId;
     boolean isParent, iswbs;
 
+    //弹出框
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missionpush);
+        floatMeunAnims = new FloatMeunAnims();
         pushMap = new HashMap<>();
         //获取到intent传过来得集合
         titlename = new ArrayList<>();
@@ -91,6 +99,13 @@ public class MissionpushActivity extends AppCompatActivity {
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+
+
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
+        fab.setOnClickListener(this);
         //侧滑栏关闭手势滑动
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         drawer_layout.setScrimColor(Color.TRANSPARENT);
@@ -188,15 +203,6 @@ public class MissionpushActivity extends AppCompatActivity {
                 finish();
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
-                drawer_layout.openDrawer(GravityCompat.START);
-            }
-        });
 
         /**
          *    侧拉listview上拉加载
@@ -204,11 +210,16 @@ public class MissionpushActivity extends AppCompatActivity {
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
                 drew = false;
-                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                page++;
+                if (liststatus) {
+                    HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
 
@@ -225,21 +236,21 @@ public class MissionpushActivity extends AppCompatActivity {
                 pagss = pagss + 1;
                 String strids = Dates.listToString(list);
 
-                    if (strids != null) {
-                        dialog = new ProgressDialog(MissionpushActivity.this);
-                        // 设置进度条的形式为圆形转动的进度条
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage("推送任务中...");
-                        // 设置是否可以通过点击Back键取消
-                        dialog.setCancelable(true);
-                        // 设置在点击Dialog外是否取消Dialog进度条
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
-                        pushOkgo(strids);
-                    } else {
-                        Dates.disDialog();
-                        ToastUtils.showShortToast("请选择推送项");
-                    }
+                if (strids != null) {
+                    dialog = new ProgressDialog(MissionpushActivity.this);
+                    // 设置进度条的形式为圆形转动的进度条
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("推送任务中...");
+                    // 设置是否可以通过点击Back键取消
+                    dialog.setCancelable(true);
+                    // 设置在点击Dialog外是否取消Dialog进度条
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                    pushOkgo(strids);
+                } else {
+                    Dates.disDialog();
+                    ToastUtils.showShortToast("请选择推送项");
+                }
 
             }
 
@@ -380,5 +391,48 @@ public class MissionpushActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(MissionpushActivity.this, "请求数据中...");
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(MissionpushActivity.this, "请求数据中...");
+                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbsname);
+                drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

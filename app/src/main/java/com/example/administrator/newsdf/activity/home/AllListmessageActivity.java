@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.Adapter.Imageloaders;
 import com.example.administrator.newsdf.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.App;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Inface_all_item;
 import com.example.administrator.newsdf.bean.OrganizationEntity;
 import com.example.administrator.newsdf.bean.PhotoBean;
@@ -40,6 +40,7 @@ import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.ScreenUtil;
@@ -62,6 +63,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
+
 /**
  * description:全部消息的列表界面，
  *
@@ -79,7 +82,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //
     private String notall = "3", nodeiD = "1";
 
-    private CircleImageView circle;
     //主界面适配器
     private Imageloaders mAdapter;
     //抽屉控件
@@ -101,7 +103,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //图册
     private ArrayList<String> paths;
     private List<Inface_all_item> Alldata;
-    private ArrayList<PhotoBean> imagePaths;
+    private ArrayList<PhotoBean> imagePaths,stardPaths;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
@@ -111,6 +113,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
+    //动画类
+    private FloatMeunAnims floatMeunAnims;
+    private CircleImageView meun_standard, meun_photo, fab;
+    private boolean liststatus = true;
+    boolean anim = true;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -118,6 +125,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
+        floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
@@ -144,9 +152,15 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 drew = false;
-                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                if (liststatus) {
+                    HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(nodeiD, page, stardPaths, drew, taskAdapter, titles);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
+
             }
         });
         /**
@@ -176,19 +190,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 refreshlayout.finishLoadmore(800);
             }
         });
-        circle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //加载第一页
-                page = 1;
-                //请求数据时清除之前的
-                drew = true;
-                //网络请求
-                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-                drawerLayout.openDrawer(GravityCompat.START);
 
-            }
-        });
         /**
          * editext回车键搜索
          */
@@ -389,29 +391,49 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         switch (id) {
             //返回
             case R.id.com_back:
-                if (intentBack != null) {
-                    finish();
-                } else {
-                    finish();
-                }
+                finish();
                 break;
             case R.id.search_img:
-
+                break;
+            case R.id.fab:
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(AllListmessageActivity.this,"请求数据中...");
+                HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(AllListmessageActivity.this,"请求数据中...");
+                HomeUtils.getStard(nodeiD, page, stardPaths, drew, taskAdapter, titles);
+                drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
                 break;
         }
     }
 
-
-    //返回back
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-        }
-        return true;
-    }
 
     @Override
     protected void onStop() {
@@ -515,7 +537,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             titles = node.getTitle();
             Titlew.setText(node.getName());
             nodeiD = node.getId();
-            circle.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
             swip = false;
             page = 1;
             pages = 1;
@@ -531,6 +553,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         mTreeDatas = new ArrayList<>();
         addOrganizationList = new ArrayList<>();
         organizationList = new ArrayList<>();
+        stardPaths = new ArrayList<>();
     }
 
     //初始化控件
@@ -541,7 +564,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         mTree = (ListView) findViewById(R.id.wbslist);
         deleteSearch = (TextView) findViewById(R.id.delete_search);
         //图册圆形控件
-        circle = (CircleImageView) findViewById(R.id.fab);
+        fab = (CircleImageView) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         //侧拉布局
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
@@ -558,6 +582,13 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard.setVisibility(View.GONE);
+        meun_photo.setVisibility(View.GONE);
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
+        fab.setOnClickListener(this);
     }
 
     //初始化数据
@@ -580,7 +611,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //主界面
         uslistView.setAdapter(mAdapter);
         //打开抽屉控件的圆形控件
-        circle.setVisibility(View.GONE);
         //图册适配器
         taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
         //图册listview
@@ -831,6 +861,15 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         }
                     });
         }
+    }
+
+    //返回back
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return true;
     }
 }
 

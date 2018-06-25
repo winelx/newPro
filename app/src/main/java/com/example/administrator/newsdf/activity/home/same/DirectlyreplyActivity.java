@@ -56,6 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -240,6 +241,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private void Okgo(String address, ArrayList<File> file, boolean isAllFinished) {
         userPop();
         OkGo.post(Requests.Uploade)
+                .isMultipart(true)
                 .params("id", id)
                 .params("uploadContent", reply_text.getText().toString())
                 .params("latitude", Latitude)
@@ -255,6 +257,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
                             if (ret == 0) {
                                 //删除上传的图片
                                 for (int i = 0; i < imagePaths.size(); i++) {
@@ -272,10 +275,18 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        try {
+                            String str=  response.body().string();
+                            JSONObject jsonObject = new JSONObject(str);
+                            ToastUtils.showLongToast(jsonObject.getString("msg"));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
                         popupWindow.dismiss();
                         popstatus = false;
                     }

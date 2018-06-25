@@ -181,7 +181,7 @@ public class HomeUtils {
                         organization.setTypes("3,5");
                     }
 
-                        organization.setIswbs(true);
+                    organization.setIswbs(true);
 
 
                     try {
@@ -204,7 +204,7 @@ public class HomeUtils {
                     }
                     try {
                         //组织机构父级节点
-                     String str= obj.getString("parent_id");
+                        String str = obj.getString("parent_id");
                         organization.setParentId(str);
 
                     } catch (JSONException e) {
@@ -324,7 +324,7 @@ public class HomeUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss",s);
+                        LogUtil.i("ss", s);
                         if (s.contains("data")) {
                             if (drew) {
                                 imagePaths.clear();
@@ -332,17 +332,28 @@ public class HomeUtils {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String id = (String) json.get("id");
-                                    String filePath = (String) json.get("filePath");
-                                    String drawingNumber = (String) json.get("drawingNumber");
-                                    String drawingName = (String) json.get("drawingName");
-                                    String drawingGroupName = (String) json.get("drawingGroupName");
-                                    filePath = Requests.networks + filePath;
-                                    imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String id = (String) json.get("id");
+                                        String filePath = (String) json.get("filePath");
+                                        String drawingNumber = (String) json.get("drawingNumber");
+                                        String drawingName = (String) json.get("drawingName");
+                                        String drawingGroupName = (String) json.get("drawingGroupName");
+                                        filePath = Requests.networks + filePath;
+                                        imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
+                                    }
+                                    taskPhotoAdapter.getData(imagePaths, wbsName);
+                                    Dates.disDialog();
+                                } else {
+                                    if (drew) {
+                                        imagePaths.clear();
+                                        imagePaths.add(new PhotoBean(
+                                                "", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据"));
+                                    }
+                                    taskPhotoAdapter.getData(imagePaths, wbsName);
+                                    Dates.disDialog();
                                 }
-                                taskPhotoAdapter.getData(imagePaths, wbsName);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -350,9 +361,10 @@ public class HomeUtils {
                             if (drew) {
                                 imagePaths.clear();
                                 imagePaths.add(new PhotoBean(
-                                        "", "暂无数据", "暂无数据", "暂无数据", "暂无数据"));
+                                        "", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据"));
                             }
                             taskPhotoAdapter.getData(imagePaths, wbsName);
+                            Dates.disDialog();
                         }
                     }
                 });
@@ -429,6 +441,80 @@ public class HomeUtils {
                             Dates.disDialog();
                         }
 
+                    }
+                });
+    }
+
+    public static void getStard(final String WbsId, int page,
+                                final ArrayList<PhotoBean> stardPats,
+                                final boolean drew,
+                                final TaskPhotoAdapter taskStardAdapter,
+                                final String wbsName) {
+        OkGo.<String>get(Requests.StandardList)
+                .params("WbsId", WbsId)
+                .params("page", page)
+                .params("rows", 30)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("ss4", s);
+                        if (s.contains("data")) {
+                            if (drew) {
+                                stardPats.clear();
+                            }
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String id = (String) json.get("id");
+                                        String filePath = (String) json.get("filePath");
+                                        String drawingNumber;
+                                        try {
+                                            drawingNumber = (String) json.get("standardNumber");
+                                        } catch (JSONException e) {
+                                            drawingNumber = "";
+                                        }
+                                        String drawingName;
+                                        try {
+                                            drawingName = (String) json.get("standardName");
+                                        } catch (JSONException e) {
+                                            drawingName = "";
+                                        }
+                                        String drawingGroupName;
+                                        try {
+                                            drawingGroupName = (String) json.get("standardGroupName");
+                                        } catch (JSONException e) {
+                                            drawingGroupName = "";
+                                        }
+                                        filePath = Requests.networks + filePath;
+                                        stardPats.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
+                                    }
+                                    taskStardAdapter.getData(stardPats, wbsName);
+                                    Dates.disDialog();
+                                } else {
+                                    if (drew) {
+                                        stardPats.clear();
+                                        stardPats.add(new PhotoBean(
+                                                "", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据"));
+                                    }
+                                    taskStardAdapter.getData(stardPats, wbsName);
+                                    Dates.disDialog();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (drew) {
+                                stardPats.clear();
+                                stardPats.add(new PhotoBean(
+                                        "", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据"));
+                            }
+                            taskStardAdapter.getData(stardPats, wbsName);
+                            Dates.disDialog();
+                        }
                     }
                 });
     }

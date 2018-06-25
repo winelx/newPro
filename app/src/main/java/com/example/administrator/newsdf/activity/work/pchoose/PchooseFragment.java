@@ -56,7 +56,6 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
             case R.id.pchoose_wbs:
                 Intent intent = new Intent(getActivity(), MmissPushActivity.class);
                 intent.putExtra("data", "Photo");
-                intent.putExtra("title", "图纸查看");
                 startActivity(intent);
                 break;
             case R.id.uploading_photo:
@@ -78,6 +77,7 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
             case R.id.pchoose_atlas:
                 Intent standard = new Intent(getActivity(), PhotoListActivity.class);
                 standard.putExtra("status", "PhotoList");
+                standard.putExtra("title", "选择图册");
                 startActivity(standard);
                 break;
             default:

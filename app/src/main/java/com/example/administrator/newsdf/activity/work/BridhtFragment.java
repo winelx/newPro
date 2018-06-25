@@ -1,8 +1,8 @@
 package com.example.administrator.newsdf.activity.work;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +21,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +64,7 @@ public class BridhtFragment extends Fragment {
         refreshlayout = view.findViewById(R.id.refreshlayout);
         refreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         refreshlayout.setEnableLoadmore(false);//禁止上拉
-        refreshlayout.setEnableRefresh(false);
+        refreshlayout.setEnableRefresh(true);
         refreshlayout.setEnableOverScrollBounce(true);//仿ios越界
         LinearLayoutManager linearLayout = new LinearLayoutManager(BrightspotActivity.getInstance());
         //添加Android自带的分割线
@@ -75,21 +75,18 @@ public class BridhtFragment extends Fragment {
         brightspot_list.setAdapter(mAdapter);
         Bright();
         //上拉加载
-        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
+        refreshlayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
+            public void onRefresh(RefreshLayout refreshlayout) {
                 Bright();
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
+                refreshlayout.finishRefresh(1000);
             }
         });
         return view;
     }
 
     private void Bright() {
-        ToastUtils.showLongToast(page + "");
         OkGo.<String>post(Requests.ListByType)
                 //pos 是从0开始的，而传递的数据从1开始
                 .params("type", pos + 1)
@@ -99,82 +96,87 @@ public class BridhtFragment extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject json = jsonArray.getJSONObject(i);
-                                String id;
-                                try {
-                                    id = json.getString("id");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    id = "";
-                                }
-                                //标段ID
-                                String orgId;
-                                try {
-                                    orgId = json.getString("orgId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    orgId = "";
-                                }
-                                //标段名称
-                                String orgName;
-                                try {
-                                    orgName = json.getString("orgName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    orgName = "";
-                                }
-                                //任务名称
-                                String taskName;
-                                try {
-                                    taskName = json.getString("taskName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    taskName = "";
-                                }
-                                //责任人
-                                String leadername;
-                                try {
-                                    leadername = json.getString("leaderName");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    leadername = "";
-                                }
-                                //图片
-                                String leaderImg;
-                                try {
-                                    leaderImg = json.getString("leaderImg");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    leaderImg = "";
-                                }
-                                String TaskId;
-                                try {
-                                    TaskId = json.getString("taskId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    TaskId = "";
-                                }
-                                String updateDate;
-                                try {
-                                    updateDate = stampToDate(json.getString("updateDate"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    updateDate = Dates.stampToDate(json.getString("createDate"));
-                                }
-                                ArrayList<String> ImagePaths = new ArrayList<String>();
-                                try {
-
-                                    JSONArray filePaths = json.getJSONArray("filePaths");
-                                    for (int j = 0; j < filePaths.length(); j++) {
-                                        String path = Requests.networks + filePaths.get(j);
-                                        ImagePaths.add(path);
+                            if (jsonArray.length() > 0) {
+                                mData.clear();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id;
+                                    try {
+                                        id = json.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        id = "";
                                     }
+                                    //标段ID
+                                    String orgId;
+                                    try {
+                                        orgId = json.getString("orgId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        orgId = "";
+                                    }
+                                    //标段名称
+                                    String orgName;
+                                    try {
+                                        orgName = json.getString("orgName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        orgName = "";
+                                    }
+                                    //任务名称
+                                    String taskName;
+                                    try {
+                                        taskName = json.getString("taskName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        taskName = "";
+                                    }
+                                    //责任人
+                                    String leadername;
+                                    try {
+                                        leadername = json.getString("leaderName");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        leadername = "";
+                                    }
+                                    //图片
+                                    String leaderImg;
+                                    try {
+                                        leaderImg = json.getString("leaderImg");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        leaderImg = "";
+                                    }
+                                    String TaskId;
+                                    try {
+                                        TaskId = json.getString("taskId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        TaskId = "";
+                                    }
+                                    String updateDate;
+                                    try {
+                                        updateDate = stampToDate(json.getString("updateDate"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        updateDate = Dates.stampToDate(json.getString("createDate"));
+                                    }
+                                    ArrayList<String> ImagePaths = new ArrayList<String>();
+                                    try {
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                        JSONArray filePaths = json.getJSONArray("filePaths");
+                                        for (int j = 0; j < filePaths.length(); j++) {
+                                            String path = Requests.networks + filePaths.get(j);
+                                            ImagePaths.add(path);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, pos, ImagePaths));
                                 }
-                                mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, pos, ImagePaths));
+                            }else {
+                                ToastUtils.showLongToast("暂无数据");
                             }
                             mAdapter.getData(mData);
                         } catch (JSONException e) {

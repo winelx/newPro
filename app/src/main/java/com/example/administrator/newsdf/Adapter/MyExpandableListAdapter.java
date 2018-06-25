@@ -19,10 +19,19 @@ import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.RequestUtils;
+import com.example.administrator.newsdf.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -196,13 +205,28 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
                 String isfavorite = content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite();
                 String wbsId = content.get(classes.get(groupPosition)).get(childPosition).getOrgid();
                 if (isfavorite.equals(zero)) {
-                    int result = requestUtils.collection(wbsId);
-                    if (result == 0) {
-                        childHold.tvSet.setBackgroundResource(R.color.back);
-                        childHold.tvSet.setText("已收藏");
-                        HideCallbackUtils.removeCallBackMethod();
-                        content.get(classes.get(groupPosition)).get(childPosition).setIsfavorite("1");
-                    }
+                    OkGo.post(Requests.WBSSAVE)
+                            .params("wbsId",wbsId )
+                            .params("type", 1)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                        if (ret == 0) {
+                                            childHold.tvSet.setBackgroundResource(R.color.back);
+                                            childHold.tvSet.setText("已收藏");
+                                            HideCallbackUtils.removeCallBackMethod();
+                                            content.get(classes.get(groupPosition)).get(childPosition).setIsfavorite("1");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
                 } else {
                     ToastUtils.showLongToast("在收藏界面取消收藏");
                 }

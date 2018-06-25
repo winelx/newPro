@@ -45,6 +45,7 @@ public class StandardFragment extends Fragment {
             public void onClick(View v) {
                 Intent standard = new Intent(getActivity(), PhotoListActivity.class);
                 standard.putExtra("status", "standard");
+                standard.putExtra("title", "选择标准");
                 startActivity(standard);
             }
         });
@@ -53,6 +54,7 @@ public class StandardFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MmissPushActivity.class);
                 intent.putExtra("data", "standrard");
+
                 startActivity(intent);
 
             }

@@ -118,21 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fab"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="44dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@mipmap/floatbutton_meun"
-                    android:elevation="10dp"
-                    app:backgroundTint="#00B4FF"
-                    app:fabSize="auto"
-                    app:rippleColor="#56abe4" />
-
+                <include layout="@layout/floating_meun_button" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -153,7 +139,6 @@
                     android:id="@+id/drawer_layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     android:divider="@color/back"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />

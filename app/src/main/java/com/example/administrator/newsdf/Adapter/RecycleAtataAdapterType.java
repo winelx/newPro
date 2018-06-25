@@ -156,7 +156,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                     holder.givealikeText.setTextColor(Color.parseColor("#808080"));
                 } else {
-                    if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                    if (mDatas.get(posotion).isSmartprojectMain2Up() ) {
                         //判断是否有本级提亮权限
                         holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
                         holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));

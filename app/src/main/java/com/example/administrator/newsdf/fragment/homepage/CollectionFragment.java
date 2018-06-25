@@ -179,6 +179,12 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                         orgName = "";
                                     }
                                     String unfinish="";
+                                    try {
+                                        unfinish = json.getString("task_counts");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        unfinish = "";
+                                    }
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "","","" ,false));
                                 }

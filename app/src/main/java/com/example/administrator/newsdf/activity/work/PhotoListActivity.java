@@ -65,9 +65,10 @@ public class PhotoListActivity extends AppCompatActivity {
         refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
         Intent intent = getIntent();
         stauts = intent.getExtras().getString("status");
+
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("选择图册");
+        com_title.setText(intent.getExtras().getString("title"));
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = PhotoListActivity.this;
         mTreeDatas = new ArrayList<>();
@@ -102,6 +103,7 @@ public class PhotoListActivity extends AppCompatActivity {
             }
         });
     }
+
     private void addOrganiztion(final String id, final boolean isDrawing, final boolean isparent, final String type) {
         Dates.getDialogs(PhotoListActivity.this, "请求数据中");
         if (stauts.equals("standard")) {

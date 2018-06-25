@@ -95,8 +95,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
             }
         }
 
-        holder.taskNum.setVisibility(View.GONE);
-
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());

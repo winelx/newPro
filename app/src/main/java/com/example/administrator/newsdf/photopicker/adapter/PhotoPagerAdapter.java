@@ -59,7 +59,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     .error(R.drawable.image_error);
             mGlide.setDefaultRequestOptions(options)
                     .load(path)
-                    .thumbnail(0.8f)
+                    .thumbnail(1f)
                     .into(imageView);
         }
         imageView.setOnClickListener(new View.OnClickListener() {

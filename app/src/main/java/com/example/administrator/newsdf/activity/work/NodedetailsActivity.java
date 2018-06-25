@@ -30,8 +30,10 @@ import com.example.administrator.newsdf.bean.Audio;
 import com.example.administrator.newsdf.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
+import com.example.administrator.newsdf.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.utils.Requests;
+import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -77,7 +79,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private WbsDialog selfDialog;
     private int number;
     private ArrayList<PhotoBean> imagePaths;
-    private CircleImageView fab;
     private SmartRefreshLayout smartRefreshLayout;
     private DrawerLayout drawer_layout;
     private ListView drawer_layout_list;
@@ -88,14 +89,19 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
 
-    public NodedetailsActivity() {
-    }
+    //弹出框
+    private CircleImageView meun_standard, meun_photo, fab;
+    private FloatMeunAnims floatMeunAnims;
+    private boolean liststatus = true;
+    boolean anim = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nodedetails);
         mContext = NodedetailsActivity.this;
+        floatMeunAnims = new FloatMeunAnims();
         mData = new ArrayList<>();
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
@@ -113,6 +119,13 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.node_lin_start).setOnClickListener(this);
         findViewById(R.id.node_commit).setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
+        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+
+
+        meun_photo.setOnClickListener(this);
+        meun_standard.setOnClickListener(this);
         //任务配置
         findViewById(R.id.node_configuration_task).setOnClickListener(this);
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
@@ -150,28 +163,22 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 finish();
             }
         });
-        //点击出侧拉
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                drew = true;
-                HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
-                drawer_layout.openDrawer(GravityCompat.START);
-            }
-        });
         /**
          *    侧拉listview上拉加载
          */
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
                 drew = false;
-                HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
-                taskAdapter.getData(imagePaths, wbsName);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                page++;
+                if (liststatus) {
+                    HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
 
@@ -278,206 +285,111 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    /**
-     * 点击事件
-     *
-     * @param v
-     */
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.node_configuration_task:
-                //任务配置
-                getOko(wbsId, wbsName);
-                break;
-            case R.id.node_commit:
-                commit();
-                break;
-            case R.id.node_lin_pro:
-                setDialog();
-                break;
-            case R.id.user_list:
-                //选择责任人
-                Intent intent = new Intent(mContext, ContactPeopleActivity.class);
-                intent.putExtra("data", "newpush");
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.node_lin_start:
-                //更改状态，判断是否处于该状态 启动
-                selfDialog = new WbsDialog(NodedetailsActivity.this);
-                selfDialog.setMessage("是否更改当前状态");
-                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        selfDialog.dismiss();
-                        if (status == "1") {
-                            ToastUtils.showShortToast("已经处于当前状态");
-                        } else {
-                            okgo1("1");
-                        }
-                    }
-                });
-                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                    @Override
-                    public void onNoClick() {
-                        selfDialog.dismiss();
-                    }
-                });
-                selfDialog.show();
-                break;
-            case R.id.node_lin_stop:
-                //更改状态，判断是否处于该状态 暂停
-                selfDialog = new WbsDialog(NodedetailsActivity.this);
-                selfDialog.setMessage("是否更改当前状态");
-                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        selfDialog.dismiss();
-                        if (status.equals("0")) {
-                            ToastUtils.showShortToast("不可改变当前状态");
-                        } else {
-                            if (status == "2") {
-                                ToastUtils.showShortToast("已经处于当前状态");
-                            } else {
-                                okgo1("2");
-                            }
-                        }
-                    }
-                });
-                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                    @Override
-                    public void onNoClick() {
-                        selfDialog.dismiss();
-                    }
-                });
-                selfDialog.show();
-                break;
-            case R.id.node_lin_complete:
-                //完成
-                selfDialog = new WbsDialog(NodedetailsActivity.this);
-                selfDialog.setMessage("是否更改当前状态");
-                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        selfDialog.dismiss();
-                        if (status.equals("0")) {
-                            ToastUtils.showShortToast("不可改变当前状态");
-                        } else {
-                            if (status == "3") {
-                                ToastUtils.showShortToast("不能直接变更到此状态");
-                            } else {
-                                okgo1("3");
-                            }
-                        }
-                    }
-                });
-                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
-                    @Override
-                    public void onNoClick() {
-                        selfDialog.dismiss();
-                    }
-                });
-                selfDialog.show();
-                break;
-
-            default:
-                break;
-        }
-    }
 
     /**
      * 修改
      */
     void commit() {
-        OkGo.<String>post(Requests.WbsTaskConfig)
-                .params("id", wbsId)
-                .params("leaderId", userID)
-                .params("finish", number)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("wbsOID", s);
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            String msg = jsonObject.getString("msg");
-                            if (ret == 0) {
-                                ToastUtils.showShortToast(msg);
-                            } else {
-                                ToastUtils.showShortToast(msg);
+        String leaderId = SPUtils.getString(mContext, "staffId", null);
+        if (leaderId.equals(userID)) {
+            OkGo.<String>post(Requests.WbsTaskConfig)
+                    .params("id", wbsId)
+                    .params("leaderId", userID)
+                    .params("finish", number)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            LogUtil.i("wbsOID", s);
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                String msg = jsonObject.getString("msg");
+                                if (ret == 0) {
+                                    ToastUtils.showShortToast(msg);
+                                } else {
+                                    ToastUtils.showShortToast(msg);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+                    });
+        } else {
+            ToastUtils.showLongToast("只有负责人能修改状态");
+        }
     }
 
     /**
      * 状态修改
      */
     void okgo1(final String str) {
-        OkGo.post(Requests.WbsTaskConfig)
-                .params("id", wbsId)
-                .params("optStatus", str)
-                .params("leaderId", userID)
-                .params("finish", number + "")
-                .execute(new StringCallback() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            String msg = jsonObject.getString("msg");
-                            if (ret != 0) {
-                                if (Objects.equals(str, "1")) {
-                                    ToastUtils.showShortToast(msg);
-                                } else if (Objects.equals(str, "2")) {
-                                    ToastUtils.showShortToast(msg);
-                                } else if (Objects.equals(str, "3")) {
-                                    ToastUtils.showShortToast(msg);
-                                }
-                            } else {
-                                //接口调用成功
-                                if (Objects.equals(str, "1")) {
-                                    nodeStartText.setTextColor(Color.parseColor("#808080"));
-                                    nodeStopText.setTextColor(Color.parseColor("#f44949"));
-                                    nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
-                                    nodeStart.setBackgroundResource(R.mipmap.node_start);
-                                    nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
-                                    nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
-                                    status = "1";
-                                    nodeWbsStatus.setText("施工中");
+        String leaderId = SPUtils.getString(mContext, "staffId", null);
+        if (leaderId.equals(userID)) {
 
-                                } else if (Objects.equals(str, "2")) {
-                                    nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
-                                    nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
-                                    nodeStopText.setTextColor(Color.parseColor("#808080"));
-                                    nodeStop.setBackgroundResource(R.mipmap.node_stop);
-                                    nodeStart.setBackgroundResource(R.mipmap.node_start_f);
-                                    nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
-                                    status = "2";
-                                    nodeWbsStatus.setText("暂停施工");
 
-                                } else if (Objects.equals(str, "3")) {
-                                    nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
-                                    nodeStopText.setTextColor(Color.parseColor("#5096F8"));
-                                    nodeCompleteText.setTextColor(Color.parseColor("#808080"));
-                                    nodeComplete.setBackgroundResource(R.mipmap.node_complete);
-                                    nodeStart.setBackgroundResource(R.mipmap.node_start_f);
-                                    nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
-                                    nodeWbsStatus.setText("已完成");
-                                    status = "3";
+            OkGo.post(Requests.WbsTaskConfig)
+                    .params("id", wbsId)
+                    .params("optStatus", str)
+                    .params("leaderId", userID)
+                    .params("finish", number + "")
+                    .execute(new StringCallback() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                String msg = jsonObject.getString("msg");
+                                if (ret != 0) {
+                                    if (Objects.equals(str, "1")) {
+                                        ToastUtils.showShortToast(msg);
+                                    } else if (Objects.equals(str, "2")) {
+                                        ToastUtils.showShortToast(msg);
+                                    } else if (Objects.equals(str, "3")) {
+                                        ToastUtils.showShortToast(msg);
+                                    }
+                                } else {
+                                    //接口调用成功
+                                    if (Objects.equals(str, "1")) {
+                                        nodeStartText.setTextColor(Color.parseColor("#808080"));
+                                        nodeStopText.setTextColor(Color.parseColor("#f44949"));
+                                        nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
+                                        nodeStart.setBackgroundResource(R.mipmap.node_start);
+                                        nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
+                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
+                                        status = "1";
+                                        nodeWbsStatus.setText("施工中");
+
+                                    } else if (Objects.equals(str, "2")) {
+                                        nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
+                                        nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
+                                        nodeStopText.setTextColor(Color.parseColor("#808080"));
+                                        nodeStop.setBackgroundResource(R.mipmap.node_stop);
+                                        nodeStart.setBackgroundResource(R.mipmap.node_start_f);
+                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
+                                        status = "2";
+                                        nodeWbsStatus.setText("暂停施工");
+
+                                    } else if (Objects.equals(str, "3")) {
+                                        nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
+                                        nodeStopText.setTextColor(Color.parseColor("#5096F8"));
+                                        nodeCompleteText.setTextColor(Color.parseColor("#808080"));
+                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete);
+                                        nodeStart.setBackgroundResource(R.mipmap.node_start_f);
+                                        nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
+                                        nodeWbsStatus.setText("已完成");
+                                        status = "3";
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
                         }
-
-                    }
-                });
-
+                    });
+        } else {
+            ToastUtils.showLongToast("只有负责人能修改状态");
+        }
     }
 
     /**
@@ -623,4 +535,148 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             nodeWbsUsername.setText(user);
         }
     }
+
+    /**
+     * 点击事件
+     *
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.meun_photo:
+                //请求图纸
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //网络请求
+                Dates.getDialog(NodedetailsActivity.this, "请求数据中...");
+                HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                //上拉加载的状态判断
+                liststatus = true;
+                drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.meun_standard:
+                //标准
+                //加载第一页
+                page = 1;
+                //请求数据时清除之前的
+                drew = true;
+                //上拉加载的状态判断
+                liststatus = false;
+                Dates.getDialog(NodedetailsActivity.this, "请求数据中...");
+                HomeUtils.getStard(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
+                drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.fab:
+                //打开meun选项
+                if (anim) {
+                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    anim = false;
+                } else {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+                break;
+
+            case R.id.node_configuration_task:
+                //任务配置
+                getOko(wbsId, wbsName);
+                break;
+            case R.id.node_commit:
+                commit();
+                break;
+            case R.id.node_lin_pro:
+                setDialog();
+                break;
+            case R.id.user_list:
+                //选择责任人
+                Intent intent = new Intent(mContext, ContactPeopleActivity.class);
+                intent.putExtra("data", "newpush");
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.node_lin_start:
+                //更改状态，判断是否处于该状态 启动
+                selfDialog = new WbsDialog(NodedetailsActivity.this);
+                selfDialog.setMessage("是否更改当前状态");
+                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        selfDialog.dismiss();
+                        if (status == "1") {
+                            ToastUtils.showShortToast("已经处于当前状态");
+                        } else {
+                            okgo1("1");
+                        }
+                    }
+                });
+                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        selfDialog.dismiss();
+                    }
+                });
+                selfDialog.show();
+                break;
+            case R.id.node_lin_stop:
+                //更改状态，判断是否处于该状态 暂停
+                selfDialog = new WbsDialog(NodedetailsActivity.this);
+                selfDialog.setMessage("是否更改当前状态");
+                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        selfDialog.dismiss();
+                        if (status.equals("0")) {
+                            ToastUtils.showShortToast("不可改变当前状态");
+                        } else {
+                            if (status == "2") {
+                                ToastUtils.showShortToast("已经处于当前状态");
+                            } else {
+                                okgo1("2");
+                            }
+                        }
+                    }
+                });
+                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        selfDialog.dismiss();
+                    }
+                });
+                selfDialog.show();
+                break;
+            case R.id.node_lin_complete:
+                //完成
+                selfDialog = new WbsDialog(NodedetailsActivity.this);
+                selfDialog.setMessage("是否更改当前状态");
+                selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        selfDialog.dismiss();
+                        if (status.equals("0")) {
+                            ToastUtils.showShortToast("不可改变当前状态");
+                        } else {
+                            if (status == "3") {
+                                ToastUtils.showShortToast("不能直接变更到此状态");
+                            } else {
+                                okgo1("3");
+                            }
+                        }
+                    }
+                });
+                selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        selfDialog.dismiss();
+                    }
+                });
+                selfDialog.show();
+                break;
+
+            default:
+                break;
+        }
+    }
+
 }

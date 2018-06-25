@@ -87,7 +87,7 @@ public class PopupDirectoryListAdapter extends BaseAdapter {
                     .error(R.drawable.__picker_ic_broken_image_black_48dp);
             glide.setDefaultRequestOptions(options)
                     .load(directory.getCoverPath())
-                    .thumbnail(0.1f)
+                    .thumbnail(0.8f)
                     .into(ivCover);
             tvName.setText(directory.getName());
             tvCount.setText(tvCount.getContext().getString(R.string.__picker_image_count, directory.getPhotos().size()));

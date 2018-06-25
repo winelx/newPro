@@ -119,7 +119,7 @@
                         android:layout_marginRight="39dp"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="任务内容 "
+                        android:hint=" "
                         android:imeOptions="actionSearch"
                         android:singleLine="true"
                         android:textColor="@color/textViwe"
@@ -195,25 +195,14 @@
                     android:scrollbars="none"
                     tools:listitem="@layout/interface_item" />
 
+
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/fab"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="45dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:src="@mipmap/drawphoto"
-                app:backgroundTint="#00B4FF"
-                app:fabSize="auto"
-                app:rippleColor="#56abe4" />
+
+            <include layout="@layout/floating_meun_button" />
 
         </RelativeLayout>
 
