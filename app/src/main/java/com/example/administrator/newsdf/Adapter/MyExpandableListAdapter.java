@@ -104,8 +104,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         } else {
             groupHold = (GroupHold) convertView.getTag();
         }
-
-
         String groupName = classes.get(groupPosition);
         groupHold.tvGroupName.setText(groupName);
         //取消默认的groupIndicator后根据方法中传入的isExpand判断组是否展开并动态自定义指示器

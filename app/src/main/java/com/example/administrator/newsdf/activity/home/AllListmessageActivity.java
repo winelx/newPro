@@ -79,14 +79,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private TextView Titlew, deleteSearch;
     private EditText searchEditext;
     private String id, wbsid, intentBack, name, titles;
-    //
     private String notall = "3", nodeiD = "1";
-
     //主界面适配器
     private Imageloaders mAdapter;
     //抽屉控件
     private DrawerLayout drawerLayout;
-
     //判断是否是加载更多
     private boolean swip = false;
     private boolean drew = true;

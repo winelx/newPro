@@ -82,7 +82,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         init();
         return rootView;
     }
-
     private void init() {
         mData = new ArrayList<>();
         //设置布局管理器
@@ -109,7 +108,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         });
         Okgo();
     }
-
     //网络请求
     private void Okgo() {
         //请求数据库的数据
@@ -160,10 +158,8 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                             ToastUtils.showShortToast("没有更多数据");
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("暂无数据，点击刷新");
-
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -172,11 +168,9 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                         home_frag_img.setVisibility(View.VISIBLE);
                         home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
                         home_img_text.setText("请求确认网络是否正常，点击再次请求");
-
                     }
                 });
     }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //跳转列表界面
@@ -185,12 +179,10 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         intent.putExtra("orgId", mData.get(position).getOrgid());
         startActivity(intent);
     }
-
     @Override
     public void onStart() {
         super.onStart();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -198,7 +190,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         Dates.disDialog();
         refreshLayout.finishRefresh(false);
     }
-
     //切换组织后刷新
     @Override
     public void taskCallback() {

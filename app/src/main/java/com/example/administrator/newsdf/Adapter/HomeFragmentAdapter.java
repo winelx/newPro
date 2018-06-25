@@ -48,13 +48,17 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
     public HomeFragmentAdapter(Context context) {
         mContext = context;
     }
+
     int number;
     private static final int MAX = 99;
+
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
+
     private String zero = "0";
+
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //设置内容布局的宽为屏幕宽度
@@ -75,7 +79,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
                 }
             }
         });
-
         /**
          *
          * 有状态未添加
@@ -96,6 +99,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         } else if (Random == 4) {
             holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
         }
+
         //前面圆圈
         holder.home_item_img.setText(mDatas.get(position).getParentname());
         //所属组织
@@ -104,6 +108,14 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
+        String Isfavorite = mDatas.get(position).getIsfavorite();
+        if (Isfavorite.equals("1")) {
+            holder.btn_Delete.setBackgroundResource(R.color.back);
+            holder.btn_Delete.setText("已收藏");
+        }else {
+            holder.btn_Delete.setBackgroundResource(R.color.Orange);
+            holder.btn_Delete.setText("收藏");
+        }
         String str = mDatas.get(position).getUnfinish();
         try {
             number = Integer.parseInt(str);
@@ -118,11 +130,11 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String isfavorite =mDatas.get(position).getIsfavorite();
+                String isfavorite = mDatas.get(position).getIsfavorite();
                 String wbsId = mDatas.get(position).getOrgid();
                 if (isfavorite.equals(zero)) {
                     OkGo.post(Requests.WBSSAVE)
-                            .params("wbsId",wbsId )
+                            .params("wbsId", wbsId)
                             .params("type", 1)
                             .execute(new StringCallback() {
                                 @Override
@@ -135,7 +147,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
                                             holder.btn_Delete.setBackgroundResource(R.color.back);
                                             holder.btn_Delete.setText("已收藏");
                                             HideCallbackUtils.removeCallBackMethod();
-                                         mDatas.get(position).setIsfavorite("1");
+                                            mDatas.get(position).setIsfavorite("1");
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -173,7 +185,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             super(itemView);
             //统一自定义控件获标签，都是tv_delete，修改后无法获取，会报错 如果非要修改，请全部修改，
             //置顶
-            btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
+            btn_Delete = (TextView) itemView.findViewById(R.id.tv_set);
             //控制布局在界面的宽度
             layout_content = itemView.findViewById(R.id.layout_content);
             //标段
@@ -189,7 +201,6 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
             ((LeftSlideView) itemView).setSlidingButtonListener(HomeFragmentAdapter.this);
         }
     }
-
 
     /**
      * 删除菜单打开信息接收
