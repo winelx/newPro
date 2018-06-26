@@ -44,9 +44,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private MyExpandableListAdapter mAdapter;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    private RelativeLayout home_frag_img;
-    private TextView home_img_text;
-    private ImageView home_img_nonews;
+
     private ArrayList<String> placedTop;
     private ExpandableListView expandable;
     private View.OnClickListener ivGoToChildClickListener;
@@ -58,9 +56,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_allmessage, null);
             mContext = getActivity();
-            home_img_nonews = rootView.findViewById(R.id.home_img_nonews);
-            home_frag_img = rootView.findViewById(R.id.home_frag_img);
-            home_img_text = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
             expandable = rootView.findViewById(R.id.expandable);
             //禁止上拉

@@ -219,6 +219,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private void findID() {
         meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
         meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_photo.setVisibility(View.GONE);
+        meun_standard.setVisibility(View.GONE);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
         //侧拉界面listview
