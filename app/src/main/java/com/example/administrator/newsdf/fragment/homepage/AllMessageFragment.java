@@ -151,7 +151,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         expandable.setAdapter(mAdapter);
         expandable.setAdapter(mAdapter);
         //默认展开第一个分组
-        expandable.expandGroup(0);
+        expandable.expandGroup(-1);
         refreshLayout.finishRefresh(false);
     }
 
