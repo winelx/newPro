@@ -85,7 +85,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * titlew 标题
      * delete_search 搜索框的取消按钮
      */
-    private TextView titlew, delete_search;
+    private TextView titlew, delete_search,drawer_layout_text;
     /**
      * 搜索框
      */
@@ -533,6 +533,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
@@ -547,6 +548,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                drawer_layout_text.setText("标准");
                 Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
                 HomeUtils.getStard(wbsid, page, stardPaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -811,6 +813,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
 
     //初始化控件
     private void findview() {
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
         //返回
         findViewById(R.id.com_back).setOnClickListener(this);
         //标题

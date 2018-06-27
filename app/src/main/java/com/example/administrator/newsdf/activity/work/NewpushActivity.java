@@ -52,7 +52,7 @@ import static com.example.administrator.newsdf.R.id.drawer_layout_list;
  * version:
  */
 public class NewpushActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView comButton, pushUsername, wbsText, replyButton;
+    private TextView comButton, pushUsername, wbsText, replyButton,drawer_layout_text;
     private IconTextView back;
     private LinearLayout newpushWbs, newpushUser;
     private EditText newpushCheck, pushContent, pushCheckstandard;
@@ -98,6 +98,7 @@ public class NewpushActivity extends AppCompatActivity implements View.OnClickLi
         drawerLayoutList = (ListView) findViewById(drawer_layout_list);
         comButton = (TextView) findViewById(R.id.newpush_title);
         replyButton = (TextView) findViewById(R.id.newpush_button);
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
         //wbs名字
         wbsText = (TextView) findViewById(R.id.newpush_text);
         //推送人名字
@@ -317,6 +318,9 @@ public class NewpushActivity extends AppCompatActivity implements View.OnClickLi
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(NewpushActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
                 //上拉加载的状态判断
@@ -330,7 +334,10 @@ public class NewpushActivity extends AppCompatActivity implements View.OnClickLi
                 //请求数据时清除之前的
                 drew = true;
                 //上拉加载的状态判断
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
                 liststatus = false;
+                drawer_layout_text.setText("标准");
                 Dates.getDialog(NewpushActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsid, page, imagePaths, drew, taskAdapter, wbsText.getText().toString());
                 drawerLayout.openDrawer(GravityCompat.START);

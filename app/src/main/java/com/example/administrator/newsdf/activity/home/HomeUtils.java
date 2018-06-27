@@ -85,8 +85,7 @@ public class HomeUtils {
                         //是否是父节点
                         organization.setIsparent(obj.getBoolean("isParent"));
                     } catch (JSONException e) {
-
-                        organization.setIsparent(true);
+                        organization.setIsparent(false);
                     }
                     try {
                         boolean isParentFlag = obj.getBoolean("isParent");
@@ -98,7 +97,6 @@ public class HomeUtils {
                             organization.setIsleaf("1");
                         }
                     } catch (JSONException e) {
-
                         organization.setIsleaf("");
                     }
                     try {
@@ -242,7 +240,6 @@ public class HomeUtils {
                     }
                     organizationList.add(organization);
                 }
-
                 return organizationList;
             } catch (JSONException e) {
                 e.printStackTrace();

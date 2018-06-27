@@ -303,9 +303,20 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:layout_marginTop="50dp"
+            android:background="#fff"
+            android:orientation="vertical">
 
-            android:background="@color/writer">
+            <TextView
+                android:id="@+id/drawer_layout_text"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/colorAccent" />
 
+            <View
+                android:background="@color/back"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
 
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/SmartRefreshLayout"

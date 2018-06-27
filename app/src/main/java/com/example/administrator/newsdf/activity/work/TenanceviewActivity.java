@@ -61,7 +61,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     private TabLayout mTabLayout;
     private TabAdapter mAdapter;
     private RelativeLayout tabulation;
-    private TextView title;
+    private TextView title,drawer_layout_text;
     private LinearLayout com_img;
     private static int taskpage = 1;
     private int msg = 0, page = 1;
@@ -115,7 +115,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerlayoutSmart.setEnableRefresh(false);
@@ -186,10 +186,10 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 drew = false;
                 page++;
                 if (liststatus) {
-                    HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
                     //传入false表示加载失败
                 } else {
-                    HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
+                    HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbsname);
                     //传入false表示加载失败
                 }
                 refreshlayout.finishLoadmore(1000);
@@ -284,6 +284,9 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 //上拉加载的状态判断
@@ -298,6 +301,9 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                imagePaths.clear();
+                drawer_layout_text.setText("标准");
+                taskAdapter.getData(imagePaths,"");
                 Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
                 HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
                 drawerLayout.openDrawer(GravityCompat.START);

@@ -52,7 +52,7 @@ import okhttp3.Response;
  *         version:
  */
 public class MissionpushActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView title;
+    private TextView title,drawer_layout_text;
     private LinearLayout button;
     private LinearLayout com_img;
     private RelativeLayout tabulation;
@@ -102,7 +102,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
 
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
@@ -358,7 +358,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Dates.disDialog();
-                                ToastUtils.showShortToast("推送成功");
+                                ToastUtils.showShortToastCenter("推送成功");
                                 if (mViewPager != null && mAdapter != null) {
                                     //拿到当前的Viewpager的页数
                                     int types = mViewPager.getCurrentItem();
@@ -405,8 +405,11 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(MissionpushActivity.this, "请求数据中...");
-                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbsname);
+                HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
                 //上拉加载的状态判断
                 liststatus = true;
                 drawer_layout.openDrawer(GravityCompat.START);
@@ -419,8 +422,13 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                imagePaths.clear();
+                drawer_layout_text.setText("标准");
+                taskAdapter.getData(imagePaths,"");
                 Dates.getDialog(MissionpushActivity.this, "请求数据中...");
-                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbsname);
+                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath
+
+                );
                 drawer_layout.openDrawer(GravityCompat.START);
                 break;
             case R.id.fab:

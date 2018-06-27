@@ -75,7 +75,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
     private static TaskdetailsActivity mContext;
-    private TextView wbspath;
+    private TextView wbspath, drawer_layout_text;
     private TextView comButton, comTitle;
     private String wtMainid = null, wbsid, status;
     public String bright;
@@ -160,7 +160,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         Intent intent = getIntent();
         try {
             TaskId = intent.getExtras().getString("TaskId");
-            wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
@@ -178,6 +177,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     }
 
     private void finById() {
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         audioComMark = (ImageView) findViewById(R.id.audio_com_mark);
         comImg = (LinearLayout) findViewById(R.id.com_img);
         iconTextView = (IconTextView) findViewById(R.id.task_icontextview);
@@ -307,6 +307,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                imagePaths.clear();
+                taskPhotoAdapter.getData(imagePaths, "");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //上拉加载的状态判断
@@ -321,6 +324,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                imagePaths.clear();
+                drawer_layout_text.setText("标准");
+                taskPhotoAdapter.getData(imagePaths, "");
                 Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -368,8 +374,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("TaskId", id);
-                        LogUtil.i("TaskId", s);
+                        LogUtil.i("task",s);
                         //任务详情
                         try {
                             JSONObject jsonObject = new JSONObject(s);
@@ -610,7 +615,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 } catch (JSONException e) {
                                     replyUserHeaderURL = "";
                                 }
-
+                                wbsid = Sub.getString("wbsId");
                                 try {
                                     //上传地点
                                     uploadAddr = Sub.getString("uploadAddr");

@@ -91,7 +91,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem;
+    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem,drawer_layout_text;
     private ImageView Save;
     private String latitude, longitude;
     private EditText replyText;
@@ -221,6 +221,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setVisibility(View.GONE);
@@ -481,6 +482,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                photoPopPaths.clear();
+                mAdapter.getData(photoPopPaths,"");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //上拉加载的状态判断
@@ -495,6 +499,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                photoPopPaths.clear();
+                mAdapter.getData(photoPopPaths,"");
+                drawer_layout_text.setText("标准");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);

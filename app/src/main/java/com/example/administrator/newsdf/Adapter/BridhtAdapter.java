@@ -18,7 +18,6 @@ import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.bean.BrightBean;
 import com.example.administrator.newsdf.utils.Dates;
-import com.example.administrator.newsdf.utils.LogUtil;
 import com.example.administrator.newsdf.view.MultiImageView;
 
 import java.util.ArrayList;
@@ -90,7 +89,6 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.hright_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtil.i("TaskId", mData.get(position).getTaskId());
                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
                 intent.putExtra("TaskId", mData.get(position).getTaskId());
                 intent.putExtra("status", "false");
@@ -100,9 +98,8 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         holder.hrightItemViewgroup.setClickCallback(new MultiImageView.ClickCallback() {
             @Override
             public void callback(int index, String[] str) {
-                LogUtil.i("TaskId", mData.get(position).getTaskId());
                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                intent.putExtra("TaskId", mData.get(position).getOrgId());
+                intent.putExtra("TaskId", mData.get(position).getTaskId());
                 intent.putExtra("status", "false");
                 mContext.startActivity(intent);
             }

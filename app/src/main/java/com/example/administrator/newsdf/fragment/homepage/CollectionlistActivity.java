@@ -76,7 +76,7 @@ import okhttp3.Response;
 public class CollectionlistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
-    private TextView Titlew, deleteSearch;
+    private TextView Titlew, deleteSearch,drawer_layout_text;
     private EditText searchEditext;
     private String id, wbsid, name, titles;
     private String notall = "3", nodeiD = "1";
@@ -418,6 +418,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
+                drawer_layout_text.setText("图纸");
                 Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
@@ -431,6 +434,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //上拉加载的状态判断
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths,"");
+                drawer_layout_text.setText("标准");
                 liststatus = false;
                 Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
@@ -577,6 +583,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
      * 初始化控件
      */
     private void findbyId() {
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
         //获得控件id，初始化id
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);

@@ -87,20 +87,16 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        if (status.equals("push") || status.equals("details")) {
-            if (str > 0) {
-                holder.taskNum.setVisibility(View.VISIBLE);
-            } else {
-                holder.taskNum.setVisibility(View.GONE);
-            }
+        if (str > 0) {
+            holder.taskNum.setVisibility(View.VISIBLE);
+        } else {
+            holder.taskNum.setVisibility(View.GONE);
         }
 
         holder.tree_name.setText(node.getUsername());
         holder.tree_progress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
-        if (node.isLeaf()){
-            holder.image_ll.setVisibility(View.GONE);
-        }
+
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -104,7 +104,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
     private FragmentBrightAdapter brightViewpagerAdapter;
     private FragmentBrightcomAdapter bridhtcompanyAdapter;
     private FragmentBrightProAdapter bridhtprojectAdapter;
-
+    private TextView bridhtGroup_text, bridhtCompany_text, bridhtProject_text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -213,6 +213,9 @@ public class WorkFragment extends Fragment implements BrightCallBack {
     }
 
     private void findId() {
+        bridhtGroup_text = rootView.findViewById(R.id.bridhtGroup_text);
+        bridhtCompany_text = rootView.findViewById(R.id.bridhtCompany_text);
+        bridhtProject_text = rootView.findViewById(R.id.bridhtProject_text);
         mCardView = rootView.findViewById(R.id.brightspot);
         fr_work_grid = rootView.findViewById(R.id.fr_work_grid);
         PieChartOne = rootView.findViewById(R.id.piechartone);
@@ -458,7 +461,6 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-
                                     int type = json.getInt("type");
                                     //判断type。
                                     if (type == 1) {
@@ -485,22 +487,29 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                 if (groupbridhtList.size() != 0) {
                                     bridhtGroup.setVisibility(View.VISIBLE);
                                     brightViewpagerAdapter.getData(groupbridhtList);
+                                    bridhtGroup_text.setVisibility(View.GONE);
+                                    bridhtgroupViewpager.setVisibility(View.VISIBLE);
                                 } else {
-                                    bridhtGroup.setVisibility(View.GONE);
+                                    bridhtgroupViewpager.setVisibility(View.GONE);
+                                    bridhtGroup_text.setVisibility(View.VISIBLE);
                                 }
 
                                 if (compangbrightList.size() != 0) {
                                     bridhtcompanyAdapter.getData(compangbrightList);
-                                    bridhtCompany.setVisibility(View.VISIBLE);
+                                    bridhtcompanyViewpager.setVisibility(View.VISIBLE);
+                                    bridhtCompany_text.setVisibility(View.GONE);
                                 } else {
-                                    bridhtCompany.setVisibility(View.GONE);
+                                    bridhtCompany_text.setVisibility(View.VISIBLE);
+                                    bridhtcompanyViewpager.setVisibility(View.GONE);
                                 }
 
                                 if (projectbrightList.size() != 0) {
                                     bridhtprojectAdapter.getData(projectbrightList);
-                                    bridhtProject.setVisibility(View.VISIBLE);
+                                    bridhtprojectViewpager.setVisibility(View.VISIBLE);
+                                    bridhtProject_text.setVisibility(View.GONE);
                                 } else {
-                                    bridhtProject.setVisibility(View.GONE);
+                                    bridhtProject_text.setVisibility(View.VISIBLE);
+                                    bridhtprojectViewpager.setVisibility(View.GONE);
                                 }
 
                             } catch (JSONException e) {

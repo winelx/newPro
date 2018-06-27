@@ -88,7 +88,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
     private CheckPermission checkPermission;
-    String id = null, status;
+    String id = null, status,wbsId;
     private static final int IMAGE_PICKER = 101;
     private RadioGroup mRadioGroup;
 
@@ -101,6 +101,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
         status = intent.getExtras().getString("status");
+        wbsId = intent.getExtras().getString("wbsId");
         //动态权限
         checkPermission = new CheckPermission(this) {
             @Override
@@ -201,7 +202,8 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                         try {
                             if (rb.getText() != null) {
                                 String str = rb.getText().toString();
-                                if (str == "是") {
+                                if (str.equals("是")) {
+                                    Okgo(Bai_address, files, true);
                                 } else {
                                     Okgo(Bai_address, files, false);
                                 }
@@ -267,7 +269,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
                                 intent.putExtra("TaskId", id);
-                                intent.putExtra("wbsid", id);
+                                intent.putExtra("wbsid", wbsId);
                                 //判断能否可以跳转任务管理
                                 intent.putExtra("status", status);
                                 startActivity(intent);

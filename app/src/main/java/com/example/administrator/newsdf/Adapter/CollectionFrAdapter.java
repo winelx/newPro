@@ -72,7 +72,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
             });
         }
         holder.btn_Delete.setVisibility(View.GONE);
-        holder.tv_set.setBackgroundResource(R.color.back);
+        holder.tv_set.setBackgroundResource(R.color.red);
         holder.tv_set.setText("取消收藏");
         //收藏点击事件
         holder.tv_set.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
             holder.home_item_img.setBackgroundResource(R.drawable.homt_item_green);
         }
         //前面圆圈
-        holder.home_item_img.setText(mDatas.get(position).getOrgname());
+        holder.home_item_img.setText(mDatas.get(position).getParentname());
         //所属组织
         holder.home_item_name.setText(mDatas.get(position).getOrgname());
         //最后一条消息

@@ -5,373 +5,402 @@
     android:layout_height="match_parent"
     android:background="@color/back">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="170dp"
+            android:background="@mipmap/fm_work_bg">
+
+            <TextView
+                android:id="@+id/fr_work_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:text="小明，"
+                android:textColor="@color/writer"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/fr_work_dn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/fr_work_name"
+                android:layout_toEndOf="@+id/fr_work_name"
+                android:layout_toRightOf="@+id/fr_work_name"
+                android:text="晚上好"
+                android:textColor="@color/writer"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/fr_work_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="@color/textViwe"
+                android:text="欢迎使用工程管理系统，尽请体验。"
+                android:textColor="@color/writer"
+                android:textSize="15sp" />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/card_list"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/editext_background_blue"
+            android:orientation="horizontal"
+            android:translationZ="3dp">
+
+
+            <TextView
+                android:id="@+id/task_management"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@color/writer"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/fr_work_miss"
+                android:gravity="center"
+                android:text="任务管理"
+                android:textColor="@color/textViwe"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/push"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@color/writer"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/fr_work_push"
+                android:gravity="center"
+                android:text="任务下发"
+                android:textColor="@color/textViwe"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/pphotoadm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@color/writer"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/fr_work_photo"
+                android:gravity="center"
+                android:text="图纸标准"
+                android:textColor="@color/textViwe"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/uploade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@color/writer"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/fr_work_upload"
+                android:gravity="center"
+                android:text="主动任务"
+                android:textColor="@color/textViwe"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/brightspot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_list"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/writer"
+            android:orientation="vertical"
+            app:cardCornerRadius="3dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:background="@mipmap/fm_work_bg">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/fr_work_name"
+                    android:id="@+id/moreandmore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="40dp"
-                    android:text="小明，"
-                    android:textColor="@color/writer"
-                    android:textSize="15sp" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableRight="@mipmap/arrow_right"
+                    android:text="更多" />
 
-                <TextView
-                    android:id="@+id/fr_work_dn"
+                <LinearLayout
+                    android:id="@+id/btight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/fr_work_name"
-                    android:layout_toEndOf="@+id/fr_work_name"
-                    android:layout_toRightOf="@+id/fr_work_name"
-                    android:text="晚上好"
-                    android:textColor="@color/writer"
-                    android:textSize="15sp" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/hollow_round_gray" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="亮点展示"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bridhtGroup"
+
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/fr_work_name"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:shadowColor="@color/textViwe"
-                    android:text="欢迎使用工程管理系统，尽请体验。"
-                    android:textColor="@color/writer"
-                    android:textSize="15sp" />
+                    android:layout_below="@+id/moreandmore">
+
+                    <TextView
+
+                        android:layout_width="1.5dp"
+                        android:layout_height="120dp"
+                        android:layout_marginLeft="22dp"
+                        android:background="@color/back" />
+
+                    <TextView
+                        android:id="@+id/bridhtGroup_title"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginStart="9dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/home_item_blue"
+                        android:gravity="center"
+                        android:text="集团"
+                        android:textColor="@color/writer"
+                        android:textSize="10sp" />
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtGroup_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp" />
+
+
+                    <TextView
+                        android:id="@+id/bridhtGroup_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
+                        android:text="暂无该级别提亮..." />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bridhtCompany"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bridhtGroup">
+
+                    <TextView
+                        android:layout_width="1.5dp"
+                        android:layout_height="110dp"
+                        android:layout_marginLeft="22dp"
+                        android:background="@color/back" />
+
+                    <TextView
+                        android:id="@+id/bridhtCompany_title"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginStart="9dp"
+                        android:background="@drawable/home_item_blue"
+                        android:gravity="center"
+                        android:text="公司"
+                        android:textColor="@color/writer"
+                        android:textSize="10sp" />
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtCompany_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/bridhtCompany_title"
+                        android:layout_toRightOf="@+id/bridhtCompany_title" />
+
+                    <TextView
+                        android:id="@+id/bridhtCompany_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
+                        android:text="暂无该级别提亮..." />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bridhtProject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bridhtCompany"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="1.5dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="22dp"
+                        android:background="@color/back" />
+
+                    <TextView
+                        android:id="@+id/bridhtProject_title"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="9dp"
+                        android:background="@drawable/home_item_blue"
+                        android:gravity="center"
+                        android:text="项目"
+                        android:textColor="@color/writer"
+                        android:textSize="10sp" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/bridhtProject_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/bridhtProject_title"
+                        android:layout_toRightOf="@+id/bridhtProject_title" />
+
+                    <TextView
+                        android:id="@+id/bridhtProject_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
+                        android:text="暂无该级别提亮..." />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/brightspot"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:cardCornerRadius="5dp">
+
+            <RelativeLayout
+                android:id="@+id/work_title"
+                android:layout_width="wrap_content"
+                android:layout_height="320dp"
+                android:background="@color/writer"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/fr_work_pie" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="标段完成配比"
+                        android:textColor="@color/color646464"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@mipmap/fr_work_pie"
+                    android:text="任务配比"
+                    android:textSize="12sp" />
+
+                <com.example.administrator.newsdf.view.PieChartOne
+                    android:id="@+id/piechartone"
+                    android:layout_width="250dp"
+                    android:layout_height="220dp"
+                    android:layout_below="@+id/linearLayout5"
+                    android:layout_centerHorizontal="true" />
+
+                <GridView
+                    android:id="@+id/fr_work_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/piechartone"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:numColumns="4"
+                    android:verticalSpacing="5sp" />
 
 
             </RelativeLayout>
 
+        </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/card_list"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="120dp"
-                android:background="@drawable/editext_background_blue"
-                android:orientation="horizontal"
-                android:translationZ="3dp">
-
-
-                <TextView
-                    android:id="@+id/task_management"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/writer"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/fr_work_miss"
-                    android:gravity="center"
-                    android:text="任务管理"
-                    android:textColor="@color/textViwe"
-                    android:textSize="14sp" />
-
-
-                <TextView
-                    android:id="@+id/push"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/writer"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/fr_work_push"
-                    android:gravity="center"
-                    android:text="任务下发"
-                    android:textColor="@color/textViwe"
-                    android:textSize="14sp" />
-
-
-                <TextView
-                    android:id="@+id/pphotoadm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/writer"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/fr_work_photo"
-                    android:gravity="center"
-                    android:text="图纸标准"
-                    android:textColor="@color/textViwe"
-                    android:textSize="14sp" />
-
-
-                <TextView
-                    android:id="@+id/uploade"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/writer"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@mipmap/fr_work_upload"
-                    android:gravity="center"
-                    android:text="主动任务"
-                    android:textColor="@color/textViwe"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/brightspot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/card_list"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/writer"
-                android:orientation="vertical"
-                app:cardCornerRadius="3dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/moreandmore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        android:drawableRight="@mipmap/arrow_right"
-                        android:text="更多" />
-
-                    <LinearLayout
-                        android:id="@+id/btight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:background="@drawable/hollow_round_gray" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="亮点展示"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/bridhtGroup"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/moreandmore">
-
-                        <TextView
-
-                            android:layout_width="1.5dp"
-                            android:layout_height="120dp"
-                            android:layout_marginLeft="22dp"
-                            android:background="@color/back" />
-
-                        <TextView
-                            android:id="@+id/bridhtGroup_title"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginStart="9dp"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/home_item_blue"
-                            android:gravity="center"
-                            android:text="集团"
-                            android:textColor="@color/writer"
-                            android:textSize="10sp" />
-
-
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/bridhtGroup_viewpager"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginTop="15dp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-
-                        android:id="@+id/bridhtCompany"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/bridhtGroup">
-
-                        <TextView
-                            android:layout_width="1.5dp"
-                            android:layout_height="110dp"
-                            android:layout_marginLeft="22dp"
-                            android:background="@color/back" />
-
-                        <TextView
-                            android:id="@+id/bridhtCompany_title"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="9dp"
-                            android:layout_marginStart="9dp"
-                            android:background="@drawable/home_item_blue"
-                            android:gravity="center"
-                            android:text="公司"
-                            android:textColor="@color/writer"
-                            android:textSize="10sp" />
-
-
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/bridhtCompany_viewpager"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_toEndOf="@+id/bridhtCompany_title"
-                            android:layout_toRightOf="@+id/bridhtCompany_title" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/bridhtProject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/bridhtCompany"
-                        android:layout_marginBottom="10dp">
-
-                        <TextView
-                            android:layout_width="1.5dp"
-                            android:layout_height="100dp"
-                            android:layout_marginLeft="22dp"
-                            android:background="@color/back" />
-
-                        <TextView
-                            android:id="@+id/bridhtProject_title"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="9dp"
-                            android:background="@drawable/home_item_blue"
-                            android:gravity="center"
-                            android:text="项目"
-                            android:textColor="@color/writer"
-                            android:textSize="10sp" />
-
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/bridhtProject_viewpager"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_toEndOf="@+id/bridhtProject_title"
-                            android:layout_toRightOf="@+id/bridhtProject_title" />
-                    </RelativeLayout>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/brightspot"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                app:cardCornerRadius="5dp">
-
-                <RelativeLayout
-                    android:id="@+id/work_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="320dp"
-                    android:background="@color/writer"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/fr_work_pie" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="标段完成配比"
-                            android:textColor="@color/color646464"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginTop="5dp"
-                        android:drawableLeft="@mipmap/fr_work_pie"
-                        android:text="任务配比"
-                        android:textSize="12sp" />
-
-                    <com.example.administrator.newsdf.view.PieChartOne
-                        android:id="@+id/piechartone"
-                        android:layout_width="250dp"
-                        android:layout_height="220dp"
-                        android:layout_below="@+id/linearLayout5"
-                        android:layout_centerHorizontal="true" />
-
-                    <GridView
-                        android:id="@+id/fr_work_grid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/piechartone"
-                        android:layout_marginBottom="20dp"
-                        android:gravity="center"
-                        android:numColumns="4"
-                        android:verticalSpacing="5sp" />
-
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

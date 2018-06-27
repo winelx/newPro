@@ -72,7 +72,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     ArrayList<Audio> mData;
     private PopupWindow popupWindow;
-    private TextView nodeStartText, nodeStopText, nodeCompleteText;
+    private TextView nodeStartText, nodeStopText, nodeCompleteText,drawer_layout_text;
     private ImageView nodeStart, nodeStop, nodeComplete;
     private Dialog mCameraDialog;
     private Context mContext;
@@ -85,7 +85,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private TaskPhotoAdapter taskAdapter;
     private int page = 1;
     private boolean drew = true, iswbs, isParent;
-    private ArrayList<String> titlename = new ArrayList<>();
+    private ArrayList<String> titlename ;
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         fab.setOnClickListener(this);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-
+        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
 
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
@@ -358,6 +358,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
                                         status = "1";
                                         nodeWbsStatus.setText("施工中");
+                                        ToastUtils.showLongToast("启动成功");
 
                                     } else if (Objects.equals(str, "2")) {
                                         nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
@@ -368,6 +369,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
                                         status = "2";
                                         nodeWbsStatus.setText("暂停施工");
+                                        ToastUtils.showLongToast("暂停施工");
 
                                     } else if (Objects.equals(str, "3")) {
                                         nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
@@ -377,6 +379,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeStart.setBackgroundResource(R.mipmap.node_start_f);
                                         nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
                                         nodeWbsStatus.setText("已完成");
+                                        ToastUtils.showLongToast("任务已完成");
                                         status = "3";
                                     }
                                 }
@@ -450,6 +453,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     private void getOko(final String str, final String wbsname) {
         Dates.getDialog(NodedetailsActivity.this, "请求数据中");
+        titlename = new ArrayList<>();
         OkGo.post(Requests.PUSHList)
                 .params("wbsId", str)
                 .execute(new StringCallback() {
@@ -550,6 +554,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 page = 1;
                 //请求数据时清除之前的
                 drew = true;
+                imagePaths.clear();
+                taskAdapter.getData(imagePaths, "");
+                drawer_layout_text.setText("图纸");
                 //网络请求
                 Dates.getDialog(NodedetailsActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
@@ -565,6 +572,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                imagePaths.clear();
+                drawer_layout_text.setText("标准");
+                taskAdapter.getData(imagePaths, "");
                 Dates.getDialog(NodedetailsActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsId, page, imagePaths, drew, taskAdapter, wbsName);
                 drawer_layout.openDrawer(GravityCompat.START);
@@ -667,7 +677,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                     okgo1("3");
                                 }
                             }
-                        }else {
+                        } else {
                             ToastUtils.showLongToast("完成度必须为100%才能修改到完成状态");
                         }
                     }
