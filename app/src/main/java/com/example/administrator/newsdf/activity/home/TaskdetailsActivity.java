@@ -59,8 +59,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-
-
 /**
  * description: 任务详情
  *
@@ -77,7 +75,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
     private static TaskdetailsActivity mContext;
-    private TextView wbsnam;
     private TextView wbspath;
     private TextView comButton, comTitle;
     private String wtMainid = null, wbsid, status;
@@ -109,7 +106,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     private boolean Refresh = true;
 
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -118,13 +116,12 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         return mContext;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
-        floatMeunAnims=new FloatMeunAnims();
+        floatMeunAnims = new FloatMeunAnims();
         newArray();
         finById();
         mContext = this;
@@ -148,14 +145,16 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         drawerLayoutSmart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
                 drew = false;
-                /**
-                 *查询当前任务节点图册
-                 */
-                HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                page++;
+                if (liststatus) {
+                    HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                    //传入false表示加载失败
+                } else {
+                    HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
+                    //传入false表示加载失败
+                }
+                refreshlayout.finishLoadmore(1000);
             }
         });
         Intent intent = getIntent();
@@ -172,7 +171,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             e.printStackTrace();
 
         }
-
         okgo(TaskId);
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
@@ -199,8 +197,8 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         fab.setOnClickListener(this);
         comButton.setOnClickListener(this);
         comButton.setVisibility(View.GONE);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
     }
@@ -300,7 +298,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.adui_com_back:
-                //返回
                 finish();
                 break;
             case R.id.meun_photo:
@@ -310,6 +307,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
+                Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //上拉加载的状态判断
                 liststatus = true;
@@ -323,6 +321,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
+                Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBackUtils;
+import com.example.administrator.newsdf.callback.frehomeCallBackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.Requests;
@@ -89,7 +90,10 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
                                         ToastUtils.showLongToast("取消成功");
                                         mDatas.remove(position);
                                         notifyDataSetChanged();
+                                        //刷新全部
                                         CallBackUtils.removeCallBackMethod();
+                                        //刷新我的
+                                        frehomeCallBackUtils.dohomeCallBackMethod();
                                         closeMenu();
                                     }
                                 } catch (JSONException e) {
@@ -120,7 +124,13 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
         String str = mDatas.get(position).getCreaeTime();
         str = str.substring(0, 11);
         holder.home_item_time.setText(str);
-        holder.home_item_message.setText(mDatas.get(position).getUnfinish());
+        Integer number = Integer.decode(mDatas.get(position).getUnfinish());
+        int mix = 99;
+        if (number > mix) {
+            holder.home_item_message.setText("99+");
+        } else {
+            holder.home_item_message.setText(number + "");
+        }
     }
 
     @Override

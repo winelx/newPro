@@ -187,7 +187,8 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     float ste;
     //动画类
     private FloatMeunAnims floatMeunAnims;
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -834,8 +835,8 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //侧拉界面的下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_standard.setVisibility(View.GONE);
         meun_photo.setVisibility(View.GONE);
         fab.setVisibility(View.GONE);

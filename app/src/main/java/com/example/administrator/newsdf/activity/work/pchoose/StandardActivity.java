@@ -47,7 +47,7 @@ public class StandardActivity extends AppCompatActivity {
         Dates.getDialog(StandardActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
-        wbsid = intent.getExtras().getString("wbsId");
+        Title = intent.getExtras().getString("title");
         groupId = intent.getExtras().getString("groupId");
         status = intent.getExtras().getString("status");
         refreshlayout= (SmartRefreshLayout) findViewById(R.id.refreshlayout);
@@ -95,12 +95,13 @@ public class StandardActivity extends AppCompatActivity {
     public void OkGo() {
         if (status.equals("standard")) {
             request = OkGo.post(Requests.StandardList)
-                    .params("WbsId", wbsid);
+                    .params("WbsId", groupId);
         } else {
             request = OkGo.post(Requests.STANDARD_BY_GROUP)
                     .params("groupId", groupId);
         }
         request
+                .isMultipart(true)
                 .params("page", page)
                 .params("rows", 10).execute(new StringCallback() {
             @Override

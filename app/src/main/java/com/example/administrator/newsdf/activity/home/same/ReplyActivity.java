@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -108,7 +109,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private Bitmap textBitmap = null;
     private boolean popstatus = false;
     private int page = 1;
-    private ArrayList<PhotoBean> photoPopPaths,stardPaths;
+    private ArrayList<PhotoBean> photoPopPaths, stardPaths;
     private DrawerLayout drawer;
     private SmartRefreshLayout smartRefreshLayout;
     private ListView drawerLayoutList;
@@ -118,7 +119,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private String titlename;
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
+
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -138,6 +141,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             public void permissionSuccess() {
                 CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
             }
+
             @Override
             public void negativeButton() {
                 //如果不重写，默认是finishddsfaasf
@@ -217,8 +221,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setVisibility(View.GONE);
         meun_standard.setVisibility(View.GONE);
         meun_photo.setOnClickListener(this);
@@ -269,9 +273,9 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 drew = false;
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(1500);
-                if (liststatus){
+                if (liststatus) {
                     HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
-                }else {
+                } else {
                     HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
                 }
             }
@@ -477,7 +481,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                Dates.getDialog(ReplyActivity.this,"请求数据中...");
+                Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //上拉加载的状态判断
                 liststatus = true;
@@ -491,7 +495,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
-                Dates.getDialog(ReplyActivity.this,"请求数据中...");
+                Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
                 break;
@@ -531,12 +535,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
             Title = data.getStringExtra("title");
             wbsText.setText(Title);
             fab.setVisibility(View.VISIBLE);
-            meun_photo.setVisibility(View.VISIBLE);
-            meun_standard.setVisibility(View.VISIBLE);
-            drew = true;
-            HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
             checkId = "";
-
             replyCheckItem.setText(data.getStringExtra(""));
         } else if (requestCode == 1 && resultCode == 2) {
             //节点
@@ -571,11 +570,11 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void takePhotoFinish(final String path) {
                     //   根据路径压缩图片并返回bitmap(2
-                    Bitmap bitmap = compressPixel(path);
+                    //获取图片选择角度，旋转图片
+                    Bitmap bitmap=  CropImageUtils.rotaingImageView( CropImageUtils.readPictureDegree(path),compressPixel(path));
                     //给压缩的图片添加时间水印(1)
-                    String time = Dates.getDate();
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
-                            bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
+                            bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {

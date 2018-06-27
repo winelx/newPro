@@ -64,7 +64,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-
 /**
  * description:全部消息的列表界面，
  *
@@ -100,7 +99,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //图册
     private ArrayList<String> paths;
     private List<Inface_all_item> Alldata;
-    private ArrayList<PhotoBean> imagePaths,stardPaths;
+    private ArrayList<PhotoBean> imagePaths, stardPaths;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
@@ -112,7 +111,9 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private float ste;
     //动画类
     private FloatMeunAnims floatMeunAnims;
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
+
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -408,7 +409,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                Dates.getDialog(AllListmessageActivity.this,"请求数据中...");
+                Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
                 liststatus = true;
@@ -422,7 +423,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
-                Dates.getDialog(AllListmessageActivity.this,"请求数据中...");
+                Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, stardPaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -579,8 +580,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_standard.setVisibility(View.GONE);
         meun_photo.setVisibility(View.GONE);
         meun_photo.setOnClickListener(this);

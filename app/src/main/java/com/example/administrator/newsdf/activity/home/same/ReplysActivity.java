@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -72,6 +73,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.utils.Dates.compressPixel;
+
 /**
  * description:新增推送界面
  * autour: lx
@@ -116,10 +119,11 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
     private boolean isParent, iswbs;
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
-    boolean anim = true;
+    private boolean anim = true;
+    private Bitmap textBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,8 +225,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
      * 发现ID
      */
     private void findID() {
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
         //图册list
@@ -485,12 +489,11 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
                 public void takePhotoFinish(final String path) {
-                    Bitmap bitmap = Dates.compressPixel(path);
+                    //获取图片选择角度，旋转图片
+                    Bitmap bitmap = CropImageUtils.rotaingImageView(CropImageUtils.readPictureDegree(path), compressPixel(path));
                     //给压缩的图片添加时间水印(1)
-                    String time = Dates.getDate();
-                    Bitmap textBitmap = null;
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
-                            bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
+                            bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
                     //压缩保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {

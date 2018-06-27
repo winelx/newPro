@@ -90,7 +90,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> ids = new ArrayList<>();
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -120,8 +121,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.node_commit).setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
 
 
         meun_photo.setOnClickListener(this);
@@ -325,8 +326,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     void okgo1(final String str) {
         String leaderId = SPUtils.getString(mContext, "staffId", null);
         if (leaderId.equals(userID)) {
-
-
             OkGo.post(Requests.WbsTaskConfig)
                     .params("id", wbsId)
                     .params("optStatus", str)
@@ -388,7 +387,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
         } else {
-            ToastUtils.showLongToast("只有负责人能修改状态");
+            ToastUtils.showLongToast("只有责任人能修改状态");
         }
     }
 
@@ -411,6 +410,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 if (content.length() != 0) {
                     number = Integer.valueOf(content);
                     if (number > 100 || number < 0) {
+                        ToastUtils.showLongToast("输入范围:0--100");
                         editext.setText("");
                     } else {
                         nodeWbsProgress.setText(content + "%");
@@ -654,16 +654,25 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onYesClick() {
                         selfDialog.dismiss();
-                        if (status.equals("0")) {
-                            ToastUtils.showShortToast("不可改变当前状态");
-                        } else {
-                            if (status == "3") {
-                                ToastUtils.showShortToast("不能直接变更到此状态");
+                        String[] split = nodeWbsProgress.getText().toString().split("%");
+                        String s1 = split[0];
+                        if ("100".equals(s1)) {
+                            ToastUtils.showLongToast(s1);
+                            if (status.equals("0")) {
+                                ToastUtils.showShortToast("不可改变当前状态");
                             } else {
-                                okgo1("3");
+                                if (status == "3") {
+                                    ToastUtils.showShortToast("不能直接变更到此状态");
+                                } else {
+                                    okgo1("3");
+                                }
                             }
+                        }else {
+                            ToastUtils.showLongToast("完成度必须为100%才能修改到完成状态");
                         }
                     }
+
+
                 });
                 selfDialog.setNoOnclickListener("取消", new WbsDialog.onNoOnclickListener() {
                     @Override

@@ -77,7 +77,8 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
     boolean isParent, iswbs;
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView  fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -99,8 +100,8 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         mTabLayout = (TabLayout) findViewById(R.id.tl_tab);
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
 
 
         meun_photo.setOnClickListener(this);
@@ -234,8 +235,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                 List<String> list = new ArrayList<String>();
                 list = pushMap.get(type);
                 pagss = pagss + 1;
-                String strids = Dates.listToString(list);
-
+                String strids = Dates.listToStrings(list);
                 if (strids != null) {
                     dialog = new ProgressDialog(MissionpushActivity.this);
                     // 设置进度条的形式为圆形转动的进度条
@@ -346,6 +346,8 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
      */
     void pushOkgo(String str) {
         OkGo.post(Requests.pushOKgo)
+                .tag(this)
+                .isMultipart(true)
                 .params("ids", str)
                 .execute(new StringCallback() {
                     @Override

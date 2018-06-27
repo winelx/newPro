@@ -111,6 +111,7 @@
         android:layout_alignEnd="@+id/audio_data"
         android:layout_alignRight="@+id/audio_data"
         android:layout_below="@+id/linearLayout3"
+        android:layout_marginTop="5dp"
         android:gravity="end"
         android:orientation="horizontal">
 

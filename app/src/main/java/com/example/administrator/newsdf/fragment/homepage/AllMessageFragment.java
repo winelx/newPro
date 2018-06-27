@@ -8,9 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.administrator.newsdf.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.R;
@@ -119,11 +116,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         refreshLayout.finishRefresh(false);
     }
 
-    //接收推送的消息，刷新数据
-    @Override
-    public void deleteTop() {
-        Intent();
-    }
+
 
     //切换组织刷新界面
     @Override
@@ -146,7 +139,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         expandable.setAdapter(mAdapter);
         expandable.setAdapter(mAdapter);
         //默认展开第一个分组
-        expandable.expandGroup(-1);
         refreshLayout.finishRefresh(false);
     }
 
@@ -157,5 +149,10 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
 
     public void Intent() {
         new AllmessagePer(this).getMode();
+    }
+
+    @Override
+    public void deleteTop() {
+        Intent();
     }
 }

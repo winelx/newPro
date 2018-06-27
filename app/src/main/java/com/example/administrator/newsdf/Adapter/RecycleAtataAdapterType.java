@@ -109,7 +109,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         //评论条数
         holder.commentCount.setText(mDatas.get(posotion).getCommentCount());
         //是否被提亮
-        isSmartProject = mDatas.get(posotion).getIsSmartProject();
+
         //提亮等级
         final int SmartProjectType = mDatas.get(posotion).getSmartProjectType();
         TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
@@ -156,7 +156,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                     holder.givealikeText.setTextColor(Color.parseColor("#808080"));
                 } else {
-                    if (mDatas.get(posotion).isSmartprojectMain2Up() ) {
+                    if (mDatas.get(posotion).isSmartprojectMain2Up()) {
                         //判断是否有本级提亮权限
                         holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
                         holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
@@ -169,6 +169,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 //提亮权限为1.集团提亮
                 if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                     //如果有集团权限，显示为提亮状态
+                    holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
+                    holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
                 } else {
                     //都没有权限隐藏
                     holder.givealike.setVisibility(View.GONE);
@@ -256,6 +258,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         });
+        isFavorite = mDatas.get(posotion).getIsFavorite();
         //提亮
         holder.givealike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,25 +269,36 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 //是否提亮
                 //提亮权限，1为集团，2为分公司，3项目
                 int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+                isSmartProject = mDatas.get(posotion).getIsSmartProject();
+
                 if (smartprojecttype == 1) {
                     //判断是否有权限，
                     if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                        brightUp();
+                        if (!isFavorite) {
+                            brightUp();
+                        } else {
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦!~");
+                        }
+
                     } else {
                         //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("没有操作权限");
                     }
                 } else if (smartprojecttype == 2) {
                     //判断是否有权限，
-                    if (mDatas.get(posotion).isSmartprojectMain2Up()) {
-                        brightUp();
+                    if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                        if (!isFavorite) {
+                            brightUp();
+                        } else {
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦!~");
+                        }
                     } else {
                         //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("没有操作权限");
                     }
                 } else if (smartprojecttype == 3) {
                     //判断是否有权限，
-                    if (mDatas.get(posotion).isSmartprojectMain3Up()) {
+                    if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain1Up()) {
                         brightUp();
                     } else {
                         //如果没有权限，那么就无法看到提亮功能
@@ -292,63 +306,67 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else if (smartprojecttype == 0) {
                     if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
-                        brightUp();
+                        if (!isFavorite) {
+                            brightUp();
+                        } else {
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦!~");
+                        }
                     }
-                } else {
-                    brightUp();
                 }
             }
         });
         holder.givealike.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                taskId = audio.gettaskId();
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage("撤亮当前任务?")
-                        .setCancelable(false)
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
-                                if (smartprojecttype == 1) {
-                                    //判断是否有权限，
-                                    if (mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                        brightDown();
+                final int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
+                if (smartprojecttype > 0) {
+                    TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
+                    taskId = audio.gettaskId();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage("撤亮当前任务?")
+                            .setCancelable(false)
+                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    if (smartprojecttype == 1) {
+                                        //判断是否有权限，
+                                        if (mDatas.get(posotion).isSmartprojectMain1Down()) {
+                                            brightDown();
+                                        } else {
+                                            //如果没有权限，那么就无法看到提亮功能
+                                            ToastUtils.showLongToast("没有操作权限");
+                                        }
+                                    } else if (smartprojecttype == 2) {
+                                        //判断是否有权限，
+                                        if (mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
+                                            brightDown();
+                                        } else {
+                                            //如果没有权限，那么就无法看到提亮功能
+                                            ToastUtils.showLongToast("没有操作权限");
+                                        }
+                                    } else if (smartprojecttype == 3) {
+                                        //判断是否有权限，
+                                        if (mDatas.get(posotion).isSmartprojectMain3Down() || mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
+                                            brightDown();
+                                        } else {
+                                            //如果没有权限，那么就无法看到提亮功能
+                                            ToastUtils.showLongToast("没有操作权限");
+                                        }
                                     } else {
-                                        //如果没有权限，那么就无法看到提亮功能
-                                        ToastUtils.showLongToast("没有操作权限");
+                                        ToastUtils.showLongToast("必须提亮才能撤亮");
                                     }
-                                } else if (smartprojecttype == 2) {
-                                    //判断是否有权限，
-                                    if (mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                        brightDown();
-                                    } else {
-                                        //如果没有权限，那么就无法看到提亮功能
-                                        ToastUtils.showLongToast("没有操作权限");
-                                    }
-                                } else if (smartprojecttype == 3) {
-                                    //判断是否有权限，
-                                    if (mDatas.get(posotion).isSmartprojectMain3Down() || mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                        brightDown();
-                                    } else {
-                                        //如果没有权限，那么就无法看到提亮功能
-                                        ToastUtils.showLongToast("没有操作权限");
-                                    }
-                                } else {
-                                    ToastUtils.showLongToast("没有操作权限");
+
                                 }
-
-                            }
-                        })
-                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                builder.show();
-
+                            })
+                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.show();
+                }
                 return false;
             }
         });
@@ -419,7 +437,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 if (workbright) {
                                     BrightCallBackUtils.removeCallBackMethod();
                                 }
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -445,7 +462,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 showLongToast("提亮成功");
-
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
                                 if (workbright) {

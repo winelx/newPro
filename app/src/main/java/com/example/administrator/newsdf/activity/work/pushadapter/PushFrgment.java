@@ -152,7 +152,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                 }
                 //查看集合是否有数据
                 if (deleSelect.size() != 0 && data.size() != 0) {
-                    strids = Dates.listToString(deleSelect);
+                    strids = Dates.listToStrings(deleSelect);
                     //批量修改数据
                     if (deleSelect.size() < 2) {
                         ToastUtils.showLongToast("至少选择2条要批量修改的任务");
@@ -345,7 +345,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                                         }
 
                                         data.add(new Push_item(content, id, label, preconditionsName,
-                                                leaderName, sendTime, sendTimes, false, leaderId, preconditions,checkStandard));
+                                                leaderName, sendTime, sendTimes, false, leaderId, preconditions, checkStandard));
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);
@@ -374,7 +374,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
 
     @Override
     public void LazyLoad() {
-    //懒加载，如果需要在加载界面前处理的
+        //懒加载，如果需要在加载界面前处理的
     }
 
     /**

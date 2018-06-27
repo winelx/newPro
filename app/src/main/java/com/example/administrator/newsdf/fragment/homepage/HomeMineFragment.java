@@ -21,6 +21,8 @@ import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.callback.frehomeCallBack;
+import com.example.administrator.newsdf.callback.frehomeCallBackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
@@ -46,7 +48,7 @@ import okhttp3.Response;
  *         我的消息
  */
 
-public class HomeMineFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback {
+public class HomeMineFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback, frehomeCallBack {
     private View rootView;
     private RecyclerView listView;
     private HomeFragmentAdapter mAdapter;
@@ -82,7 +84,9 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         init();
         return rootView;
     }
+
     private void init() {
+        frehomeCallBackUtils.setCallBack(this);
         mData = new ArrayList<>();
         //设置布局管理器
         listView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -94,7 +98,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(getActivity(), "请求数据中");
+                Dates.getDialogs(getActivity(), "请求数据中");
                 Okgo();
             }
         });
@@ -103,11 +107,12 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
             public void onRefresh(RefreshLayout refreshlayout) {
                 Okgo();
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(1200);
+                refreshlayout.finishRefresh(1000);
             }
         });
         Okgo();
     }
+
     //网络请求
     private void Okgo() {
         //请求数据库的数据
@@ -160,6 +165,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                             home_img_text.setText("暂无数据，点击刷新");
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -171,6 +177,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     }
                 });
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //跳转列表界面
@@ -179,10 +186,12 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         intent.putExtra("orgId", mData.get(position).getOrgid());
         startActivity(intent);
     }
+
     @Override
     public void onStart() {
         super.onStart();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -190,9 +199,16 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         Dates.disDialog();
         refreshLayout.finishRefresh(false);
     }
+
     //切换组织后刷新
     @Override
     public void taskCallback() {
+        Okgo();
+    }
+
+    //取消收藏后刷新
+    @Override
+    public void bright() {
         Okgo();
     }
 }

@@ -84,16 +84,20 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private String wbsName = "";
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo,fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
         mContext = this;
         floatMeunAnims = new FloatMeunAnims();
+
         //初始化集合
         initArry();
         //初始化ID
@@ -116,7 +120,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         }
         userId = SPUtils.getString(mContext, "staffId", null);
         //网络请求
-        OkGo();
         //侧拉listview上拉加载
         drawerLayout_smart.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
@@ -133,6 +136,12 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 refreshlayout.finishLoadmore(1000);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        OkGo();
     }
 
     //初始化数据
@@ -175,12 +184,16 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         newmoretask.setOnClickListener(this);
         //图册侧拉界面
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
+        /**
+         *meun
+         */
         fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
+        findViewById(R.id.taskManagemented).setOnClickListener(this);
     }
 
     //初始化集合
@@ -191,7 +204,9 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
         imagePaths = new ArrayList<>();
     }
 
-    //暴露给adapter的方法，给点击事件使用,跳转界面
+    /**
+     * 暴露给adapter的方法，给点击事件使用,跳转界面
+     */
     public void onclick(int pos) {
         Intent intent = new Intent(mContext, TaskdetailsActivity.class);
         intent.putExtra("TaskId", Dats.get(pos).getId());
@@ -237,16 +252,14 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     anim = true;
                 }
                 break;
-
             case R.id.newmoretask:
                 //点击回复
                 Intent intent = new Intent(MoretaskActivity.this, DirectlyreplyActivity.class);
                 intent.putExtra("id", taskID);
+                intent.putExtra("status", status);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
-                //返回
-                finish();
                 //抛出异常，在任务管理界面返回时不需要刷新数据，
                 try {
                     //判断状态是否改变
@@ -254,16 +267,17 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                         //改变了，调用刷新数据方法
                         TaskCallbackUtils.removeCallBackMethod();
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                finish();
                 break;
-            case R.id.taskManagement:
+            case R.id.taskManagemented:
                 if (status.equals("true")) {
                     HomeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
                 }
                 break;
-
             default:
                 break;
         }
@@ -279,6 +293,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("result", s);
+                        Dates.disDialog();
                         getJson(s);
                     }
 
@@ -382,7 +397,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                     for (int i = 0; i < parts.length(); i++) {
                         JSONObject json = parts.getJSONObject(i);
                         String ids = json.getString("id");
-
                         String partContent;
                         try {
                             partContent = json.getString("partContent");
@@ -417,7 +431,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
@@ -431,12 +444,14 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
 
     //请求图册
     public void getPhoto() {
+        Dates.getDialog(MoretaskActivity.this, "请求数据中...");
         //将请求方法封装到工具类，因为多个界面需要相同的请求
         HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
     }
 
     //请求标准
     public void getSatard() {
+        Dates.getDialog(MoretaskActivity.this, "请求数据中...");
         //将请求方法封装到工具类，因为多个界面需要相同的请求
         HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
     }
@@ -456,6 +471,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     public String getId() {
         return taskID;
     }
+
 
 
 }

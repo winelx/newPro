@@ -87,7 +87,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
         //获取自定义View的布局（加载item布局）
-        View view = LayoutInflater.from(mContext).inflate(R.layout.home_fragment_item, arg0, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_comment_message, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -95,7 +95,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView btn_Delete;
         public RelativeLayout layout_content;
         public RelativeLayout relativeLayout;
         public TextView home_item_img;
@@ -108,7 +107,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
             super(itemView);
             //统一自定义控件获标签，都是tv_delete，修改后无法获取，会报错 如果非要修改，请全部修改，
             //置顶
-            btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
+
             //控制布局在界面的宽度
             layout_content = itemView.findViewById(R.id.layout_content);
             //控制布局大小

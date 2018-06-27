@@ -16,6 +16,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.HideCallbackUtils;
+import com.example.administrator.newsdf.callback.frehomeCallBackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
 import com.example.administrator.newsdf.utils.RequestUtils;
@@ -173,7 +174,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
             childHold.tvSet.setBackgroundResource(R.color.Orange);
             childHold.tvSet.setText("收藏");
         } else {
-            childHold.tvSet.setBackgroundResource(R.color.back);
+            childHold.tvSet.setBackgroundResource(R.color.red);
             childHold.tvSet.setText("已收藏");
         }
         //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
@@ -214,9 +215,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
                                         int ret = jsonObject.getInt("ret");
                                         ToastUtils.showLongToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            childHold.tvSet.setBackgroundResource(R.color.back);
+                                            childHold.tvSet.setBackgroundResource(R.color.red);
                                             childHold.tvSet.setText("已收藏");
+                                            //刷新收藏
                                             HideCallbackUtils.removeCallBackMethod();
+                                            //刷新我的
+                                            frehomeCallBackUtils.dohomeCallBackMethod();
                                             content.get(classes.get(groupPosition)).get(childPosition).setIsfavorite("1");
                                         }
                                     } catch (JSONException e) {

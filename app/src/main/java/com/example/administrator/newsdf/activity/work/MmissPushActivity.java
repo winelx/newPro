@@ -253,11 +253,10 @@ public class MmissPushActivity extends AppCompatActivity {
                 case "push":
                     getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
                     break;
-                case "standrard":
+                case "standard":
                     //标准
                     Intent standard = new Intent(mContext, StandardActivity.class);
-                    standard.putExtra("wbsId", node.getId());
-                    LogUtil.i("standard", node.getId());
+                    standard.putExtra("groupId", node.getId());
                     standard.putExtra("title", node.getName());
                     standard.putExtra("status", "standard");
                     startActivity(standard);
@@ -280,7 +279,6 @@ public class MmissPushActivity extends AppCompatActivity {
                     finish();
                     break;
                 case "List":
-
                     Intent list = new Intent();
                     list.putExtra("id", node.getId());
                     list.putExtra("title", node.getName());

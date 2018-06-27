@@ -72,7 +72,8 @@ public class NewpushActivity extends AppCompatActivity implements View.OnClickLi
 
 
     //弹出框
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView  fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -84,8 +85,8 @@ public class NewpushActivity extends AppCompatActivity implements View.OnClickLi
         mContent = NewpushActivity.this;
         floatMeunAnims = new FloatMeunAnims();
         imagePaths = new ArrayList<>();
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);

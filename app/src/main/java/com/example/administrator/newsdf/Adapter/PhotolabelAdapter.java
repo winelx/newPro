@@ -55,9 +55,9 @@ public class PhotolabelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (position == 1) {
 
         }
-        holder.photo_name.setText(mData.get(position).getDrawingName());
+        holder.photo_name.setText(mData.get(position).getDrawingGroupName());
         holder.photo_number.setText(mData.get(position).getDrawingNumber());
-        holder.photo_names.setText(mData.get(position).getDrawingGroupName());
+        holder.photo_names.setText(mData.get(position).getDrawingName());
         holder.lin_photo_adm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

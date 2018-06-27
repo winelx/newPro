@@ -35,6 +35,7 @@ import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
@@ -63,6 +64,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.reply_button;
+import static com.example.administrator.newsdf.utils.Dates.compressPixel;
 
 
 /**
@@ -86,20 +88,19 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
     private CheckPermission checkPermission;
-    String id = null;
+    String id = null, status;
     private static final int IMAGE_PICKER = 101;
-    private int num = 0;
     private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_codeplay_repley);
-
         mContext = DirectlyreplyActivity.this;
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
+        status = intent.getExtras().getString("status");
         //动态权限
         checkPermission = new CheckPermission(this) {
             @Override
@@ -263,23 +264,28 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                                 for (int i = 0; i < imagePaths.size(); i++) {
                                     Dates.deleteFile(imagePaths.get(i));
                                 }
-                                Intent intent = new Intent();
-                                intent.putExtra("frag_id", id);
-                                //回传数据到主Activity
-                                setResult(RESULT_OK, intent);
-                                finish(); //此方法后才能返回主Activity
+
+                                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                                intent.putExtra("TaskId", id);
+                                intent.putExtra("wbsid", id);
+                                //判断能否可以跳转任务管理
+                                intent.putExtra("status", status);
+                                startActivity(intent);
+                                popupWindow.dismiss();
+                                popstatus = false;
+                                finish();
                             }
-                            popupWindow.dismiss();
-                            popstatus = false;
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         try {
-                            String str=  response.body().string();
+                            String str = response.body().string();
                             JSONObject jsonObject = new JSONObject(str);
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
                         } catch (IOException e1) {
@@ -327,12 +333,11 @@ public class DirectlyreplyActivity extends AppCompatActivity {
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
                 public void takePhotoFinish(final String path) {
-                    //根据路径压缩图片并返回bitmap
-                    Bitmap bitmap = Dates.compressPixel(path);
+                    //获取图片选择角度，旋转图片
+                    Bitmap bitmap = CropImageUtils.rotaingImageView(CropImageUtils.readPictureDegree(path), compressPixel(path));
                     //给压缩的图片添加时间水印(1)
-                    String time = Dates.getDate();
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
-                            bitmap, time + Bai_address, 15, Color.WHITE, 0, 0);
+                            bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
@@ -486,9 +491,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 finish();
             }
         }
-
         return false;
-
     }
 
 }

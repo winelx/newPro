@@ -103,6 +103,7 @@ public class PhotoadmActivity extends AppCompatActivity {
 
     public void okgo() {
         OkGo.post(Requests.Photolist)
+                .isMultipart(true)
                 .params("WbsId", wbsid)
                 .params("page", pages)
                 .params("rows", 50)

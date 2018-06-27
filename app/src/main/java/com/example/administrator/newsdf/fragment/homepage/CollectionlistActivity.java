@@ -116,7 +116,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
 
     //动画类
     private FloatMeunAnims floatMeunAnims;
-    private CircleImageView meun_standard, meun_photo;
+    private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -126,7 +126,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
-        floatMeunAnims=new FloatMeunAnims();
+        floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
@@ -418,7 +418,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                Dates.getDialog(CollectionlistActivity.this,"请求数据中...");
+                Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
                 liststatus = true;
@@ -432,7 +432,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
-                Dates.getDialog(CollectionlistActivity.this,"请求数据中...");
+                Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -602,8 +602,8 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_standard.setVisibility(View.GONE);
         meun_photo.setVisibility(View.GONE);
         meun_photo.setOnClickListener(this);

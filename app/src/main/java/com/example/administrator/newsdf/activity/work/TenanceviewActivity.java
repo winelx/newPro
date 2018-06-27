@@ -22,16 +22,27 @@ import com.example.administrator.newsdf.activity.home.HomeUtils;
 import com.example.administrator.newsdf.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.callback.MoreTaskCallback;
+import com.example.administrator.newsdf.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.FloatMeunAnims;
+import com.example.administrator.newsdf.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -42,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *         update: 2018/2/8 0008
  *         version:
  */
-public class TenanceviewActivity extends AppCompatActivity implements View.OnClickListener {
+public class TenanceviewActivity extends AppCompatActivity implements View.OnClickListener, MoreTaskCallback {
     private String TAG = "TenanceviewActivity";
     private Context mContext;
     private ViewPager mViewPager;
@@ -52,12 +63,11 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     private RelativeLayout tabulation;
     private TextView title;
     private LinearLayout com_img;
-
+    private static int taskpage = 1;
     private int msg = 0, page = 1;
     private String id, wbspath, wbsname, type;
     private SmartRefreshLayout drawerlayoutSmart;
     private DrawerLayout drawerLayout;
-
     private TaskPhotoAdapter taskAdapter;
     private ListView drawerLayoutList;
     private boolean drew = true;
@@ -68,10 +78,12 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
             names,
             titlename;
     //弹出框
-    private CircleImageView meun_standard, meun_photo, fab;
+    private CircleImageView fab;
+    private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
+    private ArrayList<String> namess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +91,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_missionmte);
         mContext = TenanceviewActivity.this;
         floatMeunAnims = new FloatMeunAnims();
+        MoreTaskCallbackUtils.setCallBack(this);
         //获取到intent传过来得集合
         names = new ArrayList<>();
         ids = new ArrayList<>();
@@ -111,8 +124,8 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         //侧滑栏关闭手势滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         fab = (CircleImageView) findViewById(R.id.fab);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         fab = (CircleImageView) findViewById(R.id.fab);
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
@@ -191,7 +204,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
             mTabLayout.setTabMode(0);
         }
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
-        mViewPager.setOffscreenPageLimit(10);
+        mViewPager.setOffscreenPageLimit(names.size());
         mAdapter = new TabAdapter(getSupportFragmentManager(), names);
         mAdapter.getAdate(ids, id);
         mViewPager.setAdapter(mAdapter);
@@ -237,6 +250,16 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (taskpage == 1) {
+            taskpage++;
+        } else {
+            Updata();
+        }
     }
 
     @Override
@@ -292,5 +315,48 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
             default:
                 break;
         }
+    }
+    /**
+     * 返回更新数据
+     */
+    private void Updata() {
+        OkGo.post(Requests.WbsTaskGroup)
+                .params("wbsId", id)
+                .params("isNeedTotal", "true")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.contains("data")) {
+                            namess = new ArrayList<String>();
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String id = json.getString("id");
+                                    String name = json.getString("detectionName");
+                                    String totalNum = json.getString("totalNum");
+                                    namess.add("   " + name + "(" + totalNum + ")" + "       ");
+                                }
+                                mAdapter = new TabAdapter(getSupportFragmentManager(), namess);
+                                mAdapter.getAdate(ids, id);
+                                mTabLayout.setupWithViewPager(mViewPager);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
+                    }
+                });
+    }
+
+    @Override
+    public void newData() {
+        Updata();
     }
 }

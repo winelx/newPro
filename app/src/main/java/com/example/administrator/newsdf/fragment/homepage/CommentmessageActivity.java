@@ -116,7 +116,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     //动画类
     private FloatMeunAnims floatMeunAnims;
-    private CircleImageView meun_standard, meun_photo;
+    private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -412,7 +412,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 //请求数据时清除之前的
                 drew = true;
                 //网络请求
-                Dates.getDialog(CommentmessageActivity.this,"请求数据中...");
+                Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
                 liststatus = true;
@@ -426,7 +426,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //上拉加载的状态判断
                 liststatus = false;
-                Dates.getDialog(CommentmessageActivity.this,"请求数据中...");
+                Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -479,33 +479,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                             okgoall(null, null, pages);
                         }
                         break;
-                    case R.id.pop_financial:
-                        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
-                        searchEditext.setText("");
-                        pages = 1;
-                        swip = false;
-                        notall = "0";
-                        uslistView.setSelection(0);
-                        if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
-                        } else {
-                            okgoall(null, null, pages);
-                        }
-
-                        break;
-                    case R.id.pop_manage:
-                        Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
-                        searchEditext.setText("");
-                        pages = 1;
-                        swip = false;
-                        notall = "2";
-                        uslistView.setSelection(0);
-                        if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
-                        } else {
-                            okgoall(null, null, pages);
-                        }
-                        break;
                     default:
                         break;
                 }
@@ -514,10 +487,15 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 }
             }
         };
-        contentView.findViewById(R.id.pop_computer).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        View view = contentView.findViewById(R.id.pop_computer);
+        view.setOnClickListener(menuItemOnClickListener);
+        View view1 = contentView.findViewById(R.id.pop_All);
+        view1.setOnClickListener(menuItemOnClickListener);
+        View view2 = contentView.findViewById(R.id.pop_financial);
+        view2.setVisibility(View.GONE);
+        View view3 = contentView.findViewById(R.id.pop_manage);
+        view3.setVisibility(View.GONE);
+
         return contentView;
     }
 
@@ -593,8 +571,8 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
-        meun_standard = (CircleImageView) findViewById(R.id.meun_standard);
-        meun_photo = (CircleImageView) findViewById(R.id.meun_photo);
+        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
+        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_standard.setVisibility(View.GONE);
         meun_photo.setVisibility(View.GONE);
         meun_photo.setOnClickListener(this);
@@ -809,7 +787,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste), Dates.higtFontSize(ste), true);
+                Dates.withFontSize(ste), 210, true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show

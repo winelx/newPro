@@ -333,7 +333,7 @@ public class PhotoListActivity extends AppCompatActivity {
         if (stauts.equals("standard")) {
             Intent intent1 = new Intent(mContext, StandardActivity.class);
             intent1.putExtra("groupId", node.getId());
-            intent1.putExtra("title", "标准分类图册");
+            intent1.putExtra("title", node.getName());
             intent1.putExtra("status", "PhotoList");
             startActivity(intent1);
         } else {

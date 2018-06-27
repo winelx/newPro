@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.bean.Home_item;
+import com.example.administrator.newsdf.callback.CallBackUtils;
 import com.example.administrator.newsdf.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.LeftSlideView;
@@ -110,7 +111,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
         String Isfavorite = mDatas.get(position).getIsfavorite();
         if (Isfavorite.equals("1")) {
-            holder.btn_Delete.setBackgroundResource(R.color.back);
+            holder.btn_Delete.setBackgroundResource(R.color.red);
             holder.btn_Delete.setText("已收藏");
         }else {
             holder.btn_Delete.setBackgroundResource(R.color.Orange);
@@ -144,9 +145,12 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<HomeFragmentAdapte
                                         int ret = jsonObject.getInt("ret");
                                         ToastUtils.showLongToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            holder.btn_Delete.setBackgroundResource(R.color.back);
+                                            holder.btn_Delete.setBackgroundResource(R.color.red);
                                             holder.btn_Delete.setText("已收藏");
+                                            //刷新收藏
                                             HideCallbackUtils.removeCallBackMethod();
+                                            //刷新全部
+                                            CallBackUtils.removeCallBackMethod();
                                             mDatas.get(position).setIsfavorite("1");
                                         }
                                     } catch (JSONException e) {
