@@ -522,7 +522,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 checkStandard = wtMain.getString("checkStandard");
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                checkStandard = "";
+                                checkStandard ="";
                             }
                             //部位
                             String partContent;

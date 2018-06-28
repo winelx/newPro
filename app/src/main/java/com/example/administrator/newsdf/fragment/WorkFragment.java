@@ -243,7 +243,6 @@ public class WorkFragment extends Fragment implements BrightCallBack {
         bridhtCompany = rootView.findViewById(R.id.bridhtCompany);
         bridhtGroup = rootView.findViewById(R.id.bridhtGroup);
         bridhtProject = rootView.findViewById(R.id.bridhtProject);
-
     }
 
     @Override
@@ -475,14 +474,6 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                     }
                                 }
 
-                                if (groupbridhtList.size() == 0 && compangbrightList.size() == 0 && projectbrightList.size() == 0) {
-                                    //如果返回的数据为空，定时器不启动
-                                    closeTimer();
-                                    mCardView.setVisibility(View.GONE);
-                                } else {
-                                    mCardView.setVisibility(View.VISIBLE);
-                                }
-
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
                                 if (groupbridhtList.size() != 0) {
                                     bridhtGroup.setVisibility(View.VISIBLE);
@@ -516,12 +507,10 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                 e.printStackTrace();
                             }
                         } else {
-                            mCardView.setVisibility(View.GONE);
                             //如果返回的数据为空，定时器不启动
                             closeTimer();
                         }
                     }
-
 
                 });
     }

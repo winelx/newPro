@@ -11,7 +11,6 @@ import android.widget.ExpandableListView;
 
 import com.example.administrator.newsdf.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.MainActivity;
 import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.callback.CallBack;
 import com.example.administrator.newsdf.callback.CallBackUtils;
@@ -19,7 +18,6 @@ import com.example.administrator.newsdf.callback.OgranCallback;
 import com.example.administrator.newsdf.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.fragment.presenter.AllmessagePer;
 import com.example.administrator.newsdf.fragment.view.UiAllMessageView;
-import com.example.administrator.newsdf.utils.Dates;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -140,11 +138,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         expandable.setAdapter(mAdapter);
         //默认展开第一个分组
         refreshLayout.finishRefresh(false);
-    }
-
-    @Override
-    public void showLoding() {
-        Dates.getDialog(MainActivity.getInstance(), "请求数据中");
     }
 
     public void Intent() {

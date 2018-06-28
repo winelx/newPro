@@ -103,7 +103,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.detailsFixedData.setText(content.get(posotion).getBackdata());
                 String stand = content.get(posotion).getCheckStandard();
-                holder.details_checkStandard.setText("标准:" + stand);
+                    holder.details_checkStandard.setText("标准:" + stand);
                 String str = content.get(posotion).getContent();
                 holder.detailsContent.setText("内容：" + str);
                 //转交人

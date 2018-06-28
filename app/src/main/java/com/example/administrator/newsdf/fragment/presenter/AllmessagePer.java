@@ -4,7 +4,6 @@ import com.example.administrator.newsdf.bean.Home_item;
 import com.example.administrator.newsdf.fragment.model.AllMessageModel;
 import com.example.administrator.newsdf.fragment.model.AllMessageModelImp;
 import com.example.administrator.newsdf.fragment.view.UiAllMessageView;
-import com.example.administrator.newsdf.utils.Dates;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,6 @@ public class AllmessagePer {
     //获取mode层的数据，并传递给view层
     public void getMode() {
         //显示进度
-        uiAllMessage.showLoding();
         //将数据传递到fragment
             messageModel.getData(new AllMessageModel.OnClickListener() {
                 @Override
@@ -42,6 +40,6 @@ public class AllmessagePer {
                     uiAllMessage.setAdapter(list, map);
                 }
             });
-        Dates.disDialog();
+
     }
 }

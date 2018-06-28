@@ -71,7 +71,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = getActivity();
         mData = new ArrayList<>();
-        Okgo();
+        Okgo(false);
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableLoadmore(false);//禁止上拉
         refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
@@ -93,12 +93,14 @@ public class CollectionFragment extends Fragment implements HideCallback {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
+                lsit();
+
                 //传入false表示刷新失败
                 if (mAdapter.menuIsOpen()) {
                     mAdapter.closeMenu();
                 }
                 mData.clear();
-                Okgo();
+                Okgo(true);
                 refreshlayout.finishRefresh(1200);
             }
         });
@@ -106,8 +108,9 @@ public class CollectionFragment extends Fragment implements HideCallback {
         home_frag_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                lsit();
                 Dates.getDialogs(getActivity(), "请求数据中");
-                Okgo();
+                Okgo(true);
             }
         });
         mAdapter.setOnItemClickListener(new CollectionFrAdapter.OnItemClickListener() {
@@ -133,10 +136,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
     //收藏全部任务后刷新该界面
     @Override
     public void deleteTop() {
-        Okgo();
+        Okgo(true);
     }
 
-    public void Okgo() {
+    public void Okgo(final boolean newdata) {
         OkGo.get(Requests.GET_LIS)
                 .execute(new StringCallback() {
                     @Override
@@ -190,14 +193,27 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, parentid,parentname,"" ,false));
                                 }
-                                mAdapter.getData(mData);
-                                home_frag_img.setVisibility(View.GONE);
+                                if (mData.size()>0){
+                                    mAdapter.getData(mData);
+                                    home_frag_img.setVisibility(View.GONE);
+                                }else {
+                                    home_frag_img.setVisibility(View.VISIBLE);
+                                    home_img_text.setText("暂无数据，点击刷新");
+                                    if (newdata){
+                                        ToastUtils.showLongToast("暂无数据");
+                                    }
+
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("暂无数据，点击刷新");
+                            if (newdata){
+                                ToastUtils.showLongToast("暂无数据");
+                            }
                         }
 
                     }
@@ -214,5 +230,8 @@ public class CollectionFragment extends Fragment implements HideCallback {
 
                 });
     }
+    public void lsit(){
 
+
+    }
 }

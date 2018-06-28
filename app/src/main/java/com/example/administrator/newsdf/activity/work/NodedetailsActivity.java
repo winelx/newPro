@@ -88,7 +88,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> titlename ;
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
-
+    private String usernameId;
     //弹出框
     private CircleImageView fab;
     private LinearLayout meun_standard, meun_photo;
@@ -288,14 +288,12 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
 
     /**
-     * 修改
+     * 修改负责人
      */
     void commit() {
-        String leaderId = SPUtils.getString(mContext, "staffId", null);
-        if (leaderId.equals(userID)) {
             OkGo.<String>post(Requests.WbsTaskConfig)
                     .params("id", wbsId)
-                    .params("leaderId", userID)
+                    .params("leaderId", usernameId)
                     .params("finish", number)
                     .execute(new StringCallback() {
                         @Override
@@ -306,6 +304,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 int ret = jsonObject.getInt("ret");
                                 String msg = jsonObject.getString("msg");
                                 if (ret == 0) {
+                                  okgo();
                                     ToastUtils.showShortToast(msg);
                                 } else {
                                     ToastUtils.showShortToast(msg);
@@ -315,13 +314,11 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             }
                         }
                     });
-        } else {
-            ToastUtils.showLongToast("只有负责人能修改状态");
-        }
+
     }
 
     /**
-     * 状态修改
+     * 任务状态修改
      */
     void okgo1(final String str) {
         String leaderId = SPUtils.getString(mContext, "staffId", null);
@@ -339,6 +336,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                 JSONObject jsonObject = new JSONObject(s);
                                 int ret = jsonObject.getInt("ret");
                                 String msg = jsonObject.getString("msg");
+                                ToastUtils.showShortToast(msg);
                                 if (ret != 0) {
                                     if (Objects.equals(str, "1")) {
                                         ToastUtils.showShortToast(msg);
@@ -358,7 +356,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
                                         status = "1";
                                         nodeWbsStatus.setText("施工中");
-                                        ToastUtils.showLongToast("启动成功");
 
                                     } else if (Objects.equals(str, "2")) {
                                         nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
@@ -369,7 +366,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
                                         status = "2";
                                         nodeWbsStatus.setText("暂停施工");
-                                        ToastUtils.showLongToast("暂停施工");
 
                                     } else if (Objects.equals(str, "3")) {
                                         nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
@@ -379,7 +375,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                                         nodeStart.setBackgroundResource(R.mipmap.node_start_f);
                                         nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
                                         nodeWbsStatus.setText("已完成");
-                                        ToastUtils.showLongToast("任务已完成");
                                         status = "3";
                                     }
                                 }
@@ -389,8 +384,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
                         }
                     });
-        } else {
-            ToastUtils.showLongToast("只有责任人能修改状态");
+        }else {
+            ToastUtils.showLongToast("只有负责人能修改状态");
         }
     }
 
@@ -409,7 +404,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 String content = editext.getText().toString();
-
                 if (content.length() != 0) {
                     number = Integer.valueOf(content);
                     if (number > 100 || number < 0) {
@@ -535,7 +529,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 2) {
             String user = data.getStringExtra("name");
-            userID = data.getStringExtra("userId");
+            usernameId = data.getStringExtra("userId");
             nodeWbsUsername.setText(user);
         }
     }
@@ -601,10 +595,10 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 setDialog();
                 break;
             case R.id.user_list:
-                //选择责任人
-                Intent intent = new Intent(mContext, ContactPeopleActivity.class);
-                intent.putExtra("data", "newpush");
-                startActivityForResult(intent, 1);
+                    //选择责任人
+                    Intent intent = new Intent(mContext, ContactPeopleActivity.class);
+                    intent.putExtra("data", "newpush");
+                    startActivityForResult(intent, 1);
                 break;
             case R.id.node_lin_start:
                 //更改状态，判断是否处于该状态 启动

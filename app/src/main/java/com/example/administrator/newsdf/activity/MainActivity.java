@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.activity;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.view.KeyEvent;
@@ -24,6 +26,7 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.Tab;
 import com.example.administrator.newsdf.callback.JPushCallUtils;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.fragment.IndexFrament;
 import com.example.administrator.newsdf.fragment.MineFragment;
 import com.example.administrator.newsdf.fragment.WorkFragment;
@@ -32,7 +35,6 @@ import com.example.administrator.newsdf.utils.Dates;
 import com.example.administrator.newsdf.utils.Requests;
 import com.example.administrator.newsdf.utils.SPUtils;
 import com.example.administrator.newsdf.utils.Utils;
-import com.example.administrator.newsdf.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Tab> mTabs = new ArrayList<>();
     private Dates dates;
     private String version;
-    private WbsDialog selfDialog;
     private TextView home_img_red;
     private List<Shop> list;
     private boolean workbtight;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         workbtight = false;
         dates = new Dates();
+
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         list = new ArrayList<>();
         list = LoveDao.JPushCart();
         if (list.size() > 0) {
@@ -183,12 +186,13 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject json = jsonObject.getJSONObject("data");
                                     //版本号
                                     String versions = json.getString("version");
+                                    String description = json.getString("description");
                                     //更新地址
                                     String filePath = json.getString("downloadUrl");
                                     int lenght = version.compareTo(versions);
                                     if (lenght < 0) {
                                         //提示框
-                                        show(filePath);
+                                        show(filePath, description);
                                     }
                                 }
                             } catch (JSONException e) {
@@ -273,38 +277,33 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     /**
      * 检测到有新版本后给的提示框
      */
-    public void show(final String path) {
-        selfDialog = new WbsDialog(mContext);
-        selfDialog.setTitle("更新提示");
-        selfDialog.setMessage("检测到有新版本，立即更新更新");
-        selfDialog.setYesOnclickListener("确定", new WbsDialog.onYesOnclickListener() {
+    public void show(final String path, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("新版本提示")
+                .setMessage(message)
+                .setCancelable(false);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void onYesClick() {
-                selfDialog.dismiss();
-            }
-        });
-        selfDialog.setNoOnclickListener("更新", new WbsDialog.onNoOnclickListener() {
-            @Override
-            public void onNoClick() {
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 Uri content_url = Uri.parse(path);
                 intent.setData(content_url);
                 startActivity(intent);
-                selfDialog.dismiss();
-
             }
         });
-        selfDialog.show();
+        builder.show();
+
+
     }
 
     /**
      *
      */
-
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
         //向indexfragemnt 发送消息，显示推送小红点
@@ -319,4 +318,6 @@ public class MainActivity extends AppCompatActivity {
     private void brightnew() {
         workbtight = true;
     }
+
+
 }

@@ -66,6 +66,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
+        findViewById(R.id.intent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ZLAQActivity.class));
+            }
+        });
     }
 
     @Override
@@ -104,6 +110,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void okgo(final String user, final String passowd) {
+
+
+        OkGo.post("http://192.168.20.79:1010/admin/")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        login(user, passowd);
+                    }
+
+                    //这个错误是网络级错误，不是请求失败的错误
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showLongToast("网络无法连接到internet");
+                    }
+                });
+
+
         OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
                     @Override
@@ -268,4 +292,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     };
+
+
 }

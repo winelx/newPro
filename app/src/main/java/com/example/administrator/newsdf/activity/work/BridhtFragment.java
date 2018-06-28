@@ -73,20 +73,20 @@ public class BridhtFragment extends Fragment {
         //设置Adapter
         mAdapter = new BridhtAdapter(BrightspotActivity.getInstance());
         brightspot_list.setAdapter(mAdapter);
-        Bright();
+        Bright(false);
         //上拉加载
         refreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                Bright();
+                Bright(true);
                 refreshlayout.finishRefresh(1000);
             }
         });
         return view;
     }
 
-    private void Bright() {
+    private void Bright(final boolean stauts) {
         OkGo.<String>post(Requests.ListByType)
                 //pos 是从0开始的，而传递的数据从1开始
                 .params("type", pos + 1)
@@ -176,7 +176,9 @@ public class BridhtFragment extends Fragment {
                                     mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, pos, ImagePaths));
                                 }
                             }else {
-                                ToastUtils.showLongToast("暂无数据");
+                                if (stauts){
+                                    ToastUtils.showLongToast("暂无数据");
+                                }
                             }
                             mAdapter.getData(mData);
                         } catch (JSONException e) {

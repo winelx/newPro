@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.bean.PhotoBean;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> mData;
     private ArrayList<String> title;
     private Context mContext;
-   private String titles;
+    private String titles;
+
     public TaskPhotoAdapter(ArrayList<PhotoBean> imagePaths, Context context) {
         super();
         this.imagePaths = imagePaths;
@@ -67,16 +69,21 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
         holder.pop_tast_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mData = new ArrayList<>();
-                title = new ArrayList<String>();
-                for (int i = 0; i < imagePaths.size(); i++) {
-                    mData.add(imagePaths.get(i).getFilePath());
-                    //将路径和图片名称拼接。在展示图片时显示
-                    title.add(titles+">>"+imagePaths.get(i).getDrawingName());
+                if (imagePaths.get(position).getFilePath().isEmpty()) {
+                    mData = new ArrayList<>();
+                    title = new ArrayList<String>();
+                    for (int i = 0; i < imagePaths.size(); i++) {
+                        mData.add(imagePaths.get(i).getFilePath());
+                        //将路径和图片名称拼接。在展示图片时显示
+                        title.add(titles + ">>" + imagePaths.get(i).getDrawingName());
+                    }
+                    PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
+                            setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
+                            .start((Activity) mContext);
+                }else {
+                    ToastUtils.showShortToastCenter("暂无数据");
                 }
-                PhotoPreview.builder().setPhotos(mData).setCurrentItem(position).
-                        setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(title)
-                        .start((Activity) mContext);
+
             }
         });
 
@@ -88,9 +95,9 @@ public class TaskPhotoAdapter extends BaseAdapter implements ListAdapter {
         TextView pop_tast_item;
     }
 
-    public void getData(ArrayList<PhotoBean> imagePaths,String titles ) {
+    public void getData(ArrayList<PhotoBean> imagePaths, String titles) {
         this.imagePaths = imagePaths;
-      this.titles = titles;
-       notifyDataSetChanged();
+        this.titles = titles;
+        notifyDataSetChanged();
     }
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.Adapter.TabAdapters;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.utils.Dates;
@@ -101,6 +102,8 @@ public class TabFragment extends LazyFragment {
         listVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TenanceviewActivity activity = (TenanceviewActivity) mContext;
+                activity.setViewtype();
                 Intent intent = new Intent(mContext, MoretaskActivity.class);
                 intent.putExtra("id", mData.get(position).getId());
                 intent.putExtra("name", mData.get(position).getUser());

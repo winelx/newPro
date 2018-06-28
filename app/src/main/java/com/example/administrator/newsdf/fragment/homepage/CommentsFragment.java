@@ -83,7 +83,7 @@ public class CommentsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                Okgo();
+                Okgo(true);
                 refreshlayout.finishRefresh(1200);
             }
         });
@@ -93,7 +93,7 @@ public class CommentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Dates.getDialogs(getActivity(), "请求数据中");
-                Okgo();
+                Okgo(true);
             }
         });
 
@@ -106,11 +106,11 @@ public class CommentsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        Okgo();
+        Okgo(false);
         return view;
     }
 
-    private void Okgo() {
+    private void Okgo(final boolean newdata) {
         OkGo.get(Requests.GET_MY_LIST)
                 .execute(new StringCallback() {
                     @Override
@@ -155,24 +155,31 @@ public class CommentsFragment extends Fragment {
                                         e.printStackTrace();
                                         orgName = "";
                                     }
-                                    String contentNumBer= json.getString("task_counts");
+                                    String contentNumBer = json.getString("task_counts");
                                     String parentid = json.getString("parent_id");
                                     String parentname = json.getString("parent_name");
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
                                     setList.add(new Home_item(content, createTime, id, orgId, orgName, contentNumBer, "", parentname, parentid, false));
-
+                                }
+                                if (setList.size()>0){
+                                    mAdapter.getData(setList);
+                                    home_frag_img.setVisibility(View.GONE);
+                                }else {
+                                    home_frag_img.setVisibility(View.VISIBLE);
+                                    if (newdata){
+                                          ToastUtils.showLongToast("暂无数据");
+                                    }
                                 }
 
-                                mAdapter.getData(setList);
-                                home_frag_img.setVisibility(View.GONE);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } else
-
-                        {
+                        } else {
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("暂无数据，点击刷新");
+                            if (newdata){
+                                ToastUtils.showLongToast("暂无数据");
+                            }
                         }
 
                     }

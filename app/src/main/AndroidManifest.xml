@@ -225,6 +225,7 @@
         <activity android:name=".activity.work.pchoose.StandardActivity" />
         <activity android:name=".fragment.homepage.CommentmessageActivity" />
         <activity android:name=".fragment.homepage.CollectionlistActivity" />
+        <activity android:name=".activity.ZLAQActivity"/>
     </application>
 
 </manifest>

@@ -61,7 +61,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     private TabLayout mTabLayout;
     private TabAdapter mAdapter;
     private RelativeLayout tabulation;
-    private TextView title,drawer_layout_text;
+    private TextView title, drawer_layout_text;
     private LinearLayout com_img;
     private static int taskpage = 1;
     private int msg = 0, page = 1;
@@ -84,7 +84,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     private boolean liststatus = true;
     boolean anim = true;
     private ArrayList<String> namess;
-
+    int viewpagertype;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
@@ -115,7 +115,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerlayoutSmart.setEnableRefresh(false);
@@ -155,6 +155,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewpagertype =mViewPager.getCurrentItem();
                 Intent intent = new Intent(TenanceviewActivity.this, ReplysActivity.class);
                 intent.putExtra("position", -1);
                 //节点名称
@@ -285,7 +286,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 drew = true;
                 //网络请求
                 imagePaths.clear();
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("图纸");
                 Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(id, page, imagePaths, drew, taskAdapter, wbspath);
@@ -303,7 +304,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 liststatus = false;
                 imagePaths.clear();
                 drawer_layout_text.setText("标准");
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 Dates.getDialog(TenanceviewActivity.this, "请求数据中...");
                 HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -322,6 +323,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+
     /**
      * 返回更新数据
      */
@@ -346,6 +348,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
                                 }
                                 mAdapter = new TabAdapter(getSupportFragmentManager(), namess);
                                 mAdapter.getAdate(ids, id);
+                               mViewPager.setCurrentItem(viewpagertype);
                                 mTabLayout.setupWithViewPager(mViewPager);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -364,5 +367,9 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void newData() {
         Updata();
+    }
+
+    public void setViewtype(){
+        viewpagertype =mViewPager.getCurrentItem();
     }
 }

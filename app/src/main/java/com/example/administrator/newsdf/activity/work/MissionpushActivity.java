@@ -82,7 +82,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
-
+    int viewpagertype ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +160,6 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                 //切换ViewPager
                 mViewPager.setCurrentItem(tab.getPosition());
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
@@ -185,6 +184,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
         com_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewpagertype =mViewPager.getCurrentItem();
                 Intent intent = new Intent(MissionpushActivity.this, NewpushActivity.class);
                 intent.putExtra("wbsname", wbsname);
                 intent.putExtra("wbspath", wbspath);
@@ -265,7 +265,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 2) {
             msg = data.getIntExtra("position", 1);
-            mViewPager.setCurrentItem(msg);
+            mViewPager.setCurrentItem(viewpagertype);
         }
     }
 
@@ -426,9 +426,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                 drawer_layout_text.setText("标准");
                 taskAdapter.getData(imagePaths,"");
                 Dates.getDialog(MissionpushActivity.this, "请求数据中...");
-                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath
-
-                );
+                HomeUtils.getStard(id, page, imagePaths, drew, taskAdapter, wbspath);
                 drawer_layout.openDrawer(GravityCompat.START);
                 break;
             case R.id.fab:
