@@ -12,7 +12,7 @@
         android:layout_marginTop="5dp"
         android:textSize="12sp" />
 
-    <com.example.administrator.newsdf.view.MultiImageView
+    <com.example.administrator.newsdf.pzgc.view.MultiImageView
         android:layout_below="@+id/content"
         android:id="@+id/multiImageView"
         android:layout_width="match_parent"

@@ -10,9 +10,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.work.OrganiwbsActivity;
-import com.example.administrator.newsdf.activity.work.PopwindActivity;
-import com.example.administrator.newsdf.utils.Requests;
+import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
+import com.example.administrator.newsdf.pzgc.activity.work.PopwindActivity;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 

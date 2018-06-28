@@ -73,7 +73,7 @@
         </provider>
 
         <activity
-            android:name=".activity.BootupActivity"
+            android:name=".pzgc.activity.BootupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/StartTheme"
@@ -87,35 +87,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.mine.SettingActivity"
+            android:name=".pzgc.activity.mine.SettingActivity"
             android:screenOrientation="portrait" />
         <!-- //设置 -->
         <activity
-            android:name=".activity.mine.AboutmeActivity"
+            android:name=".pzgc.activity.mine.AboutmeActivity"
             android:screenOrientation="portrait" />
         <!-- //关于我们 -->
         <activity
-            android:name=".activity.work.PhotoadmActivity"
+            android:name=".pzgc.activity.work.PhotoadmActivity"
             android:screenOrientation="portrait" />
         <!-- //图册浏览 -->
         <activity
-            android:name=".activity.mine.OrganizationaActivity"
+            android:name=".pzgc.activity.mine.OrganizationaActivity"
             android:screenOrientation="portrait" />
         <!-- //我的组织界面 -->
         <activity
-            android:name=".activity.mine.ProjectmemberActivity"
+            android:name=".pzgc.activity.mine.ProjectmemberActivity"
             android:screenOrientation="portrait" />
         <!-- //项目成员 -->
         <activity
-            android:name=".activity.mine.PersonalActivity"
+            android:name=".pzgc.activity.mine.PersonalActivity"
             android:screenOrientation="portrait" />
         <!-- 个人信息 -->
         <activity
-            android:name=".activity.mine.PasswordActvity"
+            android:name=".pzgc.activity.mine.PasswordActvity"
             android:screenOrientation="portrait" />
         <!-- 修改密码 -->
         <activity
-            android:name=".activity.home.MineListmessageActivity"
+            android:name=".pzgc.activity.home.MineListmessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
@@ -124,85 +124,85 @@
         </intent-filter>
 
         <activity
-            android:name=".activity.home.same.ReplyActivity"
+            android:name=".pzgc.activity.home.same.ReplyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.home.TaskdetailsActivity"
+            android:name=".pzgc.activity.home.TaskdetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.work.TenanceviewActivity"
+            android:name=".pzgc.activity.work.TenanceviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.TabulationActivity"
+            android:name=".pzgc.activity.work.TabulationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.MissionpushActivity"
+            android:name=".pzgc.activity.work.MissionpushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.AllListmessageActivity"
+            android:name=".pzgc.activity.home.AllListmessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.OrganiwbsActivity"
+            android:name=".pzgc.activity.work.OrganiwbsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".pzgc.activity.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".pzgc.activity.MainActivity" />
         <activity
-            android:name=".activity.work.MmissPushActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.work.NewpushActivity"
+            android:name=".pzgc.activity.work.MmissPushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.NotuploadActivity"
+            android:name=".pzgc.activity.work.NewpushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.home.same.DirectlyreplyActivity"
+            android:name=".pzgc.activity.work.NotuploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pzgc.activity.home.same.DirectlyreplyActivity"
             android:screenOrientation="portrait" />
         <!-- //直接回复 -->
         <!-- //图片预览界面 -->
         <activity
-            android:name=".photopicker.PhotoPagerActivity"
+            android:name=".pzgc.photopicker.PhotoPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.work.ChoosecheckActivity" />
+        <activity android:name=".pzgc.activity.work.ChoosecheckActivity" />
         <activity
-            android:name=".activity.work.PopwindActivity"
+            android:name=".pzgc.activity.work.PopwindActivity"
             android:theme="@style/myTransparent">
             >
         </activity>
-        <activity android:name=".activity.home.same.Checkpoint" />
-        <activity android:name=".activity.work.PushdialogActivity" />
-        <activity android:name=".activity.work.pchoose.PchooseActivity" />
-        <activity android:name=".activity.work.PhotoListActivity" />
-        <activity android:name=".activity.work.ListPhActivity" />
-        <activity android:name=".activity.work.PushCheckActivity" />
-        <activity android:name=".activity.work.NodedetailsActivity" />
+        <activity android:name=".pzgc.activity.home.same.Checkpoint" />
+        <activity android:name=".pzgc.activity.work.PushdialogActivity" />
+        <activity android:name=".pzgc.activity.work.pchoose.PchooseActivity" />
+        <activity android:name=".pzgc.activity.work.PhotoListActivity" />
+        <activity android:name=".pzgc.activity.work.ListPhActivity" />
+        <activity android:name=".pzgc.activity.work.PushCheckActivity" />
+        <activity android:name=".pzgc.activity.work.NodedetailsActivity" />
 
         <service
-            android:name=".utils.UpdateService"
+            android:name=".pzgc.utils.UpdateService"
             android:enabled="true" />
 
         <activity
-            android:name=".activity.home.same.ReplysActivity"
+            android:name=".pzgc.activity.home.same.ReplysActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.lzy.imagepicker.ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerThemeFullScreen" />
-        <activity android:name=".activity.home.WebActivity" />
-        <activity android:name=".activity.work.ContactPeopleActivity" />
-        <activity android:name=".activity.work.UploadPhotoActivity" />
-        <activity android:name=".activity.work.TaskWbsActivity" />
-        <activity android:name=".activity.work.BrightspotActivity" />
-        <activity android:name=".activity.mine.ProjectMembersTreeActivity" />
-        <activity android:name=".activity.home.TaskRecordActivity" />
+        <activity android:name=".pzgc.activity.home.WebActivity" />
+        <activity android:name=".pzgc.activity.work.ContactPeopleActivity" />
+        <activity android:name=".pzgc.activity.work.UploadPhotoActivity" />
+        <activity android:name=".pzgc.activity.work.TaskWbsActivity" />
+        <activity android:name=".pzgc.activity.work.BrightspotActivity" />
+        <activity android:name=".pzgc.activity.mine.ProjectMembersTreeActivity" />
+        <activity android:name=".pzgc.activity.home.TaskRecordActivity" />
 
         <!-- User defined. 用户自定义的广播接收器 -->
         <receiver
-            android:name=".service.PushReceiver"
+            android:name=".pzgc.service.PushReceiver"
             android:enabled="true">
             <intent-filter>
 
@@ -221,11 +221,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.home.MoretaskActivity" />
-        <activity android:name=".activity.work.pchoose.StandardActivity" />
-        <activity android:name=".fragment.homepage.CommentmessageActivity" />
-        <activity android:name=".fragment.homepage.CollectionlistActivity" />
-        <activity android:name=".activity.ZLAQActivity"/>
+        <activity android:name=".pzgc.activity.home.MoretaskActivity" />
+        <activity android:name=".pzgc.activity.work.pchoose.StandardActivity" />
+        <activity android:name=".pzgc.fragment.homepage.CommentmessageActivity" />
+        <activity android:name=".pzgc.fragment.homepage.CollectionlistActivity" />
+        <activity android:name=".pzgc.activity.ZLAQActivity"/>
     </application>
 
 </manifest>

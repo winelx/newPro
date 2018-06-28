@@ -93,7 +93,7 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <com.example.administrator.newsdf.utils.list.XListView
+        <com.example.administrator.newsdf.pzgc.utils.list.XListView
             android:id="@+id/us_listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

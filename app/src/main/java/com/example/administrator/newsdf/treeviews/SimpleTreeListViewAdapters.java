@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.treeviews.utils.TreeHelpers;
 import com.example.administrator.newsdf.treeviews.utils.adapter.TreeListViewAdapters;

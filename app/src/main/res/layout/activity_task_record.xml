@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.administrator.newsdf.activity.home.TaskRecordActivity">
+    tools:context=".pzgc.activity.home.TaskRecordActivity">
 
     <include layout="@layout/toolbar"></include>
 

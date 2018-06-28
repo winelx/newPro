@@ -380,7 +380,7 @@
                     android:text="任务配比"
                     android:textSize="12sp" />
 
-                <com.example.administrator.newsdf.view.PieChartOne
+                <com.example.administrator.newsdf.pzgc.view.PieChartOne
                     android:id="@+id/piechartone"
                     android:layout_width="250dp"
                     android:layout_height="220dp"

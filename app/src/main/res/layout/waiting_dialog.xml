@@ -16,7 +16,7 @@
     <!--android:layout_width="50dp"-->
     <!--android:layout_height="50dp"-->
     <!--android:indeterminateDrawable="@drawable/progressbar"/>-->
-    <com.example.administrator.newsdf.progress.CircleProgress
+    <com.example.administrator.newsdf.pzgc.progress.CircleProgress
         android:layout_width="50dp"
         android:layout_height="50dp" />
 

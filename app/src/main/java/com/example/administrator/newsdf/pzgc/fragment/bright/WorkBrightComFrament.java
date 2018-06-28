@@ -1,0 +1,109 @@
+package com.example.administrator.newsdf.pzgc.fragment.bright;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.view.MultiImageView;
+
+import java.util.List;
+
+import static com.example.administrator.newsdf.pzgc.fragment.bright.FragmentBrightcomAdapter.mDataCom;
+
+
+/**
+ * description:分公司
+ *
+ * @author lx
+ *         date: 2018/5/17 0017 上午 11:00
+ *         update: 2018/5/17 0017
+ *         version:
+ */
+public class WorkBrightComFrament extends Fragment {
+    private int pos;
+    private View view;
+    private RelativeLayout brightspot;
+
+    @SuppressLint("ValidFragment")
+    public WorkBrightComFrament(int pos) {
+        this.pos = pos;
+    }
+
+    private MultiImageView multiImageView;
+    private TextView content;
+    private ImageView brightmark;
+    List<String> path;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.wrok_bright_fragment, container, false);
+        content = view.findViewById(R.id.content);
+        multiImageView = view.findViewById(R.id.multiImageView);
+        brightspot = view.findViewById(R.id.brightspot);
+        brightmark = view.findViewById(R.id.brightmark);
+        brightmark.setBackgroundResource(R.mipmap.marktwo);
+        try {
+            String Leadername = mDataCom.get(pos).getLeadername();
+            String titme = mDataCom.get(pos).getLeadername() + mDataCom.get(pos).getOrgName();
+            SpannableString sp1 = new SpannableString(titme);
+            sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
+                            .getColor(R.color.brighr_people)), 0,
+                    Leadername.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sp1.setSpan(new AbsoluteSizeSpan(13, true), 0, Leadername.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            content.setText(sp1);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        multiImageView.setMaxChildCount(5);
+        multiImageView.setMoreImgBg(R.mipmap.image_error);
+        try {
+            List<String> path = FragmentBrightcomAdapter.mDataCom.get(pos).getList();
+            String imagepath = Dates.listToString(path);
+            String[] urls = imagepath.split("，");
+            multiImageView.setImgs(urls, 5);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+//如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
+        multiImageView.setClickCallback(new MultiImageView.ClickCallback() {
+            @Override
+            public void callback(int index, String[] str) {
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
+                intent.putExtra("status", "true");
+                startActivity(intent);
+
+            }
+        });
+        brightspot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.getInstance(), TaskdetailsActivity.class);
+                String taskId = FragmentBrightcomAdapter.mDataCom.get(pos).getTaskId();
+                intent.putExtra("TaskId", taskId);
+                intent.putExtra("status", "true");
+                startActivity(intent);
+            }
+        });
+        return view;
+    }
+}

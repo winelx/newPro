@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.activity.mine.ProjectmemberActivity;
+import com.example.administrator.newsdf.pzgc.activity.mine.ProjectmemberActivity;
 
 import java.util.List;
 
