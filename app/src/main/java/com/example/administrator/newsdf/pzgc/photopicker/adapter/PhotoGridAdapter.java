@@ -118,7 +118,6 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .override(imageSize, imageSize)
-                        .override(350, 350)
                         .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                         .error(R.drawable.image_error);
                 glide.setDefaultRequestOptions(options)

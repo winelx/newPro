@@ -142,7 +142,10 @@
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">@color/green</item>
     </style>
-
+    <style name="Unfiled" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/red</item>
+    </style>
 
     //仿抽屉弹窗的弹出样式
     <style name="AnimationBottomFade">

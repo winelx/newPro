@@ -60,5 +60,6 @@
     <string name="ProjectMembers">项目成员</string>
     <string name="switchorganization">切换组织</string>
     <string name="fa_angle_right">{fa-angle-right}</string>
+    <string name="unified_title">交建统一登录平台</string>
 
 </resources>

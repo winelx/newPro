@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
 //标准图纸列表界面（图册的在photoadmActivity）
 public class StandardActivity extends AppCompatActivity {
     private RecyclerView photo_rec;
@@ -50,7 +51,7 @@ public class StandardActivity extends AppCompatActivity {
         Title = intent.getExtras().getString("title");
         groupId = intent.getExtras().getString("groupId");
         status = intent.getExtras().getString("status");
-        refreshlayout= (SmartRefreshLayout) findViewById(R.id.refreshlayout);
+        refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         refreshlayout.setEnableOverScrollBounce(true);
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
@@ -113,9 +114,11 @@ public class StandardActivity extends AppCompatActivity {
                         JSONObject json = jsonArray.getJSONObject(i);
                         String id = (String) json.get("id");
                         String filePath = (String) json.get("filePath");
+                        filePath = Requests.networks + filePath;
                         String drawingNumber;
                         try {
                             drawingNumber = (String) json.get("standardNumber");
+
                         } catch (JSONException e) {
                             drawingNumber = "";
                         }
@@ -131,7 +134,7 @@ public class StandardActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             drawingGroupName = "";
                         }
-                        filePath = Requests.networks + filePath;
+
                         imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                     }
                     photoAdapter.getData(imagePaths, Title, true);

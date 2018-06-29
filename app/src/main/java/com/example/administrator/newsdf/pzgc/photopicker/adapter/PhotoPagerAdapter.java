@@ -55,7 +55,6 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     .dontTransform()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
-                    .override(320, 320)
                     .error(R.drawable.image_error);
             mGlide.setDefaultRequestOptions(options)
                     .load(path)

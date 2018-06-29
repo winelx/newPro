@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.administrator.newsdf.zlaq.activity.UnifiedLoginActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.intent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ZLAQActivity.class));
+                startActivity(new Intent(LoginActivity.this, UnifiedLoginActivity.class));
             }
         });
     }
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.forget_password:
-                ToastUtils.showLongToast("请联系管理员");
+                ToastUtils.showLongToast("请联系管理员?");
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(password.getText().toString()) &&

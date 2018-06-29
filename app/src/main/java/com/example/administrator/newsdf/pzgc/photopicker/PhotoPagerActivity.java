@@ -143,7 +143,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
         } else {
             picker_horizon.setVisibility(View.GONE);
         }
-
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionBarTitle();
