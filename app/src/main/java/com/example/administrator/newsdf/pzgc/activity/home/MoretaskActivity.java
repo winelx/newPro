@@ -55,7 +55,7 @@ import okhttp3.Response;
  */
 public class MoretaskActivity extends AppCompatActivity implements View.OnClickListener {
     private Context mContext;
-    private TextView wbsNode,drawer_layout_text;
+    private TextView wbsNode, drawer_layout_text;
     private RecyclerView mRecyclerView;
     private MoretaskAdapter mAdapter;
     private ArrayList<Aduio_content> contents;
@@ -89,7 +89,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +166,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
 
     //初始化控件ID
     private void initfind() {
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         findViewById(R.id.com_back).setOnClickListener(this);
         //wbs路径
         iconTextView = (IconTextView) findViewById(R.id.iconTextView);
@@ -228,7 +227,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 drew = true;
                 //网络请求
                 imagePaths.clear();
-                taskPhotoAdapter.getData(imagePaths,"");
+                taskPhotoAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("图纸");
                 getPhoto();
                 //上拉加载的状态判断
@@ -244,7 +243,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 //上拉加载的状态判断
                 liststatus = false;
                 imagePaths.clear();
-                taskPhotoAdapter.getData(imagePaths,"");
+                taskPhotoAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("标准");
                 getSatard();
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -476,7 +475,6 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
     public String getId() {
         return taskID;
     }
-
 
 
 }

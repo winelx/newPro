@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="项目公司"
+            android:text="项目"
             android:textColor="#646464" />
 
     </LinearLayout>

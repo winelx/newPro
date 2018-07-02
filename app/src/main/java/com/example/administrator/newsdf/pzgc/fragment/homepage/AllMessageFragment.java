@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
@@ -22,7 +22,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,11 +38,9 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private MyExpandableListAdapter mAdapter;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-
-    private ArrayList<String> placedTop;
     private ExpandableListView expandable;
     private View.OnClickListener ivGoToChildClickListener;
-   private Map<String, List<Home_item>> map;
+    private  int groupPosition=0;
 
     @Nullable
     @Override
@@ -76,7 +73,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             public void onClick(View v) {
                 //获取被点击图标所在的group的索引
                 Map<String, Object> map = (Map<String, Object>) v.getTag();
-                int groupPosition = (int) map.get("groupPosition");
+                groupPosition = (int) map.get("groupPosition");
                 //判断分组是否展开
                 boolean isExpand = expandable.isGroupExpanded(groupPosition);
                 if (isExpand) {
@@ -114,8 +111,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         refreshLayout.finishRefresh(false);
     }
 
-
-
     //切换组织刷新界面
     @Override
     public void taskCallback() {
@@ -130,16 +125,13 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
      */
     @Override
     public void setAdapter(List<String> list, Map<String, List<Home_item>> map) {
-        this.map=map;
-
         mAdapter = new MyExpandableListAdapter(list, map, mContext,
                 ivGoToChildClickListener);
-        expandable.setAdapter(mAdapter);
         expandable.setAdapter(mAdapter);
         //默认展开第一个分组
         refreshLayout.finishRefresh(false);
     }
-
+    //重新加载数据
     public void Intent() {
         new AllmessagePer(this).getMode();
     }

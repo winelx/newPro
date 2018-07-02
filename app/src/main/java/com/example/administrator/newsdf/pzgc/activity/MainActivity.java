@@ -1,17 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Slide;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         workbtight = false;
         dates = new Dates();
-
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
@@ -144,13 +140,6 @@ public class MainActivity extends AppCompatActivity {
         //数据处理
         initTab();
 
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setupWindowAnimations() {
-        Slide slide = new Slide();
-        slide.setDuration(1000);
-        getWindow().setExitTransition(slide);
     }
 
     @Override

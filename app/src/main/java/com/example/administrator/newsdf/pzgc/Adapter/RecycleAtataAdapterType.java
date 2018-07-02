@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -36,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.layout.audio_data_item;
 import static com.example.administrator.newsdf.camera.ToastUtils.showLongToast;
 
 
@@ -75,11 +76,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //主体内容
         return new Viewholder(LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.audio_data_item, parent, false));
+                inflate(audio_data_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         bindContent((Viewholder) holder, position);
     }
 
@@ -94,6 +95,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         } else {
             holder.audioRec.setVisibility(View.INVISIBLE);
             holder.audioNotimage.setVisibility(View.VISIBLE);
+        }
+      int size=  mDatas.size()-1;
+        if (posotion==size){
+            holder.related.setVisibility(View.VISIBLE);
+        }else {
+            holder.related.setVisibility(View.GONE);
         }
         Glide.with(mContext)
                 .load(mDatas.get(posotion).getUserpath())
@@ -378,10 +385,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         private RecyclerView audioRec;
         private LinearLayout audioDataComm, givealike;
         private ImageView givealikeImage, audioNotimage, collectionImage;
-        private LinearLayout collection;
+        private LinearLayout collection, audio_data_item, related;
 
         Viewholder(View itemView) {
             super(itemView);
+            related = itemView.findViewById(R.id.related);
             //头像
             audioAcathor = itemView.findViewById(R.id.audio_acathor);
             //文字内容

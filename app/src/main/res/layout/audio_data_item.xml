@@ -106,6 +106,7 @@
 
 
     <LinearLayout
+        android:id="@+id/related"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/audio_data"
@@ -160,8 +161,8 @@
                 android:layout_marginLeft="2dp"
                 android:gravity="center"
                 android:paddingTop="3dp"
-                android:textColor="@color/persomal_text"
                 android:text="@string/collection"
+                android:textColor="@color/persomal_text"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -186,8 +187,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center"
                 android:layout_marginLeft="2dp"
-                android:textColor="@color/persomal_text"
                 android:text="评论"
+                android:textColor="@color/persomal_text"
                 android:textSize="12sp" />
 
             <TextView

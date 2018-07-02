@@ -64,7 +64,7 @@ public class CommentsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_collection, container, false);
         mContext = getActivity();
 
         mAdapter = new CommentsAdapter(mContext);
@@ -76,9 +76,12 @@ public class CommentsFragment extends Fragment {
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(mAdapter);
-        refreshLayout.setEnableLoadmore(false);//禁止上拉
-        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
-        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        //禁止上拉
+        refreshLayout.setEnableLoadmore(false);
+        //仿ios越界
+        refreshLayout.setEnableOverScrollBounce(true);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

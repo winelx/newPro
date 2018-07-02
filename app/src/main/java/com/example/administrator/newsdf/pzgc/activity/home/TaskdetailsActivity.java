@@ -655,6 +655,10 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                         subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
                                         smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
                                         userimage, filename, isSmartProject, isFavorite, smartProjectType));
+                                aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                        subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
+                                        smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
+                                        userimage, filename, isSmartProject, isFavorite, smartProjectType));
                             }
                             /**
                              * 回复评论

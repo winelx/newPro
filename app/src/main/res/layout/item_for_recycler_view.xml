@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/moretask_content"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:id="@+id/moretask_content"
     android:orientation="vertical">
 
     <TextView
+        android:layout_width="1.5dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginStart="38dp"
+        android:background="#a8a8a8" />
+
+
+    <TextView
+        android:id="@+id/segmentation"
         android:layout_width="1.5dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="38dp"
@@ -46,7 +55,6 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/hollow_round_gray" />
 
-
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
@@ -68,6 +76,5 @@
         android:layout_marginLeft="45dp"
         android:layout_marginTop="59dp"
         android:background="#dddddd" />
-
 
 </RelativeLayout>

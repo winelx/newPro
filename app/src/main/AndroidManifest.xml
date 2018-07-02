@@ -227,7 +227,8 @@
         <activity android:name=".pzgc.fragment.homepage.CollectionlistActivity" />
         <activity android:name=".pzgc.activity.ZLAQActivity" />
         <activity android:name=".zlaq.activity.UnifiedLoginActivity" />
-        <activity android:name=".zlaq.activity.UnifiedHomeActivity"></activity>
+        <activity android:name=".zlaq.activity.UnifiedHomeActivity" />
+        <activity android:name=".pzgc.activity.audit.AuditActivity" />
     </application>
 
 </manifest>

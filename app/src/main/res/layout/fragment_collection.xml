@@ -47,14 +47,15 @@
             android:layout_height="wrap_content" />
 
 
-        <ExpandableListView
-            android:id="@+id/expandable"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/home_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/writer"
             android:divider="@color/back"
-            android:dividerHeight="@null"
-            android:groupIndicator="@color/colorAccent" />
+            android:dividerHeight="0.5dp"
+            android:scrollbars="none"
+            />
+
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter
             android:layout_width="match_parent"

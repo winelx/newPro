@@ -86,13 +86,18 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof MoreTaskDataAdapter.ContentHolder) {
             // 获取holder对象
             MoreTaskDataAdapter.ContentHolder myHolder = (MoreTaskDataAdapter.ContentHolder) holder;
-
             //设置创建时间
             myHolder.create_time.setText(list.get(position - 1).getUploadTime());
             MoretaskActivity activity = (MoretaskActivity) mContext;
             String taskId = activity.getId();
             String Id = list.get(position - 1).getId();
             String content = list.get(position - 1).getPartContent();
+               int size= list.size();
+            if (size==position){
+                myHolder.segmentation.setVisibility(View.GONE);
+            }else {
+                myHolder.segmentation.setVisibility(View.VISIBLE);
+            }
             if (taskId.equals(Id)) {
                 //设置部位名称
                 if (content.isEmpty()) {
@@ -108,10 +113,8 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     myHolder.itemText.setText("未填写部位");
                 } else {
                     myHolder.itemText.setText(list.get(position - 1).getPartContent());
-
                 }
             }
-
             //设置点击事件
             myHolder.moretask_content.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,24 +139,25 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // 头部
     private class HeadHolder extends RecyclerView.ViewHolder {
         private TextView button, taskNumber, moretaskname;
-        private ImageView moretaskimage;
 
+        private ImageView moretaskImage;
         public HeadHolder(View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.head);
             taskNumber = itemView.findViewById(R.id.taskNumber);
             moretaskname = itemView.findViewById(R.id.moretaskname);
-            moretaskimage = itemView.findViewById(R.id.moretaskImage);
+            moretaskImage = itemView.findViewById(R.id.moretaskImage);
         }
     }
 
     // 内容
     private class ContentHolder extends RecyclerView.ViewHolder {
-        TextView itemText, create_time;
+        TextView itemText, create_time,segmentation;
         RelativeLayout moretask_content;
 
         public ContentHolder(View itemView) {
             super(itemView);
+            segmentation=itemView.findViewById(R.id.segmentation);
             itemText = itemView.findViewById(R.id.item_text);
             create_time = itemView.findViewById(R.id.create_time);
             moretask_content = itemView.findViewById(R.id.moretask_content);

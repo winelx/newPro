@@ -18,10 +18,10 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.audit.AuditActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.administrator.newsdf.zlaq.activity.UnifiedLoginActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.intent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, UnifiedLoginActivity.class));
+                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
             }
         });
     }
@@ -203,7 +203,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 e.printStackTrace();
                                 moblie = "";
                             }
-
                             //职员ID
                             SPUtils.putString(mContext, "staffId", staffId);
                             //所在组织名称
@@ -222,10 +221,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (status) {
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
                                 finish();
                             } else {
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
                                 finish();
                             }
                             Dates.disDialog();

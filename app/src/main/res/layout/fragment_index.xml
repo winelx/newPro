@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -65,8 +66,8 @@
                 android:layout_height="15dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="12dp"
-                android:visibility="gone"
-                android:background="@drawable/home_item_red" />
+                android:background="@drawable/home_item_red"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/homepage_mine"
@@ -114,7 +115,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/homeage_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp" />
 
 
 </LinearLayout>
