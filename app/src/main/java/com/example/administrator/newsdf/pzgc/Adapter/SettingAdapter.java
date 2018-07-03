@@ -176,6 +176,8 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             return this;
         }
 
+
+
         /**
          * 设置自定义控件文字和背景
          */

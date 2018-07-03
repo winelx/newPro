@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class Utils {
      *501～700：key验证失败，请按照说明文档重新申请KEY。
      */
 
+
     public static float[] EARTH_WEIGHT = {0.1f, 0.2f, 0.4f, 0.6f, 0.8f}; // 推算计算权重_地球
     //public static float[] MOON_WEIGHT = {0.0167f,0.033f,0.067f,0.1f,0.133f};
     //public static float[] MARS_WEIGHT = {0.034f,0.068f,0.152f,0.228f,0.304f};
@@ -54,4 +56,28 @@ public class Utils {
     public void showLog(String key, String Value) {
         Log.i(key, Value);
     }
+
+
+    //界面亮度
+    public static void backgroundAlpha(float bgAlpha, Activity activity) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        activity.getWindow().setAttributes(lp);
+    }
+
+    public static String[] years = new String[]{"2010年", "2011年", "2012年", "2013年", "2014年",
+            "2015年", "2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
+
+    public static String[] month = new String[]{"01月", "02月", "03月", "04月", "05月",
+            "06月", "07月", "08月", "09月", "10月", "11月", "12月"};
+
+    public static String[] day = new String[]{"01日", "02日", "03日", "04日", "05日",
+            "06日", "07日", "08日", "09日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日",
+            "21日", "22日", "23日", "24日", "25日", "36日", "27日", "28日", "28日", "30日", "31日"};
+    public static String[] daytwo = new String[]{"01日", "02日", "03日", "04日", "05日",
+            "06日", "07日", "08日", "09日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日",
+            "21日", "22日", "23日", "24日", "25日", "36日", "27日", "28日", "28日", "30日", "30日"};
+    public static String[] dayth = new String[]{"01日", "02日", "03日", "04日", "05日",
+            "06日", "07日", "08日", "09日", "10日", "11日", "12日", "13日", "14日", "15日", "16日", "17日", "18日", "19日", "20日",
+            "21日", "22日", "23日", "24日", "25日", "36日", "27日", "28日", "28日", "30日"};
 }

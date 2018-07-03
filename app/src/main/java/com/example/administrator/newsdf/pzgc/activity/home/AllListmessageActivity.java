@@ -374,10 +374,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -443,7 +440,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     }
 
     //设置pop的点击事件
-
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID

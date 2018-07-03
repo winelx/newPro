@@ -221,10 +221,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (status) {
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
-                                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             } else {
-                                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
                             Dates.disDialog();

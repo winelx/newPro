@@ -12,6 +12,7 @@
         ` `
 
         <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/iconTextView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center|start"
@@ -27,13 +28,21 @@
             android:layout_height="match_parent"
             android:layout_weight="8" />
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/audit_meun"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@mipmap/meun"
-            android:gravity="center" />
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@mipmap/meun"
+                android:gravity="center" />
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -48,6 +57,7 @@
             android:layout_height="wrap_content" />
 
         <ListView
+            android:layoutAnimation="@anim/anim_listview_item"
             android:id="@+id/aduit_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
