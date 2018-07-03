@@ -115,5 +115,8 @@ dependencies {
     compile 'com.blankj:utilcode:1.15.0'
     //轮播图
     compile 'com.youth.banner:banner:1.4.10'
+    //时间选择器
+    compile 'com.contrarywind:Android-PickerView:4.1.4'
+
     testCompile 'junit:junit:4.12'
 }
