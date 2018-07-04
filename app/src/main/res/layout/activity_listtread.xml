@@ -146,7 +146,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:id="@+id/relativeLayout2">
 
                 <LinearLayout
                     android:id="@+id/listerad_nonumber"
@@ -202,7 +203,10 @@
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-            <include layout="@layout/floating_meun_button" />
+            <include layout="@layout/floating_meun_button"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/relativeLayout2"
+                android:layout_toEndOf="@+id/relativeLayout2" />
 
         </RelativeLayout>
 

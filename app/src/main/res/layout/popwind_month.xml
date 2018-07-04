@@ -51,6 +51,7 @@
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/pop_vaulee"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -58,13 +59,6 @@
                 android:text="月"
                 android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="日"
-                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,11 +80,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <NumberPicker
-                android:id="@+id/day"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
 
         </LinearLayout>
 

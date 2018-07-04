@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorAccent">
+
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/reprot_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|start"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:text="{fa-angle-left}"
+            android:textColor="@color/writer"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="统计报表"
+            android:textColor="@color/writer"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

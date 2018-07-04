@@ -101,7 +101,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             if (content.size() != 0) {
                 holder.linearLayout.setVisibility(View.VISIBLE);
-                holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+//                holder.detailsFixedData.setText(content.get(posotion).getBackdata());
                 String stand = content.get(posotion).getCheckStandard();
                     holder.details_checkStandard.setText("标准:" + stand);
                 String str = content.get(posotion).getContent();
@@ -124,7 +124,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
 
                 }// 转交说明
-                holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
+//                holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
                 holder.detailsFixedBoolean.setText("任务状态:");
             }
         }
@@ -172,10 +172,8 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             linearLayout = itemView.findViewById(R.id.linearLayout);
             detailsTitle = itemView.findViewById(R.id.details_title);
             detailsData = itemView.findViewById(R.id.details_data);
-            detailsFixedData = itemView.findViewById(R.id.details_end_data);
             detailsUser = itemView.findViewById(R.id.details_user);
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
-            handoverStatusDescription = itemView.findViewById(R.id.handover_status_description);
             detailsContent = itemView.findViewById(R.id.details_content);
 
         }

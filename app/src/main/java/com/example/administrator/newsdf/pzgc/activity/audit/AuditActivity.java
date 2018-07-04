@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class AuditActivity extends AppCompatActivity {
     private ListView aduit_list;
     private SettingAdapter adapter;
     private PopupWindow mPopupWindow;
+    private IconTextView aduit_back;
     private LinearLayout audit_meunl;
     private float ste;
 
@@ -53,6 +55,7 @@ public class AuditActivity extends AppCompatActivity {
         ste = ScreenUtil.getDensity(App.getInstance());
         title = new ArrayList<>();
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
+        aduit_back = (IconTextView) findViewById(R.id.aduit_back);
         title.add(new Audittitlebean("2018年07月01日", "20", "审核"));
         title.add(new Audittitlebean("2018年07月01日", "32", "未审核"));
         title.add(new Audittitlebean("2018年07月01日", "15", "审核"));
@@ -68,17 +71,25 @@ public class AuditActivity extends AppCompatActivity {
             }
         };
         aduit_list.setAdapter(adapter);
+        //listview 点击事件
         aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtils.showLongToast(position + "");
             }
         });
-
+        //功能按钮
         audit_meunl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MeunPop();
+            }
+        });
+        //返回按钮
+        aduit_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

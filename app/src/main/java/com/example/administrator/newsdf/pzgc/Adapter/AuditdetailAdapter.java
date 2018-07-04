@@ -20,11 +20,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/12/13 0013.
- * 任务详情
+ * head_for_recyclerview   item_for_recycler_view   foot_for_recyclerview
+ * 多任务回复的适配器
  */
 
-public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AuditdetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     public static final int TYPE_XBANNR = 0xff01;
     public static final int TYPE_GRID = 0xff02;
     public static final int TYPE_LIST = 0xff03;
@@ -40,7 +41,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     int bright;
 
     //构造
-    public AudioAdapter(Context mContext) {
+    public AuditdetailAdapter(Context mContext) {
         this.mContext = mContext;
         content = new ArrayList<>();
         datas = new ArrayList<>();
@@ -123,7 +124,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //转交人
             holder.detailsUser.setText(content.get(posotion).getLeaderName());
             if (content.get(posotion).getStatus().equals("0")) {
-                holder.detailsData.setText(content.get(posotion).getCreateDate() + "  已推送：" + data);
+                holder.detailsData.setText(content.get(posotion).getCreateDate() + " 已推送：" + data);
                 //状态
                 holder.detailsBoolean.setText("未完成");
                 //状态
@@ -203,8 +204,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             detailsUser = itemView.findViewById(R.id.details_user);
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             detailsContent = itemView.findViewById(R.id.details_content);
-
-//            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }
 
@@ -239,6 +238,4 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.comms = comms;
         notifyDataSetChanged();
     }
-
-
 }

@@ -230,6 +230,7 @@
         <activity android:name=".zlaq.activity.UnifiedHomeActivity" />
         <activity android:name=".pzgc.activity.audit.AuditActivity" />
         <activity android:name=".pzgc.activity.audit.ReportActivity" />
+        <activity android:name=".pzgc.activity.audit.AuditdetailsActivity" />
     </application>
 
 </manifest>

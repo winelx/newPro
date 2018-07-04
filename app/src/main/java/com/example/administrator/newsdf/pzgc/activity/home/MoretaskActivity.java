@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.MoretaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
@@ -208,7 +209,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
      * 暴露给adapter的方法，给点击事件使用,跳转界面
      */
     public void onclick(int pos) {
-        Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+        Intent intent = new Intent(mContext, AuditdetailsActivity.class);
         intent.putExtra("TaskId", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         //判断能否可以跳转任务管理

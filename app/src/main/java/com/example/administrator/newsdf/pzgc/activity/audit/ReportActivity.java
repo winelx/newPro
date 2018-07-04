@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.pzgc.activity.audit.fragment.Dailyrecord
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.MonthrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.QuarterrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,12 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     private ViewPager reportViewpager;
     private static ReportActivity mContext;
     private TextView reportDaily, reportMonth, reportQuarter;
+    private IconTextView reprot_back;
+
     public static ReportActivity getInstance() {
         return mContext;
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private void findView() {
+        reprot_back = (IconTextView) findViewById(R.id.reprot_back);
         reportViewpager = (ViewPager) findViewById(R.id.report_viewpager);
         reportDaily = (TextView) findViewById(R.id.report_daily);
         reportMonth = (TextView) findViewById(R.id.report_month);
@@ -54,6 +59,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportDaily.setOnClickListener(this);
         reportMonth.setOnClickListener(this);
         reportQuarter.setOnClickListener(this);
+        reprot_back.setOnClickListener(this);
     }
 
     private void initData() {
@@ -117,6 +123,9 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.report_quarter:
                 reportViewpager.setCurrentItem(2, false);
                 break;
+            case R.id.reprot_back:
+                finish();
+                break;
             default:
                 break;
         }
@@ -139,7 +148,6 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportMonth.setTextColor(Color.parseColor("#999797"));
         reportQuarter.setTextColor(Color.parseColor("#5096F8"));
     }
-
 
 
 }

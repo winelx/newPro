@@ -6,10 +6,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
+import android.widget.DatePicker;
+import android.widget.NumberPicker;
 
-import com.example.administrator.newsdf.camera.ToastUtils;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Utils {
@@ -70,14 +72,17 @@ public class Utils {
         activity.getWindow().setAttributes(lp);
     }
 
-    public static String[] years = new String[]{"2010年", "2011年", "2012年", "2013年", "2014年",
-            "2015年", "2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
+    public static String[] years = new String[]{"2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
 
     public static String[] month = new String[]{
             "01月", "02月", "03月",
             "04月", "05月", "06月",
             "07月", "08月", "09月",
             "10月", "11月", "12月"};
+    public static String[] quarter = new String[]{
+            "一季度", "二季度", "三季度",
+            "四季度",};
+
 
     public static String[] day = new String[]{
             "01日", "02日", "03日", "04日", "05日",
@@ -85,7 +90,7 @@ public class Utils {
             "11日", "12日", "13日", "14日", "15日",
             "16日", "17日", "18日", "19日", "20日",
             "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日", "28日", "30日", "31日"};
+            "26日", "27日", "28日", "29日", "30日", "31日"};
     public static String[] daytwo = new String[]{
             "01日", "02日", "03日", "04日", "05日",
             "06日", "07日", "08日", "09日", "10日",
@@ -106,14 +111,77 @@ public class Utils {
             "11日", "12日", "13日", "14日", "15日",
             "16日", "17日", "18日", "19日", "20日",
             "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日", "28日", "30日"};
+            "26日", "27日", "28日", "29日", "30日"};
 
-    public static List<Integer> getyear() {
-        ArrayList<Integer> year = new ArrayList<>();
+    public static List<String> getyear() {
+        ArrayList<String> year = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             int teger = 2012 + i * 4;
-            year.add(teger);
+            year.add(teger + "年");
         }
         return year;
     }
+
+
+    //选择器抽取方法
+    public static void setPicker(NumberPicker View, String[] str, int time) {
+        //设置需要显示的数组
+        View.setDisplayedValues(str);
+        View.setWrapSelectorWheel(true);
+        //这两行不能缺少,不然只能显示第一个，关联到format方法
+        View.setMinValue(0);
+        View.setMaxValue(str.length - 1);
+        //中间不可点击
+        View.setValue(time);
+        View.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    //获取当前 年与日
+    public static String titleDay() {
+        //设置日期格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
+        // new Date()为获取当前系统时间，也可使用当前时间戳
+        String date = df.format(new Date());
+        return date;
+    }
+
+    //获取当前 年与日
+    public static String titleMonth() {
+        //设置日期格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月");
+        // new Date()为获取当前系统时间，也可使用当前时间戳
+        String date = df.format(new Date());
+        return date;
+    }
+
+    public static int titleyear() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy年");
+        // new Date()为获取当前系统时间，也可使用当前时间戳
+        String date = df.format(new Date());
+        int datayear = 0;
+        for (int i = 0; i < years.length; i++) {
+            String str = years[i];
+            if (str.equals(date)) {
+                datayear = i;
+            }
+        }
+        return datayear;
+    }
+
+    public static int getquarter() {
+        int quarter = 0;
+        Date myDate = new Date();
+        int dateMonth = myDate.getMonth();
+        if (dateMonth < 4) {
+            quarter = 1;
+        } else if (dateMonth > 3 && dateMonth <= 6) {
+            quarter = 2;
+        } else if (dateMonth >= 7 && dateMonth <= 9) {
+            quarter = 3;
+        } else if (dateMonth > 9) {
+            quarter = 4;
+        }
+        return quarter;
+    }
+
 }

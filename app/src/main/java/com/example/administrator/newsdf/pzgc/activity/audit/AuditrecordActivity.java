@@ -1,0 +1,17 @@
+package com.example.administrator.newsdf.pzgc.activity.audit;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+
+/**
+ * Created by Administrator on 2018/7/4 0004.
+ */
+
+public class AuditrecordActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+}

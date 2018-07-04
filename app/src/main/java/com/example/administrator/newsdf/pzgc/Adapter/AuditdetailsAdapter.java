@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * 任务详情
  */
 
-public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AuditdetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_XBANNR = 0xff01;
     public static final int TYPE_GRID = 0xff02;
     public static final int TYPE_LIST = 0xff03;
@@ -33,14 +34,14 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private ArrayList<Aduio_data> datas;
     private ArrayList<Aduio_comm> comms;
 
-    private RecycleAtataAdapterType dataTypeAdapter;
+    private AuditAtataAdapterType dataTypeAdapter;
     private RecycleCommAdapterType commlistBTypeAdapter;
     private Context mContext;
     private boolean status = false;
     int bright;
 
     //构造
-    public AudioAdapter(Context mContext) {
+    public AuditdetailsAdapter(Context mContext) {
         this.mContext = mContext;
         content = new ArrayList<>();
         datas = new ArrayList<>();
@@ -117,7 +118,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.detailspart.setText(content.get(posotion).getPartContent());
             String str = content.get(posotion).getContent();
             holder.detailsContent.setText("内容：" + str);
-            holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+
             String stand = content.get(posotion).getCheckStandard();
             holder.details_checkStandard.setText("标准:" + stand);
             //转交人
@@ -133,11 +134,9 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.detailsData.setText(content.get(posotion).getCreateDate());
                 //状态
                 holder.detailsBoolean.setText("已完成");
-                //状态 finish_green
-                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
+                holder.detailsBoolean.setTextColor(Color.parseColor("#22c67b"));
 
             }// 转交说明
-            holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
             holder.detailsFixedBoolean.setText("部位状态:");
         } else {
             holder.linearLayout.setVisibility(View.GONE);
@@ -153,7 +152,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (datas.size() != 0) {
             holder.setpin.setVisibility(View.VISIBLE);
             holder.dataRec.setLayoutManager(new LinearLayoutManager(holder.dataRec.getContext(), LinearLayoutManager.VERTICAL, false));
-            dataTypeAdapter = new RecycleAtataAdapterType(mContext, status, bright);
+            dataTypeAdapter = new AuditAtataAdapterType(mContext, status, bright);
             holder.dataRec.setAdapter(dataTypeAdapter);
             dataTypeAdapter.getdata(datas);
         } else {
@@ -188,8 +187,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private LinearLayout linearLayout, detailsParts;
         private TextView detailsTitle, detailsData, details_checkStandard,
                 detailsUser, detailsBoolean, detailspart,
-                handoverStatusDescription, handoverHuifu,
-                detailsContent, detailsFixedData, handoversText, detailsFixedBoolean;
+                detailsContent, detailsFixedBoolean;
 
         public TypeBannerHolder(View itemView) {
             super(itemView);
@@ -203,8 +201,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             detailsUser = itemView.findViewById(R.id.details_user);
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             detailsContent = itemView.findViewById(R.id.details_content);
-
-//            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }
 

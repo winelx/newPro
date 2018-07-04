@@ -12,7 +12,7 @@
         ` `
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/iconTextView2"
+            android:id="@+id/aduit_back"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center|start"

@@ -8,26 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
-import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+
 
 /**
  * description:每日审核
@@ -46,12 +39,12 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private DailyrecordAdapter mAdapter;
     private Context mContext;
     private PopupWindow mPopupWindow;
-    private float ste;
+
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private String[] NumberMonth, NumberYear;
     private Date myDate = new Date();
-    private int dateMonth, dayDate, yeartime;
-   private int NewVal;
+    private int dateMonth, dayDate;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,24 +53,15 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
         }
-        ArrayList<Integer> year = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            int teger = 2012 + i * 4;
-            LogUtil.i("syssy", teger);
-            year.add(teger);
-        }
-        ste = ScreenUtil.getDensity(App.getInstance());
         mContext = getActivity();
-        Calendar cal = Calendar.getInstance();
-        yeartime = cal.get(Calendar.YEAR);
-        ToastUtils.showLongToast(yeartime + "");
         datatime.setOnClickListener(this);
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
         NumberMonth = Utils.month;
         NumberYear = Utils.years;
         dayDate = myDate.getDate() - 1;
-        dateMonth = myDate.getMonth() + 1;
+        dateMonth = myDate.getMonth();
+        datatime.setText(Utils.titleDay());
         return rootView;
     }
 
@@ -107,7 +91,31 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-
+                    case R.id.pop_determine:
+                        //获取年
+                        String yeardata = Utils.years[yearPicker.getValue()];
+                        //获取月
+                        int month = monthPicker.getValue();
+                        String monthdata = Utils.month[month];
+                        //获取天
+                        int day = dayPicker.getValue();
+                        String daydata;
+                        if (monthdata.equals("02月")) {
+                            //是二月份
+                            if (Utils.getyear().contains(yeardata)) {
+                                daydata = Utils.daytwos[day];
+                                //闰年
+                            } else {
+                                //平年
+                                daydata = Utils.daytwo[day];
+                            }
+                        } else {
+                            //不是二月份
+                            daydata = Utils.day[day];
+                        }
+                        datatime.setText(yeardata + monthdata + daydata);
+                        break;
+                    case R.id.pop_dismiss:
                     default:
                         break;
                 }
@@ -116,71 +124,35 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                 }
             }
         };
-        TextView time = contentView.findViewById(R.id.createdate);
+        contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
-        setPicker(yearPicker, Utils.years, 8);
+        Utils.setPicker(yearPicker, Utils.years, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
-        setPicker(monthPicker, Utils.month, dateMonth - 1);
+        Utils.setPicker(monthPicker, Utils.month, dateMonth);
         dayPicker = contentView.findViewById(R.id.day);
         if (dateMonth == 2) {
-            setPicker(dayPicker, Utils.daytwo, dayDate);
+            Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
         } else if (dateMonth == 1 || dateMonth == 3 || dateMonth == 5 || dateMonth == 7 || dateMonth == 8 || dateMonth == 10 || dateMonth == 12) {
-            setPicker(dayPicker, Utils.day, dayDate);
+            Utils.setPicker(dayPicker, Utils.day, dayDate);
         } else {
-            setPicker(dayPicker, Utils.dayth, dayDate);
+            Utils.setPicker(dayPicker, Utils.dayth, dayDate);
         }
         yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                String str = NumberYear[i1];
-                String mont = NumberMonth[NewVal];
-                if (mont.equals("02月")) {
-                    if (Utils.getyear().contains(str)) {
-                        dayPicker.setDisplayedValues(null);
-                        dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                        dayPicker.setDisplayedValues(Utils.daytwos);
-                        dayPicker.setMinValue(0);
-                    } else {
-                        dayPicker.setDisplayedValues(null);
-                        dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                        dayPicker.setDisplayedValues(Utils.daytwo);
-                        dayPicker.setMinValue(0);
-                    }
-                }
+                setyear(i1);
+
             }
         });
         monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal,
                                       int newVal) {
-                NewVal=newVal;
-              String  NewVal = NumberMonth[newVal];
-                if (NewVal.equals("02月")) {
-                    if (Utils.getyear().contains(yeartime)) {
-                        dayPicker.setDisplayedValues(null);
-                        dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                        dayPicker.setDisplayedValues(Utils.daytwos);
-                        dayPicker.setMinValue(0);
-                    } else {
-                        dayPicker.setDisplayedValues(null);
-                        dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                        dayPicker.setDisplayedValues(Utils.daytwo);
-                        dayPicker.setMinValue(0);
-                    }
-                } else if (NewVal.equals("01月") || NewVal.equals("03月") || NewVal.equals("05月") ||
-                        NewVal.equals("07月") || NewVal.equals("08月") || NewVal.equals("10月") || NewVal.equals("12月")) {
-                    dayPicker.setDisplayedValues(null);
-                    dayPicker.setMaxValue(Utils.day.length - 1);
-                    dayPicker.setDisplayedValues(Utils.day);
-                    dayPicker.setMinValue(0);
-                } else if (NewVal.equals("04月") || NewVal.equals("06月") || NewVal.equals("09月") || NewVal.equals("11月")) {
-                    dayPicker.setDisplayedValues(null);
-                    dayPicker.setMaxValue(Utils.dayth.length - 1);
-                    dayPicker.setDisplayedValues(Utils.dayth);
-                    dayPicker.setMinValue(0);
-                }
+                setMonth(newVal);
             }
         });
+
         return contentView;
     }
 
@@ -205,15 +177,83 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public void setPicker(NumberPicker View, String[] str, int time) {
-        //设置需要显示的数组
-        View.setDisplayedValues(str);
-        View.setWrapSelectorWheel(true);
-        //这两行不能缺少,不然只能显示第一个，关联到format方法
-        View.setMinValue(0);
-        View.setMaxValue(str.length - 1);
-        //中间不可点击
-        View.setValue(time);
-        View.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+    //设置选择年，控制二月天数
+    public void setyear(int i1) {
+        //月份
+        String mont = Utils.month[monthPicker.getValue()];
+        //年份
+        String str = NumberYear[i1];
+        //如果选择中的月份是二月
+        if (mont.equals("02月")) {
+            //判断是闰年还是平年
+            if (Utils.getyear().contains(str)) {
+                dayPicker.setDisplayedValues(null);
+                dayPicker.setMaxValue(Utils.daytwos.length - 1);
+                dayPicker.setDisplayedValues(Utils.daytwos);
+                dayPicker.setMinValue(0);
+            } else {
+                dayPicker.setDisplayedValues(null);
+                dayPicker.setMaxValue(Utils.daytwo.length - 1);
+                dayPicker.setDisplayedValues(Utils.daytwo);
+                dayPicker.setMinValue(0);
+            }
+        }
+    }
+
+    //设置选择月，控制二月天数
+    public void setMonth(int newVal) {
+        String NewVal = NumberMonth[newVal];
+        String years = NumberYear[yearPicker.getValue()];
+        if (NewVal.equals("02月")) {
+            if (Utils.getyear().contains(years)) {
+                //如果是闰年。二月有29天
+                dayPicker.setDisplayedValues(null);
+                dayPicker.setMaxValue(Utils.daytwos.length - 1);
+                dayPicker.setDisplayedValues(Utils.daytwos);
+                dayPicker.setMinValue(0);
+            } else {
+                //如果是平年。二月有28天
+                dayPicker.setDisplayedValues(null);
+                dayPicker.setMaxValue(Utils.daytwo.length - 1);
+                dayPicker.setDisplayedValues(Utils.daytwo);
+                dayPicker.setMinValue(0);
+            }
+        } else if (NewVal.equals("01月") || NewVal.equals("03月") || NewVal.equals("05月") ||
+                NewVal.equals("07月") || NewVal.equals("08月") || NewVal.equals("10月") || NewVal.equals("12月")) {
+            dayPicker.setDisplayedValues(null);
+            dayPicker.setMaxValue(Utils.day.length - 1);
+            dayPicker.setDisplayedValues(Utils.day);
+            dayPicker.setMinValue(0);
+        } else if (NewVal.equals("04月") || NewVal.equals("06月") || NewVal.equals("09月") || NewVal.equals("11月")) {
+            dayPicker.setDisplayedValues(null);
+            dayPicker.setMaxValue(Utils.dayth.length - 1);
+            dayPicker.setDisplayedValues(Utils.dayth);
+            dayPicker.setMinValue(0);
+        }
+    }
+
+    public String getData() {
+        //获取年
+        String yeardata = Utils.years[yearPicker.getValue()];
+        //获取月
+        int month = monthPicker.getValue();
+        String monthdata = Utils.month[month];
+        //获取天
+        int day = dayPicker.getValue();
+        String daydata;
+        if (monthdata.equals("02月")) {
+            //是二月份
+            if (Utils.getyear().contains(yeardata)) {
+                daydata = Utils.daytwos[day];
+                //闰年
+            } else {
+                //平年
+                daydata = Utils.daytwo[day];
+            }
+        } else {
+            //不是二月份
+            daydata = Utils.day[day];
+        }
+        return yeardata + monthdata + daydata;
     }
 }
