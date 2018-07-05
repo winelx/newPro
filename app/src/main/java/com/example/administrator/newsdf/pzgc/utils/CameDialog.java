@@ -51,7 +51,7 @@ public class CameDialog {
     private static final int IMAGE_PICKER = 101;
     private ArrayList<File> files;
 
-    public void setDialog(final String wtMainid, final Activity activity) {
+    public void setDialog(final String wtMainid, final Activity activity, String str) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
         LinearLayout root = (LinearLayout) LayoutInflater.from(activity).inflate(
                 R.layout.dialog_custom, null);
@@ -60,6 +60,7 @@ public class CameDialog {
         final EditText editext = (EditText) root.findViewById(R.id.par_editext);
         final ImageView imageView = (ImageView) root.findViewById(R.id.par_image);
         dialog_rec = root.findViewById(R.id.dialog_rec);
+        editext.setHint(str);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         dialog_rec.setLayoutManager(linearLayoutManager);
@@ -79,7 +80,7 @@ public class CameDialog {
                 if (str == null || str.isEmpty()) {
                     ToastUtils.showShortToast("回复不能为空");
                 } else {
-                    Dates.getDialogs(activity,"上传数据中");
+                    Dates.getDialogs(activity, "上传数据中");
                     send.setClickable(false);
                     send.setTextColor(Color.parseColor("#F0F0F0"));
                     files = new ArrayList<>();
@@ -126,33 +127,34 @@ public class CameDialog {
                                 });
                     } else {
                         mRequest.execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(String s, Call call, Response response) {
-                                        Dates.disDialog();
-                                        send.setClickable(true);
-                                        send.setTextColor(Color.parseColor("#5096F8"));
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(s);
-                                            int ret = jsonObject.getInt("ret");
-                                            //提示消息
-                                            ToastUtils.showLongToast(jsonObject.getString("msg"));
-                                            if (ret == 0) {
-                                                path.clear();
-                                                DetailsCallbackUtils.dohomeCallBackMethod();
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                        mCameraDialog.dismiss();
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                Dates.disDialog();
+                                send.setClickable(true);
+                                send.setTextColor(Color.parseColor("#5096F8"));
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    //提示消息
+                                    ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                    if (ret == 0) {
+                                        path.clear();
+                                        DetailsCallbackUtils.dohomeCallBackMethod();
                                     }
-                                    @Override
-                                    public void onError(Call call, Response response, Exception e) {
-                                        super.onError(call, response, e);
-                                        Dates.disDialog();
-                                        send.setClickable(true);
-                                        send.setTextColor(Color.parseColor("#5096F8"));
-                                    }
-                                });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                mCameraDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                                Dates.disDialog();
+                                send.setClickable(true);
+                                send.setTextColor(Color.parseColor("#5096F8"));
+                            }
+                        });
                     }
 
                 }

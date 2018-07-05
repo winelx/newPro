@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 
@@ -56,13 +57,28 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
 
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
+        String url = mDatas.get(posotion).getReplyUserHeaderURL();
+
         Glide.with(mContext)
-                .load(mDatas.get(posotion).getUserpath())
+                .load(url)
                 .into(holder.audio_acathor);
         holder.audio_name.setText(mDatas.get(posotion).getReplyUserName());
         holder.audio_data.setText(mDatas.get(posotion).getUpdateDate());
         holder.audio_content.setText(mDatas.get(posotion).getUploadContent());
         holder.audio_address.setText(mDatas.get(posotion).getUploadAddr());
+        holder.details_audit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        holder.details_rejected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuditdetailsActivity audio = (AuditdetailsActivity) mContext;
+                cameDialog.setDialog(audio.getId(), audio,"输入打回理由");
+            }
+        });
     }
 
     @Override
@@ -73,6 +89,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     private class Viewholder extends RecyclerView.ViewHolder {
         ImageView audio_acathor;
         TextView audio_name, audio_data, audio_content, audio_address;
+        TextView details_rejected, details_audit;
 
         Viewholder(View itemView) {
             super(itemView);
@@ -81,6 +98,8 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
             audio_data = itemView.findViewById(R.id.audio_data);
             audio_content = itemView.findViewById(R.id.audio_content);
             audio_address = itemView.findViewById(R.id.audio_address);
+            details_audit = itemView.findViewById(R.id.details_audit);
+            details_rejected = itemView.findViewById(R.id.details_rejected);
         }
     }
 

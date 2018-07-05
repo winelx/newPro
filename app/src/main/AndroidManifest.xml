@@ -231,6 +231,8 @@
         <activity android:name=".pzgc.activity.audit.AuditActivity" />
         <activity android:name=".pzgc.activity.audit.ReportActivity" />
         <activity android:name=".pzgc.activity.audit.AuditdetailsActivity" />
+        <activity android:name=".pzgc.activity.audit.AuditrecordActivity" />
+        <activity android:name=".pzgc.activity.home.same.WorkareaActivity"></activity>
     </application>
 
 </manifest>

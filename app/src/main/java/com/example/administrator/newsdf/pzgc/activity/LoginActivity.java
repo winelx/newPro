@@ -18,7 +18,6 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.audit.AuditActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -67,12 +66,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
-        findViewById(R.id.intent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, AuditActivity.class));
-            }
-        });
     }
 
     @Override

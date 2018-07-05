@@ -23,12 +23,12 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
-import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.same.WorkareaActivity;
+import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -67,12 +67,12 @@ import okhttp3.Response;
  */
 public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
-            nodeWbsStatus, nodeWbsUsername, nodeWbsProgress;
+            nodeWbsStatus, nodeWbsUsername, nodeWbsProgress, node_lin_workarea_item;
     String wbsId, userID, status, wbsName, wbspath, type;
 
-    ArrayList<Audio> mData;
+
     private PopupWindow popupWindow;
-    private TextView nodeStartText, nodeStopText, nodeCompleteText,drawer_layout_text;
+    private TextView nodeStartText, nodeStopText, nodeCompleteText, drawer_layout_text;
     private ImageView nodeStart, nodeStop, nodeComplete;
     private Dialog mCameraDialog;
     private Context mContext;
@@ -85,13 +85,13 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private TaskPhotoAdapter taskAdapter;
     private int page = 1;
     private boolean drew = true, iswbs, isParent;
-    private ArrayList<String> titlename ;
+    private ArrayList<String> titlename;
     private ArrayList<String> titles = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
-    private String usernameId;
+    private String usernameId, workArea, workareaId;
     //弹出框
     private CircleImageView fab;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meun_standard, meun_photo, node_lin_workarea;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
@@ -103,7 +103,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_nodedetails);
         mContext = NodedetailsActivity.this;
         floatMeunAnims = new FloatMeunAnims();
-        mData = new ArrayList<>();
+
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         //节点ID
@@ -112,18 +112,19 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         type = intent.getExtras().getString("type");
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
-
         wbspath = intent.getExtras().getString("wbspath");
         findViewById(R.id.node_lin_complete).setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
         findViewById(R.id.node_lin_stop).setOnClickListener(this);
         findViewById(R.id.node_lin_start).setOnClickListener(this);
         findViewById(R.id.node_commit).setOnClickListener(this);
+        findViewById(R.id.node_lin_workarea).setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+        node_lin_workarea_item = (TextView) findViewById(R.id.node_lin_workarea_item);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
 
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
@@ -156,7 +157,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         taskAdapter = new TaskPhotoAdapter(imagePaths, NodedetailsActivity.this);
         drawer_layout_list.setAdapter(taskAdapter);
         okgo();
-        userdetails();
+
         //返回
         findViewById(R.id.check_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +183,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 refreshlayout.finishLoadmore(1000);
             }
         });
-
     }
 
     void okgo() {
@@ -211,6 +211,8 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                             String finish = json.getString("finish") + "%";
                             nodeWbsProgress.setText(finish);
                             nodeStatus(status);
+                            workArea = json.getString("workArea");
+                            node_lin_workarea_item.setText(workArea);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -261,59 +263,35 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+
     /**
-     * 获取联系人
+     * 修改任务配置
      */
-    void userdetails() {
-        OkGo.<String>post(Requests.UserList)
+    void commit() {
+        OkGo.<String>post(Requests.WbsTaskConfig)
+                .params("id", wbsId)
+                .params("leaderId", usernameId)
+                .params("finish", number)
+                .params("workarea", workareaId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("wbsOID", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray1.length(); i++) {
-                                JSONObject json = jsonArray1.getJSONObject(i);
-                                String id = json.getString("id");
-                                String name = json.getString("name");
-                                mData.add(new Audio(name, id));
+                            int ret = jsonObject.getInt("ret");
+                            String msg = jsonObject.getString("msg");
+                            if (ret == 0) {
+                                okgo();
+                                ToastUtils.showShortToast(msg);
+                            } else {
+                                ToastUtils.showShortToast(msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-
-    }
-
-
-    /**
-     * 修改负责人
-     */
-    void commit() {
-            OkGo.<String>post(Requests.WbsTaskConfig)
-                    .params("id", wbsId)
-                    .params("leaderId", usernameId)
-                    .params("finish", number)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            LogUtil.i("wbsOID", s);
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                String msg = jsonObject.getString("msg");
-                                if (ret == 0) {
-                                  okgo();
-                                    ToastUtils.showShortToast(msg);
-                                } else {
-                                    ToastUtils.showShortToast(msg);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
 
     }
 
@@ -384,7 +362,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
                         }
                     });
-        }else {
+        } else {
             ToastUtils.showLongToast("只有负责人能修改状态");
         }
     }
@@ -445,6 +423,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      */
     String name, id;
 
+    /**
+     * 跳转界面请求的数据
+     */
     private void getOko(final String str, final String wbsname) {
         Dates.getDialog(NodedetailsActivity.this, "请求数据中");
         titlename = new ArrayList<>();
@@ -531,6 +512,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             String user = data.getStringExtra("name");
             usernameId = data.getStringExtra("userId");
             nodeWbsUsername.setText(user);
+        } else if (requestCode == 2 && resultCode == 3) {
+            node_lin_workarea_item.setText(data.getStringExtra("name"));
+            workareaId = data.getStringExtra("userId");
         }
     }
 
@@ -583,7 +567,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                     anim = true;
                 }
                 break;
-
             case R.id.node_configuration_task:
                 //任务配置
                 getOko(wbsId, wbsName);
@@ -595,10 +578,10 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 setDialog();
                 break;
             case R.id.user_list:
-                    //选择责任人
-                    Intent intent = new Intent(mContext, ContactPeopleActivity.class);
-                    intent.putExtra("data", "newpush");
-                    startActivityForResult(intent, 1);
+                //选择责任人
+                Intent intent = new Intent(mContext, ContactPeopleActivity.class);
+                intent.putExtra("data", "newpush");
+                startActivityForResult(intent, 1);
                 break;
             case R.id.node_lin_start:
                 //更改状态，判断是否处于该状态 启动
@@ -686,7 +669,11 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 });
                 selfDialog.show();
                 break;
-
+            case R.id.node_lin_workarea:
+                //修改工区
+                Intent intent1 = new Intent(mContext, WorkareaActivity.class);
+                startActivityForResult(intent1, 2);
+                break;
             default:
                 break;
         }

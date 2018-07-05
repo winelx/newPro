@@ -53,6 +53,9 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
         }
+        for (int i = 0; i < 100; i++) {
+            list.add("");
+        }
         mContext = getActivity();
         datatime.setOnClickListener(this);
         mAdapter = new DailyrecordAdapter(mContext, list);

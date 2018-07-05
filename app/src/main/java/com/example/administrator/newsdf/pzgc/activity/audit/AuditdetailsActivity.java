@@ -59,13 +59,13 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditdetails);
         Intent intent = getIntent();
+        mContext = this;
         taskId = intent.getExtras().getString("TaskId");
         mRecyclerView = (RecyclerView) findViewById(R.id.auditdetails_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AuditdetailsAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
         wbspath = (TextView) findViewById(R.id.auditdetails_path);
-        mContext = this;
         newArray();
         okgo(taskId);
     }
@@ -406,7 +406,7 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (wbsName.length() != 0) {
+                        if (wbsName != null) {
                             wbspath.setText(wbsName);
                         }
                     }

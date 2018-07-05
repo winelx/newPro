@@ -6,10 +6,10 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    //public static final String networks = "http://192.168.20.33:8080/";
-    // public static final String networks = "http://192.168.20.35:8080/pzgc/";
+public static final String networks = "http://192.168.20.33:8080/";
+    //public static final String networks = "http://192.168.20.35:8080/pzgc/";
     //public static final String networks = "http://192.168.1.119:8081/pzgc/";
-    public static final String networks = "http://117.187.27.78:58081/pzgc/";
+  //  public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -202,4 +202,9 @@ public class Requests {
      * 评论列表界面tree
      */
     public static final String GETMYTREE = networks + "iface/mobile/taskmain/selectCommentWbsTree";
+    /**
+     * 工区
+     */
+    public static final String WORK_AREA = networks + "iface/mobile/taskmsg/findWbsworkArea";
+
 }

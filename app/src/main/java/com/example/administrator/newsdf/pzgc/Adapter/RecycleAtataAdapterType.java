@@ -36,7 +36,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.R.layout.audio_data_item;
 import static com.example.administrator.newsdf.camera.ToastUtils.showLongToast;
 
 
@@ -76,7 +75,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //主体内容
         return new Viewholder(LayoutInflater.from(parent.getContext()).
-                inflate(audio_data_item, parent, false));
+                inflate(R.layout.audio_data_item, parent, false));
     }
 
     @Override
@@ -96,10 +95,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             holder.audioRec.setVisibility(View.INVISIBLE);
             holder.audioNotimage.setVisibility(View.VISIBLE);
         }
-      int size=  mDatas.size()-1;
-        if (posotion==size){
+        int size = mDatas.size() - 1;
+        if (posotion == size) {
             holder.related.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.related.setVisibility(View.GONE);
         }
         Glide.with(mContext)
@@ -201,13 +200,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
-                cameDialog.setDialog(audio.getId(), audio);
+                cameDialog.setDialog(audio.getId(), audio, "输入回复内容");
             }
         });
         /**
          * 收藏/取消收藏
-         */
-        holder.collection.setOnClickListener(new View.OnClickListener() {
+         */holder.collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskdetailsActivity audio = (TaskdetailsActivity) mContext;

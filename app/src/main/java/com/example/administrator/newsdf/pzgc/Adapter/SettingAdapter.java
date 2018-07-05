@@ -2,6 +2,9 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +34,10 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
     private List<T> mData;
     //布局id
     private int mLayoutRes;
+
     public SettingAdapter() {
     }
+
 
     public SettingAdapter(List<T> mData, int mLayoutRes) {
         this.mData = mData;
@@ -176,6 +181,25 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             return this;
         }
 
+        /**
+         * 设置有颜色文字
+         */
+        public ViewHolder setText(Context mContext, int id, String text, int num,  int color2) {
+            View view = getView(id);
+            SpannableString sp = new SpannableString(text);
+            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                            .getColor(R.color.black)), 0,
+                    num,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                            .getColor(color2)), num + 1,
+                    text.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (view instanceof TextView) {
+                ((TextView) view).setText(sp);
+            }
+            return this;
+        }
 
 
         /**
@@ -234,7 +258,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
          */
         public ViewHolder setImage(int id, String url) {
             View view = getView(id);
-            LogUtil.i("url",url);
+            LogUtil.i("url", url);
             if (view instanceof ImageView) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
@@ -250,12 +274,12 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             return this;
         }
 
-        public ViewHolder setImages(int id, String url,Context context) {
+        public ViewHolder setImages(int id, String url, Context context) {
             View view = getView(id);
             if (view instanceof ImageView) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .transform(new GlideRoundTransform(context,50))
+                        .transform(new GlideRoundTransform(context, 50))
                         .error(R.mipmap.mine_avatar)
                         .placeholder(R.mipmap.image_loading)
                         .diskCacheStrategy(DiskCacheStrategy.ALL);

@@ -17,14 +17,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.activity.audit.AuditActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.PasswordActvity;
 import com.example.administrator.newsdf.pzgc.activity.mine.ProjectMembersTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.SettingActivity;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -136,6 +137,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             //切换组织
             case R.id.organizationa:
                 startActivity(new Intent(getActivity(), OrganizationaActivity.class));
+                break;
+            case R.id.mine_avatar:
+                startActivity(new Intent(getActivity(), AuditActivity.class));
                 break;
             //项目成员
             case R.id.projectmember:

@@ -117,7 +117,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.detailspart.setText(content.get(posotion).getPartContent());
             String str = content.get(posotion).getContent();
             holder.detailsContent.setText("内容：" + str);
-            holder.detailsFixedData.setText(content.get(posotion).getBackdata());
+//            holder.detailsFixedData.setText(content.get(posotion).getBackdata());
             String stand = content.get(posotion).getCheckStandard();
             holder.details_checkStandard.setText("标准:" + stand);
             //转交人
@@ -137,7 +137,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
 
             }// 转交说明
-            holder.handoverStatusDescription.setText(content.get(posotion).getCreateDate());
             holder.detailsFixedBoolean.setText("部位状态:");
         } else {
             holder.linearLayout.setVisibility(View.GONE);
@@ -188,8 +187,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private LinearLayout linearLayout, detailsParts;
         private TextView detailsTitle, detailsData, details_checkStandard,
                 detailsUser, detailsBoolean, detailspart,
-                handoverStatusDescription, handoverHuifu,
-                detailsContent, detailsFixedData, handoversText, detailsFixedBoolean;
+                detailsContent, detailsFixedBoolean;
 
         public TypeBannerHolder(View itemView) {
             super(itemView);

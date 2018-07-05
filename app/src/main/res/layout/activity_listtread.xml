@@ -203,10 +203,7 @@
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-            <include layout="@layout/floating_meun_button"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/relativeLayout2"
-                android:layout_toEndOf="@+id/relativeLayout2" />
+            <include layout="@layout/floating_meun_button" />
 
         </RelativeLayout>
 

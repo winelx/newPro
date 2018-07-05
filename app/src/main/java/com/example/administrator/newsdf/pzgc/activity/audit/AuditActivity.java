@@ -76,6 +76,7 @@ public class AuditActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtils.showLongToast(position + "");
+                startActivity(new Intent(AuditActivity.this, AuditrecordActivity.class));
             }
         });
         //功能按钮
