@@ -22,7 +22,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="0dp"
-            android:text="请及时上传安装盖板的相关请及时上传安装盖板的相关资料资料"
             android:textColor="@color/black"
             android:textSize="15sp" />
 

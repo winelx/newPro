@@ -72,7 +72,7 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
     private ListView drawerLayoutList;
     private boolean drew = true;
     private boolean isParent, iswbs;
-    ArrayList<String> replly;
+    private  ArrayList<String> replly;
     private ArrayList<PhotoBean> imagePaths;
     private ArrayList<String> ids,
             names,

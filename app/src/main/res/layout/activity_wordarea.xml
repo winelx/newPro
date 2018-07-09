@@ -16,7 +16,7 @@
         android:background="@color/colorPrimaryDark">
 
         <LinearLayout
-            android:id="@+id/com_back"
+            android:id="@+id/workarea_back"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="start|left"
@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="选择责任人"
+            android:text="选择工区"
             android:textColor="@color/writer"
             android:textSize="18sp" />
 
@@ -50,10 +50,10 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="center|end"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <ImageView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"

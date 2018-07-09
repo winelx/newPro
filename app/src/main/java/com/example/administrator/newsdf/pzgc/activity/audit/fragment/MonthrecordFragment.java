@@ -45,13 +45,13 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
+            rootView.findViewById(R.id.audit_title).setOnClickListener(this);
         }
         for (int i = 0; i < 100; i++) {
             list.add("a" + i);
         }
         title.setText("选择月份");
         datatime.setText(Utils.titleMonth());
-        datatime.setOnClickListener(this);
         mContext = getActivity();
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
@@ -113,7 +113,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.datatime:
+            case R.id.audit_title:
                 MeunPop();
                 break;
             default:

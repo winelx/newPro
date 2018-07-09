@@ -222,7 +222,6 @@ public class BootupActivity extends AppCompatActivity {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             }
-
             if (permissions.size() > 0) {
                 requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
             }
@@ -238,7 +237,7 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        //进行假登录，登录后重定向
+                        //进行登录，登录后重定向
                         okgo(user, password);
                     }
 

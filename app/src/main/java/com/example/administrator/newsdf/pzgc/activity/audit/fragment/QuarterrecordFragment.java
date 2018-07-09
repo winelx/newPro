@@ -44,6 +44,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
+            rootView.findViewById(R.id.audit_title).setOnClickListener(this);
         }
         for (int i = 0; i < 100; i++) {
             list.add("ass" + i);
@@ -52,7 +53,6 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         datatime.setText(date + Utils.quarter[Utils.getquarter()]);
-        datatime.setOnClickListener(this);
         title.setText("选择季度");
         mContext = getActivity();
         mAdapter = new DailyrecordAdapter(mContext, list);
@@ -116,7 +116,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.datatime:
+            case R.id.audit_title:
                 MeunPop();
                 break;
             default:

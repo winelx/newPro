@@ -118,25 +118,6 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         };
         findID();   //发现ID
         title.setText("任务回复");
-//        reply_text.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_DEL) {
-//                    num++;
-//                    //在这里加判断的原因是点击一次软键盘的删除键,会触发两次回调事件
-//                    if (num % 2 != 0) {
-//                        String s = reply_text.getText().toString();
-//                        if (!TextUtils.isEmpty(s)) {
-//                            reply_text.setText("" + s.substring(0, s.length() - 1));
-//                            //将光标移到最后
-//                            reply_text.setSelection(reply_text.getText().length());
-//                        }
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
         loaction();//定位
         initDate();//recycclerView
     }
@@ -144,17 +125,17 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     //定位
     private void loaction() {
         //定位初始化
-        locationService = ((App) getApplication()).locationService;
+
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
-        locationService.registerListener(mListener);
+      ((App) getApplication()).locationService.registerListener(mListener);
         //注册监听
         int type = getIntent().getIntExtra("from", 0);
-        if (type == 0) {
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+      if (type == 0) {
+          ((App) getApplication()).locationService.setLocationOption( ((App) getApplication()).locationService.getDefaultLocationClientOption());
         } else if (type == 1) {
-            locationService.setLocationOption(locationService.getOption());
+            ((App) getApplication()).locationService.setLocationOption( ((App) getApplication()).locationService.getOption());
         }
-        locationService.start();// 定位SDK
+       ((App) getApplication()).locationService.start();// 定位SDK
     }
 
     //发现ID
@@ -390,18 +371,14 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
                 // 纬度
-                sb.append("\nlatitude : ");
                 sb.append(location.getLatitude());
                 Latitude = location.getLatitude() + "";
-                // 经度
-                sb.append("\nlontitude : ");
                 sb.append(location.getLongitude());
                 Longitude = location.getLongitude() + "";
                 // 地址信息
-                sb.append("\naddr : ");
                 Bai_address = location.getAddrStr();
                 repley_address.setText(location.getAddrStr());
-                locationService.stop();// 定位SDK
+                ((App) getApplication()).locationService.stop();// 定位SDK
             }
         }
     };
@@ -495,5 +472,4 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         }
         return false;
     }
-
 }

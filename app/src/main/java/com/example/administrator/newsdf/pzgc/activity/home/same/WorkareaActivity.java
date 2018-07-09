@@ -29,7 +29,7 @@ public class WorkareaActivity extends AppCompatActivity {
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;
     private Context mContext;
-    private LinearLayout mine_backgroud;
+    private LinearLayout mine_backgroud,com_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,12 @@ public class WorkareaActivity extends AppCompatActivity {
                 });
             }
         };
+        findViewById(R.id.workarea_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         uslistView.setAdapter(mAdapter);
     }
 

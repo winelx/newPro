@@ -263,7 +263,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
     /**
      * 修改任务配置
      */
@@ -363,7 +362,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
         } else {
-            ToastUtils.showLongToast("只有负责人能修改状态");
+            ToastUtils.showLongToast("只有责任人能修改状态");
         }
     }
 

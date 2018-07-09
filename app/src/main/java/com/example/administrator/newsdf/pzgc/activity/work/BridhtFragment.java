@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.administrator.newsdf.pzgc.Adapter.BridhtAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.bean.BrightBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.BridhtAdapter;
+import com.example.administrator.newsdf.pzgc.bean.BrightBean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -42,7 +42,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.stampToDate;
  *         update: 2018/4/25 0025
  *         version:
  */
-public class BridhtFragment extends Fragment {
+public class BridhtFragment extends Fragment  {
     View view;
     private int pos = 0;
     private BridhtAdapter mAdapter;
@@ -62,6 +62,7 @@ public class BridhtFragment extends Fragment {
         view = inflater.inflate(R.layout.bright_list_view, container, false);
         brightspot_list = view.findViewById(R.id.brightspot_list);
         refreshlayout = view.findViewById(R.id.refreshlayout);
+
         refreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         refreshlayout.setEnableLoadmore(false);//禁止上拉
         refreshlayout.setEnableRefresh(true);
@@ -175,8 +176,8 @@ public class BridhtFragment extends Fragment {
                                     }
                                     mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, pos, ImagePaths));
                                 }
-                            }else {
-                                if (stauts){
+                            } else {
+                                if (stauts) {
                                     ToastUtils.showLongToast("暂无数据");
                                 }
                             }
@@ -188,4 +189,6 @@ public class BridhtFragment extends Fragment {
 
                 });
     }
+
+
 }

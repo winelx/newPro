@@ -39,7 +39,6 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private DailyrecordAdapter mAdapter;
     private Context mContext;
     private PopupWindow mPopupWindow;
-
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private String[] NumberMonth, NumberYear;
     private Date myDate = new Date();
@@ -52,12 +51,13 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             rootView = inflater.inflate(R.layout.fragment_daily, null);
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
+            rootView.findViewById(R.id.audit_title).setOnClickListener(this);
+
         }
         for (int i = 0; i < 100; i++) {
             list.add("");
         }
         mContext = getActivity();
-        datatime.setOnClickListener(this);
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
         NumberMonth = Utils.month;
@@ -162,7 +162,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.datatime:
+            case R.id.audit_title:
                 MeunPop();
                 break;
             default:

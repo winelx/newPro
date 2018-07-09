@@ -249,7 +249,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
                     pushOkgo(strids);
                 } else {
                     Dates.disDialog();
-                    ToastUtils.showShortToast("请选择推送项");
+                    ToastUtils.showShortToastCenter("请选择推送项");
                 }
 
             }

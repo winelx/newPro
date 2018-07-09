@@ -15,7 +15,6 @@ import android.widget.PopupWindow;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Auditbean;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
@@ -75,7 +74,7 @@ public class AuditActivity extends AppCompatActivity {
         aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtils.showLongToast(position + "");
+
                 startActivity(new Intent(AuditActivity.this, AuditrecordActivity.class));
             }
         });

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * description:
+ * description:审核统计报表
  *
  * @author lx
  *         date: 2018/7/3 0003 上午 9:37
@@ -48,8 +48,6 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         //初始化数据
         initData();
     }
-
-
     private void findView() {
         reprot_back = (IconTextView) findViewById(R.id.reprot_back);
         reportViewpager = (ViewPager) findViewById(R.id.report_viewpager);

@@ -110,7 +110,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private LinearLayout meun_standard, meun_photo;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
-    boolean anim = true;
+    boolean anim = true, brightlean;
 
     public static TaskdetailsActivity getInstance() {
         return mContext;
@@ -161,6 +161,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         try {
             TaskId = intent.getExtras().getString("TaskId");
             status = intent.getExtras().getString("status");
+            brightlean = intent.getExtras().getBoolean("bright");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -168,7 +169,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-
+            brightlean = false;
         }
         okgo(TaskId);
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
@@ -374,16 +375,16 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("task",s);
+                        LogUtil.i("task", s);
                         //任务详情
                         try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                if (ret == 0) {
-                                    contents.clear();
-                                    aduioDatas.clear();
-                                    aduioComms.clear();
-                                }
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                contents.clear();
+                                aduioDatas.clear();
+                                aduioComms.clear();
+                            }
                             JSONObject data = jsonObject.getJSONObject("data");
                             JSONObject wtMain = data.getJSONObject("wtMain");
                             JSONObject createBy = wtMain.getJSONObject("createBy");
@@ -522,7 +523,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 checkStandard = wtMain.getString("checkStandard");
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                checkStandard ="";
+                                checkStandard = "";
                             }
                             //部位
                             String partContent;
@@ -775,5 +776,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 audioComMark.setBackgroundResource(R.mipmap.markone);
                 break;
         }
+    }
+
+    public boolean getbright(){
+        return brightlean;
     }
 }

@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.administrator.newsdf.pzgc.activity.work.BridhtFragment;
+import com.example.administrator.newsdf.pzgc.callback.BridhtFragmentCallback;
+import com.example.administrator.newsdf.pzgc.callback.BridhtFragmentCallbackUtil;
 
 import java.util.ArrayList;
 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/4/20 0020.
  */
 
-public class BrightViewpagerAdapter extends FragmentStatePagerAdapter {
+public class BrightViewpagerAdapter extends FragmentStatePagerAdapter implements BridhtFragmentCallback {
 
     private FragmentManager mFragmentManager;
     public static ArrayList<String> mData;
@@ -21,6 +23,7 @@ public class BrightViewpagerAdapter extends FragmentStatePagerAdapter {
     public BrightViewpagerAdapter(FragmentManager fm, ArrayList<String> name) {
         super(fm);
         this.mFragmentManager = fm;
+        BridhtFragmentCallbackUtil.setCallBack(this);
         mData = name;
 
     }
@@ -53,4 +56,10 @@ public class BrightViewpagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
+
+
+    @Override
+    public void updata() {
+       notifyDataSetChanged();
+    }
 }

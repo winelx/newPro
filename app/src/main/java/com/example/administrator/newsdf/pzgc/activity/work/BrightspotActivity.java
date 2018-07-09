@@ -145,13 +145,11 @@ public class BrightspotActivity extends AppCompatActivity implements View.OnClic
         bridhtCompany.setTextColor(Color.parseColor("#F27F19"));
         bridhtProject.setTextColor(Color.parseColor("#646464"));
     }
-
     //项目
     public void projecrtselect() {
         bridhtGroup.setTextColor(Color.parseColor("#646464"));
         bridhtCompany.setTextColor(Color.parseColor("#646464"));
         bridhtProject.setTextColor(Color.parseColor("#F27F19"));
     }
-
 
 }

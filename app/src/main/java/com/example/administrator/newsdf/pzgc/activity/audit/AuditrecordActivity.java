@@ -26,7 +26,7 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.ArrayList;
 
 /**
- * description:
+ * description:审核任务列表
  *
  * @author lx
  *         date: 2018/7/5 0005 上午 9:43

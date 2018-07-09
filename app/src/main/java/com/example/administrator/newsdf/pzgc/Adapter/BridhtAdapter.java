@@ -92,6 +92,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
                 intent.putExtra("TaskId", mData.get(position).getTaskId());
                 intent.putExtra("status", "false");
+                intent.putExtra("bright", true);
                 mContext.startActivity(intent);
             }
         });
@@ -101,6 +102,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Intent intent = new Intent(mContext, TaskdetailsActivity.class);
                 intent.putExtra("TaskId", mData.get(position).getTaskId());
                 intent.putExtra("status", "false");
+                intent.putExtra("bright", true);
                 mContext.startActivity(intent);
             }
         });

@@ -57,7 +57,6 @@
             android:layout_height="wrap_content" />
 
         <ListView
-            android:layoutAnimation="@anim/anim_listview_item"
             android:id="@+id/aduit_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

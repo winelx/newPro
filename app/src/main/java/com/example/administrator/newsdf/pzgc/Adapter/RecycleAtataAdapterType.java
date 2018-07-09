@@ -1,8 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +17,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.callback.BridhtFragmentCallbackUtil;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
@@ -323,49 +322,33 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 if (smartprojecttype > 0) {
                     TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
                     taskId = audio.gettaskId();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setMessage("撤亮当前任务?")
-                            .setCancelable(false)
-                            .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    if (smartprojecttype == 1) {
-                                        //判断是否有权限，
-                                        if (mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                            brightDown();
-                                        } else {
-                                            //如果没有权限，那么就无法看到提亮功能
-                                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
-                                        }
-                                    } else if (smartprojecttype == 2) {
-                                        //判断是否有权限，
-                                        if (mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                            brightDown();
-                                        } else {
-                                            //如果没有权限，那么就无法看到提亮功能
-                                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
-                                        }
-                                    } else if (smartprojecttype == 3) {
-                                        //判断是否有权限，
-                                        if (mDatas.get(posotion).isSmartprojectMain3Down() || mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
-                                            brightDown();
-                                        } else {
-                                            //如果没有权限，那么就无法看到提亮功能
-                                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
-                                        }
-                                    } else {
-                                        ToastUtils.showLongToast("必须提亮才能撤亮");
-                                    }
-
-                                }
-                            })
-                            .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    builder.show();
+                    if (smartprojecttype == 1) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain1Down()) {
+                            brightDown();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
+                        }
+                    } else if (smartprojecttype == 2) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
+                            brightDown();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
+                        }
+                    } else if (smartprojecttype == 3) {
+                        //判断是否有权限，
+                        if (mDatas.get(posotion).isSmartprojectMain3Down() || mDatas.get(posotion).isSmartprojectMain2Down() || mDatas.get(posotion).isSmartprojectMain1Down()) {
+                            brightDown();
+                        } else {
+                            //如果没有权限，那么就无法看到提亮功能
+                            ToastUtils.showLongToast("您暂时没有撤亮权限哦");
+                        }
+                    } else {
+                        ToastUtils.showLongToast("必须提亮才能撤亮");
+                    }
                 }
                 return false;
             }
@@ -435,6 +418,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
+                                //判断是否是从点亮界面进入
+                                if (activity.getbright()) {
+                                    //如果是刷新界面
+                                    BridhtFragmentCallbackUtil.updata();
+                                }
+                                //刷新工作界面
                                 if (workbright) {
                                     BrightCallBackUtils.removeCallBackMethod();
                                 }
@@ -465,6 +454,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 showLongToast("提亮成功");
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
+                                //判断是否是从点亮界面进入
+                                if (activity.getbright()) {
+                                    //如果是刷新界面
+                                    BridhtFragmentCallbackUtil.updata();
+                                }
+                                //刷新工作界面
                                 if (workbright) {
                                     BrightCallBackUtils.removeCallBackMethod();
                                 }

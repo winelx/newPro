@@ -15,15 +15,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.pzgc.activity.work.ContactPeopleActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushdialogActivity;
-import com.example.administrator.newsdf.pzgc.Adapter.PushfragmentAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Push_item;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LazyFragment;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -155,14 +154,14 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                     strids = Dates.listToStrings(deleSelect);
                     //批量修改数据
                     if (deleSelect.size() < 2) {
-                        ToastUtils.showLongToast("至少选择2条要批量修改的任务");
+                        ToastUtils.showShortToastCenter("至少选择2条要批量修改的任务");
                     } else {
                         get();
                     }
                 } else if (data.size() == 0) {
-                    Toast.makeText(getActivity(), "没有选项数据", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToastCenter("没有选项数据");
                 } else if (deleSelect.size() == 0) {
-                    Toast.makeText(getContext(), "请选中要推送的数据", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToastCenter("请选中要推送的数据");
                 }
 
             }
@@ -420,7 +419,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                                     JSONObject json = new JSONObject(s);
                                     int ret = json.getInt("ret");
                                     String msg = json.getString("msg");
-                                    ToastUtils.showShortToast(msg);
+                                    ToastUtils.showShortToastCenter(msg);
                                     if (ret == 0) {
                                         MissionpushActivity activity = (MissionpushActivity) mContext;
                                         ArrayList<String> list = new ArrayList<String>();
@@ -437,7 +436,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
                                 try {
-                                    ToastUtils.showShortToast(response.body().string());
+                                    ToastUtils.showShortToastCenter(response.body().string());
                                 } catch (IOException e1) {
                                     e1.printStackTrace();
                                 }
