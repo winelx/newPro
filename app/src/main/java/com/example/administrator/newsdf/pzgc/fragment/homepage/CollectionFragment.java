@@ -198,7 +198,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     home_frag_img.setVisibility(View.GONE);
                                 }else {
                                     home_frag_img.setVisibility(View.VISIBLE);
-                                    home_img_text.setText("暂无数据，点击刷新");
+                                    home_img_text.setText("暂无数据");
                                     if (newdata){
                                         ToastUtils.showLongToast("暂无数据");
                                     }
@@ -210,7 +210,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                             }
                         } else {
                             home_frag_img.setVisibility(View.VISIBLE);
-                            home_img_text.setText("暂无数据，点击刷新");
+                            home_img_text.setText("暂无数据");
                             if (newdata){
                                 ToastUtils.showLongToast("暂无数据");
                             }

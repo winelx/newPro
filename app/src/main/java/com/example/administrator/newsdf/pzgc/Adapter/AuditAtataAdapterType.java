@@ -10,11 +10,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
-import com.example.administrator.newsdf.pzgc.utils.CameDialog;
+import com.example.administrator.newsdf.pzgc.utils.CameDialogs;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -32,13 +42,13 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<Aduio_data> mDatas;
     String str = null;
     int bright;
-    CameDialog cameDialog;
+    CameDialogs cameDialog;
 
     //判断workfragment是否初始化，如果没有，提亮的时候就不用刷新界面
     public AuditAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
         this.bright = bright;
-        cameDialog = new CameDialog();
+        cameDialog = new CameDialogs();
         mDatas = new ArrayList<>();
 
     }
@@ -58,7 +68,6 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
         String url = mDatas.get(posotion).getReplyUserHeaderURL();
-
         Glide.with(mContext)
                 .load(url)
                 .into(holder.audio_acathor);
@@ -69,14 +78,31 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         holder.details_audit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                AuditdetailsActivity auditdetailsActivity = (AuditdetailsActivity) mContext;
+                String taskId = auditdetailsActivity.getId();
+                OkGo.get(Requests.AUDITTask)
+                        .params("taskId", taskId)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    if (ret == 0) {
+                                        ToastUtils.showLongToast("通过");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
             }
         });
         holder.details_rejected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuditdetailsActivity audio = (AuditdetailsActivity) mContext;
-                cameDialog.setDialog(audio.getId(), audio,"输入打回理由");
+                cameDialog.setDialog(audio.getId(), audio, "输入打回理由");
             }
         });
     }

@@ -8,11 +8,12 @@ public class Audittitlebean {
     String title;
     String complete;
     String unfinished;
-
-    public Audittitlebean(String title, String complete, String unfinished) {
+    String day;
+    public Audittitlebean(String title, String complete, String unfinished, String day) {
         this.title = title;
         this.complete = complete;
         this.unfinished = unfinished;
+        this.day = day;
     }
 
     public String getTitle() {
@@ -37,5 +38,13 @@ public class Audittitlebean {
 
     public void setUnfinished(String unfinished) {
         this.unfinished = unfinished;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

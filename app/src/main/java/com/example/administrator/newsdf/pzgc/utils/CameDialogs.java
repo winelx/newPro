@@ -22,34 +22,29 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
-import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.lzy.okgo.OkGo.post;
 
 /**
  * Created by Administrator on 2018/4/12 0012.
  * 评论回复
  */
 
-public class CameDialog {
+public class CameDialogs {
     private Dialog mCameraDialog;
     private static RecyclerView dialog_rec;
     public static DialogRecAdapter Dialogadapter;
     public static ArrayList<String> path = new ArrayList<>();
     private static final int IMAGE_PICKER = 101;
-    private ArrayList<File> files;
 
     public void setDialog(final String wtMainid, final Activity activity, String str) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
@@ -77,86 +72,28 @@ public class CameDialog {
             @Override
             public void onClick(View v) {
                 String str = editext.getText().toString();
-                if (str == null || str.isEmpty()) {
+                if (str.isEmpty()) {
                     ToastUtils.showShortToast("回复不能为空");
                 } else {
-                        Dates.getDialogs(activity, "上传数据中");
-                        send.setClickable(false);
-                        send.setTextColor(Color.parseColor("#F0F0F0"));
-                        files = new ArrayList<>();
-                        PostRequest mRequest = post(Requests.SAVECOMMENT)
-                                //强制使用multipart/form-data 表单提交
-                                .isMultipart(true)
-                                .params("taskId", wtMainid)
-                                .params("content", str);
-                        if (path.size() != 0) {
-                            for (int i = 0; i < path.size(); i++) {
-                                files.add(new File(path.get(i)));
-                            }
-                            mRequest.addFileParams("files", files)
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onSuccess(String s, Call call, Response response) {
-                                            Dates.disDialog();
-                                            send.setClickable(true);
-                                            send.setTextColor(Color.parseColor("#5096F8"));
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(s);
-                                                int ret = jsonObject.getInt("ret");
-                                                //提示消息
-                                                ToastUtils.showLongToast(jsonObject.getString("msg"));
-                                                if (ret == 0) {
-                                                    path.clear();
-                                                    DetailsCallbackUtils.dohomeCallBackMethod();
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                            mCameraDialog.dismiss();
-                                            Dates.disDialog();
-                                        }
-
-                                        @Override
-                                        public void onError(Call call, Response response, Exception e) {
-                                            super.onError(call, response, e);
-                                            Dates.disDialog();
-                                            send.setClickable(true);
-                                            send.setTextColor(Color.parseColor("#5096F8"));
-
-                                        }
-                                    });
-                        } else {
-                            mRequest.execute(new StringCallback() {
+                    send.setClickable(false);
+                    send.setTextColor(Color.parseColor("#F0F0F0"));
+                    OkGo.post(Requests.AUDIT_BACK_TASK)
+                            .params("taskId", wtMainid)
+                            .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
-                                    Dates.disDialog();
-                                    send.setClickable(true);
-                                    send.setTextColor(Color.parseColor("#5096F8"));
+                                    mCameraDialog.dismiss();
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         int ret = jsonObject.getInt("ret");
-                                        //提示消息
-                                        ToastUtils.showLongToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            path.clear();
-                                            DetailsCallbackUtils.dohomeCallBackMethod();
+                                            ToastUtils.showLongToast("打回成功");
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    mCameraDialog.dismiss();
-                                }
-
-                                @Override
-                                public void onError(Call call, Response response, Exception e) {
-                                    super.onError(call, response, e);
-                                    Dates.disDialog();
-                                    send.setClickable(true);
-                                    send.setTextColor(Color.parseColor("#5096F8"));
                                 }
                             });
-                        }
-
                 }
             }
         });

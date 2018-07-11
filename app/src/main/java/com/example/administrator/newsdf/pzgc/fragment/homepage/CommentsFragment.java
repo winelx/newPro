@@ -179,7 +179,7 @@ public class CommentsFragment extends Fragment {
                             }
                         } else {
                             home_frag_img.setVisibility(View.VISIBLE);
-                            home_img_text.setText("暂无数据，点击刷新");
+                            home_img_text.setText("暂无数据");
                             if (newdata){
                                 ToastUtils.showLongToast("暂无数据");
                             }

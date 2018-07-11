@@ -39,7 +39,7 @@ import okhttp3.Response;
  *         登录
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class  LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
      * 状态图片
@@ -111,7 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
-
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {

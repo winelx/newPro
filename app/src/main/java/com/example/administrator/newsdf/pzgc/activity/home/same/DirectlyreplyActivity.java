@@ -88,7 +88,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
     private CheckPermission checkPermission;
-    String id = null, status,wbsId;
+    String id = null, status, wbsId;
     private static final int IMAGE_PICKER = 101;
     private RadioGroup mRadioGroup;
 
@@ -127,15 +127,15 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         //定位初始化
 
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
-      ((App) getApplication()).locationService.registerListener(mListener);
+        ((App) getApplication()).locationService.registerListener(mListener);
         //注册监听
         int type = getIntent().getIntExtra("from", 0);
-      if (type == 0) {
-          ((App) getApplication()).locationService.setLocationOption( ((App) getApplication()).locationService.getDefaultLocationClientOption());
+        if (type == 0) {
+            ((App) getApplication()).locationService.setLocationOption(((App) getApplication()).locationService.getDefaultLocationClientOption());
         } else if (type == 1) {
-            ((App) getApplication()).locationService.setLocationOption( ((App) getApplication()).locationService.getOption());
+            ((App) getApplication()).locationService.setLocationOption(((App) getApplication()).locationService.getOption());
         }
-       ((App) getApplication()).locationService.start();// 定位SDK
+        ((App) getApplication()).locationService.start();// 定位SDK
     }
 
     //发现ID
@@ -347,8 +347,9 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         //注销掉监听
-        locationService.unregisterListener(mListener);
-        locationService.stop(); //停止定位服务
+        ((App) getApplication()).locationService.unregisterListener(mListener);
+        //停止定位服务
+        ((App) getApplication()).locationService.stop();
         super.onStop();
     }
 

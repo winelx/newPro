@@ -133,7 +133,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                 }
             }
         };
-
         Okgo();
     }
 
@@ -167,25 +166,15 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     String parentid = json.getString("parent_id");
                                     String parentname = json.getString("parent_name");
                                     String unfinish = json.getString("unfinish");
-                                    //将组织所属公司添加到集合
-                                    if (!title.contains(parentname)) {
-                                        title.add(parentname);
-                                    }
                                     mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
-                                    int random = (int) (Math.random() * 4) + 1;
-                                    for (String str : title) {
-                                        List<Home_item> list = new ArrayList<Home_item>();
-                                        for (Home_item item : mData) {
-                                            String name = item.getParentname();
-                                            if (str.equals(name)) {
-                                                list.add(item);
-                                                hasMap.put(str, list);
-                                            }
-                                        }
-                                    }
+                                    title.add("我的任务");
+                                    title.add("我的审核");
+
+                                    hasMap.put("我的任务", mData);
+                                    hasMap.put("我的审核", mData);
                                 }
                                 mAdapter = new FragmentHomeListAdapter(title, hasMap, mContext,
                                         ivGoToChildClickListener);

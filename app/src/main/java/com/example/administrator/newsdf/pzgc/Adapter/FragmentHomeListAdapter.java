@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.audit.AuditActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
@@ -204,7 +205,7 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
                 String wbsId = content.get(classes.get(groupPosition)).get(childPosition).getOrgid();
                 if (isfavorite.equals(zero)) {
                     OkGo.post(Requests.WBSSAVE)
-                            .params("wbsId",wbsId )
+                            .params("wbsId", wbsId)
                             .params("type", 1)
                             .execute(new StringCallback() {
                                 @Override
@@ -236,10 +237,18 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MineListmessageActivity.class);
-                intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
-                intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());
-                context.startActivity(intent);
+                if (classes.get(groupPosition).equals("我的任务")) {
+                    Intent intent = new Intent(context, MineListmessageActivity.class);
+                    intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
+                    intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, AuditActivity.class);
+                    intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
+                    intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());
+                    context.startActivity(intent);
+                }
+
             }
         });
         return convertView;
