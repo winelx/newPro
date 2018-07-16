@@ -51,18 +51,21 @@ public class AuditActivity extends AppCompatActivity {
     private List<Auditbean> mData;
     private ArrayList<Audittitlebean> title;
     private ListView aduit_list;
-    private SettingAdapter adapter;
+    private SettingAdapter<Audittitlebean> adapter;
     private PopupWindow mPopupWindow;
     private IconTextView aduit_back;
     private LinearLayout audit_meunl;
     private float ste;
     private Integer integer = 1;
+    private String nodeID = "3b13c30f83684f1cad2defbb579f02d7";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit);
         mContext = AuditActivity.this;
+//        Intent intent = getIntent();
+//        nodeID = intent.getExtras().getString("nodeId");
         ste = ScreenUtil.getDensity(App.getInstance());
         title = new ArrayList<>();
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
@@ -71,9 +74,9 @@ public class AuditActivity extends AppCompatActivity {
         adapter = new SettingAdapter<Audittitlebean>(title, R.layout.item_audit_elv) {
             @Override
             public void bindView(ViewHolder holder, Audittitlebean obj) {
-                holder.setText(R.id.todaytime, obj.getTitle());
-                holder.setText(R.id.complete, "完成率:" + obj.getComplete());
-                holder.setText(R.id.unfinished, "未审核:" + obj.getUnfinished());
+                holder.setText(R.id.todaytime, obj.getCnDay());
+                holder.setText(R.id.complete, "完成率:" + obj.getRatio());
+                holder.setText(R.id.unfinished, "未审核:" + obj.getTip());
             }
         };
         aduit_list.setAdapter(adapter);
@@ -81,7 +84,14 @@ public class AuditActivity extends AppCompatActivity {
         aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(AuditActivity.this, AuditrecordActivity.class));
+                Intent intent = new Intent(AuditActivity.this, AuditrecordActivity.class);
+                intent.putExtra("date", title.get(position).getDate());
+                intent.putExtra("nodeId", nodeID);
+                intent.putExtra("day", title.get(position).getCnDay());
+                intent.putExtra("ratio", title.get(position).getRatio());
+                intent.putExtra("tip", title.get(position).getTip());
+
+                startActivity(intent);
             }
         });
         //功能按钮
@@ -160,26 +170,33 @@ public class AuditActivity extends AppCompatActivity {
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")
+                .params("id", nodeID)
+                .params("day", "day")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("sss", s);
+                        LogUtil.i("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
                                 String cnDay = json.getString("cnDay");
-                                String day = json.getString("day");
+                                String day = json.getString("date");
                                 String ratio = json.getString("ratio");
-                                String tip = json.getString("tip");
-                                title.add(new Audittitlebean(cnDay, ratio + "%", tip,day));
+                                String tip;
+                                try {
+                                    tip = json.getString("tip");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    tip = "";
+                                }
+                                title.add(new Audittitlebean(cnDay, ratio + "%", tip, day));
                             }
                             adapter.getData(title);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
     }

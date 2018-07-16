@@ -55,7 +55,6 @@
         android:textColor="@color/textViwe"
         android:textSize="14sp" />
 
-
     <ImageView
         android:id="@+id/audio_notimage"
         android:layout_width="100dp"
@@ -71,10 +70,10 @@
         android:id="@+id/audio_rec"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignLeft="@+id/audit_acathor"
-        android:layout_alignStart="@+id/audit_acathor"
-        android:layout_alignTop="@+id/audio_notimage" />
-
+        android:layout_below="@+id/audio_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"

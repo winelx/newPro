@@ -46,7 +46,6 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         mHomeUtils = new HomeUtils();
         taskId = intent.getExtras().getString("TaskId");
         status = intent.getExtras().getString("status");
-
         mRecyclerView = (RecyclerView) findViewById(R.id.auditdetails_list);
         wbspath = (TextView) findViewById(R.id.auditdetails_path);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -54,6 +53,7 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         mRecyclerView.setAdapter(mAdapter);
         findViewById(R.id.taskManagemented).setOnClickListener(this);
         findViewById(R.id.aduit_back).setOnClickListener(this);
+        findViewById(R.id.Auditrecords).setOnClickListener(this);
         mHomeUtils.TaskAudit(taskId, mAdapter);
     }
 
@@ -68,6 +68,11 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
             case R.id.aduit_back:
                 finish();
                 break;
+            case R.id.Auditrecords:
+                Intent intent = new Intent(AuditdetailsActivity.this, RecordsActivity.class);
+                intent.putExtra("taskid", taskId);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -77,11 +82,17 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
      * adapter获取ID
      */
     public String getId() {
-        return mHomeUtils.hasmap.get("id");
+        return taskId;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override
     public void updata() {
         wbspath.setText(mHomeUtils.hasmap.get("wbsName"));
     }
+
+
 }

@@ -181,10 +181,23 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             return this;
         }
 
+        public ViewHolder setText(int id, Context mContext, CharSequence text, int color) {
+            View view = getView(id);
+            SpannableString sp = new SpannableString(text);
+            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                            .getColor(color)), 0,
+                    text.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (view instanceof TextView) {
+                ((TextView) view).setText(sp);
+            }
+            return this;
+        }
+
         /**
          * 设置有颜色文字
          */
-        public ViewHolder setText(Context mContext, int id, String text, int num,  int color2) {
+        public ViewHolder setText(Context mContext, int id, String text, int num, int color2) {
             View view = getView(id);
             SpannableString sp = new SpannableString(text);
             sp.setSpan(new ForegroundColorSpan(mContext.getResources()

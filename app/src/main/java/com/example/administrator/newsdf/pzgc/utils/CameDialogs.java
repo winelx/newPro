@@ -46,7 +46,7 @@ public class CameDialogs {
     public static ArrayList<String> path = new ArrayList<>();
     private static final int IMAGE_PICKER = 101;
 
-    public void setDialog(final String wtMainid, final Activity activity, String str) {
+    public void setDialog(final String wtMainid, final Activity activity, String str, final View view) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
         LinearLayout root = (LinearLayout) LayoutInflater.from(activity).inflate(
                 R.layout.dialog_custom, null);
@@ -55,6 +55,7 @@ public class CameDialogs {
         final EditText editext = (EditText) root.findViewById(R.id.par_editext);
         final ImageView imageView = (ImageView) root.findViewById(R.id.par_image);
         dialog_rec = root.findViewById(R.id.dialog_rec);
+        imageView.setVisibility(View.GONE);
         editext.setHint(str);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -79,6 +80,7 @@ public class CameDialogs {
                     send.setTextColor(Color.parseColor("#F0F0F0"));
                     OkGo.post(Requests.AUDIT_BACK_TASK)
                             .params("taskId", wtMainid)
+                            .params("remarks", str)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
@@ -88,6 +90,7 @@ public class CameDialogs {
                                         int ret = jsonObject.getInt("ret");
                                         if (ret == 0) {
                                             ToastUtils.showLongToast("打回成功");
+                                            view.setVisibility(View.GONE  );
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

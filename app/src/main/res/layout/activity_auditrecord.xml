@@ -101,11 +101,20 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/auditrecord_list"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/SmartRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp">
 
+        <ListView
+            android:id="@+id/auditrecord_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

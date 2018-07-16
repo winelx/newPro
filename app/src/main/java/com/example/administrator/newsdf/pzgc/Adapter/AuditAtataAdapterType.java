@@ -1,11 +1,13 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,6 +45,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     String str = null;
     int bright;
     CameDialogs cameDialog;
+    AuditdetailsActivity auditdetailsActivity;
 
     //判断workfragment是否初始化，如果没有，提亮的时候就不用刷新界面
     public AuditAtataAdapterType(Context mContext, boolean status, int bright) {
@@ -50,6 +53,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         this.bright = bright;
         cameDialog = new CameDialogs();
         mDatas = new ArrayList<>();
+        auditdetailsActivity = (AuditdetailsActivity) mContext;
 
     }
 
@@ -67,18 +71,38 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
 
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
+        //判断是否有图片
+        if (mDatas.get(posotion).getAttachments().size() != 0) {
+            //有图片展示布局
+            holder.audioRec.setVisibility(View.VISIBLE);
+        } else {
+            holder.audioRec.setVisibility(View.INVISIBLE);
+        }
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        holder.audioRec.setLayoutManager(linearLayoutManager);
+        RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
+        holder.audioRec.setAdapter(adapter);
+        //头像图片
         String url = mDatas.get(posotion).getReplyUserHeaderURL();
         Glide.with(mContext)
                 .load(url)
-                .into(holder.audio_acathor);
-        holder.audio_name.setText(mDatas.get(posotion).getReplyUserName());
-        holder.audio_data.setText(mDatas.get(posotion).getUpdateDate());
-        holder.audio_content.setText(mDatas.get(posotion).getUploadContent());
-        holder.audio_address.setText(mDatas.get(posotion).getUploadAddr());
-        holder.details_audit.setOnClickListener(new View.OnClickListener() {
+                .into(holder.audioAcathor);
+        String status = auditdetailsActivity.getStatus();
+        if (status.equals("1")) {
+            holder.related.setVisibility(View.GONE);
+        } else if (status.equals("2")) {
+            holder.related.setVisibility(View.GONE);
+        } else {
+            holder.related.setVisibility(View.VISIBLE);
+        }
+        holder.audioName.setText(mDatas.get(posotion).getReplyUserName());
+        holder.audioData.setText(mDatas.get(posotion).getUpdateDate());
+        holder.audioContent.setText(mDatas.get(posotion).getUploadContent());
+        holder.audioAddress.setText(mDatas.get(posotion).getUploadAddr());
+        holder.detailsAudit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuditdetailsActivity auditdetailsActivity = (AuditdetailsActivity) mContext;
                 String taskId = auditdetailsActivity.getId();
                 OkGo.get(Requests.AUDITTask)
                         .params("taskId", taskId)
@@ -90,6 +114,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                                     int ret = jsonObject.getInt("ret");
                                     if (ret == 0) {
                                         ToastUtils.showLongToast("通过");
+                                        holder.related.setVisibility(View.GONE);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -98,11 +123,11 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                         });
             }
         });
-        holder.details_rejected.setOnClickListener(new View.OnClickListener() {
+        holder.detailsRejected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AuditdetailsActivity audio = (AuditdetailsActivity) mContext;
-                cameDialog.setDialog(audio.getId(), audio, "输入打回理由");
+                cameDialog.setDialog(audio.getId(), audio, "输入打回理由", holder.related);
             }
         });
     }
@@ -113,19 +138,23 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private class Viewholder extends RecyclerView.ViewHolder {
-        ImageView audio_acathor;
-        TextView audio_name, audio_data, audio_content, audio_address;
-        TextView details_rejected, details_audit;
+        ImageView audioAcathor;
+        TextView audioName, audioData, audioContent, audioAddress;
+        TextView detailsRejected, detailsAudit;
+        LinearLayout related;
+        RecyclerView audioRec;
 
         Viewholder(View itemView) {
             super(itemView);
-            audio_acathor = itemView.findViewById(R.id.audit_acathor);
-            audio_name = itemView.findViewById(R.id.audio_name);
-            audio_data = itemView.findViewById(R.id.audio_data);
-            audio_content = itemView.findViewById(R.id.audio_content);
-            audio_address = itemView.findViewById(R.id.audio_address);
-            details_audit = itemView.findViewById(R.id.details_audit);
-            details_rejected = itemView.findViewById(R.id.details_rejected);
+            audioAcathor = itemView.findViewById(R.id.audit_acathor);
+            audioName = itemView.findViewById(R.id.audio_name);
+            audioData = itemView.findViewById(R.id.audio_data);
+            audioContent = itemView.findViewById(R.id.audio_content);
+            audioAddress = itemView.findViewById(R.id.audio_address);
+            detailsAudit = itemView.findViewById(R.id.details_audit);
+            detailsRejected = itemView.findViewById(R.id.details_rejected);
+            related = itemView.findViewById(R.id.related);
+            audioRec = itemView.findViewById(R.id.audio_rec);
         }
     }
 

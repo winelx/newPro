@@ -726,7 +726,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_manage:
-                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
+                        Dates.getDialog(MineListmessageActivity.this, "请F求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         mDatas.clear();

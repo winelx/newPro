@@ -5,46 +5,47 @@ package com.example.administrator.newsdf.pzgc.bean;
  */
 
 public class Audittitlebean {
-    String title;
-    String complete;
-    String unfinished;
-    String day;
-    public Audittitlebean(String title, String complete, String unfinished, String day) {
-        this.title = title;
-        this.complete = complete;
-        this.unfinished = unfinished;
-        this.day = day;
+    String cnDay;
+    String ratio;
+    String tip;
+    String date;
+
+    public Audittitlebean(String cnDay, String ratio, String tip, String date) {
+        this.cnDay = cnDay;
+        this.ratio = ratio;
+        this.tip = tip;
+        this.date = date;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCnDay() {
+        return cnDay;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCnDay(String cnDay) {
+        this.cnDay = cnDay;
     }
 
-    public String getComplete() {
-        return complete;
+    public String getRatio() {
+        return ratio;
     }
 
-    public void setComplete(String complete) {
-        this.complete = complete;
+    public void setRatio(String ratio) {
+        this.ratio = ratio;
     }
 
-    public String getUnfinished() {
-        return unfinished;
+    public String getTip() {
+        return tip;
     }
 
-    public void setUnfinished(String unfinished) {
-        this.unfinished = unfinished;
+    public void setTip(String tip) {
+        this.tip = tip;
     }
 
-    public String getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDate(String date) {
+        this.date = date;
     }
 }
