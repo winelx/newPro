@@ -22,6 +22,8 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -90,7 +92,11 @@ public class CameDialogs {
                                         int ret = jsonObject.getInt("ret");
                                         if (ret == 0) {
                                             ToastUtils.showLongToast("打回成功");
-                                            view.setVisibility(View.GONE  );
+                                            view.setVisibility(View.GONE);
+                                            //更新列表界面数据状态
+                                            AuditrecordCallbackUtils.updata();
+                                            //刷新任务详情界面
+                                            AuditDetailsrefreshCallbackUtils.refreshs();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

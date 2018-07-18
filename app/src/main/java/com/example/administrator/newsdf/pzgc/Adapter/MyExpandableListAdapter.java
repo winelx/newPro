@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.frehomeCallBackUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
-import com.example.administrator.newsdf.pzgc.utils.RequestUtils;
+
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -50,7 +50,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
     private View.OnClickListener ivGoToChildClickListener;
     private LeftSlideView mMenu = null;
     private String zero = "0";
-    private RequestUtils requestUtils;
+
 
     public MyExpandableListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context,
                                    View.OnClickListener ivGoToChildClickListener) {
@@ -58,7 +58,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         this.content = content;
         this.context = context;
         this.ivGoToChildClickListener = ivGoToChildClickListener;
-        requestUtils = new RequestUtils();
+
     }
 
     @Override

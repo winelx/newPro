@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
@@ -37,6 +38,7 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
 /**
  * description: 审核列表界面
  *
@@ -57,17 +59,20 @@ public class AuditActivity extends AppCompatActivity {
     private LinearLayout audit_meunl;
     private float ste;
     private Integer integer = 1;
-    private String nodeID = "3b13c30f83684f1cad2defbb579f02d7";
+    private String orgId = "", name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit);
         mContext = AuditActivity.this;
-//        Intent intent = getIntent();
-//        nodeID = intent.getExtras().getString("nodeId");
+        Intent intent = getIntent();
+        orgId = intent.getExtras().getString("orgId");
+        name = intent.getExtras().getString("name");
         ste = ScreenUtil.getDensity(App.getInstance());
         title = new ArrayList<>();
+        TextView titles= (TextView) findViewById(R.id.title);
+        titles.setText(name);
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
         aduit_back = (IconTextView) findViewById(R.id.aduit_back);
         aduit_list = (ListView) findViewById(R.id.aduit_list);
@@ -86,11 +91,10 @@ public class AuditActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AuditActivity.this, AuditrecordActivity.class);
                 intent.putExtra("date", title.get(position).getDate());
-                intent.putExtra("nodeId", nodeID);
+                intent.putExtra("orgId", orgId);
                 intent.putExtra("day", title.get(position).getCnDay());
                 intent.putExtra("ratio", title.get(position).getRatio());
                 intent.putExtra("tip", title.get(position).getTip());
-
                 startActivity(intent);
             }
         });
@@ -131,13 +135,15 @@ public class AuditActivity extends AppCompatActivity {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
         int layoutId = R.layout.audit_popwindow;
-        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
+        final View contentView = LayoutInflater.from(this).inflate(layoutId, null);
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.audit_all:
-                        startActivity(new Intent(AuditActivity.this, ReportActivity.class));
+                    case R.id.audit_statistical:
+                        Intent intent =new Intent(AuditActivity.this,ReportActivity.class);
+                        intent.putExtra("orgId",orgId);
+                        startActivity(intent);
                         break;
                     default:
                         break;
@@ -147,10 +153,6 @@ public class AuditActivity extends AppCompatActivity {
                 }
             }
         };
-        contentView.findViewById(R.id.audit_all).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.audit_audit).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.audit_noaudit).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.audit_all).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_statistical).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
@@ -170,7 +172,7 @@ public class AuditActivity extends AppCompatActivity {
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")
-                .params("id", nodeID)
+                .params("id", orgId)
                 .params("day", "day")
                 .execute(new StringCallback() {
                     @Override

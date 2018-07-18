@@ -24,15 +24,26 @@
             android:textSize="30sp" />
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8" />
+            android:layout_weight="8"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="19"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textColor="@color/writer"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/audit_meun"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:visibility="gone"
             android:gravity="center">
 
             <ImageView

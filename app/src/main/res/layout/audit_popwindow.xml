@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
-    android:layout_height="155dp">
+    android:layout_height="45dp">
 
     <LinearLayout
         android:layout_width="100dp"
-        android:layout_height="155dp"
+        android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -15,61 +15,12 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/audit_all"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="全部"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
-
-        <TextView
-            android:id="@+id/audit_audit"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="未达标"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
-
-        <TextView
-            android:id="@+id/audit_noaudit"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="已达标"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
-
-        <TextView
             android:id="@+id/audit_statistical"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="统计表表"
+            android:text="统计报表"
             android:textColor="@color/black"
             android:textSize="14sp" />
 

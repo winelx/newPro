@@ -13,6 +13,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallback;
+import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
 
 /**
  * description:审核功能的部位详情
@@ -23,7 +25,7 @@ import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
  *         version:
  */
 
-public class AuditdetailsActivity extends AppCompatActivity implements View.OnClickListener, AuditDetailsCallback {
+public class AuditdetailsActivity extends AppCompatActivity implements View.OnClickListener, AuditDetailsCallback, AuditDetailsrefreshCallback {
 
     private static AuditdetailsActivity mContext;
     private RecyclerView mRecyclerView;
@@ -42,7 +44,9 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_auditdetails);
         Intent intent = getIntent();
         mContext = this;
+        //审核界面回调
         AuditDetailsCallbackUtils.setCallBack(this);
+        AuditDetailsrefreshCallbackUtils.setCallBack(this);
         mHomeUtils = new HomeUtils();
         taskId = intent.getExtras().getString("TaskId");
         status = intent.getExtras().getString("status");
@@ -61,14 +65,18 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.taskManagemented:
+                //跳转任务管理
 //                if (status.equals("true")) {
+                //
                 HomeUtils.getOko(mHomeUtils.hasmap.get("id"), null, false, null, false, null, AuditdetailsActivity.this);
 //                }
                 break;
             case R.id.aduit_back:
+                //返回
                 finish();
                 break;
             case R.id.Auditrecords:
+                //审核记录
                 Intent intent = new Intent(AuditdetailsActivity.this, RecordsActivity.class);
                 intent.putExtra("taskid", taskId);
                 startActivity(intent);
@@ -85,6 +93,11 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         return taskId;
     }
 
+    /**
+     * 获取状态
+     *
+     * @return
+     */
     public String getStatus() {
         return status;
     }
@@ -94,5 +107,10 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         wbspath.setText(mHomeUtils.hasmap.get("wbsName"));
     }
 
+    @Override
+    public void refreshs() {
+        status = "1";
+        mHomeUtils.TaskAudit(taskId, mAdapter);
+    }
 
 }

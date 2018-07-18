@@ -26,7 +26,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:
+ * description:每日任务列表
  *
  * @author lx
  *         date: 2018/7/16 0016 上午 11:01
@@ -36,9 +36,10 @@ import okhttp3.Response;
 
 public class RecordsActivity extends AppCompatActivity {
     private String taskid;
-    private SettingAdapter adapter;
+    private SettingAdapter<Recordsbean> adapter;
     private List<Recordsbean> mData;
     private Context mContext;
+    private String ont = "1";
 
     @Override
 
@@ -46,16 +47,16 @@ public class RecordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
         ListView list = (ListView) findViewById(R.id.task_list);
-        mContext = this;
-        mData = new ArrayList<>();
-        Intent intent = getIntent();
-        taskid = intent.getExtras().getString("taskid");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        mContext = this;
+        mData = new ArrayList<>();
+        Intent intent = getIntent();
+        taskid = intent.getExtras().getString("taskid");
         adapter = new SettingAdapter<Recordsbean>(mData, R.layout.activity_records_item) {
             @Override
             public void bindView(ViewHolder holder, Recordsbean obj) {
@@ -63,7 +64,7 @@ public class RecordsActivity extends AppCompatActivity {
                 holder.setText(R.id.create_user, obj.getRealname());
                 holder.setText(R.id.create_jobs, obj.getJobs());
                 String pass = obj.getPass();
-                if (pass.equals("1")) {
+                if (ont.equals(pass)) {
                     holder.setText(R.id.create_status, mContext, "通过", R.color.finish_green);
                 } else {
                     holder.setText(R.id.create_status, mContext, "打回", R.color.red);
@@ -89,10 +90,10 @@ public class RecordsActivity extends AppCompatActivity {
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject jsons = array.getJSONObject(i);
                                     String jobs = jsons.getString("jobs");
-                                    String create_date = jsons.getString("create_date");
+                                    String createdate = jsons.getString("create_date");
                                     String realname = jsons.getString("realname");
                                     String pass = jsons.getString("pass");
-                                    mData.add(new Recordsbean(create_date, realname, jobs, pass));
+                                    mData.add(new Recordsbean(createdate, realname, jobs, pass));
                                 }
                                 adapter.getData(mData);
                             }

@@ -14,12 +14,26 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -35,7 +49,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private View rootView;
     private ListView daily_list;
     private TextView datatime;
-    private ArrayList<String> list = new ArrayList();
+    private ArrayList<DailyrecordBean> list;
     private DailyrecordAdapter mAdapter;
     private Context mContext;
     private PopupWindow mPopupWindow;
@@ -43,6 +57,8 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private String[] NumberMonth, NumberYear;
     private Date myDate = new Date();
     private int dateMonth, dayDate;
+    private ReportActivity activity;
+
 
     @Nullable
     @Override
@@ -54,18 +70,19 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
 
         }
-        for (int i = 0; i < 100; i++) {
-            list.add("");
-        }
+        list = new ArrayList<>();
         mContext = getActivity();
-        mAdapter = new DailyrecordAdapter(mContext, list);
-        daily_list.setAdapter(mAdapter);
+        activity = (ReportActivity) mContext;
         NumberMonth = Utils.month;
         NumberYear = Utils.years;
         dayDate = myDate.getDate() - 1;
         dateMonth = myDate.getMonth();
         datatime.setText(Utils.titleDay());
+        mAdapter = new DailyrecordAdapter(mContext, list);
+        daily_list.setAdapter(mAdapter);
+        okgo(Dates.getDay());
         return rootView;
+
     }
 
 
@@ -96,7 +113,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                 switch (v.getId()) {
                     case R.id.pop_determine:
                         //获取年
-                        String yeardata = Utils.years[yearPicker.getValue()];
+                        String yeardata = Utils.year[yearPicker.getValue()];
                         //获取月
                         int month = monthPicker.getValue();
                         String monthdata = Utils.month[month];
@@ -116,7 +133,10 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                             //不是二月份
                             daydata = Utils.day[day];
                         }
+                        daydata = daydata.replace("日", "");
                         datatime.setText(yeardata + monthdata + daydata);
+                        LogUtil.i("data", Utils.years[yearPicker.getValue()] + "-" + Utils.months[month] + "-" + daydata);
+                        okgo(Utils.years[yearPicker.getValue()] + "-" + Utils.months[month] + "-" + daydata);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -130,7 +150,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
-        Utils.setPicker(yearPicker, Utils.years, Utils.titleyear());
+        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
         Utils.setPicker(monthPicker, Utils.month, dateMonth);
         dayPicker = contentView.findViewById(R.id.day);
@@ -258,5 +278,106 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             daydata = Utils.day[day];
         }
         return yeardata + monthdata + daydata;
+    }
+
+
+    public void okgo(String data) {
+        OkGo.<String>get(Requests.REPORT_IMG_DATE_APP)
+                .params("type", "1")
+                .params("orgId", activity.getOrgId())
+                .params("startDate", data)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            list.clear();
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject json = data.getJSONObject(i);
+                                    //岗位
+                                    String position;
+                                    try {
+                                        position = json.getString("position");
+                                    } catch (JSONException e) {
+                                        position = "";
+                                    }
+                                    //责任人
+                                    String personName;
+                                    try {
+                                        personName = json.getString("personName");
+                                    } catch (JSONException e) {
+                                        personName = "";
+                                    }
+                                    //百分比
+                                    String percentage;
+                                    try {
+                                        percentage = json.getString("percentage");
+                                    } catch (JSONException e) {
+                                        percentage = "";
+                                    }
+                                    //未审核
+                                    String noAuditCount;
+                                    try {
+                                        noAuditCount = json.getString("noAuditCount");
+                                    } catch (JSONException e) {
+                                        noAuditCount = "";
+                                    }
+                                    //已审核
+                                    String auditCount;
+                                    try {
+                                        auditCount = json.getString("auditCount");
+                                    } catch (JSONException e) {
+                                        auditCount = "";
+                                    }
+                                    //待审核
+                                    String waitTask;
+                                    try {
+                                        waitTask = json.getString("waitTask");
+                                    } catch (JSONException e) {
+                                        waitTask = "";
+                                    }
+//                                String timeout = json.getString("timeout");//超时
+                                    //所属标段
+                                    String orgName;
+                                    try {
+                                        orgName = json.getString("orgName");
+                                    } catch (JSONException e) {
+                                        orgName = "";
+                                    }
+                                    //目标数量
+                                    String aimsTask;
+                                    try {
+                                        aimsTask = json.getString("aimsTask");
+                                    } catch (JSONException e) {
+                                        aimsTask = "";
+                                    }
+                                    list.add(new DailyrecordBean(position, personName, percentage, noAuditCount, auditCount, waitTask, "", orgName, aimsTask));
+                                }
+                                if (list.size() > 0) {
+                                    mAdapter.getData(list);
+                                } else {
+                                    list.clear();
+                                    ToastUtils.showShortToastCenter("暂无数据");
+                                    mAdapter.getData(list);
+                                }
+                            } else {
+                                list.clear();
+                                ToastUtils.showShortToastCenter("暂无数据");
+                                mAdapter.getData(list);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showShortToastCenter("请求失败");
+                    }
+                });
     }
 }

@@ -31,7 +31,6 @@
             android:text="姓名：张三"
             android:textColor="@color/black"
             android:textSize="16sp"
-
             android:textStyle="bold" />
 
         <TextView

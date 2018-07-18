@@ -20,7 +20,6 @@ import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
-import com.example.administrator.newsdf.pzgc.utils.RequestUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -51,7 +50,7 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
     private View.OnClickListener ivGoToChildClickListener;
     private LeftSlideView mMenu = null;
     private String zero = "0";
-    private RequestUtils requestUtils;
+
 
     public FragmentHomeListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context,
                                    View.OnClickListener ivGoToChildClickListener) {
@@ -59,7 +58,6 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         this.content = content;
         this.context = context;
         this.ivGoToChildClickListener = ivGoToChildClickListener;
-        requestUtils = new RequestUtils();
     }
 
     @Override

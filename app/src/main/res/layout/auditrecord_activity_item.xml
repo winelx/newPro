@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxEms="16"
+        android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp" />
 
@@ -20,6 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxEms="16"
+        android:singleLine="true"
         android:textColor="@color/graytext"
         android:textSize="13sp" />
 

@@ -14,13 +14,29 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static com.example.administrator.newsdf.pzgc.utils.Utils.getquarter;
 
 /**
  * Created by Administrator on 2018/7/3 0003.
@@ -32,9 +48,10 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
     private ListView daily_list;
     private Context mContext;
     private TextView datatime, title;
-    private ArrayList<String> list = new ArrayList();
+    private ArrayList<DailyrecordBean> list = new ArrayList();
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker;
+    private ReportActivity activity;
 
     @Nullable
     @Override
@@ -46,17 +63,16 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
             title = rootView.findViewById(R.id.audit_fr_title);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
         }
-        for (int i = 0; i < 100; i++) {
-            list.add("ass" + i);
-        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy年");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
-        datatime.setText(date + Utils.quarter[Utils.getquarter()]);
+        datatime.setText(date + Utils.quarter[getquarter()]);
         title.setText("选择季度");
         mContext = getActivity();
+        activity = (ReportActivity) mContext;
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
+        okgo(Dates.getYear() + "-" + Utils.getquarter());
         return rootView;
     }
 
@@ -92,8 +108,12 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                         int month = monthPicker.getValue();
                         String monthdata = Utils.quarter[month];
                         datatime.setText(yeardata + monthdata);
+                        LogUtil.i("data", yeardata + "-" + month);
+                        LogUtil.i(Utils.years[yearPicker.getValue()] + "-" + Utils.getquarter());
+                        okgo(Utils.years[yearPicker.getValue()] + "-" + Utils.getquarter());
                         break;
                     case R.id.pop_dismiss:
+
                     default:
                         break;
                 }
@@ -107,9 +127,9 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
-        Utils.setPicker(yearPicker, Utils.years, Utils.titleyear());
+        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
-        Utils.setPicker(monthPicker, Utils.quarter, Utils.getquarter());
+        Utils.setPicker(monthPicker, Utils.quarter, getquarter());
         return contentView;
     }
 
@@ -133,5 +153,105 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         public void onDismiss() {
             Utils.backgroundAlpha(1f, ReportActivity.getInstance());
         }
+    }
+
+    public void okgo(String date) {
+        OkGo.<DailyrecordBean>get(Requests.REPORT_IMG_DATE_APP)
+                .params("type", "3")
+                .params("orgId", activity.getOrgId())
+                .params("startDate", date)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            list.clear();
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject json = data.getJSONObject(i);
+                                    //岗位
+                                    String position;
+                                    try {
+                                        position = json.getString("position");
+                                    } catch (JSONException e) {
+                                        position = "";
+                                    }
+                                    //责任人
+                                    String personName;
+                                    try {
+                                        personName = json.getString("personName");
+                                    } catch (JSONException e) {
+                                        personName = "";
+                                    }
+                                    //百分比
+                                    String percentage;
+                                    try {
+                                        percentage = json.getString("percentage");
+                                    } catch (JSONException e) {
+                                        percentage = "";
+                                    }
+                                    //未审核
+                                    String noAuditCount;
+                                    try {
+                                        noAuditCount = json.getString("noAuditCount");
+                                    } catch (JSONException e) {
+                                        noAuditCount = "";
+                                    }
+                                    //已审核
+                                    String auditCount;
+                                    try {
+                                        auditCount = json.getString("auditCount");
+                                    } catch (JSONException e) {
+                                        auditCount = "";
+                                    }
+//待审核
+                                    String waitTask;
+                                    try {
+                                        waitTask = json.getString("waitTask");
+                                    } catch (JSONException e) {
+                                        waitTask = "";
+                                    }
+//                                String timeout = json.getString("timeout");//超时
+                                    //所属标段
+                                    String orgName;
+                                    try {
+                                        orgName = json.getString("orgName");
+                                    } catch (JSONException e) {
+                                        orgName = "";
+                                    }
+                                    //目标数量
+                                    String aimsTask;
+                                    try {
+                                        aimsTask = json.getString("aimsTask");
+                                    } catch (JSONException e) {
+                                        aimsTask = "";
+                                    }
+                                    list.add(new DailyrecordBean(position, personName, percentage, noAuditCount, auditCount, waitTask, "", orgName, aimsTask));
+                                }
+                                if (list.size() > 0) {
+                                    mAdapter.getData(list);
+                                } else {
+                                    list.clear();
+                                    ToastUtils.showShortToastCenter("暂无数据");
+                                    mAdapter.getData(list);
+                                }
+                            } else {
+                                list.clear();
+                                ToastUtils.showShortToastCenter("暂无数据");
+                                mAdapter.getData(list);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showShortToastCenter("请求失败");
+                    }
+                });
     }
 }

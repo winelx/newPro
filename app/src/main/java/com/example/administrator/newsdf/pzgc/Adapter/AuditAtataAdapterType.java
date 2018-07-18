@@ -15,6 +15,8 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialogs;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -54,7 +56,6 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         cameDialog = new CameDialogs();
         mDatas = new ArrayList<>();
         auditdetailsActivity = (AuditdetailsActivity) mContext;
-
     }
 
     @Override
@@ -114,7 +115,12 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                                     int ret = jsonObject.getInt("ret");
                                     if (ret == 0) {
                                         ToastUtils.showLongToast("通过");
+                                        //更新列表界面数据状态
+                                        AuditrecordCallbackUtils.updata();
+                                        //更新详情界面
+                                        AuditDetailsrefreshCallbackUtils.refreshs();
                                         holder.related.setVisibility(View.GONE);
+
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -126,8 +132,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         holder.detailsRejected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuditdetailsActivity audio = (AuditdetailsActivity) mContext;
-                cameDialog.setDialog(audio.getId(), audio, "输入打回理由", holder.related);
+                cameDialog.setDialog(auditdetailsActivity.getId(), auditdetailsActivity, "输入打回理由", holder.related);
             }
         });
     }

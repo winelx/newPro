@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.audit;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.example.administrator.newsdf.pzgc.activity.audit.fragment.Dailyrecord
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.MonthrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.QuarterrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -32,24 +34,28 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     private ViewPager reportViewpager;
     private static ReportActivity mContext;
     private TextView reportDaily, reportMonth, reportQuarter;
-    private IconTextView reprot_back;
 
     public static ReportActivity getInstance() {
         return mContext;
     }
 
+    String orgId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        Intent intent = getIntent();
+        orgId = intent.getExtras().getString("orgId");
         //初始化控件
         mContext = this;
         findView();
         //初始化数据
         initData();
     }
+
     private void findView() {
-        reprot_back = (IconTextView) findViewById(R.id.reprot_back);
+        IconTextView reprotBack = (IconTextView) findViewById(R.id.reprot_back);
         reportViewpager = (ViewPager) findViewById(R.id.report_viewpager);
         reportDaily = (TextView) findViewById(R.id.report_daily);
         reportMonth = (TextView) findViewById(R.id.report_month);
@@ -57,7 +63,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportDaily.setOnClickListener(this);
         reportMonth.setOnClickListener(this);
         reportQuarter.setOnClickListener(this);
-        reprot_back.setOnClickListener(this);
+        reprotBack.setOnClickListener(this);
     }
 
     private void initData() {
@@ -88,13 +94,13 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        Daily();
+                        daily();
                         break;
                     case 1:
-                        Month();
+                        month();
                         break;
                     case 2:
-                        Quarter();
+                        quarter();
                         break;
 
                     default:
@@ -129,23 +135,28 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void Daily() {
+    public void daily() {
         reportDaily.setTextColor(Color.parseColor("#5096F8"));
         reportMonth.setTextColor(Color.parseColor("#999797"));
         reportQuarter.setTextColor(Color.parseColor("#999797"));
     }
 
-    public void Month() {
+    public void month() {
         reportDaily.setTextColor(Color.parseColor("#999797"));
         reportMonth.setTextColor(Color.parseColor("#5096F8"));
         reportQuarter.setTextColor(Color.parseColor("#999797"));
     }
 
-    public void Quarter() {
+    public void quarter() {
         reportDaily.setTextColor(Color.parseColor("#999797"));
         reportMonth.setTextColor(Color.parseColor("#999797"));
         reportQuarter.setTextColor(Color.parseColor("#5096F8"));
     }
 
+    public String getOrgId() {
+        LogUtil.i(orgId);
+        return orgId;
+
+    }
 
 }

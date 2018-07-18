@@ -104,7 +104,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                 holder.setImages(R.id.contact_acatar, obj.getImageUrl(), mContext);
                 //名字
                 holder.setText(R.id.content_name, obj.getName());
-
                 holder.setText(R.id.content_phone, obj.getMoblie());
                 holder.setOnClickListener(R.id.member, new View.OnClickListener() {
                     @Override
@@ -119,18 +118,17 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                 });
             }
         };
-
         uslistView.setAdapter(mAdapter);
     }
 
     //网络请求
     void okgo() {
         OkGo.post(Requests.Members)
-                .params("orgId", "")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         try {
+                            mData.clear();
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -224,7 +222,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //是否是回车键
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-
                     String string = search.getText().toString();
                     searchData.clear();
                     for (int i = 0; i < mData.size(); i++) {

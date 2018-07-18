@@ -130,8 +130,20 @@ public class Dates {
         String str = formatter.format(curDate);
         return str;
     }
-
-
+    public static String getDay() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        //获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());
+        String str = formatter.format(curDate);
+        return str;
+    }
+    public static String getMonth() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+        //获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());
+        String str = formatter.format(curDate);
+        return str;
+    }
     public static String getHH() {
         SimpleDateFormat formatter = new SimpleDateFormat("HH");
         //获取当前时间
@@ -139,7 +151,13 @@ public class Dates {
         String str = formatter.format(curDate);
         return str;
     }
-
+    public static String getYear() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+        //获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());
+        String str = formatter.format(curDate);
+        return str;
+    }
     /**
      * 加载图片
      */

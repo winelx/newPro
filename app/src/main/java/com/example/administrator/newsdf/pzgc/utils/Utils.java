@@ -72,13 +72,20 @@ public class Utils {
         activity.getWindow().setAttributes(lp);
     }
 
-    public static String[] years = new String[]{"2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
-
+    public static String[] year = new String[]{"2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
+    public static String[] years = new String[]{"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"};
     public static String[] month = new String[]{
             "01月", "02月", "03月",
             "04月", "05月", "06月",
             "07月", "08月", "09月",
             "10月", "11月", "12月"};
+
+    public static String[] months = new String[]{
+            "01", "02", "03",
+            "04", "05", "06",
+            "07", "08", "09",
+            "10", "11", "12"};
+
     public static String[] quarter = new String[]{
             "一季度", "二季度", "三季度",
             "四季度",};
@@ -159,8 +166,8 @@ public class Utils {
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         int datayear = 0;
-        for (int i = 0; i < years.length; i++) {
-            String str = years[i];
+        for (int i = 0; i < year.length; i++) {
+            String str = year[i];
             if (str.equals(date)) {
                 datayear = i;
             }

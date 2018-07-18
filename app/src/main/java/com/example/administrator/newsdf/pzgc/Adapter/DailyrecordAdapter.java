@@ -25,9 +25,10 @@ import java.util.ArrayList;
  */
 public class DailyrecordAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<String> mData;
+    private ArrayList<DailyrecordBean> mData;
     SpannableString sp;
-    public DailyrecordAdapter(Context mContext, ArrayList<String> mData) {
+
+    public DailyrecordAdapter(Context mContext, ArrayList<DailyrecordBean> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -65,17 +66,27 @@ public class DailyrecordAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        String str = "任务目标:120000";
-        holder.dailyTarget.setText(setText(str, 4, R.color.graytext,R.color.black));
-        String str1 = "已审核:00000";
-        holder.dailyYaudit.setText(setText(str1, 3,  R.color.graytext,R.color.finish_green));
-        String str2 = "待审核:00000";
+        //姓名
+        holder.dailyName.setText("姓名:" + mData.get(position).getPersonName());
+        //岗位
+        holder.dailyJobs.setText("岗位:" + mData.get(position).getPosition());
+        //所属标段
+        holder.dailyBlock.setText("所属标段：" + mData.get(position).getOrgName());
+        String str = "任务目标:" + mData.get(position).getAimsTask();
+        holder.dailyTarget.setText(setText(str, 4, R.color.graytext, R.color.black));
+        String str1 = "已审核:" + mData.get(position).getAuditCount();
+        holder.dailyYaudit.setText(setText(str1, 3, R.color.graytext, R.color.finish_green));
+        String str2 = "待审核:" + mData.get(position).getWaitTask();
         holder.dailyNaudit.setText(setText(str2, 3, R.color.graytext, R.color.yellow));
-        String str4 = "超时审核:00000";
-        holder.dailyTimeout.setText(setText(str4,4, R.color.graytext, R.color.red));
+        String str4 = "超时审核:";
+        holder.dailyTimeout.setText(setText(str4, 4, R.color.graytext, R.color.red));
         //角标
-        holder.ItemMessage.setTextString("99%");
-        holder.ItemMessage.setSlantedBackgroundColor(R.color.yellow);
+        holder.ItemMessage.setTextString(mData.get(position).getPercentage());
+        if (mData.get(position).getPercentage().equals("100%")) {
+            holder.ItemMessage.setSlantedBackgroundColor(R.color.yellow);
+        } else {
+            holder.ItemMessage.setSlantedBackgroundColor(R.color.finish_green);
+        }
         return convertView;
     }
 
@@ -85,18 +96,22 @@ public class DailyrecordAdapter extends BaseAdapter {
         SlantedTextView ItemMessage;
     }
 
-    private SpannableString setText(String str, int num, int color,int color2) {
+    private SpannableString setText(String str, int num, int color, int color2) {
         sp = new SpannableString(str);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
                         .getColor(color)), 0,
                 num,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                        .getColor(color2)), num+1,
+                        .getColor(color2)), num + 1,
                 str.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return sp;
     }
 
+    public void getData(ArrayList<DailyrecordBean> mData) {
+        this.mData = mData;
+        notifyDataSetChanged();
+    }
 }
