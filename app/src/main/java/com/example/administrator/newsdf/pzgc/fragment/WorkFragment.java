@@ -13,8 +13,9 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
@@ -107,7 +108,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
     private TextView bridhtGroup_text, bridhtCompany_text, bridhtProject_text;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
         if (rootView == null) {
             mContext = getActivity();
@@ -173,6 +174,15 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                     holder.setText(R.id.fr_worl_gr_text, obj.getValuer());
                 }
             };
+            //统计报表
+            rootView.findViewById(R.id.statementsaudit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(mContext, OrganizationaActivity.class);
+                    intent.putExtra("data","reprot");
+                    startActivity(intent);
+                }
+            });
         }
         //设置饼状图
         PieChartOne.setDate(mData);

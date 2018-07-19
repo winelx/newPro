@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.mine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,12 +10,13 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -38,11 +40,15 @@ public class OrganizationaActivity extends AppCompatActivity {
     private List<OrgenBeans> mData;
     private Context mContext;
     private boolean status = true;
+    public String data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
+        Intent intent = getIntent();
+        data = intent.getExtras().getString("data");
+        LogUtil.i("node", data);
         mContext = OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
         mTree = (ListView) findViewById(R.id.organ_list_item);

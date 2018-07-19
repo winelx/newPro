@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.treeviews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,7 +10,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.treeviews.utils.TreeHelpers;
 import com.example.administrator.newsdf.treeviews.utils.adapter.TreeListViewAdapters;
@@ -64,6 +67,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View view) {
                 if (node.getChildren().size() == 0) {
+
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
@@ -74,8 +78,18 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrganizationaActivity activity= (OrganizationaActivity) mContext;
-                activity.member(node.getIds(),node.getName());
+                OrganizationaActivity activity = (OrganizationaActivity) mContext;
+                LogUtil.i("node",activity.data);
+                if (activity.data.equals("Organi")) {
+                    activity.member(node.getIds(), node.getName());
+                } else {
+                    Intent intent = new Intent(mContext, ReportActivity.class);
+                    intent.putExtra("name", node.getName());
+                    intent.putExtra("orgId", node.getId());
+                    mContext.startActivity(intent);
+                }
+
+
             }
         });
         return convertView;

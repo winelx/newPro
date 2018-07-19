@@ -136,7 +136,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             //切换组织
             case R.id.organizationa:
-                startActivity(new Intent(getActivity(), OrganizationaActivity.class));
+                Intent intent = new Intent(mContext, OrganizationaActivity.class);
+                intent.putExtra("data", "Organi");
+                startActivity(intent);
                 break;
             case R.id.mine_avatar:
                 startActivity(new Intent(getActivity(), AuditActivity.class));
