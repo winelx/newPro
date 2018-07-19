@@ -180,6 +180,8 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                 public void onClick(View v) {
                     Intent intent=new Intent(mContext, OrganizationaActivity.class);
                     intent.putExtra("data","reprot");
+                    intent.putExtra("title","选择组织");
+
                     startActivity(intent);
                 }
             });

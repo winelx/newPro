@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
@@ -47,10 +48,13 @@ public class OrganizationaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
         Intent intent = getIntent();
+        String title = intent.getExtras().getString("title");
         data = intent.getExtras().getString("data");
         LogUtil.i("node", data);
         mContext = OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
+        TextView comtitle= (TextView) findViewById(R.id.com_title);
+        comtitle.setText(title);
         mTree = (ListView) findViewById(R.id.organ_list_item);
         mDatas2 = new ArrayList<OrgBeans>();
         initDatas();
