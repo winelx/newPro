@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
@@ -39,7 +41,7 @@ import okhttp3.Response;
  *         登录
  */
 
-public class  LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
      * 状态图片
@@ -52,12 +54,20 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
     //用户名密码1
     private EditText username, password;
     private Context mContext;
+    private RelativeLayout backgroud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mContext = App.getInstance();
+        //点击背景关闭软键盘
+        findViewById(R.id.backgroud).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hintKeyBoard();
+            }
+        });
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);
@@ -111,6 +121,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
+
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -130,11 +141,10 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
                         try {
-
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");
-                            String msg = jsonObject.getString("msg");
-                            ToastUtils.showLongToast(msg);
+                            ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            Dates.disDialog();
                             //删除数据库红点
                             greedao();
                             SPUtils.deleAll(mContext);
@@ -268,5 +278,16 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
         }
     };
 
-
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 }

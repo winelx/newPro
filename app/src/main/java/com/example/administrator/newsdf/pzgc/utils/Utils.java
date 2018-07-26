@@ -72,15 +72,10 @@ public class Utils {
         activity.getWindow().setAttributes(lp);
     }
 
-    public static String[] year = new String[]{"2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年"};
-    public static String[] years = new String[]{"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"};
-    public static String[] month = new String[]{
-            "01月", "02月", "03月",
-            "04月", "05月", "06月",
-            "07月", "08月", "09月",
-            "10月", "11月", "12月"};
 
-    public static String[] months = new String[]{
+    public static String[] year = new String[]{"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"};
+
+    public static String[] month = new String[]{
             "01", "02", "03",
             "04", "05", "06",
             "07", "08", "09",
@@ -92,33 +87,33 @@ public class Utils {
 
 
     public static String[] day = new String[]{
-            "01日", "02日", "03日", "04日", "05日",
-            "06日", "07日", "08日", "09日", "10日",
-            "11日", "12日", "13日", "14日", "15日",
-            "16日", "17日", "18日", "19日", "20日",
-            "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日", "29日", "30日", "31日"};
+            "01", "02", "03", "04", "05",
+            "06", "07", "08", "09", "10",
+            "11", "12", "13", "14", "15",
+            "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25",
+            "26", "27", "28", "29", "30", "31"};
     public static String[] daytwo = new String[]{
-            "01日", "02日", "03日", "04日", "05日",
-            "06日", "07日", "08日", "09日", "10日",
-            "11日", "12日", "13日", "14日", "15日",
-            "16日", "17日", "18日", "19日", "20日",
-            "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日"};
+            "01", "02", "03", "04", "05",
+            "06", "07", "08", "09", "10",
+            "11", "12", "13", "14", "15",
+            "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25",
+            "26", "27", "28"};
     public static String[] daytwos = new String[]{
-            "01日", "02日", "03日", "04日", "05日",
-            "06日", "07日", "08日", "09日", "10日",
-            "11日", "12日", "13日", "14日", "15日",
-            "16日", "17日", "18日", "19日", "20日",
-            "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日", "29日"};
+            "01", "02", "03", "04", "05",
+            "06", "07", "08", "09", "10",
+            "11", "12", "13", "14", "15",
+            "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25",
+            "26", "27", "28", "29"};
     public static String[] dayth = new String[]{
-            "01日", "02日", "03日", "04日", "05日",
-            "06日", "07日", "08日", "09日", "10日",
-            "11日", "12日", "13日", "14日", "15日",
-            "16日", "17日", "18日", "19日", "20日",
-            "21日", "22日", "23日", "24日", "25日",
-            "26日", "27日", "28日", "29日", "30日"};
+            "01", "02", "03", "04", "05",
+            "06", "07", "08", "09", "10",
+            "11", "12", "13", "14", "15",
+            "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25",
+            "26", "27", "28", "29", "30"};
 
     public static List<String> getyear() {
         ArrayList<String> year = new ArrayList<>();
@@ -146,7 +141,7 @@ public class Utils {
     //获取当前 年与日
     public static String titleDay() {
         //设置日期格式
-        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         return date;
@@ -155,14 +150,14 @@ public class Utils {
     //获取当前 年与日
     public static String titleMonth() {
         //设置日期格式
-        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         return date;
     }
 
     public static int titleyear() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy年");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         int datayear = 0;

@@ -95,7 +95,7 @@ public class Listinter_Adfapter extends BaseAdapter {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                holder.item_inface_date.setText("已推送："+str);
+                holder.item_inface_date.setText("已推送：" + str);
                 break;
             //已完成
             case "1":
@@ -104,6 +104,14 @@ public class Listinter_Adfapter extends BaseAdapter {
                 holder.inter_text.setText("点击查看");
                 holder.home_item_message.setTextString("已完成");
                 holder.home_item_message.setSlantedBackgroundColor(R.color.finish_green);
+                break;
+            case "2":
+                //更新时间
+                holder.item_inface_date.setText(mData.get(position).getCreateTime());
+                holder.inter_text.setText("点击查看");
+                holder.home_item_message.setTextString("打回");
+                holder.home_item_message.setSlantedBackgroundColor(R.color.red);
+                break;
             default:
                 break;
         }

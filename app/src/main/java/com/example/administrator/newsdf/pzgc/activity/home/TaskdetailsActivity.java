@@ -19,17 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplysActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_comm;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
@@ -75,12 +74,12 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
     private static TaskdetailsActivity mContext;
-    private TextView wbspath, drawer_layout_text;
-    private TextView comButton, comTitle;
+    private TextView wbspath, drawerLayoutText;
+    private TextView comTitle;
     private String wtMainid = null, wbsid, status;
     public String bright;
-    private String wbsName = null, usernma;
-
+    private String wbsName = null;
+    private LinearLayout comButton;
     private ArrayList<PhotoBean> imagePaths;
     private int page = 1;
     public ImageView audioComMark;
@@ -107,10 +106,12 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private boolean Refresh = true;
 
     private CircleImageView fab;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meunStandard, meunPhoto;
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true, brightlean;
+    String iscallback;
+    String partContent;
 
     public static TaskdetailsActivity getInstance() {
         return mContext;
@@ -127,7 +128,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         mContext = this;
         //权限
         DetailsCallbackUtils.setCallBack(this);
-        usernma = SPUtils.getString(mContext, "staffName", null);
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
@@ -171,14 +171,19 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             e.printStackTrace();
             brightlean = false;
         }
-        okgo(TaskId);
-        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
-        drawerLayoutList.setAdapter(taskPhotoAdapter);
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        okgo(TaskId);
+        taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
+        drawerLayoutList.setAdapter(taskPhotoAdapter);
+    }
+
     private void finById() {
-        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
+        drawerLayoutText = (TextView) findViewById(R.id.drawer_layout_text);
         audioComMark = (ImageView) findViewById(R.id.audio_com_mark);
         comImg = (LinearLayout) findViewById(R.id.com_img);
         iconTextView = (IconTextView) findViewById(R.id.task_icontextview);
@@ -188,7 +193,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         drawerLayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         wbspath = (TextView) findViewById(R.id.wbspath);
-        comButton = (TextView) findViewById(R.id.audio_com_button);
+        comButton = (LinearLayout) findViewById(R.id.com_text);
         comTitle = (TextView) findViewById(R.id.audio_com_title);
         mRecyclerView = (RecyclerView) findViewById(R.id.handover_status_recycler);
         taskManagement = (LinearLayout) findViewById(R.id.taskManagement);
@@ -197,11 +202,10 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         fab = (CircleImageView) findViewById(R.id.fab);
         fab.setOnClickListener(this);
         comButton.setOnClickListener(this);
-        comButton.setVisibility(View.GONE);
-        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
-        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        meun_photo.setOnClickListener(this);
-        meun_standard.setOnClickListener(this);
+        meunStandard = (LinearLayout) findViewById(R.id.meun_standard);
+        meunPhoto = (LinearLayout) findViewById(R.id.meun_photo);
+        meunPhoto.setOnClickListener(this);
+        meunStandard.setOnClickListener(this);
     }
 
     private void newArray() {
@@ -228,16 +232,16 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        //抛出异常，在任务管理界面返回时不需要刷新数据，
-        try {
-            //判断状态是否改变
-            if (!Refresh) {
-                //改变了，调用刷新数据方法
-                TaskCallbackUtils.removeCallBackMethod();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //抛出异常，在任务管理界面返回时不需要刷新数据，
+//        try {
+//            //判断状态是否改变
+//            if (!Refresh) {
+//                //改变了，调用刷新数据方法
+//                TaskCallbackUtils.CallBackMethod();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         finish();
         return true;
     }
@@ -310,7 +314,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 //网络请求
                 imagePaths.clear();
                 taskPhotoAdapter.getData(imagePaths, "");
-                drawer_layout_text.setText("图纸");
+                drawerLayoutText.setText("图纸");
                 Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
                 //上拉加载的状态判断
@@ -326,7 +330,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 //上拉加载的状态判断
                 liststatus = false;
                 imagePaths.clear();
-                drawer_layout_text.setText("标准");
+                drawerLayoutText.setText("标准");
                 taskPhotoAdapter.getData(imagePaths, "");
                 Dates.getDialog(TaskdetailsActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsid, page, imagePaths, drew, taskPhotoAdapter, wbsName);
@@ -335,10 +339,10 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             case R.id.fab:
                 //打开meun选项
                 if (anim) {
-                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclickt(meunPhoto, meunStandard, fab);
                     anim = false;
                 } else {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
                     anim = true;
                 }
                 break;
@@ -348,10 +352,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 intent1.putExtra("taskId", TaskId);
                 startActivity(intent1);
                 break;
-            case R.id.audio_com_button:
+            case R.id.com_text:
                 //任务回复界面
-                Intent intent = new Intent(TaskdetailsActivity.this, DirectlyreplyActivity.class);
+                Intent intent = new Intent(TaskdetailsActivity.this, DirectlyreplysActivity.class);
                 intent.putExtra("id", TaskId);
+                intent.putExtra("status", true);
+                intent.putExtra("partContent", partContent);
+
                 startActivityForResult(intent, 1);
                 break;
             case R.id.taskManagement:
@@ -388,7 +395,21 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             JSONObject data = jsonObject.getJSONObject("data");
                             JSONObject wtMain = data.getJSONObject("wtMain");
                             JSONObject createBy = wtMain.getJSONObject("createBy");
-                            JSONArray subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
+                            JSONArray subWbsTaskMains;
+                            try {
+                                subWbsTaskMains = data.getJSONArray("subWbsTaskMains");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                subWbsTaskMains = new JSONArray();
+                            }
+                            JSONArray taskHi;
+                            try {
+                                taskHi = data.getJSONArray("taskHi");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                taskHi = new JSONArray();
+                            }
+
                             JSONArray comments = data.getJSONArray("comments");
 
                             //判断提亮降亮权限
@@ -455,25 +476,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 isSmartProject = 0;
                             }
 
-                            String status;
-                            //状态
-                            try {
-                                status = wtMain.getString("status");
-                                switch (status) {
-                                    case "1":
-                                        comImg.setVisibility(View.GONE);
-                                        comButton.setVisibility(View.VISIBLE);
-                                        break;
-                                    case "2":
-                                        comButton.setVisibility(View.GONE);
-                                        comImg.setVisibility(View.VISIBLE);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } catch (JSONException e) {
-                                status = "";
-                            }
                             String content;
                             //推送内容
                             try {
@@ -494,6 +496,12 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             } catch (JSONException e) {
 
                                 leaderName = "";
+                            }
+                            //是否打回
+                            try {
+                                iscallback = wtMain.getString("iscallback");
+                            } catch (JSONException e) {
+                                iscallback = "";
                             }
                             String leaderId = null;
                             //负责人ID
@@ -526,13 +534,42 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 checkStandard = "";
                             }
                             //部位
-                            String partContent;
+
                             try {
                                 partContent = wtMain.getString("partContent");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 partContent = "";
                             }
+                            String status;
+                            //状态
+                            try {
+                                status = wtMain.getString("status");
+                                switch (status) {
+                                    case "1":
+                                        comImg.setVisibility(View.GONE);
+                                        comButton.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "2":
+                                        comButton.setVisibility(View.GONE);
+                                        comImg.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "3":
+                                        String userId = SPUtils.getString(mContext, "staffId", null);
+                                        if (userId.equals(leaderId)) {
+                                            comButton.setVisibility(View.VISIBLE);
+                                        } else {
+                                            comButton.setVisibility(View.GONE);
+                                        }
+                                        comImg.setVisibility(View.GONE);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } catch (JSONException e) {
+                                status = "";
+                            }
+
                             //更新时间
                             String createDate = wtMain.getString("createDate");
                             //wbsname
@@ -550,6 +587,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     leaderName, leaderId, isread,
                                     createByUserID, checkStandard, createDate, wbsName, changeId,
                                     backdata, partContent));
+
                             for (int i = 0; i < subWbsTaskMains.length(); i++) {
                                 JSONObject Sub = subWbsTaskMains.getJSONObject(i);
                                 String replyID, uploadId, replyUserName, replyUserHeaderURL,
@@ -586,9 +624,9 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                                 try {
                                     //wbsName
-                                    subWbsname = Sub.getString("wbsName");
+                                    wbsName = Sub.getString("wbsName");
                                 } catch (JSONException e) {
-                                    subWbsname = "";
+                                    wbsName = "";
                                 }
                                 try {
                                     //上传时间
@@ -639,7 +677,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                     userimage = "";
                                 }
 
-
                                 ArrayList<String> attachments = new ArrayList<>();
                                 ArrayList<String> filename = new ArrayList<>();
                                 //任务回复图片
@@ -652,12 +689,122 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                         attachments.add(Requests.networks + path);
                                     }
                                 }
-                                aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
-                                        subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
-                                        smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
-                                        userimage, filename, isSmartProject, isFavorite, smartProjectType));
-
+                                if (!uploadContent.isEmpty()) {
+                                    aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                            wbsName, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
+                                            smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
+                                            userimage, filename, isSmartProject, isFavorite, smartProjectType));
+                                }
                             }
+                            if (iscallback.equals("1")) {
+                                for (int i = 0; i < taskHi.length(); i++) {
+                                    JSONObject Sub = taskHi.getJSONObject(i);
+                                    String replyID, uploadId, replyUserName, replyUserHeaderURL,
+                                            subName, subWbsname,
+                                            uploadContent, updateDate, uploadAddr;
+                                    JSONArray hments = new JSONArray();
+                                    try {
+                                        hments = Sub.getJSONArray("attachments");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    //  (回复详情列表)
+                                    try {
+                                        //唯一标识
+                                        replyID = Sub.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        replyID = "";
+                                    }
+                                    try {
+                                        //上传人ID
+                                        uploadId = Sub.getString("leaderId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        uploadId = "";
+                                    }
+
+                                    try {
+                                        //检查点
+                                        subName = Sub.getString("name");
+                                    } catch (JSONException e) {
+                                        subName = "";
+                                    }
+                                    try {
+                                        //wbsName
+                                        subWbsname = Sub.getString("wbsName");
+                                    } catch (JSONException e) {
+                                        subWbsname = "";
+                                    }
+                                    try {
+                                        //上传时间
+                                        updateDate = Sub.getString("uploadTime");
+                                    } catch (JSONException e) {
+                                        updateDate = "";
+                                    }
+
+                                    try {
+                                        //上传内容说明
+                                        uploadContent = Sub.getString("uploadContent");
+                                    } catch (JSONException e) {
+                                        uploadContent = "";
+                                    }
+                                    try {
+                                        // 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
+                                        replyUserName = wtMain.getJSONObject("uploadUser").getString("realname");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        replyUserName = "";
+                                    }
+                                    //头像
+                                    try {
+                                        replyUserHeaderURL = wtMain.getJSONObject("uploadUser").getString("portrait");
+                                    } catch (JSONException e) {
+                                        replyUserHeaderURL = "";
+                                    }
+                                    wbsid = Sub.getString("wbsId");
+                                    try {
+                                        //上传地点
+                                        uploadAddr = Sub.getString("uploadAddr");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        uploadAddr = "";
+                                    }
+                                    boolean isFavorite;
+                                    try {
+                                        isFavorite = wtMain.getBoolean("isFavorite");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        isFavorite = false;
+                                    }
+                                    String userimage;
+                                    try {
+                                        String path = wtMain.getJSONObject("uploadUser").getString("portrait");
+                                        userimage = Requests.networks + path;
+                                    } catch (JSONException e) {
+                                        userimage = "";
+                                    }
+
+                                    ArrayList<String> attachments = new ArrayList<>();
+                                    ArrayList<String> filename = new ArrayList<>();
+                                    //任务回复图片
+                                    if (hments.length() > 0) {
+                                        for (int j = 0; j < hments.length(); j++) {
+                                            JSONObject json = hments.getJSONObject(j);
+                                            String path = json.getString("filepath");
+                                            String name1 = json.getString("filename");
+                                            filename.add(name1);
+                                            attachments.add(Requests.networks + path);
+                                        }
+                                    }
+                                    aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                            subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
+                                            smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
+                                            userimage, filename, isSmartProject, isFavorite, smartProjectType));
+                                }
+                            }
+
                             /**
                              * 回复评论
                              */
@@ -724,7 +871,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                                 //评论时间
                                 String replyTime = json.getString("replyTime");
-                                aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
+                                aduioComms.add(new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
                                         commentsContent, replyTime, filePathsMin, filePaths));
                             }
                             if (contents.get(0).getStatus().equals("0")) {
@@ -736,7 +883,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (wbsName.length() != 0) {
+                        if (wbsName != null) {
                             taskManagement.setVisibility(View.VISIBLE);
                             wbspath.setText(wbsName);
                         }
@@ -778,7 +925,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         }
     }
 
-    public boolean getbright(){
+    public boolean getbright() {
         return brightlean;
     }
 }

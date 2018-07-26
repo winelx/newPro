@@ -86,7 +86,8 @@
             android:paddingLeft="8dp"
             android:text="完成率:20%"
             android:textColor="@color/green"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/unfinished"
@@ -97,24 +98,52 @@
             android:paddingLeft="8dp"
             android:text="未审核:20"
             android:textColor="@color/yellow"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/SmartRefreshLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/auditrecord_list"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/SmartRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            <ListView
+                android:id="@+id/auditrecord_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/nullposion"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/nonews" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂 无 数 据 ！" />
+
+
+        </LinearLayout>
+    </FrameLayout>
+
 
 </LinearLayout>

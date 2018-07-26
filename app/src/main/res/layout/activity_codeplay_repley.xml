@@ -88,6 +88,7 @@
 
 
     <LinearLayout
+        android:id="@+id/dialog_rec_status"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/writer"
@@ -141,6 +142,7 @@
         android:background="@color/back" />
 
     <LinearLayout
+        android:id="@+id/dialog_rec_content"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/writer"
@@ -182,7 +184,7 @@
         android:layout_height="80dp"
         android:background="@color/writer"
         android:gravity="left"
-        android:hint="输入部位名称"
+        android:hint="输入内容"
         android:minHeight="80dp"
         android:paddingLeft="20dp"
         android:paddingRight="15dp"

@@ -21,7 +21,6 @@ import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyAct
 import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -81,7 +80,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
      * 判断状态，是上拉还是下拉
      */
     private boolean drew = true;
-    private String wbsName = "";
+    private String wbsName = "",activity;
 
     //弹出框
     private CircleImageView fab;
@@ -108,6 +107,7 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
             taskID = intent.getExtras().getString("TaskId");
             wbsid = intent.getExtras().getString("wbsid");
             status = intent.getExtras().getString("status");
+            activity = intent.getExtras().getString("activity");
             if (status.equals("true")) {
                 iconTextView.setVisibility(View.VISIBLE);
             } else {
@@ -265,20 +265,21 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("id", taskID);
                 intent.putExtra("wbsId", wbsid);
                 intent.putExtra("status", status);
+                intent.putExtra("activity", activity);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
-                //抛出异常，在任务管理界面返回时不需要刷新数据，
-                try {
-                    //判断状态是否改变
-                    if (!Refresh) {
-                        //改变了，调用刷新数据方法
-                        TaskCallbackUtils.removeCallBackMethod();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                //抛出异常，在任务管理界面返回时不需要刷新数据，
+//                try {
+//                    //判断状态是否改变
+//                    if (!Refresh) {
+//                        //改变了，调用刷新数据方法
+//                        TaskCallbackUtils.CallBackMethod();
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 finish();
                 break;
             case R.id.taskManagemented:

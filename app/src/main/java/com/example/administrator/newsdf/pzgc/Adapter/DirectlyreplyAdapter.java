@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplysActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
@@ -29,12 +30,13 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
 
     public final static int TYPE_ADD = 1;
     final static int TYPE_PHOTO = 2;
-
+    private String activity;
     final static int MAX = 9;
 
-    public DirectlyreplyAdapter(Context mContext, ArrayList<String> photoPaths) {
+    public DirectlyreplyAdapter(Context mContext, ArrayList<String> photoPaths, String activity) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
+        this.activity = activity;
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -88,8 +90,14 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DirectlyreplyActivity reply = (DirectlyreplyActivity) mContext;
-                    reply.Cream();
+                    if (activity.equals("false")) {
+                        DirectlyreplyActivity reply = (DirectlyreplyActivity) mContext;
+                        reply.Cream();
+                    } else {
+                        DirectlyreplysActivity reply = (DirectlyreplysActivity) mContext;
+                        reply.Cream();
+                    }
+
                 }
             });
         }

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
-import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
@@ -178,10 +178,9 @@ public class WorkFragment extends Fragment implements BrightCallBack {
             rootView.findViewById(R.id.statementsaudit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(mContext, OrganizationaActivity.class);
-                    intent.putExtra("data","reprot");
-                    intent.putExtra("title","选择组织");
 
+                    Intent intent = new Intent(mContext, ReportActivity.class);
+                    intent.putExtra("orgId", SPUtils.getString(mContext, "orgId", ""));
                     startActivity(intent);
                 }
             });

@@ -46,7 +46,7 @@ public class AllMessageModelImp implements AllMessageModel {
     @Override
     public void getData(final OnClickListener onClickListener) {
         OkGo.post(Requests.TaskMain)
-                .params("isAll", "true")
+                .params("isAll", true)
                 .execute(new StringCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override

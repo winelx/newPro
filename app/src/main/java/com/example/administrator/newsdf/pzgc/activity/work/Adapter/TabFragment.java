@@ -12,12 +12,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.TabAdapters;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.TabAdapters;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Tab_fragment_item;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LazyFragment;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -102,19 +103,28 @@ public class TabFragment extends LazyFragment {
         listVIew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            TenanceviewActivity activity = (TenanceviewActivity) mContext;
+                TenanceviewActivity activity = (TenanceviewActivity) mContext;
                 activity.setViewtype();
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
-                intent.putExtra("id", mData.get(position).getId());
-                intent.putExtra("name", mData.get(position).getUser());
-                intent.putExtra("TaskId", mData.get(position).getId());
-                intent.putExtra("status", "false");
-                intent.putExtra("wbsid", wbeID);
-                startActivity(intent);
+                String ststus = mData.get(position).getStatus1();
+                if (ststus.equals("3")) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", mData.get(position).getId());
+                    intent.putExtra("status", "false");
+                    intent.putExtra("wbsid", wbeID);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("id", mData.get(position).getId());
+                    intent.putExtra("name", mData.get(position).getUser());
+                    intent.putExtra("TaskId", mData.get(position).getId());
+                    intent.putExtra("status", "false");
+                    intent.putExtra("wbsid", wbeID);
+                    startActivity(intent);
+                }
+
 //                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
 //                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
 //                intent.putExtra("status", "true");
-
             }
         });
 

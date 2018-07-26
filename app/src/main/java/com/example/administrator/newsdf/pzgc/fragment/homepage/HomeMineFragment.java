@@ -54,6 +54,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
     private ExpandableListView expandable;
     private FragmentHomeListAdapter mAdapter;
     private ArrayList<Home_item> mData;
+    private ArrayList<Home_item> Audit;
     private ArrayList<String> title;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
@@ -145,42 +146,72 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.contains("data")) {
                             mData = new ArrayList<>();
+                            Audit = new ArrayList<>();
                             title = new ArrayList<>();
                             hasMap = new HashMap<>();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json = jsonArray.getJSONObject(i);
-                                    String content = json.getString("content");
-                                    String createTime = json.getString("createTime");
-                                    if (createTime != null && !"".equals(createTime)) {
-                                        createTime = createTime.substring(0, 10);
-                                    } else {
-                                        createTime = "";
-                                    }
-                                    String id = json.getString("id");
-                                    String isfavorite = json.getString("isfavorite");
-                                    String orgId = json.getString("orgId");
-                                    String orgName = json.getString("orgName");
-                                    String parentid = json.getString("parent_id");
-                                    String parentname = json.getString("parent_name");
-                                    String unfinish = json.getString("unfinish");
-                                    mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                JSONArray task;
+                                try {
+                                    task = data.getJSONArray("task");
+                                } catch (JSONException e) {
+                                    task = new JSONArray();
                                 }
-                                //是否有数据
-                                if (mData.size() != 0) {
-                                    title.add("我的任务");
-                                    title.add("我的审核");
+                                JSONArray audit;
+                                try {
+                                    audit = data.getJSONArray("audit");
+                                } catch (JSONException e) {
+                                    audit = new JSONArray();
+                                }
 
-                                    hasMap.put("我的任务", mData);
-                                    hasMap.put("我的审核", mData);
+
+                                if (task.length() > 0) {
+                                    for (int i = 0; i < task.length(); i++) {
+                                        JSONObject json = task.getJSONObject(i);
+                                        String content = json.getString("content");
+                                        String createTime = json.getString("createTime");
+                                        if (createTime != null && !"".equals(createTime)) {
+                                            createTime = createTime.substring(0, 10);
+                                        } else {
+                                            createTime = "";
+                                        }
+                                        String id = json.getString("id");
+                                        String isfavorite = json.getString("isfavorite");
+                                        String orgId = json.getString("orgId");
+                                        String orgName = json.getString("orgName");
+                                        String parentid = json.getString("parent_id");
+                                        String parentname = json.getString("parent_name");
+                                        String unfinish = json.getString("unfinish");
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
+                                    }
+                                    title.add("待回复");
+                                    hasMap.put("待回复", mData);
+
+                                }
+                                if (audit.length() > 0) {
+                                    for (int i = 0; i < audit.length(); i++) {
+                                        JSONObject json1 = audit.getJSONObject(i);
+                                        String id = json1.getString("id");
+                                        String orgName = json1.getString("name");
+                                        String parentname = json1.getString("parentName");
+                                        //任务未完成
+                                        String unfinish;
+                                        try {
+                                            unfinish = json1.getString("unfinish");
+                                        } catch (JSONException e) {
+                                            unfinish = "0";
+                                        }
+                                        Audit.add(new Home_item("", "", "", id, orgName, unfinish, "", parentname, "", false));
+                                    }
+                                    title.add("待审核");
+                                    hasMap.put("待审核", Audit);
                                 }
                                 mAdapter = new FragmentHomeListAdapter(title, hasMap, mContext,
                                         ivGoToChildClickListener);
                                 expandable.setAdapter(mAdapter);
                                 //关闭刷新提示
-                                refreshLayout.finishRefresh(false);
+                                refreshLayout.finishRefresh(true);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

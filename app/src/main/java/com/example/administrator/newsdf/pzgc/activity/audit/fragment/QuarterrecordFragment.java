@@ -18,8 +18,9 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -40,9 +41,10 @@ import static com.example.administrator.newsdf.pzgc.utils.Utils.getquarter;
 
 /**
  * Created by Administrator on 2018/7/3 0003.
+ * 季度报表
  */
 
-public class QuarterrecordFragment extends Fragment implements View.OnClickListener {
+public class QuarterrecordFragment extends Fragment implements View.OnClickListener, TaskCallback {
     private View rootView;
     private DailyrecordAdapter mAdapter;
     private ListView daily_list;
@@ -52,7 +54,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker;
     private ReportActivity activity;
-
+    private String data;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,17 +64,21 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
+            rootView.findViewById(R.id.quarterRetry).setOnClickListener(this);
         }
         SimpleDateFormat df = new SimpleDateFormat("yyyy年");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
         datatime.setText(date + Utils.quarter[getquarter()]);
+        TaskCallbackUtils.setCallBack(this);
         title.setText("选择季度");
         mContext = getActivity();
         activity = (ReportActivity) mContext;
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
-        okgo(Dates.getYear() + "-" + Utils.getquarter());
+        daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
+        data=Dates.getYear() + "-" + Utils.getquarter();
+        okgo(data);
         return rootView;
     }
 
@@ -103,17 +109,15 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                 switch (v.getId()) {
                     case R.id.pop_determine:
                         //获取年
-                        String yeardata = Utils.years[yearPicker.getValue()];
+                        String yeardata = Utils.year[yearPicker.getValue()];
                         //获取季度
                         int month = monthPicker.getValue();
                         String monthdata = Utils.quarter[month];
                         datatime.setText(yeardata + monthdata);
-                        LogUtil.i("data", yeardata + "-" + month);
-                        LogUtil.i(Utils.years[yearPicker.getValue()] + "-" + Utils.getquarter());
-                        okgo(Utils.years[yearPicker.getValue()] + "-" + Utils.getquarter());
+                         data= yeardata + "-" + Utils.getquarter();
+                        okgo(data);
                         break;
                     case R.id.pop_dismiss:
-
                     default:
                         break;
                 }
@@ -124,6 +128,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         };
         TextView pop_vaulee = contentView.findViewById(R.id.pop_vaulee);
         pop_vaulee.setText("季度");
+        TextView titledata = contentView.findViewById(R.id.titledata);
+        titledata.setText("选择季度");
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
@@ -139,9 +145,21 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
             case R.id.audit_title:
                 MeunPop();
                 break;
+            case R.id.quarterRetry:
+                okgo(data);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 接口回调
+     */
+    @Override
+    public void taskCallback() {
+        ToastUtils.showLongToast("季度");
+        okgo(data);
     }
 
 

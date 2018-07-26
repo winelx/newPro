@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.treeviews.utils.TreeHelpers;
 import com.example.administrator.newsdf.treeviews.utils.adapter.TreeListViewAdapters;
@@ -25,8 +25,8 @@ import java.util.List;
  *         update: 2018/3/20 0020
  *         version:
  */
-public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
-    public SimpleTreeListViewAdapters(ListView tree, Context context,
+public class ReportTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
+    public ReportTreeListViewAdapters(ListView tree, Context context,
                                       List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
@@ -38,7 +38,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public View getConvertView(final Nodes node, final int position, View convertView,
                                ViewGroup parent) {
         ViewHolder holder = null;
-        final OrganizationaActivity mian = (OrganizationaActivity) mContext;
+        final ReportActivity mian = (ReportActivity) mContext;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_node, parent, false);
             holder = new ViewHolder();
@@ -63,7 +63,6 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View view) {
                 if (node.getChildren().size() == 0) {
-
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
@@ -74,8 +73,8 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrganizationaActivity activity = (OrganizationaActivity) mContext;
-                    activity.member(node.getIds(), node.getName());
+                mian.setOrgId(node.getIds());
+
             }
         });
         return convertView;

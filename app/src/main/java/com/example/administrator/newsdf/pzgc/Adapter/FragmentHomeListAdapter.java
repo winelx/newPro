@@ -147,7 +147,6 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         }
         //随机数，改变标段的颜色
         int random = (int) (Math.random() * 4) + 1;
-
         if (groupPosition % 5 != 0) {
             childHold.homeItemImg.setBackgroundResource(R.drawable.home_item_blue);
         } else if (groupPosition % 2 != 0) {
@@ -157,16 +156,27 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         } else if (groupPosition % 4 != 0) {
             childHold.homeItemImg.setBackgroundResource(R.drawable.homt_item_green);
         }
+        if (classes.get(groupPosition).equals("待审核")) {
+            childHold.tvSet.setVisibility(View.GONE);
+        } else {
+            childHold.tvSet.setVisibility(View.VISIBLE);
+        }
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         String childName = content.get(classes.get(groupPosition)).get(childPosition).getContent();
         //消息数量
-        Integer number = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
-        int mix = 99;
-        if (number > mix) {
-            childHold.homeItemMessage.setText("99+");
+        String Unfinish = content.get(classes.get(groupPosition)).get(childPosition).getUnfinish();
+        if (!Unfinish.equals("0")) {
+            Integer number = Integer.decode(Unfinish);
+            int mix = 99;
+            if (number > mix) {
+                childHold.homeItemMessage.setText("99+");
+            } else {
+                childHold.homeItemMessage.setText(number + "");
+            }
         } else {
-            childHold.homeItemMessage.setText(number + "");
+            childHold.homeItemMessage.setVisibility(View.GONE);
         }
+
 //判断是否有消息
         if (zero.equals(content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite())) {
             childHold.tvSet.setBackgroundResource(R.color.Orange);
@@ -235,7 +245,7 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classes.get(groupPosition).equals("我的任务")) {
+                if (classes.get(groupPosition).equals("待回复")) {
                     Intent intent = new Intent(context, MineListmessageActivity.class);
                     intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                     intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());

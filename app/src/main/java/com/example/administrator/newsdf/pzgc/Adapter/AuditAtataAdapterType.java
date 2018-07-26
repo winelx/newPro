@@ -72,6 +72,9 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
 
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
+
+        int size = mDatas.size() - 1;
+        holder.related.setVisibility(View.GONE);
         //判断是否有图片
         if (mDatas.get(posotion).getAttachments().size() != 0) {
             //有图片展示布局
@@ -90,12 +93,14 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                 .load(url)
                 .into(holder.audioAcathor);
         String status = auditdetailsActivity.getStatus();
-        if (status.equals("1")) {
-            holder.related.setVisibility(View.GONE);
-        } else if (status.equals("2")) {
-            holder.related.setVisibility(View.GONE);
+        if (posotion == size) {
+            if ("1".equals(status) || "2".equals(status)) {
+                holder.related.setVisibility(View.GONE);
+            } else {
+                holder.related.setVisibility(View.VISIBLE);
+            }
         } else {
-            holder.related.setVisibility(View.VISIBLE);
+            holder.related.setVisibility(View.GONE);
         }
         holder.audioName.setText(mDatas.get(posotion).getReplyUserName());
         holder.audioData.setText(mDatas.get(posotion).getUpdateDate());
@@ -158,7 +163,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
             audioAddress = itemView.findViewById(R.id.audio_address);
             detailsAudit = itemView.findViewById(R.id.details_audit);
             detailsRejected = itemView.findViewById(R.id.details_rejected);
-            related = itemView.findViewById(R.id.related);
+            related = itemView.findViewById(R.id.relateds);
             audioRec = itemView.findViewById(R.id.audio_rec);
         }
     }

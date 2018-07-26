@@ -26,25 +26,26 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
+import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.treeView.Node;
-import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
-import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -75,7 +76,7 @@ import okhttp3.Response;
 public class CommentmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
-    private TextView Titlew, deleteSearch,drawer_layout_text;
+    private TextView Titlew, deleteSearch, drawer_layout_text;
     private EditText searchEditext;
     private String orgid, wbsid, name, titles;
     //
@@ -108,7 +109,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
 
-    private LinearLayout drawerContent, listeradNonumber, imageViewMeun;
+    private LinearLayout drawerContent, imageViewMeun;
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
@@ -253,11 +254,22 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
-                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                intent.putExtra("status", "true");
-                startActivity(intent);
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
             }
         });
         //listview的触摸监听
@@ -413,7 +425,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //网络请求
                 imagePaths.clear();
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("图纸");
                 Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
@@ -431,7 +443,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 liststatus = false;
                 imagePaths.clear();
                 drawer_layout_text.setText("标准");
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -553,7 +565,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     //初始化控件
     private void findbyId() {
         //获得控件id，初始化id
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         mTree = (ListView) findViewById(R.id.wbslist);
@@ -565,7 +577,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
+
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
 
@@ -606,6 +618,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mAdapter = new Imageloaders(mContext, Alldata);
         //主界面
         uslistView.setAdapter(mAdapter);
+        uslistView.setEmptyView(findViewById(R.id.nullposion));
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
@@ -776,7 +789,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
                     mAdapter.getData(Alldata);
-                    listeradNonumber.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -794,7 +806,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste)+20, 210, true);
+                Dates.withFontSize(ste) + 20, 210, true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show

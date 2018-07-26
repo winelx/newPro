@@ -202,7 +202,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     if (newdata){
                                         ToastUtils.showLongToast("暂无数据");
                                     }
-
                                 }
 
                             } catch (JSONException e) {

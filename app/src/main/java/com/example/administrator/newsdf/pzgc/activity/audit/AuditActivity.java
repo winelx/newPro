@@ -71,7 +71,7 @@ public class AuditActivity extends AppCompatActivity {
         name = intent.getExtras().getString("name");
         ste = ScreenUtil.getDensity(App.getInstance());
         title = new ArrayList<>();
-        TextView titles= (TextView) findViewById(R.id.title);
+        TextView titles = (TextView) findViewById(R.id.title);
         titles.setText(name);
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
         aduit_back = (IconTextView) findViewById(R.id.aduit_back);
@@ -81,7 +81,16 @@ public class AuditActivity extends AppCompatActivity {
             public void bindView(ViewHolder holder, Audittitlebean obj) {
                 holder.setText(R.id.todaytime, obj.getCnDay());
                 holder.setText(R.id.complete, "完成率:" + obj.getRatio());
-                holder.setText(R.id.unfinished, "未审核:" + obj.getTip());
+                if (obj.getTip().isEmpty()) {
+                    holder.setText(R.id.unfinished, "未审核:" + "0");
+                }else {
+                    Integer str = Integer.decode(obj.getTip());
+                if (str > 0) {
+                    holder.setText(R.id.unfinished, "未审核:" + obj.getTip());
+                } else {
+                    holder.setText(R.id.unfinished, "未审核:" + "0");
+                }
+                }
             }
         };
         aduit_list.setAdapter(adapter);
@@ -89,12 +98,12 @@ public class AuditActivity extends AppCompatActivity {
         aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent(AuditActivity.this, AuditrecordActivity.class);
                 intent.putExtra("date", title.get(position).getDate());
+                intent.putExtra("title", name);
                 intent.putExtra("orgId", orgId);
                 intent.putExtra("day", title.get(position).getCnDay());
-                intent.putExtra("ratio", title.get(position).getRatio());
-                intent.putExtra("tip", title.get(position).getTip());
                 startActivity(intent);
             }
         });
@@ -141,8 +150,8 @@ public class AuditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.audit_statistical:
-                        Intent intent =new Intent(AuditActivity.this,ReportActivity.class);
-                        intent.putExtra("orgId",orgId);
+                        Intent intent = new Intent(AuditActivity.this, ReportActivity.class);
+                        intent.putExtra("orgId", orgId);
                         startActivity(intent);
                         break;
                     default:
@@ -172,7 +181,7 @@ public class AuditActivity extends AppCompatActivity {
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")
-                .params("id", orgId)
+                .params("orgId", orgId)
                 .params("day", "day")
                 .execute(new StringCallback() {
                     @Override

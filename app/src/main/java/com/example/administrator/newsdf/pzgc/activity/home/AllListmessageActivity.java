@@ -76,8 +76,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     private TextView Titlew, deleteSearch, drawer_layout_text;
     private EditText searchEditext;
-    private String id, wbsid, intentBack, name, titles;
-    private String notall = "3", nodeiD = "1";
+    private String id, wbsid, name, titles;
+    private String notall = "2", nodeiD = "1";
     //主界面适配器
     private Imageloaders mAdapter;
     //抽屉控件
@@ -100,7 +100,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
 
-    private LinearLayout drawerContent, listeradNonumber, imageViewMeun;
+    private LinearLayout drawerContent, imageViewMeun;
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
@@ -109,7 +109,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private FloatMeunAnims floatMeunAnims;
     private CircleImageView fab;
     private LinearLayout meun_standard, meun_photo;
-
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -128,7 +127,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         try {
             id = intent.getExtras().getString("orgId");
             wbsid = intent.getExtras().getString("orgId");
-            intentBack = intent.getExtras().getString("back");
             name = intent.getExtras().getString("name");
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -147,11 +145,12 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 page++;
                 drew = false;
                 if (liststatus) {
+                    //加载图片
                     HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-                    //传入false表示加载失败
                 } else {
+                    //加载标准
                     HomeUtils.getStard(nodeiD, page, stardPaths, drew, taskAdapter, titles);
-                    //传入false表示加载失败
+
                 }
                 refreshlayout.finishLoadmore(1000);
 
@@ -247,11 +246,23 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
-                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                intent.putExtra("status", "true");
-                startActivity(intent);
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
+
             }
         });
         //listview的触摸监听
@@ -374,8 +385,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -436,7 +445,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     protected void onStop() {
         super.onStop();
         //传入false表示刷新失败
-        refreshLayout.finishRefresh(false);
+        refreshLayout.finishRefresh(true);
     }
 
     //设置pop的点击事件
@@ -457,7 +466,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
-                        notall = "3";
+                        notall = "10";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
@@ -492,6 +501,19 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                             okgoall(null, null, pages);
                         }
                         break;
+                    case R.id.pop_backup:
+                        Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        swip = false;
+                        notall = "3";
+                        uslistView.setSelection(0);
+                        if (nodeiD != "1") {
+                            okgoall(nodeiD, null, pages);
+                        } else {
+                            okgoall(null, null, pages);
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -504,6 +526,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_backup).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
 
@@ -513,7 +536,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         swip = false;
         pages = 1;
         okgoall(wbsid, null, page);
-        uslistView.setSelection(0);
     }
 
     /**
@@ -567,7 +589,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
+
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         findViewById(R.id.com_back).setOnClickListener(this);
@@ -598,7 +620,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerlayoutSmart.setEnableRefresh(false);
         //是否在加载的时候禁止列表的操作
-        refreshLayout.setDisableContentWhenLoading(true);
+//        refreshLayout.setDisableContentWhenLoading(true);
         //设置标题
         Titlew.setText(name);
         //设置标题字体
@@ -607,6 +629,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         mAdapter = new Imageloaders(mContext, Alldata);
         //主界面
         uslistView.setAdapter(mAdapter);
+        uslistView.setEmptyView(findViewById(R.id.nullposion));
         //打开抽屉控件的圆形控件
         //图册适配器
         taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
@@ -766,6 +789,10 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 pointName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
+                    if (Alldata.size() != 0) {
+                        mAdapter.getData(Alldata);
+
+                    }
                 } else {
                     if (!swip) {
                         Alldata.clear();
@@ -773,10 +800,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     mAdapter.getData(Alldata);
                 }
                 Dates.disDialog();
-                if (Alldata.size() != 0) {
-                    mAdapter.getData(Alldata);
-                    listeradNonumber.setVisibility(View.GONE);
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -793,7 +816,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste)+20, Dates.higtFontSize(ste), true);
+                Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
@@ -841,7 +864,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 .params("isAll", "true")
                 .params("content", content);
         //如果==3 那么就不传
-        if (notall == "3") {
+        if (notall == "10") {
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {

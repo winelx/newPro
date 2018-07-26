@@ -51,7 +51,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
     private LeftSlideView mMenu = null;
     private String zero = "0";
 
-
     public MyExpandableListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context,
                                    View.OnClickListener ivGoToChildClickListener) {
         this.classes = classes;
@@ -164,11 +163,16 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         //消息数量
         Integer number = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
         int mix = 99;
-        if (number > mix) {
-            childHold.homeItemMessage.setText("99+");
+        if (number > 0) {
+            if (number > mix) {
+                childHold.homeItemMessage.setText("99+");
+            } else {
+                childHold.homeItemMessage.setText(number + "");
+            }
         } else {
-            childHold.homeItemMessage.setText(number + "");
+            childHold.homeItemMessage.setVisibility(View.GONE);
         }
+
 //判断是否有消息
         if (zero.equals(content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite())) {
             childHold.tvSet.setBackgroundResource(R.color.Orange);
@@ -205,7 +209,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
                 String wbsId = content.get(classes.get(groupPosition)).get(childPosition).getOrgid();
                 if (isfavorite.equals(zero)) {
                     OkGo.post(Requests.WBSSAVE)
-                            .params("wbsId",wbsId )
+                            .params("wbsId", wbsId)
                             .params("type", 1)
                             .execute(new StringCallback() {
                                 @Override
@@ -237,6 +241,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Integer message = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
+                if (message > 0) {
+                    content.get(classes.get(groupPosition)).get(childPosition).setUnfinish("0");
+                    childHold.homeItemMessage.setVisibility(View.GONE);
+                }
                 Intent intent = new Intent(context, AllListmessageActivity.class);
                 intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());

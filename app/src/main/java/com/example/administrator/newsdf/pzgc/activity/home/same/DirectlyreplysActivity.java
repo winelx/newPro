@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +20,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,13 +35,9 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
-import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -76,39 +68,44 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * update: 2018/2/6 0006
  * version:
  */
-public class DirectlyreplyActivity extends AppCompatActivity {
+public class DirectlyreplysActivity extends AppCompatActivity {
     private DirectlyreplyAdapter photoAdapter;
     private ArrayList<File> files;
     private RecyclerView photoadd;
-    private LocationService locationService;
-    private TextView repley_address, wbs_text, title;
-    private LinearLayout com_button;
-    private String Latitude, Longitude, activity;
-    private EditText reply_text, partContent;
+    private TextView repley_address, title;
+    private LinearLayout com_button, dialog_rec_status;
+    private String Latitude, Longitude, partstr;
+    private EditText reply_text;
+    private EditText partContent;
     private Context mContext;
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
     private CheckPermission checkPermission;
     String id = null, status, wbsId;
     private static final int IMAGE_PICKER = 101;
-    private RadioGroup mRadioGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_codeplay_repley);
-        mContext = DirectlyreplyActivity.this;
+        mContext = DirectlyreplysActivity.this;
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
         status = intent.getExtras().getString("status");
         wbsId = intent.getExtras().getString("wbsId");
-        activity = intent.getExtras().getString("activity");
+        try {
+            partstr = intent.getExtras().getString("partContent");
+        } catch (NullPointerException e) {
+            partstr = "";
+        }
+
         //动态权限
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(DirectlyreplyActivity.this);
+                CropImageUtils.getInstance().takePhoto(DirectlyreplysActivity.this);
             }
 
             @Override
@@ -143,10 +140,11 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //发现ID
     private void findID() {
+        dialog_rec_status = (LinearLayout) findViewById(R.id.dialog_rec_status);
+        dialog_rec_status.setVisibility(View.GONE);
         //部位名称
         partContent = (EditText) findViewById(R.id.partContent);
-        //单选
-        mRadioGroup = (RadioGroup) findViewById(R.id.codeplay_status);
+        partContent.setText(partstr);
         //标题
         title = (TextView) findViewById(R.id.com_title);
         //图片
@@ -175,36 +173,16 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 for (int i = 0; i < imagePaths.size(); i++) {
                     files.add(new File(imagePaths.get(i)));
                 }
-                LogUtil.d("DirectlyreplyActivity", "files.size():" + files.size());
                 if (content.isEmpty()) {
                     ToastUtils.showShortToast("回复内容不能为空");
                 } else {
-                    //保存状态，进行回退判断
-                    SPUtils.putString(mContext, "back", "false");
-                    if (partContent.getText().toString().length() != 0) {
-                        RadioButton rb = (RadioButton) DirectlyreplyActivity.this.findViewById(mRadioGroup.getCheckedRadioButtonId());
-                        try {
-                            if (rb.getText() != null) {
-                                String str = rb.getText().toString();
-                                if (str.equals("是")) {
-                                    Okgo(Bai_address, files, true);
-                                } else {
-                                    Okgo(Bai_address, files, false);
-                                }
-                            }
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                            ImageView img = new ImageView(DirectlyreplyActivity.this);
-                            img.setImageResource(R.mipmap.directlyreply_dialog);
-                            new AlertDialog.Builder(DirectlyreplyActivity.this)
-                                    .setView(img)
-                                    .setPositiveButton("去选择", null)
-                                    .show();
-                        }
+                    //部位不能为空
+                    String str = partContent.getText().toString();
+                    if (str.isEmpty()) {
+                        ToastUtils.showShortToast("部位名称不能为空");
                     } else {
-                        ToastUtils.showLongToast("具体部位不能为空");
+                        Okgo(Bai_address, files, true);
                     }
-
                 }
             }
         });
@@ -219,7 +197,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //初始化recyclerview
     private void initDate() {
-        photoAdapter = new DirectlyreplyAdapter(this, imagePaths,"false");
+        photoAdapter = new DirectlyreplyAdapter(this, imagePaths, "true");
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setAdapter(photoAdapter);
     }
@@ -234,7 +212,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 .params("latitude", Latitude)
                 .params("longitude", Longitude)
                 .params("partContent", partContent.getText().toString())
-                .params("isAllFinished ", isAllFinished)
+                .params("isAllFinished ", true)
                 .params("uploadAddr", address)
                 //上传图片
                 .addFileParams("imagesList", file)
@@ -246,26 +224,12 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             int ret = jsonObject.getInt("ret");
                             ToastUtils.showShortToast(jsonObject.getString("msg"));
                             if (ret == 0) {
-
                                 TaskCallbackUtils.CallBackMethod();
-//                                //回复成功，刷新任务列表界面
-//                                if (activity.equals("all")) {
-//
-//                                } else {
-//
-//                                }
                                 //删除上传的图片
                                 for (int i = 0; i < imagePaths.size(); i++) {
                                     Dates.deleteFile(imagePaths.get(i));
                                 }
-                                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                                intent.putExtra("TaskId", id);
-                                intent.putExtra("wbsid", wbsId);
-                                //判断能否可以跳转任务管理
-                                intent.putExtra("status", status);
-                                startActivity(intent);
-                                popupWindow.dismiss();
-                                popstatus = false;
+
                                 finish();
                             }
 
@@ -396,7 +360,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     private void showPopwindow() {
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(DirectlyreplyActivity.this.getCurrentFocus()
+                .hideSoftInputFromWindow(DirectlyreplysActivity.this.getCurrentFocus()
                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
@@ -422,7 +386,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
                         } else {
-                            CropImageUtils.getInstance().takePhoto(DirectlyreplyActivity.this);
+                            CropImageUtils.getInstance().takePhoto(DirectlyreplysActivity.this);
                         }
                         break;
                     //相册图片

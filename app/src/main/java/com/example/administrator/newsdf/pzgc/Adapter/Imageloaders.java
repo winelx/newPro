@@ -118,7 +118,7 @@ public class Imageloaders extends BaseAdapter {
             holder.inface_relat2_icon = convertView.findViewById(R.id.inface_relat2_icon);
             holder.inface_relat3_icon = convertView.findViewById(R.id.inface_relat3_icon);
             holder.view = convertView.findViewById(R.id.view);
-            holder.inface_no_image=convertView.findViewById(R.id.inface_no_image);
+            holder.inface_no_image = convertView.findViewById(R.id.inface_no_image);
             //多图片时显示图片数量
             holder.ic_loading_bg = convertView.findViewById(R.id.ic_loading_bg);
             convertView.setTag(holder);
@@ -376,6 +376,233 @@ public class Imageloaders extends BaseAdapter {
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+                } else {
+                    holder.inface_no_image.setVisibility(View.VISIBLE);
+                    holder.inface_image.setVisibility(View.GONE);
+                }
+                break;
+            case "2":
+                holder.view.setVisibility(View.VISIBLE);
+                holder.inface_status_true.setVisibility(View.VISIBLE);
+                holder.inface_item_message.setTextString("打回");
+                try {
+                    String strtime = dateToStamp(list.get(position).getUpdateDate());
+                    holder.inter_time.setText(Dates.stampToDates(strtime));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                holder.textView4.setText("(" + list.get(position).getComments() + ")");
+                holder.inface_item_message.setSlantedBackgroundColor(R.color.red);
+                // 预设一个图片
+                if (path.size() >= 1) {
+                    holder.inface_image.setVisibility(View.VISIBLE);
+                    String imgUrl = path.get(0);
+                    if (imgUrl != null && !imgUrl.equals("")) {
+                        int doc = imgUrl.lastIndexOf(".");
+                        String strs = imgUrl.substring(doc + 1);
+                        holder.inface_imgae_text.setVisibility(View.GONE);
+                        holder.ic_loading_bg.setVisibility(View.GONE);
+                        holder.inface_image2.setVisibility(View.INVISIBLE);
+                        holder.inface_image3.setVisibility(View.INVISIBLE);
+                        if (strs.equals("pdf")) {
+                            //隐藏图片
+                            holder.inface_imag1.setVisibility(View.GONE);
+                            //显示文档布局
+                            holder.inface_relat1.setVisibility(View.VISIBLE);
+                            //设置文档布局背景色
+                            holder.inface_relat1.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                            //pdf的icon显示图
+                            holder.inface_relat1_icon.setText("P");
+                            //设置文件名
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
+                            //设置文字的颜色
+                            holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                            //设置文字背景色
+                            holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#e98e90"));
+                        } else if (strs.equals("doc") || strs.equals("docx")) {
+                            //隐藏图片
+                            holder.inface_imag1.setVisibility(View.GONE);
+                            //显示文档布局
+                            holder.inface_relat1.setVisibility(View.VISIBLE);
+                            //设置文档布局背景色
+                            holder.inface_relat1.setBackgroundColor(Color.parseColor("#f1f6f7"));
+                            //pdf的icon显示图
+                            holder.inface_relat1_icon.setText("W");
+                            //设置文件名
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
+                            //设置文字的颜色
+                            holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                            //设置文字背景色
+                            holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
+
+                        } else if (strs.equals("xlsx") || strs.equals("xls")) {
+                            //隐藏图片
+                            holder.inface_imag1.setVisibility(View.GONE);
+                            //显示文档布局
+                            holder.inface_relat1.setVisibility(View.VISIBLE);
+                            //设置文档布局背景色
+                            holder.inface_relat1.setBackgroundColor(Color.parseColor("#f5f8f7"));
+                            //pdf的icon显示图
+                            holder.inface_relat1_icon.setText("X");
+                            //设置文件名
+                            holder.inface_relat1_name.setText(pathname.get(0) + strs);
+                            //设置文字的颜色
+                            holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                            //设置文字背景色
+                            holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#67cf95"));
+                        } else {
+                            holder.inface_relat1.setVisibility(View.GONE);
+                            holder.inface_imag1.setVisibility(View.VISIBLE);
+                            holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
+                            holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
+                            //截取出后缀
+                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
+                            //拿到截取后缀后的字段
+                            imgUrl = imgUrl.replace(pas, "");
+                            //在字段后面添加_min后再拼接后缀
+                            imgUrl = imgUrl + "_min" + pas;
+                            holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
+                        }
+                        if (path.size() >= 2) {
+                            String imgUrl1 = path.get(1);
+                            if (imgUrl1 != null && !imgUrl1.equals("")) {
+                                int doc1 = imgUrl1.lastIndexOf(".");
+                                String strs1 = imgUrl1.substring(doc1 + 1);
+                                holder.inface_image2.setVisibility(View.VISIBLE);
+                                holder.inface_image3.setVisibility(View.INVISIBLE);
+                                if (strs1.equals("pdf")) {
+                                    //隐藏图片
+                                    holder.inface_image2.setVisibility(View.GONE);
+                                    //显示文档布局
+                                    holder.inface_relat2.setVisibility(View.VISIBLE);
+                                    //设置文档布局背景色
+                                    holder.inface_relat2.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                                    //pdf的icon显示图
+                                    holder.inface_relat2_icon.setText("P");
+                                    //设置文件名
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
+                                    //设置文字的颜色
+                                    holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                    //设置文字背景色
+                                    holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#e98e90"));
+                                } else if (strs1.equals("doc") || strs1.equals("docx")) {
+                                    //隐藏图片
+                                    holder.inface_image2.setVisibility(View.GONE);
+                                    //显示文档布局
+                                    holder.inface_relat2.setVisibility(View.VISIBLE);
+                                    //设置文档布局背景色
+                                    holder.inface_relat2.setBackgroundColor(Color.parseColor("#f1f6f7"));
+                                    //pdf的icon显示图
+                                    holder.inface_relat2_icon.setText("W");
+                                    //设置文件名
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
+                                    //设置文字的颜色
+                                    holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                    //设置文字背景色
+                                    holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
+                                } else if (strs1.equals("xlsx") || strs1.equals("xls")) {
+                                    //隐藏图片
+                                    holder.inface_image2.setVisibility(View.GONE);
+                                    //显示文档布局
+                                    holder.inface_relat2.setVisibility(View.VISIBLE);
+                                    //设置文档布局背景色
+                                    holder.inface_relat2.setBackgroundColor(Color.parseColor("#f5f8f7"));
+                                    //pdf的icon显示图
+                                    holder.inface_relat2_icon.setText("X");
+                                    //设置文件名
+                                    holder.inface_relat2_name.setText(pathname.get(1) + strs1);
+                                    //设置文字的颜色
+                                    holder.inface_relat2_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                    //设置文字背景色
+                                    holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
+                                } else {
+                                    holder.inface_image2.setVisibility(View.VISIBLE);
+                                    //显示文档布局
+                                    holder.inface_relat2.setVisibility(View.GONE);
+                                    holder.inface_image2.setDefaultImageResId(R.mipmap.image_loading);
+                                    holder.inface_image2.setErrorImageResId(R.mipmap.image_error);
+                                    //截取出后缀
+                                    String pas = imgUrl1.substring(imgUrl1.length() - 4, imgUrl1.length());
+                                    //拿到截取后缀后的字段
+                                    imgUrl1 = imgUrl1.replace(pas, "");
+                                    //在字段后面添加_min后再拼接后缀
+                                    imgUrl1 = imgUrl1 + "_min" + pas;
+                                    holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
+                                }
+                                if (path.size() >= 3) {
+                                    String imgUrl2 = path.get(2);
+                                    if (imgUrl2 != null && !imgUrl2.equals("")) {
+                                        int doc2 = imgUrl2.lastIndexOf(".");
+                                        String strs2 = imgUrl2.substring(doc2 + 1);
+                                        if (strs2.equals("pdf")) {
+                                            //隐藏图片
+                                            holder.inface_image3.setVisibility(View.GONE);
+                                            //显示文档布局
+                                            holder.inface_relat3.setVisibility(View.VISIBLE);
+                                            //设置文档布局背景色
+                                            holder.inface_relat3.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                                            //pdf的icon显示图
+                                            holder.inface_relat3_icon.setText("P");
+                                            //设置文件名
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
+                                            //设置文字的颜色
+                                            holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                            //设置文字背景色
+                                            holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#e98e90"));
+                                        } else if (strs2.equals("doc") || strs2.equals("docx")) {
+                                            //隐藏图片
+                                            holder.inface_image3.setVisibility(View.GONE);
+                                            //显示文档布局
+                                            holder.inface_relat3.setVisibility(View.VISIBLE);
+                                            //设置文档布局背景色
+                                            holder.inface_relat3.setBackgroundColor(Color.parseColor("#f1f6f7"));
+                                            //pdf的icon显示图
+                                            holder.inface_relat3_icon.setText("W");
+                                            //设置文件名
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
+                                            //设置文字的颜色
+                                            holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                            //设置文字背景色
+                                            holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
+                                        } else if (strs2.equals("xlsx") || strs2.equals("xls")) {
+                                            //隐藏图片
+                                            holder.inface_image3.setVisibility(View.GONE);
+                                            //显示文档布局
+                                            holder.inface_relat3.setVisibility(View.VISIBLE);
+                                            //设置文档布局背景色
+                                            holder.inface_relat3.setBackgroundColor(Color.parseColor("#f5f8f7"));
+                                            //pdf的icon显示图
+                                            holder.inface_relat3_icon.setText("X");
+                                            //设置文件名
+                                            holder.inface_relat3_name.setText(pathname.get(2) + strs2);
+                                            //设置文字的颜色
+                                            holder.inface_relat3_icon.setTextColor(Color.parseColor("#FFFFFF"));
+                                            //设置文字背景色
+                                            holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#67cf95"));
+                                        } else {
+                                            holder.inface_image3.setVisibility(View.VISIBLE);
+                                            holder.inface_relat3.setVisibility(View.GONE);
+                                            if (path.size() > 3) {
+                                                holder.ic_loading_bg.setVisibility(View.VISIBLE);
+                                                holder.inface_imgae_text.setVisibility(View.VISIBLE);
+                                                int num = path.size() - 3;
+                                                holder.inface_imgae_text.setText("+" + num);
+                                            }
+                                            holder.inface_image3.setDefaultImageResId(R.mipmap.image_loading);
+                                            holder.inface_image3.setErrorImageResId(R.mipmap.image_error);
+                                            //截取出后缀
+                                            String pas = imgUrl2.substring(imgUrl2.length() - 4, imgUrl2.length());
+                                            //拿到截取后缀后的字段
+                                            imgUrl2 = imgUrl2.replace(pas, "");
+                                            //在字段后面添加_min后再拼接后缀
+                                            imgUrl2 = imgUrl2 + "_min" + pas;
+                                            holder.inface_image3.setImageUrl(imgUrl2, imageLoader);
+                                        }
+                                    }
+                                }
 
                             }
                         }
@@ -384,6 +611,7 @@ public class Imageloaders extends BaseAdapter {
                     holder.inface_no_image.setVisibility(View.VISIBLE);
                     holder.inface_image.setVisibility(View.GONE);
                 }
+                break;
             default:
                 break;
         }
@@ -391,7 +619,7 @@ public class Imageloaders extends BaseAdapter {
     }
 
     class ViewHolder {
-        NetworkImageView inface_image3, inface_image2, inface_imag1,inface_no_image;
+        NetworkImageView inface_image3, inface_image2, inface_imag1, inface_no_image;
         CircleImageView user_auathor;
         RelativeLayout inface_status_true;
         TextView inter_title;

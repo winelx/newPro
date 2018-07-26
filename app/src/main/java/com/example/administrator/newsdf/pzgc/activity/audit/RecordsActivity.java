@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.Recordsbean;
@@ -47,6 +48,8 @@ public class RecordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
         ListView list = (ListView) findViewById(R.id.task_list);
+        TextView titkle = (TextView) findViewById(R.id.com_title);
+        titkle.setText("审核记录");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +84,6 @@ public class RecordsActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         try {
                             JSONObject json = new JSONObject(s);
                             JSONArray array = json.getJSONArray("data");

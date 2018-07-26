@@ -58,6 +58,13 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.taskManagemented).setOnClickListener(this);
         findViewById(R.id.aduit_back).setOnClickListener(this);
         findViewById(R.id.Auditrecords).setOnClickListener(this);
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         mHomeUtils.TaskAudit(taskId, mAdapter);
     }
 
@@ -68,7 +75,7 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
                 //跳转任务管理
 //                if (status.equals("true")) {
                 //
-                HomeUtils.getOko(mHomeUtils.hasmap.get("id"), null, false, null, false, null, AuditdetailsActivity.this);
+                HomeUtils.getOko(mHomeUtils.getId(), null, false, null, false, null, AuditdetailsActivity.this);
 //                }
                 break;
             case R.id.aduit_back:

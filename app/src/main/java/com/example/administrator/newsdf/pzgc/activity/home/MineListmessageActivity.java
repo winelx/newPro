@@ -29,25 +29,25 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.pzgc.Adapter.Listinter_Adfapter;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.Listinter_Adfapter;
+import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.List_interface;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.treeView.Node;
-import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
-import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -85,7 +85,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * titlew 标题
      * delete_search 搜索框的取消按钮
      */
-    private TextView titlew, delete_search,drawer_layout_text;
+    private TextView titlew, delete_search, drawer_layout_text;
     /**
      * 搜索框
      */
@@ -104,7 +104,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     /**
      * 侧拉界面数据集合
      */
-    private ArrayList<PhotoBean> imagePaths,stardPaths;
+    private ArrayList<PhotoBean> imagePaths, stardPaths;
     /**
      * 打开状态选择弹窗
      */
@@ -191,6 +191,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -286,12 +287,23 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
-                intent.putExtra("TaskId", mDatas.get(position).getTaskId());
-                intent.putExtra("wbsid", mDatas.get(position).getWbsId());
-                intent.putExtra("status", "true");
-                startActivity(intent);
-                backgroundAlpha(1f);
+                String status = mDatas.get(position).getIsFinish() + "";
+
+                if (status.equals("2")) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", mDatas.get(position).getTaskId());
+                    intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "mine");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", mDatas.get(position).getTaskId());
+                    intent.putExtra("wbsid", mDatas.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "mine");
+                    startActivity(intent);
+                }
             }
         });
         //listview滑动时让editext失去焦点，并且关闭软键盘
@@ -407,6 +419,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         drawerLayoutList.setAdapter(taskAdapter);
         //任务界面数据填充
         uslistView.setAdapter(mAdapter);
+        uslistView.setEmptyView(findViewById(R.id.nullposion));
     }
 
 
@@ -454,6 +467,14 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         });
     }
 
+    /**
+     * wbs树数据
+     *
+     * @param id
+     * @param iswbs
+     * @param isparent
+     * @param type
+     */
     void addOrganiztion(final String id, final boolean iswbs,
                         final boolean isparent, String type) {
         Dates.getDialogs(MineListmessageActivity.this, "请求数据中");
@@ -521,7 +542,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                     floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
                     anim = false;
                 } else {
-
                     floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
                     anim = true;
                 }
@@ -534,7 +554,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 drew = true;
                 //网络请求
                 drawer_layout_text.setText("图纸");
-                Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
+                Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsid, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
                 liststatus = true;
@@ -549,7 +569,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 //上拉加载的状态判断
                 liststatus = false;
                 drawer_layout_text.setText("标准");
-                Dates.getDialog(MineListmessageActivity.this,"请求数据中...");
+                Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsid, page, stardPaths, drew, taskAdapter, titles);
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -575,7 +595,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 .params("wbsId", wbsId)
                 .params("content", content);
         //判断请求数据的状态，如果是3，就是请求全部数据，那就不传数据
-        if (msgStatus == "3") {
+        if (msgStatus == "10") {
             mRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
@@ -683,7 +703,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste)+20, Dates.higtFontSize(ste), true);
+                Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
@@ -712,7 +732,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                         searchEditext.setText("");
                         mDatas.clear();
                         pages = 1;
-                        status = "3";
+                        status = "10";
                         okgo(wbsid, status, null, pages);
                         uslistView.setSelection(0);
                         break;
@@ -726,11 +746,20 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                         uslistView.setSelection(0);
                         break;
                     case R.id.pop_manage:
-                        Dates.getDialog(MineListmessageActivity.this, "请F求数据中...");
+                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
                         searchEditext.setText("");
                         pages = 1;
                         mDatas.clear();
                         status = "1";
+                        okgo(wbsid, status, null, pages);
+                        uslistView.setSelection(0);
+                        break;
+                    case R.id.pop_backup:
+                        Dates.getDialog(MineListmessageActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        mDatas.clear();
+                        status = "3";
                         okgo(wbsid, status, null, pages);
                         uslistView.setSelection(0);
                         break;
@@ -746,14 +775,17 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_backup).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
 
-    //详情页数据状态发生改变，刷新当前界面
+    /**
+     * 详情页数据状态发生改变，刷新当前界面
+     */
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void taskCallback() {
-        //初始化页数为第一页
         pages = 1;
         //当前为刷新数据。设置false 加载数据时清除之前的
         swip = false;
@@ -813,7 +845,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
 
     //初始化控件
     private void findview() {
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         //返回
         findViewById(R.id.com_back).setOnClickListener(this);
         //标题

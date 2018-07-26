@@ -129,14 +129,20 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 //状态
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
 
-            } else {
+            } else if (content.get(posotion).getStatus().equals("2")) {
                 holder.detailsData.setText(content.get(posotion).getCreateDate());
                 //状态
                 holder.detailsBoolean.setText("已完成");
                 //状态 finish_green
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
-
-            }// 转交说明
+            } else {
+                holder.detailsData.setText(content.get(posotion).getCreateDate());
+                //状态
+                holder.detailsBoolean.setText("打回");
+                //状态 finish_green
+                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.red));
+            }
+            // 转交说明
             holder.detailsFixedBoolean.setText("部位状态:");
         } else {
             holder.linearLayout.setVisibility(View.GONE);

@@ -162,6 +162,9 @@
         <activity
             android:name=".pzgc.activity.home.same.DirectlyreplyActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".pzgc.activity.home.same.DirectlyreplysActivity"
+            android:screenOrientation="portrait" />
         <!-- //直接回复 -->
         <!-- //图片预览界面 -->
         <activity

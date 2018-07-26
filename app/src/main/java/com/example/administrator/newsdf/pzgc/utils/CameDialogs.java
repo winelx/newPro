@@ -57,6 +57,7 @@ public class CameDialogs {
         final EditText editext = (EditText) root.findViewById(R.id.par_editext);
         final ImageView imageView = (ImageView) root.findViewById(R.id.par_image);
         dialog_rec = root.findViewById(R.id.dialog_rec);
+        editext.setText("上传资料不符标准,请重新上传");
         imageView.setVisibility(View.GONE);
         editext.setHint(str);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);

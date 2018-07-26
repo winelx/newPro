@@ -76,6 +76,7 @@ public class CommentsFragment extends Fragment {
         listView.setLayoutManager(new LinearLayoutManager(mContext));
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.setAdapter(mAdapter);
+
         //禁止上拉
         refreshLayout.setEnableLoadmore(false);
         //仿ios越界
@@ -169,20 +170,14 @@ public class CommentsFragment extends Fragment {
                                     home_frag_img.setVisibility(View.GONE);
                                 }else {
                                     home_frag_img.setVisibility(View.VISIBLE);
-                                    if (newdata){
-                                          ToastUtils.showLongToast("暂无数据");
-                                    }
+                                    home_img_text.setText("暂无数据");
                                 }
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
                             home_frag_img.setVisibility(View.VISIBLE);
                             home_img_text.setText("暂无数据");
-                            if (newdata){
-                                ToastUtils.showLongToast("暂无数据");
-                            }
                         }
 
                     }

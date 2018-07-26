@@ -91,6 +91,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Intent();
+                refreshlayout.finishRefresh(1000);
             }
         });
     }
@@ -119,7 +120,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
 
     /**
      * 将数据放到适配器中
-     *
      * @param list
      * @param map
      */

@@ -18,8 +18,9 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -37,9 +38,10 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/7/3 0003.
+ * 月度报表
  */
 
-public class MonthrecordFragment extends Fragment implements View.OnClickListener {
+public class MonthrecordFragment extends Fragment implements View.OnClickListener, TaskCallback {
     private View rootView;
     private Context mContext;
     private TextView datatime, title;
@@ -51,7 +53,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     private Date myDate = new Date();
     private int dateMonth;
     private ReportActivity activity;
-
+    private String data;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,19 +63,25 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
+            rootView.findViewById(R.id.monthRetry).setOnClickListener(this);
         }
         title.setText("选择月份");
+        TaskCallbackUtils.setCallBack(this);
         datatime.setText(Utils.titleMonth());
         mContext = getActivity();
         activity = (ReportActivity) mContext;
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
+        daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
         dateMonth = myDate.getMonth();
-        okgo(Dates.getMonth());
+        data=Dates.getMonth();
+        okgo(data);
         return rootView;
     }
 
-    //弹出框
+    /**
+     * 时间选择器弹出框
+     */
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
@@ -88,7 +96,9 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
-    //设置pop的点击事件
+    /**
+     * 设置pop的点击事件
+     */
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
@@ -104,9 +114,9 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                         //获取月
                         int month = monthPicker.getValue();
                         String monthdata = Utils.month[month];
-                        datatime.setText(yeardata + monthdata);
-                        LogUtil.i("data", Utils.years[yearPicker.getValue()] + "-" + Utils.months[month]);
-                        okgo(Utils.years[yearPicker.getValue()] + "-" + Utils.months[month]);
+                        datatime.setText(yeardata +"-"+ monthdata);
+                        data=yeardata +"-"+ monthdata;
+                        okgo(data);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -117,24 +127,42 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                 }
             }
         };
+
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
+        //初始化年的选择器
         Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
+        //初始化月的选择器
         Utils.setPicker(monthPicker, Utils.month, dateMonth);
         return contentView;
     }
 
+    /**
+     * 点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audit_title:
                 MeunPop();
                 break;
+            case R.id.monthRetry:
+                okgo(data);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 接口回调
+     */
+    @Override
+    public void taskCallback() {
+        okgo(data);
     }
 
     /**
@@ -240,6 +268,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                         }
 
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

@@ -13,7 +13,7 @@ public class TaskCallbackUtils {
     public static void setCallBack(TaskCallback callBack) {
         mTaskCallback = callBack;
     }
-    public static void removeCallBackMethod(){
+    public static void CallBackMethod(){
         mTaskCallback.taskCallback();
     }
 }

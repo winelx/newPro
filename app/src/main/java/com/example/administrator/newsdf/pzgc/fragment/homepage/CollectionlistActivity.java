@@ -26,26 +26,27 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
+import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.treeView.Node;
-import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
-import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -108,7 +109,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
 
-    private LinearLayout drawerContent, listeradNonumber, imageViewMeun;
+    private LinearLayout drawerContent, imageViewMeun;
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
@@ -255,11 +256,22 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(mContext, MoretaskActivity.class);
-                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                intent.putExtra("status", "true");
-                startActivity(intent);
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
             }
         });
         //listview的触摸监听
@@ -482,7 +494,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
-                        notall = "3";
+                        notall = "10";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
@@ -517,6 +529,19 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             okgoall(null, null, pages);
                         }
                         break;
+                    case R.id.pop_backup:
+                        Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
+                        searchEditext.setText("");
+                        pages = 1;
+                        swip = false;
+                        notall = "3";
+                        uslistView.setSelection(0);
+                        if (nodeiD != "1") {
+                            okgoall(nodeiD, null, pages);
+                        } else {
+                            okgoall(null, null, pages);
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -529,6 +554,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_backup).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
 
@@ -596,7 +622,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        listeradNonumber = (LinearLayout) findViewById(R.id.listerad_nonumber);
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
 
@@ -640,6 +665,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         mAdapter = new Imageloaders(mContext, Alldata);
         //主界面
         uslistView.setAdapter(mAdapter);
+        uslistView.setEmptyView(findViewById(R.id.nullposion));
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
@@ -816,7 +842,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 Dates.disDialog();
                 if (Alldata.size() != 0) {
                     mAdapter.getData(Alldata);
-                    listeradNonumber.setVisibility(View.GONE);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -887,7 +913,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 .params("isAll", "true")
                 .params("content", content);
         //如果==3 那么就不传
-        if (notall == "3") {
+        if (notall == "10") {
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {

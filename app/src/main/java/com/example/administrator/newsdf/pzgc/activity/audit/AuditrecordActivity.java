@@ -6,9 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,12 +56,15 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
     private Context mContext;
     private LinearLayout recordMeun;
     private PopupWindow mPopupWindow;
-    private int page = 1, status = 2;
+    private int page = 1;
     private float ste;
-    private String orgId;
+    private String orgId, title;
     private String date;
+    private int Success = 1;
     private SmartRefreshLayout smartRefreshLayout;
     private String one = "1", two = "2";
+    //上拉加载数据判断
+    private int status = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,12 +76,9 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
         date = intent.getExtras().getString("date");
+        title = intent.getExtras().getString("title");
         String day = intent.getExtras().getString("day");
-        String retio = intent.getExtras().getString("ratio");
-        String tip = intent.getExtras().getString("tip");
         ste = ScreenUtil.getDensity(App.getInstance());
-
-
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //关闭下拉刷新
         smartRefreshLayout.setEnableRefresh(false);
@@ -94,11 +91,11 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         recordMeun = (LinearLayout) findViewById(R.id.record_meun);
         ListView auditrecordList = (ListView) findViewById(R.id.auditrecord_list);
         TextView todaytime = (TextView) findViewById(R.id.todaytime);
+        TextView record_title = (TextView) findViewById(R.id.record_title);
+        record_title.setText(title);
         TextView complete = (TextView) findViewById(R.id.complete);
         TextView unfinished = (TextView) findViewById(R.id.unfinished);
         todaytime.setText(day);
-        complete.setText(setText("完成率：" + retio, 3 + retio.length(), R.color.finish_green));
-        unfinished.setText(setText("未审核:" + tip, 3 + tip.length(), R.color.yellow));
         recordMeun.setOnClickListener(this);
         mAdapter = new SettingAdapter<AuditrecordBean>(mData, R.layout.auditrecord_activity_item) {
             @Override
@@ -107,16 +104,21 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 holder.setText(R.id.record_path, obj.getWbspath());
                 holder.setText(mContext, R.id.record_user, "上一节点审核人:" + obj.getUser(), 7, R.color.black);
                 String str = obj.getStatus();
-                if (one.equals(str)) {
+                if ("1".equals(str)) {
+                    //通过
                     holder.setText(mContext, R.id.record_status, "当前状态:通过", 4, R.color.finish_green);
-                } else if (two.equals(str)) {
+                } else if ("2".equals(str)) {
+                    //打回
                     holder.setText(mContext, R.id.record_status, "当前状态:打回", 4, R.color.red);
                 } else {
+                    //待审核
                     holder.setText(mContext, R.id.record_status, "当前状态:待审核", 4, R.color.yellow);
                 }
             }
         };
+
         auditrecordList.setAdapter(mAdapter);
+        auditrecordList.setEmptyView(findViewById(R.id.nullposion));
         auditrecordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,13 +128,18 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
             }
         });
-        getData(status);
+        getData();
         //上拉加载
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-                getData(status);
+                if (status == 1) {
+                    getData();
+                } else {
+                    http();
+                }
+
 //                //传入false表示刷新失败
 //                refreshlayout.finishLoadMore(800);
             }
@@ -179,29 +186,25 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 Dates.getDialog(AuditrecordActivity.this, "请求数据中...");
                 switch (v.getId()) {
-                    case R.id.audit_all:
-                        status = 1;
-                        page = 1;
-                        mData.clear();
-                        getData(status);
-                        break;
                     case R.id.audit_audit:
                         page = 1;
-                        status = 2;
                         mData.clear();
-                        getData(status);
+                        status = 1;
+                        getData();
                         break;
                     case R.id.audit_noaudit:
                         page = 1;
-                        status = 3;
                         mData.clear();
-                        getData(status);
+                        Success = 1;
+                        status = 2;
+                        http();
                         break;
                     case R.id.audit_statistical:
                         page = 1;
-                        status = 4;
+                        Success = 2;
+                        status = 3;
                         mData.clear();
-                        getData(status);
+                        http();
                         break;
                     default:
                         break;
@@ -211,7 +214,6 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         };
-        contentView.findViewById(R.id.audit_all).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_audit).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_noaudit).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_statistical).setOnClickListener(menuItemOnClickListener);
@@ -222,7 +224,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
     public void updata() {
         page = 1;
         mData.clear();
-        getData(status);
+        getData();
     }
 
     /**
@@ -235,12 +237,12 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void getData(int stauts) {
+    public void getData() {
         OkGo.post(Requests.GET_TASK_LIST)
-                .params("id", orgId)
+                .params("orgId", orgId)
                 .params("day", date)
                 .params("page", page)
-                .params("status", stauts)
+                .params("status", 2)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -275,20 +277,42 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 
-    public SpannableString setText(String str, int num, int color) {
-        SpannableString sp = new SpannableString(str);
-        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                        .getColor(color)), 0,
-                num,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sp;
+    public void http() {
+        OkGo.post(Requests.GET_AUDIT_TASK_LIST)
+                .params("orgId", orgId)
+                .params("day", date)
+                .params("page", page)
+                .params("status", Success)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                String name = json.getString("detectionName");
+                                String appWbsPath = json.getString("appWbsPath");
+                                String status = json.getString("pass");
+                                String leaderName = json.getString("leaderName");
+                                String id = json.getString("id");
+                                mData.add(new AuditrecordBean(id, name, appWbsPath, leaderName, status));
+                            }
+                            mAdapter.getData(mData);
+                            smartRefreshLayout.finishLoadmore();
+                            Dates.disDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         //传入false表示刷新失败
-        smartRefreshLayout.finishRefresh(false);
+        smartRefreshLayout.finishRefresh(true);
     }
 
 }

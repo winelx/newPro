@@ -12,9 +12,9 @@
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
         app:slantedLength="28dp"
-        app:slantedTextColor="@color/writer"
         app:slantedMode="right_triangle"
         app:slantedText="未完成"
+        app:slantedTextColor="@color/writer"
         app:slantedTextSize="12sp" />
 
     <LinearLayout
@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -92,7 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="超时审核:120000"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:visibility="gone" />
         </LinearLayout>
 
 

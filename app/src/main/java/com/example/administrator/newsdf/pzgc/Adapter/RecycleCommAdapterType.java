@@ -3,6 +3,9 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +44,14 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
 
     //内容主题
     private void bindContent(Viewholder holder, final int posotion) {
-        holder.audi_user.setText(mDatas.get(posotion).getReplyUserName());
-        holder.audi_content.setText(mDatas.get(posotion).getContent());
+
+        //回复人名字
+        String username = mDatas.get(posotion).getReplyUserName();
+        //回复内容
+        int lenght = username.length();
+        String content = mDatas.get(posotion).getContent();
+        content = username + "：" + content;
+        holder.audi_user.setText(setText(content, lenght, R.color.colorAccent, R.color.gray));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.image_viewpager.setLayoutManager(linearLayoutManager);
@@ -50,7 +59,7 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
         ArrayList<String> path = new ArrayList<>();
         pathMin.addAll(mDatas.get(posotion).getFilePathsMin());
         path.addAll(mDatas.get(posotion).getFilePaths());
-        CommentsRecAdapter adapter = new CommentsRecAdapter(mContext, pathMin,path,false);
+        CommentsRecAdapter adapter = new CommentsRecAdapter(mContext, pathMin, path, false);
         holder.image_viewpager.setAdapter(adapter);
     }
 
@@ -61,19 +70,35 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
 
     class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView audi_user, adui_user_in, audi_content;
+        private TextView audi_user;
         private RecyclerView image_viewpager;
 
         public Viewholder(View itemView) {
             super(itemView);
             audi_user = (TextView) itemView.findViewById(R.id.audi_user);
-            adui_user_in = (TextView) itemView.findViewById(R.id.adui_user_in);
-            audi_content = (TextView) itemView.findViewById(R.id.audi_content);
             image_viewpager = itemView.findViewById(R.id.image_viewpager);
         }
     }
 
     public void getComm(ArrayList<Aduio_comm> mDatas) {
         this.mDatas = mDatas;
+    }
+
+
+    /**
+     * 设置有颜色文字
+     */
+    public SpannableString setText(String str, int num, int color, int color2) {
+        SpannableString sp = new SpannableString(str);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(color)), 0,
+                num - 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.black)), num,
+                str.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
     }
 }

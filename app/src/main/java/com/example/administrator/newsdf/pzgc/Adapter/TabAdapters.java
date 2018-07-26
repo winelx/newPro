@@ -101,6 +101,11 @@ public class TabAdapters extends BaseAdapter {
                 holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;
+            case "3":
+                holder.tab_statu2.setText("打回");
+                holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_red);
+                holder.tab_time.setText(mData.get(position).getTime());
+                break;
             default:
                 break;
         }

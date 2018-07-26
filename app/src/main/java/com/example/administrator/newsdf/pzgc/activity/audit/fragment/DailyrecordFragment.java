@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
@@ -18,8 +19,9 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -45,49 +47,56 @@ import okhttp3.Response;
  *         version:
  */
 
-public class DailyrecordFragment extends Fragment implements View.OnClickListener {
+public class DailyrecordFragment extends Fragment implements View.OnClickListener, TaskCallback {
     private View rootView;
-    private ListView daily_list;
+    private ListView dailyList;
     private TextView datatime;
     private ArrayList<DailyrecordBean> list;
     private DailyrecordAdapter mAdapter;
     private Context mContext;
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private String[] NumberMonth, NumberYear;
+    private String[] numbermonth, numberyear;
     private Date myDate = new Date();
     private int dateMonth, dayDate;
     private ReportActivity activity;
-
-
+    private String data;
+    private LinearLayout linear;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_daily, null);
-            daily_list = rootView.findViewById(R.id.daily_list);
+            dailyList = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
+           rootView.findViewById(R.id.dayRetry).setOnClickListener(this);
 
         }
         list = new ArrayList<>();
         mContext = getActivity();
+        TaskCallbackUtils.setCallBack(this);
+
         activity = (ReportActivity) mContext;
-        NumberMonth = Utils.month;
-        NumberYear = Utils.years;
+        numbermonth = Utils.month;
+        numberyear = Utils.year;
         dayDate = myDate.getDate() - 1;
         dateMonth = myDate.getMonth();
         datatime.setText(Utils.titleDay());
         mAdapter = new DailyrecordAdapter(mContext, list);
-        daily_list.setAdapter(mAdapter);
-        okgo(Dates.getDay());
+        dailyList.setAdapter(mAdapter);
+        dailyList.setEmptyView(rootView.findViewById(R.id.nullposion));
+        data=Dates.getDay();
+        okgo(data);
         return rootView;
 
     }
 
 
-    //弹出框
-    private void MeunPop() {
+    /**
+     * 选择时间弹出框
+     */
+    private void meunpop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -101,7 +110,10 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
-    //设置pop的点击事件
+    /**
+     * \设置pop的点击事件
+     */
+
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
@@ -120,7 +132,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                         //获取天
                         int day = dayPicker.getValue();
                         String daydata;
-                        if (monthdata.equals("02月")) {
+                        if (monthdata.equals("02")) {
                             //是二月份
                             if (Utils.getyear().contains(yeardata)) {
                                 daydata = Utils.daytwos[day];
@@ -133,10 +145,10 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                             //不是二月份
                             daydata = Utils.day[day];
                         }
-                        daydata = daydata.replace("日", "");
-                        datatime.setText(yeardata + monthdata + daydata);
-                        LogUtil.i("data", Utils.years[yearPicker.getValue()] + "-" + Utils.months[month] + "-" + daydata);
-                        okgo(Utils.years[yearPicker.getValue()] + "-" + Utils.months[month] + "-" + daydata);
+
+                        datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
+                        data=yeardata + "-" + monthdata + "-" + daydata;
+                        okgo(data);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -149,6 +161,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         };
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
+
         yearPicker = contentView.findViewById(R.id.years);
         Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
@@ -179,15 +192,31 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         return contentView;
     }
 
+    /**
+     * 点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audit_title:
-                MeunPop();
+                meunpop();
+                break;
+            case R.id.dayRetry:
+                okgo(data);
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 回调接口
+     */
+    @Override
+    public void taskCallback() {
+        ToastUtils.showLongToast("日 ");
+        okgo(data);
     }
 
     /**
@@ -200,12 +229,14 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    //设置选择年，控制二月天数
+    /**
+     * /设置选择年，控制二月天数
+     */
     public void setyear(int i1) {
         //月份
         String mont = Utils.month[monthPicker.getValue()];
         //年份
-        String str = NumberYear[i1];
+        String str = numberyear[i1];
         //如果选择中的月份是二月
         if (mont.equals("02月")) {
             //判断是闰年还是平年
@@ -223,10 +254,12 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    //设置选择月，控制二月天数
+    /**
+     *  /设置选择月，控制二月天数
+     */
     public void setMonth(int newVal) {
-        String NewVal = NumberMonth[newVal];
-        String years = NumberYear[yearPicker.getValue()];
+        String NewVal = numbermonth[newVal];
+        String years = numberyear[yearPicker.getValue()];
         if (NewVal.equals("02月")) {
             if (Utils.getyear().contains(years)) {
                 //如果是闰年。二月有29天
@@ -255,9 +288,13 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * 返回当前时间
+     * @return
+     */
     public String getData() {
         //获取年
-        String yeardata = Utils.years[yearPicker.getValue()];
+        String yeardata = Utils.year[yearPicker.getValue()];
         //获取月
         int month = monthPicker.getValue();
         String monthdata = Utils.month[month];
@@ -280,7 +317,10 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         return yeardata + monthdata + daydata;
     }
 
-
+    /**
+     * 网络请求
+     * @param data
+     */
     public void okgo(String data) {
         OkGo.<String>get(Requests.REPORT_IMG_DATE_APP)
                 .params("type", "1")
@@ -373,6 +413,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

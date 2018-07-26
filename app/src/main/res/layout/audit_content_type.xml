@@ -102,7 +102,7 @@
 
 
     <LinearLayout
-        android:id="@+id/related"
+        android:id="@+id/relateds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/audio_data"
