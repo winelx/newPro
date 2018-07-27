@@ -117,6 +117,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
         //提亮等级
         final int SmartProjectType = mDatas.get(posotion).getSmartProjectType();
+        final int IssmartProjectType = mDatas.get(posotion).getIsSmartProject();
         TaskdetailsActivity audio = (TaskdetailsActivity) mContext;
         //设置图标
         audio.markimage(SmartProjectType);
@@ -125,9 +126,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
         //提亮逻辑
         //未提亮
-        if (SmartProjectType == 0) {
+
+        if (IssmartProjectType==0){
             //如果提亮的等级为0，说明没有提亮
-            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+            if (mDatas.get(posotion).isSmartprojectMain1Up()|| mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                 //判断是否有集团提亮
                 holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                 holder.givealikeText.setTextColor(Color.parseColor("#808080"));
@@ -135,7 +137,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 //如果都有没权限，不给提亮按钮
                 holder.givealike.setVisibility(View.GONE);
             }
-        } else {
+        }else {
             //如果被提亮了
             if (SmartProjectType == 3) {
                 //如果等级为3项目提亮，判断是否有集团和分公司权限,如果没有，就判断本级
@@ -176,6 +178,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     //如果有集团权限，显示为提亮状态
                     holder.givealikeImage.setBackgroundResource(R.mipmap.givealikenew);
                     holder.givealikeText.setTextColor(Color.parseColor("#FFEC8B"));
+
                 } else {
                     //都没有权限隐藏
                     holder.givealike.setVisibility(View.GONE);

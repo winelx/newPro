@@ -228,16 +228,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        //抛出异常，在任务管理界面返回时不需要刷新数据，
-//        try {
-//            //判断状态是否改变
-//            if (!Refresh) {
-//                //改变了，调用刷新数据方法
-//                TaskCallbackUtils.CallBackMethod();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
         finish();
         return true;
     }

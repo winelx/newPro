@@ -125,11 +125,16 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                                         //更新详情界面
                                         AuditDetailsrefreshCallbackUtils.refreshs();
                                         holder.related.setVisibility(View.GONE);
-
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
                             }
                         });
             }
@@ -137,7 +142,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         holder.detailsRejected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameDialog.setDialog(auditdetailsActivity.getId(), auditdetailsActivity, "输入打回理由", holder.related);
+                cameDialog.setDialog(auditdetailsActivity.getId(), auditdetailsActivity, holder.related);
             }
         });
     }

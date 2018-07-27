@@ -231,14 +231,17 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void updata() {
-        Integer number = Integer.decode(tip);
-        if (number > 0) {
-            number = number - 1;
-            unfinished.setText("未审核:" + number);
-            tip = number + "";
-        } else {
-            unfinished.setText("未审核:" + 0);
+        if (!tip.isEmpty()) {
+            Integer number = Integer.decode(tip);
+            if (number > 0) {
+                number = number - 1;
+                unfinished.setText("未审核:" + number);
+                tip = number + "";
+            } else {
+                unfinished.setText("未审核:" + 0);
+            }
         }
+
         page = 1;
         mData.clear();
         getData();

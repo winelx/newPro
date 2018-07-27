@@ -48,7 +48,7 @@ public class CameDialogs {
     public static ArrayList<String> path = new ArrayList<>();
     private static final int IMAGE_PICKER = 101;
 
-    public void setDialog(final String wtMainid, final Activity activity, String str, final View view) {
+    public void setDialog(final String wtMainid, final Activity activity, final View view) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
         LinearLayout root = (LinearLayout) LayoutInflater.from(activity).inflate(
                 R.layout.dialog_custom, null);
@@ -59,7 +59,6 @@ public class CameDialogs {
         dialog_rec = root.findViewById(R.id.dialog_rec);
         editext.setText("上传资料不符标准,请重新上传");
         imageView.setVisibility(View.GONE);
-        editext.setHint(str);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         dialog_rec.setLayoutManager(linearLayoutManager);

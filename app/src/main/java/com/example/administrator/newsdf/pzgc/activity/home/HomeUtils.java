@@ -971,7 +971,7 @@ public class HomeUtils {
                                     }
                                     //评论时间
                                     String replyTime = json.getString("replyTime");
-                                    aduioComms.add(0, new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
+                                    aduioComms.add( new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
                                             commentsContent, replyTime, filePathsMin, filePaths));
                                 }
 
