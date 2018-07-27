@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -46,7 +45,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
@@ -70,8 +68,6 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress, node_lin_workarea_item;
     String wbsId, userID, status, wbsName, wbspath, type;
 
-
-    private PopupWindow popupWindow;
     private TextView nodeStartText, nodeStopText, nodeCompleteText, drawer_layout_text;
     private ImageView nodeStart, nodeStop, nodeComplete;
     private Dialog mCameraDialog;
@@ -86,7 +82,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private int page = 1;
     private boolean drew = true, iswbs, isParent;
     private ArrayList<String> titlename;
-    private ArrayList<String> titles = new ArrayList<>();
+
     private ArrayList<String> ids = new ArrayList<>();
     private String usernameId, workArea, workareaId;
     //弹出框
@@ -184,7 +180,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-
+    //请求数据
     void okgo() {
         OkGo.<String>post(Requests.Wbsdetails)
                 .params("id", wbsId)
@@ -311,50 +307,9 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                         public void onSuccess(String s, Call call, Response response) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
                                 String msg = jsonObject.getString("msg");
                                 ToastUtils.showShortToast(msg);
-                                if (ret != 0) {
-                                    if (Objects.equals(str, "1")) {
-                                        ToastUtils.showShortToast(msg);
-                                    } else if (Objects.equals(str, "2")) {
-                                        ToastUtils.showShortToast(msg);
-                                    } else if (Objects.equals(str, "3")) {
-                                        ToastUtils.showShortToast(msg);
-                                    }
-                                } else {
-                                    //接口调用成功
-                                    if (Objects.equals(str, "1")) {
-                                        nodeStartText.setTextColor(Color.parseColor("#808080"));
-                                        nodeStopText.setTextColor(Color.parseColor("#f44949"));
-                                        nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
-                                        nodeStart.setBackgroundResource(R.mipmap.node_start);
-                                        nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
-                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
-                                        status = "1";
-                                        nodeWbsStatus.setText("施工中");
-
-                                    } else if (Objects.equals(str, "2")) {
-                                        nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
-                                        nodeCompleteText.setTextColor(Color.parseColor("#5096F8"));
-                                        nodeStopText.setTextColor(Color.parseColor("#808080"));
-                                        nodeStop.setBackgroundResource(R.mipmap.node_stop);
-                                        nodeStart.setBackgroundResource(R.mipmap.node_start_f);
-                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete_f);
-                                        status = "2";
-                                        nodeWbsStatus.setText("暂停施工");
-
-                                    } else if (Objects.equals(str, "3")) {
-                                        nodeStartText.setTextColor(Color.parseColor("#ff99cc00"));
-                                        nodeStopText.setTextColor(Color.parseColor("#5096F8"));
-                                        nodeCompleteText.setTextColor(Color.parseColor("#808080"));
-                                        nodeComplete.setBackgroundResource(R.mipmap.node_complete);
-                                        nodeStart.setBackgroundResource(R.mipmap.node_start_f);
-                                        nodeStop.setBackgroundResource(R.mipmap.node_stop_f);
-                                        nodeWbsStatus.setText("已完成");
-                                        status = "3";
-                                    }
-                                }
+                                    okgo();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

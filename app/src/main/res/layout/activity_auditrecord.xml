@@ -82,24 +82,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:gravity="center"
-            android:paddingLeft="8dp"
+            android:gravity="left"
+
             android:text="完成率:20%"
-            android:textColor="@color/green"
-            android:textSize="10sp"
-            android:visibility="invisible" />
+            android:textColor="@color/finish_green"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/unfinished"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:gravity="center"
+            android:gravity="left"
             android:paddingLeft="8dp"
             android:text="未审核:20"
             android:textColor="@color/yellow"
-            android:textSize="10sp"
-            android:visibility="invisible" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 

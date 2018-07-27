@@ -654,10 +654,10 @@ public class Dates {
     public static int withFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-            return 230;
+            return 250;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
-            return 230;
+            return 250;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
             return 300;
@@ -671,12 +671,11 @@ public class Dates {
     public static int higtFontSize(float screenWidth) {
         // 240X320 屏幕
         if (screenWidth == 1.0) {
-
-            return 300;
+            return 330;
             // 320X480 屏幕
         } else if (screenWidth == 2.0) {
 
-            return 310;
+            return 340;
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
 
@@ -685,5 +684,21 @@ public class Dates {
             return 500;
         }
     }
+    //评论界面专用：根据bii返回当前分辨率下该设置高度
+    public static int higtFontSizes(float screenWidth) {
+        // 240X320 屏幕
+        if (screenWidth == 1.0) {
+            return 155;
+            // 320X480 屏幕
+        } else if (screenWidth == 2.0) {
 
+            return 155;
+            // 480X800 或 480X854 屏幕
+        } else if (screenWidth == 3.0) {
+
+            return 210;
+        } else {
+            return 210;
+        }
+    }
 }

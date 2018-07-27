@@ -535,7 +535,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, page);
+        okgoall(wbsid, null, pages);
     }
 
     /**
@@ -814,6 +814,10 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     //弹出框
     private void MeunPop() {
+        if (!anim) {
+            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+            anim = true;
+        }
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
@@ -869,7 +873,12 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     LogUtil.i("sesfdsew", pages);
+                    refreshLayout.finishRefresh(true);
                     parsingjson(s);
+                }
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
                 }
             });
         } else {
@@ -877,7 +886,13 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            refreshLayout.finishRefresh(true);
                             parsingjson(s);
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
                         }
                     });
         }

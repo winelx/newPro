@@ -100,10 +100,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
     private LinearLayout comImg, taskManagement;
     private RecyclerView mRecyclerView;
     private IconTextView iconTextView;
-    /**
-     * 是否需要返回后刷新界面状态
-     */
-    private boolean Refresh = true;
 
     private CircleImageView fab;
     private LinearLayout meunStandard, meunPhoto;
@@ -257,7 +253,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             String id = data.getStringExtra("frag_id");
             comButton.setVisibility(View.GONE);
             comImg.setVisibility(View.VISIBLE);
-            Refresh = false;
             okgo(id);
         } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
@@ -358,7 +353,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 intent.putExtra("id", TaskId);
                 intent.putExtra("status", true);
                 intent.putExtra("partContent", partContent);
-
                 startActivityForResult(intent, 1);
                 break;
             case R.id.taskManagement:
@@ -569,7 +563,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             } catch (JSONException e) {
                                 status = "";
                             }
-
                             //更新时间
                             String createDate = wtMain.getString("createDate");
                             //wbsname
@@ -805,6 +798,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 }
                             }
 
+
                             /**
                              * 回复评论
                              */
@@ -880,6 +874,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             }
                             mAdapter.setmBanner(contents, aduioDatas, aduioComms);
                             Dates.disDialog();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

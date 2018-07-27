@@ -94,9 +94,8 @@ public class CameDialogs {
                                         if (ret == 0) {
                                             ToastUtils.showLongToast("打回成功");
                                             view.setVisibility(View.GONE);
-                                            //更新列表界面数据状态
                                             AuditrecordCallbackUtils.updata();
-                                            //刷新任务详情界面
+                                            //更新详情界面
                                             AuditDetailsrefreshCallbackUtils.refreshs();
                                         }
                                     } catch (JSONException e) {

@@ -70,10 +70,11 @@ public class ReportTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         });
 
         holder.mText.setText(node.getName());
+        //点击
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mian.setOrgId(node.getIds());
+                mian.setOrgId(node.getIds(),node.getName());
 
             }
         });

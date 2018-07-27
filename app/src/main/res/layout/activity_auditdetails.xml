@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,19 +29,23 @@
             android:textColor="@color/writer"
             android:textSize="18sp" />
 
-        <TextView
+        <LinearLayout
             android:id="@+id/Auditrecords"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:text="审核记录"
-            android:textColor="@color/writer"
-            android:textSize="13sp" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@mipmap/task_log"
+                android:gravity="center"
+                android:textColor="@color/writer"
+                android:textSize="13sp" />
+        </LinearLayout>
 
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/taskManagemented"
@@ -79,9 +84,11 @@
             android:textColor="@color/inconfy"
             android:textSize="25sp" />
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/auditdetails_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/taskManagemented"
+        android:overScrollMode="never" />
 </LinearLayout>

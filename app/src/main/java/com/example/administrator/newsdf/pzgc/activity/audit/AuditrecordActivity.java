@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.AuditrecordBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallback;
@@ -65,6 +64,9 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
     private String one = "1", two = "2";
     //上拉加载数据判断
     private int status = 1;
+    //待审核数
+    String tip;
+    TextView unfinished;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         date = intent.getExtras().getString("date");
         title = intent.getExtras().getString("title");
         String day = intent.getExtras().getString("day");
+        String ratio = intent.getExtras().getString("ratio");
+        tip = intent.getExtras().getString("tip");
         ste = ScreenUtil.getDensity(App.getInstance());
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //关闭下拉刷新
@@ -94,7 +98,14 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         TextView record_title = (TextView) findViewById(R.id.record_title);
         record_title.setText(title);
         TextView complete = (TextView) findViewById(R.id.complete);
-        TextView unfinished = (TextView) findViewById(R.id.unfinished);
+        complete.setText("完成率:" + ratio);
+        unfinished = (TextView) findViewById(R.id.unfinished);
+        if (tip.isEmpty()) {
+            unfinished.setText("未审核:" + "0");
+        } else {
+            unfinished.setText("未审核:" + tip);
+        }
+
         todaytime.setText(day);
         recordMeun.setOnClickListener(this);
         mAdapter = new SettingAdapter<AuditrecordBean>(mData, R.layout.auditrecord_activity_item) {
@@ -102,7 +113,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
             public void bindView(ViewHolder holder, AuditrecordBean obj) {
                 holder.setText(R.id.record_title, obj.getTitle());
                 holder.setText(R.id.record_path, obj.getWbspath());
-                holder.setText(mContext, R.id.record_user, "上一节点审核人:" + obj.getUser(), 7, R.color.black);
+                holder.setText(mContext, R.id.record_user, "时间:" + obj.getUser(), 3, R.color.black);
                 String str = obj.getStatus();
                 if ("1".equals(str)) {
                     //通过
@@ -139,9 +150,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     http();
                 }
-
-//                //传入false表示刷新失败
-//                refreshlayout.finishLoadMore(800);
+                refreshlayout.finishLoadmore(800);
             }
         });
     }
@@ -222,6 +231,14 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void updata() {
+        Integer number = Integer.decode(tip);
+        if (number > 0) {
+            number = number - 1;
+            unfinished.setText("未审核:" + number);
+            tip = number + "";
+        } else {
+            unfinished.setText("未审核:" + 0);
+        }
         page = 1;
         mData.clear();
         getData();
@@ -255,17 +272,16 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                                     String name = json.getString("name");
                                     String id = json.getString("id");
                                     String str = json.getString("appWbsPath");
-                                    String leaderName = json.getString("leaderName");
+                                    String updateDate = json.getString("updateDate");
+                                    updateDate = updateDate.substring(10, 16);
                                     String status;
                                     try {
                                         status = json.getString("pass");
                                     } catch (JSONException e) {
                                         status = "";
                                     }
-                                    mData.add(new AuditrecordBean(id, name, str, leaderName, status));
+                                    mData.add(new AuditrecordBean(id, name, str, updateDate, status));
                                 }
-                            } else {
-                                ToastUtils.showLongToast("数据为空");
                             }
                             Dates.disDialog();
                             mAdapter.getData(mData);
@@ -294,9 +310,10 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                                 String name = json.getString("detectionName");
                                 String appWbsPath = json.getString("appWbsPath");
                                 String status = json.getString("pass");
-                                String leaderName = json.getString("leaderName");
+                                String updateDate = json.getString("updateDate");
+                                updateDate = updateDate.substring(10, 16);
                                 String id = json.getString("id");
-                                mData.add(new AuditrecordBean(id, name, appWbsPath, leaderName, status));
+                                mData.add(new AuditrecordBean(id, name, appWbsPath, updateDate, status));
                             }
                             mAdapter.getData(mData);
                             smartRefreshLayout.finishLoadmore();
@@ -314,5 +331,6 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         //传入false表示刷新失败
         smartRefreshLayout.finishRefresh(true);
     }
+
 
 }

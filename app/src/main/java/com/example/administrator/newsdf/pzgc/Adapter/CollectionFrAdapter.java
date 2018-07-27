@@ -9,10 +9,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.frehomeCallBackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -94,6 +95,8 @@ public class CollectionFrAdapter extends RecyclerView.Adapter<CollectionFrAdapte
                                         CallBackUtils.removeCallBackMethod();
                                         //刷新我的
                                         frehomeCallBackUtils.dohomeCallBackMethod();
+                                        //刷新界面
+                                        HideCallbackUtils.removeCallBackMethod();
                                         closeMenu();
                                     }
                                 } catch (JSONException e) {

@@ -18,8 +18,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.HideCallback;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -41,7 +41,7 @@ import okhttp3.Response;
  * 月度报表
  */
 
-public class MonthrecordFragment extends Fragment implements View.OnClickListener, TaskCallback {
+public class MonthrecordFragment extends Fragment implements View.OnClickListener, HideCallback {
     private View rootView;
     private Context mContext;
     private TextView datatime, title;
@@ -54,6 +54,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     private int dateMonth;
     private ReportActivity activity;
     private String data;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
             rootView.findViewById(R.id.monthRetry).setOnClickListener(this);
         }
         title.setText("选择月份");
-        TaskCallbackUtils.setCallBack(this);
+        HideCallbackUtils.setCallBack(this);
         datatime.setText(Utils.titleMonth());
         mContext = getActivity();
         activity = (ReportActivity) mContext;
@@ -74,8 +75,8 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
         daily_list.setAdapter(mAdapter);
         daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
         dateMonth = myDate.getMonth();
-        data=Dates.getMonth();
-        okgo(data);
+        data = Dates.getMonth();
+        okgo(data, false);
         return rootView;
     }
 
@@ -114,9 +115,9 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                         //获取月
                         int month = monthPicker.getValue();
                         String monthdata = Utils.month[month];
-                        datatime.setText(yeardata +"-"+ monthdata);
-                        data=yeardata +"-"+ monthdata;
-                        okgo(data);
+                        datatime.setText(yeardata + "-" + monthdata);
+                        data = yeardata + "-" + monthdata;
+                        okgo(data, true);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -141,6 +142,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
 
     /**
      * 点击事件
+     *
      * @param v
      */
     @Override
@@ -150,7 +152,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                 MeunPop();
                 break;
             case R.id.monthRetry:
-                okgo(data);
+                okgo(data, true);
                 break;
             default:
                 break;
@@ -161,8 +163,8 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
      * 接口回调
      */
     @Override
-    public void taskCallback() {
-        okgo(data);
+    public void deleteTop() {
+        okgo(data, false);
     }
 
     /**
@@ -175,7 +177,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public void okgo(String data) {
+    public void okgo(String data, final boolean lean) {
         OkGo.<String>get(Requests.REPORT_IMG_DATE_APP)
                 .params("type", "2")
                 .params("orgId", activity.getOrgId())
@@ -254,12 +256,14 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
                                     mAdapter.getData(list);
                                 } else {
                                     list.clear();
-                                    ToastUtils.showShortToastCenter("暂无数据");
+
                                     mAdapter.getData(list);
                                 }
                             } else {
+                                if (lean) {
+                                    ToastUtils.showShortToastCenter("暂无数据");
+                                }
                                 list.clear();
-                                ToastUtils.showShortToastCenter("暂无数据");
                                 mAdapter.getData(list);
                             }
 

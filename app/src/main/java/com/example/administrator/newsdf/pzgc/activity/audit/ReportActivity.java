@@ -18,8 +18,11 @@ import com.example.administrator.newsdf.pzgc.activity.audit.fragment.Dailyrecord
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.MonthrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.QuarterrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.ReportTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -51,6 +54,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     private ViewPager reportViewpager;
     private static ReportActivity mContext;
     private TextView reportDaily, reportMonth, reportQuarter;
+    TextView title_ll;
 
     public static ReportActivity getInstance() {
         return mContext;
@@ -63,12 +67,14 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     private ReportTreeListViewAdapters<OrgBeans> mAdapter;
     private ListView mTree;
     private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
+
         //初始化控件
         mContext = this;
         mData = new ArrayList<>();
@@ -80,10 +86,12 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void findView() {
+        title_ll = (TextView) findViewById(R.id.title_ll);
+        title_ll.setText(SPUtils.getString(mContext, "username", null));
         mTree = (ListView) findViewById(R.id.reporttree);
         IconTextView reprotBack = (IconTextView) findViewById(R.id.reprot_back);
         reportViewpager = (ViewPager) findViewById(R.id.report_viewpager);
-        drawerLayout= (DrawerLayout) findViewById(R.id.Reportdrawer);
+        drawerLayout = (DrawerLayout) findViewById(R.id.Reportdrawer);
         reportDaily = (TextView) findViewById(R.id.report_daily);
         reportMonth = (TextView) findViewById(R.id.report_month);
         reportQuarter = (TextView) findViewById(R.id.report_quarter);
@@ -144,6 +152,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 点击事件处理
+     *
      * @param v
      */
     @Override
@@ -179,6 +188,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportMonth.setTextColor(Color.parseColor("#999797"));
         reportQuarter.setTextColor(Color.parseColor("#999797"));
     }
+
     /**
      * 每月控件不同状态显示控制
      */
@@ -187,6 +197,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportMonth.setTextColor(Color.parseColor("#5096F8"));
         reportQuarter.setTextColor(Color.parseColor("#999797"));
     }
+
     /**
      * 每季控件不同状态显示控制
      */
@@ -199,10 +210,14 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     public String getOrgId() {
         return orgId;
     }
-    public void setOrgId(String id) {
-        orgId=id;
+
+    public void setOrgId(String id, String name) {
+        orgId = id;
+        title_ll.setText(name);
         drawerLayout.closeDrawers();
+        CallBackUtils.removeCallBackMethod();
         TaskCallbackUtils.CallBackMethod();
+        HideCallbackUtils.removeCallBackMethod();
     }
 
     private void initDatas() {

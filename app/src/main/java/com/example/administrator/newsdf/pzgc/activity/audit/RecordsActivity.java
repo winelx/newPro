@@ -27,7 +27,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:每日任务列表
+ * description:审核记录
  *
  * @author lx
  *         date: 2018/7/16 0016 上午 11:01

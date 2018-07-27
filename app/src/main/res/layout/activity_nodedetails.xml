@@ -321,13 +321,60 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/back"></View>
+                    android:background="@color/back" />
+
+
+                <RelativeLayout
+                    android:id="@+id/node_lin_workarea"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/writer">
+
+                    <TextView
+                        android:id="@+id/workarea"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:text="所属工区"
+                        android:textColor="#323232" />
+
+                    <TextView
+                        android:id="@+id/node_lin_workarea_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="52dp"
+                        android:layout_marginStart="52dp"
+                        android:layout_toEndOf="@+id/workarea"
+                        android:layout_toRightOf="@+id/workarea"
+                        android:gravity="center" />
+
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center"
+                        android:text="{fa-angle-right}"
+                        android:textColor="@color/inconfy"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
 
                 <RelativeLayout
                     android:id="@+id/user_list"
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
-                    android:layout_marginTop="10dp"
+
                     android:background="@color/writer">
 
                     <TextView
@@ -366,50 +413,6 @@
                         android:textSize="30sp" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/back" />
-
-
-                <RelativeLayout
-                    android:id="@+id/node_lin_workarea"
-                    android:layout_width="match_parent"
-                    android:layout_height="49dp"
-                    android:background="@color/writer">
-
-                    <TextView
-                        android:id="@+id/workarea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:gravity="center"
-                        android:text="所属工区"
-                        android:textColor="#323232" />
-
-                    <TextView
-                        android:id="@+id/node_lin_workarea_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="52dp"
-                        android:layout_marginStart="52dp"
-                        android:layout_toEndOf="@+id/workarea"
-                        android:layout_toRightOf="@+id/workarea"
-                        android:gravity="center" />
-
-                    <com.joanzapata.iconify.widget.IconTextView
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="15dp"
-                        android:gravity="center"
-                        android:text="{fa-angle-right}"
-                        android:textColor="@color/inconfy"
-                        android:textSize="30sp" />
-                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -419,7 +422,6 @@
                 <RelativeLayout
                     android:id="@+id/node_lin_pro"
                     android:layout_width="match_parent"
-
 
                     android:layout_height="49dp"
                     android:background="@color/writer">

@@ -489,7 +489,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                         searchEditext.setText("");
                         pages = 1;
                         swip = false;
-                        notall = "3";
+                        notall = "10";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
@@ -513,7 +513,8 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         view2.setVisibility(View.GONE);
         View view3 = contentView.findViewById(R.id.pop_manage);
         view3.setVisibility(View.GONE);
-
+        View view4 = contentView.findViewById(R.id.pop_backup);
+        view4.setVisibility(View.GONE);
         return contentView;
     }
 
@@ -806,7 +807,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste) + 20, 210, true);
+                Dates.withFontSize(ste) + 20, Dates.higtFontSizes(ste), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show

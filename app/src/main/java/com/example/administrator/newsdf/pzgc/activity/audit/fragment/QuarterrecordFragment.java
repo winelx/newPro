@@ -55,6 +55,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
     private NumberPicker yearPicker, monthPicker;
     private ReportActivity activity;
     private String data;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         SimpleDateFormat df = new SimpleDateFormat("yyyy年");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
-        datatime.setText(date + Utils.quarter[getquarter()]);
+      int quarter= Utils.getquarter();
+        datatime.setText(date + Utils.quarter[quarter-1]);
         TaskCallbackUtils.setCallBack(this);
         title.setText("选择季度");
         mContext = getActivity();
@@ -77,8 +79,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         mAdapter = new DailyrecordAdapter(mContext, list);
         daily_list.setAdapter(mAdapter);
         daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
-        data=Dates.getYear() + "-" + Utils.getquarter();
-        okgo(data);
+        data = Dates.getYear() + "-" + Utils.getquarter();
+        okgo(data,false);
         return rootView;
     }
 
@@ -114,8 +116,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                         int month = monthPicker.getValue();
                         String monthdata = Utils.quarter[month];
                         datatime.setText(yeardata + monthdata);
-                         data= yeardata + "-" + Utils.getquarter();
-                        okgo(data);
+                        data = yeardata + "-" + Utils.getquarter();
+                        okgo(data, true);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -135,7 +137,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         yearPicker = contentView.findViewById(R.id.years);
         Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
-        Utils.setPicker(monthPicker, Utils.quarter, getquarter());
+        Utils.setPicker(monthPicker, Utils.quarter, getquarter()-1);
         return contentView;
     }
 
@@ -146,7 +148,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                 MeunPop();
                 break;
             case R.id.quarterRetry:
-                okgo(data);
+                okgo(data, true);
                 break;
             default:
                 break;
@@ -158,8 +160,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
      */
     @Override
     public void taskCallback() {
-        ToastUtils.showLongToast("季度");
-        okgo(data);
+        okgo(data, false);
     }
 
 
@@ -173,7 +174,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void okgo(String date) {
+    public void okgo(String date, final boolean lean) {
         OkGo.<DailyrecordBean>get(Requests.REPORT_IMG_DATE_APP)
                 .params("type", "3")
                 .params("orgId", activity.getOrgId())
@@ -252,12 +253,13 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                                     mAdapter.getData(list);
                                 } else {
                                     list.clear();
-                                    ToastUtils.showShortToastCenter("暂无数据");
                                     mAdapter.getData(list);
                                 }
                             } else {
+                                if (lean) {
+                                    ToastUtils.showShortToastCenter("暂无数据");
+                                }
                                 list.clear();
-                                ToastUtils.showShortToastCenter("暂无数据");
                                 mAdapter.getData(list);
                             }
                         } catch (JSONException e) {

@@ -19,8 +19,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.CallBack;
+import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -47,7 +47,7 @@ import okhttp3.Response;
  *         version:
  */
 
-public class DailyrecordFragment extends Fragment implements View.OnClickListener, TaskCallback {
+public class DailyrecordFragment extends Fragment implements View.OnClickListener, CallBack {
     private View rootView;
     private ListView dailyList;
     private TextView datatime;
@@ -62,6 +62,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private ReportActivity activity;
     private String data;
     private LinearLayout linear;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,12 +71,12 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             dailyList = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
-           rootView.findViewById(R.id.dayRetry).setOnClickListener(this);
+            rootView.findViewById(R.id.dayRetry).setOnClickListener(this);
 
         }
         list = new ArrayList<>();
         mContext = getActivity();
-        TaskCallbackUtils.setCallBack(this);
+        CallBackUtils.setCallBack(this);
 
         activity = (ReportActivity) mContext;
         numbermonth = Utils.month;
@@ -86,8 +87,8 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         mAdapter = new DailyrecordAdapter(mContext, list);
         dailyList.setAdapter(mAdapter);
         dailyList.setEmptyView(rootView.findViewById(R.id.nullposion));
-        data=Dates.getDay();
-        okgo(data);
+        data = Dates.getDay();
+        okgo(data, false);
         return rootView;
 
     }
@@ -147,8 +148,8 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                         }
 
                         datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
-                        data=yeardata + "-" + monthdata + "-" + daydata;
-                        okgo(data);
+                        data = yeardata + "-" + monthdata + "-" + daydata;
+                        okgo(data, true);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -194,6 +195,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
 
     /**
      * 点击事件
+     *
      * @param v
      */
     @Override
@@ -203,7 +205,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                 meunpop();
                 break;
             case R.id.dayRetry:
-                okgo(data);
+                okgo(data, true);
                 break;
             default:
                 break;
@@ -214,9 +216,8 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
      * 回调接口
      */
     @Override
-    public void taskCallback() {
-        ToastUtils.showLongToast("日 ");
-        okgo(data);
+    public void deleteTop() {
+        okgo(data, false);
     }
 
     /**
@@ -255,7 +256,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     *  /设置选择月，控制二月天数
+     * /设置选择月，控制二月天数
      */
     public void setMonth(int newVal) {
         String NewVal = numbermonth[newVal];
@@ -290,6 +291,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
 
     /**
      * 返回当前时间
+     *
      * @return
      */
     public String getData() {
@@ -319,9 +321,10 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
 
     /**
      * 网络请求
+     *
      * @param data
      */
-    public void okgo(String data) {
+    public void okgo(String data, final boolean lean) {
         OkGo.<String>get(Requests.REPORT_IMG_DATE_APP)
                 .params("type", "1")
                 .params("orgId", activity.getOrgId())
@@ -400,12 +403,15 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                                     mAdapter.getData(list);
                                 } else {
                                     list.clear();
-                                    ToastUtils.showShortToastCenter("暂无数据");
+
                                     mAdapter.getData(list);
                                 }
                             } else {
+                                if (lean) {
+                                    ToastUtils.showShortToastCenter("暂无数据");
+                                }
                                 list.clear();
-                                ToastUtils.showShortToastCenter("暂无数据");
+
                                 mAdapter.getData(list);
                             }
 

@@ -28,8 +28,10 @@
         android:layout_alignLeft="@+id/textView10"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
         android:gravity="center"
-        android:text="部位：更梁山大桥"
+        android:maxEms="19"
+        android:singleLine="true"
         android:textColor="#323232"
         android:textSize="14sp" />
 

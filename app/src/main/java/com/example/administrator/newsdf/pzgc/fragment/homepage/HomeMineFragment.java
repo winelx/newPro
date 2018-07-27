@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -58,11 +56,9 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
     private ArrayList<String> title;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
-    private RelativeLayout homeFragImg;
-    private TextView homeImgText;
-    private ImageView homeImgNonews;
     private View.OnClickListener ivGoToChildClickListener;
     private Map<String, List<Home_item>> hasMap;
+    private LinearLayout nullposion;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,10 +67,8 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
             rootView = inflater.inflate(R.layout.fragment_home, null);
             Dates.getDialog(getActivity(), "请求数据中...");
             expandable = rootView.findViewById(R.id.expandable);
-            homeFragImg = rootView.findViewById(R.id.home_frag_img);
-            homeImgNonews = rootView.findViewById(R.id.home_img_nonews);
-            homeImgText = rootView.findViewById(R.id.home_img_text);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
+            nullposion = rootView.findViewById(R.id.nullposion);
             //禁止上拉
             refreshLayout.setEnableLoadmore(false);
             //仿ios越界
@@ -97,17 +91,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         //收藏刷新
         frehomeCallBackUtils.setCallBack(this);
 
-        //设置布局管理器
-        //设置适配器
-//        mAdapter = new MyExpandableListAdapter(mContext);
-        //设置控制Item增删的动画
-        homeFragImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dates.getDialogs(getActivity(), "请求数据中");
-                Okgo();
-            }
-        });
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -164,8 +147,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                 } catch (JSONException e) {
                                     audit = new JSONArray();
                                 }
-
-
                                 if (task.length() > 0) {
                                     for (int i = 0; i < task.length(); i++) {
                                         JSONObject json = task.getJSONObject(i);
@@ -207,9 +188,16 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     title.add("待审核");
                                     hasMap.put("待审核", Audit);
                                 }
-                                mAdapter = new FragmentHomeListAdapter(title, hasMap, mContext,
-                                        ivGoToChildClickListener);
-                                expandable.setAdapter(mAdapter);
+                                if (hasMap.size() > 0) {
+                                    expandable.setVisibility(View.VISIBLE);
+                                    nullposion.setVisibility(View.GONE);
+                                    mAdapter = new FragmentHomeListAdapter(title, hasMap, mContext,
+                                            ivGoToChildClickListener);
+                                    expandable.setAdapter(mAdapter);
+                                } else {
+                                    nullposion.setVisibility(View.VISIBLE);
+                                    expandable.setVisibility(View.GONE);
+                                }
                                 //关闭刷新提示
                                 refreshLayout.finishRefresh(true);
                             } catch (JSONException e) {
@@ -217,8 +205,8 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                             }
                         } else {
                             ToastUtils.showShortToast("没有更多数据");
-                            homeFragImg.setVisibility(View.VISIBLE);
-                            homeImgText.setText("暂无数据，点击刷新");
+                            nullposion.setVisibility(View.VISIBLE);
+                            expandable.setVisibility(View.GONE);
                         }
                     }
 
@@ -227,9 +215,8 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                         super.onError(call, response, e);
                         Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
-                        homeFragImg.setVisibility(View.VISIBLE);
-                        homeImgNonews.setBackgroundResource(R.mipmap.nonetwork);
-                        homeImgText.setText("请求确认网络是否正常，点击再次请求");
+                        nullposion.setVisibility(View.VISIBLE);
+                        expandable.setVisibility(View.GONE);
                     }
                 });
     }

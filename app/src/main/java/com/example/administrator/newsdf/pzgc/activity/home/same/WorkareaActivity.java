@@ -2,7 +2,9 @@ package com.example.administrator.newsdf.pzgc.activity.home.same;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,6 +16,9 @@ import com.example.administrator.newsdf.pzgc.bean.Icon;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +34,8 @@ public class WorkareaActivity extends AppCompatActivity {
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;
     private Context mContext;
-    private LinearLayout mine_backgroud,com_back;
+    private LinearLayout mine_backgroud, com_back;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,14 @@ public class WorkareaActivity extends AppCompatActivity {
         mContext = this;
         getData();
         mine_backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.RefreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                getData();
+            }
+        });
         uslistView = (ListView) findViewById(R.id.us_listView);
         mAdapter = new SettingAdapter<Icon>(mData, R.layout.contact_item) {
             @Override
@@ -67,6 +81,7 @@ public class WorkareaActivity extends AppCompatActivity {
             }
         });
         uslistView.setAdapter(mAdapter);
+        uslistView.setEmptyView(findViewById(R.id.mine_backgroud));
     }
 
     public void getData() {

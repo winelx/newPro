@@ -66,17 +66,14 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     protected void onStart() {
         super.onStart();
         mHomeUtils.TaskAudit(taskId, mAdapter);
+        mRecyclerView.scrollToPosition(0);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.taskManagemented:
-                //跳转任务管理
-//                if (status.equals("true")) {
-                //
                 HomeUtils.getOko(mHomeUtils.getId(), null, false, null, false, null, AuditdetailsActivity.this);
-//                }
                 break;
             case R.id.aduit_back:
                 //返回

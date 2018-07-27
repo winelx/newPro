@@ -31,7 +31,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:text="完成率:20%"
-            android:textColor="@color/green"
+            android:textColor="@color/finish_green"
             android:textSize="10sp" />
 
         <TextView

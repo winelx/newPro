@@ -168,7 +168,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="9"
                     android:drawablePadding="10dp"
-                    android:text="统计报表"
+                    android:text="审核报表"
                     android:textSize="15sp" />
 
 

@@ -599,6 +599,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             mRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
+                    refreshLayout.finishRefresh(true);
                     getJson(s);
                 }
 
@@ -612,6 +613,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            refreshLayout.finishRefresh(true);
                             getJson(s);
                         }
 
@@ -701,6 +703,10 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
 
     //任务状态弹出窗
     private void MeunPop() {
+        if (!anim) {
+            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+            anim = true;
+        }
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);

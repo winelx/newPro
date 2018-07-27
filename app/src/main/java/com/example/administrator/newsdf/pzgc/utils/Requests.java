@@ -6,10 +6,10 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-   public static final String networks = "http://192.168.20.33:8080/";
- //  public static final String networks = "http://192.168.20.35:8080/pzgc/";
+    public static final String networks = "http://192.168.20.33:8080/";
+   // public static final String networks = "http://192.168.20.35:8080/pzgc/";
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
- //public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    //public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -132,7 +132,6 @@ public class Requests {
     /**
      * 根据ID查询wbs的信息
      */
-
     public static final String Wbsdetails = networks + "iface/mobile/taskmsg/findWbsInfoById";
     /**
      * 查询联系人
@@ -222,9 +221,9 @@ public class Requests {
      * 每日任务列表已审核和打回
      */
     public static final String GET_AUDIT_TASK_LIST = networks + "iface/mobile/taskmain/getAuditTaskList";
-   /**
-    * 每日任务列表待审核
-    */
+    /**
+     * 每日任务列表待审核
+     */
     public static final String GET_TASK_LIST = networks + "iface/mobile/taskmsg/getTaskList";
     /**
      * 任务审核记录

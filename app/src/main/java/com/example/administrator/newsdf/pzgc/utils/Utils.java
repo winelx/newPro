@@ -174,13 +174,14 @@ public class Utils {
         int quarter = 0;
         Date myDate = new Date();
         int dateMonth = myDate.getMonth();
-        if (dateMonth < 4) {
+        dateMonth= dateMonth+1;
+        if (dateMonth == 1 || dateMonth == 2 || dateMonth == 3) {
             quarter = 1;
-        } else if (dateMonth > 3 && dateMonth <= 6) {
+        } else if (dateMonth == 4 || dateMonth == 5 || dateMonth == 6) {
             quarter = 2;
-        } else if (dateMonth >= 7 && dateMonth <= 9) {
+        } else if (dateMonth == 7 || dateMonth == 8 || dateMonth == 9) {
             quarter = 3;
-        } else if (dateMonth > 9) {
+        } else if (dateMonth == 10 || dateMonth == 11 || dateMonth == 12) {
             quarter = 4;
         }
         return quarter;

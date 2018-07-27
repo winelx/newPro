@@ -1,10 +1,13 @@
 package com.example.administrator.newsdf.pzgc.activity.audit;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,10 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +67,7 @@ public class AuditActivity extends AppCompatActivity {
     private float ste;
     private Integer integer = 1;
     private String orgId = "", name;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +84,9 @@ public class AuditActivity extends AppCompatActivity {
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
         aduit_back = (IconTextView) findViewById(R.id.aduit_back);
         aduit_list = (ListView) findViewById(R.id.aduit_list);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+
+
         adapter = new SettingAdapter<Audittitlebean>(title, R.layout.item_audit_elv) {
             @Override
             public void bindView(ViewHolder holder, Audittitlebean obj) {
@@ -83,13 +94,13 @@ public class AuditActivity extends AppCompatActivity {
                 holder.setText(R.id.complete, "完成率:" + obj.getRatio());
                 if (obj.getTip().isEmpty()) {
                     holder.setText(R.id.unfinished, "未审核:" + "0");
-                }else {
-                    Integer str = Integer.decode(obj.getTip());
-                if (str > 0) {
-                    holder.setText(R.id.unfinished, "未审核:" + obj.getTip());
                 } else {
-                    holder.setText(R.id.unfinished, "未审核:" + "0");
-                }
+                    Integer str = Integer.decode(obj.getTip());
+                    if (str > 0) {
+                        holder.setText(R.id.unfinished, "未审核:" + obj.getTip());
+                    } else {
+                        holder.setText(R.id.unfinished, "未审核:" + "0");
+                    }
                 }
             }
         };
@@ -98,11 +109,12 @@ public class AuditActivity extends AppCompatActivity {
         aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Intent intent = new Intent(AuditActivity.this, AuditrecordActivity.class);
                 intent.putExtra("date", title.get(position).getDate());
                 intent.putExtra("title", name);
                 intent.putExtra("orgId", orgId);
+                intent.putExtra("ratio", title.get(position).getRatio());
+                intent.putExtra("tip", title.get(position).getTip());
                 intent.putExtra("day", title.get(position).getCnDay());
                 startActivity(intent);
             }
@@ -121,7 +133,36 @@ public class AuditActivity extends AppCompatActivity {
                 finish();
             }
         });
-        getData(integer);
+        getData(integer,true);
+        /**
+         * 下拉
+         */
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                integer = 1;
+                getData(integer,true);
+                refreshlayout.finishRefresh(800);
+            }
+        });
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                integer++;
+                getData(integer,false);
+                refreshlayout.finishLoadmore(800);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        integer = 1;
+        getData(integer,true);
     }
 
     //弹出框
@@ -177,7 +218,7 @@ public class AuditActivity extends AppCompatActivity {
         }
     }
 
-    public void getData(Integer integer) {
+    public void getData(Integer integer,final boolean lean) {
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")
@@ -187,6 +228,9 @@ public class AuditActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("ss", s);
+                    if (lean){
+                        title.clear();
+                    }
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");

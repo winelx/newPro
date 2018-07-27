@@ -11,14 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.example.administrator.newsdf.pzgc.Adapter.CommentsAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.CommentsAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -57,9 +55,7 @@ public class CommentsFragment extends Fragment {
      * 显示数据控件
      */
     private RecyclerView listView;
-    private RelativeLayout home_frag_img;
-    private ImageView home_img_nonews;
-    private TextView home_img_text;
+    private LinearLayout nullposion;
 
     @Nullable
     @Override
@@ -68,9 +64,7 @@ public class CommentsFragment extends Fragment {
         mContext = getActivity();
 
         mAdapter = new CommentsAdapter(mContext);
-        home_frag_img = view.findViewById(R.id.home_frag_img);
-        home_img_text = view.findViewById(R.id.home_img_text);
-        home_img_nonews = view.findViewById(R.id.home_img_nonews);
+        nullposion = view.findViewById(R.id.nullposion);
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         listView = view.findViewById(R.id.home_list);
         listView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -89,15 +83,6 @@ public class CommentsFragment extends Fragment {
             public void onRefresh(final RefreshLayout refreshlayout) {
                 Okgo(true);
                 refreshlayout.finishRefresh(1200);
-            }
-        });
-
-        //无数据加载数据
-        home_frag_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dates.getDialogs(getActivity(), "请求数据中");
-                Okgo(true);
             }
         });
 
@@ -165,19 +150,20 @@ public class CommentsFragment extends Fragment {
                                     //最后一个false是判断是否置顶的，这个界面复用的实体类，但又没有置顶，所以用false
                                     setList.add(new Home_item(content, createTime, id, orgId, orgName, contentNumBer, "", parentname, parentid, false));
                                 }
-                                if (setList.size()>0){
+                                if (setList.size() > 0) {
                                     mAdapter.getData(setList);
-                                    home_frag_img.setVisibility(View.GONE);
-                                }else {
-                                    home_frag_img.setVisibility(View.VISIBLE);
-                                    home_img_text.setText("暂无数据");
+                                    listView.setVisibility(View.VISIBLE);
+                                    nullposion.setVisibility(View.GONE);
+                                } else {
+                                    listView.setVisibility(View.GONE);
+                                    nullposion.setVisibility(View.VISIBLE);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            home_frag_img.setVisibility(View.VISIBLE);
-                            home_img_text.setText("暂无数据");
+                            listView.setVisibility(View.GONE);
+                            nullposion.setVisibility(View.VISIBLE);
                         }
 
                     }
@@ -187,9 +173,8 @@ public class CommentsFragment extends Fragment {
                         super.onError(call, response, e);
                         Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
-                        home_frag_img.setVisibility(View.VISIBLE);
-                        home_img_nonews.setBackgroundResource(R.mipmap.nonetwork);
-                        home_img_text.setText("请求确认网络是否通畅，点击再次请求");
+                        listView.setVisibility(View.GONE);
+                        nullposion.setVisibility(View.VISIBLE);
                     }
 
                 });

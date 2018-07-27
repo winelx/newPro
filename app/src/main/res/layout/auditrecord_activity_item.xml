@@ -12,7 +12,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:ellipsize="end"
-        android:maxEms="16"
+        android:maxEms="22"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp" />
@@ -23,8 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:ellipsize="end"
-        android:maxEms="16"
+        android:maxEms="25"
         android:singleLine="true"
         android:textColor="@color/graytext"
         android:textSize="13sp" />
@@ -35,6 +36,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -43,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:textColor="@color/black"
+            android:maxEms="6"
+            android:textColor="@color/persomal_text"
             android:textSize="12sp" />
 
         <TextView
@@ -51,7 +54,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
+            android:text="12121212"
+            android:gravity="right"
             android:textSize="12sp" />
 
     </LinearLayout>

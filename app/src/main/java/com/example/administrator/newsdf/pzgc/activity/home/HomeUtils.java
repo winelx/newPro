@@ -685,6 +685,116 @@ public class HomeUtils {
                                         leaderName, leaderId, isread,
                                         createByUserID, checkStandard, createDate, wbsName, changeId,
                                         backdata, partContent));
+
+
+                                for (int i = 0; i < subWbsTaskMains.length(); i++) {
+                                    JSONObject Sub = subWbsTaskMains.getJSONObject(i);
+                                    String replyID, uploadId, replyUserName, replyUserHeaderURL,
+                                            subName, subWbsname,
+                                            uploadContent, updateDate, uploadAddr;
+                                    JSONArray hments = new JSONArray();
+                                    try {
+                                        hments = Sub.getJSONArray("attachments");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    //  (回复详情列表)
+                                    try {
+                                        //唯一标识
+                                        replyID = Sub.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        replyID = "";
+                                    }
+                                    try {
+                                        //上传人ID
+                                        uploadId = Sub.getString("leaderId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        uploadId = "";
+                                    }
+                                    try {
+                                        //检查点
+                                        subName = Sub.getString("name");
+                                    } catch (JSONException e) {
+                                        subName = "";
+                                    }
+                                    try {
+                                        //wbsName
+                                        subWbsname = Sub.getString("wbsName");
+                                    } catch (JSONException e) {
+                                        subWbsname = "";
+                                    }
+                                    try {
+                                        //上传时间
+                                        updateDate = Sub.getString("uploadTime");
+                                    } catch (JSONException e) {
+                                        updateDate = "";
+                                    }
+
+                                    try {
+                                        //上传内容说明
+                                        uploadContent = Sub.getString("uploadContent");
+                                    } catch (JSONException e) {
+                                        uploadContent = "";
+                                    }
+                                    try {
+                                        // 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
+                                        replyUserName = wtMain.getJSONObject("uploadUser").getString("realname");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        replyUserName = "";
+                                    }
+                                    //头像
+                                    try {
+                                        replyUserHeaderURL = wtMain.getJSONObject("uploadUser").getString("portrait");
+                                    } catch (JSONException e) {
+                                        replyUserHeaderURL = "";
+                                    }
+
+                                    orgId = Sub.getString("wbsId");
+                                    try {
+                                        //上传地点
+                                        uploadAddr = Sub.getString("uploadAddr");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        uploadAddr = "";
+                                    }
+                                    boolean isFavorite;
+                                    try {
+                                        isFavorite = wtMain.getBoolean("isFavorite");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        isFavorite = false;
+                                    }
+                                    String userimage;
+                                    try {
+                                        String path = wtMain.getJSONObject("uploadUser").getString("portrait");
+                                        userimage = Requests.networks + path;
+                                    } catch (JSONException e) {
+                                        userimage = "";
+                                    }
+                                    ArrayList<String> attachments = new ArrayList<>();
+                                    ArrayList<String> filename = new ArrayList<>();
+                                    //任务回复图片
+                                    if (hments.length() > 0) {
+                                        for (int j = 0; j < hments.length(); j++) {
+                                            JSONObject json = hments.getJSONObject(j);
+                                            String path = json.getString("filepath");
+                                            String name1 = json.getString("filename");
+                                            filename.add(name1);
+                                            attachments.add(Requests.networks + path);
+                                        }
+                                    }
+                                    if (!uploadContent.isEmpty()) {
+                                        aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                                subWbsname, uploadContent, updateDate, uploadAddr, false, false, false,
+                                                false, false, false, attachments, comments.length() + "",
+                                                userimage, filename, isSmartProject, isFavorite, smartProjectType));
+                                    }
+                                }
+
                                 if (iscallback.equals("1")) {
                                     for (int i = 0; i < taskHi.length(); i++) {
                                         JSONObject Sub = taskHi.getJSONObject(i);
@@ -795,114 +905,6 @@ public class HomeUtils {
                                     }
                                 }
 
-
-                                for (int i = 0; i < subWbsTaskMains.length(); i++) {
-                                    JSONObject Sub = subWbsTaskMains.getJSONObject(i);
-                                    String replyID, uploadId, replyUserName, replyUserHeaderURL,
-                                            subName, subWbsname,
-                                            uploadContent, updateDate, uploadAddr;
-                                    JSONArray hments = new JSONArray();
-                                    try {
-                                        hments = Sub.getJSONArray("attachments");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    //  (回复详情列表)
-                                    try {
-                                        //唯一标识
-                                        replyID = Sub.getString("id");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        replyID = "";
-                                    }
-                                    try {
-                                        //上传人ID
-                                        uploadId = Sub.getString("leaderId");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        uploadId = "";
-                                    }
-                                    try {
-                                        //检查点
-                                        subName = Sub.getString("name");
-                                    } catch (JSONException e) {
-                                        subName = "";
-                                    }
-                                    try {
-                                        //wbsName
-                                        subWbsname = Sub.getString("wbsName");
-                                    } catch (JSONException e) {
-                                        subWbsname = "";
-                                    }
-                                    try {
-                                        //上传时间
-                                        updateDate = Sub.getString("uploadTime");
-                                    } catch (JSONException e) {
-                                        updateDate = "";
-                                    }
-
-                                    try {
-                                        //上传内容说明
-                                        uploadContent = Sub.getString("uploadContent");
-                                    } catch (JSONException e) {
-                                        uploadContent = "";
-                                    }
-                                    try {
-                                        // 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
-                                        replyUserName = wtMain.getJSONObject("uploadUser").getString("realname");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        replyUserName = "";
-                                    }
-                                    //头像
-                                    try {
-                                        replyUserHeaderURL = wtMain.getJSONObject("uploadUser").getString("portrait");
-                                    } catch (JSONException e) {
-                                        replyUserHeaderURL = "";
-                                    }
-
-                                    orgId = Sub.getString("wbsId");
-                                    try {
-                                        //上传地点
-                                        uploadAddr = Sub.getString("uploadAddr");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        uploadAddr = "";
-                                    }
-                                    boolean isFavorite;
-                                    try {
-                                        isFavorite = wtMain.getBoolean("isFavorite");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        isFavorite = false;
-                                    }
-                                    String userimage;
-                                    try {
-                                        String path = wtMain.getJSONObject("uploadUser").getString("portrait");
-                                        userimage = Requests.networks + path;
-                                    } catch (JSONException e) {
-                                        userimage = "";
-                                    }
-                                    ArrayList<String> attachments = new ArrayList<>();
-                                    ArrayList<String> filename = new ArrayList<>();
-                                    //任务回复图片
-                                    if (hments.length() > 0) {
-                                        for (int j = 0; j < hments.length(); j++) {
-                                            JSONObject json = hments.getJSONObject(j);
-                                            String path = json.getString("filepath");
-                                            String name1 = json.getString("filename");
-                                            filename.add(name1);
-                                            attachments.add(Requests.networks + path);
-                                        }
-                                    }
-                                    if (!uploadContent.isEmpty()) {
-                                        aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
-                                                subWbsname, uploadContent, updateDate, uploadAddr, false, false, false,
-                                                false, false, false, attachments, comments.length() + "",
-                                                userimage, filename, isSmartProject, isFavorite, smartProjectType));
-                                    }
-                                }
                                 /**
                                  * 回复评论
                                  */

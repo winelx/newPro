@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -130,12 +129,18 @@ public class AuditdetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 //状态
                 holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.Orange));
 
-            } else {
+            } else if (content.get(posotion).getStatus().equals("2")) {
                 holder.detailsData.setText(content.get(posotion).getCreateDate());
                 //状态
                 holder.detailsBoolean.setText("已完成");
-                holder.detailsBoolean.setTextColor(Color.parseColor("#22c67b"));
-
+                //状态 finish_green
+                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.finish_green));
+            } else {
+                holder.detailsData.setText(content.get(posotion).getCreateDate());
+                //状态
+                holder.detailsBoolean.setText("打回");
+                //状态 finish_green
+                holder.detailsBoolean.setTextColor(mContext.getResources().getColor(R.color.red));
             }// 转交说明
             holder.detailsFixedBoolean.setText("部位状态:");
         } else {
