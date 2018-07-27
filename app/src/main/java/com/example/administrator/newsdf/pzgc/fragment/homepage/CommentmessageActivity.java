@@ -523,7 +523,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, page);
+        okgoall(wbsid, null, pages);
         uslistView.setSelection(0);
     }
 

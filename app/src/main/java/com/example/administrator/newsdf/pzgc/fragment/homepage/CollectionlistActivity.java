@@ -80,7 +80,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private TextView Titlew, deleteSearch,drawer_layout_text;
     private EditText searchEditext;
     private String id, wbsid, name, titles;
-    private String notall = "3", nodeiD = "1";
+    private String notall = "10", nodeiD = "1";
 
     private CircleImageView circle;
     //主界面适配器
@@ -563,7 +563,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, page);
+        okgoall(wbsid, null, pages);
         uslistView.setSelection(0);
     }
 

@@ -88,7 +88,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         dailyList.setAdapter(mAdapter);
         dailyList.setEmptyView(rootView.findViewById(R.id.nullposion));
         data = Dates.getDay();
-        okgo(data, false);
+//        okgo(data, false);
         return rootView;
 
     }

@@ -67,15 +67,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
         searchData = new ArrayList<>();
-        Intent intent = getIntent();
-        try {
-            str = intent.getExtras().getString("data");
-            if (str.equals("newpush")) {
-                mData.add(new Icon("", "", "", "无", ""));
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
         okgo();
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
         uslistView = (XListView) findViewById(R.id.us_listView);
@@ -120,7 +111,6 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
         };
         uslistView.setAdapter(mAdapter);
     }
-
     //网络请求
     void okgo() {
         OkGo.post(Requests.Members)
@@ -147,6 +137,7 @@ public class ContactPeopleActivity extends AppCompatActivity implements XListVie
                                 mData.add(new Icon(id, userId, name, moblie, imageUrl));
                             }
                             if (mData.size() != 0) {
+                                    mData.add(0, new Icon("", "", "", "无", ""));
                                 backgroud.setVisibility(View.GONE);
                                 mAdapter.getData(mData);
                             }

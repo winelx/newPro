@@ -64,9 +64,6 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
             sendTimes, preconditions, id, Standard;
     private String taskcontent, pushcontent;
 
-    public PushdialogActivity() {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
