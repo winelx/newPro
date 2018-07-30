@@ -76,7 +76,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
         daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
         dateMonth = myDate.getMonth();
         data = Dates.getMonth();
-//        okgo(data, false);
+       okgo(data, false);
         return rootView;
     }
 

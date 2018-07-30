@@ -46,6 +46,7 @@ import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
@@ -421,6 +422,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             String msg = jsonObject.getString("msg");
                             ToastUtils.showShortToast(msg);
                             if (ret == 0) {
+                                TaskCallbackUtils.CallBackMethod();
                                 //删除上传的原图图片
                                 for (int i = 0; i < pathimg.size(); i++) {
                                     Dates.deleteFile(pathimg.get(i));
@@ -429,6 +431,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                                 if (!list.isEmpty() && position != -1) {
                                     LoveDao.deleteLove(list.get(position).getId());
                                 }
+                                Intent newpush = new Intent();
+                                setResult(2, newpush);
                                 finish();
                             }
 

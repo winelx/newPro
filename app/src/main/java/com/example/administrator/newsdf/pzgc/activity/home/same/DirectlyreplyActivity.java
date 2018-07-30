@@ -219,7 +219,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
 
     //初始化recyclerview
     private void initDate() {
-        photoAdapter = new DirectlyreplyAdapter(this, imagePaths,"false");
+        photoAdapter = new DirectlyreplyAdapter(this, imagePaths, "false");
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setAdapter(photoAdapter);
     }
@@ -246,14 +246,11 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                             int ret = jsonObject.getInt("ret");
                             ToastUtils.showShortToast(jsonObject.getString("msg"));
                             if (ret == 0) {
+                                try {
+                                    TaskCallbackUtils.CallBackMethod();
+                                } catch (NullPointerException e) {
+                                }
 
-                                TaskCallbackUtils.CallBackMethod();
-//                                //回复成功，刷新任务列表界面
-//                                if (activity.equals("all")) {
-//
-//                                } else {
-//
-//                                }
                                 //删除上传的图片
                                 for (int i = 0; i < imagePaths.size(); i++) {
                                     Dates.deleteFile(imagePaths.get(i));

@@ -15,6 +15,8 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.Adapter.Adapter;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +34,12 @@ import java.util.List;
  * version:
  */
 
-public class NotuploadActivity extends AppCompatActivity {
+public class NotuploadActivity extends AppCompatActivity implements TaskCallback {
     private LinearLayout toolbar_add;
-    LinearLayout com_back;
-    String wbsID;
+    private LinearLayout com_back, nullposion;
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
-    List<Shop> list;
+    private List<Shop> list;
     int pos = 0;
 
     @Override
@@ -54,6 +55,8 @@ public class NotuploadActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        list = new ArrayList<>();
+        TaskCallbackUtils.setCallBack(this);
         com_back = (LinearLayout) findViewById(R.id.com_back);
         com_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,15 +65,13 @@ public class NotuploadActivity extends AppCompatActivity {
             }
         });
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
         //设置布局管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //设置适配器
         mRecyclerView.setAdapter(mAdapter = new Adapter(this));
         //设置控制Item增删的动画
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        queryDate();
-
     }
 
     @Override
@@ -79,17 +80,17 @@ public class NotuploadActivity extends AppCompatActivity {
         queryDate();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-    }
 
     //更新数据
     private void queryDate() {
-        list = new ArrayList<>();
+        list.clear();
         list = LoveDao.queryLove();
-        mAdapter.getData(list);
+        if (list.size() > 0) {
+            mAdapter.getData(list);
+            nullposion.setVisibility(View.GONE);
+        } else {
+            nullposion.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -133,4 +134,8 @@ public class NotuploadActivity extends AppCompatActivity {
         startActivityForResult(intent, 2);
     }
 
+    @Override
+    public void taskCallback() {
+        queryDate();
+    }
 }

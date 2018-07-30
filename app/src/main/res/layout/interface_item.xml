@@ -256,7 +256,6 @@
                             android:layout_toEndOf="@+id/inface_relat2"
                             android:layout_toRightOf="@+id/inface_relat2"
                             android:layout_weight="1"
-
                             android:scaleType="centerCrop"
                             android:src="@mipmap/image_loading"
                             android:visibility="gone" />

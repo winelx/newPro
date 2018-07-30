@@ -122,7 +122,6 @@ public class WebActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //判断当前系统是否高于或等于6.0
-
                     final String download = download(Url);
                     runOnUiThread(new Runnable() {
                         @Override

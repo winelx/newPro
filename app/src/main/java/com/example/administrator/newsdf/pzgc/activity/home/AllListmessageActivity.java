@@ -535,7 +535,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, pages);
+        smart();
     }
 
     /**
@@ -645,6 +645,104 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
     }
+
+
+
+    //弹出框
+    private void MeunPop() {
+        if (!anim) {
+            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+            anim = true;
+        }
+        View contentView = getPopupWindowContentView();
+        mPopupWindow = new PopupWindow(contentView,
+                Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+        // 默认在mButton2的左下角显示
+        mPopupWindow.showAsDropDown(imageViewMeun);
+        backgroundAlpha(0.5f);
+        //添加pop窗口关闭事件
+        mPopupWindow.setOnDismissListener(new poponDismissListener());
+    }
+
+
+    //请求数据
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void smart() {
+        String content = searchEditext.getText().toString();
+        //判断是否需要传内容
+        if (content.length() != 0) {
+            //判断是否有节点ID
+            if (nodeiD != "1") {
+                okgoall(nodeiD, content, pages);
+            } else {
+                okgoall(null, content, pages);
+            }
+        } else {
+            if (nodeiD != "1") {
+                okgoall(nodeiD, null, pages);
+            } else {
+                okgoall(nodeiD, null, pages);
+            }
+
+        }
+    }
+
+    /**
+     * @param wbsId   wbs ID
+     * @param content 搜索内容
+     * @param i       页数
+     */
+    private void okgoall(String wbsId, String content, int i) {
+        PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
+                .params("orgId", id)
+                .params("page", i)
+                .params("rows", 25)
+                .params("wbsId", wbsId)
+                .params("isAll", "true")
+                .params("content", content);
+        //如果==3 那么就不传
+        if ("10".equals(notall)) {
+            mPostRequest.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    LogUtil.i("sesfdsew", pages);
+                    refreshLayout.finishRefresh(true);
+                    parsingjson(s);
+                }
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
+                }
+            });
+        } else {
+            mPostRequest.params("msgStatus", notall)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            refreshLayout.finishRefresh(true);
+                            parsingjson(s);
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                        }
+                    });
+        }
+    }
+
+    //返回back
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return true;
+    }
+
 
     //解析json
     private void parsingjson(String s) {
@@ -810,101 +908,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             }
             mAdapter.getData(Alldata);
         }
-    }
-
-    //弹出框
-    private void MeunPop() {
-        if (!anim) {
-            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
-            anim = true;
-        }
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        // 设置好参数之后再show
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(imageViewMeun);
-        backgroundAlpha(0.5f);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-    }
-
-
-    //请求数据
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    void smart() {
-        String content = searchEditext.getText().toString();
-        //判断是否需要传内容
-        if (content.length() != 0) {
-            //判断是否有节点ID
-            if (nodeiD != "1") {
-                okgoall(nodeiD, content, pages);
-            } else {
-                okgoall(null, content, pages);
-            }
-        } else {
-            if (nodeiD != "1") {
-                okgoall(nodeiD, null, pages);
-            } else {
-                okgoall(nodeiD, null, pages);
-            }
-
-        }
-    }
-
-    /**
-     * @param wbsId   wbs ID
-     * @param content 搜索内容
-     * @param i       页数
-     */
-    private void okgoall(String wbsId, String content, int i) {
-        PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
-                .params("orgId", id)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("content", content);
-        //如果==3 那么就不传
-        if (notall == "10") {
-            mPostRequest.execute(new StringCallback() {
-                @Override
-                public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew", pages);
-                    refreshLayout.finishRefresh(true);
-                    parsingjson(s);
-                }
-                @Override
-                public void onError(Call call, Response response, Exception e) {
-                    super.onError(call, response, e);
-                }
-            });
-        } else {
-            mPostRequest.params("msgStatus", notall)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            refreshLayout.finishRefresh(true);
-                            parsingjson(s);
-                        }
-
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                        }
-                    });
-        }
-    }
-
-    //返回back
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-        }
-        return true;
     }
 }
 

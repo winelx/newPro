@@ -5,17 +5,45 @@
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_wbs"></include>
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/SmartRefreshLayout"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/wbs_listview"
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/SmartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/wbs_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/back"
+                android:dividerHeight="1px" />
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/nullposion"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/back"
-            android:dividerHeight="1px" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/nonews" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂 无 数 据 ！" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 </LinearLayout>

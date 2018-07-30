@@ -595,7 +595,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 .params("wbsId", wbsId)
                 .params("content", content);
         //判断请求数据的状态，如果是3，就是请求全部数据，那就不传数据
-        if (msgStatus == "10") {
+        if ("10".equals(msgStatus)) {
             mRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {

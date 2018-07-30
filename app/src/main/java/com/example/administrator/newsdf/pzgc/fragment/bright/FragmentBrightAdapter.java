@@ -21,7 +21,7 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
 
     public FragmentBrightAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
-        FragmentBrightAdapter.mData = name;
+        this.mData = name;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FragmentBrightAdapter extends FragmentStatePagerAdapter {
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
-        FragmentBrightAdapter.mData = mData;
+        this.mData = mData;
         notifyDataSetChanged();
     }
 

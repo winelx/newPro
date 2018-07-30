@@ -91,7 +91,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
     //延迟执行时间
     private int datatime = 4000;
     //展示轮播图的三个布局
-    private RelativeLayout bridhtCompany, bridhtGroup, bridhtProject;
+    private RelativeLayout bridhtGroup;
     /**
      * 通用适配器
      */
@@ -251,9 +251,9 @@ public class WorkFragment extends Fragment implements BrightCallBack {
         bridhtcompanyViewpager = rootView.findViewById(R.id.bridhtCompany_viewpager);
         //项目
         bridhtprojectViewpager = rootView.findViewById(R.id.bridhtProject_viewpager);
-        bridhtCompany = rootView.findViewById(R.id.bridhtCompany);
+
         bridhtGroup = rootView.findViewById(R.id.bridhtGroup);
-        bridhtProject = rootView.findViewById(R.id.bridhtProject);
+
     }
 
     @Override
@@ -486,7 +486,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                 }
 
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
-                                if (groupbridhtList.size() != 0) {
+                                if (groupbridhtList.size() >0) {
                                     bridhtGroup.setVisibility(View.VISIBLE);
                                     brightViewpagerAdapter.getData(groupbridhtList);
                                     bridhtGroup_text.setVisibility(View.GONE);
@@ -496,7 +496,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                     bridhtGroup_text.setVisibility(View.VISIBLE);
                                 }
 
-                                if (compangbrightList.size() != 0) {
+                                if (compangbrightList.size() >0) {
                                     bridhtcompanyAdapter.getData(compangbrightList);
                                     bridhtcompanyViewpager.setVisibility(View.VISIBLE);
                                     bridhtCompany_text.setVisibility(View.GONE);
@@ -505,7 +505,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                     bridhtcompanyViewpager.setVisibility(View.GONE);
                                 }
 
-                                if (projectbrightList.size() != 0) {
+                                if (projectbrightList.size() > 0) {
                                     bridhtprojectAdapter.getData(projectbrightList);
                                     bridhtprojectViewpager.setVisibility(View.VISIBLE);
                                     bridhtProject_text.setVisibility(View.GONE);
@@ -549,7 +549,6 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                     public void onSubscribe(Disposable d) {
                         mDisposable = d;
                     }
-
                     @Override
                     public void onNext(Long value) {
                         if (status == 1) {

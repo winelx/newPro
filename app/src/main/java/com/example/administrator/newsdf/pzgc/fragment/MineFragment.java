@@ -20,7 +20,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.activity.audit.AuditActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.PasswordActvity;
@@ -142,7 +141,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.mine_avatar:
-                startActivity(new Intent(getActivity(), AuditActivity.class));
+//                startActivity(new Intent(getActivity(), AuditActivity.class));
                 break;
             //项目成员
             case R.id.projectmember:

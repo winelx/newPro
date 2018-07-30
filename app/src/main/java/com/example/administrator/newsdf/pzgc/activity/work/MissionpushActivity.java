@@ -264,7 +264,7 @@ public class MissionpushActivity extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 2) {
-            msg = data.getIntExtra("position", 1);
+            viewpagertype = data.getIntExtra("position", 1);
             mViewPager.setCurrentItem(viewpagertype);
         }
     }

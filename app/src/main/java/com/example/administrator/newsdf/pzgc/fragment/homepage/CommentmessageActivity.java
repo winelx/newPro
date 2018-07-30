@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
@@ -80,7 +79,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private EditText searchEditext;
     private String orgid, wbsid, name, titles;
     //
-    private String notall = "3", nodeiD = "1";
+    private String notall = "10", nodeiD = "1";
 
     private CircleImageView circle;
     //主界面适配器
@@ -206,7 +205,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                             .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
-                    page = 1;
+                    pages = 1;
                     String search = searchEditext.getText().toString();
                     if (search.length() != 0) {
                         smart();
@@ -518,12 +517,15 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         return contentView;
     }
 
+    /**
+     * 接口回调
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, pages);
+        smart();
         uslistView.setSelection(0);
     }
 
@@ -637,6 +639,86 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         getWindow().setAttributes(lp);
     }
 
+
+    //弹出框
+    private void MeunPop() {
+        View contentView = getPopupWindowContentView();
+        mPopupWindow = new PopupWindow(contentView,
+                Dates.withFontSize(ste) + 20, Dates.higtFontSizes(ste), true);
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+        // 默认在mButton2的左下角显示
+        mPopupWindow.showAsDropDown(imageViewMeun);
+        backgroundAlpha(0.5f);
+        //添加pop窗口关闭事件
+        mPopupWindow.setOnDismissListener(new poponDismissListener());
+    }
+
+    //请求数据
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void smart() {
+        String content = searchEditext.getText().toString();
+        //判断是否需要传内容
+        if (content.length() != 0) {
+            //判断是否有节点ID
+            if (nodeiD != "1") {
+                okgoall(nodeiD, content, pages);
+            } else {
+                okgoall(null, content, pages);
+            }
+        } else {
+            if (nodeiD != "1") {
+                okgoall(nodeiD, null, pages);
+            } else {
+                okgoall(nodeiD, null, pages);
+            }
+
+        }
+    }
+
+    /**
+     * 请求数据
+     *
+     * @param wbsId   wbs ID
+     * @param content 搜索内容
+     * @param i       页数
+     */
+    private void okgoall(String wbsId, String content, int i) {
+        PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST)
+                .params("orgId", orgid)
+                .params("page", i)
+                .params("rows", 25)
+                .params("wbsId", wbsId)
+                .params("isAll", "true")
+                .params("content", content);
+        //如果==3 那么就不传
+        if ("10".equals(notall)) {
+            mPostRequest.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    parsingjson(s);
+                }
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
+                }
+            });
+        } else {
+            mPostRequest.params("msgStatus", notall)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            parsingjson(s);
+                        }
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                        }
+                    });
+        }
+    }
+
     //解析json
     private void parsingjson(String s) {
         String wbsPath;
@@ -651,11 +733,10 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         if (!swip) {
             Alldata.clear();
         }
-        if (s.contains("data")) {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                if (jsonArray1.length() != 0) {
+                if (jsonArray1.length()>0) {
                     for (int i = 0; i < jsonArray1.length(); i++) {
                         JSONObject json = jsonArray1.getJSONObject(i);
                         JSONObject json1 = new JSONObject();
@@ -781,96 +862,16 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
+                    mAdapter.getData(Alldata);
                 } else {
+                    //.判断是否是下拉加载
                     if (!swip) {
                         Alldata.clear();
                     }
                     mAdapter.getData(Alldata);
                 }
-                Dates.disDialog();
-                if (Alldata.size() != 0) {
-                    mAdapter.getData(Alldata);
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            ToastUtils.showShortToast("暂无数据！");
-            if (!swip) {
-                Alldata.clear();
-            }
-            mAdapter.getData(Alldata);
-        }
-    }
-
-    //弹出框
-    private void MeunPop() {
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste) + 20, Dates.higtFontSizes(ste), true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        // 设置好参数之后再show
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(imageViewMeun);
-        backgroundAlpha(0.5f);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-    }
-
-    //请求数据
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    void smart() {
-        String content = searchEditext.getText().toString();
-        //判断是否需要传内容
-        if (content.length() != 0) {
-            //判断是否有节点ID
-            if (nodeiD != "1") {
-                okgoall(nodeiD, content, pages);
-            } else {
-                okgoall(null, content, pages);
-            }
-        } else {
-            if (nodeiD != "1") {
-                okgoall(nodeiD, null, pages);
-            } else {
-                okgoall(nodeiD, null, pages);
-            }
-
-        }
-    }
-
-    /**
-     * @param wbsId   wbs ID
-     * @param content 搜索内容
-     * @param i       页数
-     */
-    private void okgoall(String wbsId, String content, int i) {
-        PostRequest mPostRequest = OkGo.<String>post(Requests.GETMyPAGELIST)
-                .params("orgId", orgid)
-                .params("page", i)
-                .params("rows", 25)
-                .params("wbsId", wbsId)
-                .params("isAll", "true")
-                .params("content", content);
-        //如果==3 那么就不传
-        if (notall == "3") {
-            mPostRequest.execute(new StringCallback() {
-                @Override
-                public void onSuccess(String s, Call call, Response response) {
-
-                    parsingjson(s);
-                }
-            });
-        } else {
-            mPostRequest.params("msgStatus", notall)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-
-                            parsingjson(s);
-                        }
-                    });
-        }
     }
 }

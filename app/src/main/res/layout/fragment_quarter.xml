@@ -35,12 +35,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="没有统计数据，换个组织实施吧！" />
+                android:text="没有统计数据，换个组织试试吧！" />
 
             <Button
                 android:id="@+id/quarterRetry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="重试" />
 
         </LinearLayout>

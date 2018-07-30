@@ -229,7 +229,7 @@ public class DirectlyreplysActivity extends AppCompatActivity {
                                 for (int i = 0; i < imagePaths.size(); i++) {
                                     Dates.deleteFile(imagePaths.get(i));
                                 }
-
+                                TaskCallbackUtils.CallBackMethod();
                                 finish();
                             }
 

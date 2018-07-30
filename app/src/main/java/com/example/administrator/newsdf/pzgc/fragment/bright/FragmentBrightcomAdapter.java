@@ -21,7 +21,7 @@ public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
 
     public FragmentBrightcomAdapter(FragmentManager fm, ArrayList<work_fr_bright_bean> name) {
         super(fm);
-        FragmentBrightcomAdapter.mDataCom = name;
+        this.mDataCom = name;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FragmentBrightcomAdapter extends FragmentStatePagerAdapter {
 
 
     public void getData(ArrayList<work_fr_bright_bean> mData) {
-        FragmentBrightcomAdapter.mDataCom = mData;
+        this.mDataCom = mData;
         notifyDataSetChanged();
     }
 

@@ -228,7 +228,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         finish();
         return true;
     }
@@ -361,7 +360,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      * 完成详细数据
      */
     private void okgo(final String id) {
-        Dates.getDialogs(TaskdetailsActivity.this, "请求数据中");
+        Dates.getDialog(TaskdetailsActivity.this, "请求数据中");
         OkGo.post(Requests.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {
@@ -864,8 +863,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                                 aduioComms.clear();
                             }
                             mAdapter.setmBanner(contents, aduioDatas, aduioComms);
-                            Dates.disDialog();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -878,7 +875,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
+
                     }
                 });
     }

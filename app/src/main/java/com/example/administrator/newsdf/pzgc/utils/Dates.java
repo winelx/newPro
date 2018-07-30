@@ -456,7 +456,15 @@ public class Dates {
         }
         return null;
     }
+    public static List<String> stringToLists(String strs) {
+        if (strs == "" && strs.isEmpty()) {
 
+        } else {
+            String str[] = strs.split(",");
+            return Arrays.asList(str);
+        }
+        return null;
+    }
     /**
      * 判断当前软键盘是否打开
      *

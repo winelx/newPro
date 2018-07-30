@@ -31,13 +31,14 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:text="没有统计数据，换个组织实施吧！"
+                android:text="没有统计数据，换个组织试试吧！"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/monthRetry"
                 android:text="重试"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

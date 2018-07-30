@@ -10,7 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -53,9 +55,17 @@ public class OrganizationaActivity extends AppCompatActivity {
         LogUtil.i("node", data);
         mContext = OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
-        TextView comtitle= (TextView) findViewById(R.id.com_title);
+        TextView comtitle = (TextView) findViewById(R.id.com_title);
+        findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initDatas();
+
+            }
+        });
         comtitle.setText(title);
         mTree = (ListView) findViewById(R.id.organ_list_item);
+        mTree.setEmptyView(findViewById(R.id.nullposion));
         mDatas2 = new ArrayList<OrgBeans>();
         initDatas();
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
@@ -67,10 +77,13 @@ public class OrganizationaActivity extends AppCompatActivity {
     }
 
     private void initDatas() {
+        Dates.getDialog(OrganizationaActivity.this,"请求数据中...");
         OkGo.<String>post(Requests.Swatchmakeup)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        mDatas2.clear();
+                        mData.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray1 = jsonObject.getJSONArray("data");
@@ -142,6 +155,14 @@ public class OrganizationaActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        Dates.disDialog();
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showShortToastCenter("请确认网络是否通畅...");
+                        Dates.disDialog();
                     }
                 });
 

@@ -35,8 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.camera.ToastUtils.showLongToast;
-
 
 /**
  * description:任务详情回复内容适配器
@@ -126,10 +124,9 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
         //提亮逻辑
         //未提亮
-
-        if (IssmartProjectType==0){
+        if (IssmartProjectType == 0) {
             //如果提亮的等级为0，说明没有提亮
-            if (mDatas.get(posotion).isSmartprojectMain1Up()|| mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                 //判断是否有集团提亮
                 holder.givealikeImage.setBackgroundResource(R.mipmap.givealike);
                 holder.givealikeText.setTextColor(Color.parseColor("#808080"));
@@ -137,7 +134,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 //如果都有没权限，不给提亮按钮
                 holder.givealike.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             //如果被提亮了
             if (SmartProjectType == 3) {
                 //如果等级为3项目提亮，判断是否有集团和分公司权限,如果没有，就判断本级
@@ -223,11 +220,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showShortToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            ToastUtils.showLongToast("取消收藏");
-                                            holder.collectionImage.setBackgroundResource(R.mipmap.collectiondown);
-                                            holder.collectionText.setTextColor(Color.parseColor("#808080"));
-                                            mDatas.get(posotion).setIsFavorite(false);
+                                            TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                            activity.deleteTop();
                                             HideCallbackUtils.removeCallBackMethod();
                                             Dates.disDialog();
                                         }
@@ -246,12 +242,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showShortToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            ToastUtils.showLongToast("收藏");
-                                            holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
-                                            holder.collectionText.setTextColor(Color.parseColor("#FFEC8B"));
-                                            mDatas.get(posotion).setIsFavorite(true);
                                             HideCallbackUtils.removeCallBackMethod();
+                                            TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
+                                            activity.deleteTop();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -273,47 +268,68 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 taskId = audio.gettaskId();
                 //是否提亮
                 //提亮权限，1为集团，2为分公司，3项目
-                int smartprojecttype = mDatas.get(posotion).getSmartProjectType();
                 isSmartProject = mDatas.get(posotion).getIsSmartProject();
-                if (smartprojecttype == 1) {
-                    //判断是否有权限，
-                    if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                        if (!isFavorite) {
-                            brightUp();
-                        } else {
-                            ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
-                        }
-                    } else {
-                        //如果没有权限，那么就无法看到提亮功能
-                        ToastUtils.showLongToast("您暂时没有提亮权限哦");
-                    }
-                } else if (smartprojecttype == 2) {
-                    //判断是否有权限，
-                    if (mDatas.get(posotion).isSmartprojectMain1Up()) {
-                        if (!isFavorite) {
-                            brightUp();
-                        } else {
-                            ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
-                        }
-                    } else {
-                        //如果没有权限，那么就无法看到提亮功能
-                        ToastUtils.showLongToast("您暂时没有提亮权限哦");
-                    }
-                } else if (smartprojecttype == 3) {
-                    //判断是否有权限，
-                    if (mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain1Up()) {
-                        brightUp();
-                    } else {
-                        //如果没有权限，那么就无法看到提亮功能
-                        ToastUtils.showLongToast("您暂时没有提亮权限哦");
-                    }
-                } else if (smartprojecttype == 0) {
+                //判断是否提亮，
+                if (IssmartProjectType == 0) {
+                    //没有提亮
                     if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                        //判断是否提亮
                         if (!isFavorite) {
                             brightUp();
                         } else {
                             ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
                         }
+                    } else {
+                        //如果没有权限，那么就无法看到提亮功能
+                        ToastUtils.showLongToast("您暂时没有提亮权限哦");
+                    }
+                } else {
+                    //判断当前提亮登录
+                    switch (SmartProjectType) {
+                        //如果为集团
+                        case 1:
+                            if (mDatas.get(posotion).isSmartprojectMain1Up()) {
+                                //判断是否提亮
+                                if (!isFavorite) {
+                                    brightUp();
+                                } else {
+                                    ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
+                                }
+                            } else {
+                                //如果没有权限，那么就无法看到提亮功能
+                                ToastUtils.showLongToast("您暂时没有提亮权限哦");
+                            }
+                            break;
+                        //如果为分公司
+                        case 2:
+                            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
+                                //判断是否提亮
+                                if (!isFavorite) {
+                                    brightUp();
+                                } else {
+                                    ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
+                                }
+                            } else {
+                                //如果没有权限，那么就无法看到提亮功能
+                                ToastUtils.showLongToast("您暂时没有提亮权限哦");
+                            }
+                            break;
+                        case 3:
+                            //项目
+                            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                                //判断是否提亮
+                                if (!isFavorite) {
+                                    brightUp();
+                                } else {
+                                    ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
+                                }
+                            } else {
+                                //如果没有权限，那么就无法看到提亮功能
+                                ToastUtils.showLongToast("您暂时没有提亮权限哦");
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -417,8 +433,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
                             if (ret == 0) {
-                                ToastUtils.showLongToast(jsonObject.getString("msg"));
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
                                 //判断是否是从点亮界面进入
@@ -453,10 +469,9 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
                             if (ret == 0) {
-                                showLongToast("提亮成功");
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
-                                activity.deleteTop();
                                 //判断是否是从点亮界面进入
                                 if (activity.getbright()) {
                                     //如果是刷新界面
@@ -466,6 +481,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                 if (workbright) {
                                     BrightCallBackUtils.removeCallBackMethod();
                                 }
+                                activity.deleteTop();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

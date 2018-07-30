@@ -76,15 +76,46 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/organ_list_item"
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/back"
-            android:dividerHeight="1.5px"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/organ_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/back"
+                android:dividerHeight="1.5px"
+                android:scrollbars="none" />
 
 
+            <LinearLayout
+                android:id="@+id/nullposion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/nonews" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暂 无 数 据 ！" />
+
+                <Button
+                    android:id="@+id/retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="重试"
+                    android:textColor="@color/colorPrimary" />
+
+            </LinearLayout>
+        </FrameLayout>
     </RelativeLayout>
 
 </LinearLayout>

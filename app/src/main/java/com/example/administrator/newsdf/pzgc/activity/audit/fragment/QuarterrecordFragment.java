@@ -70,8 +70,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         SimpleDateFormat df = new SimpleDateFormat("yyyy年");
         // new Date()为获取当前系统时间，也可使用当前时间戳
         String date = df.format(new Date());
-      int quarter= Utils.getquarter();
-        datatime.setText(date + Utils.quarter[quarter-1]);
+        int quarter = Utils.getquarter();
+        datatime.setText(date + Utils.quarter[quarter - 1]);
         TaskCallbackUtils.setCallBack(this);
         title.setText("选择季度");
         mContext = getActivity();
@@ -80,7 +80,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         daily_list.setAdapter(mAdapter);
         daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
         data = Dates.getYear() + "-" + Utils.getquarter();
-        okgo(data,false);
+        okgo(data, false);
         return rootView;
     }
 
@@ -116,7 +116,8 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
                         int month = monthPicker.getValue();
                         String monthdata = Utils.quarter[month];
                         datatime.setText(yeardata + monthdata);
-                        data = yeardata + "-" + Utils.getquarter();
+                        month = month + 1;
+                        data = yeardata + "-" + month;
                         okgo(data, true);
                         break;
                     case R.id.pop_dismiss:
@@ -137,7 +138,7 @@ public class QuarterrecordFragment extends Fragment implements View.OnClickListe
         yearPicker = contentView.findViewById(R.id.years);
         Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
-        Utils.setPicker(monthPicker, Utils.quarter, getquarter()-1);
+        Utils.setPicker(monthPicker, Utils.quarter, getquarter() - 1);
         return contentView;
     }
 

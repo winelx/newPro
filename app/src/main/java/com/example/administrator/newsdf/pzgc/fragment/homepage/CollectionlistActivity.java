@@ -77,7 +77,7 @@ import okhttp3.Response;
 public class CollectionlistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
-    private TextView Titlew, deleteSearch,drawer_layout_text;
+    private TextView Titlew, deleteSearch, drawer_layout_text;
     private EditText searchEditext;
     private String id, wbsid, name, titles;
     private String notall = "10", nodeiD = "1";
@@ -146,7 +146,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         findbyId();
         //初始化数据
         initData();
-        okgoall(null, null, pages);
+        okgoall(null, null,notall);
         /**
          *    侧拉listview上拉加载
          */
@@ -208,7 +208,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
-                    page = 1;
+
                     String search = searchEditext.getText().toString();
                     if (search.length() != 0) {
                         smart();
@@ -332,7 +332,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 //判断是否是子节点，
                 //  如果不是，判断该节点是否有数据，
                 if (node.isLeaf()) {
-                    ToastUtils.showLongToast("不是isLeaf");
+
                 } else {
                     if (node.getChildren().size() == 0) {
                         //  如果没有，就请求数据，
@@ -431,7 +431,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //网络请求
                 imagePaths.clear();
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("图纸");
                 Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
@@ -447,7 +447,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 drew = true;
                 //上拉加载的状态判断
                 imagePaths.clear();
-                taskAdapter.getData(imagePaths,"");
+                taskAdapter.getData(imagePaths, "");
                 drawer_layout_text.setText("标准");
                 liststatus = false;
                 Dates.getDialog(CollectionlistActivity.this, "请求数据中...");
@@ -497,9 +497,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "10";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
+                            okgoall(nodeiD, null,notall);
                         } else {
-                            okgoall(null, null, pages);
+                            okgoall(null, null,notall);
                         }
                         break;
                     case R.id.pop_financial:
@@ -510,9 +510,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "0";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
+                            okgoall(nodeiD, null,notall);
                         } else {
-                            okgoall(null, null, pages);
+                            okgoall(null, null,notall);
                         }
 
                         break;
@@ -524,9 +524,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "2";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
+                            okgoall(nodeiD, null,notall);
                         } else {
-                            okgoall(null, null, pages);
+                            okgoall(null, null,notall);
                         }
                         break;
                     case R.id.pop_backup:
@@ -537,9 +537,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "3";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null, pages);
+                            okgoall(nodeiD, null,notall);
                         } else {
-                            okgoall(null, null, pages);
+                            okgoall(null, null,notall);
                         }
                         break;
                     default:
@@ -563,7 +563,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     public void taskCallback() {
         swip = false;
         pages = 1;
-        okgoall(wbsid, null, pages);
+        smart();
         uslistView.setSelection(0);
     }
 
@@ -591,7 +591,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         uslistView.setSelection(0);
         page = 1;
         pages = 1;
-        okgoall(nodeiD, null, pages);
+        okgoall(nodeiD, null,notall);
     }
 
     /**
@@ -609,7 +609,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
      * 初始化控件
      */
     private void findbyId() {
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         //获得控件id，初始化id
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
@@ -863,7 +863,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(ste)+20, Dates.higtFontSize(ste), true);
+                Dates.withFontSize(ste) + 20, Dates.higtFontSize(ste), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
@@ -885,15 +885,15 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         if (content.length() != 0) {
             //判断是否有节点ID
             if (nodeiD != "1") {
-                okgoall(nodeiD, content, pages);
+                okgoall(nodeiD, content,notall);
             } else {
-                okgoall(null, content, pages);
+                okgoall(null, content,notall);
             }
         } else {
             if (nodeiD != "1") {
-                okgoall(nodeiD, null, pages);
+                okgoall(nodeiD, null,notall);
             } else {
-                okgoall(nodeiD, null, pages);
+                okgoall(nodeiD, null,notall);
             }
 
         }
@@ -902,23 +902,28 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     /**
      * @param wbsId   wbs ID
      * @param content 搜索内容
-     * @param i       页数
+
      */
-    private void okgoall(String wbsId, String content, int i) {
+    private void okgoall(String wbsId, String content,String status) {
         PostRequest mPostRequest = OkGo.<String>post(Requests.FAVORITETASKMSGBYWBS)
                 .params("orgId", id)
-                .params("page", i)
+                .params("page", pages)
                 .params("rows", 25)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content);
         //如果==3 那么就不传
-        if (notall == "10") {
+        if ("10".equals(status)) {
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     LogUtil.i("sesfdsew", s);
                     parsingjson(s);
+                }
+
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
                 }
             });
         } else {
@@ -928,6 +933,10 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         public void onSuccess(String s, Call call, Response response) {
                             LogUtil.i("sesfdsew", s);
                             parsingjson(s);
+                        }
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
                         }
                     });
         }

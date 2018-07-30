@@ -53,7 +53,7 @@ public class Imageloaders extends BaseAdapter {
         queue = Volley.newRequestQueue(context);
         imageLoader = new ImageLoader(queue, new BitmapCache());
         int maxCache = (int) Runtime.getRuntime().maxMemory();
-        int cacheSize = maxCache / 8;
+        int cacheSize = maxCache / 6;
         mImageCache = new LruCache<String, BitmapDrawable>(cacheSize) {
             @Override
             protected int sizeOf(String key, BitmapDrawable value) {
@@ -158,6 +158,9 @@ public class Imageloaders extends BaseAdapter {
                 }
                 break;
             case "1":
+                holder.inface_imag1.setVisibility(View.INVISIBLE);
+                holder.inface_image2.setVisibility(View.INVISIBLE);
+                holder.inface_image3.setVisibility(View.INVISIBLE);
                 holder.view.setVisibility(View.VISIBLE);
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("已完成");
@@ -168,9 +171,12 @@ public class Imageloaders extends BaseAdapter {
                     e.printStackTrace();
                 }
                 holder.textView4.setText("(" + list.get(position).getComments() + ")");
+                //三角形角标
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.finish_green);
                 // 预设一个图片
                 if (path.size() >= 1) {
+                    holder.inface_relat2.setVisibility(View.GONE);
+                    holder.inface_relat3.setVisibility(View.GONE);
                     holder.inface_image.setVisibility(View.VISIBLE);
                     String imgUrl = path.get(0);
                     if (imgUrl != null && !imgUrl.equals("")) {
@@ -180,6 +186,7 @@ public class Imageloaders extends BaseAdapter {
                         holder.ic_loading_bg.setVisibility(View.GONE);
                         holder.inface_image2.setVisibility(View.INVISIBLE);
                         holder.inface_image3.setVisibility(View.INVISIBLE);
+                        //获取文件类型
                         if (strs.equals("pdf")) {
                             //隐藏图片
                             holder.inface_imag1.setVisibility(View.GONE);
@@ -197,7 +204,7 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#e98e90"));
                         } else if (strs.equals("doc") || strs.equals("docx")) {
                             //隐藏图片
-                            holder.inface_imag1.setVisibility(View.GONE);
+                            holder.inface_imag1.setVisibility(View.VISIBLE);
                             //显示文档布局
                             holder.inface_relat1.setVisibility(View.VISIBLE);
                             //设置文档布局背景色
@@ -210,7 +217,6 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_relat1_icon.setTextColor(Color.parseColor("#FFFFFF"));
                             //设置文字背景色
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-
                         } else if (strs.equals("xlsx") || strs.equals("xls")) {
                             //隐藏图片
                             holder.inface_imag1.setVisibility(View.GONE);
@@ -227,6 +233,9 @@ public class Imageloaders extends BaseAdapter {
                             //设置文字背景色
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                         } else {
+                            holder.inface_imag1.setVisibility(View.VISIBLE);
+                            holder.inface_image2.setVisibility(View.VISIBLE);
+                            holder.inface_image3.setVisibility(View.GONE);
                             holder.inface_relat1.setVisibility(View.GONE);
                             holder.inface_imag1.setVisibility(View.VISIBLE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
@@ -240,12 +249,14 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
                         }
                         if (path.size() >= 2) {
+                            holder.inface_relat3.setVisibility(View.GONE);
                             String imgUrl1 = path.get(1);
                             if (imgUrl1 != null && !imgUrl1.equals("")) {
                                 int doc1 = imgUrl1.lastIndexOf(".");
                                 String strs1 = imgUrl1.substring(doc1 + 1);
                                 holder.inface_image2.setVisibility(View.VISIBLE);
-                                holder.inface_image3.setVisibility(View.INVISIBLE);
+                                holder.inface_imag1.setVisibility(View.VISIBLE);
+                                holder.inface_image3.setVisibility(View.GONE);
                                 if (strs1.equals("pdf")) {
                                     //隐藏图片
                                     holder.inface_image2.setVisibility(View.GONE);
@@ -292,9 +303,11 @@ public class Imageloaders extends BaseAdapter {
                                     //设置文字背景色
                                     holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                 } else {
+                                    holder.inface_imag1.setVisibility(View.VISIBLE);
                                     holder.inface_image2.setVisibility(View.VISIBLE);
                                     //显示文档布局
                                     holder.inface_relat2.setVisibility(View.GONE);
+                                    holder.inface_relat1.setVisibility(View.GONE);
                                     holder.inface_image2.setDefaultImageResId(R.mipmap.image_loading);
                                     holder.inface_image2.setErrorImageResId(R.mipmap.image_error);
                                     //截取出后缀
@@ -310,6 +323,9 @@ public class Imageloaders extends BaseAdapter {
                                     if (imgUrl2 != null && !imgUrl2.equals("")) {
                                         int doc2 = imgUrl2.lastIndexOf(".");
                                         String strs2 = imgUrl2.substring(doc2 + 1);
+                                        holder.inface_image2.setVisibility(View.VISIBLE);
+                                        holder.inface_imag1.setVisibility(View.VISIBLE);
+                                        holder.inface_image3.setVisibility(View.VISIBLE);
                                         if (strs2.equals("pdf")) {
                                             //隐藏图片
                                             holder.inface_image3.setVisibility(View.GONE);
@@ -356,6 +372,9 @@ public class Imageloaders extends BaseAdapter {
                                             //设置文字背景色
                                             holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                         } else {
+
+                                            holder.inface_imag1.setVisibility(View.VISIBLE);
+                                            holder.inface_image2.setVisibility(View.VISIBLE);
                                             holder.inface_image3.setVisibility(View.VISIBLE);
                                             holder.inface_relat3.setVisibility(View.GONE);
                                             if (path.size() > 3) {
@@ -384,10 +403,14 @@ public class Imageloaders extends BaseAdapter {
                     holder.inface_image.setVisibility(View.GONE);
                 }
                 break;
+            //打回
             case "2":
                 holder.view.setVisibility(View.VISIBLE);
                 holder.inface_status_true.setVisibility(View.VISIBLE);
                 holder.inface_item_message.setTextString("打回");
+                holder.inface_imag1.setVisibility(View.INVISIBLE);
+                holder.inface_image2.setVisibility(View.INVISIBLE);
+                holder.inface_image3.setVisibility(View.INVISIBLE);
                 try {
                     String strtime = dateToStamp(list.get(position).getUpdateDate());
                     holder.inter_time.setText(Dates.stampToDates(strtime));
@@ -398,6 +421,8 @@ public class Imageloaders extends BaseAdapter {
                 holder.inface_item_message.setSlantedBackgroundColor(R.color.red);
                 // 预设一个图片
                 if (path.size() >= 1) {
+                    holder.inface_relat2.setVisibility(View.GONE);
+                    holder.inface_relat3.setVisibility(View.GONE);
                     holder.inface_image.setVisibility(View.VISIBLE);
                     String imgUrl = path.get(0);
                     if (imgUrl != null && !imgUrl.equals("")) {
@@ -456,6 +481,9 @@ public class Imageloaders extends BaseAdapter {
                         } else {
                             holder.inface_relat1.setVisibility(View.GONE);
                             holder.inface_imag1.setVisibility(View.VISIBLE);
+                            holder.inface_image2.setVisibility(View.GONE);
+                            holder.inface_image3.setVisibility(View.GONE);
+                            holder.inface_imag1.setVisibility(View.VISIBLE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
                             //截取出后缀
@@ -467,6 +495,7 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
                         }
                         if (path.size() >= 2) {
+                            holder.inface_relat3.setVisibility(View.GONE);
                             String imgUrl1 = path.get(1);
                             if (imgUrl1 != null && !imgUrl1.equals("")) {
                                 int doc1 = imgUrl1.lastIndexOf(".");
@@ -519,9 +548,10 @@ public class Imageloaders extends BaseAdapter {
                                     //设置文字背景色
                                     holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                 } else {
-                                    holder.inface_image2.setVisibility(View.VISIBLE);
                                     //显示文档布局
-                                    holder.inface_relat2.setVisibility(View.GONE);
+                                    holder.inface_image3.setVisibility(View.GONE);
+                                    holder.inface_relat2.setVisibility(View.INVISIBLE);
+                                    holder.inface_image2.setVisibility(View.VISIBLE);
                                     holder.inface_image2.setDefaultImageResId(R.mipmap.image_loading);
                                     holder.inface_image2.setErrorImageResId(R.mipmap.image_error);
                                     //截取出后缀

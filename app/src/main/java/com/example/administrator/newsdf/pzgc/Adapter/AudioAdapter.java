@@ -207,7 +207,6 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             detailsUser = itemView.findViewById(R.id.details_user);
             detailsBoolean = itemView.findViewById(R.id.details_boolean);
             detailsContent = itemView.findViewById(R.id.details_content);
-
 //            handover_huifu = itemView.findViewById(R.id.handover_fhui);
         }
     }

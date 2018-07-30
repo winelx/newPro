@@ -58,6 +58,7 @@ public class MmissPushActivity extends AppCompatActivity {
     String org_status, wbsID;
     private SmartRefreshLayout refreshLayout;
     ArrayList<String> titlename;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,23 +133,23 @@ public class MmissPushActivity extends AppCompatActivity {
 
     void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
-            OkGo.post(Requests.WBSTress)
-                    .params("nodeid", id)
-                    .params("iswbs", iswbs)
-                    .params("isparent", isparent)
-                    .params("type", type)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String result, Call call, Response response) {
-                            addOrganizationList(result);
-                        }
+        OkGo.post(Requests.WBSTress)
+                .params("nodeid", id)
+                .params("iswbs", iswbs)
+                .params("isparent", isparent)
+                .params("type", type)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String result, Call call, Response response) {
+                        addOrganizationList(result);
+                    }
 
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            Dates.disDialog();
-                        }
-                    });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
 
 
     }
@@ -214,6 +215,7 @@ public class MmissPushActivity extends AppCompatActivity {
                 mTreeAdapter = new PushListviewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
+                mTree.setEmptyView(findViewById(R.id.nullposion));
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -322,6 +324,7 @@ public class MmissPushActivity extends AppCompatActivity {
     }
 
     String name, id;
+
     void getOko(final String str, final String wbspath, final String wbsname, final String type, final boolean isParent, final boolean iswbs) {
         Dates.getDialogs(MmissPushActivity.this, "请求数据中");
         titlename = new ArrayList<>();
@@ -401,8 +404,9 @@ public class MmissPushActivity extends AppCompatActivity {
                     }
                 });
     }
-    public  String getstatus(){
-       return org_status;
+
+    public String getstatus() {
+        return org_status;
     }
 
 }

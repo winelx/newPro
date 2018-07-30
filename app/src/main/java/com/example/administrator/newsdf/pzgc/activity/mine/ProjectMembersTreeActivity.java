@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.mine;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,11 +7,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
-import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -39,16 +39,13 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private MeberlistViewAdapter<OrganizationEntity> mTreeAdapter;
-    private Context mContext;
     private int addPosition;
-    private String path = "";
     private TextView Title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmb_tree);
-        mContext = ProjectMembersTreeActivity.this;
         //树
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
@@ -65,7 +62,12 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okgo();
+            }
+        });
     }
 
     /**
@@ -246,6 +248,7 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
                 mTreeAdapter = new MeberlistViewAdapter<>(maberTree, this,
                         mTreeDatas, 0);
                 maberTree.setAdapter(mTreeAdapter);
+                maberTree.setEmptyView(findViewById(R.id.nullposion));
                 initEvent(organizationList);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -307,6 +310,12 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         mTreeDatas.clear();
                         getWorkOrganizationList(s, "", "");
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showShortToastCenter("请确认网络是否畅通...");
                     }
                 });
     }

@@ -91,9 +91,9 @@ public class ProjectmemberActivity extends AppCompatActivity {
         treeids = intent.getStringExtra("ids");
         //将传递过来的String转成集合
         //名称集合
-        listPath = Dates.stringToList(treepath);
+        listPath = Dates.stringToLists(treepath);
         //id集合
-        listIds = Dates.stringToList(treeids);
+        listIds = Dates.stringToLists(treeids);
         //将id和名称存入一个集合
         for (int i = 0; i < listPath.size(); i++) {
             makeups.add(new Makeup(listPath.get(i), listIds.get(i)));
