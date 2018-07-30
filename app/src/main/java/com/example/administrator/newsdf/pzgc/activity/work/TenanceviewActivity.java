@@ -235,15 +235,15 @@ public class TenanceviewActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         //新增任务返回处理
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            msg = data.getIntExtra("position", 1);
+            viewpagertype = data.getIntExtra("position", 1);
+            mViewPager.setCurrentItem(viewpagertype);
             replly = new ArrayList<>();
             replly = data.getStringArrayListExtra("name");
-            mViewPager.setCurrentItem(msg);
             mAdapter.getData(replly);
             //点击tab返回的处理
         } else if (requestCode == 1 && resultCode == 2) {
-            msg = data.getIntExtra("position", 1);
-            mViewPager.setCurrentItem(msg);
+            viewpagertype = data.getIntExtra("position", 1);
+            mViewPager.setCurrentItem(viewpagertype);
         }
     }
 

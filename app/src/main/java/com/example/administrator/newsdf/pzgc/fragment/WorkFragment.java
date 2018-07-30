@@ -487,8 +487,13 @@ public class WorkFragment extends Fragment implements BrightCallBack {
 
 //                            //判断是否有数据，如果有就展示界面，没有就隐藏界面
                                 if (groupbridhtList.size() >0) {
+                                    try {
+                                        brightViewpagerAdapter.getData(groupbridhtList);
+                                    }catch (NullPointerException e){
+                                        e.printStackTrace();
+                                    }
                                     bridhtGroup.setVisibility(View.VISIBLE);
-                                    brightViewpagerAdapter.getData(groupbridhtList);
+
                                     bridhtGroup_text.setVisibility(View.GONE);
                                     bridhtgroupViewpager.setVisibility(View.VISIBLE);
                                 } else {
@@ -497,7 +502,11 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                 }
 
                                 if (compangbrightList.size() >0) {
-                                    bridhtcompanyAdapter.getData(compangbrightList);
+                                  try {
+                                      bridhtcompanyAdapter.getData(compangbrightList);
+                                  }catch (NullPointerException e){
+                                      e.printStackTrace();
+                                  }
                                     bridhtcompanyViewpager.setVisibility(View.VISIBLE);
                                     bridhtCompany_text.setVisibility(View.GONE);
                                 } else {
@@ -506,7 +515,13 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                 }
 
                                 if (projectbrightList.size() > 0) {
-                                    bridhtprojectAdapter.getData(projectbrightList);
+                                    try {
+                                        bridhtprojectAdapter.getData(projectbrightList);
+                                    }catch (NullPointerException e){
+                                        e.printStackTrace();
+                                    }
+
+
                                     bridhtprojectViewpager.setVisibility(View.VISIBLE);
                                     bridhtProject_text.setVisibility(View.GONE);
                                 } else {
