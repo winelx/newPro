@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
@@ -20,7 +22,6 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.okgo.OkGo;
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText username, password;
     private Context mContext;
     private RelativeLayout backgroud;
-
+    private Dialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     void login(final String user, final String password) {
-        Dates.getDialog(LoginActivity.this, "登录中...");
+       loading();
         OkGo.post(Requests.Login)
                 .params("username", user)
                 .params("password", password)
@@ -141,8 +142,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");
+                            progressDialog.dismiss();
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
-                            Dates.disDialog();
+
                             //删除数据库红点
                             greedao();
                             SPUtils.deleAll(mContext);
@@ -218,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //手机号
                             SPUtils.putString(mContext, "phone", moblie);
                             //是否保存数据
+
                             if (status) {
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
@@ -227,15 +230,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
-                            Dates.disDialog();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        progressDialog.dismiss();
                         ToastUtils.showLongToast("请确认网络是否通畅");
                     }
                 });
@@ -248,6 +253,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent MyIntent = new Intent(Intent.ACTION_MAIN);
             MyIntent.addCategory(Intent.CATEGORY_HOME);
             startActivity(MyIntent);
+
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
             return true;
@@ -288,4 +294,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+    public void loading(){
+        progressDialog = new Dialog(LoginActivity.this, R.style.progress_dialog);
+        progressDialog.setContentView(R.layout.waiting_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
+        text.setText("登录中...");
+        progressDialog.show();
+    }
+
 }

@@ -20,7 +20,6 @@ import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.frehomeCallBack;
 import com.example.administrator.newsdf.pzgc.callback.frehomeCallBackUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -65,7 +64,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_home, null);
-            Dates.getDialog(getActivity(), "请求数据中...");
             expandable = rootView.findViewById(R.id.expandable);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
             nullposion = rootView.findViewById(R.id.nullposion);
@@ -223,7 +221,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
                         nullposion.setVisibility(View.VISIBLE);
                         expandable.setVisibility(View.GONE);
@@ -249,8 +246,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
     public void onDestroy() {
         super.onDestroy();
         //关闭dialog和刷新
-        Dates.disDialog();
-        refreshLayout.finishRefresh(false);
+        refreshLayout.finishRefresh(true);
     }
 
     //切换组织后刷新

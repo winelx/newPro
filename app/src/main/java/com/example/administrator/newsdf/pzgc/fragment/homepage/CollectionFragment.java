@@ -19,7 +19,6 @@ import com.example.administrator.newsdf.pzgc.Adapter.CollectionFrAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.HideCallback;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -125,7 +124,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Dates.disDialog();
                         mData.clear();
                         if (s.contains("data")) {
                             try {
@@ -196,7 +194,6 @@ public class CollectionFragment extends Fragment implements HideCallback {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
                         ToastUtils.showShortToast("网络连接失败");
                         listView.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);

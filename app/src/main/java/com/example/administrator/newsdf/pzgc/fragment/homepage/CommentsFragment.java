@@ -17,7 +17,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CommentsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -111,9 +110,6 @@ public class CommentsFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if (newdata){
-                            Dates.disDialog();
-                        }
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -180,11 +176,6 @@ public class CommentsFragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        try {
-                            Dates.disDialog();
-                        }catch (NullPointerException e11){
-                            e11.printStackTrace();
-                        }
                         ToastUtils.showShortToast("网络连接失败");
                         listView.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
