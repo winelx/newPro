@@ -182,7 +182,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         }
-        //收藏
+
         isFavorite = mDatas.get(posotion).getIsFavorite();
         if (isFavorite) {
             holder.collectionImage.setBackgroundResource(R.mipmap.collectionup);
@@ -274,11 +274,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     //没有提亮
                     if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                         //判断是否提亮
-                        if (!isFavorite) {
                             brightUp();
-                        } else {
-                            ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
-                        }
                     } else {
                         //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("您暂时没有提亮权限哦");
@@ -290,33 +286,22 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         case 1:
                             if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                                 //判断是否提亮
-                                if (!isFavorite) {
-                                    brightUp();
-                                } else {
                                     ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
-                                }
-                            } else {
-                                //如果没有权限，那么就无法看到提亮功能
-                                ToastUtils.showLongToast("您暂时没有提亮权限哦");
                             }
                             break;
                         //如果为分公司
                         case 2:
-                            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
+                            if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                                 //判断是否提亮
-                                if (!isFavorite) {
                                     brightUp();
-                                } else {
-                                    ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
-                                }
-                            } else {
+                            } else  {
                                 //如果没有权限，那么就无法看到提亮功能
                                 ToastUtils.showLongToast("您暂时没有提亮权限哦");
                             }
                             break;
                         case 3:
                             //项目
-                            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
+                            if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up()) {
                                 //判断是否提亮
                                 if (!isFavorite) {
                                     brightUp();

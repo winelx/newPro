@@ -142,7 +142,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                                     }
                                     String createTime;
                                     try {
-                                        createTime = json.getString("createTime");
+                                        createTime = json.getString("updateDate");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         createTime = "";

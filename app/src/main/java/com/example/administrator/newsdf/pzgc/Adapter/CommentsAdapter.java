@@ -62,7 +62,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
          */
         //判断是否有消息
         holder.home_item_message.setVisibility(View.VISIBLE);
-
         int Random = (int) (Math.random() * 4) + 1;
         if (Random == 1) {
             holder.home_item_img.setBackgroundResource(R.drawable.home_item_blue);
@@ -81,6 +80,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         holder.home_item_content.setText(mDatas.get(position).getContent());
         //最后一条消息时间
         holder.home_item_time.setText(mDatas.get(position).getCreaeTime());
+        //消息数量
+        Integer number = Integer.decode(mDatas.get(position).getUnfinish());
+        int mix = 99;
+        if (number > 0) {
+            if (number > mix) {
+                holder.home_item_message.setText("99+");
+            } else {
+                holder.home_item_message.setText(number + "");
+            }
+        } else {
+            holder.home_item_message.setVisibility(View.GONE);
+        }
         holder.home_item_message.setText(mDatas.get(position).getUnfinish());
     }
 

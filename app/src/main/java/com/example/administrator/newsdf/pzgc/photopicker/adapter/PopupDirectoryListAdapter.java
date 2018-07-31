@@ -81,6 +81,7 @@ public class PopupDirectoryListAdapter extends BaseAdapter {
         public void bindData(PhotoDirectory directory) {
             final RequestOptions options = new RequestOptions();
             options.dontAnimate()
+                    .dontAnimate()
                     .dontTransform()
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                     .error(R.drawable.__picker_ic_broken_image_black_48dp);

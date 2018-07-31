@@ -15,7 +15,7 @@
         app:slantedMode="right_triangle"
         app:slantedText="未完成"
         app:slantedTextColor="@color/writer"
-        app:slantedTextSize="12sp" />
+        app:slantedTextSize="11sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

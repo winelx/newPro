@@ -262,6 +262,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 .params("orgId", orgId)
                 .params("day", date)
                 .params("page", page)
+                .params("size", 10)
                 .params("status", 2)
                 .execute(new StringCallback() {
                     @Override

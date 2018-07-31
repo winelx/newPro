@@ -88,7 +88,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         dailyList.setAdapter(mAdapter);
         dailyList.setEmptyView(rootView.findViewById(R.id.nullposion));
         data = Dates.getDay();
-     okgo(data, false);
+        okgo(data, false);
         return rootView;
 
     }
@@ -144,9 +144,13 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                             }
                         } else {
                             //不是二月份
-                            daydata = Utils.day[day];
-                        }
+                            if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
+                                daydata = Utils.day[day];
+                            } else {
+                                daydata = Utils.dayth[day];
+                            }
 
+                        }
                         datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
                         data = yeardata + "-" + monthdata + "-" + daydata;
                         okgo(data, true);
@@ -162,18 +166,26 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         };
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
-
         yearPicker = contentView.findViewById(R.id.years);
         Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
         Utils.setPicker(monthPicker, Utils.month, dateMonth);
         dayPicker = contentView.findViewById(R.id.day);
-        if (dateMonth == 2) {
-            Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
-        } else if (dateMonth == 1 || dateMonth == 3 || dateMonth == 5 || dateMonth == 7 || dateMonth == 8 || dateMonth == 10 || dateMonth == 12) {
-            Utils.setPicker(dayPicker, Utils.day, dayDate);
-        } else {
-            Utils.setPicker(dayPicker, Utils.dayth, dayDate);
+        String yeardata = Utils.year[yearPicker.getValue()];
+        if (dateMonth== 2) {
+            if (Utils.getyear().contains(yeardata)) {
+                Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
+                //闰年
+            } else {
+                //平年
+                Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
+            }
+        } else{
+            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
+                Utils.setPicker(dayPicker, Utils.day, dayDate);
+            } else{
+                Utils.setPicker(dayPicker, Utils.dayth, dayDate);
+            }
         }
         yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -239,7 +251,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         //年份
         String str = numberyear[i1];
         //如果选择中的月份是二月
-        if (mont.equals("02月")) {
+        if (mont.equals("02")) {
             //判断是闰年还是平年
             if (Utils.getyear().contains(str)) {
                 dayPicker.setDisplayedValues(null);
@@ -261,7 +273,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     public void setMonth(int newVal) {
         String NewVal = numbermonth[newVal];
         String years = numberyear[yearPicker.getValue()];
-        if (NewVal.equals("02月")) {
+        if (NewVal.equals("02")) {
             if (Utils.getyear().contains(years)) {
                 //如果是闰年。二月有29天
                 dayPicker.setDisplayedValues(null);
@@ -275,13 +287,13 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                 dayPicker.setDisplayedValues(Utils.daytwo);
                 dayPicker.setMinValue(0);
             }
-        } else if (NewVal.equals("01月") || NewVal.equals("03月") || NewVal.equals("05月") ||
-                NewVal.equals("07月") || NewVal.equals("08月") || NewVal.equals("10月") || NewVal.equals("12月")) {
+        } else if (NewVal.equals("01") || NewVal.equals("03") || NewVal.equals("05") ||
+                NewVal.equals("07") || NewVal.equals("08") || NewVal.equals("10") || NewVal.equals("12")) {
             dayPicker.setDisplayedValues(null);
             dayPicker.setMaxValue(Utils.day.length - 1);
             dayPicker.setDisplayedValues(Utils.day);
             dayPicker.setMinValue(0);
-        } else if (NewVal.equals("04月") || NewVal.equals("06月") || NewVal.equals("09月") || NewVal.equals("11月")) {
+        } else if (NewVal.equals("04") || NewVal.equals("06") || NewVal.equals("09") || NewVal.equals("11")) {
             dayPicker.setDisplayedValues(null);
             dayPicker.setMaxValue(Utils.dayth.length - 1);
             dayPicker.setDisplayedValues(Utils.dayth);
@@ -303,7 +315,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         //获取天
         int day = dayPicker.getValue();
         String daydata;
-        if (monthdata.equals("02月")) {
+        if (monthdata.equals("02")) {
             //是二月份
             if (Utils.getyear().contains(yeardata)) {
                 daydata = Utils.daytwos[day];

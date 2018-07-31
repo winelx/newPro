@@ -61,7 +61,7 @@ public class AllMessageModelImp implements AllMessageModel {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
                                     String content = json.getString("content");
-                                    String createTime = json.getString("createTime");
+                                    String createTime = json.getString("updateDate");
                                     if (createTime != null && !"".equals(createTime)) {
                                         createTime = createTime.substring(0, 10);
                                     } else {

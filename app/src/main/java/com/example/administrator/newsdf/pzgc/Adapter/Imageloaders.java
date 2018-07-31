@@ -189,6 +189,7 @@ public class Imageloaders extends BaseAdapter {
                         //获取文件类型
                         if (strs.equals("pdf")) {
                             //隐藏图片
+
                             holder.inface_imag1.setVisibility(View.GONE);
                             //显示文档布局
                             holder.inface_relat1.setVisibility(View.VISIBLE);
@@ -204,7 +205,7 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#e98e90"));
                         } else if (strs.equals("doc") || strs.equals("docx")) {
                             //隐藏图片
-                            holder.inface_imag1.setVisibility(View.VISIBLE);
+                            holder.inface_imag1.setVisibility(View.GONE);
                             //显示文档布局
                             holder.inface_relat1.setVisibility(View.VISIBLE);
                             //设置文档布局背景色
@@ -233,8 +234,6 @@ public class Imageloaders extends BaseAdapter {
                             //设置文字背景色
                             holder.inface_relat1_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                         } else {
-                            holder.inface_imag1.setVisibility(View.VISIBLE);
-                            holder.inface_image2.setVisibility(View.VISIBLE);
                             holder.inface_image3.setVisibility(View.GONE);
                             holder.inface_relat1.setVisibility(View.GONE);
                             holder.inface_imag1.setVisibility(View.VISIBLE);
@@ -259,6 +258,7 @@ public class Imageloaders extends BaseAdapter {
                                 holder.inface_image3.setVisibility(View.GONE);
                                 if (strs1.equals("pdf")) {
                                     //隐藏图片
+                                    holder.inface_imag1.setVisibility(View.GONE);
                                     holder.inface_image2.setVisibility(View.GONE);
                                     //显示文档布局
                                     holder.inface_relat2.setVisibility(View.VISIBLE);
@@ -303,7 +303,6 @@ public class Imageloaders extends BaseAdapter {
                                     //设置文字背景色
                                     holder.inface_relat2_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                 } else {
-                                    holder.inface_imag1.setVisibility(View.VISIBLE);
                                     holder.inface_image2.setVisibility(View.VISIBLE);
                                     //显示文档布局
                                     holder.inface_relat2.setVisibility(View.GONE);
@@ -328,6 +327,7 @@ public class Imageloaders extends BaseAdapter {
                                         holder.inface_image3.setVisibility(View.VISIBLE);
                                         if (strs2.equals("pdf")) {
                                             //隐藏图片
+                                            holder.inface_imag1.setVisibility(View.GONE);
                                             holder.inface_image3.setVisibility(View.GONE);
                                             //显示文档布局
                                             holder.inface_relat3.setVisibility(View.VISIBLE);
@@ -372,9 +372,6 @@ public class Imageloaders extends BaseAdapter {
                                             //设置文字背景色
                                             holder.inface_relat3_icon.setBackgroundColor(Color.parseColor("#67cf95"));
                                         } else {
-
-                                            holder.inface_imag1.setVisibility(View.VISIBLE);
-                                            holder.inface_image2.setVisibility(View.VISIBLE);
                                             holder.inface_image3.setVisibility(View.VISIBLE);
                                             holder.inface_relat3.setVisibility(View.GONE);
                                             if (path.size() > 3) {

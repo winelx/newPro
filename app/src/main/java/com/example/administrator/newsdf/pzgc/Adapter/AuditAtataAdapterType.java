@@ -110,11 +110,15 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
             @Override
             public void onClick(View v) {
                 String taskId = auditdetailsActivity.getId();
+                //取消点击事件
+                holder.detailsAudit.setClickable(false);
                 OkGo.get(Requests.AUDITTask)
                         .params("taskId", taskId)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
+                                //重启点击事件
+                                holder.detailsAudit.setClickable(true);
                                 try {
                                     JSONObject jsonObject = new JSONObject(s);
                                     int ret = jsonObject.getInt("ret");
@@ -129,12 +133,12 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
                             }
-
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
+                                //重启点击事件
+                                holder.detailsAudit.setClickable(true);
                             }
                         });
             }

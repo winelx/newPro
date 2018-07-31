@@ -393,7 +393,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
 
     //亮点工程
     private void Bright() {
-        OkGo.<String>post(Requests.ListByType)
+        OkGo.<String>get(Requests.ListByType1)
                 .params("page", 1)
                 .params("size", 20)
                 .execute(new StringCallback() {

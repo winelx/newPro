@@ -205,6 +205,7 @@ public class DirectlyreplysActivity extends AppCompatActivity {
     //网络请求
     private void Okgo(String address, ArrayList<File> file, boolean isAllFinished) {
         userPop();
+        com_button.setVisibility(View.INVISIBLE);
         OkGo.post(Requests.Uploade)
                 .isMultipart(true)
                 .params("id", id)
@@ -219,6 +220,7 @@ public class DirectlyreplysActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        com_button.setVisibility(View.VISIBLE);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -241,6 +243,7 @@ public class DirectlyreplysActivity extends AppCompatActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        com_button.setVisibility(View.VISIBLE);
                         try {
                             String str = response.body().string();
                             JSONObject jsonObject = new JSONObject(str);

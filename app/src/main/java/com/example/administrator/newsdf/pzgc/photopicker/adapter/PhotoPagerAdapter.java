@@ -53,6 +53,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
             final RequestOptions options = new RequestOptions();
             options.dontAnimate()
                     .dontTransform()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .placeholder(R.drawable.__picker_ic_photo_black_48dp)
                     .error(R.drawable.image_error);

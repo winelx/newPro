@@ -85,17 +85,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (status) {
                     //记住密码
                     img.setBackgroundResource(R.mipmap.login_pass_false);
-                    Toast.makeText(this, "不记住", Toast.LENGTH_SHORT).show();
                     status = false;
                 } else {
                     //不记住密码
                     img.setBackgroundResource(R.mipmap.login_pass_true);
-                    Toast.makeText(this, "记住", Toast.LENGTH_SHORT).show();
                     status = true;
                 }
                 break;
             case R.id.forget_password:
-                ToastUtils.showLongToast("请联系管理员?");
+                ToastUtils.showLongToast("请联系管理员");
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(password.getText().toString()) &&

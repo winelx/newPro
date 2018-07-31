@@ -91,7 +91,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Intent();
-                refreshlayout.finishRefresh(1000);
+                refreshlayout.finishRefresh(800);
             }
         });
     }
@@ -128,8 +128,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         mAdapter = new MyExpandableListAdapter(list, map, mContext,
                 ivGoToChildClickListener);
         expandable.setAdapter(mAdapter);
-        //默认展开第一个分组
-        refreshLayout.finishRefresh(false);
+        refreshLayout.finishRefresh(true);
     }
     //重新加载数据
     public void Intent() {

@@ -685,6 +685,11 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                     mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
                 }
                 mAdapter.getDate(mDatas);
+                try {
+                    Dates.disDialog();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

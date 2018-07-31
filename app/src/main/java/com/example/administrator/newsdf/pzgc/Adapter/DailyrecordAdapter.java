@@ -71,7 +71,7 @@ public class DailyrecordAdapter extends BaseAdapter {
         //岗位
         holder.dailyJobs.setText("岗位:" + mData.get(position).getPosition());
         //所属标段
-        holder.dailyBlock.setText("所属标段：" + mData.get(position).getOrgName());
+        holder.dailyBlock.setText("所属组织：" + mData.get(position).getOrgName());
         String str = "任务目标:" + mData.get(position).getAimsTask();
         holder.dailyTarget.setText(setText(str, 4, R.color.graytext, R.color.black));
         String str1 = "已审核:" + mData.get(position).getAuditCount();
@@ -82,10 +82,11 @@ public class DailyrecordAdapter extends BaseAdapter {
         holder.dailyTimeout.setText(setText(str4, 4, R.color.graytext, R.color.red));
         //角标
         holder.ItemMessage.setTextString(mData.get(position).getPercentage());
-        if (mData.get(position).getPercentage().equals("100%")) {
-            holder.ItemMessage.setSlantedBackgroundColor(R.color.yellow);
-        } else {
+        if (mData.get(position).getPercentage().equals("100.00%") || mData.get(position).getPercentage().equals("100%")) {
             holder.ItemMessage.setSlantedBackgroundColor(R.color.finish_green);
+        } else {
+            holder.ItemMessage.setSlantedBackgroundColor(R.color.yellow);
+
         }
         return convertView;
     }

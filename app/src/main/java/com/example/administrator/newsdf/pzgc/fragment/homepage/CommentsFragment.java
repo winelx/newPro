@@ -89,14 +89,21 @@ public class CommentsFragment extends Fragment {
         mAdapter.setOnItemClickListener(new CommentsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                setList.get(position).setUnfinish("0");
+                mAdapter.getData(setList);
                 Intent intent = new Intent(mContext, CommentmessageActivity.class);
                 intent.putExtra("name", setList.get(position).getOrgname());
                 intent.putExtra("orgId", setList.get(position).getOrgid());
                 startActivity(intent);
             }
         });
-        Okgo(false);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Okgo(false);
     }
 
     private void Okgo(final boolean newdata) {
@@ -104,7 +111,9 @@ public class CommentsFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Dates.disDialog();
+                        if (newdata){
+                            Dates.disDialog();
+                        }
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -171,7 +180,11 @@ public class CommentsFragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
+                        try {
+                            Dates.disDialog();
+                        }catch (NullPointerException e11){
+                            e11.printStackTrace();
+                        }
                         ToastUtils.showShortToast("网络连接失败");
                         listView.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);

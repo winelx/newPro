@@ -441,6 +441,11 @@ public class MoretaskActivity extends AppCompatActivity implements View.OnClickL
                 contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
+                try {
+                    Dates.disDialog();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

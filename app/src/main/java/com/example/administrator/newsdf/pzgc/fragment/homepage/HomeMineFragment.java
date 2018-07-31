@@ -151,20 +151,30 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     for (int i = 0; i < task.length(); i++) {
                                         JSONObject json = task.getJSONObject(i);
                                         String content = json.getString("content");
-                                        String createTime = json.getString("createTime");
-                                        if (createTime != null && !"".equals(createTime)) {
-                                            createTime = createTime.substring(0, 10);
-                                        } else {
+                                        String createTime, id, orgId, orgName, parentid, parentname, unfinish;
+                                        try {
+                                            createTime = json.getString("createTime");
+                                            if (createTime != null && !"".equals(createTime)) {
+                                                createTime = createTime.substring(0, 10);
+                                            } else {
+                                                createTime = "";
+                                            }
+                                            id = json.getString("id");
+                                            orgId = json.getString("orgId");
+                                            orgName = json.getString("orgName");
+                                            parentid = json.getString("parent_id");
+                                            parentname = json.getString("parent_name");
+                                            unfinish = json.getString("unfinish");
+                                        } catch (JSONException e) {
                                             createTime = "";
+                                            id = "";
+                                            orgId = "";
+                                            orgName = "";
+                                            parentid = "";
+                                            parentname = "";
+                                            unfinish = "";
                                         }
-                                        String id = json.getString("id");
-                                        String isfavorite = json.getString("isfavorite");
-                                        String orgId = json.getString("orgId");
-                                        String orgName = json.getString("orgName");
-                                        String parentid = json.getString("parent_id");
-                                        String parentname = json.getString("parent_name");
-                                        String unfinish = json.getString("unfinish");
-                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, isfavorite, parentname, parentid, false));
+                                        mData.add(new Home_item(content, createTime, id, orgId, orgName, unfinish, "", parentname, parentid, false));
                                     }
                                     title.add("待回复");
                                     hasMap.put("待回复", mData);

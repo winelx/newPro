@@ -42,6 +42,7 @@ public class UnifiedCenterFragment extends BaseFragment {
         mBanner.setImages(list)
                 .setImageLoader(new GlideImageLoader())
                 .start();
+
         return rootView;
     }
 

@@ -179,7 +179,7 @@
                     android:layout_height="100dp"
                     android:layout_below="@+id/inface_pcontent"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+
                     android:layout_marginTop="10dp"
                     android:background="@mipmap/notimgeview"
                     />
@@ -208,15 +208,15 @@
                             android:layout_alignParentTop="true"
                             android:layout_weight="1"
                             android:scaleType="centerCrop"
+                            android:visibility="gone"
                             android:src="@mipmap/image_loading"
-                            android:visibility="gone" />
+                          />
 
                         <RelativeLayout
                             android:id="@+id/inface_relat1"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="15sp"
-                            android:visibility="gone">
+                            android:layout_height="match_parent">
 
                             <TextView
                                 android:id="@+id/inface_relat1_name"
@@ -264,7 +264,6 @@
                             android:id="@+id/inface_relat2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="3sp"
                             android:background="#f5f8f7"
                             android:visibility="gone">
 

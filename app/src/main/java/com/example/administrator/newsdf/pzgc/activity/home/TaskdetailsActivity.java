@@ -870,6 +870,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             taskManagement.setVisibility(View.VISIBLE);
                             wbspath.setText(wbsName);
                         }
+                        try {
+                            Dates.disDialog();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
 
                     @Override

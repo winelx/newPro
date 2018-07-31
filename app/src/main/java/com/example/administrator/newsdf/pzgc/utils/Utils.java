@@ -119,7 +119,7 @@ public class Utils {
         ArrayList<String> year = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             int teger = 2012 + i * 4;
-            year.add(teger + "年");
+            year.add(teger + "");
         }
         return year;
     }
@@ -174,7 +174,7 @@ public class Utils {
         int quarter = 0;
         Date myDate = new Date();
         int dateMonth = myDate.getMonth();
-        dateMonth= dateMonth+1;
+        dateMonth = dateMonth + 1;
         if (dateMonth == 1 || dateMonth == 2 || dateMonth == 3) {
             quarter = 1;
         } else if (dateMonth == 4 || dateMonth == 5 || dateMonth == 6) {
