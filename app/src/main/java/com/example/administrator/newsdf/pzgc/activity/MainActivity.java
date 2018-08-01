@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity mContext;
     private LayoutInflater mInflater;
     private ArrayList<Tab> mTabs = new ArrayList<>();
-    private Dates dates;
     private String version;
     private TextView home_img_red;
     private List<Shop> list;
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = this;
         workbtight = false;
-        dates = new Dates();
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);

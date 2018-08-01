@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,11 +26,10 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     private RecycleAdapterType adapterType;
 
-    public AllTaskListItem(List<Inface_all_item> list, Context mContext) {
+    public AllTaskListItem(ArrayList<Inface_all_item> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,10 +39,13 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        bindGrid((TypeViewholder) holder, position);
+        if (holder instanceof TypeViewholder && list.size()>0) {
+            bindGrid((TypeViewholder) holder, position);
+        }
     }
 
     private void bindGrid(TypeViewholder holder, int position) {
+        Log.i("sss",list.get(position).getGroupName());
         //标题
         if (list.get(position).getGroupName().length() != 0) {
             holder.interTitle.setText(list.get(position).getGroupName());
@@ -53,10 +58,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.infaceUptime.setText(list.get(position).getUpload_time());
         holder.infaceLoation.setText(list.get(position).getUpload_addr());
         holder.infacePcontent.setText(list.get(position).getUpload_content());
-        holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterType = new RecycleAdapterType(mContext);
-        holder.taskcontent.setAdapter(adapterType);
-        adapterType.getdata(list.get(position).getFilename());
         switch (list.get(position).getIsFinish() + "") {
             case "0":
                 holder.inface_item_message.setTextString("未完成");
@@ -73,6 +74,9 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 break;
         }
+        holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        adapterType = new RecycleAdapterType(holder.taskcontent.getContext(),list.get(position).getUpload());
+        holder.taskcontent.setAdapter(adapterType);
     }
 
     @Override
@@ -109,7 +113,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void getData(List<Inface_all_item> mdata) {
+    public void getData(ArrayList<Inface_all_item> mdata) {
         this.list = mdata;
         notifyDataSetChanged();
     }

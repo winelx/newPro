@@ -114,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void okgo(final String user, final String passowd) {
-
         OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override

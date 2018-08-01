@@ -125,7 +125,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listtread);
+        setContentView(R.layout.activity_comment);
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -208,7 +208,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
-
+                    pages=1;
                     String search = searchEditext.getText().toString();
                     if (search.length() != 0) {
                         smart();

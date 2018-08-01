@@ -28,9 +28,9 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     private ArrayList<String> list;
 
-    public RecycleAdapterType(Context mContext) {
+    public RecycleAdapterType(Context mContext,ArrayList<String> list) {
         this.mContext = mContext;
-        this.list = new ArrayList<>();
+        this.list = list;
     }
 
     @Override
@@ -41,7 +41,10 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        bindGrid((ItemViewholder) holder, position);
+
+        if (holder instanceof ItemViewholder && list.size()>0) {
+            bindGrid((ItemViewholder) holder, position);
+        }
     }
 
     private void bindGrid(ItemViewholder holder, int position) {
@@ -129,8 +132,4 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void getdata(ArrayList<String> list) {
-        this.list = list;
-        notifyDataSetChanged();
-    }
 }

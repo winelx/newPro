@@ -29,7 +29,7 @@
                 android:maxEms="8"
                 android:maxLines="1"
                 android:padding="0dp"
-                android:text="技术：安装盖板"
+
                 android:textColor="@color/textViwe"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -59,7 +59,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="0dp"
-                android:text="2017-03-01"
+
                 android:textColor="@color/editext_text"
                 android:textSize="12sp" />
 
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:maxEms="16"
                 android:singleLine="true"
-                android:text="ssdga"
+
                 android:textColor="@color/editext_text"
                 android:textSize="12sp" />
 
@@ -90,7 +90,6 @@
                 android:ellipsize="end"
                 android:maxEms="16"
                 android:singleLine="true"
-                android:text="请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料请及时上传标段工程安装的详细资料"
                 android:textColor="@color/textViwe"
                 android:textSize="14sp" />
 
@@ -141,7 +140,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@+id/inface_avatar"
                     android:layout_toRightOf="@+id/inface_avatar"
-                    android:text="周恺"
+
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -155,7 +154,6 @@
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@+id/inface_username"
                     android:layout_toRightOf="@+id/inface_username"
-                    android:text="2018-12-12"
                     android:textColor="@color/textViwe" />
 
                 <TextView
@@ -170,7 +168,6 @@
                     android:maxEms="16"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="定义定义定义定义定义定义"
                     android:textSize="15sp" />
 
                 <com.android.volley.toolbox.NetworkImageView
@@ -195,7 +192,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/taskcontent"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="100dp" />
 
                 </LinearLayout>
 
@@ -228,7 +225,7 @@
                         android:layout_toRightOf="@+id/imageView"
                         android:drawableLeft="@mipmap/view_positioning"
                         android:drawablePadding="5dp"
-                        android:text="贵阳市云岩区"
+
                         android:textSize="10sp" />
 
 
@@ -256,7 +253,6 @@
                         android:layout_marginRight="14dp"
                         android:layout_marginTop="3dp"
                         android:gravity="center"
-                        android:text="(2)"
                         android:textSize="10sp" />
                 </RelativeLayout>
 

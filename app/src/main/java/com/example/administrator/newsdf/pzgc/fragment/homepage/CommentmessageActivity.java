@@ -124,7 +124,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listtread);
+        setContentView(R.layout.activity_comment);
         floatMeunAnims = new FloatMeunAnims();
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
