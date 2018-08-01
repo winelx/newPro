@@ -284,6 +284,15 @@ public class Dates {
         ins.close();
         out.close();
     }
+        public static  String downloadPath(){
+    // 首先保存图片
+    String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
+    File appDir = new File(strpath, "picker");
+    if (!appDir.exists()) {
+        appDir.mkdir();
+    }
+    return strpath;
+    }
 
 
     public static String downloadPhoto(Bitmap bmp, String Title) {

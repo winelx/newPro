@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Context mContext;
     private RelativeLayout backgroud;
     private Dialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +115,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void okgo(final String user, final String passowd) {
 
+        OkGo.post(Requests.BackTo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int code = jsonObject.getInt("ret");
+                            if (code != 1) {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
         OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
                     @Override
@@ -131,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     void login(final String user, final String password) {
-       loading();
+        loading();
         OkGo.post(Requests.Login)
                 .params("username", user)
                 .params("password", password)
@@ -294,7 +310,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
-    public void loading(){
+
+    public void loading() {
         progressDialog = new Dialog(LoginActivity.this, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

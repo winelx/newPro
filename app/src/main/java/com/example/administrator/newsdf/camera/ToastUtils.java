@@ -34,6 +34,23 @@ public class ToastUtils {
         }
     }
 
+    public static void showLongToastCenter(String message) {
+        if (App.getInstance() == null) {
+            return;
+        }
+        if (toast == null) {
+            toast = Toast.makeText(App.getInstance(), message, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 100);
+            toast.show();
+        } else {
+            toast.setGravity(Gravity.CENTER, 0, 100);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setText(message);
+            toast.show();
+        }
+    }
+
+
     /**
      * 显示短时间Toast
      *
@@ -53,6 +70,7 @@ public class ToastUtils {
             toast.show();
         }
     }
+
     /**
      * 显示短时间Toast
      *

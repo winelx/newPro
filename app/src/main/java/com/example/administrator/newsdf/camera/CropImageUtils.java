@@ -144,7 +144,9 @@ public class CropImageUtils {
                     if (file.isFile() && listener != null)
                         //  listener.cropPictureFinish(crop_image);
                         // 最后通知图库更新
+                    {
                         activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                    }
                 }
                 break;
             default:

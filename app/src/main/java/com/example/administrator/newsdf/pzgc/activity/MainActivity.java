@@ -196,15 +196,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     public void initTab() {
@@ -254,11 +251,12 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
+                getFragmentManager().popBackStack();
                 Intent MyIntent = new Intent(Intent.ACTION_MAIN);
                 MyIntent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(MyIntent);
-                finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
+                finish();
             }
             return true;
         }
@@ -285,8 +283,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
-
     }
 
     /**
@@ -301,10 +297,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean wbright() {
         return workbtight;
-    }
-
-    private void brightnew() {
-        workbtight = true;
     }
 
 

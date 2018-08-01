@@ -13,7 +13,6 @@ import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
@@ -279,7 +278,7 @@ public class HomeUtils {
                         addOrganizationList.get(i).getPhone(),
                         addOrganizationList.get(i).isDrawingGroup());
             }
-            Dates.disDialog();
+
         }
     }
 
@@ -350,7 +349,7 @@ public class HomeUtils {
                                         imagePaths.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                     }
                                     taskPhotoAdapter.getData(imagePaths, wbsName);
-                                    Dates.disDialog();
+
                                 } else {
                                     if (drew) {
                                         imagePaths.clear();
@@ -358,7 +357,7 @@ public class HomeUtils {
                                                 "", "暂无数据", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据"));
                                     }
                                     taskPhotoAdapter.getData(imagePaths, wbsName);
-                                    Dates.disDialog();
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -370,7 +369,7 @@ public class HomeUtils {
                                         "", "暂无数据", "图纸：暂无数据", "图纸：暂无数据", "图纸：暂无数据"));
                             }
                             taskPhotoAdapter.getData(imagePaths, wbsName);
-                            Dates.disDialog();
+
                         }
                     }
                 });
@@ -380,7 +379,7 @@ public class HomeUtils {
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
-        Dates.getDialog(activity, "请求数据中");
+
         OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", wbsid)
                 .params("isNeedTotal", "true")
@@ -421,7 +420,7 @@ public class HomeUtils {
                                 intent.putExtra("status", "More");
 
                                 activity.startActivity(intent);
-                                Dates.disDialog();
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -444,7 +443,7 @@ public class HomeUtils {
                             intent.putExtra("iswbs", iswbs);
                             intent.putExtra("type", type);
                             activity.startActivity(intent);
-                            Dates.disDialog();
+
                         }
 
                     }
@@ -498,7 +497,7 @@ public class HomeUtils {
                                         stardPats.add(new PhotoBean(id, filePath, drawingNumber, drawingName, drawingGroupName));
                                     }
                                     taskStardAdapter.getData(stardPats, wbsName);
-                                    Dates.disDialog();
+
                                 } else {
                                     if (drew) {
                                         stardPats.clear();
@@ -506,7 +505,7 @@ public class HomeUtils {
                                                 "", "暂无数据", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据"));
                                     }
                                     taskStardAdapter.getData(stardPats, wbsName);
-                                    Dates.disDialog();
+
                                 }
 
                             } catch (JSONException e) {
@@ -519,7 +518,7 @@ public class HomeUtils {
                                         "", "暂无数据", "标准：暂无数据", "标准：暂无数据", "标准：暂无数据"));
                             }
                             taskStardAdapter.getData(stardPats, wbsName);
-                            Dates.disDialog();
+
                         }
                     }
                 });
@@ -971,7 +970,7 @@ public class HomeUtils {
                                     }
                                     //评论时间
                                     String replyTime = json.getString("replyTime");
-                                    aduioComms.add( new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
+                                    aduioComms.add(new Aduio_comm(comments_id, replyId, realname, portrait, taskId, commentsStatus, statusName,
                                             commentsContent, replyTime, filePathsMin, filePaths));
                                 }
 
@@ -981,7 +980,7 @@ public class HomeUtils {
                                 }
                                 mAdapter.setmBanner(contents, aduioDatas, aduioComms);
                                 AuditDetailsCallbackUtils.updata();
-                                Dates.disDialog();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -992,7 +991,7 @@ public class HomeUtils {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
+
                     }
                 });
 
@@ -1001,4 +1000,7 @@ public class HomeUtils {
     public String getId() {
         return orgId;
     }
+
+
+
 }

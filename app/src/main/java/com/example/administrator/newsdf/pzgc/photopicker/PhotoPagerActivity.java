@@ -17,6 +17,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
@@ -81,7 +82,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 case 1:
                     //保存数据
                     byte[] bytes = (byte[]) msg.obj;
-
                     break;
                 case 2:
                     //加载数据库数据，方便在下载时进行数据对比，看是否已下载该图片
@@ -113,6 +113,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
         boolean showUploade = getIntent().getBooleanExtra(EXTRA_SHOW_UPLOADE, true);
         //图片路径
         imagepath = getIntent().getStringArrayListExtra(EXTRA_ORIGINAL_TITLE);
+
         if (pagerFragment == null) {
             pagerFragment =
                     (ImagePagerFragment) getSupportFragmentManager().findFragmentById(R.id.photoPagerFragment);
@@ -167,26 +168,39 @@ public class PhotoPagerActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (showLabel) {
-                    care();
-                } else {
-                    standard();
-                }
-                path = paths.get(pagerFragment.getViewPager().getCurrentItem());
-                //根据'/'切割地址，
-                String[] strs = path.split("/");
-                //拿到图片名称
-                result = strs[strs.length - 1].replace(".jpg", "");
-                //进行判断当前图片是否有下载过  用图片名进行对比
-                boolean setr = pathname.contains(result);
-                if (setr) {
-                    //下载图片
-                    ToastUtils.showShortToast("已下载该图片过");
-                } else {
-                    if (path != null) {
-                        Dates.getDialogs(PhotoPagerActivity.this, "保存图片中...");
-                        asyncGet(path);
+
+                if (imagepath.size() > 0) {
+                    if (showLabel) {
+                        care();
+                    } else {
+                        standard();
                     }
+                    path = paths.get(pagerFragment.getViewPager().getCurrentItem());
+                    //根据'/'切割地址，
+                    String[] strs = path.split("/");
+                    //拿到图片名称
+                    result = strs[strs.length - 1].replace(".jpg", "");
+                    //进行判断当前图片是否有下载过  用图片名进行对比
+                    boolean setr = pathname.contains(result);
+                    if (setr) {
+                        //下载图片
+                        ToastUtils.showShortToast("已下载该图片过");
+                    } else {
+                        if (path != null) {
+                            Dates.getDialogs(PhotoPagerActivity.this, "保存图片中...");
+                            asyncGet(path);
+                        }
+                    }
+                } else {
+                    path = paths.get(pagerFragment.getViewPager().getCurrentItem());
+                    OkGo.get(path)
+                            .tag(1)
+                            .execute(new FileCallback() {
+                                @Override
+                                public void onSuccess(File file, Call call, Response response) {
+                                        ToastUtils.showShortToastCenter("下载成功");
+                                }
+                            });
                 }
             }
         });
@@ -241,13 +255,14 @@ public class PhotoPagerActivity extends AppCompatActivity {
     }
 
     private void asyncGet(String imageUrl) {
-        OkGo.get(imageUrl)
+        OkGo.<File>get(imageUrl)
+                .tag(2)
                 .execute(new FileCallback() {
                     @Override
-                    public void onSuccess(File file, Call call, Response response) {
+                    public void onSuccess(final File file, Call call, Response response) {
+
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         Tiny.getInstance().source(file).asFile().withOptions(options).compress(new FileWithBitmapCallback() {
-
                             @Override
                             public void callback(boolean isSuccess, Bitmap bitmap, String outfile) {
                                 if (isSuccess) {
@@ -263,6 +278,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
                                     shop.setTimme(getDate());
                                     LoveDao.insertLove(shop);
                                     ToastUtils.showShortToast("已保存");
+                                    FileUtils.deleteFile(file);
                                 } else {
                                     ToastUtils.showShortToast("下载失败");
                                 }

@@ -12,13 +12,14 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.AllTaskListItem;
 import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
@@ -86,7 +88,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private boolean swip = false;
     private boolean drew = true;
     private PopupWindow mPopupWindow;
-    private ListView mTree, uslistView, drawerLayoutList;
+    private ListView mTree, drawerLayoutList;
     private TaskPhotoAdapter taskAdapter;
     //状态值
     private int addPosition;
@@ -111,6 +113,10 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
+
+
+    private AllTaskListItem adapters;
+    RecyclerView recycler_att;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -166,7 +172,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 swip = false;
                 pages = 1;
                 smart();
-                uslistView.setSelection(0);
+
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -242,47 +248,29 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
             }
         });
-        //listview的点击事件
-        uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String status = Alldata.get(position).getIsFinish() + "";
-                if ("2".equals(status)) {
-                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(mContext, MoretaskActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                }
-
-            }
-        });
-        //listview的触摸监听
-        uslistView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        // 触摸移动时的操作
-                        searchEditext.clearFocus();//失去焦点
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
-                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+//        //listview的点击事件
+//        uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String status = Alldata.get(position).getIsFinish() + "";
+//                if ("2".equals(status)) {
+//                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+//                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+//                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+//                    intent.putExtra("status", "true");
+//                    intent.putExtra("activity", "all");
+//                    startActivity(intent);
+//                } else {
+//                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+//                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+//                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+//                    intent.putExtra("status", "true");
+//                    intent.putExtra("activity", "all");
+//                    startActivity(intent);
+//                }
+//
+//            }
+//        });
 
         okgoall(null, null, page);
         OrganizationEntity bean = new OrganizationEntity(wbsid, "",
@@ -467,7 +455,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "10";
-                        uslistView.setSelection(0);
+                        recycler_att.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -480,7 +468,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "0";
-                        uslistView.setSelection(0);
+                        recycler_att.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -494,7 +482,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "2";
-                        uslistView.setSelection(0);
+                        recycler_att.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -507,7 +495,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "3";
-                        uslistView.setSelection(0);
+                        recycler_att.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -559,7 +547,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             swip = false;
             page = 1;
             pages = 1;
-            uslistView.setSelection(0);
+
             okgoall(nodeiD, null, pages);
         }
     }
@@ -576,6 +564,29 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     //初始化控件
     private void findbyId() {
+        recycler_att = (RecyclerView) findViewById(R.id.recycler_att);
+        recycler_att.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //滑动关闭软键盘
+                searchEditext.clearFocus();//失去焦点
+                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(AllListmessageActivity.this.getCurrentFocus()
+                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                    //触摸关闭图册和标准
+                if (!anim) {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    anim = true;
+                }
+
+            }
+        });
         drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         //获得控件id，初始化id
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
@@ -594,7 +605,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         findViewById(R.id.com_back).setOnClickListener(this);
         //列表
-        uslistView = (ListView) findViewById(R.id.list_recycler);
+
         //标题
         Titlew = (TextView) findViewById(R.id.com_title);
         //meun
@@ -608,6 +619,12 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
         fab.setOnClickListener(this);
+
+        recycler_att.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recycler_att.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //初始化适配器
+        adapters = new AllTaskListItem(Alldata, mContext);
+        recycler_att.setAdapter(adapters);
     }
 
     //初始化数据
@@ -627,9 +644,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         Titlew.setTextSize(17);
         //主界面适配器
         mAdapter = new Imageloaders(mContext, Alldata);
-        //主界面
-        uslistView.setAdapter(mAdapter);
-        uslistView.setEmptyView(findViewById(R.id.nullposion));
+
         //打开抽屉控件的圆形控件
         //图册适配器
         taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
@@ -645,7 +660,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
     }
-
 
 
     //弹出框
@@ -672,6 +686,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void smart() {
         String content = searchEditext.getText().toString();
+        recycler_att.scrollToPosition(0);
         //判断是否需要传内容
         if (content.length() != 0) {
             //判断是否有节点ID
@@ -696,10 +711,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
+        ToastUtils.showShortToastCenter(i+"");
         PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 25)
+                .params("rows", 75)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content);
@@ -712,6 +728,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     refreshLayout.finishRefresh(true);
                     parsingjson(s);
                 }
+
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
@@ -758,155 +775,148 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         if (!swip) {
             Alldata.clear();
         }
-        if (s.contains("data")) {
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                if (jsonArray1.length() != 0) {
-                    for (int i = 0; i < jsonArray1.length(); i++) {
-                        JSONObject json = jsonArray1.getJSONObject(i);
-                        JSONObject json1 = new JSONObject();
-                        JSONArray json2 = new JSONArray();
-                        try {
-                            json1 = json.getJSONObject("children");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            json2 = json.getJSONArray("comments");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        JSONArray files = new JSONArray();
-                        try {
-                            files = json1.getJSONArray("file");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            wbsPath = json.getString("wbsPath");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            wbsPath = "";
-                        }
-                        try {
-                            wbsId = json.getString("wbsId");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            wbsId = "";
-                        }
-                        try {
-                            updateDate = json.getString("updateDate");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            updateDate = "";
-                        }
-                        try {
-                            taskId = json.getString("taskId");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            taskId = "";
-                        }
-                        try {
-                            isFinish = json.getInt("isFinish");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            isFinish = 0;
-                        }
-                        try {
-                            id = json.getString("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            id = "";
-                        }
-                        try {
-                            pointName = json.getString("pointName");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            pointName = "";
-                        }
-                        try {
-                            createTime = json.getString("createTime");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            createTime = "";
-                        }
-                        try {
-                            content = json.getString("content");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            content = "";
-                        }
-                        String userId = "", protrait = "", upload_addr = "", upload_content = "", upload_time = "", uploador = "";
-                        //个人信息
-                        try {
-                            userId = json1.getString("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            userId = "";
-                        }
-                        try {
-                            protrait = json1.getString("portrait");
-                            protrait = Requests.networks + protrait;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            protrait = "";
-                        }
-                        try {
-                            upload_addr = json1.getString("upload_addr");
-                        } catch (JSONException e) {
-                            upload_addr = "";
-                        }
-                        try {
-                            upload_time = json1.getString("upload_time");
-                        } catch (JSONException e) {
-                            upload_time = "";
-                        }
-                        try {
-                            uploador = json1.getString("uploador");
-                        } catch (JSONException e) {
-                            uploador = "";
-                        }
-                        try {
-                            upload_content = json1.getString("upload_content");
-                        } catch (JSONException e) {
-                            upload_content = "";
-                        }
-                        paths = new ArrayList<>();
-                        ArrayList<String> pathsname = new ArrayList<>();
-                        if (files.length() > 0) {
-                            for (int j = 0; j < files.length(); j++) {
-                                JSONObject jsonfilse = files.getJSONObject(j);
-                                String filepath = jsonfilse.getString("filepath");
-                                String filename = jsonfilse.getString("filename");
-                                paths.add(Requests.networks + filepath);
-                                pathsname.add(filename);
-                            }
-                        }
-                        int comments = json2.length();
-                        Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
-                                pointName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            JSONArray jsonArray1 = jsonObject.getJSONArray("data");
+            if (jsonArray1.length() != 0) {
+                for (int i = 0; i < jsonArray1.length(); i++) {
+                    JSONObject json = jsonArray1.getJSONObject(i);
+                    JSONObject json1 = new JSONObject();
+                    JSONArray json2 = new JSONArray();
+                    try {
+                        json1 = json.getJSONObject("children");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    if (Alldata.size() != 0) {
-                        mAdapter.getData(Alldata);
-
+                    try {
+                        json2 = json.getJSONArray("comments");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    if (!swip) {
-                        Alldata.clear();
+                    JSONArray files = new JSONArray();
+                    try {
+                        files = json1.getJSONArray("file");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    mAdapter.getData(Alldata);
+                    try {
+                        wbsPath = json.getString("wbsPath");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        wbsPath = "";
+                    }
+                    try {
+                        wbsId = json.getString("wbsId");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        wbsId = "";
+                    }
+                    try {
+                        updateDate = json.getString("updateDate");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        updateDate = "";
+                    }
+                    try {
+                        taskId = json.getString("taskId");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        taskId = "";
+                    }
+                    try {
+                        isFinish = json.getInt("isFinish");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        isFinish = 0;
+                    }
+                    try {
+                        id = json.getString("id");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        id = "";
+                    }
+                    try {
+                        pointName = json.getString("pointName");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        pointName = "";
+                    }
+                    try {
+                        createTime = json.getString("createTime");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        createTime = "";
+                    }
+                    try {
+                        content = json.getString("content");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        content = "";
+                    }
+                    String userId = "", protrait = "", upload_addr = "", upload_content = "", upload_time = "", uploador = "";
+                    //个人信息
+                    try {
+                        userId = json1.getString("id");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        userId = "";
+                    }
+                    try {
+                        protrait = json1.getString("portrait");
+                        protrait = Requests.networks + protrait;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        protrait = "";
+                    }
+                    try {
+                        upload_addr = json1.getString("upload_addr");
+                    } catch (JSONException e) {
+                        upload_addr = "";
+                    }
+                    try {
+                        upload_time = json1.getString("upload_time");
+                    } catch (JSONException e) {
+                        upload_time = "";
+                    }
+                    try {
+                        uploador = json1.getString("uploador");
+                    } catch (JSONException e) {
+                        uploador = "";
+                    }
+                    try {
+                        upload_content = json1.getString("upload_content");
+                    } catch (JSONException e) {
+                        upload_content = "";
+                    }
+                    paths = new ArrayList<>();
+                    ArrayList<String> pathsname = new ArrayList<>();
+                    if (files.length() > 0) {
+                        for (int j = 0; j < files.length(); j++) {
+                            JSONObject jsonfilse = files.getJSONObject(j);
+                            String filepath = jsonfilse.getString("filepath");
+                            String filename = jsonfilse.getString("filename");
+                            paths.add(Requests.networks + filepath);
+                            pathsname.add(filename);
+                        }
+                    }
+                    int comments = json2.length();
+                    Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
+                            pointName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                 }
-                Dates.disDialog();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if (Alldata.size() != 0) {
+                    mAdapter.getData(Alldata);
+                    adapters.getData(Alldata);
+
+                }
+            } else {
+                if (!swip) {
+                    Alldata.clear();
+                }
+                mAdapter.getData(Alldata);
             }
-        } else {
-            ToastUtils.showShortToast("暂无数据！");
-            if (!swip) {
-                Alldata.clear();
-            }
-            mAdapter.getData(Alldata);
+            Dates.disDialog();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

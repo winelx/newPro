@@ -125,7 +125,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
                 PhotoPreview.builder().setPhotos(path).setCurrentItem(position).
-                        setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
+                        setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(imagepath)
                         .start((Activity) mContext);
             }
         });

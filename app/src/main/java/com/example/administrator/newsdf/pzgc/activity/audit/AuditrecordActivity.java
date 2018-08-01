@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.audit;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -61,12 +62,12 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
     private String date;
     private int Success = 1;
     private SmartRefreshLayout smartRefreshLayout;
-    private String one = "1", two = "2";
     //上拉加载数据判断
     private int status = 1;
     //待审核数
     String tip;
     TextView unfinished;
+    Dialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         mData = new ArrayList<>();
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
+
         date = intent.getExtras().getString("date");
         title = intent.getExtras().getString("title");
         String day = intent.getExtras().getString("day");
@@ -193,7 +195,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dates.getDialog(AuditrecordActivity.this, "请求数据中...");
+
                 switch (v.getId()) {
                     case R.id.audit_audit:
                         page = 1;
@@ -241,7 +243,6 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 unfinished.setText("未审核:" + 0);
             }
         }
-
         page = 1;
         mData.clear();
         getData();
@@ -258,8 +259,9 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void getData() {
+        Loading();
         OkGo.post(Requests.GET_TASK_LIST)
-                .params("orgId", orgId)
+                .params("id", orgId)
                 .params("day", date)
                 .params("page", page)
                 .params("size", 10)
@@ -287,19 +289,22 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                                     mData.add(new AuditrecordBean(id, name, str, updateDate, status));
                                 }
                             }
-                            Dates.disDialog();
+
                             mAdapter.getData(mData);
                             smartRefreshLayout.finishLoadmore();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } finally {
+                            progressDialog.dismiss();
                         }
                     }
                 });
     }
 
     public void http() {
+        Loading();
         OkGo.post(Requests.GET_AUDIT_TASK_LIST)
-                .params("orgId", orgId)
+                .params("id", orgId)
                 .params("day", date)
                 .params("page", page)
                 .params("status", Success)
@@ -311,7 +316,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                             JSONArray jsonArray = jsonObject.getJSONArray("results");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
-                                String name = json.getString("detectionName");
+                                String name = json.getString("name");
                                 String appWbsPath = json.getString("appWbsPath");
                                 String status = json.getString("pass");
                                 String updateDate = json.getString("updateDate");
@@ -321,9 +326,11 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                             }
                             mAdapter.getData(mData);
                             smartRefreshLayout.finishLoadmore();
-                            Dates.disDialog();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } finally {
+                            progressDialog.dismiss();
                         }
                     }
                 });
@@ -336,5 +343,13 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         smartRefreshLayout.finishRefresh(true);
     }
 
+    private void Loading() {
+        progressDialog = new Dialog(AuditrecordActivity.this, R.style.progress_dialog);
+        progressDialog.setContentView(R.layout.waiting_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
+        text.setText("请求数据中...");
+        progressDialog.show();
+    }
 
 }
