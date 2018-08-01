@@ -715,7 +715,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
-                .params("rows", 75)
+                .params("rows", 10)
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content);
