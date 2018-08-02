@@ -17,6 +17,7 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
+            android:windowSoftInputMode="adjustPan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -141,36 +142,41 @@
                     android:textSize="14dp"
                     android:visibility="gone" />
             </RelativeLayout>
-
-            <com.scwang.smartrefresh.layout.SmartRefreshLayout
-                android:id="@+id/SmartRefreshLayout"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/SmartRefreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent">
+
+                    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_att"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="4dp"
-                    android:divider="@color/back"
-                    android:dividerHeight="10dp"
-                    android:padding="0dp"
-                    android:scrollbars="none" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_att"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="4dp"
+                        android:divider="@color/back"
+                        android:dividerHeight="10dp"
+                        android:padding="0dp"
+                        android:scrollbars="none" />
 
-                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp" />
-            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp" />
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-            <include layout="@layout/floating_meun_button" />
+                <include layout="@layout/floating_meun_button" />
+            </RelativeLayout>
+
 
         </LinearLayout>
 

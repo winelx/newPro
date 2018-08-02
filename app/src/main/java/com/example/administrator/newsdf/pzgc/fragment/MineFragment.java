@@ -160,6 +160,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), AboutmeActivity.class));
                 break;
             case R.id.BackTo:
+                getActivity().getSupportFragmentManager().popBackStack();
                 Okgo();
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
                     @Override

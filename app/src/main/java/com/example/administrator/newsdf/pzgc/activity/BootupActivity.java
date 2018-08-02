@@ -80,7 +80,7 @@ public class BootupActivity extends AppCompatActivity {
                 //进行是否登录判断
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
-                    startActivity(new Intent(BootupActivity.this, LoginActivity.class));
+                    startActivity(new Intent(mContext, LoginActivity.class));
                     finish();
                 } else {
                     //如果已经存在，
@@ -90,25 +90,7 @@ public class BootupActivity extends AppCompatActivity {
                 return false;
             }
             //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 2500);
-
-        new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                //进行是否登录判断
-                if (TextUtils.isEmpty(password)) {
-                    //实现页面跳转
-                    startActivity(new Intent(BootupActivity.this, LoginActivity.class));
-                    finish();
-                } else {
-                    //如果已经存在，
-                    // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
-                    BackTo(user, password);
-                }
-                return false;
-            }
-            //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 2500);
+        }).sendEmptyMessageDelayed(0, 1000);
     }
 
     //假登录
@@ -120,7 +102,6 @@ public class BootupActivity extends AppCompatActivity {
                         //进行真正的登录
                         login(user, passowd);
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -170,9 +151,9 @@ public class BootupActivity extends AppCompatActivity {
                                 String staffName;
                                 try {
                                     staffName = jsom.getString("staffName");
-                                }catch (JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
-                                    staffName="";
+                                    staffName = "";
                                 }
 
                                 //所在组织id

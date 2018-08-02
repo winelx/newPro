@@ -124,7 +124,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         break;
                     case "all":
                         AllListmessageActivity listreadActivity = (AllListmessageActivity) mContext;
-//                        listreadActivity.switchAct(node);
+                      listreadActivity.switchAct(node);
                         break;
                     case "task":
                         TaskWbsActivity taskWbsActivity = (TaskWbsActivity) mContext;

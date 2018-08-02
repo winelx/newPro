@@ -7,13 +7,27 @@
 
     <ImageView
         android:id="@+id/infaimage"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp" />
+
+
+    <TextView
+        android:id="@+id/inface_imgaetext"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/transparents"
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:textColor="@color/writer"
+        android:textSize="30sp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/attachment"
-
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp">
 
         <TextView

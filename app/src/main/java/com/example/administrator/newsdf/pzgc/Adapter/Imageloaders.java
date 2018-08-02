@@ -18,6 +18,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
@@ -137,7 +138,7 @@ public class Imageloaders extends BaseAdapter {
         holder.inface_uptime.setText(list.get(position).getUpload_time());
         holder.inface_loation.setText(list.get(position).getUpload_addr());
         holder.inface_pcontent.setText(list.get(position).getUpload_content());
-        ArrayList<String> path = new ArrayList<>();
+        ArrayList<Audio> path = new ArrayList<>();
         ArrayList<String> pathname = new ArrayList<>();
         path.addAll(list.get(position).getUpload());
         pathname.addAll(list.get(position).getFilename());
@@ -178,7 +179,7 @@ public class Imageloaders extends BaseAdapter {
                     holder.inface_relat2.setVisibility(View.GONE);
                     holder.inface_relat3.setVisibility(View.GONE);
                     holder.inface_image.setVisibility(View.VISIBLE);
-                    String imgUrl = path.get(0);
+                    String imgUrl = path.get(0).getName();
                     if (imgUrl != null && !imgUrl.equals("")) {
                         int doc = imgUrl.lastIndexOf(".");
                         String strs = imgUrl.substring(doc + 1);
@@ -239,6 +240,8 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_imag1.setVisibility(View.VISIBLE);
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
+
+
                             //截取出后缀
                             String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
                             //拿到截取后缀后的字段
@@ -249,7 +252,7 @@ public class Imageloaders extends BaseAdapter {
                         }
                         if (path.size() >= 2) {
                             holder.inface_relat3.setVisibility(View.GONE);
-                            String imgUrl1 = path.get(1);
+                            String imgUrl1 = path.get(1).getName();
                             if (imgUrl1 != null && !imgUrl1.equals("")) {
                                 int doc1 = imgUrl1.lastIndexOf(".");
                                 String strs1 = imgUrl1.substring(doc1 + 1);
@@ -318,7 +321,7 @@ public class Imageloaders extends BaseAdapter {
                                     holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
                                 }
                                 if (path.size() >= 3) {
-                                    String imgUrl2 = path.get(2);
+                                    String imgUrl2 = path.get(2).getName();
                                     if (imgUrl2 != null && !imgUrl2.equals("")) {
                                         int doc2 = imgUrl2.lastIndexOf(".");
                                         String strs2 = imgUrl2.substring(doc2 + 1);
@@ -421,7 +424,7 @@ public class Imageloaders extends BaseAdapter {
                     holder.inface_relat2.setVisibility(View.GONE);
                     holder.inface_relat3.setVisibility(View.GONE);
                     holder.inface_image.setVisibility(View.VISIBLE);
-                    String imgUrl = path.get(0);
+                    String imgUrl = path.get(0).getName();
                     if (imgUrl != null && !imgUrl.equals("")) {
                         int doc = imgUrl.lastIndexOf(".");
                         String strs = imgUrl.substring(doc + 1);
@@ -493,7 +496,7 @@ public class Imageloaders extends BaseAdapter {
                         }
                         if (path.size() >= 2) {
                             holder.inface_relat3.setVisibility(View.GONE);
-                            String imgUrl1 = path.get(1);
+                            String imgUrl1 = path.get(1).getName();
                             if (imgUrl1 != null && !imgUrl1.equals("")) {
                                 int doc1 = imgUrl1.lastIndexOf(".");
                                 String strs1 = imgUrl1.substring(doc1 + 1);
@@ -560,7 +563,7 @@ public class Imageloaders extends BaseAdapter {
                                     holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
                                 }
                                 if (path.size() >= 3) {
-                                    String imgUrl2 = path.get(2);
+                                    String imgUrl2 = path.get(2).getName();
                                     if (imgUrl2 != null && !imgUrl2.equals("")) {
                                         int doc2 = imgUrl2.lastIndexOf(".");
                                         String strs2 = imgUrl2.substring(doc2 + 1);

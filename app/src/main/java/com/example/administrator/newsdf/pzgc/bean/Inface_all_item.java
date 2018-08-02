@@ -22,7 +22,7 @@ public class Inface_all_item {
     String upload_content;//上传内容
     String upload_addr;//上传地址
     String portrait;//人物头像
-    ArrayList<String> upload;
+    ArrayList<Audio> upload;
     ArrayList<String> filename;
     int comments;
 
@@ -30,7 +30,7 @@ public class Inface_all_item {
                            String taskId, String id, String wbsId, String createTime,
                            String groupName, int isFinish, String upload_time, String userid,
                            String uploador, String upload_content, String upload_addr,
-                           String portrait, ArrayList<String> upload, int comments, ArrayList<String> filename) {
+                           String portrait, ArrayList<Audio> upload, int comments, ArrayList<String> filename) {
         this.wbsPath = wbsPath;
         this.updateDate = updateDate;
         this.content = content;
@@ -163,11 +163,11 @@ public class Inface_all_item {
         this.portrait = portrait;
     }
 
-    public ArrayList<String> getUpload() {
+    public ArrayList<Audio> getUpload() {
         return upload;
     }
 
-    public void setUpload(ArrayList<String> upload) {
+    public void setUpload(ArrayList<Audio> upload) {
         this.upload = upload;
     }
 

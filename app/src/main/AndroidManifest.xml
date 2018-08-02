@@ -237,7 +237,8 @@
         <activity android:name=".pzgc.activity.audit.AuditrecordActivity" />
         <activity android:name=".pzgc.activity.home.same.WorkareaActivity" />
         <activity android:name=".pzgc.activity.audit.RecordsActivity" />
-        <activity android:name=".pzgc.activity.Main2Activity"></activity>
+        <activity android:name=".pzgc.activity.check.CheckmanagementActivity" />
+        <activity android:name=".pzgc.activity.check.CheckmanagementlistActivity"/>
     </application>
 
 </manifest>

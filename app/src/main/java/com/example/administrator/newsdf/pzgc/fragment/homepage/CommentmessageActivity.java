@@ -33,6 +33,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
@@ -101,7 +102,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private int page = 1;
     private int pages = 1;
     //图册
-    private ArrayList<String> paths;
+    private ArrayList<Audio> paths;
     private List<Inface_all_item> Alldata;
     private ArrayList<PhotoBean> imagePaths;
     private List<OrganizationEntity> mTreeDatas;
@@ -854,7 +855,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                                 JSONObject jsonfilse = files.getJSONObject(j);
                                 String filepath = jsonfilse.getString("filepath");
                                 String filename = jsonfilse.getString("filename");
-                                paths.add(Requests.networks + filepath);
+                                paths.add(new Audio(filename,Requests.networks + filepath));
                                 pathsname.add(filename);
                             }
                         }

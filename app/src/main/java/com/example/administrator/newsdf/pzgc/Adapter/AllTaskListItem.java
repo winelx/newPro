@@ -3,17 +3,16 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  * Created by Administrator on 2018/8/1 0001.
  */
 
-public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Inface_all_item> list;
     private Context mContext;
     private RecycleAdapterType adapterType;
@@ -33,19 +32,21 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TypeViewholder(LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.alltasklistitem, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false);
+        TypeViewholder vh = new TypeViewholder(view);
+        //将创建的View注册点击事件
+        return vh;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof TypeViewholder && list.size()>0) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof TypeViewholder && list.size() > 0) {
             bindGrid((TypeViewholder) holder, position);
         }
     }
 
-    private void bindGrid(TypeViewholder holder, int position) {
-        Log.i("sss",list.get(position).getGroupName());
+    private void bindGrid(final TypeViewholder holder, final int position) {
+
         //标题
         if (list.get(position).getGroupName().length() != 0) {
             holder.interTitle.setText(list.get(position).getGroupName());
@@ -58,6 +59,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.infaceUptime.setText(list.get(position).getUpload_time());
         holder.infaceLoation.setText(list.get(position).getUpload_addr());
         holder.infacePcontent.setText(list.get(position).getUpload_content());
+
         switch (list.get(position).getIsFinish() + "") {
             case "0":
                 holder.inface_item_message.setTextString("未完成");
@@ -75,8 +77,30 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
         }
         holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterType = new RecycleAdapterType(holder.taskcontent.getContext(),list.get(position).getUpload());
+        adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload());
         holder.taskcontent.setAdapter(adapterType);
+        holder.inter_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1
+                int position = holder.getLayoutPosition();
+                // 2
+                mOnItemClickListener.onItemClick(holder.itemView, position);
+            }
+        });
+        //判断是否设置了监听器
+        if (mOnItemClickListener != null) {
+            //为ItemView设置监听器
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 1
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
     }
 
     @Override
@@ -96,9 +120,11 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView infaceImgaeText;
         RecyclerView taskcontent;
         SlantedTextView inface_item_message;
+        RelativeLayout inter_rl;
 
         public TypeViewholder(View itemView) {
             super(itemView);
+            inter_rl = itemView.findViewById(R.id.inter_rl);
             interTitle = itemView.findViewById(R.id.inter_title);
             interTime = itemView.findViewById(R.id.inter_time);
             infaceWbsPath = itemView.findViewById(R.id.inface_wbs_path);
@@ -116,6 +142,20 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void getData(ArrayList<Inface_all_item> mdata) {
         this.list = mdata;
         notifyDataSetChanged();
+    }
+
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 
 }

@@ -14,11 +14,8 @@
     <color name="inter_background">#FFDFDF</color>
     <color name="inter_text">#543434</color>
     <color name="Orange">#f88c37</color>
-    <color name="yellow">#ffaa08</color>
-    <color name="graytext">#888888</color>
 
 
-    <color name="red">#f44949</color>
     <color name="green">#3eec09</color>
     <color name="black">#050505</color>
     <color name="blue">#167fe1</color>
@@ -28,7 +25,6 @@
     <color name="transparents">#55000000</color>
 
 
-    <color name="finish_green">#22c67b</color>
     <color name="unfinish_gray">#a6a6a6</color>
     <color name="light_blue">#ccf0fd</color>
     <color name="colorD9E6FD">#D9E6FD</color>
@@ -59,5 +55,11 @@
     <color name="slxicon">#67cd95</color>
 
     <color name="tab_tv_nor">#646464</color>
-    <color name="tab_tv_sel">#f27f19</color>
+    <color name="tab_tv_sel">#f27f19</color>]
+
+
+    <color name="graytext">#888888</color>
+    <color name="finish_green">#28c26A</color>
+    <color name="red">#FE0000</color>
+    <color name="yellow">#ffaa09</color>
 </resources>

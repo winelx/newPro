@@ -15,7 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 
 import java.util.ArrayList;
 
@@ -26,9 +26,9 @@ import java.util.ArrayList;
 public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> list;
+    private ArrayList<Audio> list;
 
-    public RecycleAdapterType(Context mContext,ArrayList<String> list) {
+    public RecycleAdapterType(Context mContext, ArrayList<Audio> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -42,73 +42,111 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof ItemViewholder && list.size()>0) {
+        if (holder instanceof ItemViewholder && list.size() > 0) {
             bindGrid((ItemViewholder) holder, position);
         }
     }
 
     private void bindGrid(ItemViewholder holder, int position) {
-        LogUtil.d("list",list.size());
+
         if (list.size() != 0) {
-            if (position < 3) {
-                try {
-                    String str = list.get(position);
-                    if (str.contains("pdf")) {
-                        holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
-                        holder.imageView.setVisibility(View.GONE);
-                        holder.attachment.setVisibility(View.VISIBLE);
-                        holder.content.setText(list.get(position));
-                        //pdf的icon显示图
-                        holder.tag.setText("P");
-                        //设置文档布局背景色
-                        holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
-                        //设置文件名
-                        holder.content.setText(list.get(position));
-                        //设置文字的颜色
-                        holder.tag.setTextColor(Color.parseColor("#FFFFFF"));
-                        //设置文字背景色
-                        holder.tag.setBackgroundColor(Color.parseColor("#e98e90"));
-                    } else if (str.contains("doc") || str.contains("docx")) {
-                        holder.imageView.setVisibility(View.GONE);
-                        holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
-                        holder.attachment.setVisibility(View.VISIBLE);
-                        holder.content.setText(list.get(position));
-                        //设置文档布局背景色
-                        holder.attachment.setBackgroundColor(Color.parseColor("#f1f6f7"));
-                        //pdf的icon显示图
-                        holder.tag.setText("W");
-                        //设置文件名
-                        holder.content.setText(list.get(position));
-                        //设置文字的颜色
-                        holder.tag.setTextColor(Color.parseColor("#FFFFFF"));
-                        //设置文字背景色
-                        holder.tag.setBackgroundColor(Color.parseColor("#5e8ed3"));
-                    } else if (str.contains("xlsx") || str.contains("xls")) {
-                        holder.imageView.setVisibility(View.GONE);
-                        holder.attachment.setVisibility(View.VISIBLE);
-                        holder.content.setText(list.get(position));
-                        holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
-                        holder.tag.setText("X");
+            try {
+                String str = list.get(position).getContent();
+
+                if (str.contains("pdf")) {
+                    //如果下载路径包含pdf
+                    holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                    //隐藏图片
+                    holder.imageView.setVisibility(View.GONE);
+                    //显示文件控件
+                    holder.attachment.setVisibility(View.VISIBLE);
+                    holder.content.setText(list.get(position).getName());
+                    //pdf的icon显示图
+                    holder.tag.setText("P");
+                    //设置文档布局背景色
+                    holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                    //设置文件名
+                    holder.content.setText(list.get(position).getName());
+                    //设置文字的颜色
+                    holder.tag.setTextColor(Color.parseColor("#FFFFFF"));
+                    //设置文字背景色
+                    holder.tag.setBackgroundColor(Color.parseColor("#e98e90"));
+                    holder.infaceImgaeText.setVisibility(View.GONE);
+                } else if (str.contains("doc") || str.contains("docx")) {
+                    holder.imageView.setVisibility(View.GONE);
+                    holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                    holder.attachment.setVisibility(View.VISIBLE);
+                    holder.content.setText(list.get(position).getName());
+                    //设置文档布局背景色
+                    holder.attachment.setBackgroundColor(Color.parseColor("#f1f6f7"));
+                    //pdf的icon显示图
+                    holder.tag.setText("W");
+                    //设置文件名
+                    holder.content.setText(list.get(position).getName());
+                    //设置文字的颜色
+                    holder.tag.setTextColor(Color.parseColor("#FFFFFF"));
+                    holder.infaceImgaeText.setVisibility(View.GONE);
+                    //设置文字背景色
+                    holder.tag.setBackgroundColor(Color.parseColor("#5e8ed3"));
+                } else if (str.contains("xlsx") || str.contains("xls")) {
+                    holder.imageView.setVisibility(View.GONE);
+                    holder.attachment.setVisibility(View.VISIBLE);
+                    holder.content.setText(list.get(position).getName());
+                    holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
+                    holder.tag.setText("X");
+                    //设置文字的颜色
+                    holder.tag.setTextColor(Color.parseColor("#FFFFFF"));
+                    //设置文字背景色
+                    holder.tag.setBackgroundColor(Color.parseColor("#22c67b"));
+                    holder.infaceImgaeText.setVisibility(View.GONE);
+                } else {
+                    //页面只展示三张图片。当图片超过三招，显示蒙层，展示剩余图片数量
+                    if (position == 2) {
+                        //计算剩余图片数量
+                        int lenght = list.size() - 3;
+                        if (lenght > 0) {
+                            //展示蒙层
+                            holder.infaceImgaeText.setVisibility(View.VISIBLE);
+                            //设置展示数字
+                            holder.infaceImgaeText.setText(lenght + "+");
+                        } else {
+                            holder.infaceImgaeText.setVisibility(View.GONE);
+                        }
                     } else {
-                        holder.imageView.setVisibility(View.VISIBLE);
-                        holder.attachment.setVisibility(View.GONE);
-                        RequestOptions options = new RequestOptions()
-                                .centerCrop()
-                                .dontAnimate()
-                                .error(R.mipmap.image_loading)
-                                .placeholder(R.mipmap.image_loading)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL);
-                        Glide.with(mContext)
-                                .load(str)
-                                .apply(options)
-                                .transition(new DrawableTransitionOptions().crossFade(1000))
-                                .into(holder.imageView);
+                        //如果图片数量没有超过三张就不显示
+                        holder.infaceImgaeText.setVisibility(View.GONE);
                     }
-                } catch (IndexOutOfBoundsException e) {
-
+                    //显示图片
+                    holder.imageView.setVisibility(View.VISIBLE);
+                    //隐藏文件
+                    holder.attachment.setVisibility(View.GONE);
+                    RequestOptions options = new RequestOptions()
+                            .centerCrop()
+                            .dontAnimate()
+                            .error(R.mipmap.image_loading)//加载失败
+                            .placeholder(R.mipmap.image_loading)//加载中
+                            .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                    /**
+                     * 图片使用压缩后的，在路径后面拼接_min
+                     */
+                    //截取出后缀
+                    String imgUrl2 = list.get(position).getContent();
+                    String pas = imgUrl2.substring(imgUrl2.length() - 4, imgUrl2.length());
+                    //拿到截取后缀后的字段
+                    imgUrl2 = imgUrl2.replace(pas, "");
+                    //在字段后面添加_min后再拼接后缀
+                    imgUrl2 = imgUrl2 + "_min" + pas;
+                    Glide.with(mContext)
+                            .load(imgUrl2)
+                            .apply(options)
+                            .transition(new DrawableTransitionOptions().crossFade(1000))
+                            .into(holder.imageView);
                 }
-
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
+
+
         }
     }
 
@@ -122,6 +160,7 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
         private RelativeLayout attachment;
         private TextView content;
         private TextView tag;
+        private TextView infaceImgaeText;
 
         public ItemViewholder(View itemView) {
             super(itemView);
@@ -129,6 +168,7 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
             attachment = itemView.findViewById(R.id.attachment);
             content = itemView.findViewById(R.id.content);
             tag = itemView.findViewById(R.id.tag);
+            infaceImgaeText = itemView.findViewById(R.id.inface_imgaetext);
         }
     }
 

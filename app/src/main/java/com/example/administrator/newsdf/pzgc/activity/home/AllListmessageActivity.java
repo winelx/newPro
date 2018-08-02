@@ -29,10 +29,9 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.AllTaskListItem;
-import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
@@ -80,8 +79,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private EditText searchEditext;
     private String id, wbsid, name, titles;
     private String notall = "2", nodeiD = "1";
-    //主界面适配器
-    private Imageloaders mAdapter;
     //抽屉控件
     private DrawerLayout drawerLayout;
     //判断是否是加载更多
@@ -95,7 +92,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private int page = 1;
     private int pages = 1;
     //图册
-    private ArrayList<String> paths;
+    private ArrayList<Audio> paths;
     private ArrayList<Inface_all_item> Alldata;
     private ArrayList<PhotoBean> imagePaths, stardPaths;
     private List<OrganizationEntity> mTreeDatas;
@@ -128,7 +125,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
-        mContext = getApplicationContext();
+        mContext = AllListmessageActivity.this;
         Intent intent = getIntent();
         try {
             id = intent.getExtras().getString("orgId");
@@ -248,29 +245,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
             }
         });
-//        //listview的点击事件
-//        uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String status = Alldata.get(position).getIsFinish() + "";
-//                if ("2".equals(status)) {
-//                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-//                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-//                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-//                    intent.putExtra("status", "true");
-//                    intent.putExtra("activity", "all");
-//                    startActivity(intent);
-//                } else {
-//                    Intent intent = new Intent(mContext, MoretaskActivity.class);
-//                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-//                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-//                    intent.putExtra("status", "true");
-//                    intent.putExtra("activity", "all");
-//                    startActivity(intent);
-//                }
-//
-//            }
-//        });
 
         okgoall(null, null, page);
         OrganizationEntity bean = new OrganizationEntity(wbsid, "",
@@ -625,6 +599,29 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //初始化适配器
         adapters = new AllTaskListItem(Alldata, mContext);
         recycler_att.setAdapter(adapters);
+        adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     //初始化数据
@@ -642,9 +639,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         Titlew.setText(name);
         //设置标题字体
         Titlew.setTextSize(17);
-        //主界面适配器
-        mAdapter = new Imageloaders(mContext, Alldata);
-
         //打开抽屉控件的圆形控件
         //图册适配器
         taskAdapter = new TaskPhotoAdapter(imagePaths, AllListmessageActivity.this);
@@ -686,7 +680,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void smart() {
         String content = searchEditext.getText().toString();
-       
+
         //判断是否需要传内容
         if (content.length() != 0) {
             //判断是否有节点ID
@@ -711,7 +705,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
-        ToastUtils.showShortToastCenter(i+"");
+
         PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
                 .params("orgId", id)
                 .params("page", i)
@@ -725,7 +719,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     LogUtil.i("sesfdsew", pages);
-                    refreshLayout.finishRefresh(true);
+
                     parsingjson(s);
                 }
 
@@ -739,7 +733,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            refreshLayout.finishRefresh(true);
                             parsingjson(s);
                         }
 
@@ -895,7 +888,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                             JSONObject jsonfilse = files.getJSONObject(j);
                             String filepath = jsonfilse.getString("filepath");
                             String filename = jsonfilse.getString("filename");
-                            paths.add(Requests.networks + filepath);
+                            paths.add(new Audio(filename, Requests.networks + filepath));
                             pathsname.add(filename);
                         }
                     }
@@ -905,7 +898,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 }
                 if (Alldata.size() != 0) {
                     adapters.getData(Alldata);
-
                 }
             } else {
                 if (!swip) {
@@ -913,7 +905,9 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 }
                 adapters.getData(Alldata);
             }
-            Dates.disDialog();
+            refreshLayout.finishRefresh(true);
+            refreshLayout.finishRefresh(true);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

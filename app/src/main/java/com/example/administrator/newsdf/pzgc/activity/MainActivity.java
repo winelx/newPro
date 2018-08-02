@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +24,11 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Tab;
 import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
+import com.example.administrator.newsdf.pzgc.fragment.CheckFragment;
 import com.example.administrator.newsdf.pzgc.fragment.IndexFrament;
 import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -49,6 +50,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
+
 /**
  * description: 承载fragemnt的界面
  *
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView home_img_red;
     private List<Shop> list;
     private boolean workbtight;
+    private List<Fragment> fragmentList;
 
     public static MainActivity getInstance() {
         return mContext;
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mian);
         mContext = this;
         workbtight = false;
+        fragmentList = new ArrayList<>();
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
@@ -195,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -203,12 +206,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initTab() {
+        fragmentList.add(new IndexFrament());
+        fragmentList.add(new WorkFragment());
+        fragmentList.add(new CheckFragment());
+        fragmentList.add(new MineFragment());
         //添加tab信息，存入集合进行展示
         Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style, 0);
         Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tab_check = new Tab(CheckFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
         mTabs.add(tab_home);
         mTabs.add(tab_work);
+        mTabs.add(tab_check);
         mTabs.add(tab_hot);
 
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
@@ -249,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                getFragmentManager().popBackStack();
+                getSupportFragmentManager().popBackStack();
                 Intent MyIntent = new Intent(Intent.ACTION_MAIN);
                 MyIntent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(MyIntent);

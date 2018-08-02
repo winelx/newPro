@@ -34,6 +34,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
@@ -102,7 +103,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private int page = 1;
     private int pages = 1;
     //图册
-    private ArrayList<String> paths;
+    private ArrayList<Audio> paths;
     private List<Inface_all_item> Alldata;
     private ArrayList<PhotoBean> imagePaths;
     private List<OrganizationEntity> mTreeDatas;
@@ -146,7 +147,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         findbyId();
         //初始化数据
         initData();
-        okgoall(null, null,notall);
+        okgoall(null, null, notall);
         /**
          *    侧拉listview上拉加载
          */
@@ -208,7 +209,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     swip = false;
-                    pages=1;
+                    pages = 1;
                     String search = searchEditext.getText().toString();
                     if (search.length() != 0) {
                         smart();
@@ -497,9 +498,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "10";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null,notall);
+                            okgoall(nodeiD, null, notall);
                         } else {
-                            okgoall(null, null,notall);
+                            okgoall(null, null, notall);
                         }
                         break;
                     case R.id.pop_financial:
@@ -510,9 +511,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "0";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null,notall);
+                            okgoall(nodeiD, null, notall);
                         } else {
-                            okgoall(null, null,notall);
+                            okgoall(null, null, notall);
                         }
 
                         break;
@@ -524,9 +525,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "2";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null,notall);
+                            okgoall(nodeiD, null, notall);
                         } else {
-                            okgoall(null, null,notall);
+                            okgoall(null, null, notall);
                         }
                         break;
                     case R.id.pop_backup:
@@ -537,9 +538,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         notall = "3";
                         uslistView.setSelection(0);
                         if (nodeiD != "1") {
-                            okgoall(nodeiD, null,notall);
+                            okgoall(nodeiD, null, notall);
                         } else {
-                            okgoall(null, null,notall);
+                            okgoall(null, null, notall);
                         }
                         break;
                     default:
@@ -591,7 +592,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         uslistView.setSelection(0);
         page = 1;
         pages = 1;
-        okgoall(nodeiD, null,notall);
+        okgoall(nodeiD, null, notall);
     }
 
     /**
@@ -825,7 +826,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                                 JSONObject jsonfilse = files.getJSONObject(j);
                                 String filepath = jsonfilse.getString("filepath");
                                 String filename = jsonfilse.getString("filename");
-                                paths.add(Requests.networks + filepath);
+                                paths.add(new Audio(filename, Requests.networks + filepath));
                                 pathsname.add(filename);
                             }
                         }
@@ -885,15 +886,15 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         if (content.length() != 0) {
             //判断是否有节点ID
             if (nodeiD != "1") {
-                okgoall(nodeiD, content,notall);
+                okgoall(nodeiD, content, notall);
             } else {
-                okgoall(null, content,notall);
+                okgoall(null, content, notall);
             }
         } else {
             if (nodeiD != "1") {
-                okgoall(nodeiD, null,notall);
+                okgoall(nodeiD, null, notall);
             } else {
-                okgoall(nodeiD, null,notall);
+                okgoall(nodeiD, null, notall);
             }
 
         }
@@ -902,9 +903,8 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     /**
      * @param wbsId   wbs ID
      * @param content 搜索内容
-
      */
-    private void okgoall(String wbsId, String content,String status) {
+    private void okgoall(String wbsId, String content, String status) {
         PostRequest mPostRequest = OkGo.<String>post(Requests.FAVORITETASKMSGBYWBS)
                 .params("orgId", id)
                 .params("page", pages)
@@ -934,6 +934,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             LogUtil.i("sesfdsew", s);
                             parsingjson(s);
                         }
+
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);

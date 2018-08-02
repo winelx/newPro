@@ -86,7 +86,7 @@
                     android:drawableLeft="@mipmap/bright_time"
                     android:drawablePadding="5dp"
                     android:gravity="center"
-                    android:text="回复时间:"
+                    android:text="时间:"
                     android:textColor="#999999"
                     android:textSize="11sp" />
 
