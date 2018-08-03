@@ -1,18 +1,38 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.widget.ListView;
+
+import com.example.administrator.newsdf.pzgc.activity.check.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
+import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/4/13 0013.
  */
 
 public class TreeUtlis {
+
+    private int addPosition;
+    private Activity activity;
+
+
     /**
      * 组织机构
      *
@@ -133,6 +153,124 @@ public class TreeUtlis {
                 e.printStackTrace();
                 return null;
             }
+        }
+    }
+
+
+    public void getOrganization(Context mContext, ArrayList<OrganizationEntity> organizationList, TaskTreeListViewAdapter mTreeAdapter, List<OrganizationEntity> mTreeDatas, ListView mTree) {
+        if (organizationList != null) {
+            for (OrganizationEntity entity : organizationList) {
+                String departmentName = entity.getDepartname();
+                OrganizationEntity bean = new OrganizationEntity(entity.getId(), entity.getParentId(),
+                        departmentName, entity.getIsleaf(), entity.iswbs(),
+                        entity.isparent(), entity.getTypes(), entity.getUsername(),
+                        entity.getNumber(), entity.getUserId(), entity.getTitle(), entity.getPhone(), entity.isDrawingGroup());
+                mTreeDatas.add(bean);
+            }
+            try {
+                mTreeAdapter = new TaskTreeListViewAdapter<>(mTree, mContext,
+                        mTreeDatas, 0);
+                mTree.setAdapter(mTreeAdapter);
+                mTreeAdapter.getStatus("Check");
+                initEvent(mContext, mTreeAdapter);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void initEvent(final Context mContext, final TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter) {
+        mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
+            @Override
+            public void onClick(Node node, int position) {
+                if (node.isLeaf()) {
+                } else {
+                    //  如果不是，判断该节点是否有数据，
+                    if (node.getChildren().size() == 0) {
+                        //  如果没有，就请求数据，
+                        addPosition = position;
+                        if (node.isperent()) {
+                            //从拿到该节点的名称和id
+                            CheckNewAddActivity addActivity = (CheckNewAddActivity) mContext;
+                            addActivity.Dialog();
+                            addOrganiztion(mContext, node.getId(), node.iswbs(), node.isperent(), node.getType(), mTreeAdapter);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    //wsb树的数据
+    private void addOrganiztion(final Context mContext, final String id, final boolean iswbs,
+                                final boolean isparent, String type, final TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter) {
+        OkGo.get(Requests.WBSTress)
+                .params("nodeid", id)
+                .params("iswbs", iswbs)
+                .params("isparent", isparent)
+                .params("type", type)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String result, Call call, Response response) {
+                        addOrganizationList(mContext, result, mTreeAdapter);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+                        activity.dissdialog();
+                    }
+                });
+
+    }
+
+    /**
+     * 解析SoapObject对象
+     *
+     * @return
+     */
+    private void addOrganizationList(final Context mContext, String result, TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter) {
+        if (result.contains("data")) {
+            /**
+             * 解析数据
+             */
+            ArrayList<OrganizationEntity> addOrganizationList = new ArrayList<>();
+            addOrganizationList = HomeUtils.parseOrganizationList(result);
+            /**
+             * 动态添加
+             */
+            addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
+            CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+            activity.dissdialog();
+        } else {
+            CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+            activity.dissdialog();
+        }
+    }
+
+    /**
+     * 动态添加数据
+     */
+    public static void addOrganizationList(ArrayList<OrganizationEntity> addOrganizationList, int addPosition, TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter) {
+        if (addOrganizationList.size() != 0) {
+            for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                mTreeAdapter.addExtraNode(addPosition,
+                        addOrganizationList.get(i).getId(),
+                        addOrganizationList.get(i).getParentId(),
+                        addOrganizationList.get(i).getDepartname(),
+                        addOrganizationList.get(i).getIsleaf(),
+                        addOrganizationList.get(i).iswbs(),
+                        addOrganizationList.get(i).isparent(),
+                        addOrganizationList.get(i).getTypes(),
+                        addOrganizationList.get(i).getUsername(),
+                        addOrganizationList.get(i).getNumber(),
+                        addOrganizationList.get(i).getUserId(),
+                        addOrganizationList.get(i).getTitle(),
+                        addOrganizationList.get(i).getPhone(),
+                        addOrganizationList.get(i).isDrawingGroup());
+            }
+
         }
     }
 

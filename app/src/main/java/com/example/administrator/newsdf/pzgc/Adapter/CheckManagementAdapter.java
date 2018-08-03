@@ -1,8 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 
-
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckmanagementlistActivity;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -31,8 +31,10 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
 
     public CheckManagementAdapter(Context context) {
         mContext = context;
-
+        activity = (CheckmanagementlistActivity) mContext;
     }
+
+    private CheckmanagementlistActivity activity;
 
     @Override
     public int getItemCount() {
@@ -43,14 +45,15 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         //设置内容布局的宽为屏幕宽度
-        holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext)-115;
+        holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
         //时间
         holder.management_user.setText(mDatas.get(position));
         //左滑删除点击事件
         holder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ToastUtils.showShortToastCenter(position + "");
+                removeData(position);
             }
         });
     }
@@ -61,7 +64,6 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.check_management, arg0, false);
         MyViewHolder holder = new MyViewHolder(view);
-
         return holder;
     }
 
@@ -69,14 +71,15 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
 
 
         public RelativeLayout layout_content;
-        private TextView managementTitle,management_user;
+        private TextView managementTitle, management_user;
         private TextView tvDelete;
+
         public MyViewHolder(View itemView) {
             super(itemView);
-            management_user=itemView.findViewById(R.id.management_user);
-            managementTitle =itemView.findViewById(R.id.management_title);
-            tvDelete =itemView.findViewById(R.id.tv_delete);
-            layout_content =  itemView.findViewById(R.id.layout_content);
+            management_user = itemView.findViewById(R.id.management_user);
+            managementTitle = itemView.findViewById(R.id.management_title);
+            tvDelete = itemView.findViewById(R.id.tv_delete);
+            layout_content = itemView.findViewById(R.id.layout_content);
             ((LeftSlideView) itemView).setSlidingButtonListener(CheckManagementAdapter.this);
         }
     }
@@ -138,8 +141,5 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
         mDatas = shops;
         notifyDataSetChanged();
     }
-    /**
-     * 注册接口的方法：点击事件。在Mactivity.java实现这些方法。
-     */
 
 }

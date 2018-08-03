@@ -142,7 +142,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".pzgc.activity.home.AllListmessageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".pzgc.activity.work.OrganiwbsActivity"
             android:screenOrientation="portrait" />
@@ -238,7 +239,11 @@
         <activity android:name=".pzgc.activity.home.same.WorkareaActivity" />
         <activity android:name=".pzgc.activity.audit.RecordsActivity" />
         <activity android:name=".pzgc.activity.check.CheckmanagementActivity" />
-        <activity android:name=".pzgc.activity.check.CheckmanagementlistActivity"/>
+        <activity android:name=".pzgc.activity.check.CheckmanagementlistActivity" />
+        <activity
+            android:name=".pzgc.activity.check.CheckNewAddActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".pzgc.activity.check.CheckTaskCategoryActivity"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PopwindActivity;
@@ -72,6 +73,8 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+
         if (!node.isperent()) {
             holder.mIcon.setVisibility(View.INVISIBLE);
         } else {
@@ -124,7 +127,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         break;
                     case "all":
                         AllListmessageActivity listreadActivity = (AllListmessageActivity) mContext;
-                      listreadActivity.switchAct(node);
+                        listreadActivity.switchAct(node);
                         break;
                     case "task":
                         TaskWbsActivity taskWbsActivity = (TaskWbsActivity) mContext;
@@ -137,12 +140,21 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                     case "Collect":
                         CollectionlistActivity Collectionlist = (CollectionlistActivity) mContext;
                         Collectionlist.switchAct(node);
+                        break;
+                    case "Check":
+                        CheckNewAddActivity CheckNewAdd = (CheckNewAddActivity) mContext;
+                        CheckNewAdd.switchAct(node);
+                        break;
                     default:
 
                         break;
                 }
             }
         });
+
+        if ("Check".equals(status)) {
+            holder.taskNum.setVisibility(View.GONE);
+        }
         return convertView;
     }
 

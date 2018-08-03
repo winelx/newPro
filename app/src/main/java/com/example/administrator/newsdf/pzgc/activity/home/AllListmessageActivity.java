@@ -103,6 +103,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
+    //根据评论分辨率返回的尺寸
     private float ste;
     //动画类
     private FloatMeunAnims floatMeunAnims;
@@ -242,7 +243,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                                 .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 //打开弹出框
                 MeunPop();
-
             }
         });
 
@@ -521,7 +521,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             swip = false;
             page = 1;
             pages = 1;
-
             okgoall(nodeiD, null, pages);
         }
     }

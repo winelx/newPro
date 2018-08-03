@@ -42,8 +42,7 @@
             android:layout_marginRight="15dp"
             android:background="@mipmap/toolbar_add"
             android:textSize="18sp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/com_button"

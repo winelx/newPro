@@ -77,6 +77,8 @@ public class BootupActivity extends AppCompatActivity {
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
+//                startActivity(new Intent(mContext, MainActivity.class));
+//                finish();
                 //进行是否登录判断
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
@@ -90,7 +92,7 @@ public class BootupActivity extends AppCompatActivity {
                 return false;
             }
             //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 1000);
+        }).sendEmptyMessageDelayed(0, 1500);
     }
 
     //假登录

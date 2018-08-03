@@ -17,10 +17,10 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
-            android:windowSoftInputMode="adjustPan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:windowSoftInputMode="adjustPan">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -142,6 +142,7 @@
                     android:textSize="14dp"
                     android:visibility="gone" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
