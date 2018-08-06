@@ -32,17 +32,26 @@
         android:id="@+id/checklistmeun"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-
-        android:layout_weight="1">
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:gravity="center">
 
         <TextView
-            android:id="@+id/checklistmeunimage"
-            android:layout_width="25dp"
+            android:id="@+id/checklistmeuntext"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/writer"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/checklistmeunimage"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/category_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="9"
+        android:text="121212121212"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/icontextview"
+        android:layout_width="12dp"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/mine_text5"
+        android:layout_gravity="center"
+        android:layout_marginRight="15dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="{fa-angle-right}"
+        android:textColor="@color/inconfy"
+        android:textSize="25sp" />
+
+</LinearLayout>

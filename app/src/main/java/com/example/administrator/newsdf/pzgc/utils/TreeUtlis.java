@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.ListView;
 
-import com.example.administrator.newsdf.pzgc.activity.check.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.Node;
@@ -191,7 +191,7 @@ public class TreeUtlis {
                         addPosition = position;
                         if (node.isperent()) {
                             //从拿到该节点的名称和id
-                            CheckNewAddActivity addActivity = (CheckNewAddActivity) mContext;
+                            CheckTreeActivity addActivity = (CheckTreeActivity) mContext;
                             addActivity.Dialog();
                             addOrganiztion(mContext, node.getId(), node.iswbs(), node.isperent(), node.getType(), mTreeAdapter);
                         }
@@ -218,7 +218,7 @@ public class TreeUtlis {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+                        CheckTreeActivity activity = (CheckTreeActivity) mContext;
                         activity.dissdialog();
                     }
                 });
@@ -241,10 +241,10 @@ public class TreeUtlis {
              * 动态添加
              */
             addOrganizationList(addOrganizationList, addPosition, mTreeAdapter);
-            CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+            CheckTreeActivity activity = (CheckTreeActivity) mContext;
             activity.dissdialog();
         } else {
-            CheckNewAddActivity activity = (CheckNewAddActivity) mContext;
+            CheckTreeActivity activity = (CheckTreeActivity) mContext;
             activity.dissdialog();
         }
     }

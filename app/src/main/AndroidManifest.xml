@@ -243,7 +243,9 @@
         <activity
             android:name=".pzgc.activity.check.CheckNewAddActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.check.CheckTaskCategoryActivity"></activity>
+        <activity android:name=".pzgc.activity.check.CheckTaskCategoryActivity" />
+        <activity android:name=".pzgc.activity.check.CheckTreeActivity" />
+        <activity android:name=".pzgc.activity.check.CheckitemActivity"></activity>
     </application>
 
 </manifest>

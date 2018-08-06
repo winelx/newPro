@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.check;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,47 +10,51 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
+import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
-import com.example.administrator.newsdf.treeView.Node;
-import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import static com.example.administrator.newsdf.R.id.checklistmeun;
 
 
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView titleView;
-    private String[] numbermonth, numberyear;
+/**
+ * description:新增检查
+ *
+ * @author lx
+ *         date: 2018/8/3 0006
+ *         update: 2018/8/6 0006
+ *         version:
+ */
+public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener,DKDragView.onDragViewClickListener {
+    //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private TextView datatime, checkWbspath;
-    private static CheckNewAddActivity mContext;
-    private int dateMonth, dayDate;
-    private Date myDate = new Date();
+    private TextView datatime, checkWbspath, categoryItem, checklistmeuntext,titleView;
     private LinearLayout check_new_data, checkImport, checkCategory;
     private DrawerLayout drawerLayout;
-
-    //传递参数
+    private GridView checklist;
+    private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
+    private DKDragView dkDragView;
+    //参数
     private String name, wbsid;
-
-    //tree
-    private List<OrganizationEntity> mTreeDatas;
-    private ArrayList<OrganizationEntity> organizationList;
-    private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
-    private TreeUtlis treeUtlis;
-    private ListView checklist;
-    private Dialog progressDialog;
-
+    private int dateMonth,dayDate;
+    private Date myDate = new Date();
+    private String[] numbermonth, numberyear;
+    private CheckNewAdapter adapter;
+    private ArrayList<String> mData;
+    private static CheckNewAddActivity mContext;
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
@@ -60,19 +63,21 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-        mContext = this;
-        treeUtlis = new TreeUtlis();
-        mTreeDatas = new ArrayList<>();
-        organizationList = new ArrayList<>();
-        //获取当前月份
-        dateMonth = myDate.getMonth();
-        //拿到月
-        numbermonth = Utils.month;
-        //拿到年
-        numberyear = Utils.year;
+        initData();
+        //分数
+        checkNewNumber = (EditText) findViewById(R.id.check_new_number);
+        //标题
+        checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
+        //临时部位
+        checkNewTemporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
+        //meun
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        //检查标准类别
+        categoryItem = (TextView) findViewById(R.id.category_item);
         //导入的wbs路径
         checkWbspath = (TextView) findViewById(R.id.check_wbspath);
-        checklist = (ListView) findViewById(R.id.checklist);
+        //wbs Tree
+        checklist = (GridView) findViewById(R.id.checklist);
         //检查标准类别
         checkCategory = (LinearLayout) findViewById(R.id.Check_category);
         //抽屉控件
@@ -81,27 +86,51 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checkImport = (LinearLayout) findViewById(R.id.check_import);
         //时间选择器选择时间后显示
         titleView = (TextView) findViewById(R.id.titleView);
+
+        //具体时间
+        datatime = (TextView) findViewById(R.id.check_new_data_tx);
+        //现在时间（弹出时间选择器）
+        check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
+        //显示meun控件
+        checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         //侧滑栏关闭手势滑动
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //展示侧拉界面后，背景透明度（当前透明度为完全透明）
         drawerLayout.setScrimColor(Color.TRANSPARENT);
-        //具体时间
-        datatime = (TextView) findViewById(R.id.check_new_data_tx);
-        //现在时间（弹出时间选择器）
-        check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
         check_new_data.setOnClickListener(this);
         checkImport.setOnClickListener(this);
         checkCategory.setOnClickListener(this);
+        findViewById(checklistmeun).setOnClickListener(this);
+        findViewById(R.id.checklistback).setOnClickListener(this);
+        dkDragView= (DKDragView) findViewById(R.id.float_suspension);
+        dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
+            @Override
+            public void onClick() {
+                drawerLayout.openDrawer(GravityCompat.END);
+            }
+        });
         titleView.setText("新增检查");
-        //添加list数据
-        OrganizationEntity bean = new OrganizationEntity("724ebfdc08b04e5dbad91b4693b20bfa", "",
-                "测试9标", "0", false,
-                true, "3,5", "",
-                "", "", "测试9标", "", true);
-        organizationList.add(bean);
-        treeUtlis.getOrganization(mContext, organizationList, mTreeAdapter, mTreeDatas, checklist);
+        checklistmeuntext.setText("保存");
+        adapter=new CheckNewAdapter(mContext,mData);
+      checklist.setAdapter(adapter);
+    }
+
+    private void initData() {
+        mData=new ArrayList<>();
+        for (int i = 0; i <10 ; i++) {
+            mData.add(i+1+"");
+        }
+        mContext = this;
+        //获取当前月份
+        dateMonth = myDate.getMonth();
+        //拿到月
+        numbermonth = Utils.month;
+        //拿到年
+        numberyear = Utils.year;
+        //天
+        dayDate = myDate.getDate() - 1;
     }
 
     @Override
@@ -112,16 +141,37 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 meunpop();
                 break;
             case R.id.check_import:
-                drawerLayout.openDrawer(GravityCompat.END);
+                Intent intent1 =new Intent(CheckNewAddActivity.this,CheckTreeActivity.class);
+                intent1.putExtra("orgId","");
+                intent1.putExtra("name","");
+                startActivityForResult(intent1,2);
                 break;
             case R.id.Check_category:
-                startActivity(new Intent(mContext, CheckTaskCategoryActivity.class));
+                Intent intent = new Intent(mContext, CheckTaskCategoryActivity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case checklistmeun:
+                ToastUtils.showShortToastCenter("保存");
+                break;
+            case R.id.checklistback:
+                finish();
                 break;
             default:
                 break;
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2) {
+            String str = data.getStringExtra("data");
+            categoryItem.setText(str);
+        }else if (requestCode == 2 && resultCode == 3){
+            checkWbspath.setText(data.getStringExtra("title"));
+            checkWbspath.setVisibility(View.VISIBLE);
+        }
+    }
 
     /**
      * 选择时间弹出框
@@ -300,6 +350,12 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void onClick() {
+        ToastUtils.showLongToast("tttt");
+    }
+
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -310,22 +366,5 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void switchAct(Node node) {
-        checkWbspath.setText(node.getTitle());
-        checkWbspath.setVisibility(View.VISIBLE);
-    }
 
-    public void Dialog() {
-        progressDialog = new Dialog(CheckNewAddActivity.getInstance(), R.style.progress_dialog);
-        progressDialog.setContentView(R.layout.waiting_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
-        text.setText("请求数据中...");
-        progressDialog.show();
-
-    }
-
-    public void dissdialog() {
-        progressDialog.dismiss();
-    }
 }

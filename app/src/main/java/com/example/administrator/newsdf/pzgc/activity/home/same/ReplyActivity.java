@@ -559,6 +559,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     double mdouble = Dates.getDirSize(new File(images.get(i).path));
                     if (mdouble != 0.0) {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        options.quality=95;
+
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
@@ -588,6 +590,8 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                             bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    options.quality=95;
+
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {

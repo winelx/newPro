@@ -10,6 +10,9 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.example.administrator.newsdf.R;
 
+
+
+
 /**
  * Created by Administrator on 2018/6/25 0025.
  */
@@ -80,4 +83,6 @@ public class FloatMeunAnims {
         });
         animatorSet.start();
     }
+
+
 }

@@ -100,6 +100,7 @@ public class App extends Application {
         OkGo.init(this);
         //图片压缩
         Tiny.getInstance().init(this);
+
         //字体图标
         Iconify.with(new FontAwesomeModule());
         //网络加载库配置

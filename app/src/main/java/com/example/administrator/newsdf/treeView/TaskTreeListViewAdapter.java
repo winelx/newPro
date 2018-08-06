@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PopwindActivity;
@@ -142,7 +142,7 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         Collectionlist.switchAct(node);
                         break;
                     case "Check":
-                        CheckNewAddActivity CheckNewAdd = (CheckNewAddActivity) mContext;
+                        CheckTreeActivity CheckNewAdd = (CheckTreeActivity) mContext;
                         CheckNewAdd.switchAct(node);
                         break;
                     default:

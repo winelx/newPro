@@ -17,9 +17,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
+        maven { url "https://jitpack.io" }
         mavenCentral()
         maven { url "https://raw.githubusercontent.com/miomin/mvn-repo-ione/master" }
         maven {

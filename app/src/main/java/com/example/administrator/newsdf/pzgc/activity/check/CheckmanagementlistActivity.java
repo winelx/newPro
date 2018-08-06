@@ -14,9 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
@@ -30,6 +30,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+
+
 
 
 /**
@@ -48,7 +50,7 @@ public class CheckmanagementlistActivity extends AppCompatActivity implements Vi
     private PopupWindow mPopupWindow;
     private LinearLayout checklistmeun;
     private float resolution;
-    private TextView checklistmeunimage;
+    private ImageView checklistmeunimage;
     private SmartRefreshLayout smartrefreshlayout;
     private int pages = 1;
 
@@ -72,7 +74,8 @@ public class CheckmanagementlistActivity extends AppCompatActivity implements Vi
         smartrefreshlayout.setDisableContentWhenRefresh(true);
         //是否在加载的时候禁止列表的操作
         smartrefreshlayout.setDisableContentWhenLoading(true);
-        checklistmeunimage = (TextView) findViewById(R.id.checklistmeunimage);
+        checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
+        checklistmeunimage.setVisibility(View.VISIBLE);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         findViewById(R.id.checklistback).setOnClickListener(this);
