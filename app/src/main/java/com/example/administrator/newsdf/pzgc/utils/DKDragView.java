@@ -14,8 +14,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
-
-import com.example.administrator.newsdf.camera.ToastUtils;
 /**
  * description: 检查模块新增检查的浮动按钮
  * @author lx
@@ -146,7 +144,7 @@ public class DKDragView extends TextView {
         switch (event.getAction()) {
            //按住
             case MotionEvent.ACTION_DOWN:
-                ToastUtils.showShortToast("ACTION_DOWN");
+
                 startX = (int) event.getX();
                 startY = (int) event.getY();
                 startTime = System.currentTimeMillis();

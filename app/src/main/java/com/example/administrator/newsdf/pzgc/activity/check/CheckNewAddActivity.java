@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -37,11 +38,11 @@ import static com.example.administrator.newsdf.R.id.checklistmeun;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener,DKDragView.onDragViewClickListener {
+public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener, DKDragView.onDragViewClickListener {
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private TextView datatime, checkWbspath, categoryItem, checklistmeuntext,titleView;
+    private TextView datatime, checkWbspath, categoryItem, checklistmeuntext, titleView;
     private LinearLayout check_new_data, checkImport, checkCategory;
     private DrawerLayout drawerLayout;
     private GridView checklist;
@@ -49,12 +50,13 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private DKDragView dkDragView;
     //参数
     private String name, wbsid;
-    private int dateMonth,dayDate;
+    private int dateMonth, dayDate;
     private Date myDate = new Date();
     private String[] numbermonth, numberyear;
     private CheckNewAdapter adapter;
     private ArrayList<String> mData;
     private static CheckNewAddActivity mContext;
+
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
@@ -104,7 +106,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checkCategory.setOnClickListener(this);
         findViewById(checklistmeun).setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
-        dkDragView= (DKDragView) findViewById(R.id.float_suspension);
+        dkDragView = (DKDragView) findViewById(R.id.float_suspension);
         dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
             @Override
             public void onClick() {
@@ -113,14 +115,21 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         });
         titleView.setText("新增检查");
         checklistmeuntext.setText("保存");
-        adapter=new CheckNewAdapter(mContext,mData);
-      checklist.setAdapter(adapter);
+        adapter = new CheckNewAdapter(mContext, mData);
+        checklist.setAdapter(adapter);
+        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ToastUtils.showLongToast(position + "");
+                startActivity(new Intent(mContext,CheckitemActivity.class));
+            }
+        });
     }
 
     private void initData() {
-        mData=new ArrayList<>();
-        for (int i = 0; i <10 ; i++) {
-            mData.add(i+1+"");
+        mData = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            mData.add(i + 1 + "");
         }
         mContext = this;
         //获取当前月份
@@ -141,10 +150,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 meunpop();
                 break;
             case R.id.check_import:
-                Intent intent1 =new Intent(CheckNewAddActivity.this,CheckTreeActivity.class);
-                intent1.putExtra("orgId","");
-                intent1.putExtra("name","");
-                startActivityForResult(intent1,2);
+                Intent intent1 = new Intent(CheckNewAddActivity.this, CheckTreeActivity.class);
+                intent1.putExtra("orgId", "");
+                intent1.putExtra("name", "");
+                startActivityForResult(intent1, 2);
                 break;
             case R.id.Check_category:
                 Intent intent = new Intent(mContext, CheckTaskCategoryActivity.class);
@@ -167,7 +176,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == 1 && resultCode == 2) {
             String str = data.getStringExtra("data");
             categoryItem.setText(str);
-        }else if (requestCode == 2 && resultCode == 3){
+        } else if (requestCode == 2 && resultCode == 3) {
             checkWbspath.setText(data.getStringExtra("title"));
             checkWbspath.setVisibility(View.VISIBLE);
         }
