@@ -12,8 +12,11 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckitemActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckmassageActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 
 import java.util.ArrayList;
 
@@ -32,10 +35,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     final static int TYPE_PHOTO = 2;
 
     final static int MAX = 100;
+    private String status;
 
-    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
+    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths, String status) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
+        this.status = status;
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -92,9 +97,27 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ReplyActivity reply = (ReplyActivity) mContext;
-                    //调用相机
-                    reply.Cream();
+                    switch (status) {
+                        case "Reply":
+                            ReplyActivity reply = (ReplyActivity) mContext;
+                            //调用相机
+                            reply.Cream();
+                            break;
+                        case "Check":
+                            CheckitemActivity Checkitem = (CheckitemActivity) mContext;
+                            //调用相机
+                            Checkitem.showPopwindow();
+                            break;
+                        case "Message":
+                            CheckmassageActivity message = (CheckmassageActivity) mContext;
+                            //调用相机
+                            message.showPopwindow();
+                            break;
+
+                        default:
+                            break;
+                    }
+
                 }
             });
         }
@@ -116,9 +139,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     }
 
     public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivPhoto;
+        private RoundImageView ivPhoto;
         private ImageView vSelected;
         private ImageView img_add;
+
         public PhotoViewHolder(View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_photo);

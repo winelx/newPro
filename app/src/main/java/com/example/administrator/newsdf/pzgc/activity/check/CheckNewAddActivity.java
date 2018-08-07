@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -47,6 +48,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
+    private Button checkNewButton;
     private DKDragView dkDragView;
     //参数
     private String name, wbsid;
@@ -66,6 +68,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
         initData();
+        checkNewButton = (Button) findViewById(R.id.check_new_button);
+
         //分数
         checkNewNumber = (EditText) findViewById(R.id.check_new_number);
         //标题
@@ -104,9 +108,12 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         check_new_data.setOnClickListener(this);
         checkImport.setOnClickListener(this);
         checkCategory.setOnClickListener(this);
+        checkNewButton.setOnClickListener(this);
         findViewById(checklistmeun).setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         dkDragView = (DKDragView) findViewById(R.id.float_suspension);
+        //设置不允许超过的边界（左上右下）
+        dkDragView.setBoundary(0, 130, 0, 130);
         dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
             @Override
             public void onClick() {
@@ -121,7 +128,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtils.showLongToast(position + "");
-                startActivity(new Intent(mContext,CheckitemActivity.class));
+                startActivity(new Intent(mContext, CheckitemActivity.class));
             }
         });
     }
@@ -164,6 +171,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.checklistback:
                 finish();
+                break;
+            case R.id.check_new_button:
+                startActivity(new Intent(mContext, CheckitemActivity.class));
                 break;
             default:
                 break;

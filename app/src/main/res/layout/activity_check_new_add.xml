@@ -32,24 +32,24 @@
                 <include layout="@layout/check_new_add_content" />
             </ScrollView>
 
-
-            <com.example.administrator.newsdf.pzgc.utils.DKDragView
-                android:id="@+id/float_suspension"
-                android:background="@mipmap/float_suspension"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="50dp" />
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/check_new_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/graytext"
                 android:text="检查"
                 android:textColor="@color/writer" />
+            <com.example.administrator.newsdf.pzgc.utils.DKDragView
+                android:id="@+id/float_suspension"
+                android:background="@mipmap/float_suspension"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="70dp" />
         </RelativeLayout>
 
         <LinearLayout

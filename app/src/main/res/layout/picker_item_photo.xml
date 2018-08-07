@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.example.administrator.newsdf.pzgc.utils.RoundImageView
         android:id="@+id/iv_photo"
-        android:layout_width="90dp"
-        android:layout_height="95dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
-        android:padding="1dip"
         android:scaleType="centerCrop" />
 
     <ImageView

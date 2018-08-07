@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back"
+    android:orientation="vertical">
+
+    <include layout="@layout/titlestyle" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="是否生成整改通知单"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <Switch
+            android:id="@+id/check_message_switch"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:padding="0dp"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/check_message_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_marginTop="10dp">
+
+        <include layout="@layout/check_message_conent" />
+
+    </ScrollView>
+</LinearLayout>

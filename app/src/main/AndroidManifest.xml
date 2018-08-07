@@ -245,7 +245,11 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".pzgc.activity.check.CheckTaskCategoryActivity" />
         <activity android:name=".pzgc.activity.check.CheckTreeActivity" />
-        <activity android:name=".pzgc.activity.check.CheckitemActivity"></activity>
+        <activity
+            android:name=".pzgc.activity.check.CheckitemActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".pzgc.activity.check.CheckmassageActivity" />
+        <activity android:name=".pzgc.activity.check.CheckuserActivity" />
     </application>
 
 </manifest>

@@ -27,9 +27,9 @@ public class CheckmanagementActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_checkmanagement);
         expandableListView= (ExpandableListView) findViewById(R.id.expandable);
         refreshLayout= (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        comtitle= (TextView) findViewById(R.id.com_title);
+        comtitle= (TextView) findViewById(R.id.titleView);
         comtitle.setText("检查管理");
-        findViewById(R.id.com_back).setOnClickListener(this);
+        findViewById(R.id.checklistback).setOnClickListener(this);
         comtitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

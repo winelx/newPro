@@ -92,7 +92,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
     private List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem,drawer_layout_text;
+    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem, drawer_layout_text;
     private ImageView Save;
     private String latitude, longitude;
     private EditText replyText;
@@ -222,7 +222,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      * 发现ID
      */
     private void findID() {
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setVisibility(View.GONE);
@@ -376,7 +376,60 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
      */
 
     public void Cream() {
-        showPopwindow();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(ReplyActivity.this.getCurrentFocus()
+                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
+        View popView = View.inflate(this, R.layout.camera_pop_menu, null);
+
+        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
+        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
+        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
+        RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+
+        final PopupWindow popWindow = new PopupWindow(popView, width, height);
+        popWindow.setAnimationStyle(R.style.AnimBottom);
+        popWindow.setFocusable(true);
+        // 设置同意在外点击消失
+        popWindow.setOutsideTouchable(false);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    //调用相机
+                    case R.id.btn_camera_pop_camera:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                        } else {
+                            CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
+                        }
+                        break;
+                    //相册图片
+                    case R.id.btn_camera_pop_album:
+                        //开启相册
+                        Intent intent = new Intent(mContext, ImageGridActivity.class);
+                        startActivityForResult(intent, IMAGE_PICKER);
+                        break;
+                    //
+                    case R.id.btn_camera_pop_cancel:
+                        //关闭pop
+                    case R.id.btn_pop_add:
+                    default:
+                        popWindow.dismiss();
+                        break;
+                }
+                popWindow.dismiss();
+            }
+        };
+
+        btnCamera.setOnClickListener(listener);
+        btnAlbum.setOnClickListener(listener);
+        btnCancel.setOnClickListener(listener);
+        ColorDrawable dw = new ColorDrawable(0x30000000);
+        popWindow.setBackgroundDrawable(dw);
+        popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     /**
@@ -386,7 +439,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         if (pathimg.size() == 0 || pathimg.get(0) == "") {
             pathimg.clear();
         }
-        photoAdapter = new PhotoAdapter(this, pathimg);
+        photoAdapter = new PhotoAdapter(this, pathimg, "Reply");
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setAdapter(photoAdapter);
         comButton.setBackgroundResource(R.mipmap.reply_commit);
@@ -487,7 +540,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 drew = true;
                 //网络请求
                 photoPopPaths.clear();
-                mAdapter.getData(photoPopPaths,"");
+                mAdapter.getData(photoPopPaths, "");
                 drawer_layout_text.setText("图纸");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
@@ -504,7 +557,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 //上拉加载的状态判断
                 liststatus = false;
                 photoPopPaths.clear();
-                mAdapter.getData(photoPopPaths,"");
+                mAdapter.getData(photoPopPaths, "");
                 drawer_layout_text.setText("标准");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
@@ -559,7 +612,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                     double mdouble = Dates.getDirSize(new File(images.get(i).path));
                     if (mdouble != 0.0) {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                        options.quality=95;
+                        options.quality = 95;
 
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
@@ -584,13 +637,13 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
                 public void takePhotoFinish(final String path) {
                     //   根据路径压缩图片并返回bitmap(2
                     //获取图片选择角度，旋转图片
-                    Bitmap bitmap=  CropImageUtils.rotaingImageView( CropImageUtils.readPictureDegree(path),compressPixel(path));
+                    Bitmap bitmap = CropImageUtils.rotaingImageView(CropImageUtils.readPictureDegree(path), compressPixel(path));
                     //给压缩的图片添加时间水印(1)
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
                             bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    options.quality=95;
+                    options.quality = 95;
 
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
@@ -650,63 +703,6 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    //添加图片
-    private void showPopwindow() {
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(ReplyActivity.this.getCurrentFocus()
-                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
-        View popView = View.inflate(this, R.layout.camera_pop_menu, null);
-
-        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
-        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
-        RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-
-        final PopupWindow popWindow = new PopupWindow(popView, width, height);
-        popWindow.setAnimationStyle(R.style.AnimBottom);
-        popWindow.setFocusable(true);
-        // 设置同意在外点击消失
-        popWindow.setOutsideTouchable(false);
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    //调用相机
-                    case R.id.btn_camera_pop_camera:
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
-                        } else {
-                            CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
-                        }
-                        break;
-                    //相册图片
-                    case R.id.btn_camera_pop_album:
-                        //开启相册
-                        Intent intent = new Intent(mContext, ImageGridActivity.class);
-                        startActivityForResult(intent, IMAGE_PICKER);
-                        break;
-                    //
-                    case R.id.btn_camera_pop_cancel:
-                        //关闭pop
-                    case R.id.btn_pop_add:
-                    default:
-                        popWindow.dismiss();
-                        break;
-                }
-                popWindow.dismiss();
-            }
-        };
-
-        btnCamera.setOnClickListener(listener);
-        btnAlbum.setOnClickListener(listener);
-        btnCancel.setOnClickListener(listener);
-        ColorDrawable dw = new ColorDrawable(0x30000000);
-        popWindow.setBackgroundDrawable(dw);
-        popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-    }
 
     /**
      * 重写返回键，判断是否在上传数据，如果在上

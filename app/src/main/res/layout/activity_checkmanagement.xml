@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/titlestyle" />
 
 
 
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:background="@color/writer"
             android:divider="@color/back"
-            android:dividerHeight="@null"
+            android:dividerHeight="0.5dp"
             android:groupIndicator="@color/colorAccent" />
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter

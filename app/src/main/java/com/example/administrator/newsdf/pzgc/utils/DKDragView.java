@@ -234,6 +234,7 @@ public class DKDragView extends TextView {
     }
 
     private void startTranslateAnimation() {
+
         TranslateAnimation animation = new TranslateAnimation(0, targetX, 0, targetY);
         animation.setDuration(animationDuration);
         animation.setFillAfter(true);
