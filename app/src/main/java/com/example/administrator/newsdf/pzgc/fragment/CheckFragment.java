@@ -15,7 +15,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckFragmentAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.Checkbean;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckmanagementActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 
 import java.util.ArrayList;
 
@@ -53,20 +54,22 @@ public class CheckFragment extends Fragment {
         adapter.setOnItemClickListener(new CheckFragmentAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         ToastUtils.showShortToastCenter("检查标准");
                         break;
                     case 1:
-                    startActivity(new Intent(mContext, CheckmanagementActivity.class));
+                        startActivity(new Intent(mContext, CheckmanagementActivity.class));
+
                         break;
                     case 2:
-                        ToastUtils.showShortToastCenter("通知管理");
+                        startActivity(new Intent(mContext, CheckdownMessageActivity.class));
                         break;
                     case 3:
                         ToastUtils.showShortToastCenter("统计报表");
                         break;
-                    default:break;
+                    default:
+                        break;
                 }
             }
         });

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.check;
+package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class CheckmanagementActivity extends AppCompatActivity implements View.O
         comtitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CheckmanagementActivity.this,CheckmanagementlistActivity.class));
+                startActivity(new Intent(CheckmanagementActivity.this,CheckTasklistActivity.class));
             }
         });
     }
@@ -41,7 +41,7 @@ public class CheckmanagementActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
             switch (v.getId()){
-                case R.id.com_back:
+                case R.id.checklistback:
                     finish();
                     break;
                 default:break;

@@ -241,13 +241,12 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
 
-
-                            //截取出后缀
-                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
-                            //拿到截取后缀后的字段
-                            imgUrl = imgUrl.replace(pas, "");
-                            //在字段后面添加_min后再拼接后缀
-                            imgUrl = imgUrl + "_min" + pas;
+//                            //截取出后缀
+//                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
+//                            //拿到截取后缀后的字段
+//                            imgUrl = imgUrl.replace(pas, "");
+//                            //在字段后面添加_min后再拼接后缀
+//                            imgUrl = imgUrl + "_min" + pas;
                             holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
                         }
                         if (path.size() >= 2) {

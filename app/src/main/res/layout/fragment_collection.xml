@@ -1,38 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back"
-    android:orientation="vertical">
+    android:background="@color/back">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/SmartRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/home_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/back"
-                android:dividerHeight="0.5dp"
-                android:scrollbars="none" />
-
-
-            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                android:layout_width="match_parent"
-                android:layout_height="45dp" />
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <LinearLayout
             android:id="@+id/nullposion"
@@ -52,7 +27,44 @@
                 android:text="暂 无 数 据 ！" />
 
         </LinearLayout>
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/SmartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/home_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/back"
+                android:dividerHeight="0.5dp"
+                android:scrollbars="none" />
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/check_newadd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginRight="29dp"
+        android:visibility="gone"
+        android:background="@mipmap/check_newadd" />
 
-</LinearLayout>
+</RelativeLayout>

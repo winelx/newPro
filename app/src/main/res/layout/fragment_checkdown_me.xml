@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><!--item布局，自定义View-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/check_relati"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/home_item_img"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/home_item_blue"
+        android:gravity="center"
+        android:padding="7dp"
+        android:text="第四分公司"
+        android:textColor="@color/writer"
+        android:textSize="9sp" />
+
+
+    <TextView
+        android:id="@+id/check_me_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:text="三度一标"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:layout_marginStart="22dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/home_item_img"
+        android:layout_toEndOf="@+id/home_item_img" />
+
+
+    <TextView
+        android:id="@+id/home_item_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_item_style"
+        android:gravity="center"
+        android:text="+"
+        android:layout_marginRight="18dp"
+        android:textColor="@color/writer"
+        android:textSize="10sp"
+        android:layout_marginEnd="18dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.ListView;
 
-import com.example.administrator.newsdf.pzgc.activity.check.CheckTreeActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.treeView.Node;

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LazyFragment;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -46,7 +46,7 @@ import static com.example.administrator.newsdf.pzgc.activity.work.Adapter.TabAda
  * 任务管理界面的fragment
  */
 @SuppressLint("ValidFragment")
-public class TabFragment extends LazyFragment {
+public class TabFragment extends Fragment {
     private int pos = 0;
     private TabAdapter TabAdapter = null;
     private TabAdapters mAdapters;
@@ -252,8 +252,5 @@ public class TabFragment extends LazyFragment {
         super.onStop();
     }
 
-    @Override
-    public void LazyLoad() {
-    }
 
 }

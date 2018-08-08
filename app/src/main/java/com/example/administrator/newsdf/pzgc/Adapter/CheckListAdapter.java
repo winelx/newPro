@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
+import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
 import java.util.HashMap;
@@ -18,28 +20,17 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * description: 检查模块——下发整改通知选择责任人
- *
- * @author lx
- *         date: 2018/6/14 0014 上午 11:46
- *         update: 2018/6/14 0014
- *         version:
- */
-public class CheckUserListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
+public class CheckListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
     private List<String> classes;
-    private Map<String, List<String>> content;
+    private Map<String, List<Home_item>> content;
     private Context context;
-    private View.OnClickListener ChildClickListener;
     private LeftSlideView mMenu = null;
-    private String zero = "0";
 
-    public CheckUserListAdapter(List<String> classes, Map<String, List<String>> content, Context context,
-                                View.OnClickListener ivGoToChildClickListener) {
+
+    public CheckListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context) {
         this.classes = classes;
         this.content = content;
         this.context = context;
-        this.ChildClickListener = ivGoToChildClickListener;
 
     }
 
@@ -83,13 +74,11 @@ public class CheckUserListAdapter extends BaseExpandableListAdapter implements L
             groupHold = new GroupHold();
             groupHold.tvGroupName = convertView.findViewById(R.id.tv_groupName);
             groupHold.ivGoToChildLv = convertView.findViewById(R.id.iv_goToChildLV);
-            groupHold.tv_group = convertView.findViewById(R.id.tv_group);
             convertView.setTag(groupHold);
         } else {
             groupHold = (GroupHold) convertView.getTag();
         }
-        String groupName = classes.get(groupPosition);
-        groupHold.tvGroupName.setText(groupName);
+        groupHold.tvGroupName.setText(classes.get(groupPosition));
         //取消默认的groupIndicator后根据方法中传入的isExpand判断组是否展开并动态自定义指示器
         //如果组展开
         if (isExpanded) {
@@ -103,9 +92,6 @@ public class CheckUserListAdapter extends BaseExpandableListAdapter implements L
         Map<String, Object> tagMap = new HashMap<>(16);
         tagMap.put("groupPosition", groupPosition);
         tagMap.put("isExpanded", isExpanded);
-//        groupHold.tv_group.setTag(tagMap);
-        // 点击事件
-
         return convertView;
     }
 
@@ -115,21 +101,21 @@ public class CheckUserListAdapter extends BaseExpandableListAdapter implements L
                              ViewGroup parent) {
         final ChildHold childHold;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.vw_list_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_checkdown_all, null);
             childHold = new ChildHold();
-            childHold.list_item_text = convertView.findViewById(R.id.list_item_text);
-
+            childHold.homeItemImg = convertView.findViewById(R.id.home_item_img);
+            childHold.layoutContent = convertView.findViewById(R.id.check_relati);
             convertView.setTag(childHold);
         } else {
             childHold = (ChildHold) convertView.getTag();
         }
-        childHold.list_item_text.setText(content.get(classes.get(groupPosition)).get(childPosition));
-        childHold.list_item_text.setOnClickListener(new View.OnClickListener() {
+        childHold.homeItemImg.setBackgroundResource(R.drawable.home_item_blue);
+
+        childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckuserActivity activity = (CheckuserActivity) context;
-                activity.getdata(content.get(classes.get(groupPosition)).get(childPosition));
-
+                Intent intent = new Intent(context, ChecknoticeMessagelistActivity.class);
+                context.startActivity(intent);
             }
         });
         return convertView;
@@ -187,11 +173,12 @@ public class CheckUserListAdapter extends BaseExpandableListAdapter implements L
     private class GroupHold {
         TextView tvGroupName;
         ImageView ivGoToChildLv;
-        LinearLayout tv_group;
     }
 
     private class ChildHold {
-        TextView list_item_text;
+        TextView tvDelete;
+        TextView homeItemContent, homeItemTime, homeItemName, homeItemImg, homeItemMessage, tvSet;
+        LinearLayout layoutContent;
     }
 
 }

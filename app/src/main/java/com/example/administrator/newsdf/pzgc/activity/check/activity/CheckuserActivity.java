@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.check;
+package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2018/8/7 0007.
+ * Created by Administrator on
  */
+/**
+ * description: 检查模块——下发通知的选择联系人
+ * @author lx
+ * date: 2018/8/8 0008 上午 9:37
+ * update: 2018/8/7 0007
+ * version:
+*/
 
 public class CheckuserActivity extends AppCompatActivity implements View.OnClickListener {
     private ExpandableListView expandableListView;

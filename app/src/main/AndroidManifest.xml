@@ -238,18 +238,22 @@
         <activity android:name=".pzgc.activity.audit.AuditrecordActivity" />
         <activity android:name=".pzgc.activity.home.same.WorkareaActivity" />
         <activity android:name=".pzgc.activity.audit.RecordsActivity" />
-        <activity android:name=".pzgc.activity.check.CheckmanagementActivity" />
-        <activity android:name=".pzgc.activity.check.CheckmanagementlistActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckmanagementActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckTasklistActivity" />
         <activity
-            android:name=".pzgc.activity.check.CheckNewAddActivity"
+            android:name=".pzgc.activity.check.activity.CheckNewAddActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.check.CheckTaskCategoryActivity" />
-        <activity android:name=".pzgc.activity.check.CheckTreeActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckTaskCategoryActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckTreeActivity" />
         <activity
-            android:name=".pzgc.activity.check.CheckitemActivity"
+            android:name=".pzgc.activity.check.activity.CheckitemActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.check.CheckmassageActivity" />
-        <activity android:name=".pzgc.activity.check.CheckuserActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckmassageActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckuserActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckdownMessageActivity" />
+        <activity android:name=".pzgc.activity.check.activity.IssuedTaskDetailsActivity" />
+        <activity android:name=".pzgc.activity.check.activity.ChecknoticeMessagelistActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckRectificationActivity"></activity>
     </application>
 
 </manifest>

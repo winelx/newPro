@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.check;
+package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckmanagementlistActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView rmanageRecy;
     private CheckManagementAdapter mAdapter;
     private ArrayList<String> list;
@@ -58,7 +58,7 @@ public class CheckmanagementlistActivity extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
-        mContext = CheckmanagementlistActivity.this;
+        mContext = CheckTasklistActivity.this;
         list = new ArrayList<>();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         resolution = ScreenUtil.getDensity(App.getInstance());

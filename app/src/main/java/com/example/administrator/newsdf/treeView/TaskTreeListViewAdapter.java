@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckTreeActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PopwindActivity;

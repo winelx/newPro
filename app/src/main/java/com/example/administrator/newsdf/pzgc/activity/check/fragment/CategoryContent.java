@@ -15,7 +15,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckTaskCategoryActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskCategoryActivity;
 import com.example.administrator.newsdf.pzgc.callback.CategoryCallback;
 import com.example.administrator.newsdf.pzgc.callback.CategoryCallbackUtils;
 import com.joanzapata.iconify.widget.IconTextView;

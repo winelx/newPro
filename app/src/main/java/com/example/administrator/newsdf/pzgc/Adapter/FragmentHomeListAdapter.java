@@ -120,7 +120,7 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         tagMap.put("isExpanded", isExpanded);
         groupHold.tvGroupName.setTag(tagMap);
         // 点击事件
-        groupHold.tvGroupName.setOnClickListener(ivGoToChildClickListener);
+//        groupHold.tvGroupName.setOnClickListener(ivGoToChildClickListener);
         return convertView;
     }
 
@@ -156,10 +156,10 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         } else if (groupPosition % 4 != 0) {
             childHold.homeItemImg.setBackgroundResource(R.drawable.homt_item_green);
         }
-        if (classes.get(groupPosition).equals("待审核")) {
-            childHold.tvSet.setVisibility(View.GONE);
-        } else {
+        if (classes.get(groupPosition).equals("待回复")) {
             childHold.tvSet.setVisibility(View.VISIBLE);
+        } else {
+            childHold.tvSet.setVisibility(View.GONE);
         }
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         String childName = content.get(classes.get(groupPosition)).get(childPosition).getContent();

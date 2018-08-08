@@ -121,7 +121,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
         tagMap.put("isExpanded", isExpanded);
         groupHold.tvGroupName.setTag(tagMap);
         // 点击事件
-        groupHold.tvGroupName.setOnClickListener(ivGoToChildClickListener);
+//        groupHold.tvGroupName.setOnClickListener(ivGoToChildClickListener);
         return convertView;
     }
 

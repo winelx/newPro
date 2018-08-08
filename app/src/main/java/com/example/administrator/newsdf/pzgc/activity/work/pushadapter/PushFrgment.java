@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.example.administrator.newsdf.pzgc.activity.work.MissionpushActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushdialogActivity;
 import com.example.administrator.newsdf.pzgc.bean.Push_item;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LazyFragment;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.WbsDialog;
 import com.lzy.okgo.OkGo;
@@ -50,7 +50,7 @@ import okhttp3.Response;
  *         说明：
  */
 @SuppressLint("ValidFragment")
-public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapter.UpdateAble {
+public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.UpdateAble {
     private int pos = 0;
     private Context mContext;
     private ArrayList<Push_item> data = null;
@@ -371,10 +371,7 @@ public class PushFrgment extends LazyFragment implements BaseFragmentPagerAdapte
                 });
     }
 
-    @Override
-    public void LazyLoad() {
-        //懒加载，如果需要在加载界面前处理的
-    }
+
 
     /**
      * 批量修改负责人

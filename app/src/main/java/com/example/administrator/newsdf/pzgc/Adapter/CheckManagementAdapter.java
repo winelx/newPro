@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckmanagementlistActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -31,10 +31,10 @@ public class CheckManagementAdapter extends RecyclerView.Adapter<CheckManagement
 
     public CheckManagementAdapter(Context context) {
         mContext = context;
-        activity = (CheckmanagementlistActivity) mContext;
+        activity = (CheckTasklistActivity) mContext;
     }
 
-    private CheckmanagementlistActivity activity;
+    private CheckTasklistActivity activity;
 
     @Override
     public int getItemCount() {

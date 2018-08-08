@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.check;
+package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
