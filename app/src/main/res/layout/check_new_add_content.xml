@@ -10,7 +10,10 @@
         android:id="@+id/newaddcontent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,11 +87,12 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/check_new_webtext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="测试一标"
+
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -201,7 +205,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="检查标准类别"
+                    android:text="类别"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>

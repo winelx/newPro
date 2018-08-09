@@ -246,6 +246,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter implement
                     content.get(classes.get(groupPosition)).get(childPosition).setUnfinish("0");
                     childHold.homeItemMessage.setVisibility(View.GONE);
                 }
+
                 Intent intent = new Intent(context, AllListmessageActivity.class);
                 intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());

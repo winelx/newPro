@@ -253,7 +253,12 @@
         <activity android:name=".pzgc.activity.check.activity.CheckdownMessageActivity" />
         <activity android:name=".pzgc.activity.check.activity.IssuedTaskDetailsActivity" />
         <activity android:name=".pzgc.activity.check.activity.ChecknoticeMessagelistActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckRectificationActivity"></activity>
+        <activity
+            android:name=".pzgc.activity.check.activity.CheckRectificationActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".pzgc.activity.check.activity.CheckReplyActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckValidationActivity"/>
+        <activity android:name=".pzgc.activity.check.activity.CheckstandardListActivity"/>
     </application>
 
 </manifest>

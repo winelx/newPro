@@ -49,6 +49,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_checkmanagement);
         mContext = CheckuserActivity.this;
         list = new ArrayList<>();
+
         list.add("项目经理");
         list.add("技术员");
         list.add("实施人员");

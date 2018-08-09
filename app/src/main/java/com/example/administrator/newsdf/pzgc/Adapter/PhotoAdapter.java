@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReplyActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckValidationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmassageActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
@@ -113,7 +116,21 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                             //调用相机
                             message.showPopwindow();
                             break;
-
+                        case "Rectifi":
+                            CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
+                            //调用相机
+                            Rectifi.showPopwindow();
+                            break;
+                        case "CheckReply":
+                            CheckReplyActivity CheckReply = (CheckReplyActivity) mContext;
+                            //调用相机
+                            CheckReply.showPopwindow();
+                            break;
+                        case "validation":
+                            CheckValidationActivity validation = (CheckValidationActivity) mContext;
+                            //调用相机
+                            validation.showPopwindow();
+                            break;
                         default:
                             break;
                     }

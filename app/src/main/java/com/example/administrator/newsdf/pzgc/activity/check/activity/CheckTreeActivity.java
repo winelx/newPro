@@ -19,13 +19,14 @@ import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 
+/**
  * description: 检查的wbs树
+ *
  * @author lx
- * date: 2018/8/6 0006 下午 1:35 
- * update: 2018/8/6 0006
- * version: 
-*/
+ *         date: 2018/8/6 0006 下午 1:35
+ *         update: 2018/8/6 0006
+ *         version:
+ */
 
 public class CheckTreeActivity extends AppCompatActivity {
     //tree
@@ -36,21 +37,24 @@ public class CheckTreeActivity extends AppCompatActivity {
     private Context mContext;
     private ListView checklist;
     private Dialog progressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbs);
-        mContext=this;
+        Intent intent = getIntent();
+        mContext = this;
         treeUtlis = new TreeUtlis();
 
         mTreeDatas = new ArrayList<>();
         organizationList = new ArrayList<>();
-        checklist= (ListView) findViewById(R.id.wbs_listview);
+        checklist = (ListView) findViewById(R.id.wbs_listview);
         //添加list数据
-        OrganizationEntity bean = new OrganizationEntity("724ebfdc08b04e5dbad91b4693b20bfa", "",
-                "测试9标", "0", false,
+        String name = intent.getStringExtra("name");
+        OrganizationEntity bean = new OrganizationEntity(intent.getStringExtra("orgId"), "",
+                name, "0", false,
                 true, "3,5", "",
-                "", "", "测试9标", "", true);
+                "", "", name, "", true);
         organizationList.add(bean);
         treeUtlis.getOrganization(mContext, organizationList, mTreeAdapter, mTreeDatas, checklist);
         checklist.setEmptyView(findViewById(R.id.nullposion));
@@ -61,9 +65,10 @@ public class CheckTreeActivity extends AppCompatActivity {
             }
         });
     }
+
     public void switchAct(Node node) {
-        Intent intent=new Intent();
-        intent.putExtra("title",node.getTitle());
+        Intent intent = new Intent();
+        intent.putExtra("title", node.getTitle());
         setResult(3, intent);
         finish();
     }

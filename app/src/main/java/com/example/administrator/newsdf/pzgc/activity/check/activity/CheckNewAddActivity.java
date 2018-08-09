@@ -22,12 +22,14 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.administrator.newsdf.R.id.check_new_button;
 import static com.example.administrator.newsdf.R.id.checklistmeun;
 
 
@@ -39,22 +41,22 @@ import static com.example.administrator.newsdf.R.id.checklistmeun;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener, DKDragView.onDragViewClickListener {
+public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener {
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private TextView datatime, checkWbspath, categoryItem, checklistmeuntext, titleView;
+    private TextView datatime, checkWbspath, categoryItem, checklistmeuntext, titleView, checkNewWebtext;
     private LinearLayout check_new_data, checkImport, checkCategory;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
+    private String[] numbermonth, numberyear;
     //参数
-    private String name, wbsid;
+    private String name, orgId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
-    private String[] numbermonth, numberyear;
     private CheckNewAdapter adapter;
     private ArrayList<String> mData;
     private static CheckNewAddActivity mContext;
@@ -63,13 +65,20 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         return mContext;
     }
 
+    private CheckUtils checkUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
+        Intent intent =getIntent();
         initData();
-        checkNewButton = (Button) findViewById(R.id.check_new_button);
-
+        //wbs名称
+        checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
+        orgId=intent.getStringExtra("orgId");
+        name=intent.getStringExtra("name");
+        checkNewWebtext.setText(name);
+        checkNewButton = (Button) findViewById(check_new_button);
         //分数
         checkNewNumber = (EditText) findViewById(R.id.check_new_number);
         //标题
@@ -92,7 +101,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checkImport = (LinearLayout) findViewById(R.id.check_import);
         //时间选择器选择时间后显示
         titleView = (TextView) findViewById(R.id.titleView);
-
         //具体时间
         datatime = (TextView) findViewById(R.id.check_new_data_tx);
         //现在时间（弹出时间选择器）
@@ -138,13 +146,14 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         for (int i = 0; i < 10; i++) {
             mData.add(i + 1 + "");
         }
-        mContext = this;
-        //获取当前月份
-        dateMonth = myDate.getMonth();
+        checkUtils = new CheckUtils();
         //拿到月
         numbermonth = Utils.month;
         //拿到年
         numberyear = Utils.year;
+        mContext = this;
+        //获取当前月份
+        dateMonth = myDate.getMonth();
         //天
         dayDate = myDate.getDate() - 1;
     }
@@ -158,8 +167,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.check_import:
                 Intent intent1 = new Intent(CheckNewAddActivity.this, CheckTreeActivity.class);
-                intent1.putExtra("orgId", "");
-                intent1.putExtra("name", "");
+                intent1.putExtra("orgId", orgId);
+                intent1.putExtra("name",name);
                 startActivityForResult(intent1, 2);
                 break;
             case R.id.Check_category:
@@ -167,13 +176,27 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 startActivityForResult(intent, 1);
                 break;
             case checklistmeun:
-                ToastUtils.showShortToastCenter("保存");
+                String string = checklistmeuntext.getText().toString();
+                if (string.equals("保存")) {
+                    checklistmeuntext.setText("编辑");
+                    ToastUtils.showShortToastCenter("保存");
+                    checkNewButton.setText("开始检查");
+                    checkNewButton.setBackgroundResource(R.color.colorAccent);
+                } else {
+                    checklistmeuntext.setText("保存");
+                    checkNewButton.setText("开始");
+                    ToastUtils.showShortToastCenter("编辑");
+                    checkNewButton.setBackgroundResource(R.color.gray);
+                }
                 break;
             case R.id.checklistback:
                 finish();
                 break;
-            case R.id.check_new_button:
-                startActivity(new Intent(mContext, CheckitemActivity.class));
+            case check_new_button:
+                String str = checkNewButton.getText().toString();
+                if ("开始检查".equals(str)) {
+                    startActivity(new Intent(mContext, CheckitemActivity.class));
+                }
                 break;
             default:
                 break;
@@ -204,18 +227,18 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(datatime);
+        mPopupWindow.showAsDropDown(checkNewWebtext);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
     }
+
 
     /**
      * \设置pop的点击事件
      */
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
-        // 布局ID
         int layoutId = R.layout.popwind_daily;
         final View contentView = LayoutInflater.from(mContext).inflate(layoutId, null);
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
@@ -249,7 +272,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             }
 
                         }
-                        datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
+                        titleView.setText(yeardata + "-" + monthdata + "-" + daydata);
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -260,10 +283,13 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         };
+
+
         //获取控件点击事件
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         //年的控件
+
         yearPicker = contentView.findViewById(R.id.years);
         //月
         monthPicker = contentView.findViewById(R.id.month);
@@ -295,7 +321,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                setyear(i1);
+                checkUtils.setyear(monthPicker, dayPicker, i1, numberyear);
             }
         });
         //月份选择器。如果当前的月份是二月，
@@ -303,75 +329,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onValueChange(NumberPicker picker, int oldVal,
                                       int newVal) {
-                setMonth(newVal);
+                checkUtils.setMonth(yearPicker, monthPicker, dayPicker, newVal, numbermonth, numberyear);
             }
         });
 
         return contentView;
-    }
-
-    /**
-     * /设置选择月，控制二月天数
-     */
-    public void setMonth(int newVal) {
-        String NewVal = numbermonth[newVal];
-        String years = numberyear[yearPicker.getValue()];
-        if (NewVal.equals("02")) {
-            if (Utils.getyear().contains(years)) {
-                //如果是闰年。二月有29天
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwos);
-                dayPicker.setMinValue(0);
-            } else {
-                //如果是平年。二月有28天
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwo);
-                dayPicker.setMinValue(0);
-            }
-        } else if (NewVal.equals("01") || NewVal.equals("03") || NewVal.equals("05") ||
-                NewVal.equals("07") || NewVal.equals("08") || NewVal.equals("10") || NewVal.equals("12")) {
-            dayPicker.setDisplayedValues(null);
-            dayPicker.setMaxValue(Utils.day.length - 1);
-            dayPicker.setDisplayedValues(Utils.day);
-            dayPicker.setMinValue(0);
-        } else if (NewVal.equals("04") || NewVal.equals("06") || NewVal.equals("09") || NewVal.equals("11")) {
-            dayPicker.setDisplayedValues(null);
-            dayPicker.setMaxValue(Utils.dayth.length - 1);
-            dayPicker.setDisplayedValues(Utils.dayth);
-            dayPicker.setMinValue(0);
-        }
-    }
-
-    /**
-     * /设置选择年，控制二月天数
-     */
-    public void setyear(int i1) {
-        //月份
-        String mont = Utils.month[monthPicker.getValue()];
-        //年份
-        String str = numberyear[i1];
-        //如果选择中的月份是二月
-        if (mont.equals("02")) {
-            //判断是闰年还是平年
-            if (Utils.getyear().contains(str)) {
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwos);
-                dayPicker.setMinValue(0);
-            } else {
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwo);
-                dayPicker.setMinValue(0);
-            }
-        }
-    }
-
-    @Override
-    public void onClick() {
-        ToastUtils.showLongToast("tttt");
     }
 
 

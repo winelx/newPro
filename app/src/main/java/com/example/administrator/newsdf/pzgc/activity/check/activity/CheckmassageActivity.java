@@ -46,7 +46,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
-
+/**
+ * description: 下发整改通知
+ * @author lx
+ * date: 2018/8/9 0009 下午 3:09
+ * update: 2018/8/9 0009
+ * version:
+*/
 public class CheckmassageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int IMAGE_PICKER = 101;
@@ -106,7 +112,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         photoAdapter = new PhotoAdapter(mContext, Imagepath, "Message");
         photoadd.setAdapter(photoAdapter);
         checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
@@ -137,7 +142,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         Imagepath = intent.getStringArrayListExtra("list");
     }
-
 
     //添加图片
     public void showPopwindow() {

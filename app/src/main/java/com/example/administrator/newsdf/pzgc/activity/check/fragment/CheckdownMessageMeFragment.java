@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -76,17 +77,17 @@ public class CheckdownMessageMeFragment extends Fragment {
                 refreshlayout.finishRefresh(800);
             }
         });
-        checkNewadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         mAdapter.setOnItemClickListener(new CheckMessageMineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(mContext, ChecknoticeMessagelistActivity.class);
                 mContext.startActivity(intent);
+            }
+        });
+        checkNewadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, CheckRectificationActivity.class));
             }
         });
         return view;

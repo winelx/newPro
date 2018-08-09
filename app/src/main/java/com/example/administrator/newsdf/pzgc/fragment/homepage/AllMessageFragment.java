@@ -67,7 +67,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     }
 
     private void Onclick() {
-
         ivGoToChildClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

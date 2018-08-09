@@ -5,7 +5,7 @@
 
     <com.example.administrator.newsdf.pzgc.utils.RoundImageView
         android:id="@+id/iv_photo"
-        android:layout_width="75dp"
+        android:layout_width="78dp"
         android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"

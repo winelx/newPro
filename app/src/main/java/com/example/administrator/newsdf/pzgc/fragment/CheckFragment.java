@@ -60,7 +60,6 @@ public class CheckFragment extends Fragment {
                         break;
                     case 1:
                         startActivity(new Intent(mContext, CheckmanagementActivity.class));
-
                         break;
                     case 2:
                         startActivity(new Intent(mContext, CheckdownMessageActivity.class));

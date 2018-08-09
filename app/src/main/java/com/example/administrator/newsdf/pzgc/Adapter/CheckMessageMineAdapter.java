@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -42,6 +43,12 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 //        holder.check_me_title.setText();
+        holder.check_relati.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v, position);
+            }
+        });
     }
 
     @Override
@@ -57,6 +64,7 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         TextView homeItemImg,
                 checkMeTitle,
                 homeItemMessage;
+        RelativeLayout check_relati;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +72,7 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
             homeItemImg = itemView.findViewById(R.id.home_item_img);
             checkMeTitle = itemView.findViewById(R.id.check_me_title);
             homeItemMessage = itemView.findViewById(R.id.home_item_message);
+            check_relati = itemView.findViewById(R.id.check_relati);
         }
     }
 

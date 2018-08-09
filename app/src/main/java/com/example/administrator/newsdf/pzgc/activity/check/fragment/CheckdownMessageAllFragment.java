@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckListAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -72,7 +72,6 @@ public class CheckdownMessageAllFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -80,7 +79,7 @@ public class CheckdownMessageAllFragment extends Fragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, CheckNewAddActivity.class));
+                startActivity(new Intent(mContext, CheckRectificationActivity.class));
             }
         });
         return view;

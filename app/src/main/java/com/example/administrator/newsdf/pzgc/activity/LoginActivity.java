@@ -268,7 +268,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent MyIntent = new Intent(Intent.ACTION_MAIN);
             MyIntent.addCategory(Intent.CATEGORY_HOME);
             startActivity(MyIntent);
-
             finish();
             android.os.Process.killProcess(android.os.Process.myPid());
             return true;
