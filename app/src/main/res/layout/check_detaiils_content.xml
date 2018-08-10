@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/details_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,7 +17,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -26,7 +26,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -38,7 +37,7 @@
                 android:textSize="13sp" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/details_result_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -59,6 +58,7 @@
             android:paddingRight="10dp">
 
             <TextView
+                android:id="@+id/details_result_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -66,17 +66,17 @@
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/details_result_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="整改结果:已整改"
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/details_result_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="整改描述:已按照标准完成整改"
                 android:textSize="13sp" />
@@ -84,12 +84,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="附件:"
                 android:textSize="13sp" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/details_result_rec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />
@@ -98,6 +98,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/details_validation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -109,7 +110,6 @@
             android:orientation="horizontal">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -119,7 +119,6 @@
                 android:textStyle="bold" />
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -131,7 +130,7 @@
                 android:textSize="13sp" />
 
             <TextView
-
+                android:id="@+id/details_validation_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -152,6 +151,7 @@
             android:paddingRight="10dp">
 
             <TextView
+                android:id="@+id/details_validation_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -159,17 +159,17 @@
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/details_validation_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="整改结果:已整改"
                 android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/details_validation_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="整改描述:已按照标准完成整改"
                 android:textSize="13sp" />
@@ -177,12 +177,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="2dp"
                 android:text="附件:"
                 android:textSize="13sp" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/details_validation_rec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp" />

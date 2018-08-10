@@ -3,7 +3,11 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowTranslucentStatus">true</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#5095F9</item>
+        <item name="colorPrimaryDark">#5095F9</item>
+        <item name="toolbarStyle">@style/MyToolbar</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

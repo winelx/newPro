@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.Checkbean;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class CheckFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 switch (position) {
                     case 0:
-                        ToastUtils.showShortToastCenter("检查标准");
+                        startActivity(new Intent(mContext, CheckstandardListActivity.class));
                         break;
                     case 1:
                         startActivity(new Intent(mContext, CheckmanagementActivity.class));

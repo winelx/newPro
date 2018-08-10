@@ -34,7 +34,7 @@ import java.util.Map;
 public class CheckuserActivity extends AppCompatActivity implements View.OnClickListener {
     private ExpandableListView expandableListView;
     private SmartRefreshLayout refreshLayout;
-    private TextView comtitle, checklistmeuntext;
+    private TextView comtitle;
     private CheckUserListAdapter adapter;
     private View.OnClickListener ivGoToChildClickListener;
     private int groupPosition = 0;
@@ -49,7 +49,6 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_checkmanagement);
         mContext = CheckuserActivity.this;
         list = new ArrayList<>();
-
         list.add("项目经理");
         list.add("技术员");
         list.add("实施人员");
@@ -60,7 +59,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
         map.put("实施人员", list);
         map.put("工区长", list);
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
-        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
         checklistmeuntext.setOnClickListener(this);
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -94,7 +93,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.com_back:
+            case R.id.checklistback:
                 finish();
                 break;
             case R.id.checklistmeuntext:

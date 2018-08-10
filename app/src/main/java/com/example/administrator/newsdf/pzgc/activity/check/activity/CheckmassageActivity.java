@@ -46,13 +46,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
+
 /**
  * description: 下发整改通知
+ *
  * @author lx
- * date: 2018/8/9 0009 下午 3:09
- * update: 2018/8/9 0009
- * version:
-*/
+ *         date: 2018/8/9 0009 下午 3:09
+ *         update: 2018/8/9 0009
+ *         version:
+ */
 public class CheckmassageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int IMAGE_PICKER = 101;
@@ -72,7 +74,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private Date myDate = new Date();
 
     private Switch checkMessageSwitch;
-    private TextView checkMessageTime, checkMessageUsernameText;
+    private TextView checkMessageTime, checkMessageUsernameText, checklistmeuntext;
     private RecyclerView photoadd;
     private LinearLayout checkMessageLasttiem, checkMessageUsername;
     private NumberPicker yearPicker, monthPicker, dayPicker;
@@ -100,6 +102,10 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         checkMessageContent = (ScrollView) findViewById(R.id.check_message_content);
         findViewById(R.id.checklistback).setOnClickListener(this);
         findViewById(R.id.check_message_username).setOnClickListener(this);
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
+        checklistmeuntext.setText("保存");
+        checklistmeuntext.setVisibility(View.GONE);
         checkMessageSwitch = (Switch) findViewById(R.id.check_message_switch);
         checkMessageUsernameText = (TextView) findViewById(R.id.check_message_username_text);
         checkMessageTime = (TextView) findViewById(R.id.check_message_time);
@@ -467,6 +473,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                     FileUtils.deleteFile(pathimg.get(i));
                 }
                 finish();
+                break;
+            case R.id.checklistmeun:
+                ToastUtils.showLongToast("保存");
                 break;
             default:
                 break;

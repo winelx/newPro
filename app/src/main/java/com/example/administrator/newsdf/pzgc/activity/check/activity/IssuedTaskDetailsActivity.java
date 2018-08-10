@@ -61,9 +61,13 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setTextSize(10);
         checklistmeuntext.setText("处理记录");
-        mData.add(new CheckDetailsContent("1", "1", "1", "1"));
-        mData.add(new CheckDetailsContent("1", "1", "1", "1"));
+        ArrayList<String> path = new ArrayList<>();
+        path.add("http://pics.sc.chinaz.com/Files/pic/icons128/7061/h10.png");
+        path.add("http://pics.sc.chinaz.com/Files/pic/icons128/7061/h11.png");
         mData.add(new CheckDetailsTop("1"));
+        mData.add(new CheckDetailsContent("1", "1", "1", "1",path));
+        mData.add(new CheckDetailsContent("1", "1", "1", "1",path));
+
         mAdater = new IssuedTaskDetailsAdapter(mData, mContext);
         detailsRejected.setAdapter(mAdater);
         checkDetailsSubmit.setOnClickListener(this);

@@ -160,14 +160,6 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
             childHold.homeItemMessage.setVisibility(View.GONE);
         }
 
-//判断是否有消息
-        if (zero.equals(content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite())) {
-            childHold.tvSet.setBackgroundResource(R.color.Orange);
-            childHold.tvSet.setText("收藏");
-        } else {
-            childHold.tvSet.setBackgroundResource(R.color.red);
-            childHold.tvSet.setText("已收藏");
-        }
         //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);

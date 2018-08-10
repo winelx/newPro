@@ -25,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, checkWbspath, categoryItem, checklistmeuntext, titleView, checkNewWebtext;
-    private LinearLayout check_new_data, checkImport, checkCategory;
+    private LinearLayout check_new_data, checkImport, checkCategory, checkNewDialog;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
@@ -54,37 +55,61 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId;
+    private String name, orgId, status = "";
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
     private ArrayList<String> mData;
     private static CheckNewAddActivity mContext;
+    private IconTextView IconTextViewone, IconTextViewtwo;
 
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
 
     private CheckUtils checkUtils;
+    ArrayList<View> viewlist = new ArrayList<>();
+    ArrayList<View> tVisibility = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-        Intent intent =getIntent();
+        Intent intent = getIntent();
+        try {
+            //wbs名称
+            orgId = intent.getStringExtra("orgId");
+            name = intent.getStringExtra("name");
+            status = intent.getStringExtra("status");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            status = "-1";
+            name = "";
+            orgId = "";
+        }
+        findbyid();
         initData();
-        //wbs名称
+    }
+
+    private void findbyid() {
+        IconTextViewone = (IconTextView) findViewById(R.id.IconTextViewone);
+        IconTextViewtwo = (IconTextView) findViewById(R.id.IconTextViewtwo);
+        tVisibility.add(IconTextViewone);
+        tVisibility.add(IconTextViewtwo);
+
+        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
+
         checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
-        orgId=intent.getStringExtra("orgId");
-        name=intent.getStringExtra("name");
-        checkNewWebtext.setText(name);
+
         checkNewButton = (Button) findViewById(check_new_button);
         //分数
         checkNewNumber = (EditText) findViewById(R.id.check_new_number);
-        //标题
+        //标题   111
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
+        viewlist.add(checkNewTasktitle);
         //临时部位
         checkNewTemporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
+        viewlist.add(checkNewTemporarysite);
         //meun
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         //检查标准类别
@@ -95,53 +120,28 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checklist = (GridView) findViewById(R.id.checklist);
         //检查标准类别
         checkCategory = (LinearLayout) findViewById(R.id.Check_category);
+        viewlist.add(checkCategory);
         //抽屉控件
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //导入标段
+        //导入标段   1111
         checkImport = (LinearLayout) findViewById(R.id.check_import);
+        tVisibility.add(checkImport);
         //时间选择器选择时间后显示
         titleView = (TextView) findViewById(R.id.titleView);
+
         //具体时间
         datatime = (TextView) findViewById(R.id.check_new_data_tx);
         //现在时间（弹出时间选择器）
         check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
-        //显示meun控件
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        //关闭边缘滑动
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        //侧滑栏关闭手势滑动
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        check_new_data.setOnClickListener(this);
-        checkImport.setOnClickListener(this);
-        checkCategory.setOnClickListener(this);
-        checkNewButton.setOnClickListener(this);
-        findViewById(checklistmeun).setOnClickListener(this);
-        findViewById(R.id.checklistback).setOnClickListener(this);
+        viewlist.add(check_new_data);
+        //拖动控件
         dkDragView = (DKDragView) findViewById(R.id.float_suspension);
-        //设置不允许超过的边界（左上右下）
-        dkDragView.setBoundary(0, 130, 0, 130);
-        dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
-            @Override
-            public void onClick() {
-                drawerLayout.openDrawer(GravityCompat.END);
-            }
-        });
-        titleView.setText("新增检查");
-        checklistmeuntext.setText("保存");
-        adapter = new CheckNewAdapter(mContext, mData);
-        checklist.setAdapter(adapter);
-        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtils.showLongToast(position + "");
-                startActivity(new Intent(mContext, CheckitemActivity.class));
-            }
-        });
+
+
     }
 
     private void initData() {
+
         mData = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             mData.add(i + 1 + "");
@@ -156,6 +156,47 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         dateMonth = myDate.getMonth();
         //天
         dayDate = myDate.getDate() - 1;
+        checkNewWebtext.setText(name);
+        //显示meun控件
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        //关闭边缘滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        check_new_data.setOnClickListener(this);
+        checkImport.setOnClickListener(this);
+        checkCategory.setOnClickListener(this);
+        checkNewButton.setOnClickListener(this);
+        findViewById(checklistmeun).setOnClickListener(this);
+        findViewById(R.id.checklistback).setOnClickListener(this);
+        //设置不允许超过的边界（左上右下）
+        dkDragView.setBoundary(0, 130, 0, 190);
+        dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
+            @Override
+            public void onClick() {
+                drawerLayout.openDrawer(GravityCompat.END);
+            }
+        });
+        titleView.setText("新增检查");
+        adapter = new CheckNewAdapter(mContext, mData);
+        checklist.setAdapter(adapter);
+        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ToastUtils.showLongToast(position + "");
+                startActivity(new Intent(mContext, CheckitemActivity.class));
+            }
+        });
+
+        if ("1".equals(status)) {
+            statusT();
+        } else if ("2".equals(status)) {
+            statusF();
+        }else {
+            statusF();
+        }
     }
 
     @Override
@@ -168,7 +209,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             case R.id.check_import:
                 Intent intent1 = new Intent(CheckNewAddActivity.this, CheckTreeActivity.class);
                 intent1.putExtra("orgId", orgId);
-                intent1.putExtra("name",name);
+                intent1.putExtra("name", name);
                 startActivityForResult(intent1, 2);
                 break;
             case R.id.Check_category:
@@ -178,15 +219,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             case checklistmeun:
                 String string = checklistmeuntext.getText().toString();
                 if (string.equals("保存")) {
-                    checklistmeuntext.setText("编辑");
-                    ToastUtils.showShortToastCenter("保存");
-                    checkNewButton.setText("开始检查");
-                    checkNewButton.setBackgroundResource(R.color.colorAccent);
+                    statusT();
                 } else {
-                    checklistmeuntext.setText("保存");
-                    checkNewButton.setText("开始");
-                    ToastUtils.showShortToastCenter("编辑");
-                    checkNewButton.setBackgroundResource(R.color.gray);
+                    statusF();
                 }
                 break;
             case R.id.checklistback:
@@ -200,6 +235,35 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 break;
             default:
                 break;
+        }
+    }
+
+    private void statusF() {
+        checklistmeuntext.setText("保存");
+        checkNewButton.setText("开始");
+        checkNewButton.setBackgroundResource(R.color.gray);
+        dkDragView.setVisibility(View.GONE);
+        for (int i = 0; i <tVisibility.size() ; i++) {
+            tVisibility.get(i).setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < viewlist.size(); i++) {
+            viewlist.get(i).setClickable(true);
+            viewlist.get(i).setEnabled(true);
+        }
+    }
+
+    private void statusT() {
+        checklistmeuntext.setText("编辑");
+        checkNewButton.setText("开始检查");
+        checkImport.setVisibility(View.VISIBLE);
+        checkNewButton.setBackgroundResource(R.color.colorAccent);
+        dkDragView.setVisibility(View.VISIBLE);
+        for (int i = 0; i <tVisibility.size() ; i++) {
+            tVisibility.get(i).setVisibility(View.GONE);
+        }
+        for (int i = 0; i < viewlist.size(); i++) {
+            viewlist.get(i).setClickable(false);
+            viewlist.get(i).setEnabled(false);
         }
     }
 
@@ -227,12 +291,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checkNewWebtext);
+        mPopupWindow.showAsDropDown(checkNewDialog);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
     }
-
 
     /**
      * \设置pop的点击事件
@@ -346,6 +409,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             Utils.backgroundAlpha(1f, CheckNewAddActivity.this);
         }
     }
+
+
+
 
 
 }

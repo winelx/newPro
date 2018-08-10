@@ -13,11 +13,12 @@ public class CheckDetailsContent {
     String resultData;
     ArrayList<String> imageList;
 
-    public CheckDetailsContent(String username, String results, String describe, String resultData) {
+    public CheckDetailsContent(String username, String results, String describe, String resultData,ArrayList<String> imageList) {
         this.username = username;
         this.results = results;
         this.describe = describe;
         this.resultData = resultData;
+        this.imageList = imageList;
     }
 
     public String getUsername() {
@@ -50,5 +51,13 @@ public class CheckDetailsContent {
 
     public void setResultData(String resultData) {
         this.resultData = resultData;
+    }
+
+    public ArrayList<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<String> imageList) {
+        this.imageList = imageList;
     }
 }

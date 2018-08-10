@@ -1,10 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +14,6 @@ import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 
@@ -47,6 +41,9 @@ public class CheckstandardContent extends Fragment {
         mData.add("桥梁工程" + "”" + "12不准" + "”");
         mData.add("隧道工程" + "”" + "7不准" + "”");
         smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
+        smartrefreshlayout.setEnableRefresh(false);//是否启用下拉刷新功能
+        smartrefreshlayout.setEnableLoadmore(false);//是否启用上拉加载功能
+        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         adapter = new SettingAdapter<String>(mData, R.layout.check_standard_content) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, String obj) {
@@ -76,27 +73,7 @@ public class CheckstandardContent extends Fragment {
                 activity.dismiss();
             }
         });
-        /**
-         *   下拉刷新
-         */
-        smartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
 
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
-            }
-        });
-        //上拉加载
-        smartrefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
 
         return view;
     }

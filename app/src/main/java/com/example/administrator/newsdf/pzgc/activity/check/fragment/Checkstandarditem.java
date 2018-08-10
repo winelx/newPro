@@ -46,7 +46,9 @@ public class Checkstandarditem extends Fragment {
             mData.add("整改数据" + i);
         }
         SmartRefreshLayout smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
-
+        smartrefreshlayout.setEnableRefresh(false);//是否启用下拉刷新功能
+        smartrefreshlayout.setEnableLoadmore(false);//是否启用上拉加载功能
+        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果)
         SettingAdapter adapter = new SettingAdapter<String>(mData, R.layout.task_category_item) {
             @Override
             public void bindView(ViewHolder holder, String obj) {

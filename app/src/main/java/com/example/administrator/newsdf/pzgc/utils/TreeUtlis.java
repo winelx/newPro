@@ -192,7 +192,7 @@ public class TreeUtlis {
                         if (node.isperent()) {
                             //从拿到该节点的名称和id
                             CheckTreeActivity addActivity = (CheckTreeActivity) mContext;
-                            addActivity.Dialog();
+                            addActivity.dialog();
                             addOrganiztion(mContext, node.getId(), node.iswbs(), node.isperent(), node.getType(), mTreeAdapter);
                         }
                     }

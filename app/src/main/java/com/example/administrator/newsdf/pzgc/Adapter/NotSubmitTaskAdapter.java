@@ -30,7 +30,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
 
     private Context mContext;
 
-    private List<CheckTasklistAdapter> mDatas = new ArrayList<CheckTasklistAdapter>();
+    private List<CheckTasklistAdapter> mDatas = new ArrayList<>();
 
     private LeftSlideView mMenu = null;
 
@@ -50,9 +50,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         //设置内容布局的宽为屏幕宽度
-        holder.layout_content.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
+        holder.layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
         //时间
-        holder.management_user.setText(mDatas.get(position).getUserdata());
+        holder.managementTitle.setText(mDatas.get(position).getTitle());
         holder.managementNumber.setText(setText("总分：" + mDatas.get(position).getNumber()));
         holder.managementBlock.setText("所属标段:" + mDatas.get(position).getBlock());
         holder.managementOrg.setText("所属组织:" + mDatas.get(position).getOrg());
@@ -68,7 +68,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
         if (status.equals("1")) {
             holder.slantedTextView.setTextString("已提交");
             holder.tvDelete.setVisibility(View.GONE);
-            holder.tv_set.setVisibility(View.GONE);
+            holder.tvSet.setVisibility(View.GONE);
             holder.slantedTextView.setSlantedBackgroundColor(R.color.finish_green);
         } else {
             //状态
@@ -79,7 +79,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
         //判断是否设置了监听器
         if (mOnItemClickListener != null) {
             //为ItemView设置监听器
-            holder.layout_content.setOnClickListener(new View.OnClickListener() {
+            holder.layoutContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // 1
@@ -101,25 +101,25 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
         return holder;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        public RelativeLayout layout_content;
-        private TextView managementTitle, management_user;
-        private TextView tvDelete, managementNumber, managementBlock, managementOrg, tv_set;
+        RelativeLayout layoutContent;
+        private TextView managementTitle, managementUser;
+        private TextView tvDelete, managementNumber, managementBlock, managementOrg, tvSet;
         private SlantedTextView slantedTextView;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             managementBlock = itemView.findViewById(R.id.management_block);
             managementOrg = itemView.findViewById(R.id.management_org);
             managementNumber = itemView.findViewById(R.id.management_number);
             slantedTextView = itemView.findViewById(R.id.inface_item_message);
-            management_user = itemView.findViewById(R.id.management_user);
+            managementUser = itemView.findViewById(R.id.management_user);
             managementTitle = itemView.findViewById(R.id.management_title);
             tvDelete = itemView.findViewById(R.id.tv_delete);
-            tv_set = itemView.findViewById(R.id.tv_set);
-            layout_content = itemView.findViewById(R.id.layout_content);
+            tvSet = itemView.findViewById(R.id.tv_set);
+            layoutContent = itemView.findViewById(R.id.layout_content);
             ((LeftSlideView) itemView).setSlidingButtonListener(NotSubmitTaskAdapter.this);
         }
     }

@@ -73,7 +73,7 @@ public class CheckTreeActivity extends AppCompatActivity {
         finish();
     }
 
-    public void Dialog() {
+    public void dialog() {
         progressDialog = new Dialog(mContext, R.style.progress_dialog);
         progressDialog = new Dialog(mContext, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);

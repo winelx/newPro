@@ -370,7 +370,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         private RecyclerView audioRec;
         private LinearLayout audioDataComm, givealike;
         private ImageView givealikeImage, audioNotimage, collectionImage;
-        private LinearLayout collection, audio_data_item, related;
+        private LinearLayout collection, related;
 
         Viewholder(View itemView) {
             super(itemView);

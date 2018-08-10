@@ -257,8 +257,10 @@
             android:name=".pzgc.activity.check.activity.CheckRectificationActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".pzgc.activity.check.activity.CheckReplyActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckValidationActivity"/>
-        <activity android:name=".pzgc.activity.check.activity.CheckstandardListActivity"/>
+        <activity android:name=".pzgc.activity.check.activity.CheckValidationActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckstandardListActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckReportActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckNewItemActivity"></activity>
     </application>
 
 </manifest>
