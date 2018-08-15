@@ -20,8 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorAccent">
-
-
                 <com.joanzapata.iconify.widget.IconTextView
                     android:id="@+id/reprot_back"
                     android:layout_width="50dp"

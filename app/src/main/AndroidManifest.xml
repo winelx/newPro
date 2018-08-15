@@ -260,7 +260,10 @@
         <activity android:name=".pzgc.activity.check.activity.CheckValidationActivity" />
         <activity android:name=".pzgc.activity.check.activity.CheckstandardListActivity" />
         <activity android:name=".pzgc.activity.check.activity.CheckReportActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckNewItemActivity"></activity>
+        <activity android:name=".pzgc.activity.check.activity.CheckNewItemActivity"/>
+        <activity android:name=".pzgc.activity.check.activity.CheckListDetailsActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            />
     </application>
 
 </manifest>

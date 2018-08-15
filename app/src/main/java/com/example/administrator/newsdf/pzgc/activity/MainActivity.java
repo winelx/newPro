@@ -50,7 +50,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-
 /**
  * description: 承载fragemnt的界面
  *
@@ -141,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         Uplogding();
         //数据处理
         initTab();
-
     }
 
     @Override
@@ -287,6 +285,8 @@ public class MainActivity extends AppCompatActivity {
                 Uri content_url = Uri.parse(path);
                 intent.setData(content_url);
                 startActivity(intent);
+                finish();
+
             }
         });
         builder.show();

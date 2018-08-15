@@ -95,7 +95,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * wbsid 从wsb节点返回，默认请求可以没有，
      * fixedwbsId 用在选择wbs节点，用来筛选wbs，减少节点
      */
-    private String orgId, wbsid = "5", fixedwbsId;
+    private String orgId, wbsid = "", fixedwbsId;
     /**
      * pages 任务列表 请求页数
      * page  图册请求页数

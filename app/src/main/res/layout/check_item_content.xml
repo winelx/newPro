@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="基本要求"
+
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -63,10 +63,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/check_item_content_contentname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="检查内容名称"
+
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -93,10 +94,10 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/check_item_content_bz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="符合设计规范要求"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -124,12 +125,11 @@
                     android:textSize="15sp" />
 
                 <TextView
-
+                    android:id="@+id/check_item_content_standarcore"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="15"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -189,6 +189,7 @@
                     android:textSize="15sp" />
 
                 <EditText
+                    android:id="@+id/check_item_content_core"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -223,6 +224,7 @@
                     android:textSize="15sp" />
 
                 <EditText
+                    android:id="@+id/check_item_content_describe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -262,7 +264,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="否"
                     android:textSize="15sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
@@ -270,7 +271,6 @@
                     android:layout_height="30dp"
                     android:layout_alignTop="@+id/mine_text"
                     android:layout_gravity="center"
-
                     android:gravity="center"
                     android:text="{fa-angle-right}"
                     android:textColor="@color/inconfy"

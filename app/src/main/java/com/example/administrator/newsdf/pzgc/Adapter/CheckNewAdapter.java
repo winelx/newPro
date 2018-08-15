@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 
 import java.util.ArrayList;
 
@@ -20,11 +22,11 @@ public class CheckNewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context mContext;
-    private ArrayList<String> imagePaths;
+    private ArrayList<chekitemList> imagePaths;
 
-    public CheckNewAdapter(Context mContext, ArrayList<String> imagePaths) {
+    public CheckNewAdapter(Context mContext, ArrayList<chekitemList> imagePaths) {
         this.mContext = mContext;
-        this.imagePaths= imagePaths;
+        this.imagePaths = imagePaths;
         this.inflater = LayoutInflater.from(mContext);
     }
 
@@ -51,19 +53,46 @@ public class CheckNewAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.pop_tast_item = convertView.findViewById(R.id.text_item);
             holder.LabelView = convertView.findViewById(R.id.angleofthe);
+            holder.chekItemRe = convertView.findViewById(R.id.chek_item_re);
             //将Holder存储到convertView中
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.pop_tast_item.setText(imagePaths.get(position));
-
+        int numbher = position + 1;
+        holder.pop_tast_item.setText(numbher + "");
+        //拿到分数
+        String score = imagePaths.get(position).getScore();
+        if (!score.isEmpty()) {
+            //是否有此项
+            boolean noSuch = imagePaths.get(position).isNoSuch();
+            if (noSuch) {
+                //无此项
+                holder.LabelView.setBackgroundResource(R.mipmap.triangle_gray);
+            } else {
+                //是否被扣分
+                boolean penalty = imagePaths.get(position).isPenalty();
+                if (penalty) {
+                    holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                } else {
+                    holder.LabelView.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            holder.LabelView.setVisibility(View.GONE);
+            holder.chekItemRe.setBackgroundResource(R.color.gray);
+        }
         return convertView;
     }
 
     class ViewHolder {
         TextView pop_tast_item;
         ImageView LabelView;
+        RelativeLayout chekItemRe;
     }
 
+    public void getdate(ArrayList<chekitemList> imagePaths){
+        this.imagePaths=imagePaths;
+        notifyDataSetChanged();
+    }
 }

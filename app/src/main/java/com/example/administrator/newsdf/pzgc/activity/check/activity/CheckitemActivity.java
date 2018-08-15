@@ -20,9 +20,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,16 +35,27 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 
@@ -63,16 +76,27 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView photoadd;
     private CheckNewAdapter adapter;
     private PhotoAdapter photoAdapter;
-    private ArrayList<String> mData;
+    private ArrayList<chekitemList> mData;
     private CheckPermission checkPermission;
     private Context mContext;
     private ArrayList<String> Imagepath;
     private static final int IMAGE_PICKER = 101;
+    private String taskId;
+    private int number, size;
+    private CheckUtils checkUtils;
+    private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
+    private EditText checkItemContentCore, check_item_content_describe;
+    private Switch switch1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
+        checkUtils = new CheckUtils();
+        Intent intent = getIntent();
+        taskId = intent.getStringExtra("id");
+        number = intent.getIntExtra("number", 0);
+        size = intent.getIntExtra("size", 0);
         mData = new ArrayList<>();
         Imagepath = new ArrayList<>();
         mContext = this;
@@ -89,9 +113,22 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
-        for (int i = 0; i < 10; i++) {
-            mData.add(i + 1 + "");
-        }
+        //是否无此项
+        switch1 = (Switch) findViewById(R.id.switch1);
+        //是否生成整改通知
+        checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
+        //检查描述
+        check_item_content_describe = (EditText) findViewById(R.id.check_item_content_describe);
+        //检查项名称
+        checkItemContentName = (TextView) findViewById(R.id.check_item_content_name);
+        //检查项内容名称
+        checkItemContentContentname = (TextView) findViewById(R.id.check_item_content_contentname);
+        //检查项要求
+        checkItemContentBz = (TextView) findViewById(R.id.check_item_content_bz);
+        //标准分
+        checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
+        //得分
+        checkItemContentCore = (EditText) findViewById(R.id.check_item_content_core);
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
@@ -161,7 +198,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         photoadd.setItemAnimator(new DefaultItemAnimator());
         photoAdapter = new PhotoAdapter(mContext, Imagepath, "Check");
         photoadd.setAdapter(photoAdapter);
-        titleView.setText("1/10");
+        titleView.setText(number + "/" + size);
+        getdate();
     }
 
     //添加图片
@@ -317,4 +355,47 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
+    public void getdate() {
+        OkGo.post(Requests.INFO_BY_MAIN_ID_AND_SQE)
+                .params("id", taskId)
+                .params("page", number)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                checkItemContentName.setText(json.getString("name"));
+                                checkItemContentContentname.setText(json.getString("content"));
+                                checkItemContentBz.setText(json.getString("standard"));
+                                checkItemContentStandarcore.setText(json.getString("standardScore"));
+                                checkItemContentCore.setText(json.getString("score"));
+                             String describe=   json.getString("describe");
+                                if (describe.length()>0){
+                                    check_item_content_describe.setText(describe);
+                                }else {
+                                    check_item_content_describe.setText("未输入描述");
+                                }
+
+                                Boolean generate;
+                                try {
+                                    generate = json.getBoolean("generate");
+                                    checkitemcontentStatus.setText("是");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    generate = false;
+                                    checkitemcontentStatus.setText("否");
+                                }
+                                switch1.setChecked(json.getBoolean("noSuch"));
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 }

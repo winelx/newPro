@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -13,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
@@ -26,101 +27,147 @@ import java.util.List;
 /**
  * 这里未上传资料的recycler的适配器
  */
-public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
-
+public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements LeftSlideView.IonSlidingButtonListener {
+    private static final int TYPE_SUCCESS = 0;
+    private static final int TYPE_SUB = 1;
+    private static final int TYPE_END = 2;
     private Context mContext;
 
-    private List<CheckTasklistAdapter> mDatas = new ArrayList<>();
+    private List<Object> mDatas = new ArrayList<>();
 
     private LeftSlideView mMenu = null;
 
     public NotSubmitTaskAdapter(Context context) {
         mContext = context;
-        activity = (CheckTasklistActivity) mContext;
     }
 
-    private CheckTasklistActivity activity;
 
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
 
+
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
-        //设置内容布局的宽为屏幕宽度
-        holder.layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
-        //时间
-        holder.managementTitle.setText(mDatas.get(position).getTitle());
-        holder.managementNumber.setText(setText("总分：" + mDatas.get(position).getNumber()));
-        holder.managementBlock.setText("所属标段:" + mDatas.get(position).getBlock());
-        holder.managementOrg.setText("所属组织:" + mDatas.get(position).getOrg());
-        //左滑删除点击事件
-        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastUtils.showShortToastCenter(position + "");
-                removeData(position);
-            }
-        });
-        String status = mDatas.get(position).getStatus();
-        if (status.equals("1")) {
-            holder.slantedTextView.setTextString("已提交");
-            holder.tvDelete.setVisibility(View.GONE);
-            holder.tvSet.setVisibility(View.GONE);
-            holder.slantedTextView.setSlantedBackgroundColor(R.color.finish_green);
-        } else {
-            //状态
-            holder.slantedTextView.setTextString("未提交");
-            //状态 finish_green
-            holder.slantedTextView.setSlantedBackgroundColor(R.color.gray);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case TYPE_SUCCESS:
+                return new MyViewHolder(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.check_management, parent, false));
+            case TYPE_SUB:
+                return new SubViewHolder(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.check_management_sub, parent, false));
+            case TYPE_END:
+                return new RecyclerHolder(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.recycler_null_layout, parent, false));
+            default:
+                return null;
         }
-        //判断是否设置了监听器
-        if (mOnItemClickListener != null) {
-            //为ItemView设置监听器
-            holder.layoutContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 1
-                    int position = holder.getLayoutPosition();
-                    // 2
-                    mOnItemClickListener.onItemClick(holder.itemView, position);
-                }
-            });
-        }
-
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        Object obj = mDatas.get(position);
+        if (holder instanceof MyViewHolder) {
+            final CheckTasklistAdapter success = (CheckTasklistAdapter) obj;
+            ((MyViewHolder) holder).managementTitle.setText(success.getCheckOrgName());
+            ((MyViewHolder) holder).managementBlock.setText(success.getOrgName());
+            ((MyViewHolder) holder).managementOrg.setText(success.getCheckOrgName());
+            ((MyViewHolder) holder).managementNumber.setText(success.getCheckOrgName());
+            ((MyViewHolder) holder).managementUser.setText(success.getCheckUser() + "   " + success.getCreateDate());
+            ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+                    intent.putExtra("id", success.getId());
+                    mContext.startActivity(intent);
+                }
+            });
 
-        //获取自定义View的布局（加载item布局）
-        View view = LayoutInflater.from(mContext).inflate(R.layout.check_management, arg0, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+
+        } else if (holder instanceof SubViewHolder) {
+            final SCheckTasklistAdapter Sub = (SCheckTasklistAdapter) obj;
+            //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
+            //设置内容布局的宽为屏幕宽度
+            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
+            ((SubViewHolder) holder).managementTitle.setText(Sub.getCheckOrgName());
+            ((SubViewHolder) holder).managementUser.setText(Sub.getCheckUser() + "      " + Sub.getCreateDate());
+            ((SubViewHolder) holder).sub_management_block.setText("所属标段：" + Sub.getOrgName());
+            ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
+            ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
+            ((SubViewHolder) holder).tvDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDatas.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+            ((SubViewHolder) holder).layoutContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, CheckNewAddActivity.class);
+                    intent.putExtra("id", Sub.getId());
+//                    intent.putExtra("orgId",m)
+                    mContext.startActivity(intent);
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (mDatas.get(position) instanceof CheckTasklistAdapter) {
+            return TYPE_SUCCESS;
+        } else if (mDatas.get(position) instanceof SCheckTasklistAdapter) {
+            return TYPE_SUB;
+        } else if (mDatas.get(position) instanceof String) {
+            return TYPE_END;
+        } else {
+            return super.getItemViewType(position);
+        }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
-
-        RelativeLayout layoutContent;
         private TextView managementTitle, managementUser;
-        private TextView tvDelete, managementNumber, managementBlock, managementOrg, tvSet;
-        private SlantedTextView slantedTextView;
+        private TextView managementNumber, managementBlock, managementOrg, tvSet;
+        private RelativeLayout item;
 
         MyViewHolder(View itemView) {
             super(itemView);
+            item = itemView.findViewById(R.id.item_not);
             managementBlock = itemView.findViewById(R.id.management_block);
             managementOrg = itemView.findViewById(R.id.management_org);
             managementNumber = itemView.findViewById(R.id.management_number);
-            slantedTextView = itemView.findViewById(R.id.inface_item_message);
             managementUser = itemView.findViewById(R.id.management_user);
             managementTitle = itemView.findViewById(R.id.management_title);
+        }
+    }
+
+    class SubViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout layoutContent;
+        private TextView managementTitle, managementUser;
+        private TextView tvDelete, sub_management_block, tvSet;
+        private SlantedTextView slantedTextView;
+
+        SubViewHolder(View itemView) {
+            super(itemView);
+            sub_management_block = itemView.findViewById(R.id.sub_management_block);
+            slantedTextView = itemView.findViewById(R.id.sub_inface_item_message);
+            managementUser = itemView.findViewById(R.id.sub_management_user);
+            managementTitle = itemView.findViewById(R.id.sub_management_title);
             tvDelete = itemView.findViewById(R.id.tv_delete);
             tvSet = itemView.findViewById(R.id.tv_set);
-            layoutContent = itemView.findViewById(R.id.layout_content);
+            layoutContent = itemView.findViewById(R.id.sub_layout_content);
             ((LeftSlideView) itemView).setSlidingButtonListener(NotSubmitTaskAdapter.this);
+        }
+    }
+
+    class RecyclerHolder extends RecyclerView.ViewHolder {
+
+        public RecyclerHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -177,7 +224,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
         return false;
     }
 
-    public void getData(List<CheckTasklistAdapter> shops) {
+    public void getData(List<Object> shops) {
         mDatas = shops;
         notifyDataSetChanged();
     }
@@ -196,7 +243,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<NotSubmitTaskAdap
      */
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, String status);
     }
 
     private OnItemClickListener mOnItemClickListener;

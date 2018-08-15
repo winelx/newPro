@@ -23,13 +23,16 @@ import java.util.List;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckTaskCategoryActivity extends AppCompatActivity  {
+public class CheckTaskCategoryActivity extends AppCompatActivity {
     private NoScrollViewPager viewpager;
+    private String wbsId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_category);
+        Intent intent = getIntent();
+        wbsId = intent.getStringExtra("wbsId");
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
         //图册
@@ -58,11 +61,15 @@ public class CheckTaskCategoryActivity extends AppCompatActivity  {
         return true;
     }
 
-    public void  setItem(){
+    public void setItem() {
         viewpager.setCurrentItem(1);
     }
 
-    public void dismiss(){
+    public String getwbsId() {
+        return wbsId;
+    }
+
+    public void dismiss() {
         int item = viewpager.getCurrentItem();
         if (item == 1) {
             viewpager.setCurrentItem(0);
@@ -70,10 +77,12 @@ public class CheckTaskCategoryActivity extends AppCompatActivity  {
             finish();
         }
     }
-    public  void result(String str){
+
+    public void result(String str,String id) {
         Intent intent = new Intent();
         //回传数据到主Activity
-        intent.putExtra("data",str);
+        intent.putExtra("data", str);
+        intent.putExtra("id", id);
         setResult(2, intent);
         finish();
     }

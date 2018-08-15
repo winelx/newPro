@@ -875,10 +875,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
-
-
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

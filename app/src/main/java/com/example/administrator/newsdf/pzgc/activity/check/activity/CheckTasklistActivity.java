@@ -23,15 +23,27 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -42,9 +54,13 @@ import java.util.ArrayList;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+    private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
-    private ArrayList<CheckTasklistAdapter> list;
+    private ArrayList<Object> list;
+    private ArrayList<CheckTasklistAdapter> listsuccess;
+    private ArrayList<SCheckTasklistAdapter> listsub;
+
     private Context mContext;
     private PopupWindow mPopupWindow;
     private LinearLayout checklistmeun;
@@ -52,14 +68,19 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
     private SmartRefreshLayout smartrefreshlayout;
     private int pages = 1;
     private String orgId, name;
-    RecyclerView rmanageRecy;
+    private RecyclerView rmanageRecy;
+    private CheckUtils checkUtils;
+    private String status = "3";
+    private Checkjson checkjson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
-
-
         mContext = CheckTasklistActivity.this;
+        TaskCallbackUtils.setCallBack(this);
+        checkUtils = new CheckUtils();
+        checkjson = new Checkjson();
         try {
             Intent intent = getIntent();
             name = intent.getStringExtra("name");
@@ -70,16 +91,9 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         }
 
         list = new ArrayList<>();
+        listsub = new ArrayList<>();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         resolution = ScreenUtil.getDensity(App.getInstance());
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "2"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "2"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));   list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-        list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(name);
         smartrefreshlayout = (SmartRefreshLayout) findViewById(R.id.smartrefreshlayout);
@@ -91,6 +105,10 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         smartrefreshlayout.setDisableContentWhenRefresh(true);
         //是否在加载的时候禁止列表的操作
         smartrefreshlayout.setDisableContentWhenLoading(true);
+        //是否启用列表惯性滑动到底部时自动加载更多
+        smartrefreshlayout.setEnableAutoLoadmore(false);
+
+        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         ImageView checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setVisibility(View.VISIBLE);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
@@ -98,14 +116,13 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         findViewById(R.id.checklistback).setOnClickListener(this);
         checklistmeun.setOnClickListener(this);
         findViewById(R.id.newcheck).setOnClickListener(this);
-         rmanageRecy = (RecyclerView) findViewById(R.id.rmanage_recy);
+        rmanageRecy = (RecyclerView) findViewById(R.id.rmanage_recy);
         //设置布局管理器
         rmanageRecy.setLayoutManager(new LinearLayoutManager(this));
         //设置适配器
         rmanageRecy.setAdapter(mAdapter = new NotSubmitTaskAdapter(this));
         //设置Item增删的动画
         rmanageRecy.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.getData(list);
         /**
          *   下拉刷新
          */
@@ -115,16 +132,10 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             public void onRefresh(RefreshLayout refreshlayout) {
                 pages = 1;
                 list.clear();
-                for (int i = 0; i < 2; i++) {
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "2"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "2"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织", "88", "1"));
-                }
-                mAdapter.getData(list);
+                checkmamgrlist();
+//                mAdapter.getData(list);
                 //结束刷新
-                smartrefreshlayout.finishRefresh();
+
             }
         });
         //上拉加载
@@ -133,33 +144,13 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pages++;
-
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织1", "88", "1"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组1", "88", "2"));
-                    list.add(new CheckTasklistAdapter("测试公司项目", "张三，2018-00-00", "所属标准", "检查组织2", "88", "1"));
-
-                mAdapter.getData(list);
+                checkmamgrlist();
+//                mAdapter.getData(list);
                 //结束加载
-                smartrefreshlayout.finishLoadmore();
 
             }
         });
-        mAdapter.setOnItemClickListener(new NotSubmitTaskAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String status = list.get(position).getStatus();
-                Intent intent = new Intent(mContext, CheckNewAddActivity.class);
-                intent.putExtra("orgId", orgId);
-                intent.putExtra("name", name);
-                if ("1".equals(status)) {
-                    intent.putExtra("data", "1");
-                } else {
-                    intent.putExtra("data", "2");
-                }
-//                startActivity(intent);
-
-            }
-        });
+        checkmamgrlist();
     }
 
     @Override
@@ -207,26 +198,17 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pages = 1;
+                list.clear();
                 switch (v.getId()) {
                     case R.id.pop_All:
-                        ToastUtils.showShortToastCenter("全部");
-
+                        status = "3";
                         break;
                     case R.id.pop_financial:
-                        ToastUtils.showShortToastCenter("已提交");
-                        Intent intent = new Intent(mContext, CheckNewAddActivity.class);
-                        intent.putExtra("orgId", orgId);
-                        intent.putExtra("status", "1");
-                        intent.putExtra("name", name);
-                        startActivity(intent);
+                        status = "1";
                         break;
                     case R.id.pop_manage:
-                        ToastUtils.showShortToastCenter("未提交");
-                        Intent intent1 = new Intent(mContext, CheckNewAddActivity.class);
-                        intent1.putExtra("orgId", orgId);
-                        intent1.putExtra("status", "2");
-                        intent1.putExtra("name", name);
-                        startActivity(intent1);
+                        status = "0";
                         break;
                     default:
                         break;
@@ -234,6 +216,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                 if (mPopupWindow != null) {
                     mPopupWindow.dismiss();
                 }
+                checkmamgrlist();
             }
         };
 
@@ -250,6 +233,14 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         getWindow().setAttributes(lp);
     }
 
+    //编辑页面新增或者修改后刷新界面
+    @Override
+    public void taskCallback() {
+        pages = 1;
+        list.clear();
+        checkmamgrlist();
+    }
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -259,5 +250,45 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             backgroundAlpha(1f);
         }
     }
+
+    public void checkmamgrlist() {
+        PostRequest mPostRequest = OkGo.<String>post(Requests.CHECKMANGERLIST)
+                .params("orgId", orgId)
+                .params("page", pages)
+                .params("size", 20);
+        if ("1".equals(status) || "0".equals(status)) {
+            mPostRequest.params("status", status)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            checkjson.taskmanagerlist(s, list, mAdapter);
+                            smartrefreshlayout.finishRefresh(true);
+                            smartrefreshlayout.finishLoadmore(true);
+                        }
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            ToastUtils.showShortToast("请求失败");
+                        }
+                    });
+        } else {
+            mPostRequest.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    checkjson.taskmanagerlist(s, list, mAdapter);
+                    smartrefreshlayout.finishRefresh(true);
+                    smartrefreshlayout.finishLoadmore(true);
+                }
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
+                    ToastUtils.showShortToast("请求失败");
+                }
+            });
+
+        }
+
+    }
+
 
 }

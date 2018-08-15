@@ -2,7 +2,24 @@ package com.example.administrator.newsdf.pzgc.activity.check;
 
 import android.widget.NumberPicker;
 
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Utils.month;
 
@@ -12,12 +29,10 @@ import static com.example.administrator.newsdf.pzgc.utils.Utils.month;
 
 public class CheckUtils {
 
-
-
     /**
      * /设置选择年，控制二月天数
      */
-    public void setyear( NumberPicker monthPicker, NumberPicker dayPicker, int i1, String[] numberyear) {
+    public void setyear(NumberPicker monthPicker, NumberPicker dayPicker, int i1, String[] numberyear) {
         //月份
         String mont = month[monthPicker.getValue()];
         //年份
@@ -71,6 +86,77 @@ public class CheckUtils {
             dayPicker.setDisplayedValues(Utils.dayth);
             dayPicker.setMinValue(0);
         }
+    }
+
+
+    //类别分类
+    public void taskTypeList(String wbsId, final ArrayList<Tenanceview> data, final SettingAdapter adapter) {
+
+        OkGo.post(Requests.TASK_TYPE_LIST)
+                .params("wbsId", wbsId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONObject jsonobject = jsonObject.getJSONObject("data");
+                            JSONArray Array = jsonobject.getJSONArray("data");
+                            for (int i = 0; i < Array.length(); i++) {
+                                JSONObject json = Array.getJSONObject(i);
+                                String id = json.getString("id");
+                                String name = json.getString("name");
+                                String hasChildren = json.getString("hasChildren");
+                                data.add(new Tenanceview(id, name, hasChildren));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        adapter.getData(data);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtils.showLongToast("请求失败");
+                    }
+
+                });
+
+    }
+
+    /**
+     * 违反标准
+     */
+    public void CheckStandardApp(final ArrayList<Audio> mData, final SettingAdapter mAdapter) {
+        OkGo.post(Requests.CheckStandardApp)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                        LogUtil.d("s", s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String checkType = json.getString("checkType");
+                                    String id = json.getString("id");
+                                    mData.add(new Audio(checkType, id));
+                                }
+                            }
+                            mAdapter.getData(mData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 
 

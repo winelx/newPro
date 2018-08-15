@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/chek_item_re"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:background="@color/finish_green"

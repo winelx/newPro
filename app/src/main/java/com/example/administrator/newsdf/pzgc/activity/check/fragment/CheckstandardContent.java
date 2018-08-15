@@ -11,7 +11,9 @@ import android.widget.ListView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -25,9 +27,10 @@ public class CheckstandardContent extends Fragment {
     private View view;
     private ListView category_list;
     private SettingAdapter adapter;
-    private ArrayList<String> mData;
+    private ArrayList<Audio> mData;
     private IconTextView checklistback;
     private SmartRefreshLayout smartrefreshlayout;
+    private CheckUtils checkUtils;
 
     @Nullable
     @Override
@@ -35,19 +38,15 @@ public class CheckstandardContent extends Fragment {
         view = inflater.inflate(R.layout.fragment_categorylist, container, false);
         category_list = view.findViewById(R.id.category_list);
         mData = new ArrayList<>();
-        mData.add("基本要求" + "”" + "10不准" + "”");
-        mData.add("特种设备" + "”" + "5不准" + "”");
-        mData.add("路基工程" + "”" + "1不准" + "”");
-        mData.add("桥梁工程" + "”" + "12不准" + "”");
-        mData.add("隧道工程" + "”" + "7不准" + "”");
+        checkUtils = new CheckUtils();
         smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
         smartrefreshlayout.setEnableRefresh(false);//是否启用下拉刷新功能
         smartrefreshlayout.setEnableLoadmore(false);//是否启用上拉加载功能
         smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
-        adapter = new SettingAdapter<String>(mData, R.layout.check_standard_content) {
+        adapter = new SettingAdapter<Audio>(mData, R.layout.check_standard_content) {
             @Override
-            public void bindView(SettingAdapter.ViewHolder holder, String obj) {
-                holder.setText(R.id.check_stndard_content_font, obj);
+            public void bindView(SettingAdapter.ViewHolder holder, Audio obj) {
+                holder.setText(R.id.check_stndard_content_font, obj.getName());
             }
         };
         category_list.setAdapter(adapter);
@@ -73,8 +72,9 @@ public class CheckstandardContent extends Fragment {
                 activity.dismiss();
             }
         });
-
-
+        checkUtils.CheckStandardApp(mData, adapter);
         return view;
     }
+
+
 }

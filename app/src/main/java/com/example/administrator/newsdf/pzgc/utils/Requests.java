@@ -6,11 +6,11 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
- //public static final String networks = "http://192.168.20.33:8080/";
-     //public static final String networks = "http://192.168.20.35:8080/pzgc/";
-   //public static final String networks = "http://192.168.20.81:8080/baseframe/";
-   //public static final String networks = "http://117.187.27.78:58081/pzgc/";
- public static final String networks = "http://120.79.142.15/pzgc/";
+    public static final String networks = "http://192.168.20.33:8080/";
+    //  public static final String networks = "http://192.168.20.35:8080/pzgc/";
+    //public static final String networks = "http://192.168.20.81:8080/baseframe/";
+    // public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -234,5 +234,38 @@ public class Requests {
      * 审核报表
      */
     public static final String REPORT_IMG_DATE_APP = networks + "admin/wbs/wbstaskauditrecord/getReportImgDateApp";
+    /**
+     * 检查管理列表
+     */
+    public static final String CHECKMANGERLIST = networks + "/iface/mobile/appcheck/checkManagerList";
+    /**
+     * 新增检查
+     */
+    public static final String CHECKMANGERSAVE = networks + "/iface/mobile/appcheck/save";
 
+    /**
+     * 检查类别
+     */
+    public static final String TASK_TYPE_LIST = networks + "/iface/mobile/appcheck/getTaskTypeLis";
+    /**
+     * 现在标准
+     */
+    public static final String CheckStandardApp = networks + "admin/check/checkstandard/getCheckStandardApp";
+    /**
+     * 根据标段选择类别
+     */
+    public static final String GET_TASK_TYPE_BY_WBS_ID = networks + "/iface/mobile/appcheck/getTaskTypeByWbsId";
+    /**
+     * 检查项详情
+     */
+    public static final String CHECKGET_BY_ID = networks + "/iface/mobile/appcheck/getById";
+
+    /**
+     * 检查任务的检查项
+     */
+    public static final String SIMPLE_DETAILS_LIST_BY_APP = networks + "/iface/mobile/appcheck/getSimpleDetailsListByApp";
+    /**
+     * 检查任务的检查项详情
+     */
+    public static final String INFO_BY_MAIN_ID_AND_SQE = networks + "/iface/mobile/appcheck/getInfoByMainIdAndSqe";
 }

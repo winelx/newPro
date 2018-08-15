@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckFragmentAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.Checkbean;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
@@ -66,7 +66,7 @@ public class CheckFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckdownMessageActivity.class));
                         break;
                     case 3:
-                        ToastUtils.showShortToastCenter("统计报表");
+                        startActivity(new Intent(mContext, CheckReportActivity.class));
                         break;
                     default:
                         break;

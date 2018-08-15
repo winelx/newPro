@@ -142,8 +142,11 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                         Collectionlist.switchAct(node);
                         break;
                     case "Check":
-                        CheckTreeActivity CheckNewAdd = (CheckTreeActivity) mContext;
-                        CheckNewAdd.switchAct(node);
+                        if (position==0){
+                        }else {
+                            CheckTreeActivity CheckNewAdd = (CheckTreeActivity) mContext;
+                            CheckNewAdd.switchAct(node);
+                        }
                         break;
                     default:
 

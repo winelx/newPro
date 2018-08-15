@@ -68,6 +68,8 @@ public class CheckTreeActivity extends AppCompatActivity {
 
     public void switchAct(Node node) {
         Intent intent = new Intent();
+        intent.putExtra("id", node.getId());
+        intent.putExtra("name", node.getName());
         intent.putExtra("title", node.getTitle());
         setResult(3, intent);
         finish();

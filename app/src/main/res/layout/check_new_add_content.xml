@@ -158,8 +158,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black"
+                android:visibility="gone"
                 android:textSize="13sp"
-                android:visibility="gone" />
+               />
 
             <EditText
                 android:id="@+id/check_new_temporarysite"
@@ -224,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:hint="请选择"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
                     android:id="@+id/IconTextViewone"
@@ -246,9 +247,11 @@
             android:background="@color/back" />
 
         <LinearLayout
+            android:id="@+id/check_new_add_number"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -309,6 +312,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/check_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="测试员"
@@ -349,6 +353,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/check_new_orgname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="测试一标"

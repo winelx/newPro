@@ -905,7 +905,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 adapters.getData(Alldata);
             }
             refreshLayout.finishRefresh(true);
-            refreshLayout.finishRefresh(true);
+            refreshLayout.finishLoadmore(true);
 
         } catch (JSONException e) {
             e.printStackTrace();
