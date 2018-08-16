@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
@@ -70,10 +70,14 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         Object obj = mDatas.get(position);
         if (holder instanceof MyViewHolder) {
             final CheckTasklistAdapter success = (CheckTasklistAdapter) obj;
-            ((MyViewHolder) holder).managementTitle.setText(success.getCheckOrgName());
-            ((MyViewHolder) holder).managementBlock.setText(success.getOrgName());
-            ((MyViewHolder) holder).managementOrg.setText(success.getCheckOrgName());
-            ((MyViewHolder) holder).managementNumber.setText(success.getCheckOrgName());
+            //标题
+            ((MyViewHolder) holder).managementTitle.setText(success.getWbsMainName());
+            //
+            ((MyViewHolder) holder).managementBlock.setText("所属标段：" + success.getOrgName());
+
+            ((MyViewHolder) holder).managementOrg.setText("检查组织：" + success.getCheckOrgName());
+            //分数
+            ((MyViewHolder) holder).managementNumber.setText(setText("总分:"+success.getScore()));
             ((MyViewHolder) holder).managementUser.setText(success.getCheckUser() + "   " + success.getCreateDate());
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,22 +97,20 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((SubViewHolder) holder).managementTitle.setText(Sub.getCheckOrgName());
             ((SubViewHolder) holder).managementUser.setText(Sub.getCheckUser() + "      " + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText("所属标段：" + Sub.getOrgName());
+            ((SubViewHolder) holder).subManagementOrg.setText("所属组织:"+Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
             ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
             ((SubViewHolder) holder).tvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mDatas.remove(position);
-                    notifyDataSetChanged();
+                    removeData(position);
                 }
             });
             ((SubViewHolder) holder).layoutContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, CheckNewAddActivity.class);
-                    intent.putExtra("id", Sub.getId());
-//                    intent.putExtra("orgId",m)
-                    mContext.startActivity(intent);
+                    CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
+                    addActivity.submit(Sub.getId());
                 }
             });
 
@@ -146,19 +148,19 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     class SubViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layoutContent;
-        private TextView managementTitle, managementUser;
-        private TextView tvDelete, sub_management_block, tvSet;
+        RelativeLayout layoutContent ;
+        private TextView managementTitle, managementUser,subManagementOrg;
+        private TextView tvDelete, sub_management_block;
         private SlantedTextView slantedTextView;
 
         SubViewHolder(View itemView) {
             super(itemView);
+            subManagementOrg =itemView.findViewById(R.id.sub_management_org);
             sub_management_block = itemView.findViewById(R.id.sub_management_block);
             slantedTextView = itemView.findViewById(R.id.sub_inface_item_message);
             managementUser = itemView.findViewById(R.id.sub_management_user);
             managementTitle = itemView.findViewById(R.id.sub_management_title);
             tvDelete = itemView.findViewById(R.id.tv_delete);
-            tvSet = itemView.findViewById(R.id.tv_set);
             layoutContent = itemView.findViewById(R.id.sub_layout_content);
             ((LeftSlideView) itemView).setSlidingButtonListener(NotSubmitTaskAdapter.this);
         }
@@ -229,15 +231,6 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
-    private SpannableString setText(String str) {
-        SpannableString sp = new SpannableString(str);
-        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                        .getColor(R.color.red)), 3,
-                str.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sp;
-    }
-
     /**
      * 内部接口
      */
@@ -250,5 +243,15 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    private SpannableString setText(String str) {
+        SpannableString sp = new SpannableString(str);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.red)), 3,
+                str.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return sp;
     }
 }

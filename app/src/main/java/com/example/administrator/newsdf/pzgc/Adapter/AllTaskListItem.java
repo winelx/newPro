@@ -19,7 +19,13 @@ import java.util.List;
 /**
  * Created by Administrator on 2018/8/1 0001.
  */
-
+/** 
+ * description: 全部任务界面列表
+ * @author lx
+ * date: 2018/8/16 0016 上午 10:15 
+ * update: 2018/8/16 0016
+ * version: 
+*/
 public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Inface_all_item> list;
     private Context mContext;
@@ -46,7 +52,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void bindGrid(final TypeViewholder holder, final int position) {
-
         //标题
         if (list.get(position).getGroupName().length() != 0) {
             holder.interTitle.setText(list.get(position).getGroupName());

@@ -268,4 +268,15 @@ public class Requests {
      * 检查任务的检查项详情
      */
     public static final String INFO_BY_MAIN_ID_AND_SQE = networks + "/iface/mobile/appcheck/getInfoByMainIdAndSqe";
+    /**
+     * 保存整改
+     */
+    public static final String CREATE_NOTICE_BY_APP = networks + "/iface/mobile/appcheck/createNoticeByApp";
+
+    /**
+     *
+     */
+    public static final String GET_PERSON_DATA_APP = networks +"admin/check/checknoticeform/getPersonDataApp";
+
+
 }

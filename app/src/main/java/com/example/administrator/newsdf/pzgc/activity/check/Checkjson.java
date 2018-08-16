@@ -50,7 +50,13 @@ public class Checkjson {
         }
         return null;
     }
-
+    /**
+     * description:检查管理列表
+     * @author lx
+     * date: 2018/8/16 0016 下午 1:50
+     * update: 2018/8/16 0016
+     * version:
+     */
     public void taskmanagerlist(String str, ArrayList<Object> list, NotSubmitTaskAdapter mAdapter) {
         ArrayList<CheckTasklistAdapter> mdata = new ArrayList<>();
         ArrayList<CheckTasklistAdapter> listsuccess = new ArrayList<>();
@@ -65,7 +71,7 @@ public class Checkjson {
                         String checkOrgName = json.getString("checkOrgName");
                         String checkUser = json.getString("checkUser");
                         String createDate = json.getString("createDate");
-                        createDate = createDate.substring(0, 12);
+                        createDate = createDate.substring(0, 10);
                         String id = json.getString("id");
                         String orgName;
                         try {

@@ -4,7 +4,7 @@
 <com.example.administrator.newsdf.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="110dp"
     android:layout_marginTop="10dp"
     android:background="@color/back"
     android:gravity="center_vertical"
@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/tv_set"
             android:layout_width="20dp"
-            android:layout_height="80dp"
+            android:layout_height="110dp"
             android:layout_toRightOf="@+id/tv_delete"
             android:gravity="center"
             android:minHeight="80dp"
@@ -98,8 +98,22 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
+                    android:textColor="@color/black"
                     android:singleLine="true"
-                    android:text="所属标段:0XXXXXXXXXXXX" />
+                    android:text="所属标段:0XXXXXXXXXXXX11111111111111111" />
+
+                <TextView
+                    android:id="@+id/sub_management_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sub_management_block"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:text="所属标段:0XXXXXXXXXXXX11111111111111" />
             </RelativeLayout>
 
         </RelativeLayout>

@@ -10,16 +10,17 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
-            android:transitionName="sharedView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/back"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:transitionName="sharedView">
+
             <include layout="@layout/titlestyle" />
 
             <ScrollView
@@ -40,17 +41,18 @@
                 android:background="@color/graytext"
                 android:text="检查"
                 android:textColor="@color/writer" />
+
             <com.example.administrator.newsdf.pzgc.utils.DKDragView
                 android:id="@+id/float_suspension"
-                android:background="@mipmap/float_suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="50dp"
-                android:visibility="gone"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="70dp" />
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="70dp"
+                android:layout_marginTop="50dp"
+                android:background="@mipmap/float_suspension"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout
@@ -59,18 +61,35 @@
             android:layout_gravity="right"
             android:layout_marginTop="50dp"
             android:background="@color/writer">
-
-            <GridView
-                android:numColumns="5"
-                android:horizontalSpacing="5dp"
-                android:verticalSpacing="5dp"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/checklist"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/SmartRefreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <GridView
+                        android:id="@+id/checklist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:horizontalSpacing="5dp"
+                        android:numColumns="5"
+                        android:verticalSpacing="5dp" />
+
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
-
     </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

@@ -142,7 +142,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public int getItemCount() {
-
         int count = photoPaths.size() + 1;
         if (count > MAX) {
             count = MAX;

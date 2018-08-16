@@ -41,8 +41,6 @@ import java.util.Date;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.lzy.okgo.OkGo.post;
-
 /**
  * description:
  *
@@ -154,7 +152,16 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                 drawerLayout.openDrawer(GravityCompat.END);
             }
         });
-
+        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent2 = new Intent(mContext, CheckitemActivity.class);
+                intent2.putExtra("id", taskId);
+                intent2.putExtra("number", position+1);
+                intent2.putExtra("size",mData.size());
+                startActivity(intent2);
+            }
+        });
     }
 
     private void initData() {
@@ -196,14 +203,9 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         titleView.setText("新增检查");
         adapter = new CheckNewAdapter(mContext, mData);
         checklist.setAdapter(adapter);
-        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(mContext, CheckitemActivity.class));
-            }
-        });
         checkNewButton.setVisibility(View.GONE);
         statusT();
+
     }
 
     @Override
@@ -215,16 +217,6 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                 break;
             case R.id.checklistback:
                 finish();
-                break;
-            case R.id.check_new_buttons:
-                String str = checkNewButton.getText().toString();
-                if ("开始检查".equals(str)) {
-                    Intent intent2 = new Intent(mContext, CheckitemActivity.class);
-                    intent2.putExtra("id", taskId);
-                    intent2.putExtra("number", 1);
-                    intent2.putExtra("size",mData.size());
-                    startActivity(intent2);
-                }
                 break;
             default:
                 break;
@@ -396,9 +388,8 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         }
     }
 
-
     public void getCategory() {
-        post(Requests.CHECKGET_BY_ID)
+       OkGo.post(Requests.CHECKGET_BY_ID)
                 .params("Id", Id)
                 .execute(new StringCallback() {
                     @Override
@@ -454,7 +445,9 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                     }
                 });
     }
-
+    /**
+     *生成检查后的检查项列表
+     */
     private void checkItem() {
         OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
                 .params("id", taskId)

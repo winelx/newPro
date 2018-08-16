@@ -22,9 +22,12 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="8"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxEms="13"
         android:paddingLeft="5dp"
-        android:text="检查管理"
+        android:singleLine="true"
+        android:text="检查管理检查管理检查管理检查管理检查管理检查管理"
         android:textColor="@color/writer"
         android:textSize="18sp" />
 
@@ -42,6 +45,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
+
             android:gravity="center"
             android:textColor="@color/writer"
             android:textSize="15sp"

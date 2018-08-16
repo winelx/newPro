@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
@@ -34,6 +35,7 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -62,7 +64,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 
     private PhotoAdapter photoAdapter;
     private Context mContext;
-
     private String[] numbermonth, numberyear;
     private CheckPermission checkPermission;
     //当前界面新增的图片（如果未返回，删除图片）
@@ -76,9 +77,13 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private Switch checkMessageSwitch;
     private TextView checkMessageTime, checkMessageUsernameText, checklistmeuntext;
     private RecyclerView photoadd;
-    private LinearLayout checkMessageLasttiem, checkMessageUsername;
+    private LinearLayout checkMessageLasttiem, checkMessageDialog, checkMessageDate;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private ScrollView checkMessageContent;
+    private EditText checkMessageStandar, check_message_describe;
+    private TextView checkMessageUser, checkMessageOrg, MessageData;
+    private Boolean generate;
+    private String orgId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,40 +103,44 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+        findID();
         initData();
-        checkMessageContent = (ScrollView) findViewById(R.id.check_message_content);
-        findViewById(R.id.checklistback).setOnClickListener(this);
-        findViewById(R.id.check_message_username).setOnClickListener(this);
-        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        findViewById(R.id.checklistmeun).setOnClickListener(this);
-        checklistmeuntext.setText("保存");
-        checklistmeuntext.setVisibility(View.GONE);
-        checkMessageSwitch = (Switch) findViewById(R.id.check_message_switch);
-        checkMessageUsernameText = (TextView) findViewById(R.id.check_message_username_text);
-        checkMessageTime = (TextView) findViewById(R.id.check_message_time);
-        checkMessageLasttiem = (LinearLayout) findViewById(R.id.check_message_lasttiem);
-        checkMessageLasttiem.setOnClickListener(this);
-        photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
-        //附件的recycleraview的适配器
-        photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        photoadd.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new PhotoAdapter(mContext, Imagepath, "Message");
-        photoadd.setAdapter(photoAdapter);
-        checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                // TODO Auto-generated method stub
-                if (isChecked) {
-                    //打开
-                    checkMessageContent.setVisibility(View.VISIBLE);
-                } else {
-                    // 关闭
-                    checkMessageContent.setVisibility(View.GONE);
-                }
-            }
-        });
+    }
 
+    private void findID() {
+        //检查人
+        checkMessageUser = (TextView) findViewById(R.id.check_message_user);
+        //检查组织
+        checkMessageOrg = (TextView) findViewById(R.id.check_message_org);
+        //检查时间
+        MessageData = (TextView) findViewById(R.id.message_date);
+        //检查时间linear
+        checkMessageDate = (LinearLayout) findViewById(R.id.check_message_data);
+        //是否生成通知linear
+        checkMessageDialog = (LinearLayout) findViewById(R.id.check_message_dialog);
+        //整改事由
+        check_message_describe = (EditText) findViewById(R.id.check_message_describe);
+        //违反标段
+        checkMessageStandar = (EditText) findViewById(R.id.checkmessage_standar);
+        //滚动父布局
+        checkMessageContent = (ScrollView) findViewById(R.id.check_message_content);
+        //标题
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        //是否生成整改状态按钮
+        checkMessageSwitch = (Switch) findViewById(R.id.check_message_switch);
+        //负责人
+        checkMessageUsernameText = (TextView) findViewById(R.id.check_message_username_text);
+        //整改最后时间
+        checkMessageTime = (TextView) findViewById(R.id.check_message_time);
+        //整改最后时间linear
+        checkMessageLasttiem = (LinearLayout) findViewById(R.id.check_message_lasttiem);
+        //附件
+        photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
+        findViewById(R.id.check_message_username).setOnClickListener(this);
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
+        findViewById(R.id.checklistback).setOnClickListener(this);
+        checkMessageDate.setOnClickListener(this);
+        checkMessageLasttiem.setOnClickListener(this);
     }
 
     private void initData() {
@@ -146,10 +155,43 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         Imagepath = new ArrayList<>();
         pathimg = new ArrayList<>();
         Intent intent = getIntent();
+        orgId = intent.getStringExtra("orgId");
         Imagepath = intent.getStringArrayListExtra("list");
+        checkMessageStandar.setText(intent.getStringExtra("standar"));
+        check_message_describe.setText(intent.getStringExtra("describe"));
+        generate = intent.getBooleanExtra("status", false);
+        if (generate) {
+            checkMessageSwitch.setChecked(generate);
+            checkMessageContent.setVisibility(View.VISIBLE);
+            checklistmeuntext.setVisibility(View.VISIBLE);
+        }
+        //附件的recycleraview的适配器
+        photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        photoadd.setItemAnimator(new DefaultItemAnimator());
+        photoAdapter = new PhotoAdapter(mContext, Imagepath, "Message");
+        photoadd.setAdapter(photoAdapter);
+        checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                // TODO Auto-generated method stub
+                if (isChecked) {
+                    //打开
+                    checkMessageContent.setVisibility(View.VISIBLE);
+                    checklistmeuntext.setVisibility(View.VISIBLE);
+                } else {
+                    // 关闭
+                    checkMessageContent.setVisibility(View.GONE);
+                    checklistmeuntext.setVisibility(View.GONE);
+                }
+            }
+        });
+        checklistmeuntext.setText("保存");
+        checkMessageUser.setText(SPUtils.getString(mContext, "staffName", ""));
+        checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
     }
 
-    //添加图片
+    //添加图片选择功能
     public void showPopwindow() {
         //弹出现在相机和图册的蒙层
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
@@ -264,18 +306,16 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             Dates.deleteFile(path);
                         }
                     });
-
                 }
             });
         }
-
     }
 
     /**
      * 选择时间弹出框
      */
-    private void meunpop() {
-        View contentView = getPopupWindowContentView();
+    private void meunpop(String str) {
+        View contentView = getPopupWindowContentView(str);
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
@@ -283,7 +323,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checkMessageLasttiem);
+        mPopupWindow.showAsDropDown(checkMessageDialog);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new CheckmassageActivity.poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckmassageActivity.this);
@@ -292,7 +332,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     /**
      * \设置pop的点击事件
      */
-    private View getPopupWindowContentView() {
+    private View getPopupWindowContentView(final String str) {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
         int layoutId = R.layout.popwind_daily;
@@ -328,7 +368,11 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             }
 
                         }
-                        checkMessageTime.setText(yeardata + "-" + monthdata + "-" + daydata);
+                        if ("data".equals(str)) {
+                            MessageData.setText(yeardata + "-" + monthdata + "-" + daydata);
+                        } else {
+                            checkMessageTime.setText(yeardata + "-" + monthdata + "-" + daydata);
+                        }
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -462,10 +506,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.check_message_lasttiem:
-                meunpop();
+                meunpop("last");
                 break;
             case R.id.check_message_username:
-                startActivityForResult(new Intent(mContext, CheckuserActivity.class), 1);
+                Intent intent = new Intent(mContext, CheckuserActivity.class);
+                intent.putExtra("orgId", orgId);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.checklistback:
                 //删除当前界面新增的图片
@@ -476,6 +522,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.checklistmeun:
                 ToastUtils.showLongToast("保存");
+                break;
+            case R.id.check_message_data:
+                meunpop("data");
                 break;
             default:
                 break;
@@ -495,5 +544,25 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             return true;
         }
         return true;
+    }
+
+
+    public void Save() {
+//        OkGo.post(Requests.CREATE_NOTICE_BY_APP)
+//                .params("id", "")
+//                //违反标准
+//                .params("standardDelName", "")
+//                //整改事宜
+//                .params("rectificationReason", "")
+//                //检查人
+//                .params("checkPersonName", "")
+//                //检查组织
+//                .params("checkOrgid", "")
+//                //检查时间
+//                .params("checkDate", "")
+//                //整改期限
+//                .params("rectificationDate", "")
+//                //整改负责人Id
+//                .params("rectificationPerson", "")
     }
 }

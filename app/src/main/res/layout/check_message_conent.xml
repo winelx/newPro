@@ -11,31 +11,6 @@
         android:layout_height="1dp"
         android:background="@color/back" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="违反内容"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="不符合设计规范要求"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -56,11 +31,14 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
-        <TextView
+        <EditText
+            android:id="@+id/checkmessage_standar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="不符合设计规范要求"
+            android:background="@null"
+            android:hint="请输入内容"
+            android:minHeight="30dp"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -86,11 +64,14 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
-        <TextView
+        <EditText
+            android:id="@+id/check_message_describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="不符合设计规范要求"
+            android:background="@null"
+            android:hint="请输入内容"
+            android:minHeight="30dp"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -118,6 +99,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/check_message_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -150,6 +132,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/check_message_org"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -166,6 +149,7 @@
         android:background="@color/back" />
 
     <LinearLayout
+        android:id="@+id/check_message_data"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
@@ -182,6 +166,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/message_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -189,6 +174,16 @@
             android:text="2018-08-07"
             android:textColor="@color/black"
             android:textSize="15sp" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/mine_text"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -313,6 +308,5 @@
         android:layout_below="@+id/text"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-    />
+        android:layout_marginRight="10dp" />
 </LinearLayout>

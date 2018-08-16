@@ -133,8 +133,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                 pages = 1;
                 list.clear();
                 checkmamgrlist();
-//                mAdapter.getData(list);
-                //结束刷新
+
 
             }
         });
@@ -145,11 +144,11 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             public void onLoadmore(RefreshLayout refreshlayout) {
                 pages++;
                 checkmamgrlist();
-//                mAdapter.getData(list);
-                //结束加载
-
             }
         });
+        /**
+         * 网络请求
+         */
         checkmamgrlist();
     }
 
@@ -265,6 +264,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                             smartrefreshlayout.finishRefresh(true);
                             smartrefreshlayout.finishLoadmore(true);
                         }
+
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
@@ -279,6 +279,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                     smartrefreshlayout.finishRefresh(true);
                     smartrefreshlayout.finishLoadmore(true);
                 }
+
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
@@ -290,5 +291,12 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    public void submit(String  id) {
+        Intent intent = new Intent(mContext, CheckNewAddActivity.class);
+        intent.putExtra("orgId", orgId);
+        intent.putExtra("name", name);
+        intent.putExtra("taskId",id);
+        startActivity(intent);
+    }
 
 }

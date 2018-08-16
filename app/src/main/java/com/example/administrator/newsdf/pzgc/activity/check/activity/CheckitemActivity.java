@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -48,6 +49,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +60,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
+import static com.lzy.okgo.OkGo.post;
 
 /**
  * description: 检查项
@@ -81,12 +84,15 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private Context mContext;
     private ArrayList<String> Imagepath;
     private static final int IMAGE_PICKER = 101;
-    private String taskId;
+    private String taskId,orgId;
     private int number, size;
     private CheckUtils checkUtils;
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
-    private EditText checkItemContentCore, check_item_content_describe;
+    private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
+    private LinearLayout check_item_tabup, check_item_tadown;
+    private ArrayList<String> imageId;
+    private Boolean generate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkUtils = new CheckUtils();
         Intent intent = getIntent();
         taskId = intent.getStringExtra("id");
+        orgId = intent.getStringExtra("orgId");
         number = intent.getIntExtra("number", 0);
         size = intent.getIntExtra("size", 0);
         mData = new ArrayList<>();
@@ -113,12 +120,15 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+
+        check_item_tabup = (LinearLayout) findViewById(R.id.check_item_tabup);
+        check_item_tadown = (LinearLayout) findViewById(R.id.check_item_tadown);
         //是否无此项
         switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //检查描述
-        check_item_content_describe = (EditText) findViewById(R.id.check_item_content_describe);
+        checkItemContentDescribe = (EditText) findViewById(R.id.check_item_content_describe);
         //检查项名称
         checkItemContentName = (TextView) findViewById(R.id.check_item_content_name);
         //检查项内容名称
@@ -199,7 +209,21 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         photoAdapter = new PhotoAdapter(mContext, Imagepath, "Check");
         photoadd.setAdapter(photoAdapter);
         titleView.setText(number + "/" + size);
-        getdate();
+        if (number == 1) {
+            check_item_tabup.setVisibility(View.INVISIBLE);
+        } else if (number == size) {
+            check_item_tadown.setVisibility(View.INVISIBLE);
+        }
+        checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int page = position + 1;
+                getdate(page);
+                titleView.setText(page + "/" + size);
+            }
+        });
+        getdate(number);
+        getcheckitemList();
     }
 
     //添加图片
@@ -215,7 +239,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //获取屏幕宽高
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-
         final PopupWindow popWindow = new PopupWindow(popView, width, height);
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setFocusable(true);
@@ -334,6 +357,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             case R.id.check_item_content_massage:
                 Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
                 intent.putExtra("list", Imagepath);
+                intent.putExtra("orgId",orgId);
+                intent.putExtra("imageId", imageId);
+                intent.putExtra("standar", checkItemContentBz.getText().toString());
+                intent.putExtra("describe", checkItemContentDescribe.getText().toString());
+                intent.putExtra("status", generate);
                 startActivity(intent);
                 break;
             default:
@@ -355,10 +383,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-    public void getdate() {
-        OkGo.post(Requests.INFO_BY_MAIN_ID_AND_SQE)
+    public void getdate(int page) {
+        post(Requests.INFO_BY_MAIN_ID_AND_SQE)
                 .params("id", taskId)
-                .params("page", number)
+                .params("page", page)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -366,29 +394,44 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                imageId = new ArrayList<>();
+                                Imagepath.clear();
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 checkItemContentName.setText(json.getString("name"));
                                 checkItemContentContentname.setText(json.getString("content"));
                                 checkItemContentBz.setText(json.getString("standard"));
                                 checkItemContentStandarcore.setText(json.getString("standardScore"));
                                 checkItemContentCore.setText(json.getString("score"));
-                             String describe=   json.getString("describe");
-                                if (describe.length()>0){
-                                    check_item_content_describe.setText(describe);
-                                }else {
-                                    check_item_content_describe.setText("未输入描述");
+                                String describe = json.getString("describe");
+                                if (describe.length() > 0) {
+                                    checkItemContentDescribe.setText(describe);
+                                } else {
+                                    checkItemContentDescribe.setText("未输入描述");
                                 }
 
-                                Boolean generate;
+
                                 try {
                                     generate = json.getBoolean("generate");
-                                    checkitemcontentStatus.setText("是");
+                                    if (generate) {
+                                        checkitemcontentStatus.setText("是");
+                                    } else {
+                                        checkitemcontentStatus.setText("否");
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     generate = false;
                                     checkitemcontentStatus.setText("否");
                                 }
                                 switch1.setChecked(json.getBoolean("noSuch"));
+                                JSONArray attachments = json.getJSONArray("attachments");
+                                if (attachments.length() > 0) {
+                                    for (int i = 0; i < attachments.length(); i++) {
+                                        JSONObject attach = attachments.getJSONObject(i);
+                                        imageId.add(attach.getString("id"));
+                                        Imagepath.add(Requests.networks + attach.getString("filepath"));
+                                    }
+                                    photoAdapter.getData(Imagepath);
+                                }
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -396,6 +439,44 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             e.printStackTrace();
                         }
                     }
+                });
+    }
+
+    /**
+     * 生成检查后的检查项列表
+     */
+    public void getcheckitemList() {
+        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
+                .params("id", taskId)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                mData.clear();
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String id = json.getString("id");
+                                        String score = json.getString("score");
+                                        String sequence = json.getString("sequence");
+                                        String standardScore = json.getString("standardScore");
+                                        boolean noSuch = json.getBoolean("noSuch");
+                                        boolean penalty = json.getBoolean("penalty");
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty));
+                                    }
+                                }
+                            }
+                            adapter.getdate(mData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                 });
     }
 }
