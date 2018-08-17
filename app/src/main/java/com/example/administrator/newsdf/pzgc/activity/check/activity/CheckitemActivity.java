@@ -35,8 +35,9 @@ import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -46,6 +47,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -59,6 +61,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.check_item_tadown;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 import static com.lzy.okgo.OkGo.post;
 
@@ -72,27 +75,29 @@ import static com.lzy.okgo.OkGo.post;
  */
 public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener {
     private DKDragView dkDragView;
-    private LinearLayout checkItemTadown, checkItemTabup, checkItemContentMassage;
-    private TextView checkItemTabupText, checkItemTadownText, titleView, checkitemcontentStatus;
+    private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
+    private TextView checkItemTabupText, checkItemTadownText, titleView, checkitemcontentStatus, checklistmeuntext;
     private GridView checklist;
     private DrawerLayout drawerLayout;
     private RecyclerView photoadd;
     private CheckNewAdapter adapter;
-    private PhotoAdapter photoAdapter;
+    private CheckPhotoAdapter photoAdapter;
     private ArrayList<chekitemList> mData;
     private CheckPermission checkPermission;
     private Context mContext;
-    private ArrayList<String> Imagepath;
+    private ArrayList<Audio> Imagepath;
     private static final int IMAGE_PICKER = 101;
-    private String taskId,orgId;
+    private String taskId, orgId;
     private int number, size;
     private CheckUtils checkUtils;
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
-    private LinearLayout check_item_tabup, check_item_tadown;
-    private ArrayList<String> imageId;
+    String noticeid;
+
     private Boolean generate;
+    //删除的图片Id
+    private ArrayList<String> deleteid = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +125,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
-
-        check_item_tabup = (LinearLayout) findViewById(R.id.check_item_tabup);
-        check_item_tadown = (LinearLayout) findViewById(R.id.check_item_tadown);
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setText("编辑");
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
         //是否无此项
         switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
@@ -143,7 +149,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //整改通知
-        findViewById(R.id.check_item_content_massage).setOnClickListener(this);
+        checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
+        checkItemContentMassage.setOnClickListener(this);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
         //抽屉控件
@@ -153,7 +160,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //右侧拉布局
         checklist = (GridView) findViewById(R.id.checklist);
         //下一项
-        checkItemTadown = (LinearLayout) findViewById(R.id.check_item_tadown);
+        checkItemTadown = (LinearLayout) findViewById(check_item_tadown);
         //上一项
         checkItemTabup = (LinearLayout) findViewById(R.id.check_item_tabup);
         //上一项文字
@@ -179,25 +186,43 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkItemTadown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //点击下一项时，上一项文字变为灰色
-                checkItemTabupText.setTextColor(Color.parseColor("#646464"));
-                //文字变为白色
-                checkItemTadownText.setTextColor(Color.parseColor("#ffffff"));
-                //下一项背景变为灰色
-                checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down_gray);
-                //上一下背景变为白色
-                checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
+                String text = checklistmeuntext.getText().toString();
+                if ("编辑".equals(text)) {
+                    //点击下一项时，上一项文字变为灰色
+                    checkItemTabupText.setTextColor(Color.parseColor("#646464"));
+                    //文字变为白色
+                    checkItemTadownText.setTextColor(Color.parseColor("#ffffff"));
+                    //下一项背景变为灰色
+                    checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down_gray);
+                    //上一下背景变为白色
+                    checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
+                    checkItemTabup.setClickable(false);
+                    checkItemTadown.setClickable(false);
+                    getdate(number + 1);
+
+                } else {
+                    ToastUtils.showShortToast("请先保存数据");
+                }
+
             }
         });
         //上一项点击事件
         checkItemTabup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //参考下一项点击事件
-                checkItemTabupText.setTextColor(Color.parseColor("#ffffff"));
-                checkItemTadownText.setTextColor(Color.parseColor("#646464"));
-                checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
-                checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
+                String text = checklistmeuntext.getText().toString();
+                if ("编辑".equals(text)) {
+                    //参考下一项点击事件
+                    checkItemTabupText.setTextColor(Color.parseColor("#ffffff"));
+                    checkItemTadownText.setTextColor(Color.parseColor("#646464"));
+                    checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
+                    checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
+                    getdate(number - 1);
+                    checkItemTabup.setClickable(false);
+                    checkItemTadown.setClickable(false);
+                } else {
+                    ToastUtils.showShortToast("请先保存数据");
+                }
             }
         });
         //右侧布局的gridview的适配器
@@ -206,24 +231,30 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //附件的recycleraview的适配器
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new PhotoAdapter(mContext, Imagepath, "Check");
+        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Check");
         photoadd.setAdapter(photoAdapter);
         titleView.setText(number + "/" + size);
         if (number == 1) {
-            check_item_tabup.setVisibility(View.INVISIBLE);
+            checkItemTabup.setVisibility(View.INVISIBLE);
         } else if (number == size) {
-            check_item_tadown.setVisibility(View.INVISIBLE);
+            checkItemTadown.setVisibility(View.INVISIBLE);
         }
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int page = position + 1;
-                getdate(page);
-                titleView.setText(page + "/" + size);
+                String text = checklistmeuntext.getText().toString();
+                if ("编辑".equals(text)) {
+                    number = position + 1;
+                    getdate(number);
+                } else {
+                    ToastUtils.showShortToast("请先保存数据");
+                }
             }
         });
+        tClickableF();
         getdate(number);
         getcheckitemList();
+
     }
 
     //添加图片
@@ -304,7 +335,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
                                 //添加进集合
-                                Imagepath.add(outfile);
+                                Imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
                                 photoAdapter.getData(Imagepath);
                             }
@@ -330,10 +361,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     Tiny.getInstance().source(bitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            Imagepath.add(outfile);
+                            Imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
                             photoAdapter.getData(Imagepath);
-//                    //删除原图
+                            //删除原图
                             Dates.deleteFile(path);
                         }
                     });
@@ -350,19 +381,33 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             case R.id.checklistback:
                 //删除已有图片
                 for (int i = 0; i < Imagepath.size(); i++) {
-                    FileUtils.deleteFile(Imagepath.get(i));
+                    FileUtils.deleteFile(Imagepath.get(i).getName());
                 }
                 finish();
                 break;
             case R.id.check_item_content_massage:
+                ArrayList<String> ids = new ArrayList<>();
+                ArrayList<String> path = new ArrayList<>();
+                for (int i = 0; i < Imagepath.size(); i++) {
+                    ids.add(Imagepath.get(i).getContent());
+                    path.add(Imagepath.get(i).getName());
+                }
                 Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
-                intent.putExtra("list", Imagepath);
-                intent.putExtra("orgId",orgId);
-                intent.putExtra("imageId", imageId);
-                intent.putExtra("standar", checkItemContentBz.getText().toString());
-                intent.putExtra("describe", checkItemContentDescribe.getText().toString());
+                intent.putExtra("ids", ids);
+                intent.putExtra("path", path);
+                intent.putExtra("orgId", orgId);
                 intent.putExtra("status", generate);
+                intent.putExtra("id",noticeid);
                 startActivity(intent);
+                break;
+            case R.id.checklistmeun:
+                String text = checklistmeuntext.getText().toString();
+                if ("编辑".equals(text)) {
+                    tClickableT();
+                    checklistmeuntext.setText("保存");
+                } else {
+                    saveDetails();
+                }
                 break;
             default:
                 break;
@@ -375,7 +420,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
             for (int i = 0; i < Imagepath.size(); i++) {
-                FileUtils.deleteFile(Imagepath.get(i));
+                FileUtils.deleteFile(Imagepath.get(i).getName());
             }
             finish();
             return true;
@@ -383,20 +428,34 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-    public void getdate(int page) {
+    public void getdate(final Integer page) {
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
                 .params("id", taskId)
                 .params("page", page)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        checkItemTabup.setClickable(true);
+                        checkItemTadown.setClickable(true);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                imageId = new ArrayList<>();
+                                number = page;
+                                titleView.setText(page + "/" + size);
+                                if (page == 1) {
+                                    checkItemTabup.setVisibility(View.INVISIBLE);
+                                    checkItemTadown.setVisibility(View.VISIBLE);
+                                } else if (page == size) {
+                                    checkItemTabup.setVisibility(View.VISIBLE);
+                                    checkItemTadown.setVisibility(View.INVISIBLE);
+                                } else {
+                                    checkItemTabup.setVisibility(View.VISIBLE);
+                                    checkItemTadown.setVisibility(View.VISIBLE);
+                                }
                                 Imagepath.clear();
                                 JSONObject json = jsonObject.getJSONObject("data");
+                                noticeid = json.getString("noticeId");
                                 checkItemContentName.setText(json.getString("name"));
                                 checkItemContentContentname.setText(json.getString("content"));
                                 checkItemContentBz.setText(json.getString("standard"));
@@ -408,8 +467,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 } else {
                                     checkItemContentDescribe.setText("未输入描述");
                                 }
-
-
                                 try {
                                     generate = json.getBoolean("generate");
                                     if (generate) {
@@ -427,9 +484,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 if (attachments.length() > 0) {
                                     for (int i = 0; i < attachments.length(); i++) {
                                         JSONObject attach = attachments.getJSONObject(i);
-                                        imageId.add(attach.getString("id"));
-                                        Imagepath.add(Requests.networks + attach.getString("filepath"));
+                                        Imagepath.add(new Audio(Requests.networks + attach.getString("filepath"), attach.getString("id")));
                                     }
+                                    photoAdapter.getData(Imagepath);
+                                } else {
+                                    Imagepath.clear();
                                     photoAdapter.getData(Imagepath);
                                 }
                             } else {
@@ -438,6 +497,13 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        checkItemTabup.setClickable(true);
+                        checkItemTadown.setClickable(true);
                     }
                 });
     }
@@ -479,4 +545,101 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
                 });
     }
+
+    public void saveDetails() {
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < Imagepath.size(); i++) {
+            if (Imagepath.get(i).getContent().length() > 0) {
+
+            } else {
+                file.add(new File(Imagepath.get(i).getName()));
+            }
+        }
+        PostRequest Request = post(Requests.SAVE_DETAILS)
+                .isMultipart(true)
+                .params("noSuch", switch1.isChecked())
+                //是否生成整改通知单
+                .params("generate", false)
+                //Id
+                .params("id", mData.get(number).getId())
+                //得分
+                .params("Score", 0)
+                //具体描述
+                .params("describe", checkItemContentDescribe.getText().toString())
+                .params("deleteFileId", Dates.listToStrings(deleteid));
+        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
+        if (file.size() > 0) {
+            Request.addFileParams("imagesList", file)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    tClickableF();
+                                    checklistmeuntext.setText("编辑");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+
+                        }
+                    });
+        } else {
+            Request.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int ret = jsonObject.getInt("ret");
+                        if (ret == 0) {
+                            tClickableF();
+                            checklistmeuntext.setText("编辑");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
+
+                }
+            });
+        }
+
+    }
+
+    public void delete(String position) {
+        if (position.length() > 0) {
+            deleteid.add(position);
+        }
+    }
+
+    public void tClickableF() {
+        switch1.setClickable(false);
+        checkItemContentCore.setEnabled(false);
+        checkItemContentDescribe.setEnabled(false);
+
+
+    }
+
+    public void tClickableT() {
+        switch1.setClickable(true);
+        checkItemContentCore.setEnabled(true);
+        checkItemContentDescribe.setEnabled(true);
+
+    }
+
+    public String getstatus() {
+        return checklistmeuntext.getText().toString();
+    }
 }
+

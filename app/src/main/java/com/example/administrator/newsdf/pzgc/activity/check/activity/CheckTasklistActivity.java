@@ -191,7 +191,6 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
     //设置pop的点击事件
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
-        // 布局ID
         int layoutId = R.layout.checkmanagementlist_pop;
         View contentView = LayoutInflater.from(this).inflate(layoutId, null);
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {

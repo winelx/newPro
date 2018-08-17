@@ -120,7 +120,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         } else {
             getdata();
             getcheckitemList();
-
             statusT();
         }
     }
@@ -229,7 +228,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                 intent2.putExtra("id", taskId);
                 intent2.putExtra("orgId", orgId);
-                intent2.putExtra("number", position+1);
+                intent2.putExtra("number",position+1);
                 intent2.putExtra("size",mData.size());
                 startActivity(intent2);
             }
@@ -564,7 +563,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String standardScore = json.getString("standardScore");
+                                        String  standardScore =json.getString("standardScore");
                                         boolean noSuch = json.getBoolean("noSuch");
                                         boolean penalty = json.getBoolean("penalty");
                                         mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty));

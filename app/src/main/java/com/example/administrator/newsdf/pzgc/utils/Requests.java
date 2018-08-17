@@ -237,16 +237,16 @@ public class Requests {
     /**
      * 检查管理列表
      */
-    public static final String CHECKMANGERLIST = networks + "/iface/mobile/appcheck/checkManagerList";
+    public static final String CHECKMANGERLIST = networks + "iface/mobile/appcheck/checkManagerList";
     /**
      * 新增检查
      */
-    public static final String CHECKMANGERSAVE = networks + "/iface/mobile/appcheck/save";
+    public static final String CHECKMANGERSAVE = networks + "iface/mobile/appcheck/save";
 
     /**
      * 检查类别
      */
-    public static final String TASK_TYPE_LIST = networks + "/iface/mobile/appcheck/getTaskTypeLis";
+    public static final String TASK_TYPE_LIST = networks + "iface/mobile/appcheck/getTaskTypeLis";
     /**
      * 现在标准
      */
@@ -254,29 +254,37 @@ public class Requests {
     /**
      * 根据标段选择类别
      */
-    public static final String GET_TASK_TYPE_BY_WBS_ID = networks + "/iface/mobile/appcheck/getTaskTypeByWbsId";
+    public static final String GET_TASK_TYPE_BY_WBS_ID = networks + "iface/mobile/appcheck/getTaskTypeByWbsId";
     /**
      * 检查项详情
      */
-    public static final String CHECKGET_BY_ID = networks + "/iface/mobile/appcheck/getById";
+    public static final String CHECKGET_BY_ID = networks + "iface/mobile/appcheck/getById";
 
     /**
      * 检查任务的检查项
      */
-    public static final String SIMPLE_DETAILS_LIST_BY_APP = networks + "/iface/mobile/appcheck/getSimpleDetailsListByApp";
+    public static final String SIMPLE_DETAILS_LIST_BY_APP = networks + "iface/mobile/appcheck/getSimpleDetailsListByApp";
     /**
      * 检查任务的检查项详情
      */
-    public static final String INFO_BY_MAIN_ID_AND_SQE = networks + "/iface/mobile/appcheck/getInfoByMainIdAndSqe";
+    public static final String INFO_BY_MAIN_ID_AND_SQE = networks + "iface/mobile/appcheck/getInfoByMainIdAndSqe";
     /**
      * 保存整改
      */
-    public static final String CREATE_NOTICE_BY_APP = networks + "/iface/mobile/appcheck/createNoticeByApp";
+    public static final String CREATE_NOTICE_BY_APP = networks + "iface/mobile/appcheck/createNoticeByApp";
 
     /**
-     *
+     * 检查管理的联系人
      */
-    public static final String GET_PERSON_DATA_APP = networks +"admin/check/checknoticeform/getPersonDataApp";
+    public static final String GET_PERSON_DATA_APP = networks + "admin/check/checknoticeform/getPersonDataApp";
+    /**
+     * 保存检查项详情
+     */
+    public static final String SAVE_DETAILS = networks + "iface/mobile/appcheck/saveDetails";
+    /**
+     * 获取已有通知单
+     */
+    public static final String GET_NOTICE_BY_APP = networks + "iface/mobile/appcheck/getNoticeByApp";
 
 
 }

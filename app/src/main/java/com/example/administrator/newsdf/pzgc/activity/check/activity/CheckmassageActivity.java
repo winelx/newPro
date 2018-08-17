@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,19 +33,28 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 
@@ -62,14 +71,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private static final int IMAGE_PICKER = 101;
     private int dateMonth, dayDate;
 
-    private PhotoAdapter photoAdapter;
+    private CheckPhotoAdapter photoAdapter;
     private Context mContext;
     private String[] numbermonth, numberyear;
     private CheckPermission checkPermission;
     //当前界面新增的图片（如果未返回，删除图片）
-    private ArrayList<String> Imagepath;
-    //当前界面新增的图片和携带过来的图片
-    private ArrayList<String> pathimg;
+    private ArrayList<Audio> Imagepath;
     private PopupWindow mPopupWindow;
 
     private Date myDate = new Date();
@@ -79,11 +86,11 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView photoadd;
     private LinearLayout checkMessageLasttiem, checkMessageDialog, checkMessageDate;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private ScrollView checkMessageContent;
-    private EditText checkMessageStandar, check_message_describe;
-    private TextView checkMessageUser, checkMessageOrg, MessageData;
+    private RelativeLayout checkMessageContent;
+    private EditText check_message_describe;
+    private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
     private Boolean generate;
-    private String orgId;
+    private String orgId, name, nameId, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +112,11 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         };
         findID();
         initData();
+        getNoticeByApp();
     }
 
     private void findID() {
+        titleView = (TextView) findViewById(R.id.titleView);
         //检查人
         checkMessageUser = (TextView) findViewById(R.id.check_message_user);
         //检查组织
@@ -121,9 +130,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //整改事由
         check_message_describe = (EditText) findViewById(R.id.check_message_describe);
         //违反标段
-        checkMessageStandar = (EditText) findViewById(R.id.checkmessage_standar);
+        checkMessageStandar = (TextView) findViewById(R.id.checkmessage_standar);
         //滚动父布局
-        checkMessageContent = (ScrollView) findViewById(R.id.check_message_content);
+        checkMessageContent = (RelativeLayout) findViewById(R.id.check_message_content);
         //标题
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         //是否生成整改状态按钮
@@ -153,22 +162,32 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //天
         dayDate = myDate.getDate() - 1;
         Imagepath = new ArrayList<>();
-        pathimg = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<String> path = new ArrayList<>();
         Intent intent = getIntent();
+        ids = intent.getStringArrayListExtra("ids");
+        path = intent.getStringArrayListExtra("path");
         orgId = intent.getStringExtra("orgId");
-        Imagepath = intent.getStringArrayListExtra("list");
-        checkMessageStandar.setText(intent.getStringExtra("standar"));
-        check_message_describe.setText(intent.getStringExtra("describe"));
         generate = intent.getBooleanExtra("status", false);
+        id = intent.getStringExtra("id");
+        //组装id和路径
+        if (ids.size() > 0) {
+            for (int i = 0; i < ids.size(); i++) {
+                Imagepath.add(new Audio(path.get(i), ids.get(i)));
+            }
+        }
         if (generate) {
             checkMessageSwitch.setChecked(generate);
             checkMessageContent.setVisibility(View.VISIBLE);
             checklistmeuntext.setVisibility(View.VISIBLE);
+        } else {
+            checkMessageContent.setVisibility(View.GONE);
+            checklistmeuntext.setVisibility(View.GONE);
         }
         //附件的recycleraview的适配器
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new PhotoAdapter(mContext, Imagepath, "Message");
+        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Message");
         photoadd.setAdapter(photoAdapter);
         checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -186,9 +205,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
+        titleView.setText("生成整改通知单");
         checklistmeuntext.setText("保存");
-        checkMessageUser.setText(SPUtils.getString(mContext, "staffName", ""));
-        checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
     }
 
     //添加图片选择功能
@@ -269,8 +287,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
                                 //添加进集合
-                                pathimg.add(outfile);
-                                Imagepath.add(outfile);
+                                Imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
                                 photoAdapter.getData(Imagepath);
                             }
@@ -284,6 +301,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             }
         } else if (requestCode == 1 && resultCode == 3) {
             checkMessageUsernameText.setText(data.getStringExtra("name"));
+        } else if (requestCode == 2 && resultCode == 2) {
+            checkMessageUsernameText.setText(data.getStringExtra("name"));
+            nameId = data.getStringExtra("id");
         } else {
             //从相机返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
@@ -298,8 +318,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                     Tiny.getInstance().source(bitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            pathimg.add(outfile);
-                            Imagepath.add(outfile);
+                            Imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
                             photoAdapter.getData(Imagepath);
 //                    //删除原图
@@ -511,12 +530,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             case R.id.check_message_username:
                 Intent intent = new Intent(mContext, CheckuserActivity.class);
                 intent.putExtra("orgId", orgId);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 2);
                 break;
             case R.id.checklistback:
                 //删除当前界面新增的图片
-                for (int i = 0; i < pathimg.size(); i++) {
-                    FileUtils.deleteFile(pathimg.get(i));
+                for (int i = 0; i < Imagepath.size(); i++) {
+                    FileUtils.deleteFile(Imagepath.get(i).getName());
                 }
                 finish();
                 break;
@@ -537,8 +556,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
-            for (int i = 0; i < pathimg.size(); i++) {
-                FileUtils.deleteFile(pathimg.get(i));
+            for (int i = 0; i < Imagepath.size(); i++) {
+                FileUtils.deleteFile(Imagepath.get(i).getName());
             }
             finish();
             return true;
@@ -564,5 +583,48 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 //                .params("rectificationDate", "")
 //                //整改负责人Id
 //                .params("rectificationPerson", "")
+    }
+
+    ArrayList<String> deleteId = new ArrayList<>();
+
+    public void deleteid(String id) {
+        deleteId.add(id);
+    }
+
+
+    public void getNoticeByApp() {
+        Dates.getDialog(CheckmassageActivity.this, "请求数据中...");
+        OkGo.post(Requests.GET_NOTICE_BY_APP)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                checkMessageStandar.setText(json.getString("standardDelName"));
+                                check_message_describe.setText(json.getString("rectificationReason"));
+                                checkMessageUser.setText(json.getString("checkPersonName"));
+                                checkMessageOrg.setText(json.getString("checkOrgName"));
+                                MessageData.setText(json.getString("checkDate").substring(0, 10));
+                                checkMessageUsernameText.setText(json.getString("rectificationPersonName"));
+                                checkMessageTime.setText(json.getString("rectificationDate").subSequence(0, 10));
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                            Dates.disDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
     }
 }

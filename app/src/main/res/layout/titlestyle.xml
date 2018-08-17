@@ -27,7 +27,6 @@
         android:maxEms="13"
         android:paddingLeft="5dp"
         android:singleLine="true"
-        android:text="检查管理检查管理检查管理检查管理检查管理检查管理"
         android:textColor="@color/writer"
         android:textSize="18sp" />
 

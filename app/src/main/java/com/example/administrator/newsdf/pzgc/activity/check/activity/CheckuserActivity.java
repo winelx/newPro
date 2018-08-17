@@ -68,7 +68,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
                     public void onClick(View v) {
                         Intent newpush = new Intent();
                         newpush.putExtra("name", obj.getPartContent());
-                        newpush.putExtra("userId", obj.getId());
+                        newpush.putExtra("id", obj.getId());
                         //回传数据到主Activity
                         setResult(2, newpush);
                         finish(); //此方法后才能返回主Activity
@@ -77,7 +77,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
             }
         };
         expandableListView.setAdapter(mAdapter);
-
+        expandableListView.setEmptyView(findViewById(R.id.nullposion));
         OkGo.post(Requests.GET_PERSON_DATA_APP)
                 .params("orgId", orgId)
                 .execute(new StringCallback() {
@@ -99,6 +99,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
                                     }
                                 }
                             }
+                            mAdapter.getData(list);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

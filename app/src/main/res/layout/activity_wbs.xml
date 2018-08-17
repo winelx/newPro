@@ -11,10 +11,7 @@
         android:layout_height="match_parent">
 
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/SmartRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
             <ListView
                 android:id="@+id/wbs_listview"
@@ -23,7 +20,6 @@
                 android:divider="@color/back"
                 android:dividerHeight="1px" />
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <LinearLayout
             android:id="@+id/nullposion"
