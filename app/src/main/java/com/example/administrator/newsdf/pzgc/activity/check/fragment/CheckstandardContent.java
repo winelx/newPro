@@ -69,9 +69,13 @@ public class CheckstandardContent extends Fragment {
         category_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 CategoryCallbackUtils.CallBackMethod(mData.get(position).getContent(), mData.get(position).getName());
                 CheckstandardListActivity activity = (CheckstandardListActivity) getActivity();
+                String str=mData.get(position).getName();
+                String content=mData.get(position).getContent();
                 activity.setItem();
+                activity.getdata(str,content);
 
             }
         });

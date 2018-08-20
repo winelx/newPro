@@ -82,6 +82,7 @@ public class CheckdownMessageAllFragment extends Fragment {
                 refreshlayout.finishRefresh(800);
             }
         });
+        //新建
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

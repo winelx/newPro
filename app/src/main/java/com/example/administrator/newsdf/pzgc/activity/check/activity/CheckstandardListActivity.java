@@ -26,7 +26,7 @@ import java.util.List;
 
 public class CheckstandardListActivity extends AppCompatActivity {
     private NoScrollViewPager viewpager;
-
+    private String name,strid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,10 @@ public class CheckstandardListActivity extends AppCompatActivity {
     public void setItem() {
         viewpager.setCurrentItem(1);
     }
+    public void getdata(String str,String id){
+        this.name=str;
+        this.strid=id;
+    }
 
     public void dismiss() {
         int item = viewpager.getCurrentItem();
@@ -71,10 +75,13 @@ public class CheckstandardListActivity extends AppCompatActivity {
         }
     }
 
-    public void result(String str) {
+    public void result(String str,String id) {
         Intent intent = new Intent();
         //回传数据到主Activity
-        intent.putExtra("data", str);
+        intent.putExtra("content", str);
+        intent.putExtra("id", id);
+        intent.putExtra("datastr", name);
+        intent.putExtra("dataid", strid);
         setResult(2, intent);
         finish();
     }

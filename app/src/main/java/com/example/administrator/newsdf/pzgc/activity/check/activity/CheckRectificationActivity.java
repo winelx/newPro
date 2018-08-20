@@ -17,9 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +31,10 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -53,7 +57,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  */
 public class CheckRectificationActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView titleView, checklistmeuntext, checkRectifiData, check_wbspath, checkRectifiSubmit,
-            checkRectifiWbs, check_rectifi_font;
+            checkRectifiWbs, check_rectifi_font, category_item;
     private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data, check_standard;
     private Context mContext;
     private NumberPicker yearPicker, monthPicker, dayPicker;
@@ -67,6 +71,14 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
     private TextView checkNewDataTx;
+    private String categoryid, categoryedid, OrgId = null, orgName, nodeId, nodeName, nodeTitle, userId, userName;
+    private EditText check_new_tasktitle, check_rectifi_result, check_new_temporarysite;
+    private LinearLayout check_org;
+    private RelativeLayout check_rectifi_content;
+    private IconTextView oneIcon, twoIcon, threeIcon, fourIcon, fiveIcon;
+    private ArrayList<View> listVIew = new ArrayList<>();
+    private ArrayList<View> listEn = new ArrayList<>();
+    private boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +100,26 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         mContext = CheckRectificationActivity.this;
         checkUtils = new CheckUtils();
         Imagepath = new ArrayList<>();
+        oneIcon = (IconTextView) findViewById(R.id.oneIcon);
+        twoIcon = (IconTextView) findViewById(R.id.twoIcon);
+        threeIcon = (IconTextView) findViewById(R.id.threeIcon);
+        fourIcon = (IconTextView) findViewById(R.id.fourIcon);
+        fiveIcon = (IconTextView) findViewById(R.id.fiveIcon);
+        listVIew.add(oneIcon);
+        listVIew.add(twoIcon);
+        listVIew.add(threeIcon);
+        listVIew.add(fourIcon);
+        listVIew.add(fiveIcon);
+        check_rectifi_content = (RelativeLayout) findViewById(R.id.check_rectifi_content);
+        check_org = (LinearLayout) findViewById(R.id.check_org);
+        check_org.setOnClickListener(this);
+        check_new_tasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
+        check_rectifi_result = (EditText) findViewById(R.id.check_rectifi_result);
+        check_new_temporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
+        listEn.add(check_new_tasktitle);
+        listEn.add(check_rectifi_result);
+        listEn.add(check_new_temporarysite);
+        category_item = (TextView) findViewById(R.id.category_item);
         checkNewDataTx = (TextView) findViewById(R.id.check_new_data_tx);
         check_standard = (LinearLayout) findViewById(R.id.check_standard);
         check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
@@ -165,7 +197,27 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             check_wbspath.setVisibility(View.VISIBLE);
         } else if (requestCode == 2 && resultCode == 3) {
             check_rectifi_font.setText(data.getStringExtra("name"));
+        } else if (requestCode == 1 && resultCode == 2) {
+            categoryid = data.getStringExtra("dataid");
+            categoryedid = data.getStringExtra("id");
+            check_new_tasktitle.setText(data.getStringExtra("datastr"));
+            category_item.setText(data.getStringExtra("content"));
+        } else if (requestCode == 3 && resultCode == 2) {
+            OrgId = data.getStringExtra("id");
+            orgName = data.getStringExtra("name");
+            checkRectifiWbs.setText(orgName);
+        } else if (requestCode == 4 && resultCode == 3) {
+            nodeId = data.getStringExtra("id");
+            nodeName = data.getStringExtra("name");
+            nodeTitle = data.getStringExtra("title");
+            check_wbspath.setText(nodeTitle);
+            check_wbspath.setVisibility(View.VISIBLE);
+        } else if (requestCode == 4 && resultCode == 3) {
+            userId = data.getStringExtra("id");
+            userName = data.getStringExtra("name");
+            check_rectifi_font.setText(userName);
         } else {
+
             //从相机返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
@@ -200,51 +252,71 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.check_standard:
-                startActivity(new Intent(mContext, CheckstandardListActivity.class));
-                break;
-            case R.id.checklistback:
-                finish();
-                break;
-            case R.id.check_rectifi:
-                meunpop();
-                break;
-            case R.id.check_new_data:
-                meunpop();
-                break;
-            case R.id.check_import:
-                String content = checkRectifiWbs.getText().toString();
-                if (!content.isEmpty()) {
-                    Intent intent = new Intent(mContext, CheckTreeActivity.class);
+        if (status) {
+            switch (v.getId()) {
+                case R.id.check_standard:
+                    Intent intent = new Intent(mContext, CheckstandardListActivity.class);
                     startActivityForResult(intent, 1);
-                } else {
-                    ToastUtils.showLongToast("请先选择标段");
-                }
-                break;
-            case R.id.checklistmeun:
-                String str = checklistmeuntext.getText().toString();
-                if ("保存".equals(str)) {
-                    checklistmeuntext.setText("编辑");
-                    checkRectifiSubmit.setBackgroundResource(R.color.Orange);
-                } else {
-                    checklistmeuntext.setText("保存");
-                    checkRectifiSubmit.setBackgroundResource(R.color.gray);
-                }
-                break;
-            case R.id.check_rectifi_submit:
-                String str1 = checklistmeuntext.getText().toString();
-                if ("编辑".equals(str1)) {
-                    ToastUtils.showLongToast("下发");
-                }
-                break;
-            case R.id.check_rectifi_user:
-                startActivityForResult(new Intent(mContext, CheckuserActivity.class), 2);
-                break;
-            default:
-                break;
+                    break;
+                case R.id.checklistback:
+                    finish();
+                    break;
+                case R.id.check_rectifi:
+                    meunpop();
+                    break;
+                case R.id.check_new_data:
+                    meunpop();
+                    break;
+                case R.id.check_org:
+                    //选择标段
+                    Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
+                    intent12.putExtra("title", "选择标段");
+                    intent12.putExtra("data", "Rectifi");
+                    startActivityForResult(intent12, 3);
+                    break;
+                case R.id.check_import:
+                    //选择
+                    String content = checkRectifiWbs.getText().toString();
+                    if (!content.isEmpty()) {
+                        Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
+                        intent1.putExtra("orgId", OrgId);
+                        intent1.putExtra("name", orgName);
+                        startActivityForResult(intent1, 4);
+                    } else {
+                        ToastUtils.showLongToast("请先选择标段");
+                    }
+                    break;
+                case R.id.checklistmeun:
+                    String str = checklistmeuntext.getText().toString();
+                    if ("保存".equals(str)) {
+                        checklistmeuntext.setText("编辑");
+                        checkRectifiSubmit.setBackgroundResource(R.color.Orange);
+                    } else {
+                        checklistmeuntext.setText("保存");
+                        checkRectifiSubmit.setBackgroundResource(R.color.gray);
+                    }
+                    break;
+                case R.id.check_rectifi_submit:
+                    String str1 = checklistmeuntext.getText().toString();
+                    if ("编辑".equals(str1)) {
+                        ToastUtils.showLongToast("下发");
+                    }
+                    break;
+                case R.id.check_rectifi_user:
+                    if (OrgId != null) {
+                        Intent intent1 = new Intent(mContext, CheckuserActivity.class);
+                        intent1.putExtra("orgId", OrgId);
+                        startActivityForResult(intent1, 4);
+                    } else {
+                        ToastUtils.showLongToast("请先选择标段");
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
+
     private PopupWindow mPopupWindow;
 
     /**
@@ -259,7 +331,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checkRectifi);
+        mPopupWindow.showAsDropDown(check_org);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckRectificationActivity.this);
@@ -437,4 +509,16 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
+    //隐藏 8  显示8
+    private void get(int number) {
+        for (int i = 0; i < listVIew.size(); i++) {
+            listVIew.get(i).setVisibility(number);
+        }
+    }
+
+    public void set(boolean status) {
+        for (int i = 0; i < listEn.size(); i++) {
+            listEn.get(i).setEnabled(status);
+        }
+    }
 }

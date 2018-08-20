@@ -73,8 +73,10 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
         categoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String DelName = mData.get(position).getStandardDelName();
+                DelName = DelName.substring(2, DelName.length());
                 CheckstandardListActivity activity = (CheckstandardListActivity) getActivity();
-                activity.result(mData.get(position).getStandardDelName());
+                activity.result(DelName, mData.get(position).getStandardDel());
             }
         });
         view.findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -85,10 +87,8 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
             }
         });
 
-
         return view;
     }
-
 
     @Override
     public void updata(String str, String str1) {
