@@ -71,7 +71,6 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
         bindView(holder, getItem(position));
         return holder.getItemView();
     }
-
     public abstract void bindView(ViewHolder holder, T obj);
 
     //添加一个元素

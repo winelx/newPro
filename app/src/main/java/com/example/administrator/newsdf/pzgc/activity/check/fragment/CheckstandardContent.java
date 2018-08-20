@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.callback.CategoryCallbackUtils;
 import com.joanzapata.iconify.widget.IconTextView;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -23,14 +24,23 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/8/9 0009.
  */
 
+/**
+ * description:
+ *
+ * @author lx
+ *         date: 2018/8/20 0020 上午 8:41
+ *         update: 2018/8/20 0020
+ *         version:
+ */
 public class CheckstandardContent extends Fragment {
     private View view;
     private ListView category_list;
     private SettingAdapter adapter;
     private ArrayList<Audio> mData;
     private IconTextView checklistback;
-    private SmartRefreshLayout smartrefreshlayout;
+
     private CheckUtils checkUtils;
+    private TextView titleView;
 
     @Nullable
     @Override
@@ -39,10 +49,8 @@ public class CheckstandardContent extends Fragment {
         category_list = view.findViewById(R.id.category_list);
         mData = new ArrayList<>();
         checkUtils = new CheckUtils();
-        smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
-        smartrefreshlayout.setEnableRefresh(false);//是否启用下拉刷新功能
-        smartrefreshlayout.setEnableLoadmore(false);//是否启用上拉加载功能
-        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        titleView = view.findViewById(R.id.titleView);
+        titleView.setText("检查标准");
         adapter = new SettingAdapter<Audio>(mData, R.layout.check_standard_content) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, Audio obj) {
@@ -61,8 +69,10 @@ public class CheckstandardContent extends Fragment {
         category_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CategoryCallbackUtils.CallBackMethod(mData.get(position).getContent(), mData.get(position).getName());
                 CheckstandardListActivity activity = (CheckstandardListActivity) getActivity();
                 activity.setItem();
+
             }
         });
         view.findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -72,7 +82,7 @@ public class CheckstandardContent extends Fragment {
                 activity.dismiss();
             }
         });
-        checkUtils.CheckStandardApp(mData, adapter);
+        checkUtils.CheckStandardApp(mData, null, adapter, "");
         return view;
     }
 

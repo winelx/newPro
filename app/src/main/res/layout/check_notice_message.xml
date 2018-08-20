@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/back"
+    android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:paddingTop="10dp"
-    android:background="@color/back"
-    android:layout_height="wrap_content">
+    android:paddingTop="10dp">
+
     <RelativeLayout
-        android:orientation="vertical"
         android:id="@+id/relativeLayout"
-        android:paddingLeft="10dp"
-        android:background="@color/writer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/writer"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
 
         <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
             android:id="@+id/inface_item_message"
@@ -22,7 +23,6 @@
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
             app:slantedLength="28dp"
-            app:slantedBackgroundColor="@color/finish_green"
             app:slantedMode="right_triangle"
             app:slantedText="未完成"
             app:slantedTextColor="@color/writer"
@@ -30,55 +30,71 @@
 
         <TextView
             android:id="@+id/management_title"
-            android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxEms="16"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/black"
             android:singleLine="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
+            android:textColor="@color/black" />
+
         <TextView
-            android:layout_below="@+id/management_title"
             android:id="@+id/management_user"
-            android:text="张三    2018-00-00"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/graytext"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_title"
+            android:layout_marginTop="2dp"
+            android:text="张三    2018-00-00"
+            android:textColor="@color/graytext" />
+
         <TextView
-            android:layout_below="@+id/management_user"
             android:id="@+id/management_block"
             android:layout_width="wrap_content"
-            android:singleLine="true"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:text="所属标段:0XXXXXXXXXXXX"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_user"
             android:layout_marginTop="6dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_below="@+id/management_block"
-            android:id="@+id/management_org"
-            android:layout_marginTop="3dp"
-            android:singleLine="true"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxEms="16"
-            android:text="检查组织:XXXXXXXXXXXX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:singleLine="true"
+            android:text="所属标段:0XXXXXXXXXXXX" />
+
         <TextView
-            android:textColor="@color/red"
-            android:textSize="12sp"
-            android:text="总分:99"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@+id/management_org"
-            android:id="@+id/management_number"
-            android:layout_marginTop="3dp"
+            android:id="@+id/management_category"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_block"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxEms="16"
+            android:singleLine="true"
+            android:text="检查类别:XXXXXXXXXXXX" />
+
+        <TextView
+            android:id="@+id/management_org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_category"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxEms="16"
+            android:singleLine="true"
+            android:text="检查组织:XXXXXXXXXXXX" />
+
+        <TextView
+            android:id="@+id/management_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_org"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="3dp"
+            android:text="总分:99"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 </LinearLayout>

@@ -1,16 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -19,10 +17,6 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskCategoryActivity;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.administrator.newsdf.pzgc.callback.CategoryCallbackUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 
@@ -40,7 +34,6 @@ public class Categorylist extends Fragment {
     private ListView categoryList;
     private SettingAdapter adapter;
     private ArrayList<Tenanceview> mData;
-    private SmartRefreshLayout smartrefreshlayout;
     private CheckUtils checkUtils;
 
     @Nullable
@@ -48,12 +41,9 @@ public class Categorylist extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_categorylist, container, false);
         categoryList = view.findViewById(R.id.category_list);
-        smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
+        TextView titleView =view.findViewById(R.id.titleView);
+        titleView.setText("类别");
         checkUtils = new CheckUtils();
-        smartrefreshlayout.setEnableRefresh(false);
-        smartrefreshlayout.setEnableAutoLoadmore(false);
-        smartrefreshlayout.setEnableLoadmore(false);
-        smartrefreshlayout.setEnableOverScrollBounce(true);
         mData = new ArrayList<>();
         adapter = new SettingAdapter<Tenanceview>(mData, R.layout.task_category_item) {
             @Override
@@ -72,7 +62,7 @@ public class Categorylist extends Fragment {
                 if (integer > 0) {
                     CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
                     activity.setItem();
-                    CategoryCallbackUtils.CallBackMethod(mData.get(position).getId());
+                    CategoryCallbackUtils.CallBackMethod(mData.get(position).getId(),"");
                 } else {
                     ToastUtils.showShortToastCenter("没有更多");
                 }
@@ -86,27 +76,7 @@ public class Categorylist extends Fragment {
                 activity.dismiss();
             }
         });
-        /**
-         *   下拉刷新
-         */
-        smartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
 
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
-            }
-        });
-        //上拉加载
-        smartrefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
         checkUtils.taskTypeList("", mData, adapter);
         return view;
     }

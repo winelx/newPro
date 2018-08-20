@@ -7,9 +7,8 @@ package com.example.administrator.newsdf.pzgc.bean;
  */
 public class Home_item {
     /**
-     * 内存
+     * 内容
      */
-
     String content;
     /**
      * 创建时间

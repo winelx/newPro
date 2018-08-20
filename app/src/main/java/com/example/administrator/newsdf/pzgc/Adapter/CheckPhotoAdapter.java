@@ -26,6 +26,7 @@ import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import java.util.ArrayList;
 
 
+
 /**
  * Created by donglua on 15/5/31.
  * 添加图片
@@ -38,13 +39,14 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
 
     public final static int TYPE_ADD = 1;
     final static int TYPE_PHOTO = 2;
-
+    boolean learn = false;
     final static int MAX = 100;
     private String status;
 
-    public CheckPhotoAdapter(Context mContext, ArrayList<Audio> photoPaths, String status) {
+    public CheckPhotoAdapter(Context mContext, ArrayList<Audio> photoPaths, String status,boolean learn) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
+        this.learn = learn;
         this.status = status;
         inflater = LayoutInflater.from(mContext);
     }
@@ -71,6 +73,11 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
 
         if (getItemViewType(position) == TYPE_PHOTO) {
+            if (learn) {
+                holder.vSelected.setVisibility(View.VISIBLE);
+            } else {
+                holder.vSelected.setVisibility(View.GONE);
+            }
             //加载图片
             Glide.with(mContext)
                     .load(photoPaths.get(position).getName())
@@ -201,8 +208,11 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
         }
     }
 
-    public void getData(ArrayList<Audio> photoPaths) {
+    public void getData(ArrayList<Audio> photoPaths,boolean learn) {
         this.photoPaths = photoPaths;
+        this.learn = learn;
         notifyDataSetChanged();
     }
+
+
 }

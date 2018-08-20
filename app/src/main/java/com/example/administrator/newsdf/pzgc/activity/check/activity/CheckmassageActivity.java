@@ -35,17 +35,21 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,6 +61,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
+import static com.lzy.okgo.OkGo.post;
 
 /**
  * description: 下发整改通知
@@ -90,7 +95,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private EditText check_message_describe;
     private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
     private Boolean generate;
-    private String orgId, name, nameId, id;
+    private String orgId, nameId;
+    private String messageid = "", taskId;
+    ArrayList<String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +119,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         };
         findID();
         initData();
-        getNoticeByApp();
+
     }
 
     private void findID() {
@@ -162,14 +169,15 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //天
         dayDate = myDate.getDate() - 1;
         Imagepath = new ArrayList<>();
-        ArrayList<String> ids = new ArrayList<>();
+        ids = new ArrayList<>();
         ArrayList<String> path = new ArrayList<>();
         Intent intent = getIntent();
         ids = intent.getStringArrayListExtra("ids");
         path = intent.getStringArrayListExtra("path");
         orgId = intent.getStringExtra("orgId");
         generate = intent.getBooleanExtra("status", false);
-        id = intent.getStringExtra("id");
+        messageid = intent.getStringExtra("id");
+        taskId = intent.getStringExtra("taskId");
         //组装id和路径
         if (ids.size() > 0) {
             for (int i = 0; i < ids.size(); i++) {
@@ -180,14 +188,17 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             checkMessageSwitch.setChecked(generate);
             checkMessageContent.setVisibility(View.VISIBLE);
             checklistmeuntext.setVisibility(View.VISIBLE);
+            getNoticeByApp();
         } else {
+            checkMessageStandar.setText(intent.getStringExtra("content"));
+            check_message_describe.setText(intent.getStringExtra("describe"));
             checkMessageContent.setVisibility(View.GONE);
             checklistmeuntext.setVisibility(View.GONE);
         }
         //附件的recycleraview的适配器
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Message");
+        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Message",true);
         photoadd.setAdapter(photoAdapter);
         checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -289,7 +300,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                                 //添加进集合
                                 Imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                photoAdapter.getData(Imagepath);
+                                photoAdapter.getData(Imagepath,true);
                             }
                         });
                     } else {
@@ -320,7 +331,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                         public void callback(boolean isSuccess, String outfile) {
                             Imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            photoAdapter.getData(Imagepath);
+                            photoAdapter.getData(Imagepath,true);
 //                    //删除原图
                             Dates.deleteFile(path);
                         }
@@ -540,7 +551,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.checklistmeun:
-                ToastUtils.showLongToast("保存");
+                Save();
                 break;
             case R.id.check_message_data:
                 meunpop("data");
@@ -567,35 +578,126 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 
 
     public void Save() {
-//        OkGo.post(Requests.CREATE_NOTICE_BY_APP)
-//                .params("id", "")
-//                //违反标准
-//                .params("standardDelName", "")
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < Imagepath.size(); i++) {
+            if (Imagepath.get(i).getContent().length() > 0) {
+
+            } else {
+                file.add(new File(Imagepath.get(i).getName()));
+            }
+        }
+        PostRequest Request = OkGo.post(Requests.CREATE_NOTICE_BY_APP)
+                .isMultipart(true)
+                .params("detailsId", taskId)
+                //违反标准
+                .params("standardDelName", checkMessageStandar.getText().toString())
 //                //整改事宜
-//                .params("rectificationReason", "")
-//                //检查人
-//                .params("checkPersonName", "")
-//                //检查组织
-//                .params("checkOrgid", "")
-//                //检查时间
-//                .params("checkDate", "")
-//                //整改期限
-//                .params("rectificationDate", "")
-//                //整改负责人Id
-//                .params("rectificationPerson", "")
+                .params("rectificationReason", check_message_describe.getText().toString())
+                //检查人
+                .params("checkPersonName", SPUtils.getString(mContext, "id", ""))
+                // 检查组织
+                .params("checkOrgid", orgId)
+                //检查时间
+                .params("checkDate", MessageData.getText().toString())
+                //整改期限
+                .params("rectificationDate", checkMessageTime.getText().toString())
+                //整改负责人Id
+                .params("rectificationPerson", nameId)
+                .addFileParams("imagesList", file)
+                .params("copyFileIds", Dates.listToStrings(ids));
+
+        if (messageid.length() > 0) {
+            //删除id
+            Request.params("deleteFileId", Dates.listToStrings(deleteId))
+                    .params("id", messageid)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                if (ret == 0) {
+                                    //更新通知单状态
+                                    BrightCallBackUtils.removeCallBackMethod();
+                                    ids.clear();
+                                    Imagepath.clear();
+                                    JSONObject data = jsonObject.getJSONObject("data");
+                                    messageid = data.getString("id");
+                                    JSONArray jsonArray = data.getJSONArray("attachmentList");
+                                    if (jsonArray.length() > 0) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject json = jsonArray.getJSONObject(i);
+                                            Imagepath.add(new Audio(json.getString("filepath"), json.getString("id")));
+                                        }
+                                    }
+                                }
+                                photoAdapter.getData(Imagepath,false);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+        } else {
+            //copyId
+            Request.params("copyFileIds", Dates.listToStrings(ids))
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                if (ret == 0) {
+                                    BrightCallBackUtils.removeCallBackMethod();
+                                    ids.clear();
+                                    Imagepath.clear();
+                                    JSONObject data = jsonObject.getJSONObject("data");
+                                    messageid = data.getString("id");
+                                    JSONArray jsonArray = data.getJSONArray("attachmentList");
+                                    if (jsonArray.length() > 0) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject json = jsonArray.getJSONObject(i);
+                                            Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
+                                        }
+                                    }
+                                }
+                                photoAdapter.getData(Imagepath,false);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                        }
+                    });
+        }
+
+
     }
 
     ArrayList<String> deleteId = new ArrayList<>();
 
     public void deleteid(String id) {
+        if (ids.size() > 0) {
+            for (int i = 0; i < ids.size(); i++) {
+                String name = ids.get(i);
+                if (name.equals(id)) {
+                    ids.remove(i);
+                }
+            }
+        }
         deleteId.add(id);
     }
 
-
+    //获取数据
     public void getNoticeByApp() {
         Dates.getDialog(CheckmassageActivity.this, "请求数据中...");
-        OkGo.post(Requests.GET_NOTICE_BY_APP)
-                .params("id", id)
+        post(Requests.GET_NOTICE_BY_APP)
+                .params("id", messageid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -604,6 +706,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
+                                messageid = json.getString("id");
                                 checkMessageStandar.setText(json.getString("standardDelName"));
                                 check_message_describe.setText(json.getString("rectificationReason"));
                                 checkMessageUser.setText(json.getString("checkPersonName"));
@@ -627,4 +730,5 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
+
 }

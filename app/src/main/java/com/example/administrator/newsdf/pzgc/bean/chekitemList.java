@@ -9,16 +9,18 @@ public class chekitemList {
     String score;
     String sequence;
     String standardScore;
+    boolean generate;
     boolean noSuch;
     boolean penalty;
 
-    public chekitemList(String id, String score, String sequence, String standardScore, boolean noSuch, boolean penalty) {
+    public chekitemList(String id, String score, String sequence, String standardScore, boolean noSuch, boolean penalty, boolean generate) {
         this.id = id;
         this.score = score;
         this.sequence = sequence;
         this.standardScore = standardScore;
         this.noSuch = noSuch;
         this.penalty = penalty;
+        this.generate = generate;
     }
 
     public String getId() {
@@ -67,5 +69,13 @@ public class chekitemList {
 
     public void setPenalty(boolean penalty) {
         this.penalty = penalty;
+    }
+
+    public boolean isGenerate() {
+        return generate;
+    }
+
+    public void setGenerate(boolean generate) {
+        this.generate = generate;
     }
 }

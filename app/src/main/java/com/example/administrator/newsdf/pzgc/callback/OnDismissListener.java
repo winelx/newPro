@@ -5,5 +5,5 @@ package com.example.administrator.newsdf.pzgc.callback;
  */
 
 public interface OnDismissListener {
-    public void onDismiss(Object o);
+     void onDismiss(Object o);
 }

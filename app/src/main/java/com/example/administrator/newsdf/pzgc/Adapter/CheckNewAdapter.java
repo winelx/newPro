@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -61,6 +62,9 @@ public class CheckNewAdapter extends BaseAdapter {
         }
         int numbher = position + 1;
         holder.pop_tast_item.setText(numbher + "");
+        //标准分
+        String standardScore = imagePaths.get(position).getStandardScore();
+        BigDecimal standardScores = new BigDecimal(standardScore);
         //拿到分数
         String score = imagePaths.get(position).getScore();
         if (!score.isEmpty()) {
@@ -73,9 +77,14 @@ public class CheckNewAdapter extends BaseAdapter {
                 //是否被扣分
                 boolean penalty = imagePaths.get(position).isPenalty();
                 if (penalty) {
-                    holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                    //是否被下通知
+                    boolean Generate = imagePaths.get(position).isGenerate();
+                    holder.chekItemRe.setBackgroundResource(R.color.Orange);
+                    if (Generate) {
+                        holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                    }
                 } else {
-                    holder.LabelView.setVisibility(View.GONE);
+                    holder.chekItemRe.setBackgroundResource(R.color.finish_green);
                 }
             }
         } else {
@@ -91,8 +100,8 @@ public class CheckNewAdapter extends BaseAdapter {
         RelativeLayout chekItemRe;
     }
 
-    public void getdate(ArrayList<chekitemList> imagePaths){
-        this.imagePaths=imagePaths;
+    public void getdate(ArrayList<chekitemList> imagePaths) {
+        this.imagePaths = imagePaths;
         notifyDataSetChanged();
     }
 }

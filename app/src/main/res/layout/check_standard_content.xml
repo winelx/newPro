@@ -11,8 +11,6 @@
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="10dp">
-
-
         <TextView
             android:id="@+id/check_stndard_content_font"
             android:layout_width="0dp"

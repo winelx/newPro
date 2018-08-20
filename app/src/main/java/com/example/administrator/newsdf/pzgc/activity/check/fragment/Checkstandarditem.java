@@ -1,39 +1,41 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.example.administrator.newsdf.pzgc.bean.standarBean;
+import com.example.administrator.newsdf.pzgc.callback.CategoryCallback;
+import com.example.administrator.newsdf.pzgc.callback.CategoryCallbackUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2018/8/9 0009.
- */
+
 /**
  * description: 检查标准列表
+ *
  * @author lx
- * date: 2018/8/9 0009 上午 10:51
- * update: 2018/8/9 0009
- * version:
-*/
-public class Checkstandarditem extends Fragment {
-    private ArrayList<String> mData;
+ *         date: 2018/8/9 0009 上午 10:51
+ *         update: 2018/8/9 0009
+ *         version:
+ */
+public class Checkstandarditem extends Fragment implements CategoryCallback {
+    private ArrayList<standarBean> mData;
+    private TextView titleView;
+    private CheckUtils checkUtils;
+    private SettingAdapter adapter;
+    private Context mContext;
 
     @Nullable
     @Override
@@ -41,18 +43,22 @@ public class Checkstandarditem extends Fragment {
         View view = inflater.inflate(R.layout.fragment_categorylist, container, false);
         ListView categoryList = view.findViewById(R.id.category_list);
         mData = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            mData.add("整改数据" + i);
-        }
-        SmartRefreshLayout smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
-        smartrefreshlayout.setEnableRefresh(false);//是否启用下拉刷新功能
-        smartrefreshlayout.setEnableLoadmore(false);//是否启用上拉加载功能
-        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果)
-        SettingAdapter adapter = new SettingAdapter<String>(mData, R.layout.task_category_item) {
+        mContext = getActivity();
+        CategoryCallbackUtils.setCallBack(this);
+        checkUtils = new CheckUtils();
+        titleView = view.findViewById(R.id.titleView);
+        adapter = new SettingAdapter<standarBean>(mData, R.layout.task_category_item) {
             @Override
-            public void bindView(ViewHolder holder, String obj) {
-                holder.setText(R.id.category_content, obj);
+            public void bindView(ViewHolder holder, standarBean obj) {
+                int score = Integer.parseInt(obj.getStandardDelScore()) / 2;
+                String standardDelScore = "";
+                String StandardDelName = obj.getStandardDelName();
+                int num = StandardDelName.length();
+                for (int i = 0; i < score; i++) {
+                    standardDelScore = standardDelScore + "★";
+                }
+                StandardDelName = StandardDelName + standardDelScore;
+                holder.setText(mContext, R.id.category_content, StandardDelName, num - 1, R.color.red);
             }
         };
         categoryList.setAdapter(adapter);
@@ -68,7 +74,7 @@ public class Checkstandarditem extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckstandardListActivity activity = (CheckstandardListActivity) getActivity();
-                activity.result(mData.get(position));
+                activity.result(mData.get(position).getStandardDelName());
             }
         });
         view.findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -78,27 +84,16 @@ public class Checkstandarditem extends Fragment {
                 activity.dismiss();
             }
         });
-        /**
-         *   下拉刷新
-         */
-        smartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
-            }
-        });
-        //上拉加载
-        smartrefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
+
 
         return view;
     }
+
+
+    @Override
+    public void updata(String str, String str1) {
+        titleView.setText(str1);
+        checkUtils.CheckStandardApp(null, mData, adapter, str);
+    }
+
 }

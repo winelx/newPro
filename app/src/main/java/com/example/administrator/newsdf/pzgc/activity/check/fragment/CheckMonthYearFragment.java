@@ -2,9 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.support.v4.app.Fragment;
 
-/**
- * Created by Administrator on 2018/8/14 0014.
- */
+
 
 /**
  * description: 检查年度报表

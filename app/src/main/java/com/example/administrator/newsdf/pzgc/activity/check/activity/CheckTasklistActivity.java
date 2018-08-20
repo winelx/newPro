@@ -40,6 +40,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -290,12 +293,34 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    public void submit(String  id) {
+    public void submit(String id) {
         Intent intent = new Intent(mContext, CheckNewAddActivity.class);
         intent.putExtra("orgId", orgId);
         intent.putExtra("name", name);
-        intent.putExtra("taskId",id);
+        intent.putExtra("taskId", id);
         startActivity(intent);
     }
 
+    public void delete(final int pos, String id) {
+        OkGo.post(Requests.BATCHDELETE)
+                .params("ids", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                list.remove(pos);
+                                mAdapter.getData(list);
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+    }
 }

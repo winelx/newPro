@@ -42,30 +42,28 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2018/8/8 0008.
- */
-
-/**
- * description: 检查通知单我的模块通知列表
+ * description: 检查通知单全部模块通知列表
  *
  * @author lx
  *         date: 2018/8/8 0008 下午 4:03
  *         update: 2018/8/8 0008
  *         version:
  */
-public class ChecknoticeMessagelistActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class ChecknoticeMessagelistAllActivity extends AppCompatActivity implements View.OnClickListener {
+
     private SettingAdapter adapter;
     private ListView listView;
-    private ArrayList<MyNoticeDataBean> mData;
+    ArrayList<MyNoticeDataBean> mData;
     private Context mContext;
     private TextView titleView;
     private ImageView checklistmeunimage;
     private PopupWindow mPopupWindow;
-    private SmartRefreshLayout refreshLayout;
     private float resolution;
     private String id;
-    private String status = "3";
+    private String status = "";
     private int page = 1;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,51 +80,33 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
         listView.setDividerHeight(0);
-        mContext = ChecknoticeMessagelistActivity.this;
+        mContext = ChecknoticeMessagelistAllActivity.this;
         mData = new ArrayList<>();
         adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_message) {
             @Override
-            public void bindView(ViewHolder holder, MyNoticeDataBean obj) {
+            public void bindView(SettingAdapter.ViewHolder holder, MyNoticeDataBean obj) {
                 holder.setText(R.id.management_title, obj.getPartDetails());
                 holder.setText(R.id.management_title, obj.getCheckPersonName() + "    " + obj.getUpdateDate());
                 holder.setText(R.id.management_user, "所属标段:" + obj.getRectificationOrgName());
                 holder.setText(R.id.management_category, "所属类别:" + obj.getStandardDelName());
                 holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
                 holder.setText(mContext, R.id.management_number, "总分:" + obj.getStandardDelScore(), 3, R.color.red);
-                Boolean isDeal = obj.isDeal();
-                if (isDeal) {
-                    String motionNode = obj.getMotionNode();
-                    if ("5".equals(motionNode)) {
-                        holder.setSlantedText(R.id.inface_item_message, "已完成", R.color.finish_green);
-                    } else {
-                        holder.setSlantedText(R.id.inface_item_message, "已处理", R.color.finish_green);
-                    }
-                } else {
-                    String status = obj.getStatus();
-                    if ("3".equals(status)) {
+                String status = obj.getStatus();
+                switch (status) {
+                    case "0":
+                        holder.setSlantedText(R.id.inface_item_message, "未下发", R.color.graytext);
+                        break;
+                    case "1":
+                        holder.setSlantedText(R.id.inface_item_message, "未回复", R.color.Orange);
+                        break;
+                    case "2":
+                        holder.setSlantedText(R.id.inface_item_message, "未验证", R.color.Orange);
+                        break;
+                    case "3":
                         holder.setSlantedText(R.id.inface_item_message, "打回", R.color.red);
-                    } else {
-                        String motionNode = obj.getMotionNode();
-                        if (motionNode.isEmpty()) {
-                            holder.setSlantedText(R.id.inface_item_message, "未下发", R.color.graytext);
-                        } else {
-                            if ("1".equals(motionNode) || "0".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "未回复", R.color.graytext);
-                            } else if ("2".equals(motionNode) || "3".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "未验证", R.color.graytext);
-                            } else if ("5".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "已完成", R.color.finish_green);
-                            } else {
-
-                            }
-
-                        }
-                    }
-                }
-                String stauts = obj.getStatus();
-                switch (stauts) {
-                    case "":
-                        holder.setSlantedText(R.id.management_number, "", R.color.red);
+                        break;
+                    case "5":
+                        holder.setSlantedText(R.id.inface_item_message, "完成", R.color.finish_green);
                         break;
                     default:
                         break;
@@ -180,7 +160,6 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checklistmeunimage:
-
                 meun();
                 break;
             default:
@@ -206,7 +185,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     public View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
-        int layoutId = R.layout.pop_checknotice;
+        int layoutId = R.layout.pop_checknoticeall;
         View contentView = LayoutInflater.from(this).inflate(layoutId, null);
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
@@ -215,11 +194,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                 mData.clear();
                 switch (v.getId()) {
                     case R.id.pop_All:
-                        status = "3";
-                        break;
-                    case R.id.pop_submit:
-                        //待提交
-                        status = "0";
+                        status = "";
                         break;
                     case R.id.pop_financial:
                         status = "1";
@@ -228,7 +203,10 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                         status = "2";
                         break;
                     case R.id.pop_back:
-                        status = "6";
+                        status = "3";
+                        break;
+                    case R.id.pop_success:
+                        status = "5";
                         break;
                     default:
                         break;
@@ -239,17 +217,20 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                 }
             }
         };
+
         contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_submit).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_back).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_success).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
 
     public void getdate() {
-        OkGo.post(Requests.GET_MY_NOTICE_DATA_APP)
+        OkGo.post(Requests.GET_NOTICE_DATA_APP)
                 .params("rectificationOrgid", id)
+//通知单回复状态(0:未下发；1：未回复;2:未验证；3：打回；5:完成) (保存：0,提交 1)
+//运动节点(0:未回复；1:回复未提交；2未验证；3:验证未提交；5完成)(保存：null,提交 0)
                 .params("status", status)
                 .params("page", page)
                 .params("size", 20)
@@ -291,20 +272,14 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         //检查类别
                                         String standardDelName = json.getString("standardDelName");
                                         //id
-                                        String noticeId = json.getString("noticeId");
+                                        String noticeId = json.getString("id");
                                         //状态
                                         String status = json.getString("status");
                                         String motionNode;
-                                        try {
-                                            motionNode = json.getString("motionNode");
-                                        } catch (JSONException e) {
-                                            motionNode = "";
-                                        }
+                                        motionNode = "";
                                         //是否回复
-                                        Boolean isDeal = json.getBoolean("isDeal");
-
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, checkPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, isDeal));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, false));
                                     }
                                 }
                             } else {

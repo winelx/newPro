@@ -32,9 +32,6 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         this.mDatas = mDatas;
     }
 
-    int number;
-    private static final int MAX = 99;
-
     @Override
     public int getItemCount() {
         return mDatas.size();
@@ -43,6 +40,15 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 //        holder.check_me_title.setText();
+        int number = Integer.parseInt(mDatas.get(position).getUnfinish());
+        if (number > 0) {
+            holder.homeItemMessage.setText(number + "");
+            holder.homeItemMessage.setVisibility(View.VISIBLE);
+        } else {
+            holder.homeItemMessage.setVisibility(View.GONE);
+        }
+        holder.checkMeTitle.setText(mDatas.get(position).getOrgname());
+        holder.homeItemImg.setText(mDatas.get(position).getParentname());
         holder.check_relati.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,8 +131,8 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         notifyDataSetChanged();
     }
 
-
-    private OnItemClickListener mOnItemClickListener;//声明接口
+    //声明接口
+    private OnItemClickListener mOnItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;

@@ -24,12 +24,13 @@ public class SCheckTasklistAdapter {
 //                "wbsMainName": "K77+046～K77+287.455"
 
 
-    public SCheckTasklistAdapter(String checkOrgName, String checkUser, String createDate, String id, String orgName, String status) {
+    public SCheckTasklistAdapter(String checkOrgName, String checkUser, String createDate, String id, String orgName, String status,String wbsMainName) {
         this.checkOrgName = checkOrgName;
         this.checkUser = checkUser;
         this.createDate = createDate;
         this.id = id;
         this.orgName = orgName;
+        this.wbsMainName = wbsMainName;
 
         this.status = status;
 
@@ -83,4 +84,19 @@ public class SCheckTasklistAdapter {
         this.status = status;
     }
 
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getWbsMainName() {
+        return wbsMainName;
+    }
+
+    public void setWbsMainName(String wbsMainName) {
+        this.wbsMainName = wbsMainName;
+    }
 }

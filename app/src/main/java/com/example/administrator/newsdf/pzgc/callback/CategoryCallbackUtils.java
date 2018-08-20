@@ -11,7 +11,7 @@ public class CategoryCallbackUtils {
         mCallBack = callBack;
     }
 
-    public static void CallBackMethod(String str) {
-        mCallBack.updata(str);
+    public static void CallBackMethod(String str,String str1) {
+        mCallBack.updata(str,str1);
     }
 }

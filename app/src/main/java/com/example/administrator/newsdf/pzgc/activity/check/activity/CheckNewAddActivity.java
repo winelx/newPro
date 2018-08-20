@@ -119,9 +119,14 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             statusF();
         } else {
             getdata();
-            getcheckitemList();
             statusT();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getcheckitemList();
     }
 
     private void findbyid() {
@@ -228,8 +233,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                 intent2.putExtra("id", taskId);
                 intent2.putExtra("orgId", orgId);
-                intent2.putExtra("number",position+1);
-                intent2.putExtra("size",mData.size());
+                intent2.putExtra("number", position + 1);
+                intent2.putExtra("size", mData.size());
                 startActivity(intent2);
             }
         });
@@ -283,6 +288,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     }
                 } else {
                     statusF();
+
                 }
                 break;
             case R.id.checklistback:
@@ -295,8 +301,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     intent2.putExtra("id", taskId);
                     intent2.putExtra("orgId", orgId);
                     intent2.putExtra("number", 1);
-                    intent2.putExtra("size",mData.size());
+                    intent2.putExtra("size", mData.size());
                     startActivity(intent2);
+                } else if ("提交".equals(str)) {
+                    senddata();
                 }
                 break;
             default:
@@ -492,6 +500,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     public void Save(String content, String nodeId) {
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
+                .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
                 //检查部位Id
@@ -551,11 +560,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        mData.clear();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                mData.clear();
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -563,14 +572,39 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String  standardScore =json.getString("standardScore");
+                                        String standardScore = json.getString("standardScore");
                                         boolean noSuch = json.getBoolean("noSuch");
+                                        boolean generate;
+                                        try {
+                                            generate = json.getBoolean("generate");
+                                        } catch (JSONException e) {
+                                            generate = false;
+                                        }
                                         boolean penalty = json.getBoolean("penalty");
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty));
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty, generate));
                                     }
                                 }
                             }
-                            adapter.getdate(mData);
+                            if (mData.size() > 0) {
+                                adapter.getdate(mData);
+                                boolean status = true;
+                                for (int i = 0; i < mData.size(); i++) {
+                                    boolean noSuch = mData.get(i).isNoSuch();
+                                    Boolean generate = mData.get(i).isGenerate();
+                                    String score = mData.get(i).getScore();
+                                    if ((!noSuch && generate == null) || score == null) {
+                                        status = false;
+                                        break;
+                                    }
+                                }
+                                if (!status) {
+                                    checkNewButton.setText("提交");
+                                    checkNewButton.setBackgroundResource(R.color.Orange);
+                                }
+
+                            }
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -621,6 +655,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
+                                categoryId = json.getString("WbsTaskTypeId");
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -667,5 +702,28 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 
+    //提交
+    public void senddata() {
+        OkGo.get(Requests.SEND_DATA)
+                .params("id", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                statusT();
+                                //刷新列表界面
+                                TaskCallbackUtils.CallBackMethod();
+                                checklistmeuntext.setText("");
+                                checkNewButton.setVisibility(View.GONE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
 }

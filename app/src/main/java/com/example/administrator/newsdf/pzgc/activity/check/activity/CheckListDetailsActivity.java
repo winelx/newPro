@@ -95,6 +95,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     private void findbyid() {
         //分数
         checkNewAddNumber = (LinearLayout) findViewById(R.id.check_new_add_number);
+        checkNewAddNumber.setVisibility(View.VISIBLE);
         //wbs路径
         wbsName = (TextView) findViewById(R.id.check_wbspath);
         //指示箭头 类别和时间
@@ -116,6 +117,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         checkNewButton.setOnClickListener(this);
         //分数
         checkNewNumber = (EditText) findViewById(R.id.check_new_number);
+        checkNewNumber.setEnabled(false);
         //标题
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
         viewlist.add(checkNewTasktitle);
@@ -157,8 +159,8 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                 intent2.putExtra("id", taskId);
-                intent2.putExtra("number", position+1);
-                intent2.putExtra("size",mData.size());
+                intent2.putExtra("number", position + 1);
+                intent2.putExtra("size", mData.size());
                 startActivity(intent2);
             }
         });
@@ -389,7 +391,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     }
 
     public void getCategory() {
-       OkGo.post(Requests.CHECKGET_BY_ID)
+        OkGo.post(Requests.CHECKGET_BY_ID)
                 .params("Id", Id)
                 .execute(new StringCallback() {
                     @Override
@@ -432,6 +434,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                             } else {
                                 checkNewTemporarysite.setText("未输入");
                             }
+                            checkNewNumber.setText(json.getString("score"));
                             taskId = json.getString("id");
                             checkItem();
                         } catch (JSONException e) {
@@ -445,8 +448,9 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                     }
                 });
     }
+
     /**
-     *生成检查后的检查项列表
+     * 生成检查后的检查项列表
      */
     private void checkItem() {
         OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
@@ -470,7 +474,13 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                                         String standardScore = json.getString("standardScore");
                                         boolean noSuch = json.getBoolean("noSuch");
                                         boolean penalty = json.getBoolean("penalty");
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty));
+                                        boolean generate;
+                                        try {
+                                            generate = json.getBoolean("generate");
+                                        }catch (JSONException e){
+                                            generate=false;
+                                        }
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty,generate));
                                     }
                                 }
 

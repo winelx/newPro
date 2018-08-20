@@ -25,8 +25,8 @@ import java.util.List;
  */
 
 public class CheckstandardListActivity extends AppCompatActivity {
-
     private NoScrollViewPager viewpager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,4 +78,6 @@ public class CheckstandardListActivity extends AppCompatActivity {
         setResult(2, intent);
         finish();
     }
+
+
 }

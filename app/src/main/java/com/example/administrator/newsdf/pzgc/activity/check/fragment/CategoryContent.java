@@ -1,16 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
@@ -19,10 +17,6 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskCa
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.administrator.newsdf.pzgc.callback.CategoryCallback;
 import com.example.administrator.newsdf.pzgc.callback.CategoryCallbackUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 
@@ -40,7 +34,7 @@ public class CategoryContent extends Fragment implements CategoryCallback {
     private ListView category_list;
     private SettingAdapter adapter;
     private ArrayList<Tenanceview> mData;
-    private SmartRefreshLayout smartrefreshlayout;
+
     private CheckUtils checkUtils;
 
     @Nullable
@@ -48,10 +42,11 @@ public class CategoryContent extends Fragment implements CategoryCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_categorylist, container, false);
         category_list = view.findViewById(R.id.category_list);
+        TextView titleView =view.findViewById(R.id.titleView);
+        titleView.setText("类别");
         mData = new ArrayList<>();
         checkUtils = new CheckUtils();
         CategoryCallbackUtils.setCallBack(this);
-        smartrefreshlayout = view.findViewById(R.id.smartrefreshlayout);
 
         adapter = new SettingAdapter<Tenanceview>(mData, R.layout.task_category_item) {
             @Override
@@ -72,7 +67,7 @@ public class CategoryContent extends Fragment implements CategoryCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
-                activity.result(mData.get(position).getName(),mData.get(position).getId());
+                activity.result(mData.get(position).getName(), mData.get(position).getId());
             }
         });
         view.findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -82,32 +77,13 @@ public class CategoryContent extends Fragment implements CategoryCallback {
                 activity.dismiss();
             }
         });
-        /**
-         *   下拉刷新
-         */
-        smartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
 
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
-            }
-        });
-        //上拉加载
-        smartrefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
         return view;
     }
 
     @Override
-    public void updata(String str) {
+    public void updata(String str, String str1) {
+        mData.clear();
         checkUtils.taskTypeList(str, mData, adapter);
     }
 }

@@ -6,10 +6,10 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    public static final String networks = "http://192.168.20.33:8080/";
+    // public static final String networks = "http://192.168.20.33:8080/";
     //  public static final String networks = "http://192.168.20.35:8080/pzgc/";
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
-    // public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -246,9 +246,9 @@ public class Requests {
     /**
      * 检查类别
      */
-    public static final String TASK_TYPE_LIST = networks + "iface/mobile/appcheck/getTaskTypeLis";
+    public static final String TASK_TYPE_LIST = networks + "iface/mobile/appcheck/getTaskTypeList";
     /**
-     * 现在标准
+     * 检查标准
      */
     public static final String CheckStandardApp = networks + "admin/check/checkstandard/getCheckStandardApp";
     /**
@@ -285,6 +285,34 @@ public class Requests {
      * 获取已有通知单
      */
     public static final String GET_NOTICE_BY_APP = networks + "iface/mobile/appcheck/getNoticeByApp";
+    /**
+     * 检查标准详情
+     */
+    public static final String GET_CHECK_STANDARD_DEAL_APP = networks + "admin/check/checkstandarddeal/getCheckStandardDealApp";
+    /**
+     * 提交检查
+     */
+    public static final String SEND_DATA = networks + "admin/check/checkstandarddeal/sendData";
+    /**
+     * 删除检查
+     */
+    public static final String BATCHDELETE = networks + "admin/check/checkstandarddeal/batch/delete";
 
 
+    //通知
+    /**
+     * 全部我的
+     */
+    public static final String GET_ALL_NOTICE_ORG_APP = networks + "admin/check/checknoticeform/getAllNoticeOrgApp";
+
+    /**
+     * 获取选择标准数据详情(全部)
+     * ?rectificationOrgid=&status=
+     */
+    public static final String GET_NOTICE_DATA_APP = networks + "admin/check/checknoticeform/getNoticeDataApp";
+
+    /**
+     *
+     */
+    public static final String GET_MY_NOTICE_DATA_APP = networks +  "admin/check/checknoticeform/getMyNoticeDataApp";
 }

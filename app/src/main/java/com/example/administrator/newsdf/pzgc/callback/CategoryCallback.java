@@ -5,5 +5,5 @@ package com.example.administrator.newsdf.pzgc.callback;
  */
 
 public interface CategoryCallback {
-    void updata(String str);
+    void updata(String str,String str1);
 }

@@ -54,7 +54,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 public class CheckRectificationActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView titleView, checklistmeuntext, checkRectifiData, check_wbspath, checkRectifiSubmit,
             checkRectifiWbs, check_rectifi_font;
-    private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data,check_standard;
+    private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data, check_standard;
     private Context mContext;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private RecyclerView recycler_view;
@@ -66,6 +66,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     private ArrayList<String> Imagepath;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
+    private TextView checkNewDataTx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,8 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         mContext = CheckRectificationActivity.this;
         checkUtils = new CheckUtils();
         Imagepath = new ArrayList<>();
-        check_standard= (LinearLayout) findViewById(R.id.check_standard);
+        checkNewDataTx = (TextView) findViewById(R.id.check_new_data_tx);
+        check_standard = (LinearLayout) findViewById(R.id.check_standard);
         check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
         check_rectifi_font = (TextView) findViewById(R.id.check_rectifi_font);
         check_rectifi_user = (LinearLayout) findViewById(R.id.check_rectifi_user);
@@ -103,7 +105,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         checkRectifiData = (TextView) findViewById(R.id.check_rectifi_data);
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setText("保存");
-
         titleView.setText("新增整改");
         checkRectifi.setOnClickListener(this);
         check_import.setOnClickListener(this);
@@ -125,6 +126,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         recycler_view.setItemAnimator(new DefaultItemAnimator());
         photoAdapter = new PhotoAdapter(mContext, Imagepath, "Rectifi");
         recycler_view.setAdapter(photoAdapter);
+        checkNewDataTx.setText(Dates.getDay());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -200,7 +202,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.check_standard:
-                startActivity(new Intent(mContext,CheckstandardListActivity.class));
+                startActivity(new Intent(mContext, CheckstandardListActivity.class));
                 break;
             case R.id.checklistback:
                 finish();
@@ -243,7 +245,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 break;
         }
     }
-
     private PopupWindow mPopupWindow;
 
     /**

@@ -195,6 +195,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="end"
+                    android:inputType="number"
                     android:hint="输入得分"
                     android:textColor="@color/black"
                     android:textSize="15sp" />

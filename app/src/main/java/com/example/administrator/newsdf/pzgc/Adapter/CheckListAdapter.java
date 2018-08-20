@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistAllActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
@@ -104,17 +104,30 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             convertView = LayoutInflater.from(context).inflate(R.layout.fragment_checkdown_all, null);
             childHold = new ChildHold();
             childHold.homeItemImg = convertView.findViewById(R.id.home_item_img);
+            childHold.checkMeTitle = convertView.findViewById(R.id.check_me_title);
             childHold.layoutContent = convertView.findViewById(R.id.check_relati);
+            childHold.homeItemMessage = convertView.findViewById(R.id.home_item_message);
             convertView.setTag(childHold);
         } else {
             childHold = (ChildHold) convertView.getTag();
         }
         childHold.homeItemImg.setBackgroundResource(R.drawable.home_item_blue);
+        childHold.checkMeTitle.setText(content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
+        int number = Integer.parseInt(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
+        if (number > 0) {
+            childHold.homeItemMessage.setText(number + "");
+            childHold.homeItemMessage.setVisibility(View.VISIBLE);
+        } else {
+            childHold.homeItemMessage.setVisibility(View.GONE);
+        }
 
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ChecknoticeMessagelistActivity.class);
+                childHold.homeItemMessage.setVisibility(View.GONE);
+                Intent intent = new Intent(context, ChecknoticeMessagelistAllActivity.class);
+                intent.putExtra("id", content.get(classes.get(groupPosition)).get(childPosition).getId());
+                intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 context.startActivity(intent);
             }
         });
@@ -176,8 +189,8 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
     }
 
     private class ChildHold {
-        TextView tvDelete;
-        TextView homeItemContent, homeItemTime, homeItemName, homeItemImg, homeItemMessage, tvSet;
+        TextView checkMeTitle, homeItemMessage;
+        TextView homeItemImg;
         LinearLayout layoutContent;
     }
 

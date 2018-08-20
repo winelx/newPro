@@ -50,8 +50,10 @@ public class Checkjson {
         }
         return null;
     }
+
     /**
      * description:检查管理列表
+     *
      * @author lx
      * date: 2018/8/16 0016 下午 1:50
      * update: 2018/8/16 0016
@@ -93,7 +95,7 @@ public class Checkjson {
                             wbsMai = "";
                         }
                         if (status.equals("0")) {
-                            listsub.add(new SCheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, status));
+                            listsub.add(new SCheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, status, wbsMai));
                         } else {
                             listsuccess.add(new CheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, score, status, wbsMai));
                         }
@@ -121,9 +123,6 @@ public class Checkjson {
             e.printStackTrace();
         }
     }
-
-
-
 
 
 }

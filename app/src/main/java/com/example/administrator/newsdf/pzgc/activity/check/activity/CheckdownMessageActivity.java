@@ -24,7 +24,7 @@ import java.util.ArrayList;
  *         version:
  */
 public class CheckdownMessageActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView checkDownAll, checkDownMe;
+    private TextView checkDownAll, checkDownMe,titleView;
     private ViewPager checkDownViewpager;
     private ArrayList<Fragment> mFragment;
 
@@ -38,6 +38,8 @@ public class CheckdownMessageActivity extends AppCompatActivity implements View.
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);
+        titleView= (TextView) findViewById(R.id.titleView);
+        titleView.setText("通知管理");
         checkDownViewpager = (ViewPager) findViewById(R.id.check_down_viewpager);
         checkDownMe.setOnClickListener(this);
         checkDownAll.setOnClickListener(this);
@@ -45,7 +47,6 @@ public class CheckdownMessageActivity extends AppCompatActivity implements View.
         checkDownViewpager.setAdapter(adapter);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

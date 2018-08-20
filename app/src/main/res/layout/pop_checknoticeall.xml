@@ -23,16 +23,6 @@
             android:text="全部"
             android:textColor="@color/black"
             android:textSize="14sp" />
-        <TextView
-            android:id="@+id/pop_submit"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="未下发"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
 
         <View
             android:layout_width="match_parent"
@@ -64,7 +54,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:text="待验证"
+            android:text="未验证"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -81,7 +71,23 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:text="已处理"
+            android:text="打回"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
+
+        <TextView
+            android:id="@+id/pop_success"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="完成"
             android:textColor="@color/black"
             android:textSize="14sp" />
     </LinearLayout>
