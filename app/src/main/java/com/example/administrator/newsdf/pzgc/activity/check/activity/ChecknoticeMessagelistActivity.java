@@ -305,14 +305,15 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         mAdapter.getnoti(pos);
     }
 
-    public void status(String status, String id) {
+    public void status(String status, String ids) {
         if ("未下发".equals(status)) {
             Intent intent = new Intent(mContext, CheckRectificationActivity.class);
-            intent.putExtra("id", id);
+            intent.putExtra("id", ids);
             startActivity(intent);
         } else {
             Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
-            intent.putExtra("id", id);
+            intent.putExtra("id", ids);
+            intent.putExtra("orgId", id);
             startActivity(intent);
         }
     }

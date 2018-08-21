@@ -8,6 +8,7 @@ android {
         cruncherEnabled = false
         useNewCruncher = false
     }
+
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14

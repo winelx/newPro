@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContent;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
+import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -45,7 +48,27 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         Object obj = mData.get(position);
         if (holder instanceof IssuedTaskDetailsAdapter.DetailsTop) {
             CheckDetailsTop top = (CheckDetailsTop) obj;
-            ((DetailsTop) holder).checkDetailsTitle.setText(top.getSsss());
+            ((DetailsTop) holder).checkDetailsTitle.setText(top.getWbspath());
+            ((DetailsTop) holder).checkDetailsUserdata.setText(top.getSendPersonName() + "  " + top.getSendDate());
+            ((DetailsTop) holder).checkDetailsBlock.setText("所属标段:" + top.getRectificationOrgName());
+            ((DetailsTop) holder).checkDetailsStandard.setText("违反标准:" + top.getStandardDelName());
+            ((DetailsTop) holder).checkDetailsWhy.setText("整改事由:" + top.getCheckplan());
+            ((DetailsTop) holder).checkDetailsOrg.setText("检查组织:" + top.getCheckOrgName());
+            ((DetailsTop) holder).checkDetailsRectificationUser.setText("整改负责人：" + top.getRectificationPersonName());
+            ((DetailsTop) holder).checkDetailsLasetime.setText("整改期限：" + top.getRectificationDate());
+            ((DetailsTop) holder).checkDetailsStatus.setText("状态：" + top.getStatus());
+            ((DetailsTop) holder).checkDetailsRec.setLayoutManager(new GridLayoutManager(mContext, 4));
+            ArrayList<Audio> list = new ArrayList<>();
+            list = ((CheckDetailsTop) obj).getAttachmentList();
+            ArrayList<String> path = new ArrayList<>();
+            ArrayList<String> title = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                path.add(list.get(i).getName());
+            }
+            RectifierAdapter adapter = new RectifierAdapter(mContext, path, title);
+            ((DetailsTop) holder).checkDetailsRec.setAdapter(adapter);
+            ((DetailsTop) holder).checkDetailsRec.addItemDecoration(new DividerItemDecoration(mContext,
+                    DividerItemDecoration.VERTICAL_LIST));
         } else if (holder instanceof DetailsContent) {
             CheckDetailsContent Content = (CheckDetailsContent) obj;
             ((DetailsContent) holder).detailsResultData.setText(Content.getDescribe());

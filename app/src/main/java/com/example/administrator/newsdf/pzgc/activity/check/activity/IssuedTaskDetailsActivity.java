@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.IssuedTaskDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContent;
+import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
 import com.example.administrator.newsdf.pzgc.bean.detailsBean;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -49,8 +50,7 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
     private Context mContext;
     private String status = "未回复";
     private ArrayList<CheckDetailsContent> list;
-    private String id = "";
-    private ArrayList<detailsBean> detailsBean;
+    private String id = "", orgId, userName, userId, noticeId, sdealId, replyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,9 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                 checkDetailsSubmit.setVisibility(View.GONE);
                 switch (str) {
                     case "指派":
-                        startActivity(new Intent(mContext, CheckuserActivity.class));
+                        Intent intent = new Intent(mContext, CheckuserActivity.class);
+                        intent.putExtra("orgId", orgId);
+                        startActivityForResult(intent, 1);
                         break;
                     case "编辑":
                         startActivity(new Intent(mContext, CheckReplyActivity.class));
@@ -127,7 +129,11 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                 ToastUtils.showLongToast(check);
                 switch (check) {
                     case "回复":
-                        startActivity(new Intent(mContext, CheckReplyActivity.class));
+                        Intent intent = new Intent(mContext, CheckReplyActivity.class);
+                        intent.putExtra("id", id);
+                        intent.putExtra("noticeId", noticeId);
+                        intent.putExtra("sdealId", sdealId);
+                        startActivity(intent);
                         break;
                     case "提交":
 
@@ -141,6 +147,14 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2) {
+            userName = data.getStringExtra("name");
+            userId = data.getStringExtra("id");
+        }
+    }
     public void setstatus() {
         switch (status) {
             case "未回复":
@@ -171,9 +185,9 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             mData.clear();
-                            detailsBean = new ArrayList<>();
                             JSONObject jsonObject = new JSONObject(s);
                             JSONObject json = jsonObject.getJSONObject("data");
+                            orgId = json.getString("rectificationOrgid");
                             String wbspath = json.getString("rectificationPartName");
                             String sendPersonName = json.getString("sendPersonName");
                             String sendDate = json.getString("sendDate");
@@ -193,16 +207,20 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                     achmentList.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
                                 }
                             }
+
                             //整改负责人
-                            String rectificationPersonName = json.getString("rectificationPesonName");
+                            String rectificationPersonName;
+                            try {
+                                rectificationPersonName = json.getString("rectificationPersonName");
+                            } catch (JSONException e) {
+                                rectificationPersonName = "";
+                            }
                             //整改最后时间
                             String rectificationDate = json.getString("rectificationDate");
                             //通知状态
                             String status = json.getString("status");
-                            detailsBean.add(new detailsBean(wbspath, sendPersonName, sendDate, rectificationOrgName,
+                            mData.add(new CheckDetailsTop(wbspath, sendPersonName, sendDate, rectificationOrgName,
                                     standardDelName, checkplan, checkOrgName, achmentList, rectificationPersonName, rectificationDate, status));
-
-                            mData.add(detailsBean);
                             mAdater.getData(mData);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -214,5 +232,18 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                         super.onError(call, response, e);
                     }
                 });
+    }
+//    noticeId = json.getString("noticeId");
+//    sdealId = json.getString("sdealId");
+    public void replySubmit() {
+        OkGo.post(Requests.replySubmit)
+                .params("replyId", "")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                    }
+                });
+
     }
 }

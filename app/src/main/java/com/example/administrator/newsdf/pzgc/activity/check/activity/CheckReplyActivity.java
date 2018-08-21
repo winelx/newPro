@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +30,20 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 
@@ -55,11 +62,18 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
     private Context mContext;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
+    private String id, noticeId, sdealId;
+
+    private EditText replyDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply);
+        Intent intent = getIntent();
+        noticeId = intent.getStringExtra("noticeId");
+        id = intent.getStringExtra("id");
+        sdealId = intent.getStringExtra("sdealId");
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -75,6 +89,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         };
         mContext = CheckReplyActivity.this;
         imagepath = new ArrayList<>();
+        replyDescription = (EditText) findViewById(R.id.replyDescription);
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -90,7 +105,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checklistback:
-                for (int i = 0; i <imagepath.size() ; i++) {
+                for (int i = 0; i < imagepath.size(); i++) {
                     FileUtils.deleteFile(imagepath.get(i));
                 }
                 finish();
@@ -191,7 +206,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
-        }  else {
+        } else {
             //从相机返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
@@ -218,6 +233,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         }
 
     }
+
     //连续两次退出App
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -244,4 +260,26 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
+    public void save() {
+        ArrayList<File> files = new ArrayList<>();
+        if (imagepath.size() > 0) {
+            for (int i = 0; i < imagepath.size(); i++) {
+                files.add(new File(imagepath.get(i)));
+            }
+        }
+        OkGo.post(Requests.saveReplyDataApp)
+                .params("id", id)
+                .params("noticeId", noticeId)
+                .params("dealId", sdealId)
+                .params("replyDescription", replyDescription.getText().toString())
+                .addFileParams("attachment", files)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                    }
+                });
+    }
+
 }

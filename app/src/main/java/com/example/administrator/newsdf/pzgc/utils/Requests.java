@@ -343,4 +343,13 @@ public class Requests {
     * 详情
     */
    public static  final  String getNoticeDateApp=networks+ "admin/check/checknoticeform/getNoticeDateApp";
+   /**
+    * 恢复
+    */
+   public static  final  String saveReplyDataApp=networks+"admin/check/checkreplyform/saveReplyDataApp";
+   /**
+    * 回复单数据提交
+    * admin/check/checkreplyform/replySubmit?replyId=
+    */
+   public static  final  String replySubmit=networks+"admin/check/checkreplyform/replySubmit";
 }

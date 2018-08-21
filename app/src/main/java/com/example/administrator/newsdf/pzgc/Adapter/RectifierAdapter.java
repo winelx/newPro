@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -100,8 +102,15 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
             urlpath = urlpath + "_min" + pas;
+             RequestOptions options = new RequestOptions();
+            options.centerCrop()
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .placeholder(R.drawable.__picker_ic_photo_black_48dp)
+                    .error(R.drawable.image_error);
             Glide.with(mContext)
                     .load(urlpath)
+                    .apply(options)
                     .thumbnail(Glide.with(mContext)
                             .load(R.mipmap.image_loading))
                     .into(holder.img);
