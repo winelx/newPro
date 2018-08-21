@@ -52,7 +52,7 @@ public class OrganizationaActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getExtras().getString("title");
         data = intent.getExtras().getString("data");
-        LogUtil.i("node", data);
+
         mContext = OrganizationaActivity.this;
         mData = new ArrayList<OrgenBeans>();
         TextView comtitle = (TextView) findViewById(R.id.com_title);
@@ -197,33 +197,43 @@ public class OrganizationaActivity extends AppCompatActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name) {
-        OkGo.post(Requests.Swatch)
-                .params("orgId", orgid)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String msg = jsonObject.getString("msg");
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                SPUtils.deleShare(mContext, "orgName");
-                                SPUtils.deleShare(mContext, "orgId");
-                                //所在组织ID
-                                SPUtils.putString(mContext, "orgId", orgid);
-                                //所在组织名称
-                                SPUtils.putString(mContext, "username", name);
-                                //刷新全部和我的界面的数据
-                                OgranCallbackUtils.removeCallBackMethod();
-                                finish(); //此方法后才能返回主Activity
-                            } else {
-                                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        if (data.equals("Rectifi")){
+            Intent intent = new Intent();
+            //回传数据到主Activity
+            intent.putExtra("id", orgid);
+            intent.putExtra("name", name);
+            setResult(2, intent);
+            finish();
+        }else {
+            OkGo.post(Requests.Swatch)
+                    .params("orgId", orgid)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                String msg = jsonObject.getString("msg");
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    SPUtils.deleShare(mContext, "orgName");
+                                    SPUtils.deleShare(mContext, "orgId");
+                                    //所在组织ID
+                                    SPUtils.putString(mContext, "orgId", orgid);
+                                    //所在组织名称
+                                    SPUtils.putString(mContext, "username", name);
+                                    //刷新全部和我的界面的数据
+                                    OgranCallbackUtils.removeCallBackMethod();
+                                    finish(); //此方法后才能返回主Activity
+                                } else {
+                                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
 

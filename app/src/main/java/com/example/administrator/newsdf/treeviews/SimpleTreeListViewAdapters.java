@@ -63,13 +63,11 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View view) {
                 if (node.getChildren().size() == 0) {
-
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
             }
         });
-
         holder.mText.setText(node.getName());
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
