@@ -13,6 +13,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,29 +22,41 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 
@@ -57,7 +70,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  */
 public class CheckRectificationActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView titleView, checklistmeuntext, checkRectifiData, check_wbspath, checkRectifiSubmit,
-            checkRectifiWbs, check_rectifi_font, category_item;
+            checkRectifiWbs, check_rectifi_font, category_item, check_new_tasktitle;
     private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data, check_standard;
     private Context mContext;
     private NumberPicker yearPicker, monthPicker, dayPicker;
@@ -66,24 +79,25 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     private Date myDate = new Date();
     private String[] numbermonth, numberyear;
     private CheckUtils checkUtils;
-    private PhotoAdapter photoAdapter;
-    private ArrayList<String> Imagepath;
+    private CheckPhotoAdapter photoAdapter;
+    private ArrayList<Audio> Imagepath;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
     private TextView checkNewDataTx;
-    private String categoryid, categoryedid, OrgId = null, orgName, nodeId, nodeName, nodeTitle, userId, userName;
-    private EditText check_new_tasktitle, check_rectifi_result, check_new_temporarysite;
+    private String categoryid, categoryedid, OrgId = null, orgName, nodeId, nodeName, userId, userName, standardDelScore, standardDelCode, id = "";
+    private EditText check_rectifi_result, check_new_temporarysite;
     private LinearLayout check_org;
-    private RelativeLayout check_rectifi_content;
     private IconTextView oneIcon, twoIcon, threeIcon, fourIcon, fiveIcon;
     private ArrayList<View> listVIew = new ArrayList<>();
     private ArrayList<View> listEn = new ArrayList<>();
     private boolean status = true;
+    private ArrayList<Audio> imageArray = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_rectification);
+        Intent intent = getIntent();
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -110,10 +124,9 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         listVIew.add(threeIcon);
         listVIew.add(fourIcon);
         listVIew.add(fiveIcon);
-        check_rectifi_content = (RelativeLayout) findViewById(R.id.check_rectifi_content);
         check_org = (LinearLayout) findViewById(R.id.check_org);
         check_org.setOnClickListener(this);
-        check_new_tasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
+        check_new_tasktitle = (TextView) findViewById(R.id.check_new_tasktitle);
         check_rectifi_result = (EditText) findViewById(R.id.check_rectifi_result);
         check_new_temporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
         listEn.add(check_new_tasktitle);
@@ -156,9 +169,21 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         dayDate = myDate.getDate() - 1;
         recycler_view.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         recycler_view.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new PhotoAdapter(mContext, Imagepath, "Rectifi");
+        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Rectifi", false);
         recycler_view.setAdapter(photoAdapter);
         checkNewDataTx.setText(Dates.getDay());
+        try {
+            id = intent.getStringExtra("id");
+            if (id != null) {
+                checklistmeuntext.setText("编辑");
+                checkRectifiSubmit.setBackgroundResource(R.color.Orange);
+                Visibility(8);
+                Enabled(false);
+                getdata();
+            }
+        } catch (Exception e) {
+            id = "";
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -180,9 +205,9 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
                                 //添加进集合
-                                Imagepath.add(outfile);
+                                Imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                photoAdapter.getData(Imagepath);
+                                photoAdapter.getData(Imagepath, true);
                             }
                         });
                     } else {
@@ -202,6 +227,8 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             categoryedid = data.getStringExtra("id");
             check_new_tasktitle.setText(data.getStringExtra("datastr"));
             category_item.setText(data.getStringExtra("content"));
+            standardDelScore = data.getStringExtra("score");
+            standardDelCode = data.getStringExtra("stancode");
         } else if (requestCode == 3 && resultCode == 2) {
             OrgId = data.getStringExtra("id");
             orgName = data.getStringExtra("name");
@@ -209,15 +236,13 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         } else if (requestCode == 4 && resultCode == 3) {
             nodeId = data.getStringExtra("id");
             nodeName = data.getStringExtra("name");
-            nodeTitle = data.getStringExtra("title");
-            check_wbspath.setText(nodeTitle);
+            check_wbspath.setText(nodeName);
             check_wbspath.setVisibility(View.VISIBLE);
-        } else if (requestCode == 4 && resultCode == 3) {
+        } else if (requestCode == 5 && resultCode == 2) {
             userId = data.getStringExtra("id");
             userName = data.getStringExtra("name");
             check_rectifi_font.setText(userName);
         } else {
-
             //从相机返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
                 @Override
@@ -231,9 +256,10 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                     Tiny.getInstance().source(bitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            Imagepath.add(outfile);
+                            //添加进集合
+                            Imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            photoAdapter.getData(Imagepath);
+                            photoAdapter.getData(Imagepath, true);
                             //删除原图
                             Dates.deleteFile(path);
                         }
@@ -259,6 +285,11 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                     startActivityForResult(intent, 1);
                     break;
                 case R.id.checklistback:
+                    if (Imagepath.size() > 0) {
+                        for (int i = 0; i < Imagepath.size(); i++) {
+                            FileUtils.deleteFile(Imagepath.get(i).getContent());
+                        }
+                    }
                     finish();
                     break;
                 case R.id.check_rectifi:
@@ -289,9 +320,10 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 case R.id.checklistmeun:
                     String str = checklistmeuntext.getText().toString();
                     if ("保存".equals(str)) {
-                        checklistmeuntext.setText("编辑");
-                        checkRectifiSubmit.setBackgroundResource(R.color.Orange);
+                        save();
                     } else {
+                        Visibility(0);
+                        Enabled(true);
                         checklistmeuntext.setText("保存");
                         checkRectifiSubmit.setBackgroundResource(R.color.gray);
                     }
@@ -299,14 +331,14 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 case R.id.check_rectifi_submit:
                     String str1 = checklistmeuntext.getText().toString();
                     if ("编辑".equals(str1)) {
-                        ToastUtils.showLongToast("下发");
+                        sendData();
                     }
                     break;
                 case R.id.check_rectifi_user:
                     if (OrgId != null) {
                         Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                         intent1.putExtra("orgId", OrgId);
-                        startActivityForResult(intent1, 4);
+                        startActivityForResult(intent1, 5);
                     } else {
                         ToastUtils.showLongToast("请先选择标段");
                     }
@@ -315,6 +347,19 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //删除无用图片
+            for (int i = 0; i < Imagepath.size(); i++) {
+                FileUtils.deleteFile(Imagepath.get(i).getContent());
+            }
+            finish();
+            return true;
+        }
+        return true;
     }
 
     private PopupWindow mPopupWindow;
@@ -487,7 +532,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                         Intent intent = new Intent(mContext, ImageGridActivity.class);
                         startActivityForResult(intent, IMAGE_PICKER);
                         break;
-                    //
                     case R.id.btn_camera_pop_cancel:
                         //关闭pop
                     case R.id.btn_pop_add:
@@ -510,15 +554,208 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     }
 
     //隐藏 8  显示8
-    private void get(int number) {
+    private void Visibility(int number) {
         for (int i = 0; i < listVIew.size(); i++) {
             listVIew.get(i).setVisibility(number);
         }
     }
 
-    public void set(boolean status) {
+    public void Enabled(boolean status) {
         for (int i = 0; i < listEn.size(); i++) {
             listEn.get(i).setEnabled(status);
         }
     }
+
+    ArrayList<String> deleteList = new ArrayList<>();
+
+    public void delete(String id) {
+        if (id.length() > 0) {
+            deleteList.add(id);
+        }
+    }
+
+    public void save() {
+        Dates.getDialog(CheckRectificationActivity.this, "保存数据中...");
+        ArrayList<File> files = new ArrayList<>();
+        if (Imagepath.size() > 0) {
+            for (int i = 0; i < Imagepath.size(); i++) {
+                files.add(new File(Imagepath.get(i).getName()));
+            }
+        }
+        OkGo.post(Requests.SAVE_NOTICE_APP)
+                .isMultipart(true)
+                .params("rectificationOrgid", OrgId)
+                .params("rectificationOrgName", orgName)
+                .params("rectificationPart", nodeId)
+                .params("standardDel", categoryedid)
+                .params("standardDelCode", standardDelCode)
+                .params("standardDelScore", standardDelScore)
+                .params("standardDelName", check_new_tasktitle.getText().toString())
+                .params("standardType", categoryid)
+                .params("standardTypeName", category_item.getText().toString())
+                .params("checkDate", checkNewDataTx.getText().toString())
+                .params("rectificationPerson", userId)
+                .params("rectificationPersonName", userName)
+                .params("rectificationDate", checkRectifiData.getText().toString())
+                .params("rectificationReason", check_rectifi_result.getText().toString())
+                .params("rectificationPartName", nodeName)
+                .params("partDetails", check_new_temporarysite.getText().toString())
+                .addFileParams("attachment", files)
+                .params("id", id)
+                .params("deleteFileId", Dates.listToStrings(deleteList))
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                id = data.getString("id");
+                                checklistmeuntext.setText("编辑");
+                                checkRectifiSubmit.setBackgroundResource(R.color.Orange);
+                                JSONArray jsonArray = data.getJSONArray("attachmentList");
+                                if (jsonArray.length() > 0) {
+                                    Imagepath.clear();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
+                                    }
+                                }
+                                photoAdapter.getData(Imagepath, false);
+                                Visibility(8);
+                                Enabled(false);
+                            }
+                            Dates.disDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+
+    }
+
+    public void getdata() {
+        Dates.getDialog(CheckRectificationActivity.this, "请求数据中...");
+        OkGo.post(Requests.GET_NOTICE_DATE_APP)
+                .params("noticeId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Imagepath.clear();
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                nodeId = json.getString("rectificationPart");
+                                nodeName = json.getString("rectificationPartName");
+                                check_wbspath.setText(nodeName);
+                                check_wbspath.setVisibility(View.VISIBLE);
+                                id = json.getString("id");
+                                OrgId = json.getString("rectificationOrgid");
+                                category_item.setText(json.getString("standardTypeName"));
+                                orgName = json.getString("rectificationOrgName");
+                                checkRectifiWbs.setText(orgName);
+                                check_new_temporarysite.setText(json.getString("partDetails"));
+                                userName = json.getString("rectificationPersonName");
+                                check_rectifi_font.setText(userName);
+                                userId = json.getString("rectificationPerson");
+                                checkRectifiData.setText(json.getString("rectificationDate"));
+                                categoryedid = json.getString("standardDel");
+                                checkRectifiData.setText(json.getString("checkDate"));
+                                check_rectifi_result.setText(json.getString("rectificationReason"));
+                                category_item.setText(json.getString("standardTypeName"));
+                                categoryid = json.getString("standardType");
+                                check_new_tasktitle.setText(json.getString("standardDelName"));
+                                standardDelCode = json.getString("standardDelCode");
+                                standardDelScore = json.getString("standardDelScore");
+                                JSONArray attachment = json.getJSONArray("attachment");
+                                if (attachment.length() > 0) {
+                                    for (int i = 0; i < attachment.length(); i++) {
+                                        JSONObject att = attachment.getJSONObject(i);
+                                        Imagepath.add(new Audio(Requests.networks + att.getString("filepath"), att.getString("id")));
+                                    }
+                                }
+                                photoAdapter.getData(Imagepath, false);
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                            Dates.disDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+    }
+
+    public void sendData() {
+        Dates.getDialog(CheckRectificationActivity.this, "请求数据中...");
+        OkGo.post(Requests.SEND_MESSAGE_DATA)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                TaskCallbackUtils.CallBackMethod();
+                                finish();
+                            }else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                            Dates.disDialog();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+
+    }
+
+    public String getstatus() {
+        return checklistmeuntext.getText().toString();
+    }
+/**
+ * rectificationOrgid  // 标段id
+ rectificationOrgName  // 标段名称
+ @"rectificationPart"];// 整改部位
+ @"standardDel"];// 违反标准id
+ @"standardDelScore"];// 违反标准分数
+ @"standardDelCode"];// 违反标准编码
+ @"standardDelName"];// 违反标准名称
+ @"standardType"];// 类别id
+ @"standardTypeName"];// 类别名称
+ @"checkDate"];// 检查时间
+ @"rectificationPerson"];// 整改负责人id
+ :@"rectificationPersonName"];// 整改负责人名称
+ @"rectificationDate"];// 整改期限
+ @"rectificationReason"];// 整改是由
+ @"rectificationPartName"];// 部位名称补充说明
+ @"attachment"];附件
+ @"id"]; //修改时必填
+ @"deleteFileId"];//修改时删除的附件ID，英文逗号拼接
+
+ */
 }

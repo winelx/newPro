@@ -36,6 +36,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -95,8 +96,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private EditText check_message_describe;
     private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
     private Boolean generate;
-    private String orgId, nameId;
-    private String messageid = "", taskId;
+    private String orgId, nameId="";
+    private String messageid = "", taskId, tyepId;
     ArrayList<String> ids;
 
     @Override
@@ -178,6 +179,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         generate = intent.getBooleanExtra("status", false);
         messageid = intent.getStringExtra("id");
         taskId = intent.getStringExtra("taskId");
+        tyepId = intent.getStringExtra("typeId");
         //组装id和路径
         if (ids.size() > 0) {
             for (int i = 0; i < ids.size(); i++) {
@@ -190,6 +192,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             checklistmeuntext.setVisibility(View.VISIBLE);
             getNoticeByApp();
         } else {
+            checkMessageTime.setText(Dates.getDay());
+            MessageData.setText(Dates.getDay());
             checkMessageStandar.setText(intent.getStringExtra("content"));
             check_message_describe.setText(intent.getStringExtra("describe"));
             checkMessageContent.setVisibility(View.GONE);
@@ -198,7 +202,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //附件的recycleraview的适配器
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoadd.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Message",true);
+        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Message", true);
         photoadd.setAdapter(photoAdapter);
         checkMessageSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -207,12 +211,22 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 // TODO Auto-generated method stub
                 if (isChecked) {
                     //打开
+                    checkMessageTime.setText(Dates.getDay());
+                    MessageData.setText(Dates.getDay());
                     checkMessageContent.setVisibility(View.VISIBLE);
                     checklistmeuntext.setVisibility(View.VISIBLE);
+
                 } else {
                     // 关闭
-                    checkMessageContent.setVisibility(View.GONE);
-                    checklistmeuntext.setVisibility(View.GONE);
+                    if (messageid.length() > 0) {
+                        checkMessageContent.setVisibility(View.GONE);
+                        checklistmeuntext.setVisibility(View.VISIBLE);
+                        checklistmeuntext.setText("删除");
+                    } else {
+                        checkMessageContent.setVisibility(View.GONE);
+                        checklistmeuntext.setVisibility(View.GONE);
+                    }
+
                 }
             }
         });
@@ -300,7 +314,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                                 //添加进集合
                                 Imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                photoAdapter.getData(Imagepath,true);
+                                photoAdapter.getData(Imagepath, true);
                             }
                         });
                     } else {
@@ -331,7 +345,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                         public void callback(boolean isSuccess, String outfile) {
                             Imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            photoAdapter.getData(Imagepath,true);
+                            photoAdapter.getData(Imagepath, true);
 //                    //删除原图
                             Dates.deleteFile(path);
                         }
@@ -551,7 +565,16 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.checklistmeun:
-                Save();
+                String meuntext = checklistmeuntext.getText().toString();
+                if ("保存".equals(meuntext)) {
+                    if (nameId.length() > 0) {
+                        Save();
+                    } else {
+                        ToastUtils.showShortToast("选择负责人");
+                    }
+                } else {
+                    deletemessage();
+                }
                 break;
             case R.id.check_message_data:
                 meunpop("data");
@@ -597,6 +620,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 .params("checkPersonName", SPUtils.getString(mContext, "id", ""))
                 // 检查组织
                 .params("checkOrgid", orgId)
+                .params("detailsId", tyepId)
                 //检查时间
                 .params("checkDate", MessageData.getText().toString())
                 //整改期限
@@ -632,7 +656,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                                         }
                                     }
                                 }
-                                photoAdapter.getData(Imagepath,false);
+                                photoAdapter.getData(Imagepath, false);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -663,7 +687,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                                         }
                                     }
                                 }
-                                photoAdapter.getData(Imagepath,false);
+                                photoAdapter.getData(Imagepath, false);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -727,6 +751,25 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         Dates.disDialog();
+                    }
+                });
+    }
+
+    public void deletemessage() {
+        OkGo.post(Requests.DELETEMESSAGE)
+                .params("id", messageid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            if (jsonObject.getInt("ret")==0){
+                                TaskCallbackUtils.CallBackMethod();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

@@ -65,7 +65,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             return TYPE_TOP;
         } else if (mData.get(position) instanceof CheckDetailsContent) {
             return TYPE_CONTENT;
-        }  else {
+        } else {
             return super.getItemViewType(position);
         }
     }
@@ -132,5 +132,10 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             //验证附件
             detailsValidationRec = itemView.findViewById(R.id.details_validation_rec);
         }
+    }
+
+    public void getData(ArrayList<Object> list) {
+        this.mData = list;
+        notifyDataSetChanged();
     }
 }

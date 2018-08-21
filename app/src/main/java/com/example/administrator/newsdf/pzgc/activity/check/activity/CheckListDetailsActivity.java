@@ -42,7 +42,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description:
+ * description:t检查单详情
  *
  * @author lx
  *         date: 2018/8/15 0015 上午 11:38
@@ -55,7 +55,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
-    private LinearLayout check_new_data, checkImport, checkCategory, checkNewDialog, checkNewAddNumber;
+    private LinearLayout check_new_data, checkImport, checkCategory, checkNewAddNumber;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
@@ -106,8 +106,6 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         tVisibility.add(IconTextViewtwo);
         //检查人
         checkUsername = (TextView) findViewById(R.id.check_username);
-        //检查名称
-        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
         //检查标段
         checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
         //检查组织
@@ -272,7 +270,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checkNewDialog);
+        mPopupWindow.showAsDropDown(titleView);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckListDetailsActivity.this);
@@ -477,10 +475,11 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                                         boolean generate;
                                         try {
                                             generate = json.getBoolean("generate");
-                                        }catch (JSONException e){
-                                            generate=false;
+                                        } catch (JSONException e) {
+                                            generate = false;
                                         }
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty,generate));
+                                        int number = i + 1;
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
                                     }
                                 }
 

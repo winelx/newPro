@@ -26,7 +26,6 @@ import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import java.util.ArrayList;
 
 
-
 /**
  * Created by donglua on 15/5/31.
  * 添加图片
@@ -43,7 +42,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
     final static int MAX = 100;
     private String status;
 
-    public CheckPhotoAdapter(Context mContext, ArrayList<Audio> photoPaths, String status,boolean learn) {
+    public CheckPhotoAdapter(Context mContext, ArrayList<Audio> photoPaths, String status, boolean learn) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         this.learn = learn;
@@ -112,6 +111,21 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             //刷新界面
                             notifyDataSetChanged();
                             break;
+                        case "Rectifi":
+                            CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
+                            String rectifi = Rectifi.getstatus();
+                            if ("编辑".equals(rectifi)) {
+                                ToastUtils.showShortToast("当前状态不可编辑");
+                            } else {
+                               Rectifi.delete(photoPaths.get(position).getName());
+                                //删除本地图片
+                                FileUtils.deleteFile(photoPaths.get(position).getName());
+                                //删除集合数据
+                                photoPaths.remove(position);
+                                //刷新界面
+                                notifyDataSetChanged();
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -137,6 +151,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                 @Override
                 public void onClick(View v) {
                     switch (status) {
+
                         case "Reply":
                             ReplyActivity reply = (ReplyActivity) mContext;
                             //调用相机
@@ -159,11 +174,17 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "Rectifi":
                             CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
-                            //调用相机
-                            Rectifi.showPopwindow();
+                            String rectifi = Rectifi.getstatus();
+                            if ("编辑".equals(rectifi)) {
+                                ToastUtils.showShortToast("当前状态不可编辑");
+                            } else {
+                                //调用相机
+                                Rectifi.showPopwindow();
+                            }
                             break;
                         case "CheckReply":
                             CheckReplyActivity CheckReply = (CheckReplyActivity) mContext;
+
                             //调用相机
                             CheckReply.showPopwindow();
                             break;
@@ -208,7 +229,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
         }
     }
 
-    public void getData(ArrayList<Audio> photoPaths,boolean learn) {
+    public void getData(ArrayList<Audio> photoPaths, boolean learn) {
         this.photoPaths = photoPaths;
         this.learn = learn;
         notifyDataSetChanged();

@@ -8,20 +8,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckRectifyMessageAdapter;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -53,9 +55,8 @@ import okhttp3.Response;
  *         update: 2018/8/8 0008
  *         version:
  */
-public class ChecknoticeMessagelistActivity extends AppCompatActivity implements View.OnClickListener {
-    private SettingAdapter adapter;
-    private ListView listView;
+public class ChecknoticeMessagelistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+    private RecyclerView listView;
     private ArrayList<MyNoticeDataBean> mData;
     private Context mContext;
     private TextView titleView;
@@ -66,81 +67,26 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     private String id;
     private String status = "3";
     private int page = 1;
+    private CheckRectifyMessageAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
         Intent intent = getIntent();
+        TaskCallbackUtils.setCallBack(this);
+        mContext = ChecknoticeMessagelistActivity.this;
         id = intent.getStringExtra("id");
         resolution = ScreenUtil.getDensity(App.getInstance());
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
         checklistmeunimage.setVisibility(View.VISIBLE);
-        listView = (ListView) findViewById(R.id.maber_tree);
+        listView = (RecyclerView) findViewById(R.id.maber_tree);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
-        listView.setDividerHeight(0);
-        mContext = ChecknoticeMessagelistActivity.this;
+
         mData = new ArrayList<>();
-        adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_message) {
-            @Override
-            public void bindView(ViewHolder holder, MyNoticeDataBean obj) {
-                holder.setText(R.id.management_title, obj.getPartDetails());
-                holder.setText(R.id.management_title, obj.getCheckPersonName() + "    " + obj.getUpdateDate());
-                holder.setText(R.id.management_user, "所属标段:" + obj.getRectificationOrgName());
-                holder.setText(R.id.management_category, "所属类别:" + obj.getStandardDelName());
-                holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
-                holder.setText(mContext, R.id.management_number, "总分:" + obj.getStandardDelScore(), 3, R.color.red);
-                Boolean isDeal = obj.isDeal();
-                if (isDeal) {
-                    String motionNode = obj.getMotionNode();
-                    if ("5".equals(motionNode)) {
-                        holder.setSlantedText(R.id.inface_item_message, "已完成", R.color.finish_green);
-                    } else {
-                        holder.setSlantedText(R.id.inface_item_message, "已处理", R.color.finish_green);
-                    }
-                } else {
-                    String status = obj.getStatus();
-                    if ("3".equals(status)) {
-                        holder.setSlantedText(R.id.inface_item_message, "打回", R.color.red);
-                    } else {
-                        String motionNode = obj.getMotionNode();
-                        if (motionNode.isEmpty()) {
-                            holder.setSlantedText(R.id.inface_item_message, "未下发", R.color.graytext);
-                        } else {
-                            if ("1".equals(motionNode) || "0".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "未回复", R.color.graytext);
-                            } else if ("2".equals(motionNode) || "3".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "未验证", R.color.graytext);
-                            } else if ("5".equals(motionNode)) {
-                                holder.setSlantedText(R.id.inface_item_message, "已完成", R.color.finish_green);
-                            } else {
-
-                            }
-
-                        }
-                    }
-                }
-                String stauts = obj.getStatus();
-                switch (stauts) {
-                    case "":
-                        holder.setSlantedText(R.id.management_number, "", R.color.red);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-        listView.setAdapter(adapter);
-        listView.setEmptyView(findViewById(R.id.nullposion));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(mContext, IssuedTaskDetailsActivity.class));
-            }
-        });
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +94,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
             }
         });
         checklistmeunimage.setOnClickListener(this);
-        getdate();
+
         /**
          *   下拉刷新
          */
@@ -174,13 +120,17 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                 refreshlayout.finishLoadmore(800);
             }
         });
+        listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //初始化适配器
+        mAdapter = new CheckRectifyMessageAdapter(mContext);
+        listView.setAdapter(mAdapter);
+        getdate();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checklistmeunimage:
-
                 meun();
                 break;
             default:
@@ -274,7 +224,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         //检查组织
                                         String checkOrgName = json.getString("checkOrgName");
                                         //责任人
-                                        String checkPersonName = json.getString("checkPersonName");
+                                        String sendPersonName = json.getString("checkPersonName");
                                         //所属标段
                                         String rectificationOrgName = json.getString("rectificationOrgName");
                                         //更新时间
@@ -302,15 +252,17 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         }
                                         //是否回复
                                         Boolean isDeal = json.getBoolean("isDeal");
-
-                                        mData.add(new MyNoticeDataBean(partDetails, checkOrgName, checkPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, isDeal));
+                                        String checkPersonName = json.getString("rectificationPersonName");
+                                        String rectificationDate = json.getString("rectificationDate");
+                                        rectificationDate = rectificationDate.substring(0, 10);
+                                        mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, isDeal));
                                     }
                                 }
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
-                            adapter.getData(mData);
+                            mAdapter.getData(mData);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -321,6 +273,14 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                         super.onError(call, response, e);
                     }
                 });
+    }
+
+    //下发成功后刷新
+    @Override
+    public void taskCallback() {
+        page = 1;
+        mData.clear();
+        getdate();
     }
 
     /**
@@ -338,5 +298,22 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
+    }
+
+    public void detele(int pos) {
+        mData.remove(pos);
+        mAdapter.getnoti(pos);
+    }
+
+    public void status(String status, String id) {
+        if ("未下发".equals(status)) {
+            Intent intent = new Intent(mContext, CheckRectificationActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
     }
 }

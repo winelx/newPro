@@ -86,7 +86,7 @@ public class CheckstandardContent extends Fragment {
                 activity.dismiss();
             }
         });
-        checkUtils.CheckStandardApp(mData, null, adapter, "");
+        checkUtils.getdatecon(mData,adapter);
         return view;
     }
 

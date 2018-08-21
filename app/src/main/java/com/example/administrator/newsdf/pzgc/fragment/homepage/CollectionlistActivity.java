@@ -122,12 +122,14 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private boolean liststatus = true;
     boolean anim = true;
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         TaskCallbackUtils.setCallBack(this);
+
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());

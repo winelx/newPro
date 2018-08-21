@@ -1,100 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--item布局，自定义View-->
+<com.example.administrator.newsdf.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="190dp"
     android:background="@color/back"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="10dp">
+    android:gravity="center_vertical"
+    android:minHeight="180dp">
+
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/item_not"
+        android:background="@color/back"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/writer"
-        android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:layout_height="match_parent">
 
-        <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
-            android:id="@+id/inface_item_message"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            app:slantedLength="28dp"
-            app:slantedMode="right_triangle"
-            app:slantedText="未完成"
-            app:slantedTextColor="@color/writer"
-            app:slantedTextSize="10sp" />
+        <!--"设置"，"删除"按钮使用了TextView而不是Button，是因为５.０以上版本使用Button会显示在上层产出错误显示-->
 
         <TextView
-            android:id="@+id/management_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:singleLine="true"
-            android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
-            android:textColor="@color/black" />
+            android:id="@+id/tv_delete"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/sub_layout_content"
+            android:background="@mipmap/check_delete"
+            android:gravity="center"
+            android:textColor="#DDFFFFFF"
+            android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/management_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_title"
-            android:layout_marginTop="2dp"
-            android:text="张三    2018-00-00"
-            android:textColor="@color/graytext" />
+            android:id="@+id/tv_set"
+            android:layout_width="20dp"
+            android:layout_height="180dp"
+            android:layout_toRightOf="@+id/tv_delete"
+            android:gravity="center"
+            android:minHeight="80dp"
+            android:textSize="25dp" />
 
-        <TextView
-            android:id="@+id/management_block"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_user"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:singleLine="true"
-            android:text="所属标段:0XXXXXXXXXXXX" />
+        <RelativeLayout
+            android:id="@+id/sub_layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/writer">
 
-        <TextView
-            android:id="@+id/management_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_block"
-            android:layout_marginTop="3dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:singleLine="true"
-            android:text="检查类别:XXXXXXXXXXXX" />
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/writer"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
 
-        <TextView
-            android:id="@+id/management_org"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_category"
-            android:layout_marginTop="3dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:singleLine="true"
-            android:text="检查组织:XXXXXXXXXXXX" />
+                <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+                    android:id="@+id/inface_item_message"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    app:slantedLength="28dp"
+                    app:slantedMode="right_triangle"
+                    app:slantedText="未完成"
+                    app:slantedTextColor="@color/writer"
+                    app:slantedTextSize="10sp" />
 
-        <TextView
-            android:id="@+id/management_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_org"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="3dp"
-            android:text="总分:99"
-            android:textColor="@color/red"
-            android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/management_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/management_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/management_title"
+                    android:layout_marginTop="2dp"
+                    android:text="张三    2018-00-00"
+                    android:textColor="@color/graytext" />
+
+                <TextView
+                    android:id="@+id/management_block"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/management_user"
+                    android:layout_marginTop="6dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
+                    android:text="所属标段:0XXXXXXXXXXXX" />
+
+                <TextView
+                    android:id="@+id/management_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/management_block"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
+                    android:text="检查类别:XXXXXXXXXXXX" />
+
+                <TextView
+                    android:id="@+id/management_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/management_category"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
+                    android:text="检查组织:XXXXXXXXXXXX" />
+
+                <TextView
+                    android:id="@+id/management_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/management_org"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="3dp"
+                    android:text="总分:99"
+                    android:textColor="@color/red"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/one"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/management_number"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/one"
+                    android:layout_marginTop="3dp"
+                    android:minHeight="25dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/notice_user"
+                        android:layout_width="0dp"
+                        android:gravity="left"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/notice_lasttime"
+                        android:layout_width="0dp"
+                        android:gravity="right"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
-</LinearLayout>
+</com.example.administrator.newsdf.pzgc.utils.LeftSlideView>

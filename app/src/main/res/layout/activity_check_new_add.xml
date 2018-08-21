@@ -15,6 +15,7 @@
         android:layout_alignParentStart="true">
 
         <RelativeLayout
+            android:id="@+id/check_new_dialog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/back"
@@ -24,6 +25,7 @@
             <include layout="@layout/titlestyle" />
 
             <ScrollView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"

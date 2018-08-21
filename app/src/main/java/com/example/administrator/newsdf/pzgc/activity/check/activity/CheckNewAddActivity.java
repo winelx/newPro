@@ -19,6 +19,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -67,7 +68,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
-    private LinearLayout checkNewData, checkImport, checkCategory, checkNewDialog, checkNewAddNumber;
+    private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
@@ -84,6 +85,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
     private SmartRefreshLayout smallLabel;
+    private RelativeLayout checkNewDialog;
 
     public static CheckNewAddActivity getInstance() {
         return mContext;
@@ -120,6 +122,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         } else {
             getdata();
             statusT();
+
         }
     }
 
@@ -127,6 +130,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     protected void onStart() {
         super.onStart();
         getcheckitemList();
+
     }
 
     private void findbyid() {
@@ -144,7 +148,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         //检查人
         checkUsername = (TextView) findViewById(R.id.check_username);
         //检查名称
-        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
+        checkNewDialog = (RelativeLayout) findViewById(R.id.check_new_dialog);
         //检查标段
         checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
         //检查组织
@@ -231,10 +235,12 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
-                intent2.putExtra("id", taskId);
+                intent2.putExtra("taskId", taskId);
                 intent2.putExtra("orgId", orgId);
                 intent2.putExtra("number", position + 1);
+                intent2.putExtra("position", position);
                 intent2.putExtra("size", mData.size());
+                intent2.putExtra("id", mData.get(position).getId());
                 startActivity(intent2);
             }
         });
@@ -288,7 +294,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     }
                 } else {
                     statusF();
-
                 }
                 break;
             case R.id.checklistback:
@@ -298,9 +303,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 String str = checkNewButton.getText().toString();
                 if ("开始检查".equals(str)) {
                     Intent intent2 = new Intent(mContext, CheckitemActivity.class);
-                    intent2.putExtra("id", taskId);
+                    intent2.putExtra("taskId", taskId);
                     intent2.putExtra("orgId", orgId);
                     intent2.putExtra("number", 1);
+                    intent2.putExtra("position", 0);
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
@@ -373,7 +379,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checkNewDialog);
+        mPopupWindow.showAsDropDown(datatime, 200, 200);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
@@ -525,8 +531,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             int ret = jsonObject1.getInt("ret");
                             if (ret == 0) {
                                 //更新列表界面
-                                taskId = jsonObject1.getString("data");
+                                JSONObject json = jsonObject1.getJSONObject("data");
+                                taskId = json.getString("id");
                                 TaskCallbackUtils.CallBackMethod();
+                                getcheckitemList();
                                 statusT();
                             } else {
                                 ToastUtils.showShortToast(jsonObject1.getString("msg"));
@@ -545,7 +553,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
-
                     }
                 });
     }
@@ -581,30 +588,15 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                             generate = false;
                                         }
                                         boolean penalty = json.getBoolean("penalty");
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty, generate));
+                                        int number = i + 1;
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
                                     }
                                 }
                             }
                             if (mData.size() > 0) {
                                 adapter.getdate(mData);
-                                boolean status = true;
-                                for (int i = 0; i < mData.size(); i++) {
-                                    boolean noSuch = mData.get(i).isNoSuch();
-                                    Boolean generate = mData.get(i).isGenerate();
-                                    String score = mData.get(i).getScore();
-                                    if ((!noSuch && generate == null) || score == null) {
-                                        status = false;
-                                        break;
-                                    }
-                                }
-                                if (!status) {
-                                    checkNewButton.setText("提交");
-                                    checkNewButton.setBackgroundResource(R.color.Orange);
-                                }
-
+                                checkFinish();
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -655,7 +647,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
-                                categoryId = json.getString("WbsTaskTypeId");
+                                categoryId = json.getString("id");
+                                nodeId = json.getString("WbsTaskTypeId");
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -722,6 +715,41 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    public void checkFinish() {
+        OkGo.get(Requests.CHECK_FINISH)
+                .params("id", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                Boolean lean = jsonObject1.getBoolean("finish");
+                                if (lean) {
+                                    checkNewButton.setText("提交");
+                                    checkNewButton.setBackgroundResource(R.color.Orange);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
                     }
                 });
     }

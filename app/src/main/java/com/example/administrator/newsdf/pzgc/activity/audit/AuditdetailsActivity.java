@@ -32,24 +32,25 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     private TextView wbspath;
     private String taskId, status;
     private AuditdetailsAdapter mAdapter;
-    private HomeUtils mHomeUtils;
+
 
     public static AuditdetailsActivity getInstance() {
         return mContext;
     }
-
+    HomeUtils homeUtils;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditdetails);
-        Intent intent = getIntent();
+        Intent intnt = getIntent();
+        homeUtils=new HomeUtils();
         mContext = this;
         //审核界面回调
         AuditDetailsCallbackUtils.setCallBack(this);
         AuditDetailsrefreshCallbackUtils.setCallBack(this);
-        mHomeUtils = new HomeUtils();
-        taskId = intent.getExtras().getString("TaskId");
-        status = intent.getExtras().getString("status");
+
+        taskId = intnt.getExtras().getString("TaskId");
+        status = intnt.getExtras().getString("status");
         mRecyclerView = (RecyclerView) findViewById(R.id.auditdetails_list);
         wbspath = (TextView) findViewById(R.id.auditdetails_path);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -65,7 +66,7 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
-        mHomeUtils.TaskAudit(taskId, mAdapter);
+        homeUtils.TaskAudit(taskId, mAdapter);
         mRecyclerView.scrollToPosition(0);
     }
 
@@ -73,7 +74,7 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.taskManagemented:
-                HomeUtils.getOko(mHomeUtils.getId(), null, false, null, false, null, AuditdetailsActivity.this);
+                HomeUtils.getOko(homeUtils.getId(), null, false, null, false, null, AuditdetailsActivity.this);
                 break;
             case R.id.aduit_back:
                 //返回
@@ -108,13 +109,13 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void updata() {
-        wbspath.setText(mHomeUtils.hasmap.get("wbsName"));
+        wbspath.setText(homeUtils.hasmap.get("wbsName"));
     }
 
     @Override
     public void refreshs() {
         status = "1";
-        mHomeUtils.TaskAudit(taskId, mAdapter);
+        homeUtils.TaskAudit(taskId, mAdapter);
     }
 
 }

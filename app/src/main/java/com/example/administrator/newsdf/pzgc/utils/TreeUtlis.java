@@ -32,7 +32,7 @@ public class TreeUtlis {
     private int addPosition;
     private Activity activity;
 
-
+    private HomeUtils homeUtils=new HomeUtils();
     /**
      * 组织机构
      *
@@ -236,7 +236,7 @@ public class TreeUtlis {
              * 解析数据
              */
             ArrayList<OrganizationEntity> addOrganizationList = new ArrayList<>();
-            addOrganizationList = HomeUtils.parseOrganizationList(result);
+            addOrganizationList = homeUtils.parseOrganizationList(result);
             /**
              * 动态添加
              */

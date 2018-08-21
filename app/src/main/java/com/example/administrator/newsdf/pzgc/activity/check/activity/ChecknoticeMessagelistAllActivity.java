@@ -68,7 +68,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checknoticemessage);
+        setContentView(R.layout.activity_checknoticemessage_all);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         resolution = ScreenUtil.getDensity(App.getInstance());
@@ -76,13 +76,13 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
         checklistmeunimage.setVisibility(View.VISIBLE);
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
         listView = (ListView) findViewById(R.id.maber_tree);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
-        listView.setDividerHeight(0);
         mContext = ChecknoticeMessagelistAllActivity.this;
         mData = new ArrayList<>();
-        adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_message) {
+        adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_all) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, MyNoticeDataBean obj) {
                 holder.setText(R.id.management_title, obj.getPartDetails());
@@ -91,6 +91,8 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                 holder.setText(R.id.management_category, "所属类别:" + obj.getStandardDelName());
                 holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
                 holder.setText(mContext, R.id.management_number, "总分:" + obj.getStandardDelScore(), 3, R.color.red);
+                holder.setText(R.id.notice_user, "整改负责人:" + obj.getNoticeuser());
+                holder.setText(R.id.notice_lasttime, "整改期限:" + obj.getNoticetime());
                 String status = obj.getStatus();
                 switch (status) {
                     case "0":
@@ -159,7 +161,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.checklistmeunimage:
+            case R.id.checklistmeun:
                 meun();
                 break;
             default:
@@ -255,7 +257,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         //检查组织
                                         String checkOrgName = json.getString("checkOrgName");
                                         //责任人
-                                        String checkPersonName = json.getString("checkPersonName");
+                                        String sendPersonName = json.getString("checkPersonName");
                                         //所属标段
                                         String rectificationOrgName = json.getString("rectificationOrgName");
                                         //更新时间
@@ -278,8 +280,11 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         String motionNode;
                                         motionNode = "";
                                         //是否回复
-                                        mData.add(new MyNoticeDataBean(partDetails, checkOrgName, checkPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, false));
+                                        String checkPersonName = json.getString("rectificationPersonName");
+                                        String rectificationDate = json.getString("rectificationDate");
+                                        rectificationDate=rectificationDate.substring(0,10);
+                                        mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, false));
                                     }
                                 }
                             } else {

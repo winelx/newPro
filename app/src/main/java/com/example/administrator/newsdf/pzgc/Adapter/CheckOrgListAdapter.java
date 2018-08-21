@@ -13,24 +13,36 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.frehomeCallBackUtils;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 
 /**
- * description: 检查管理适配器
+ * description: 全部任务界面
  *
  * @author lx
  *         date: 2018/6/14 0014 上午 11:46
  *         update: 2018/6/14 0014
  *         version:
  */
-public class CheckManagementAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
+public class CheckOrgListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
     private List<String> classes;
     private Map<String, List<Home_item>> content;
     private Context context;
@@ -38,8 +50,8 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
     private LeftSlideView mMenu = null;
     private String zero = "0";
 
-    public CheckManagementAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context,
-                                  View.OnClickListener ivGoToChildClickListener) {
+    public CheckOrgListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context,
+                               View.OnClickListener ivGoToChildClickListener) {
         this.classes = classes;
         this.content = content;
         this.context = context;
@@ -129,7 +141,7 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
             childHold.tvSet = convertView.findViewById(R.id.tv_set);
             childHold.layoutContent = convertView.findViewById(R.id.layout_content);
             convertView.setTag(childHold);
-            ((LeftSlideView) convertView).setSlidingButtonListener(CheckManagementAdapter.this);
+            ((LeftSlideView) convertView).setSlidingButtonListener(CheckOrgListAdapter.this);
         } else {
             childHold = (ChildHold) convertView.getTag();
         }
@@ -160,6 +172,14 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
             childHold.homeItemMessage.setVisibility(View.GONE);
         }
 
+//判断是否有消息
+        if (zero.equals(content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite())) {
+            childHold.tvSet.setBackgroundResource(R.color.Orange);
+            childHold.tvSet.setText("收藏");
+        } else {
+            childHold.tvSet.setBackgroundResource(R.color.red);
+            childHold.tvSet.setText("已收藏");
+        }
         //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
@@ -174,20 +194,59 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
         //代码设置layout_content子项的宽度
         childHold.layoutContent.setLayoutParams(new RelativeLayout.LayoutParams(width, screenHeight));
         //创建时间
-        childHold.homeItemTime.setVisibility(View.GONE);
+        childHold.homeItemTime.setText(content.get(classes.get(groupPosition)).get(childPosition).getCreaeTime());
         //标段名称
         childHold.homeItemName.setText(content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
         //标段所属公司名称
         childHold.homeItemImg.setText(content.get(classes.get(groupPosition)).get(childPosition).getParentname());
         //最后一条回复信息
-        childHold.homeItemContent.setVisibility(View.GONE);
-        childHold.tvSet.setVisibility(View.GONE);
+        childHold.homeItemContent.setText(childName);
+        childHold.tvSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String isfavorite = content.get(classes.get(groupPosition)).get(childPosition).getIsfavorite();
+                String wbsId = content.get(classes.get(groupPosition)).get(childPosition).getOrgid();
+                if (isfavorite.equals(zero)) {
+                    OkGo.post(Requests.WBSSAVE)
+                            .params("wbsId", wbsId)
+                            .params("type", 1)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(s);
+                                        int ret = jsonObject.getInt("ret");
+                                        ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                        if (ret == 0) {
+                                            childHold.tvSet.setBackgroundResource(R.color.red);
+                                            childHold.tvSet.setText("已收藏");
+                                            //刷新收藏
+                                            HideCallbackUtils.removeCallBackMethod();
+                                            //刷新我的
+                                            frehomeCallBackUtils.dohomeCallBackMethod();
+                                            content.get(classes.get(groupPosition)).get(childPosition).setIsfavorite("1");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                } else {
+                    ToastUtils.showLongToast("在收藏界面取消收藏");
+                }
+            }
+        });
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Integer message = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
+                if (message > 0) {
+                    content.get(classes.get(groupPosition)).get(childPosition).setUnfinish("0");
+                    childHold.homeItemMessage.setVisibility(View.GONE);
+                }
 
-
-                Intent intent = new Intent(context, CheckTasklistActivity.class);
+                Intent intent = new Intent(context, AllListmessageActivity.class);
                 intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());
                 context.startActivity(intent);

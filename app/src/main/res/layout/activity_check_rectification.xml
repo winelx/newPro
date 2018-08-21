@@ -14,496 +14,501 @@
         android:layout_marginTop="50dp"
         android:background="@color/writer">
 
-            <RelativeLayout
-                android:id="@+id/check_rectifi_content"
+        <RelativeLayout
+            android:id="@+id/check_rectifi_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/content"
+                    android:id="@+id/check_org"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
 
-                    <LinearLayout
-                        android:id="@+id/check_org"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text=" 标段"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/check_rectifi_wbs"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:hint="请选择"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <com.joanzapata.iconify.widget.IconTextView
-                                android:id="@+id/oneIcon"
-                                android:layout_width="10dp"
-                                android:layout_height="30dp"
-                                android:layout_alignTop="@+id/mine_text"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:text="{fa-angle-right}"
-                                android:textColor="@color/inconfy"
-                                android:textSize="25sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:minHeight="75dp"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="* "
-                                android:textColor="@color/red" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="检查部位"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <LinearLayout
-                                android:id="@+id/check_import"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:id="@+id/imageView5"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@mipmap/check_import" />
-
-                                <TextView
-                                    android:id="@+id/textView20"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="导入"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="13sp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/check_wbspath"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            android:visibility="gone" />
-
-                        <EditText
-                            android:id="@+id/check_new_temporarysite"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@null"
-                            android:hint="请输入临时部位"
-                            android:minHeight="35dp"
-                            android:textColorHint="@color/graytext"
-                            android:textSize="13sp" />
-
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
+                        android:layout_weight="1"
+                        android:text=" 标段"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <LinearLayout
-                        android:id="@+id/check_standard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:minHeight="45dp"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
+                        android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/check_rectifi_wbs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="* "
-                            android:textColor="@color/red" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="违反标准"
+                            android:hint="请选择"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
-                        <LinearLayout
-                            android:id="@+id/Check_category"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:gravity="end"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/category_item"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:hint="请选择"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <com.joanzapata.iconify.widget.IconTextView
-                                android:id="@+id/twoIcon"
-                                android:layout_width="10dp"
-                                android:layout_height="30dp"
-                                android:layout_alignTop="@+id/mine_text"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:text="{fa-angle-right}"
-                                android:textColor="@color/inconfy"
-                                android:textSize="25sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/writer"
-                        android:orientation="horizontal"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_weight="3"
-                            android:gravity="center|start"
-                            android:text=" 类别"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="7"
-                            android:orientation="vertical"
-                            android:weightSum="6">
-
-                            <EditText
-                                android:id="@+id/check_new_tasktitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="end"
-                                android:layout_weight="7"
-                                android:background="@null"
-                                android:hint="违反标准自动返回"
-                                android:minWidth="45dp"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:id="@+id/check_new_data"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
-
-
-                        <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text=" 检查日期"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/oneIcon"
+                            android:layout_width="10dp"
+                            android:layout_height="30dp"
+                            android:layout_alignTop="@+id/mine_text"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
                             android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/check_new_data_tx"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2018-08-04"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <com.joanzapata.iconify.widget.IconTextView
-                                android:id="@+id/threeIcon"
-                                android:layout_width="10dp"
-                                android:layout_height="30dp"
-                                android:layout_alignTop="@+id/mine_text"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:text="{fa-angle-right}"
-                                android:textColor="@color/inconfy"
-                                android:textSize="25sp" />
-                        </LinearLayout>
-
+                            android:text="{fa-angle-right}"
+                            android:textColor="@color/inconfy"
+                            android:textSize="25sp" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:id="@+id/check_rectifi_user"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:minHeight="45dp"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="* "
-                            android:textColor="@color/red" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="整改负责人"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/check_rectifi_font"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:hint="请选择"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <com.joanzapata.iconify.widget.IconTextView
-                                android:id="@+id/fourIcon"
-                                android:layout_width="10dp"
-                                android:layout_height="30dp"
-                                android:layout_alignTop="@+id/mine_text"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:text="{fa-angle-right}"
-                                android:textColor="@color/inconfy"
-                                android:textSize="25sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:id="@+id/check_rectifi"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
-
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text=" 整改期限"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/check_rectifi_data"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2018-08-04"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <com.joanzapata.iconify.widget.IconTextView
-                                android:id="@+id/fiveIcon"
-                                android:layout_width="10dp"
-                                android:layout_height="30dp"
-                                android:layout_alignTop="@+id/mine_text"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:text="{fa-angle-right}"
-                                android:textColor="@color/inconfy"
-                                android:textSize="25sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="75dp"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="* "
-                                android:textColor="@color/red" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="整改事由"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-
-                        </LinearLayout>
-
-
-                        <EditText
-                            android:id="@+id/check_rectifi_result"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@null"
-                            android:hint="请输入整改事由"
-                            android:minHeight="35dp"
-                            android:textColorHint="@color/graytext"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/back" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:minHeight="80dp"
-                    android:orientation="vertical">
+                    android:minHeight="75dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="* "
+                            android:textColor="@color/red" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="检查部位"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:id="@+id/check_import"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/check_import" />
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="导入"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/check_wbspath"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/check_new_temporarysite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:hint="请输入临时部位"
+                        android:minHeight="35dp"
+                        android:textColorHint="@color/graytext"
+                        android:textSize="13sp" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:id="@+id/check_standard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="45dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="附件"
-                        android:textColor="@color/black" />
+                        android:text="* "
+                        android:textColor="@color/red" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/text"
-                        android:layout_marginTop="5dp" />
+                        android:layout_weight="1"
+                        android:text="违反标准"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/Check_category"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.2"
+                        android:gravity="end"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/category_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:hint="请选择"
+                            android:layout_marginLeft="18dp"
+                            android:minHeight="20dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/twoIcon"
+                            android:layout_width="10dp"
+                            android:layout_height="30dp"
+                            android:layout_alignTop="@+id/mine_text"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="{fa-angle-right}"
+                            android:textColor="@color/inconfy"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/writer"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="3"
+                        android:gravity="center|start"
+                        android:text=" 类别"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:weightSum="6">
+
+                        <TextView
+                            android:id="@+id/check_new_tasktitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:layout_weight="7"
+                            android:background="@null"
+                            android:hint="违反标准自动返回"
+                            android:minWidth="45dp"
+                            android:textSize="15sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:id="@+id/check_new_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" 检查日期"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/check_new_data_tx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2018-08-04"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/threeIcon"
+                            android:layout_width="10dp"
+                            android:layout_height="30dp"
+                            android:layout_alignTop="@+id/mine_text"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="{fa-angle-right}"
+                            android:textColor="@color/inconfy"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:id="@+id/check_rectifi_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:minHeight="45dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="整改负责人"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/check_rectifi_font"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="请选择"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/fourIcon"
+                            android:layout_width="10dp"
+                            android:layout_height="30dp"
+                            android:layout_alignTop="@+id/mine_text"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="{fa-angle-right}"
+                            android:textColor="@color/inconfy"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:id="@+id/check_rectifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" 整改期限"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/check_rectifi_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2018-08-04"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <com.joanzapata.iconify.widget.IconTextView
+                            android:id="@+id/fiveIcon"
+                            android:layout_width="10dp"
+                            android:layout_height="30dp"
+                            android:layout_alignTop="@+id/mine_text"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="{fa-angle-right}"
+                            android:textColor="@color/inconfy"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="75dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="* "
+                            android:textColor="@color/red" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="整改事由"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/check_rectifi_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:hint="请输入整改事由"
+                        android:minHeight="35dp"
+                        android:textColorHint="@color/graytext"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/back" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:minHeight="80dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="附件"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text"
+                    android:layout_marginTop="5dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
     </ScrollView>

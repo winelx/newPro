@@ -13,10 +13,21 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.IssuedTaskDetailsAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContent;
-import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
+import com.example.administrator.newsdf.pzgc.bean.detailsBean;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.check_details_submit;
 
@@ -33,19 +44,21 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
     private TextView infaceWbsPath, titleView, checklistmeuntext, checkDetailsSubmit,
             checkDetailsBlue, checkDetailsOrgin;
     private LinearLayout checkDetailsStatus, checkDetailsEditor;
-
     private IssuedTaskDetailsAdapter mAdater;
-
     private ArrayList<Object> mData;
     private Context mContext;
     private String status = "未回复";
     private ArrayList<CheckDetailsContent> list;
+    private String id = "";
+    private ArrayList<detailsBean> detailsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issued_task_details);
+        Intent intent = getIntent();
         mData = new ArrayList<>();
+
         list = new ArrayList<>();
         mContext = IssuedTaskDetailsActivity.this;
         checkDetailsEditor = (LinearLayout) findViewById(R.id.check_details_editor);
@@ -62,11 +75,6 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         checklistmeuntext.setTextSize(10);
         checklistmeuntext.setText("处理记录");
         ArrayList<String> path = new ArrayList<>();
-        path.add("http://pics.sc.chinaz.com/Files/pic/icons128/7061/h10.png");
-        path.add("http://pics.sc.chinaz.com/Files/pic/icons128/7061/h11.png");
-        mData.add(new CheckDetailsTop("1"));
-        mData.add(new CheckDetailsContent("1", "1", "1", "1",path));
-        mData.add(new CheckDetailsContent("1", "1", "1", "1",path));
 
         mAdater = new IssuedTaskDetailsAdapter(mData, mContext);
         detailsRejected.setAdapter(mAdater);
@@ -76,6 +84,14 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         checkDetailsOrgin.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         setstatus();
+        try {
+            id = intent.getStringExtra("id");
+            if (id != null) {
+                getData();
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -145,5 +161,58 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
             default:
                 break;
         }
+    }
+
+    public void getData() {
+        OkGo.post(Requests.getNoticeDateApp)
+                .params("noticeId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            mData.clear();
+                            detailsBean = new ArrayList<>();
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONObject json = jsonObject.getJSONObject("data");
+                            String wbspath = json.getString("rectificationPartName");
+                            String sendPersonName = json.getString("sendPersonName");
+                            String sendDate = json.getString("sendDate");
+                            //所属标段
+                            String rectificationOrgName = json.getString("rectificationOrgName");
+                            //违反标准
+                            String standardDelName = json.getString("standardDelName");
+                            //整改事由
+                            String checkplan = json.getString("checkplan");
+                            //检查组织
+                            String checkOrgName = json.getString("checkOrgName");
+                            //附件
+                            JSONArray attachmentList = json.getJSONArray("attachmentList");
+                            ArrayList<Audio> achmentList = new ArrayList<Audio>();
+                            if (attachmentList.length() > 0) {
+                                for (int i = 0; i < attachmentList.length(); i++) {
+                                    achmentList.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
+                                }
+                            }
+                            //整改负责人
+                            String rectificationPersonName = json.getString("rectificationPesonName");
+                            //整改最后时间
+                            String rectificationDate = json.getString("rectificationDate");
+                            //通知状态
+                            String status = json.getString("status");
+                            detailsBean.add(new detailsBean(wbspath, sendPersonName, sendDate, rectificationOrgName,
+                                    standardDelName, checkplan, checkOrgName, achmentList, rectificationPersonName, rectificationDate, status));
+
+                            mData.add(detailsBean);
+                            mAdater.getData(mData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 }

@@ -98,22 +98,22 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
-                    android:textColor="@color/black"
                     android:singleLine="true"
-                    android:text="所属标段:0XXXXXXXXXXXX11111111111111111" />
+                    android:text="所属标段:0XXXXXXXXXXXX11111111111111111"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/sub_management_org"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sub_management_block"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    android:text="所属标段:0XXXXXXXXXXXX11111111111111" />
+                    android:text="所属组织:0XXXXXXXXXXXX11111111111111"
+                    android:textColor="@color/black" />
             </RelativeLayout>
 
         </RelativeLayout>

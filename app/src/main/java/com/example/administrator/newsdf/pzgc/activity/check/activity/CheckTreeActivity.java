@@ -45,7 +45,8 @@ public class CheckTreeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mContext = this;
         treeUtlis = new TreeUtlis();
-
+        TextView com_title= (TextView) findViewById(R.id.com_title);
+        com_title.setText("选择部位");
         mTreeDatas = new ArrayList<>();
         organizationList = new ArrayList<>();
         checklist = (ListView) findViewById(R.id.wbs_listview);

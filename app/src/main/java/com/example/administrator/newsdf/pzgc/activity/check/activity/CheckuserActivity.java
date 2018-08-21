@@ -110,7 +110,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.checklistback:
+            case R.id.com_back:
                 finish();
                 break;
             default:
@@ -118,9 +118,10 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void getdata(String name) {
+    public void getdata(String name,String id) {
         Intent intent = new Intent();
         intent.putExtra("name", name);
+        intent.putExtra("id",id);
         setResult(3, intent);
         finish();
     }

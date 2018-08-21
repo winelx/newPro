@@ -75,13 +75,15 @@ public class CheckstandardListActivity extends AppCompatActivity {
         }
     }
 
-    public void result(String str,String id) {
+    public void result(String str,String id,String score,String code) {
         Intent intent = new Intent();
         //回传数据到主Activity
         intent.putExtra("content", str);
         intent.putExtra("id", id);
         intent.putExtra("datastr", name);
         intent.putExtra("dataid", strid);
+        intent.putExtra("score", score);
+        intent.putExtra("stancode", code);
         setResult(2, intent);
         finish();
     }

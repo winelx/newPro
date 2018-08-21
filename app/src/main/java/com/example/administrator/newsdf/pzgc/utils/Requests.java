@@ -6,10 +6,10 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    // public static final String networks = "http://192.168.20.33:8080/";
-    //  public static final String networks = "http://192.168.20.35:8080/pzgc/";
-    //public static final String networks = "http://192.168.20.81:8080/baseframe/";
-    public static final String networks = "http://117.187.27.78:58081/pzgc/";
+//public static final String networks = "http://192.168.20.33:8080/";
+  // public static final String networks = "http://192.168.20.35:8080/pzgc/";
+  //public static final String networks = "http://192.168.20.81:8080/baseframe/";
+ public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -259,6 +259,10 @@ public class Requests {
      * 检查项详情
      */
     public static final String CHECKGET_BY_ID = networks + "iface/mobile/appcheck/getById";
+    /**
+     * 删除通知单
+     */
+    public static final String DELETEMESSAGE = networks + "iface/mobile/appcheck/batch/delete";
 
     /**
      * 检查任务的检查项
@@ -292,13 +296,21 @@ public class Requests {
     /**
      * 提交检查
      */
-    public static final String SEND_DATA = networks + "admin/check/checkstandarddeal/sendData";
+    public static final String SEND_DATA = networks + "iface/mobile/appcheck/sendData";
     /**
      * 删除检查
      */
-    public static final String BATCHDELETE = networks + "admin/check/checkstandarddeal/batch/delete";
+    public static final String BATCHDELETE = networks + "iface/mobile/appcheck/batch/delete";
 
+    /**
+     * 检查管理模块登录人有权限的组织
+     */
+    public static final String getCheckOrg = networks + "iface/mobile/appcheck/getCheckOrg";
 
+    /**
+     * 检查是否允许提交
+     */
+    public static final String CHECK_FINISH = networks + "iface/mobile/appcheck/checkFinish";
     //通知
     /**
      * 全部我的
@@ -312,7 +324,23 @@ public class Requests {
     public static final String GET_NOTICE_DATA_APP = networks + "admin/check/checknoticeform/getNoticeDataApp";
 
     /**
+     * 获取选择标准数据详情我的
+     */
+    public static final String GET_MY_NOTICE_DATA_APP = networks + "admin/check/checknoticeform/getMyNoticeDataApp";
+    /**
      *
      */
-    public static final String GET_MY_NOTICE_DATA_APP = networks +  "admin/check/checknoticeform/getMyNoticeDataApp";
+    public static final String SAVE_NOTICE_APP = networks + "admin/check/checknoticeform/saveNoticeApp";
+ /**
+  * 通知单详情
+  */
+ public static  final  String GET_NOTICE_DATE_APP=networks+"admin/check/checknoticeform/getNoticeDateApp";
+ /**
+  * 下发
+  */
+ public static  final  String SEND_MESSAGE_DATA=networks+"admin/check/checknoticeform/sendData";
+   /**
+    * 详情
+    */
+   public static  final  String getNoticeDateApp=networks+ "admin/check/checknoticeform/getNoticeDateApp";
 }

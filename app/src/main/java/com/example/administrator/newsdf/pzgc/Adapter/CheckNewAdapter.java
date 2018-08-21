@@ -12,11 +12,11 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/8/6 0006.
+ * 检查
  */
 
 public class CheckNewAdapter extends BaseAdapter {
@@ -62,9 +62,6 @@ public class CheckNewAdapter extends BaseAdapter {
         }
         int numbher = position + 1;
         holder.pop_tast_item.setText(numbher + "");
-        //标准分
-        String standardScore = imagePaths.get(position).getStandardScore();
-        BigDecimal standardScores = new BigDecimal(standardScore);
         //拿到分数
         String score = imagePaths.get(position).getScore();
         if (!score.isEmpty()) {
@@ -72,16 +69,21 @@ public class CheckNewAdapter extends BaseAdapter {
             boolean noSuch = imagePaths.get(position).isNoSuch();
             if (noSuch) {
                 //无此项
+                holder.chekItemRe.setBackgroundResource(R.color.finish_green);
                 holder.LabelView.setBackgroundResource(R.mipmap.triangle_gray);
+                holder.LabelView.setVisibility(View.VISIBLE);
             } else {
                 //是否被扣分
                 boolean penalty = imagePaths.get(position).isPenalty();
                 if (penalty) {
+                    holder.chekItemRe.setBackgroundResource(R.color.Orange);
                     //是否被下通知
                     boolean Generate = imagePaths.get(position).isGenerate();
-                    holder.chekItemRe.setBackgroundResource(R.color.Orange);
                     if (Generate) {
                         holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                        holder.LabelView.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.LabelView.setVisibility(View.GONE);
                     }
                 } else {
                     holder.chekItemRe.setBackgroundResource(R.color.finish_green);

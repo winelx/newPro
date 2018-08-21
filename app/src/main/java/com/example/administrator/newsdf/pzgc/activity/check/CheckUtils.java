@@ -127,7 +127,7 @@ public class CheckUtils {
     /**
      * 违反标准
      */
-    public void CheckStandardApp(final ArrayList<Audio> mData, final ArrayList<standarBean> List, final SettingAdapter mAdapter, String id) {
+    public void CheckStandardApp( final ArrayList<standarBean> List, final SettingAdapter mAdapter, String id) {
         if (id.length() > 0) {
             OkGo.post(Requests.GET_CHECK_STANDARD_DEAL_APP)
                     .params("checkStandardId", id)
@@ -137,7 +137,7 @@ public class CheckUtils {
                             LogUtil.d("s", s);
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -151,6 +151,8 @@ public class CheckUtils {
                                         String standardTypeName = json.getString("standardTypeName");
                                         List.add(new standarBean(standardDel, standardDelCode, standardDelName, standardDelScore, standardType, standardTypeName));
                                     }
+                                }else {
+                                    ToastUtils.showShortToast(jsonObject.getString("msg"));
                                 }
                                 mAdapter.getData(List);
                             } catch (JSONException e) {
@@ -163,35 +165,39 @@ public class CheckUtils {
                             super.onError(call, response, e);
                         }
                     });
-        } else {
-            OkGo.post(Requests.CheckStandardApp)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            LogUtil.d("s", s);
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                if (jsonArray.length() > 0) {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        String checkType = json.getString("checkType");
-                                        String id = json.getString("id");
-                                        mData.add(new Audio(checkType, id));
-                                    }
-                                }
-                                mAdapter.getData(mData);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                        }
-                    });
         }
+    }
+
+    public  void getdatecon(final ArrayList<Audio> mData,final SettingAdapter mAdapter){
+        OkGo.post(Requests.CheckStandardApp)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.d("s", s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String checkType = json.getString("checkType");
+                                    String id = json.getString("id");
+                                    mData.add(new Audio(checkType, id));
+                                }
+                            }else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                            mAdapter.getData(mData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 }

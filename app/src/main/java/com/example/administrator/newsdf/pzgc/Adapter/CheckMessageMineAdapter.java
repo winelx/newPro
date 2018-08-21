@@ -40,7 +40,13 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 //        holder.check_me_title.setText();
-        int number = Integer.parseInt(mDatas.get(position).getUnfinish());
+        int number;
+        try {
+             number = Integer.parseInt(mDatas.get(position).getUnfinish());
+        }catch (NumberFormatException e){
+            number=0;
+        }
+
         if (number > 0) {
             holder.homeItemMessage.setText(number + "");
             holder.homeItemMessage.setVisibility(View.VISIBLE);

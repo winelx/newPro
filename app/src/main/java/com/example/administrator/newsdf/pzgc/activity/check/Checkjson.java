@@ -90,7 +90,7 @@ public class Checkjson {
                         String status = json.getString("status");
                         String wbsMai;
                         try {
-                            wbsMai = json.getString("wbsMai");
+                            wbsMai = json.getString("wbsMainName");
                         } catch (JSONException e) {
                             wbsMai = "";
                         }

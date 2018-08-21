@@ -303,7 +303,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
 
     public void delete(final int pos, String id) {
         OkGo.post(Requests.BATCHDELETE)
-                .params("ids", id)
+                .params("id", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

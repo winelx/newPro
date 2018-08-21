@@ -193,12 +193,14 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     boolean anim = true;
 
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
+
         floatMeunAnims = new FloatMeunAnims();
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();

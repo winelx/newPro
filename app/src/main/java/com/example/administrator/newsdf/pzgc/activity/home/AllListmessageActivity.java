@@ -123,6 +123,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
+
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");

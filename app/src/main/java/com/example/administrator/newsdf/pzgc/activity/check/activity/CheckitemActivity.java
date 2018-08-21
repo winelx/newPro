@@ -42,6 +42,8 @@ import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBack;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -65,6 +67,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.check_item_content_massage;
 import static com.example.administrator.newsdf.R.id.check_item_tadown;
 import static com.example.administrator.newsdf.R.id.checklistmeun;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
@@ -78,7 +81,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/7 0007
  *         version:
  */
-public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener, BrightCallBack {
+public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener, BrightCallBack, TaskCallback {
     private DKDragView dkDragView;
     private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
     private TextView checkItemTabupText, checkItemTadownText, titleView, checkitemcontentStatus, checklistmeuntext;
@@ -92,14 +95,13 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private Context mContext;
     private ArrayList<Audio> Imagepath;
     private static final int IMAGE_PICKER = 101;
-    private String taskId, orgId;
-    private int number, size;
+    private String taskId, orgId, id;
+    private int pos, size, number;
     private CheckUtils checkUtils;
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
     private String noticeid;
-
     private Boolean generate;
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
@@ -110,9 +112,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_checkitem);
         checkUtils = new CheckUtils();
         BrightCallBackUtils.setCallBack(this);
+        TaskCallbackUtils.setCallBack(this);
         Intent intent = getIntent();
-        taskId = intent.getStringExtra("id");
+        taskId = intent.getStringExtra("taskId");
         orgId = intent.getStringExtra("orgId");
+        pos = intent.getIntExtra("position", 0);
         number = intent.getIntExtra("number", 0);
         size = intent.getIntExtra("size", 0);
         mData = new ArrayList<>();
@@ -155,7 +159,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //整改通知
-        checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
+        checkItemContentMassage = (LinearLayout) findViewById(check_item_content_massage);
         checkItemContentMassage.setOnClickListener(this);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
@@ -204,7 +208,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
                     checkItemTabup.setClickable(false);
                     checkItemTadown.setClickable(false);
-                    getdate(number + 1);
+                    checkItemContentDescribe.setText("");
+                    getdate(taskId, pos + 1);
                 } else {
                     ToastUtils.showShortToast("请先保存数据");
                 }
@@ -222,7 +227,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     checkItemTadownText.setTextColor(Color.parseColor("#646464"));
                     checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
                     checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
-                    getdate(number - 1);
+                    checkItemContentDescribe.setText("");
+                    getdate(taskId, pos - 1);
                     checkItemTabup.setClickable(false);
                     checkItemTadown.setClickable(false);
                 } else {
@@ -249,16 +255,15 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String text = checklistmeuntext.getText().toString();
                 if ("编辑".equals(text)) {
-                    number = position + 1;
-                    getdate(number);
-                    drawerLayout.openDrawer(GravityCompat.END);
+                    pos = position + 1;
+                    getdate(taskId, pos);
+                    drawerLayout.closeDrawers();
                 } else {
                     ToastUtils.showShortToast("请先保存数据");
                 }
             }
         });
         tClickableF();
-        getdate(number);
         getcheckitemList();
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -275,8 +280,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
-
-
+        getdate(taskId, number);
     }
 
     //添加图片
@@ -407,7 +411,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 }
                 finish();
                 break;
-            case R.id.check_item_content_massage:
+            case check_item_content_massage:
                 ArrayList<String> ids = new ArrayList<>();
                 ArrayList<String> path = new ArrayList<>();
                 for (int i = 0; i < Imagepath.size(); i++) {
@@ -425,6 +429,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra("status", generate);
                 //检查项Id
                 intent.putExtra("id", noticeid);
+                intent.putExtra("typeId", mData.get(pos).getId());
                 //具体描述
                 intent.putExtra("describe", checkItemContentDescribe.getText().toString());
                 intent.putExtra("content", checkItemContentBz.getText().toString());
@@ -432,11 +437,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case checklistmeun:
-                String text = checklistmeuntext.getText().toString();
-                if ("编辑".equals(text)) {
+                String text1 = checklistmeuntext.getText().toString();
+                if ("编辑".equals(text1)) {
                     tClickableT();
                     checklistmeuntext.setText("保存");
-                } else if ("保存".equals(text)) {
+                } else if ("保存".equals(text1)) {
                     saveDetails();
                 } else {
 
@@ -447,11 +452,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    //连续两次退出App
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //删除无用图片
+            //删除已有图片
             for (int i = 0; i < Imagepath.size(); i++) {
                 FileUtils.deleteFile(Imagepath.get(i).getName());
             }
@@ -461,9 +466,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-    public void getdate(final Integer page) {
+
+    public void getdate(String Id, final Integer page) {
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
-                .params("id", taskId)
+                .params("id", Id)
                 .params("page", page)
                 .execute(new StringCallback() {
                     @Override
@@ -474,7 +480,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                number = page;
+                                pos = page;
                                 titleView.setText(page + "/" + size);
                                 if (page == 1) {
                                     checkItemTabup.setVisibility(View.INVISIBLE);
@@ -497,8 +503,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 String describe = json.getString("describe");
                                 if (describe.length() > 0) {
                                     checkItemContentDescribe.setText(describe);
-                                } else {
-                                    checkItemContentDescribe.setText("未输入描述");
                                 }
                                 try {
                                     generate = json.getBoolean("generate");
@@ -572,7 +576,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                         } catch (JSONException e) {
                                             generate = false;
                                         }
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, noSuch, penalty, generate));
+                                        int number = i + 1;
+                                        mData.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate));
                                     }
                                 }
                             }
@@ -586,6 +591,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void saveDetails() {
+        Dates.getDialog(CheckitemActivity.this,"提交数据中...");
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < Imagepath.size(); i++) {
             if (Imagepath.get(i).getContent().length() > 0) {
@@ -593,6 +599,13 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             } else {
                 file.add(new File(Imagepath.get(i).getName()));
             }
+        }
+        String contentStatus = checkitemcontentStatus.getText().toString();
+        boolean message = false;
+        if (contentStatus.equals("") || contentStatus.equals("否")) {
+            message = false;
+        } else {
+            message = true;
         }
         BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
         boolean lean = checkItemContentCore.getText().toString().isEmpty();
@@ -603,10 +616,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                         .isMultipart(true)
                         .params("checkManageId", taskId)
                         .params("noSuch", switch1.isChecked())
+
                         //是否生成整改通知单
-                        .params("generate", false)
+                        .params("generate", message)
                         //Id
-                        .params("id", mData.get(number - 1).getId())
+                        .params("id", mData.get(pos-1).getId())
                         //得分
                         .params("score", checkItemContentCore.getText().toString())
                         //具体描述
@@ -618,12 +632,14 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
+                                    Dates.disDialog();
                                     try {
                                         JSONObject jsonObject = new JSONObject(s);
                                         int ret = jsonObject.getInt("ret");
                                         if (ret == 0) {
                                             tClickableF();
                                             checklistmeuntext.setText("编辑");
+                                            getcheckitemList();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -633,19 +649,21 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 @Override
                                 public void onError(Call call, Response response, Exception e) {
                                     super.onError(call, response, e);
-
+                                    Dates.disDialog();
                                 }
                             });
                 } else {
                     Request.execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            Dates.disDialog();
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int ret = jsonObject.getInt("ret");
                                 if (ret == 0) {
                                     tClickableF();
                                     checklistmeuntext.setText("编辑");
+                                    getcheckitemList();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -655,7 +673,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
-
+                            Dates.disDialog();
                         }
                     });
                 }
@@ -678,6 +696,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         switch1.setClickable(false);
         checkItemContentCore.setEnabled(false);
         checkItemContentDescribe.setEnabled(false);
+        checkItemContentMassage.setClickable(false);
 
 
     }
@@ -687,6 +706,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkItemContentCore.setEnabled(true);
         checkItemContentDescribe.setEnabled(true);
         photoAdapter.getData(Imagepath, true);
+        checkItemContentMassage.setClickable(true);
 
     }
 
@@ -696,10 +716,16 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void bright() {
+        getcheckitemList();
         generate = true;
         checkitemcontentStatus.setText("是");
     }
 
-
+    @Override
+    public void taskCallback() {
+        getcheckitemList();
+        generate = false;
+        checkitemcontentStatus.setText("否");
+    }
 }
 

@@ -6,29 +6,33 @@ package com.example.administrator.newsdf.pzgc.bean;
 
 public class MyNoticeDataBean {
     //标题
-    String partDetails ;
+    String partDetails;
     //检查组织
-    String checkOrgName ;
+    String checkOrgName;
     //责任人
     String checkPersonName;
     //所属标段
     String rectificationOrgName;
     //更新时间
-    String updateDate ;
+    String updateDate;
     //积分
-    String standardDelScore ;
+    String standardDelScore;
     //检查类别
-    String standardDelName ;
+    String standardDelName;
     //id
     String noticeId;
     //状态
     String status;
     //
     String motionNode;
+    String noticeuser;
+    String noticetime;
     boolean isDeal;
+
     public MyNoticeDataBean(String partDetails, String checkOrgName, String checkPersonName,
                             String rectificationOrgName, String updateDate, String standardDelScore,
-                            String standardDelName, String noticeId, String status,String motionNode,boolean isDeal) {
+                            String standardDelName, String noticeId, String status, String motionNode,   String noticeuser,
+                                    String noticetime, boolean isDeal) {
         this.partDetails = partDetails;
         this.checkOrgName = checkOrgName;
         this.checkPersonName = checkPersonName;
@@ -38,8 +42,10 @@ public class MyNoticeDataBean {
         this.standardDelName = standardDelName;
         this.noticeId = noticeId;
         this.status = status;
-        this.motionNode =  motionNode;
-        this.isDeal =  isDeal;
+        this.motionNode = motionNode;
+        this.noticeuser = noticeuser;
+        this.noticetime = noticetime;
+        this.isDeal = isDeal;
     }
 
     public String getPartDetails() {
@@ -128,5 +134,21 @@ public class MyNoticeDataBean {
 
     public void setDeal(boolean deal) {
         isDeal = deal;
+    }
+
+    public String getNoticeuser() {
+        return noticeuser;
+    }
+
+    public void setNoticeuser(String noticeuser) {
+        this.noticeuser = noticeuser;
+    }
+
+    public String getNoticetime() {
+        return noticetime;
+    }
+
+    public void setNoticetime(String noticetime) {
+        this.noticetime = noticetime;
     }
 }

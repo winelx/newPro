@@ -128,7 +128,7 @@ public class CheckUserListAdapter extends BaseExpandableListAdapter implements L
             @Override
             public void onClick(View v) {
                 CheckuserActivity activity = (CheckuserActivity) context;
-                activity.getdata(content.get(classes.get(groupPosition)).get(childPosition));
+//                activity.getdata(content.get(classes.get(groupPosition)).get(childPosition));
 
             }
         });

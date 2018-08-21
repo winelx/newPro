@@ -168,7 +168,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (imagepath.size() > 0) {
                     if (showLabel) {
                         care();
@@ -260,7 +259,6 @@ public class PhotoPagerActivity extends AppCompatActivity {
                 .execute(new FileCallback() {
                     @Override
                     public void onSuccess(final File file, Call call, Response response) {
-
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         Tiny.getInstance().source(file).asFile().withOptions(options).compress(new FileWithBitmapCallback() {
                             @Override

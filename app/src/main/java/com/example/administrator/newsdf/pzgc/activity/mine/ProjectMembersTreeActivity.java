@@ -49,7 +49,7 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
         //树
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
-        Title = (TextView) findViewById(R.id.com_title);
+        Title = (TextView) findViewById(R.id.titleView);
         Title.setText("选择组织");
         //请求数据存放集合
         mTreeDatas = new ArrayList<>();

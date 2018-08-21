@@ -2,57 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/writer"
+    android:background="@color/back"
     android:orientation="vertical">
 
-    <include layout="@layout/titlestyle"/>
+    <include layout="@layout/titlestyle" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/SmartRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <ListView
-            android:id="@+id/maber_tree"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/maber_tree"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/back"
+                android:dividerHeight="1px" />
+
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
                 android:layout_height="45dp" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        <LinearLayout
-            android:id="@+id/nullposion"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/nonews" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="暂 无 数 据 ！" />
-
-            <Button
-                android:id="@+id/retry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="重试"
-                android:textColor="@color/colorPrimary"
-                android:visibility="gone" />
-
-        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>
