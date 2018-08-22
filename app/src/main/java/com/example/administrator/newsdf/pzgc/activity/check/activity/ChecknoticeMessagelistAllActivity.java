@@ -85,12 +85,12 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_all) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, MyNoticeDataBean obj) {
-                holder.setText(R.id.management_title, obj.getPartDetails());
-                holder.setText(R.id.management_title, obj.getCheckPersonName() + "    " + obj.getUpdateDate());
-                holder.setText(R.id.management_user, "所属标段:" + obj.getRectificationOrgName());
+                holder.setText(R.id.management_block, "检测标段"+obj.getRectificationOrgName());
+                holder.setText(R.id.management_title, "11111111111111");
+                holder.setText(R.id.management_user, obj.getCheckPersonName() + "    " + obj.getUpdateDate());
                 holder.setText(R.id.management_category, "所属类别:" + obj.getStandardDelName());
                 holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
-                holder.setText(mContext, R.id.management_number, "总分:" + obj.getStandardDelScore(), 3, R.color.red);
+                holder.setText(mContext, R.id.management_number, "扣分:" + obj.getStandardDelScore(), 3, R.color.red);
                 holder.setText(R.id.notice_user, "整改负责人:" + obj.getNoticeuser());
                 holder.setText(R.id.notice_lasttime, "整改期限:" + obj.getNoticetime());
                 String status = obj.getStatus();
@@ -120,7 +120,10 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(mContext, IssuedTaskDetailsActivity.class));
+                Intent intent1 =new Intent(mContext, IssuedTaskDetailsActivity.class);
+                intent1.putExtra("id",mData.get(position).getNoticeId());
+                intent1.putExtra("isDeal",true);
+                startActivity(intent1);
             }
         });
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -267,30 +270,36 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         } catch (JSONException e) {
                                             updateDate = json.getString("checkDate");
                                         }
+
                                         updateDate = updateDate.substring(0, 10);
-                                        //积分
+                                        //
                                         String standardDelScore = json.getString("standardDelScore");
                                         //检查类别
                                         String standardDelName = json.getString("standardDelName");
                                         //id
-                                        String noticeId = json.getString("id");
                                         //状态
                                         String status = json.getString("status");
+                                        String noticeld=json.getString("id");
                                         String motionNode;
-                                        motionNode = "";
-                                        String sdealId = json.getString("sdealId");
+                                        try {
+                                            motionNode = json.getString("motionNode");
+                                        } catch (JSONException e) {
+                                            motionNode = "";
+                                        }
                                         String verificationId;
                                         try {
                                             verificationId = json.getString("verificationId");
                                         }catch (JSONException e){
                                             verificationId="";
                                         }
-                                        //是否回复
+
+
+
                                         String checkPersonName = json.getString("rectificationPersonName");
                                         String rectificationDate = json.getString("rectificationDate");
                                         rectificationDate = rectificationDate.substring(0, 10);
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, sdealId, verificationId, false));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeld, status, motionNode, checkPersonName, rectificationDate, "",verificationId, false));
                                     }
                                 }
                             } else {

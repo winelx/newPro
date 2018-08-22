@@ -3,25 +3,21 @@ package com.example.administrator.newsdf.pzgc.bean;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2018/8/8 0008.
+ * Created by 10942 on 2018/8/23 0023.
  */
 
-public class CheckDetailsContent {
-
+public class CheckDetailsContents {
     String replyPersonName;
     String replyDescription;
     String replyDate;
     ArrayList<Audio> imageList;
 
-    public CheckDetailsContent(String replyPersonName, String replyDescription, String replyDate, ArrayList<Audio> imageList) {
+    public CheckDetailsContents(String replyPersonName, String replyDescription, String replyDate, ArrayList<Audio> imageList) {
         this.replyPersonName = replyPersonName;
         this.replyDescription = replyDescription;
         this.replyDate = replyDate;
         this.imageList = imageList;
     }
-
-
-
 
     public String getReplyPersonName() {
         return replyPersonName;
@@ -54,5 +50,4 @@ public class CheckDetailsContent {
     public void setImageList(ArrayList<Audio> imageList) {
         this.imageList = imageList;
     }
-
 }

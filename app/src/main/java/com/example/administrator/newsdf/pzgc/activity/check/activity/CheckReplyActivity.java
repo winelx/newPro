@@ -317,6 +317,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
 
                 }
             }
+            Dates.getDialog(CheckReplyActivity.this,"提交数据中...");
             OkGo.post(Requests.saveReplyDataApp)
                     .isMultipart(true)
                     .params("id", repyId)
@@ -340,11 +341,13 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            Dates.disDialog();
                         }
 
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
+                            Dates.disDialog();
                         }
                     });
         } else {

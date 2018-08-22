@@ -53,9 +53,9 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         holder.managementTitle.setText(mDatas.get(position).getPartDetails());
         holder.managementUser.setText(mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
         holder.managementBlock.setText("所属标段:" + mDatas.get(position).getRectificationOrgName());
-        holder.managementCategory.setText("所属类别:" + mDatas.get(position).getRectificationOrgName());
+        holder.managementCategory.setText("所属类别:" + mDatas.get(position).getStandardDelName());
         holder.managementOrg.setText("检查组织:" + mDatas.get(position).getCheckOrgName());
-        holder.managementNumber.setText(setText("总分:" + mDatas.get(position).getStandardDelScore(), 2));
+        holder.managementNumber.setText(setText("扣分:" + mDatas.get(position).getStandardDelScore(), 2));
         holder.noticeUser.setText("整改负责人:" + mDatas.get(position).getNoticeuser());
         holder.noticeLasttime.setText("整改期限:" + mDatas.get(position).getNoticetime());
         Boolean isDeal = mDatas.get(position).isDeal();

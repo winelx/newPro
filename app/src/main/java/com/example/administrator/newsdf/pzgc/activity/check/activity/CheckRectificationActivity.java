@@ -320,7 +320,30 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 case R.id.checklistmeun:
                     String str = checklistmeuntext.getText().toString();
                     if ("保存".equals(str)) {
-                        save();
+                        String rectifi = check_rectifi_result.getText().toString();
+                        if (rectifi.length() > 0) {
+                            String user = check_rectifi_font.getText().toString();
+                            if (user.length() > 0) {
+                                String tasktitle = check_new_tasktitle.getText().toString();
+                                if (tasktitle.length() > 0) {
+                                    String temporarysite = check_new_temporarysite.getText().toString();
+                                    String wsbpath = check_wbspath.getText().toString();
+                                    if (temporarysite.length() > 0 || wsbpath.length() > 0) {
+                                        save();
+                                    } else {
+                                    ToastUtils.showShortToast("检查部位不能为空");
+                                    }
+                                } else {
+                                    ToastUtils.showShortToast("违反标准不能为空");
+                                }
+                                ;
+                            } else {
+                                ToastUtils.showShortToast("整改负责人不能为空");
+                            }
+                        } else {
+                            ToastUtils.showShortToast("整改事由不能为空");
+                        }
+
                     } else {
                         Visibility(0);
                         Enabled(true);
@@ -626,7 +649,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 photoAdapter.getData(Imagepath, false);
                                 Visibility(8);
                                 Enabled(false);
-                                Dates.disDialog();
+
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
@@ -634,7 +657,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+                        Dates.disDialog();
                     }
 
                     @Override

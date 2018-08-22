@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 
 import java.util.ArrayList;
@@ -27,10 +28,12 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Context mContext;
     private ArrayList<Audio> list;
-
-    public RecycleAdapterType(Context mContext, ArrayList<Audio> list) {
+    private int pos;
+    public RecycleAdapterType(Context mContext, ArrayList<Audio> list,int pos) {
         this.mContext = mContext;
         this.list = list;
+        this.pos = pos;
+
     }
 
     @Override
@@ -47,12 +50,11 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private void bindGrid(ItemViewholder holder, int position) {
+    private void bindGrid(final  ItemViewholder holder, int position) {
 
         if (list.size() != 0) {
             try {
                 String str = list.get(position).getContent();
-
                 if (str.contains("pdf")) {
                     //如果下载路径包含pdf
                     holder.attachment.setBackgroundColor(Color.parseColor("#f8f5f6"));
@@ -141,12 +143,19 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
                             .apply(options)
                             .transition(new DrawableTransitionOptions().crossFade(1000))
                             .into(holder.imageView);
+
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
 
-
+            holder.contact_acatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AllListmessageActivity activity = (AllListmessageActivity) mContext;
+                    activity.getumber(pos);
+                }
+            });
         }
     }
 
@@ -157,7 +166,7 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class ItemViewholder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private RelativeLayout attachment;
+        private RelativeLayout attachment,contact_acatar;
         private TextView content;
         private TextView tag;
         private TextView infaceImgaeText;
@@ -166,6 +175,7 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
             imageView = itemView.findViewById(R.id.infaimage);
             attachment = itemView.findViewById(R.id.attachment);
+            contact_acatar = itemView.findViewById(R.id.contact_acatar);
             content = itemView.findViewById(R.id.content);
             tag = itemView.findViewById(R.id.tag);
             infaceImgaeText = itemView.findViewById(R.id.inface_imgaetext);

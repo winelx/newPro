@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
@@ -35,7 +38,9 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.list = list;
         this.mContext = mContext;
     }
+    public AllTaskListItem() {
 
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false);
@@ -81,9 +86,14 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 break;
         }
-        holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload());
-        holder.taskcontent.setAdapter(adapterType);
+        if (list.get(position).getUpload().size()>0){
+            holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(),position);
+            holder.taskcontent.setAdapter(adapterType);
+        }else {
+            holder.inface_image.setVisibility(View.GONE);
+        }
+
         holder.inter_rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +101,13 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 int position = holder.getLayoutPosition();
                 // 2
                 mOnItemClickListener.onItemClick(holder.itemView, position);
+            }
+        });
+        holder.inface_no_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AllListmessageActivity activity= (AllListmessageActivity) mContext;
+                activity.getumber(position);
             }
         });
         //判断是否设置了监听器
@@ -126,9 +143,12 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView taskcontent;
         SlantedTextView inface_item_message;
         RelativeLayout inter_rl;
-
+        NetworkImageView inface_no_image;
+        LinearLayout inface_image;
         public TypeViewholder(View itemView) {
             super(itemView);
+            inface_image=itemView.findViewById(R.id.inface_image);
+            inface_no_image=itemView.findViewById(R.id.inface_no_image);
             inter_rl = itemView.findViewById(R.id.inter_rl);
             interTitle = itemView.findViewById(R.id.inter_title);
             interTime = itemView.findViewById(R.id.inter_time);
@@ -162,5 +182,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
 
 }

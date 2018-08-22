@@ -154,10 +154,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
+                        progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");
-                            progressDialog.dismiss();
+
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
 
                             //删除数据库红点

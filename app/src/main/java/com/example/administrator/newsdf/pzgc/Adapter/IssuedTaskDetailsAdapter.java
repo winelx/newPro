@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContent;
+import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContents;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 
@@ -52,8 +53,8 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 return new DetailsContent(LayoutInflater.from(parent.getContext()).
                         inflate(R.layout.check_detaiils_content, parent, false));
             case TYPE_RESULT:
-                return new DetailsContent(LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.check_detaiils_content, parent, false));
+                return new DetailsContents(LayoutInflater.from(parent.getContext()).
+                                inflate(R.layout.check_delaiils_contents, parent, false));
             default:
                 return null;
         }
@@ -64,10 +65,10 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         Object obj = mData.get(position);
         if (holder instanceof IssuedTaskDetailsAdapter.DetailsTop) {
             CheckDetailsTop top = (CheckDetailsTop) obj;
-            ((DetailsTop) holder).checkDetailsTitle.setText(top.getWbspath());
+            ((DetailsTop) holder).checkDetailsTitle.setText(top.getStandardDelName());
             ((DetailsTop) holder).checkDetailsUserdata.setText(top.getSendPersonName() + "  " + top.getSendDate());
             ((DetailsTop) holder).checkDetailsBlock.setText("所属标段:" + top.getRectificationOrgName());
-            ((DetailsTop) holder).checkDetailsStandard.setText("违反标准:" + top.getStandardDelName());
+            ((DetailsTop) holder).checkDetailsStandard.setText("违反标准:" + top.getWbspath());
             if (top.getCheckplan().length() > 0) {
                 ((DetailsTop) holder).checkDetailsWhy.setText("整改事由:" + top.getCheckplan());
             } else {
@@ -106,7 +107,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             for (int i = 0; i < list.size(); i++) {
                 path.add(list.get(i).getName());
             }
-            RectifierAdapter adapter = new RectifierAdapter(mContext, path, title);
+            CheckmessageRec adapter = new CheckmessageRec(mContext, path, title);
             ((DetailsTop) holder).checkDetailsRec.setAdapter(adapter);
             ((DetailsTop) holder).checkDetailsRec.addItemDecoration(new DividerItemDecoration(mContext,
                     DividerItemDecoration.VERTICAL_LIST));
@@ -116,39 +117,34 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             //回复人
             ((DetailsContent) holder).detailsResultUser.setText("回复人：" + Content.getReplyPersonName());
             ((DetailsContent) holder).detailsResultDescribe.setText("整改事由：" + Content.getReplyDescription());
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            ((DetailsContent) holder).detailsResultRec.setLayoutManager(linearLayoutManager);
+            ((DetailsContent) holder).detailsResultRec.setLayoutManager(new GridLayoutManager(mContext, 4));
+            ArrayList<Audio> list1 = new ArrayList<>();
+            list1 = (Content).getImageList();
+            ArrayList<String> path1 = new ArrayList<>();
+            ArrayList<String> title1 = new ArrayList<>();
+            CheckmessageRec adapter = new CheckmessageRec(mContext, path1, title1);
+            for (int i = 0; i < list1.size(); i++) {
+                path1.add(list1.get(i).getName());
+            }
+
+            ((DetailsContent) holder).detailsResultRec.setAdapter(adapter);
+
+        } else if (holder instanceof DetailsContents) {
+            CheckDetailsContents Contents = (CheckDetailsContents) obj;
+            ((DetailsContents) holder).detailsValidationData.setText(Contents.getReplyDate());
+            //回复人
+            ((DetailsContents) holder).detailsValidationUser.setText("回复人：" + Contents.getReplyPersonName());
+            ((DetailsContents) holder).detailsValidationDescribe.setText("整改事由：" + Contents.getReplyDescription());
+            ((DetailsContents) holder).detailsValidationRec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<Audio> list = new ArrayList<>();
-            list = (Content).getImageList();
+            list = (Contents).getImageList();
             ArrayList<String> path = new ArrayList<>();
             ArrayList<String> title = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 path.add(list.get(i).getName());
             }
-            RectifierAdapter adapter = new RectifierAdapter(mContext, path, title);
-            ((DetailsContent) holder).detailsResultRec.setAdapter(adapter);
-            String name = Content.getReplyPersonName2();
-            if (name == null || !name.isEmpty()) {
-                ((DetailsContent) holder).details_validation.setVisibility(View.GONE);
-            } else {
-                ((DetailsContent) holder).detailsValidationData.setText(Content.getReplyDescription());
-                ((DetailsContent) holder).detailsValidationUser.setText("验证人:" + Content.getReplyPersonName2());
-                ((DetailsContent) holder).detailsResultResult.setText("验证结果:" + Content.getReplyDescription2());
-                ((DetailsContent) holder).detailsValidationDescribe.setText("验证描述:" + Content.getReplyDescription2());
-                LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mContext);
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                ((DetailsContent) holder).detailsResultRec.setLayoutManager(linearLayoutManager1);
-                ArrayList<Audio> list1 = new ArrayList<>();
-                ArrayList<String> path1 = new ArrayList<>();
-                ArrayList<String> title1 = new ArrayList<>();
-                list1 = (Content).getImageList2();
-                for (int i = 0; i < list1.size(); i++) {
-                    path.add(list1.get(i).getName());
-                }
-                RectifierAdapter adapter1 = new RectifierAdapter(mContext, path1, title1);
-                ((DetailsContent) holder).detailsValidationRec.setAdapter(adapter1);
-            }
+            CheckmessageRec adapter = new CheckmessageRec(mContext, path, title);
+            ((DetailsContents) holder).detailsValidationRec.setAdapter(adapter);
         }
     }
 
@@ -159,7 +155,10 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             return TYPE_TOP;
         } else if (mData.get(position) instanceof CheckDetailsContent) {
             return TYPE_CONTENT;
-        } else {
+        }else if (mData.get(position) instanceof CheckDetailsContents){
+            return TYPE_RESULT;
+        }
+        else  {
             return super.getItemViewType(position);
         }
     }
@@ -194,9 +193,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private class DetailsContent extends RecyclerView.ViewHolder {
         TextView detailsResultData, detailsResultUser, detailsResultResult, detailsResultDescribe;
-        TextView detailsValidationData, detailsValidationUser, detailsValidationResult, detailsValidationDescribe;
-        RecyclerView detailsValidationRec, detailsResultRec;
-        LinearLayout details_validation;
+        RecyclerView detailsResultRec;
 
         DetailsContent(View itemView) {
             super(itemView);
@@ -213,7 +210,18 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             detailsResultDescribe = itemView.findViewById(R.id.details_result_describe);
             //附件
             detailsResultRec = itemView.findViewById(R.id.details_result_rec);
-            /*
+
+        }
+    }
+
+    private class DetailsContents extends RecyclerView.ViewHolder {
+        LinearLayout details_validation;
+        RecyclerView detailsValidationRec;
+        TextView detailsValidationData, detailsValidationUser, detailsValidationResult, detailsValidationDescribe;
+
+        public DetailsContents(View itemView) {
+            super(itemView);
+              /*
              * 验证
                */
             details_validation = itemView.findViewById(R.id.details_validation);

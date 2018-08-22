@@ -912,4 +912,21 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
+    public  void  getumber(int pos){
+        String status = Alldata.get(pos).getIsFinish() + "";
+        if ("2".equals(status)) {
+            Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(mContext, MoretaskActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
+    }}
 }

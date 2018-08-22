@@ -35,7 +35,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:maxEms="16"
+            android:maxEms="20"
             android:singleLine="true"
             android:text=""
             android:textColor="@color/black" />
@@ -56,6 +56,7 @@
             android:layout_below="@+id/management_user"
             android:layout_marginTop="6dp"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:ellipsize="end"
             android:maxEms="16"
             android:singleLine="true"
@@ -66,12 +67,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/management_block"
-            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/management_title"
+            android:layout_toRightOf="@+id/management_title"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:maxEms="16"
+            android:maxEms="20"
             android:singleLine="true"
-            android:text="检查类别:XXXXXXXXXXXX" />
+            android:text="检查类别:XXXXXXXXXXXX"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/management_org"
@@ -82,6 +85,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxEms="16"
+            android:textColor="@color/black"
             android:singleLine="true"
             android:text="检查组织:XXXXXXXXXXXX" />
 
@@ -96,19 +100,12 @@
             android:textColor="@color/red"
             android:textSize="12sp" />
 
-        <View
-            android:id="@+id/one"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/management_number"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/back" />
+
 
         <LinearLayout
+            android:layout_below="@+id/management_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/one"
             android:layout_marginTop="3dp"
             android:minHeight="25dp"
             android:orientation="horizontal">
@@ -116,12 +113,16 @@
             <TextView
                 android:id="@+id/notice_user"
                 android:layout_width="0dp"
+                android:textColor="@color/black"
+
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/notice_lasttime"
                 android:layout_width="0dp"
+                android:textColor="@color/black"
+
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 

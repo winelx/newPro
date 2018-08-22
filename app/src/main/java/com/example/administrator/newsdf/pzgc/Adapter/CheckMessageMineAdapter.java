@@ -46,7 +46,6 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         }catch (NumberFormatException e){
             number=0;
         }
-
         if (number > 0) {
             holder.homeItemMessage.setText(number + "");
             holder.homeItemMessage.setVisibility(View.VISIBLE);

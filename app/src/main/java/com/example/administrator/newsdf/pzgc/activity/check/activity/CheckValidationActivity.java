@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -354,6 +355,7 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                         files.add(new File(imagepath.get(i).getName()));
                     }
                 }
+                Dates.getDialog(CheckValidationActivity.this,"提交数据中...");
                 OkGo.post(Requests.saveVerificationDataApp)
                         .isMultipart(true)
                         .params("id", id)
@@ -378,11 +380,13 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                Dates.disDialog();
                             }
 
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
+                                Dates.disDialog();
                             }
                         });
 

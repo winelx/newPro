@@ -47,7 +47,6 @@
             android:id="@+id/sub_layout_content"
             android:layout_width="match_parent"
             android:layout_height="190dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
             android:background="@color/writer">
@@ -97,6 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/management_user"
+                    android:textColor="@color/black"
+
                     android:layout_marginTop="6dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -113,6 +114,8 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
+                    android:textColor="@color/black"
+
                     android:singleLine="true"
                     android:text="检查类别:XXXXXXXXXXXX" />
 
@@ -123,6 +126,8 @@
                     android:layout_below="@+id/management_category"
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
+                    android:textColor="@color/black"
+
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:singleLine="true"
@@ -152,7 +157,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/one"
-                    android:layout_marginTop="3dp"
                     android:minHeight="25dp"
                     android:orientation="horizontal">
 
@@ -160,6 +164,8 @@
                         android:id="@+id/notice_user"
                         android:layout_width="0dp"
                         android:gravity="left"
+                        android:textColor="@color/black"
+
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
 
@@ -167,6 +173,8 @@
                         android:id="@+id/notice_lasttime"
                         android:layout_width="0dp"
                         android:gravity="right"
+                        android:textColor="@color/black"
+
                         android:layout_marginRight="5dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1" />

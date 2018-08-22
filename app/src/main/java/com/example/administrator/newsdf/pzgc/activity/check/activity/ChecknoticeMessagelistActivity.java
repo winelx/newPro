@@ -221,6 +221,8 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         } catch (JSONException e) {
                                             partDetails = "";
                                         }
+                                        //所属类别
+                                        String standardTypeName =json.getString("checkOrgName");
                                         //检查组织
                                         String checkOrgName = json.getString("checkOrgName");
                                         //责任人
@@ -317,11 +319,11 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     public void status(String status, String ids, int pos) {
         if ("未下发".equals(status)) {
             Intent intent = new Intent(mContext, CheckRectificationActivity.class);
-            intent.putExtra("id", ids);
+            intent.putExtra("id", mData.get(pos).getNoticeId());
             startActivity(intent);
         } else {
             Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
-            intent.putExtra("id", ids);
+            intent.putExtra("id",  mData.get(pos).getNoticeId());
          intent.putExtra("verificationId", mData.get(pos).getVerificationId());
             intent.putExtra("title",titleView.getText().toString());
             intent.putExtra("sdealId", mData.get(pos).getSdealId());

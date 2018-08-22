@@ -41,7 +41,7 @@ public class CheckTreeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wbs);
+        setContentView(R.layout.checkuser_list);
         Intent intent = getIntent();
         mContext = this;
         treeUtlis = new TreeUtlis();
