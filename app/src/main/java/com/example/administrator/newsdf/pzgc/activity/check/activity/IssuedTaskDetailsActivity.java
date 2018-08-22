@@ -370,6 +370,7 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                             }
                                         }
                                         String replyPersonName = jsonObject1.getString("replyPersonName");
+                                        String replyDescription = jsonObject1.getString("replyDescription");
                                         String replyDate = jsonObject1.getString("replyDate");
                                         replyDate = replyDate.substring(0, 10);
                                         ArrayList<Audio> replyimgArray = new ArrayList<Audio>();
@@ -380,7 +381,7 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                                 replyimgArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
                                             }
                                         }
-                                        mData.add(new CheckDetailsContent(replyPersonName, replyDate, replyDate, replyimgArray, null, null, null, null));
+                                        mData.add(new CheckDetailsContent(replyPersonName, replyDescription, replyDate, replyimgArray, null, null, null, null));
                                     }
 
                                 }
