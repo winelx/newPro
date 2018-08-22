@@ -267,7 +267,6 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         } catch (JSONException e) {
                                             updateDate = json.getString("checkDate");
                                         }
-
                                         updateDate = updateDate.substring(0, 10);
                                         //积分
                                         String standardDelScore = json.getString("standardDelScore");
@@ -279,12 +278,19 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         String status = json.getString("status");
                                         String motionNode;
                                         motionNode = "";
+                                        String sdealId = json.getString("sdealId");
+                                        String verificationId;
+                                        try {
+                                            verificationId = json.getString("verificationId");
+                                        }catch (JSONException e){
+                                            verificationId="";
+                                        }
                                         //是否回复
                                         String checkPersonName = json.getString("rectificationPersonName");
                                         String rectificationDate = json.getString("rectificationDate");
-                                        rectificationDate=rectificationDate.substring(0,10);
+                                        rectificationDate = rectificationDate.substring(0, 10);
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, false));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, sdealId, verificationId, false));
                                     }
                                 }
                             } else {

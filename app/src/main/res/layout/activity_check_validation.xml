@@ -2,16 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/titlestyle" />
 
     <LinearLayout
+        android:id="@+id/validation_status"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -30,7 +34,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="是否验证通过" />
+                android:text="是否验证通过"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -38,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="end"
+            android:gravity="end|center"
             android:orientation="horizontal">
 
             <TextView
@@ -71,18 +76,21 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="整改描述"
+        android:text="验证描述"
+        android:textColor="@color/black"
         android:textSize="15sp" />
 
     <EditText
+        android:id="@+id/replyDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:background="@null"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
-        android:background="@null"
+
         android:hint="请输入具体描述"
-        android:minHeight="30dp"
+        android:minHeight="40dp"
         android:textSize="15sp" />
 
     <TextView
@@ -92,6 +100,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
         android:text="附件"
+        android:textColor="@color/black"
         android:textSize="15sp" />
 
 

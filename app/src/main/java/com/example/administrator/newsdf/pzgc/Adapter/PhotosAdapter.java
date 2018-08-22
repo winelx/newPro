@@ -59,7 +59,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
-
         if (getItemViewType(position) == TYPE_PHOTO) {
             Glide.with(mContext)
                     .load(photoPaths.get(position))
@@ -68,8 +67,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    photoPaths.remove(position);
                     FileUtils.deleteFile(photoPaths.get(position));
+                    photoPaths.remove(position);
                     notifyDataSetChanged();
                 }
             });

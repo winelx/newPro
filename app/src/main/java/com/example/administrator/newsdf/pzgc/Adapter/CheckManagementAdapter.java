@@ -185,8 +185,11 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Integer message = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
+                if (message > 0) {
+                    content.get(classes.get(groupPosition)).get(childPosition).setUnfinish("0");
+                    childHold.homeItemMessage.setVisibility(View.GONE);
+                }
                 Intent intent = new Intent(context, CheckTasklistActivity.class);
                 intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());

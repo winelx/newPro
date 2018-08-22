@@ -626,8 +626,11 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 photoAdapter.getData(Imagepath, false);
                                 Visibility(8);
                                 Enabled(false);
+                                Dates.disDialog();
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
-                            Dates.disDialog();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -638,6 +641,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         Dates.disDialog();
+                        ToastUtils.showLongToast("请求失败");
                     }
                 });
 
@@ -714,9 +718,13 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                TaskCallbackUtils.CallBackMethod();
+                                try {
+                                    TaskCallbackUtils.CallBackMethod();
+                                } catch (Exception e) {
+
+                                }
                                 finish();
-                            }else {
+                            } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
                             Dates.disDialog();

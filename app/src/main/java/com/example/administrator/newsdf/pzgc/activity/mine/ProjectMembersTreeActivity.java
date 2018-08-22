@@ -56,7 +56,7 @@ public class ProjectMembersTreeActivity extends AppCompatActivity {
         addOrganizationList = new ArrayList<>();
         okgo();
         //关闭
-        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

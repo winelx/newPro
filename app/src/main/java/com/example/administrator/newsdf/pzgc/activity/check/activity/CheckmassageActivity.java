@@ -61,6 +61,7 @@ import java.util.Date;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.check_message_org;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 import static com.lzy.okgo.OkGo.post;
 
@@ -96,7 +97,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private EditText check_message_describe;
     private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
     private Boolean generate;
-    private String orgId, nameId="";
+    private String orgId, nameId = "";
     private String messageid = "", taskId, tyepId;
     ArrayList<String> ids;
 
@@ -128,7 +129,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //检查人
         checkMessageUser = (TextView) findViewById(R.id.check_message_user);
         //检查组织
-        checkMessageOrg = (TextView) findViewById(R.id.check_message_org);
+        checkMessageOrg = (TextView) findViewById(check_message_org);
         //检查时间
         MessageData = (TextView) findViewById(R.id.message_date);
         //检查时间linear
@@ -196,6 +197,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             MessageData.setText(Dates.getDay());
             checkMessageStandar.setText(intent.getStringExtra("content"));
             check_message_describe.setText(intent.getStringExtra("describe"));
+            checkMessageUser.setText(SPUtils.getString(mContext, "staffId", ""));
+            checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
             checkMessageContent.setVisibility(View.GONE);
             checklistmeuntext.setVisibility(View.GONE);
         }
@@ -764,7 +767,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
-                            if (jsonObject.getInt("ret")==0){
+                            if (jsonObject.getInt("ret") == 0) {
                                 TaskCallbackUtils.CallBackMethod();
                             }
                         } catch (JSONException e) {

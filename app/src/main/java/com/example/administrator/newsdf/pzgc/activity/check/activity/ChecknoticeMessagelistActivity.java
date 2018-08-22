@@ -250,13 +250,22 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         } catch (JSONException e) {
                                             motionNode = "";
                                         }
+                                        String sdealId = json.getString("sdealId");
+                                        String verificationId;
+                                        try {
+                                             verificationId = json.getString("verificationId");
+                                        }catch (JSONException e){
+                                            verificationId="";
+                                        }
+
                                         //是否回复
                                         Boolean isDeal = json.getBoolean("isDeal");
+
                                         String checkPersonName = json.getString("rectificationPersonName");
                                         String rectificationDate = json.getString("rectificationDate");
                                         rectificationDate = rectificationDate.substring(0, 10);
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, isDeal));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, sdealId,verificationId, isDeal));
                                     }
                                 }
                             } else {
@@ -305,7 +314,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         mAdapter.getnoti(pos);
     }
 
-    public void status(String status, String ids) {
+    public void status(String status, String ids, int pos) {
         if ("未下发".equals(status)) {
             Intent intent = new Intent(mContext, CheckRectificationActivity.class);
             intent.putExtra("id", ids);
@@ -313,7 +322,10 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         } else {
             Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
             intent.putExtra("id", ids);
-            intent.putExtra("orgId", id);
+         intent.putExtra("verificationId", mData.get(pos).getVerificationId());
+            intent.putExtra("title",titleView.getText().toString());
+            intent.putExtra("sdealId", mData.get(pos).getSdealId());
+            intent.putExtra("isDeal", mData.get(pos).isDeal());
             startActivity(intent);
         }
     }

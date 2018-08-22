@@ -52,7 +52,6 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -270,6 +269,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 //                    mText.setText("开启");
+                    BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
+                    if (Standarcore == null) {
+                        Standarcore = new BigDecimal("0");
+                    }
                     checkItemContentCore.setEnabled(false);
                     checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
                 } else {
@@ -442,7 +445,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     tClickableT();
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(text1)) {
-                    saveDetails(false,"1");
+                    saveDetails(false, "1");
                 } else {
 
                 }
@@ -480,6 +483,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                Imagepath.clear();
                                 pos = page;
                                 titleView.setText(page + "/" + size);
                                 if (page == 1) {
@@ -492,7 +496,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                     checkItemTabup.setVisibility(View.VISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
                                 }
-                                Imagepath.clear();
+
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 noticeid = json.getString("noticeId");
                                 checkItemContentName.setText(json.getString("name"));
@@ -603,12 +607,14 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             }
             BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
             BigDecimal ContentCore = new BigDecimal(checkItemContentCore.getText().toString());
+            if (Standarcore == null) {
+                Standarcore = new BigDecimal("0");
+            }
             if (Standarcore.subtract(ContentCore).compareTo(new BigDecimal("0.0")) >= 0) {
                 OkGo.post(Requests.SAVE_DETAILS)
                         .isMultipart(true)
                         .params("checkManageId", taskId)
                         .params("noSuch", switch1.isChecked())
-
                         //是否生成整改通知单
                         .params("generate", generate)
                         //Id
@@ -618,38 +624,38 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                         //具体描述
                         .params("describe", checkItemContentDescribe.getText().toString())
                         .params("deleteFileId", Dates.listToStrings(deleteid))
-                //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
-                    .addFileParams("imagesList", file)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(String s, Call call, Response response) {
-                                    Dates.disDialog();
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(s);
-                                        int ret = jsonObject.getInt("ret");
-                                        if (ret == 0) {
-                                            if (isdata) {
-                                                if (Tabup.equals("Tabup")) {
-                                                    getdate(taskId, pos - 1);
-                                                } else if (Tabup.equals("Tadown")){
-                                                    getdate(taskId, pos + 1);
-                                                }
+                        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
+                        .addFileParams("imagesList", file)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                Dates.disDialog();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    if (ret == 0) {
+                                        if (isdata) {
+                                            if (Tabup.equals("Tabup")) {
+                                                getdate(taskId, pos - 1);
+                                            } else if (Tabup.equals("Tadown")) {
+                                                getdate(taskId, pos + 1);
                                             }
-                                            tClickableF();
-                                            checklistmeuntext.setText("编辑");
-                                            getcheckitemList();
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        tClickableF();
+                                        checklistmeuntext.setText("编辑");
+                                        getcheckitemList();
                                     }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
+                            }
 
-                                @Override
-                                public void onError(Call call, Response response, Exception e) {
-                                    super.onError(call, response, e);
-                                    Dates.disDialog();
-                                }
-                            });
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                                Dates.disDialog();
+                            }
+                        });
             } else {
                 ToastUtils.showLongToast("得分必须在0与标准分之间");
             }

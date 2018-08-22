@@ -16,7 +16,10 @@ import com.example.administrator.newsdf.pzgc.Adapter.IssuedTaskDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsContent;
 import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
-import com.example.administrator.newsdf.pzgc.bean.detailsBean;
+import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -40,7 +43,7 @@ import static com.example.administrator.newsdf.R.id.check_details_submit;
  *         update: 2018/8/8 0008
  *         version:
  */
-public class IssuedTaskDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class IssuedTaskDetailsActivity extends AppCompatActivity implements View.OnClickListener, MoreTaskCallback {
     private RecyclerView detailsRejected;
     private TextView infaceWbsPath, titleView, checklistmeuntext, checkDetailsSubmit,
             checkDetailsBlue, checkDetailsOrgin;
@@ -48,9 +51,15 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
     private IssuedTaskDetailsAdapter mAdater;
     private ArrayList<Object> mData;
     private Context mContext;
+    private TextView inface_wbs_path;
     private String status = "未回复";
     private ArrayList<CheckDetailsContent> list;
-    private String id = "", orgId, userName, userId, noticeId, sdealId, replyId;
+    private Boolean isDeal;
+    private String id = "", orgId, userName, userId, sdealId, motionNode, repyId, repycontent,
+            verificationId, resultId, vermotionCount;
+    ArrayList<Audio> replyArray;
+    ArrayList<String> historyname = new ArrayList<>();
+    ArrayList<String> historydata = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +67,17 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_issued_task_details);
         Intent intent = getIntent();
         mData = new ArrayList<>();
-
+        MoreTaskCallbackUtils.setCallBack(this);
         list = new ArrayList<>();
         mContext = IssuedTaskDetailsActivity.this;
+        TextView titlle = (TextView) findViewById(R.id.titleView);
+        titlle.setText(intent.getStringExtra("title"));
+        inface_wbs_path = (TextView) findViewById(R.id.inface_wbs_path);
         checkDetailsEditor = (LinearLayout) findViewById(R.id.check_details_editor);
         checkDetailsStatus = (LinearLayout) findViewById(R.id.check_details_status);
         checkDetailsOrgin = (TextView) findViewById(R.id.check_details_orgin);
         checkDetailsBlue = (TextView) findViewById(R.id.check_details_blue);
+        //验证
         checkDetailsSubmit = (TextView) findViewById(check_details_submit);
         detailsRejected = (RecyclerView) findViewById(R.id.details_rejected);
         detailsRejected.setLayoutManager(new LinearLayoutManager(detailsRejected.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -75,17 +88,20 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         checklistmeuntext.setTextSize(10);
         checklistmeuntext.setText("处理记录");
         ArrayList<String> path = new ArrayList<>();
-
         mAdater = new IssuedTaskDetailsAdapter(mData, mContext);
         detailsRejected.setAdapter(mAdater);
         checkDetailsSubmit.setOnClickListener(this);
         checkDetailsBlue.setOnClickListener(this);
-        checklistmeuntext.setOnClickListener(this);
         checkDetailsOrgin.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
-        setstatus();
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
+        checkDetailsSubmit.setVisibility(View.GONE);
+        checkDetailsEditor.setVisibility(View.GONE);
         try {
             id = intent.getStringExtra("id");
+            sdealId = intent.getStringExtra("sdealId");
+            isDeal = intent.getBooleanExtra("isDeal", true);
+            verificationId = intent.getStringExtra("verificationId");
             if (id != null) {
                 getData();
             }
@@ -94,22 +110,39 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         }
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.checklistmeuntext:
-                ToastUtils.showLongToast("记录");
+            case R.id.checklistmeun:
+                Intent intent4 = new Intent(mContext, CheckHistoryActivity.class);
+                intent4.putExtra("msg", historyname);
+                intent4.putExtra("data", historydata);
+                startActivity(intent4);
                 break;
+
             case R.id.checklistback:
                 finish();
                 break;
             case check_details_submit:
-                ToastUtils.showLongToast("验证");
-                startActivity(new Intent(mContext, CheckValidationActivity.class));
+                ArrayList<String> list1 = new ArrayList<>();
+                ArrayList<String> ids1 = new ArrayList<>();
+                if (replyArray.size() > 0) {
+                    for (int i = 0; i < replyArray.size(); i++) {
+                        list1.add(replyArray.get(i).getName());
+                        ids1.add(replyArray.get(i).getContent());
+                    }
+                }
+                Intent intent1 = new Intent(mContext, CheckValidationActivity.class);
+                intent1.putExtra("repyId", repyId);
+                intent1.putExtra("list", list1);
+                intent1.putExtra("noticeId", id);
+                intent1.putExtra("repycontent", repycontent);
+                intent1.putExtra("ids", ids1);
+                startActivity(intent1);
                 break;
             case R.id.check_details_blue:
                 String str = checkDetailsBlue.getText().toString();
-                ToastUtils.showLongToast(str);
                 checkDetailsSubmit.setVisibility(View.GONE);
                 switch (str) {
                     case "指派":
@@ -118,7 +151,34 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                         startActivityForResult(intent, 1);
                         break;
                     case "编辑":
-                        startActivity(new Intent(mContext, CheckReplyActivity.class));
+                        ArrayList<String> list = new ArrayList<>();
+                        ArrayList<String> ids = new ArrayList<>();
+                        if (replyArray.size() > 0) {
+                            for (int i = 0; i < replyArray.size(); i++) {
+                                list.add(replyArray.get(i).getName());
+                                ids.add(replyArray.get(i).getContent());
+                            }
+                        }
+                        if (motionNode.equals("3")) {
+                            Intent intent3 = new Intent(mContext, CheckValidationActivity.class);
+                            intent3.putExtra("repyId", repyId);
+                            intent3.putExtra("noticeId", id);
+                            intent3.putExtra("id", resultId);
+                            intent3.putExtra("sdealId", sdealId);
+                            intent3.putExtra("list", list);
+                            intent3.putExtra("repycontent", repycontent);
+                            intent3.putExtra("ids", ids);
+                            startActivity(intent3);
+                        } else {
+                            Intent intent2 = new Intent(mContext, CheckReplyActivity.class);
+                            intent2.putExtra("repyId", repyId);
+                            intent2.putExtra("noticeId", id);
+                            intent2.putExtra("sdealId", sdealId);
+                            intent2.putExtra("list", list);
+                            intent2.putExtra("repycontent", repycontent);
+                            intent2.putExtra("ids", ids);
+                            startActivity(intent2);
+                        }
                         break;
                     default:
                         break;
@@ -126,17 +186,15 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                 break;
             case R.id.check_details_orgin:
                 String check = checkDetailsOrgin.getText().toString();
-                ToastUtils.showLongToast(check);
                 switch (check) {
                     case "回复":
                         Intent intent = new Intent(mContext, CheckReplyActivity.class);
-                        intent.putExtra("id", id);
-                        intent.putExtra("noticeId", noticeId);
+                        intent.putExtra("noticeId", id);
                         intent.putExtra("sdealId", sdealId);
                         startActivity(intent);
                         break;
                     case "提交":
-
+                        replySubmit();
                         break;
                     default:
                         break;
@@ -153,29 +211,10 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         if (requestCode == 1 && resultCode == 2) {
             userName = data.getStringExtra("name");
             userId = data.getStringExtra("id");
+            saveAssignPersonApp();
         }
     }
-    public void setstatus() {
-        switch (status) {
-            case "未回复":
-                checkDetailsSubmit.setVisibility(View.GONE);
-                checkDetailsEditor.setVisibility(View.VISIBLE);
-                if (list.size() > 0) {
-                    checkDetailsBlue.setText("编辑");
-                    checkDetailsOrgin.setText("提交");
-                } else {
-                    checkDetailsBlue.setText("指派");
-                    checkDetailsOrgin.setText("回复");
-                }
-                break;
-            case "未验证":
-                checkDetailsEditor.setVisibility(View.GONE);
-                checkDetailsSubmit.setVisibility(View.VISIBLE);
-                break;
-            default:
-                break;
-        }
-    }
+
 
     public void getData() {
         OkGo.post(Requests.getNoticeDateApp)
@@ -186,11 +225,31 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                         try {
                             mData.clear();
                             JSONObject jsonObject = new JSONObject(s);
-                            JSONObject json = jsonObject.getJSONObject("data");
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            JSONObject json = data.getJSONObject("notice");
+                            JSONArray replyList = data.getJSONArray("replyList");
+                            JSONArray verificationList = data.getJSONArray("verificationList");
+                            JSONArray histRecord;
+                            try {
+                                histRecord = json.getJSONArray("histRecord");
+                            } catch (JSONException e) {
+                                histRecord = new JSONArray();
+                            }
+                            if (histRecord.length() > 0) {
+                                historyname.clear();
+                                historydata.clear();
+                                for (int i = 0; i < histRecord.length(); i++) {
+                                    JSONObject js = histRecord.getJSONObject(i);
+                                    historyname.add(js.getString("msg"));
+                                    historydata.add(js.getString("date"));
+                                }
+                            }
                             orgId = json.getString("rectificationOrgid");
-                            String wbspath = json.getString("rectificationPartName");
+                            String wbspath = json.getString("standardTypeName");
+                            inface_wbs_path.setText(json.getString("rectificationPartName"));
                             String sendPersonName = json.getString("sendPersonName");
                             String sendDate = json.getString("sendDate");
+                            motionNode = json.getString("motionNode");
                             //所属标段
                             String rectificationOrgName = json.getString("rectificationOrgName");
                             //违反标准
@@ -201,13 +260,14 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                             String checkOrgName = json.getString("checkOrgName");
                             //附件
                             JSONArray attachmentList = json.getJSONArray("attachmentList");
+
                             ArrayList<Audio> achmentList = new ArrayList<Audio>();
                             if (attachmentList.length() > 0) {
                                 for (int i = 0; i < attachmentList.length(); i++) {
-                                    achmentList.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
+                                    JSONObject jsonObject1 = attachmentList.getJSONObject(i);
+                                    achmentList.add(new Audio(Requests.networks + jsonObject1.getString("filepath"), jsonObject1.getString("id")));
                                 }
                             }
-
                             //整改负责人
                             String rectificationPersonName;
                             try {
@@ -221,7 +281,140 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                             String status = json.getString("status");
                             mData.add(new CheckDetailsTop(wbspath, sendPersonName, sendDate, rectificationOrgName,
                                     standardDelName, checkplan, checkOrgName, achmentList, rectificationPersonName, rectificationDate, status));
+                            if (replyList.length() > 0) {
+                                replyArray = new ArrayList<Audio>();
+                                for (int i = replyList.length() - 1; i >= 0; i--) {
+                                    JSONObject jsonObject1 = replyList.getJSONObject(i);
+                                    if (verificationList.length() > 0) {
+                                        if (i <= verificationList.length()) {
+                                            JSONObject jsonObject2 = verificationList.getJSONObject(i);
+                                            if (i == verificationList.length()) {
+                                                repyId = jsonObject2.getString("id");
+                                                repycontent = jsonObject2.getString("replyDescription");
+                                                JSONArray jsonArray = jsonObject2.getJSONArray("attachmentList");
+                                                if (jsonArray.length() > 0) {
+                                                    for (int j = 0; j < jsonArray.length(); j++) {
+                                                        JSONObject replyimg = jsonArray.getJSONObject(i);
+                                                        replyArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                    }
+                                                }
+                                            }
+                                            if (i == verificationList.length()) {
+                                                repycontent = jsonObject2.getString("id");
+                                                JSONArray jsonArray = jsonObject2.getJSONArray("attachmentList");
+                                                if (jsonArray.length() > 0) {
+                                                    for (int j = 0; j < jsonArray.length(); j++) {
+                                                        JSONObject replyimg = jsonArray.getJSONObject(i);
+                                                        replyArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                    }
+                                                }
+                                            }
+                                            String replyPersonName = jsonObject1.getString("replyPersonName");
+                                            String replyDate = jsonObject1.getString("replyDate");
+                                            replyDate = replyDate.substring(0, 10);
+                                            ArrayList<Audio> replyimgArray = new ArrayList<Audio>();
+                                            JSONArray replyimgList = jsonObject1.getJSONArray("attachmentList");
+                                            if (replyimgList.length() > 0) {
+                                                for (int j = 0; j < replyimgList.length(); j++) {
+                                                    JSONObject replyimg = replyimgList.getJSONObject(i);
+                                                    replyimgArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                }
+                                            }
+                                            String replyPersonName2 = jsonObject2.getString("verificationPersonName");
+                                            String replyDate2 = jsonObject2.getString("updateDate");
+                                            replyDate2 = replyDate2.substring(0, 10);
+                                            String repycontent2 = jsonObject2.getString("verificationOpinion");
+                                            ArrayList<Audio> replyimgArray2 = new ArrayList<Audio>();
+                                            JSONArray jsonArray = jsonObject2.getJSONArray("attachmentList");
+                                            if (jsonArray.length() > 0) {
+                                                for (int j = 0; j < jsonArray.length(); j++) {
+                                                    JSONObject replyimg2 = jsonArray.getJSONObject(i);
+                                                    replyimgArray.add(new Audio(Requests.networks + replyimg2.getString("filepath"), replyimg2.getString("id")));
+                                                }
+                                            }
+                                            mData.add(new CheckDetailsContent(replyPersonName, replyDate, replyDate, replyimgArray, replyPersonName2, repycontent2, replyDate2, replyimgArray2));
+                                        } else {
+                                            if (i == replyList.length() - 1) {
+                                                JSONArray jsonArray = jsonObject1.getJSONArray("attachmentList");
+                                                if (jsonArray.length() > 0) {
+                                                    for (int j = 0; j < jsonArray.length(); j++) {
+                                                        JSONObject replyimg = jsonArray.getJSONObject(i);
+                                                        replyArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                    }
+                                                }
+                                                String replyPersonName = jsonObject1.getString("replyPersonName");
+                                                String replyDate = jsonObject1.getString("replyDate");
+                                                replyDate = replyDate.substring(0, 10);
+                                                ArrayList<Audio> replyimgArray = new ArrayList<Audio>();
+                                                JSONArray replyimgList = jsonObject1.getJSONArray("attachmentList");
+                                                if (replyimgList.length() > 0) {
+                                                    for (int j = 0; j < replyimgList.length(); j++) {
+                                                        JSONObject replyimg = replyimgList.getJSONObject(i);
+                                                        replyimgArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                    }
+                                                }
+                                                mData.add(new CheckDetailsContent(replyPersonName, replyDate, replyDate, replyimgArray, null, null, null, null));
+                                            }
+
+                                        }
+                                    } else {
+                                        if (i == replyList.length() - 1) {
+                                            repyId = jsonObject1.getString("id");
+                                            repycontent = jsonObject1.getString("replyDescription");
+                                            JSONArray jsonArray = jsonObject1.getJSONArray("attachmentList");
+                                            if (jsonArray.length() > 0) {
+                                                for (int j = 0; j < jsonArray.length(); j++) {
+                                                    JSONObject replyimg = jsonArray.getJSONObject(i);
+                                                    replyArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                                }
+                                            }
+                                        }
+                                        String replyPersonName = jsonObject1.getString("replyPersonName");
+                                        String replyDate = jsonObject1.getString("replyDate");
+                                        replyDate = replyDate.substring(0, 10);
+                                        ArrayList<Audio> replyimgArray = new ArrayList<Audio>();
+                                        JSONArray replyimgList = jsonObject1.getJSONArray("attachmentList");
+                                        if (replyimgList.length() > 0) {
+                                            for (int j = 0; j < replyimgList.length(); j++) {
+                                                JSONObject replyimg = replyimgList.getJSONObject(i);
+                                                replyimgArray.add(new Audio(Requests.networks + replyimg.getString("filepath"), replyimg.getString("id")));
+                                            }
+                                        }
+                                        mData.add(new CheckDetailsContent(replyPersonName, replyDate, replyDate, replyimgArray, null, null, null, null));
+                                    }
+
+                                }
+                            }
                             mAdater.getData(mData);
+                            //   0:未回复；1:回复未提交；2未验证；3:验证未提交；5完成)(保存：null,提交 0
+                            if (!isDeal) {
+                                if (motionNode.equals("0")) {
+                                    checkDetailsSubmit.setVisibility(View.GONE);
+                                    checkDetailsEditor.setVisibility(View.VISIBLE);
+                                    checkDetailsBlue.setText("指派");
+                                    checkDetailsOrgin.setText("回复");
+                                } else if (motionNode.equals("1")) {
+                                    checkDetailsSubmit.setVisibility(View.GONE);
+                                    checkDetailsEditor.setVisibility(View.VISIBLE);
+                                    checkDetailsBlue.setText("编辑");
+                                    checkDetailsOrgin.setText("提交");
+                                } else if (motionNode.equals("2")) {
+                                    checkDetailsEditor.setVisibility(View.GONE);
+                                    checkDetailsSubmit.setVisibility(View.VISIBLE);
+                                } else if (motionNode.equals("3")) {
+                                    checkDetailsSubmit.setVisibility(View.GONE);
+                                    checkDetailsEditor.setVisibility(View.VISIBLE);
+                                    //跳转验证界面
+                                    checkDetailsBlue.setText("编辑");
+                                    checkDetailsOrgin.setText("提交");
+                                } else if (motionNode.equals("5")) {
+                                    checkDetailsSubmit.setVisibility(View.GONE);
+                                    checkDetailsEditor.setVisibility(View.GONE);
+                                }
+                            } else {
+                                checkDetailsSubmit.setVisibility(View.GONE);
+                                checkDetailsEditor.setVisibility(View.GONE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -233,17 +426,74 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                     }
                 });
     }
-//    noticeId = json.getString("noticeId");
-//    sdealId = json.getString("sdealId");
-    public void replySubmit() {
-        OkGo.post(Requests.replySubmit)
-                .params("replyId", "")
+
+//    //    noticeId = json.getString("noticeId");
+////    sdealId = json.getString("sdealId");
+//    acceptPerson  指派人id
+//    acceptPersonName 指派人名称
+//    assignDate 指派日期
+//    remarks 备注
+//    id 上一节点处理人id                                   对应列表的sdealId
+//    noticeId 通知单id
+
+    public void saveAssignPersonApp() {
+        OkGo.post(Requests.saveAssignPersonApp)
+                //指派人ID
+                .params("acceptPerson", userId)
+                //指派人名称
+                .params("acceptPersonName", userId)
+                .params("assignDate", Dates.getDay())
+                .params("id", sdealId)
+                .params("noticeId", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                isDeal = true;
+                                TaskCallbackUtils.CallBackMethod();
+                                getData();
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
                     }
                 });
 
+    }
+
+    //整改回复成功关闭界面
+    @Override
+    public void newData() {
+        finish();
+    }
+
+    public void replySubmit() {
+        OkGo.post(Requests.replySubmit)
+                .params("replyId", repyId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.getInt("ret") == 0) {
+                                TaskCallbackUtils.CallBackMethod();
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
     }
 }

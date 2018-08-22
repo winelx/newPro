@@ -7,57 +7,96 @@ import java.util.ArrayList;
  */
 
 public class CheckDetailsContent {
-    String username;
-    String results;
-    String describe;
-    String resultData;
-    ArrayList<String> imageList;
 
-    public CheckDetailsContent(String username, String results, String describe, String resultData,ArrayList<String> imageList) {
-        this.username = username;
-        this.results = results;
-        this.describe = describe;
-        this.resultData = resultData;
+    String replyPersonName;
+    String replyDescription;
+    String replyDate;
+    ArrayList<Audio> imageList;
+
+
+    String replyPersonName2;
+    String replyDescription2;
+    String replyDate2;
+    ArrayList<Audio> imageList2;
+
+
+    public CheckDetailsContent( String replyPersonName, String replyDescription, String replyDate, ArrayList<Audio> imageList, String replyPersonName2, String replyDescription2, String replyDate2, ArrayList<Audio> imageList2) {
+
+        this.replyPersonName = replyPersonName;
+        this.replyDescription = replyDescription;
+        this.replyDate = replyDate;
         this.imageList = imageList;
+
+        this.replyPersonName2 = replyPersonName2;
+        this.replyDescription2 = replyDescription2;
+        this.replyDate2 = replyDate2;
+        this.imageList2 = imageList2;
     }
 
-    public String getUsername() {
-        return username;
+
+    public String getReplyPersonName() {
+        return replyPersonName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setReplyPersonName(String replyPersonName) {
+        this.replyPersonName = replyPersonName;
     }
 
-    public String getResults() {
-        return results;
+    public String getReplyDescription() {
+        return replyDescription;
     }
 
-    public void setResults(String results) {
-        this.results = results;
+    public void setReplyDescription(String replyDescription) {
+        this.replyDescription = replyDescription;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getReplyDate() {
+        return replyDate;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setReplyDate(String replyDate) {
+        this.replyDate = replyDate;
     }
 
-    public String getResultData() {
-        return resultData;
-    }
-
-    public void setResultData(String resultData) {
-        this.resultData = resultData;
-    }
-
-    public ArrayList<String> getImageList() {
+    public ArrayList<Audio> getImageList() {
         return imageList;
     }
 
-    public void setImageList(ArrayList<String> imageList) {
+    public void setImageList(ArrayList<Audio> imageList) {
         this.imageList = imageList;
+    }
+
+
+
+    public String getReplyPersonName2() {
+        return replyPersonName2;
+    }
+
+    public void setReplyPersonName2(String replyPersonName2) {
+        this.replyPersonName2 = replyPersonName2;
+    }
+
+    public String getReplyDescription2() {
+        return replyDescription2;
+    }
+
+    public void setReplyDescription2(String replyDescription2) {
+        this.replyDescription2 = replyDescription2;
+    }
+
+    public String getReplyDate2() {
+        return replyDate2;
+    }
+
+    public void setReplyDate2(String replyDate2) {
+        this.replyDate2 = replyDate2;
+    }
+
+    public ArrayList<Audio> getImageList2() {
+        return imageList2;
+    }
+
+    public void setImageList2(ArrayList<Audio> imageList2) {
+        this.imageList2 = imageList2;
     }
 }

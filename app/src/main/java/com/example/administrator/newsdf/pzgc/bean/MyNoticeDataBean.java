@@ -27,12 +27,14 @@ public class MyNoticeDataBean {
     String motionNode;
     String noticeuser;
     String noticetime;
+    String sdealId;
+    String verificationId;
     boolean isDeal;
 
     public MyNoticeDataBean(String partDetails, String checkOrgName, String checkPersonName,
                             String rectificationOrgName, String updateDate, String standardDelScore,
                             String standardDelName, String noticeId, String status, String motionNode,   String noticeuser,
-                                    String noticetime, boolean isDeal) {
+                                    String noticetime, String sdealId,  String verificationId,boolean isDeal) {
         this.partDetails = partDetails;
         this.checkOrgName = checkOrgName;
         this.checkPersonName = checkPersonName;
@@ -45,6 +47,8 @@ public class MyNoticeDataBean {
         this.motionNode = motionNode;
         this.noticeuser = noticeuser;
         this.noticetime = noticetime;
+        this.sdealId = sdealId;
+        this.verificationId = verificationId;
         this.isDeal = isDeal;
     }
 
@@ -150,5 +154,21 @@ public class MyNoticeDataBean {
 
     public void setNoticetime(String noticetime) {
         this.noticetime = noticetime;
+    }
+
+    public String getSdealId() {
+        return sdealId;
+    }
+
+    public void setSdealId(String sdealId) {
+        this.sdealId = sdealId;
+    }
+
+    public String getVerificationId() {
+        return verificationId;
+    }
+
+    public void setVerificationId(String verificationId) {
+        this.verificationId = verificationId;
     }
 }

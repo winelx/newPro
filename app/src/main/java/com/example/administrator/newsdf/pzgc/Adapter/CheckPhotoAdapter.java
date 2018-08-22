@@ -117,7 +117,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             if ("编辑".equals(rectifi)) {
                                 ToastUtils.showShortToast("当前状态不可编辑");
                             } else {
-                               Rectifi.delete(photoPaths.get(position).getName());
+                                Rectifi.delete(photoPaths.get(position).getName());
                                 //删除本地图片
                                 FileUtils.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
@@ -125,6 +125,15 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                                 //刷新界面
                                 notifyDataSetChanged();
                             }
+                        case "CheckReply":
+                            CheckReplyActivity CheckReply = (CheckReplyActivity) mContext;
+
+                            CheckReply.delete(position);
+                            break;
+                        case "validation":
+                            CheckValidationActivity   CheckValida= (CheckValidationActivity) mContext;
+                            //
+                            CheckValida.delete(position);
                             break;
                         default:
                             break;
@@ -184,7 +193,6 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "CheckReply":
                             CheckReplyActivity CheckReply = (CheckReplyActivity) mContext;
-
                             //调用相机
                             CheckReply.showPopwindow();
                             break;

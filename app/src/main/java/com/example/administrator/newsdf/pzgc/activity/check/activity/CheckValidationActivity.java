@@ -1,12 +1,15 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
@@ -18,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,37 +32,60 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
-/** 
+
+/**
  * description: 整改验证
+ *
  * @author lx
- * date: 2018/8/9 0009 上午 10:27 
- * update: 2018/8/9 0009
- * version: 
-*/
+ *         date: 2018/8/9 0009 上午 10:27
+ *         update: 2018/8/9 0009
+ *         version:
+ */
 public class CheckValidationActivity extends AppCompatActivity implements View.OnClickListener {
-    private PhotoAdapter mAdapter;
+    private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
-    private ArrayList<String> imagepath;
+    private ArrayList<Audio> imagepath;
     private Context mContext;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
+    private String repyId, noticeId, sdealId, repycontent;
+    private ArrayList<String> ids = new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
+    private EditText replyDescription;
+    private String status, id = "";
+    private LinearLayout validation_status;
+    private TextView category_item;
+    TextView checklistmeuntext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
+        Intent intent = getIntent();
+        imagepath = new ArrayList<>();
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -71,28 +99,87 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+        TextView titleview = (TextView) findViewById(R.id.titleView);
+        titleview.setText("验证");
+        category_item = (TextView) findViewById(R.id.category_item);
+        validation_status = (LinearLayout) findViewById(R.id.validation_status);
+        validation_status.setOnClickListener(this);
+        replyDescription = (EditText) findViewById(R.id.replyDescription);
         mContext = CheckValidationActivity.this;
         imagepath = new ArrayList<>();
         checkReplyRec = (RecyclerView) findViewById(R.id.check_reply_rec);
         findViewById(R.id.checklistback).setOnClickListener(this);
         checkReplyRec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         checkReplyRec.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new PhotoAdapter(mContext, imagepath, "validation");
-        checkReplyRec.setAdapter(mAdapter);
-        TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
+        checklistmeuntext.setOnClickListener(this);
+        mAdapter = new CheckPhotoAdapter(mContext, imagepath, "validation", true);
+        checkReplyRec.setAdapter(mAdapter);
         checklistmeuntext.setVisibility(View.VISIBLE);
+        try {
+            repyId = intent.getStringExtra("repyId");
+            noticeId = intent.getStringExtra("noticeId");
+            repycontent = intent.getStringExtra("repycontent");
+            sdealId = intent.getStringExtra("sdealId");
+            list = intent.getStringArrayListExtra("list");
+            ids = intent.getStringArrayListExtra("ids");
+            id = intent.getStringExtra("id");
+            replyDescription.setText(repycontent);
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    imagepath.add(new Audio(list.get(i), ids.get(i)));
+                }
+                mAdapter.getData(imagepath, true);
+            }
+        } catch (Exception e) {
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.checklistmeuntext:
+                if (status != null) {
+                    save();
+                } else {
+                    ToastUtils.showShortToast("还没确认验证是否通过");
+                }
+                break;
+
             case R.id.checklistback:
                 //删除无用图片
                 for (int i = 0; i < imagepath.size(); i++) {
-                    FileUtils.deleteFile(imagepath.get(i));
+                    if (!imagepath.isEmpty()) {
+                        FileUtils.deleteFile(imagepath.get(i).getName());
+                    }
                 }
                 finish();
+                break;
+            case R.id.validation_status:
+                hintKeyBoard();
+                AlertDialog dialog = new AlertDialog.Builder(this).setTitle("是否验证通过")
+                        .setNegativeButton("打回", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                status = "2";
+                                category_item.setText("打回");
+                                category_item.setTextColor(Color.parseColor("#FE0000"));
+
+                            }
+                        }).setPositiveButton("通过", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //处理确认按钮的点击事件
+                                category_item.setText("通过");
+                                category_item.setTextColor(Color.parseColor("#28c26A"));
+                                status = "1";
+                            }
+                        })
+                        .create();
+                dialog.show();
                 break;
             default:
                 break;
@@ -101,7 +188,6 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
 
     //添加图片
     public void showPopwindow() {
-
         hintKeyBoard();
         //弹出现在相机和图册的蒙层
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
@@ -138,7 +224,6 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                         Intent intent = new Intent(mContext, ImageGridActivity.class);
                         startActivityForResult(intent, IMAGE_PICKER);
                         break;
-                    //
                     case R.id.btn_camera_pop_cancel:
                         //关闭pop
                     case R.id.btn_pop_add:
@@ -178,10 +263,9 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
-                                //添加进集合
-                                imagepath.add(outfile);
+                                imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                mAdapter.getData(imagepath);
+                                mAdapter.getData(imagepath, true);
                             }
                         });
                     } else {
@@ -205,9 +289,9 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                     Tiny.getInstance().source(bitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            imagepath.add(outfile);
+                            imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            mAdapter.getData(imagepath);
+                            mAdapter.getData(imagepath, true);
                             //删除原图
                             Dates.deleteFile(path);
                         }
@@ -225,7 +309,9 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
             for (int i = 0; i < imagepath.size(); i++) {
-                FileUtils.deleteFile(imagepath.get(i));
+                if (!imagepath.isEmpty()) {
+                    FileUtils.deleteFile(imagepath.get(i).getName());
+                }
             }
             finish();
             return true;
@@ -243,6 +329,66 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                 //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
+        }
+    }
+
+    ArrayList<String> deleteLis = new ArrayList<>();
+
+    public void delete(int pos) {
+        String conet = imagepath.get(pos).getContent();
+        if (conet.length() > 0) {
+            deleteLis.add(imagepath.get(pos).getName());
+        }
+        imagepath.remove(pos);
+        mAdapter.getData(imagepath, true);
+    }
+
+    public void save() {
+        String result = replyDescription.getText().toString();
+        if (result.length() > 0) {
+            ArrayList<File> files = new ArrayList<>();
+            if (imagepath.size() > 0) {
+                for (int i = 0; i < imagepath.size(); i++) {
+                    String str = imagepath.get(i).getContent();
+                    if (str.isEmpty()) {
+                        files.add(new File(imagepath.get(i).getName()));
+                    }
+                }
+                OkGo.post(Requests.saveVerificationDataApp)
+                        .isMultipart(true)
+                        .params("id", id)
+                        .params("noticeId", noticeId)
+                        .params("replyId", repyId)
+                        .params("isby", status)
+                        .params("deleteFileId", Dates.listToStrings(deleteLis))
+                        .params("verificationOpinion", replyDescription.getText().toString())
+                        .addFileParams("attachment", files)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    int ret = jsonObject.getInt("ret");
+                                    if (ret == 0) {
+                                        MoreTaskCallbackUtils.removeCallBackMethod();
+                                        finish();
+                                    } else {
+                                        ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                super.onError(call, response, e);
+                            }
+                        });
+
+            }
+        } else {
+            ToastUtils.showShortToast("请输入验证描述不能为空");
         }
     }
 }

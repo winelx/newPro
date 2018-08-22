@@ -78,7 +78,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((MyViewHolder) holder).managementOrg.setText("检查组织：" + success.getCheckOrgName());
             //分数
             ((MyViewHolder) holder).managementNumber.setText(setText("总分:" + success.getScore()));
-            ((MyViewHolder) holder).managementUser.setText(success.getCheckUser() + "   " + success.getCreateDate());
+            ((MyViewHolder) holder).managementUser.setText("检查人:" + success.getCheckUser() + "   " + success.getCreateDate());
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,7 +97,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
             ((SubViewHolder) holder).managementUser.setText(Sub.getCheckUser() + "      " + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText("所属标段：" + Sub.getOrgName());
-            ((SubViewHolder) holder).subManagementOrg.setText("所属组织:" + Sub.getCheckOrgName());
+            ((SubViewHolder) holder).subManagementOrg.setText("检查组织:" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
             ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
             ((SubViewHolder) holder).tvDelete.setOnClickListener(new View.OnClickListener() {

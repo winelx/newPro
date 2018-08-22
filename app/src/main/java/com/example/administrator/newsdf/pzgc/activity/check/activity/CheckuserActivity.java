@@ -50,7 +50,7 @@ public class CheckuserActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wbs);
+        setContentView(R.layout.checkuser_list);
         mContext = CheckuserActivity.this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");

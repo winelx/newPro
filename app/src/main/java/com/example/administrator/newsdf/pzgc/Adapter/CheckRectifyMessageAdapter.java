@@ -87,11 +87,11 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
                 } else {
                     if ("1".equals(motionNode) || "0".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("未回复");
-                        holder.infaceItemMessage.setSlantedBackgroundColor(R.color.graytext);
+                        holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
 
                     } else if ("2".equals(motionNode) || "3".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("未验证");
-                        holder.infaceItemMessage.setSlantedBackgroundColor(R.color.graytext);
+                        holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
 
                     } else if ("5".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("已完成");
@@ -114,7 +114,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
                     closeMenu();//关闭菜单
                 } else {
                     ChecknoticeMessagelistActivity activity = (ChecknoticeMessagelistActivity) mContext;
-                    activity.status(holder.infaceItemMessage.getText(),mDatas.get(position).getNoticeId());
+                    activity.status(holder.infaceItemMessage.getText(),mDatas.get(position).getNoticeId(),position);
 
                 }
             }

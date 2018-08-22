@@ -6,10 +6,10 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-//public static final String networks = "http://192.168.20.33:8080/";
-  // public static final String networks = "http://192.168.20.35:8080/pzgc/";
-  //public static final String networks = "http://192.168.20.81:8080/baseframe/";
- public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    //public static final String networks = "http://192.168.20.33:8080/";
+  public static final String networks = "http://192.168.20.35:8080/pzgc/";
+    //public static final String networks = "http://192.168.20.81:8080/baseframe/";
+  //public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -331,25 +331,34 @@ public class Requests {
      *
      */
     public static final String SAVE_NOTICE_APP = networks + "admin/check/checknoticeform/saveNoticeApp";
- /**
-  * 通知单详情
-  */
- public static  final  String GET_NOTICE_DATE_APP=networks+"admin/check/checknoticeform/getNoticeDateApp";
- /**
-  * 下发
-  */
- public static  final  String SEND_MESSAGE_DATA=networks+"admin/check/checknoticeform/sendData";
-   /**
-    * 详情
-    */
-   public static  final  String getNoticeDateApp=networks+ "admin/check/checknoticeform/getNoticeDateApp";
-   /**
-    * 恢复
-    */
-   public static  final  String saveReplyDataApp=networks+"admin/check/checkreplyform/saveReplyDataApp";
-   /**
-    * 回复单数据提交
-    * admin/check/checkreplyform/replySubmit?replyId=
-    */
-   public static  final  String replySubmit=networks+"admin/check/checkreplyform/replySubmit";
+    /**
+     * 通知单详情
+     */
+    public static final String GET_NOTICE_DATE_APP = networks + "admin/check/checknoticeform/getNoticeDateApp";
+    /**
+     * 下发
+     */
+    public static final String SEND_MESSAGE_DATA = networks + "admin/check/checknoticeform/sendData";
+    /**
+     * 详情
+     */
+    public static final String getNoticeDateApp = networks + "admin/check/checknoticeform/getNoticeDateDelApp";
+    /**
+     * 回复
+     */
+    public static final String saveReplyDataApp = networks + "admin/check/checkreplyform/saveReplyDataApp";
+    /**
+     * 指派下发人
+     */
+    public static final String saveAssignPersonApp = networks + "admin/check/checkreplydealperson/saveAssignPersonApp";
+
+    /**
+     * ?replyId=
+     */
+    public static final String replySubmit = networks + "admin/check/checkreplyform/replySubmit";
+    /**
+     * 验证保存
+     * admin/check/checkverificationform/saveVerificationDataApp
+     */
+    public static final String saveVerificationDataApp = networks + "admin/check/checkverificationform/saveVerificationDataApp";
 }

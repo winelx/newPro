@@ -28,7 +28,9 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -38,6 +40,9 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,24 +61,22 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  *         version:
  */
 public class CheckReplyActivity extends AppCompatActivity implements View.OnClickListener {
-    private PhotoAdapter mAdapter;
+    private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
-    private ArrayList<String> imagepath;
+    private ArrayList<Audio> imagepath;
     private Context mContext;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
-    private String id, noticeId, sdealId;
-
+    private String id, noticeId, sdealId = "", repyId,repycontent;
     private EditText replyDescription;
+    private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<String> ids = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply);
-        Intent intent = getIntent();
-        noticeId = intent.getStringExtra("noticeId");
-        id = intent.getStringExtra("id");
-        sdealId = intent.getStringExtra("sdealId");
+        imagepath = new ArrayList<>();
         checkPermission = new CheckPermission(this) {
             @Override
             public void permissionSuccess() {
@@ -87,8 +90,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+        TextView titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText("整改回复");
         mContext = CheckReplyActivity.this;
-        imagepath = new ArrayList<>();
         replyDescription = (EditText) findViewById(R.id.replyDescription);
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
@@ -97,8 +101,32 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.checklistback).setOnClickListener(this);
         checkReplyRec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         checkReplyRec.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new PhotoAdapter(mContext, imagepath, "CheckReply");
+        mAdapter = new CheckPhotoAdapter(mContext, imagepath, "CheckReply", true);
         checkReplyRec.setAdapter(mAdapter);
+        findViewById(R.id.checklistmeun).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+        Intent intent = getIntent();
+        try {
+            repyId = intent.getStringExtra("repyId");
+            id = intent.getStringExtra("noticeId");
+            repycontent=intent.getStringExtra("repycontent");
+            sdealId = intent.getStringExtra("sdealId");
+            list = intent.getStringArrayListExtra("list");
+            ids = intent.getStringArrayListExtra("ids");
+            replyDescription.setText(repycontent);
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    imagepath.add(new Audio(list.get(i), ids.get(i)));
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
@@ -106,7 +134,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.checklistback:
                 for (int i = 0; i < imagepath.size(); i++) {
-                    FileUtils.deleteFile(imagepath.get(i));
+                    if (imagepath.get(i).getContent().length() > 0) {
+                        FileUtils.deleteFile(imagepath.get(i).getName());
+                    }
                 }
                 finish();
                 break;
@@ -194,9 +224,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
                                 //添加进集合
-                                imagepath.add(outfile);
+                                imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                mAdapter.getData(imagepath);
+                                mAdapter.getData(imagepath, true);
                             }
                         });
                     } else {
@@ -220,9 +250,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                     Tiny.getInstance().source(bitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
-                            imagepath.add(outfile);
+                            imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            mAdapter.getData(imagepath);
+                            mAdapter.getData(imagepath, true);
                             //删除原图
                             Dates.deleteFile(path);
                         }
@@ -240,7 +270,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
             for (int i = 0; i < imagepath.size(); i++) {
-                FileUtils.deleteFile(imagepath.get(i));
+                if (imagepath.get(i).getContent().length() > 0) {
+                    FileUtils.deleteFile(imagepath.get(i).getName());
+                }
             }
             finish();
             return true;
@@ -261,25 +293,63 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void save() {
-        ArrayList<File> files = new ArrayList<>();
-        if (imagepath.size() > 0) {
-            for (int i = 0; i < imagepath.size(); i++) {
-                files.add(new File(imagepath.get(i)));
-            }
-        }
-        OkGo.post(Requests.saveReplyDataApp)
-                .params("id", id)
-                .params("noticeId", noticeId)
-                .params("dealId", sdealId)
-                .params("replyDescription", replyDescription.getText().toString())
-                .addFileParams("attachment", files)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
+    ArrayList<String> deleteLis = new ArrayList<>();
 
+    public void delete(int pos) {
+        String conet = imagepath.get(pos).getContent();
+        if (conet.length() > 0) {
+            deleteLis.add(imagepath.get(pos).getName());
+        }
+        imagepath.remove(pos);
+        mAdapter.getData(imagepath, true);
+    }
+
+    public void save() {
+        String result = replyDescription.getText().toString();
+        if (result.length() > 0) {
+            ArrayList<File> files = new ArrayList<>();
+            if (imagepath.size() > 0) {
+                for (int i = 0; i < imagepath.size(); i++) {
+                    String str = imagepath.get(i).getContent();
+                    if (str.isEmpty()) {
+                        files.add(new File(imagepath.get(i).getName()));
                     }
-                });
+
+                }
+            }
+            OkGo.post(Requests.saveReplyDataApp)
+                    .isMultipart(true)
+                    .params("id", repyId)
+                    .params("noticeId", id)
+                    .params("dealId", sdealId)
+                    .params("deleteFileId", Dates.listToStrings(deleteLis))
+                    .params("replyDescription", replyDescription.getText().toString())
+                    .addFileParams("attachment", files)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(String s, Call call, Response response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    MoreTaskCallbackUtils.removeCallBackMethod();
+                                    finish();
+                                } else {
+                                    ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                        }
+                    });
+        } else {
+            ToastUtils.showLongToast("具体描述不能为空");
+        }
     }
 
 }
