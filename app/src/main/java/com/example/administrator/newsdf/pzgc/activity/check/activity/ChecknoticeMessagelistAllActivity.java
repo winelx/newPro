@@ -69,7 +69,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage_all);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         resolution = ScreenUtil.getDensity(App.getInstance());
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
@@ -85,14 +85,13 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_all) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, MyNoticeDataBean obj) {
-                holder.setText(R.id.management_block, "检测标段"+obj.getRectificationOrgName());
-                holder.setText(R.id.management_title, "11111111111111");
-                holder.setText(R.id.management_user, obj.getCheckPersonName() + "    " + obj.getUpdateDate());
-                holder.setText(R.id.management_category, "所属类别:" + obj.getStandardDelName());
+                holder.setText(R.id.management_title,  obj.getStandardDelName());
+                holder.setText(R.id.management_user, "下发人:"+obj.getCheckPersonName() + "    " + obj.getUpdateDate());
                 holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
                 holder.setText(mContext, R.id.management_number, "扣分:" + obj.getStandardDelScore(), 3, R.color.red);
                 holder.setText(R.id.notice_user, "整改负责人:" + obj.getNoticeuser());
                 holder.setText(R.id.notice_lasttime, "整改期限:" + obj.getNoticetime());
+                holder.setText(R.id.management_wbs,obj.getRectificationOrgName());
                 String status = obj.getStatus();
                 switch (status) {
                     case "0":
@@ -120,9 +119,10 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent1 =new Intent(mContext, IssuedTaskDetailsActivity.class);
-                intent1.putExtra("id",mData.get(position).getNoticeId());
-                intent1.putExtra("isDeal",true);
+                Intent intent1 = new Intent(mContext, IssuedTaskDetailsActivity.class);
+                intent1.putExtra("id", mData.get(position).getNoticeId());
+                intent1.putExtra("title", titleView.getText());
+                intent1.putExtra("isDeal", true);
                 startActivity(intent1);
             }
         });
@@ -132,7 +132,6 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                 finish();
             }
         });
-        checklistmeunimage.setOnClickListener(this);
         getdate();
         /**
          *   下拉刷新
@@ -262,7 +261,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         //责任人
                                         String sendPersonName = json.getString("checkPersonName");
                                         //所属标段
-                                        String rectificationOrgName = json.getString("rectificationOrgName");
+                                        String rectificationOrgName = json.getString("rectificationPartName");
                                         //更新时间
                                         String updateDate;
                                         try {
@@ -279,7 +278,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         //id
                                         //状态
                                         String status = json.getString("status");
-                                        String noticeld=json.getString("id");
+                                        String noticeld = json.getString("id");
                                         String motionNode;
                                         try {
                                             motionNode = json.getString("motionNode");
@@ -289,17 +288,16 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         String verificationId;
                                         try {
                                             verificationId = json.getString("verificationId");
-                                        }catch (JSONException e){
-                                            verificationId="";
+                                        } catch (JSONException e) {
+                                            verificationId = "";
                                         }
-
 
 
                                         String checkPersonName = json.getString("rectificationPersonName");
                                         String rectificationDate = json.getString("rectificationDate");
                                         rectificationDate = rectificationDate.substring(0, 10);
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeld, status, motionNode, checkPersonName, rectificationDate, "",verificationId, false));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeld, status, motionNode, checkPersonName, rectificationDate, "", verificationId, false));
                                     }
                                 }
                             } else {

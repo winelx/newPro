@@ -284,8 +284,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     if (categoryItem.length() > 0) {
                         //选择的webs和手动输入内容必须存在一个，
                         if (content.length() > 0 || wbspath.length() > 0) {
-                            //如果存在一个或者都存在，就调用接口
-                            Save(wbspath, nodeId);
+                            String title = checkNewTasktitle.getText().toString();
+                            if (title.length() > 0) {
+                                //如果存在一个或者都存在，就调用接口
+                                Save(wbspath, nodeId);
+                            }
                         } else {
                             ToastUtils.showLongToast("检查部位不能为空");
                         }

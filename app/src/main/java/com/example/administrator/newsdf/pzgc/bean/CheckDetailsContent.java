@@ -11,13 +11,17 @@ public class CheckDetailsContent {
     String replyPersonName;
     String replyDescription;
     String replyDate;
+    String count;
+
     ArrayList<Audio> imageList;
 
-    public CheckDetailsContent(String replyPersonName, String replyDescription, String replyDate, ArrayList<Audio> imageList) {
+    public CheckDetailsContent(String replyPersonName, String replyDescription, String replyDate, String count, ArrayList<Audio> imageList) {
         this.replyPersonName = replyPersonName;
         this.replyDescription = replyDescription;
         this.replyDate = replyDate;
         this.imageList = imageList;
+
+        this.count = count;
     }
 
 
@@ -54,5 +58,14 @@ public class CheckDetailsContent {
     public void setImageList(ArrayList<Audio> imageList) {
         this.imageList = imageList;
     }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
 
 }

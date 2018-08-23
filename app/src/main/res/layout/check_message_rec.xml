@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:visibility="gone" />
+         />
 
 
 </RelativeLayout>

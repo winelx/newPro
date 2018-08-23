@@ -187,7 +187,6 @@ public class OrganiwbsActivity extends Activity {
                 mTreeAdapter = new SimpleTreeListViewAdapter<OrganizationEntity>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                mTree.setEmptyView(findViewById(R.id.nullposion));
                 initEvent(organizationList);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

@@ -80,7 +80,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
     private ArrayList<chekitemList> checkitem;
-
+    String success;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,9 +156,10 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
-                intent2.putExtra("id", taskId);
+                intent2.putExtra("taskId", taskId);
                 intent2.putExtra("number", position + 1);
                 intent2.putExtra("size", mData.size());
+                intent2.putExtra("success", "success");
                 startActivity(intent2);
             }
         });

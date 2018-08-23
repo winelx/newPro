@@ -35,18 +35,18 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -57,6 +57,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -98,8 +100,11 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
     private Boolean generate;
     private String orgId, nameId = "";
-    private String messageid = "", taskId, tyepId;
+    private String messageid = "", taskId;
     ArrayList<String> ids;
+    private IconTextView threeIcon, twoIco, ontIcon;
+    private ArrayList<View> arrayList = new ArrayList<>();
+    LinearLayout check_message_username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +130,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void findID() {
+        threeIcon = (IconTextView) findViewById(R.id.threeIcon);
+        arrayList.add(threeIcon);
+        twoIco = (IconTextView) findViewById(R.id.twoIcon);
+        arrayList.add(twoIco);
+        ontIcon = (IconTextView) findViewById(R.id.oneIcon);
+        arrayList.add(ontIcon);
         titleView = (TextView) findViewById(R.id.titleView);
         //检查人
         checkMessageUser = (TextView) findViewById(R.id.check_message_user);
@@ -154,7 +165,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         checkMessageLasttiem = (LinearLayout) findViewById(R.id.check_message_lasttiem);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
-        findViewById(R.id.check_message_username).setOnClickListener(this);
+        check_message_username = (LinearLayout) findViewById(R.id.check_message_username);
+        check_message_username.setOnClickListener(this);
         findViewById(R.id.checklistmeun).setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         checkMessageDate.setOnClickListener(this);
@@ -162,6 +174,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initData() {
+
         //获取当前月份
         dateMonth = myDate.getMonth();
         //拿到月
@@ -178,15 +191,15 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         path = intent.getStringArrayListExtra("path");
         orgId = intent.getStringExtra("orgId");
         generate = intent.getBooleanExtra("status", false);
-        messageid = intent.getStringExtra("id");
+        messageid = intent.getStringExtra("messageid");
         taskId = intent.getStringExtra("taskId");
-        tyepId = intent.getStringExtra("typeId");
         //组装id和路径
         if (ids.size() > 0) {
             for (int i = 0; i < ids.size(); i++) {
                 Imagepath.add(new Audio(path.get(i), ids.get(i)));
             }
         }
+        checkMessageStandar.setText(intent.getStringExtra("content"));
         if (generate) {
             checkMessageSwitch.setChecked(generate);
             checkMessageContent.setVisibility(View.VISIBLE);
@@ -195,9 +208,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         } else {
             checkMessageTime.setText(Dates.getDay());
             MessageData.setText(Dates.getDay());
-            checkMessageStandar.setText(intent.getStringExtra("content"));
+            check_message_username.setClickable(false);
             check_message_describe.setText(intent.getStringExtra("describe"));
-            checkMessageUser.setText(SPUtils.getString(mContext, "staffId", ""));
+            checkMessageUser.setText(SPUtils.getString(mContext, "staffName", ""));
             checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
             checkMessageContent.setVisibility(View.GONE);
             checklistmeuntext.setVisibility(View.GONE);
@@ -212,29 +225,27 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 // TODO Auto-generated method stub
+
                 if (isChecked) {
                     //打开
                     checkMessageTime.setText(Dates.getDay());
                     MessageData.setText(Dates.getDay());
                     checkMessageContent.setVisibility(View.VISIBLE);
-                    checklistmeuntext.setVisibility(View.VISIBLE);
-
                 } else {
                     // 关闭
                     if (messageid.length() > 0) {
                         checkMessageContent.setVisibility(View.GONE);
-                        checklistmeuntext.setVisibility(View.VISIBLE);
-                        checklistmeuntext.setText("删除");
                     } else {
                         checkMessageContent.setVisibility(View.GONE);
-                        checklistmeuntext.setVisibility(View.GONE);
                     }
-
                 }
             }
         });
+        checklistmeuntext.setText("编辑");
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        checkMessageSwitch.setClickable(false);
+        photoAdapter.getData(Imagepath, false);
         titleView.setText("生成整改通知单");
-        checklistmeuntext.setText("保存");
     }
 
     //添加图片选择功能
@@ -539,6 +550,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -549,6 +561,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -570,13 +583,21 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             case R.id.checklistmeun:
                 String meuntext = checklistmeuntext.getText().toString();
                 if ("保存".equals(meuntext)) {
-                    if (nameId.length() > 0) {
-                        Save();
+                    boolean lean = checkMessageSwitch.isChecked();
+                    if (!lean) {
+                        setStatusT();
+                        deletemessage();
                     } else {
-                        ToastUtils.showShortToast("选择负责人");
+                        if (nameId.length() > 0) {
+                            Save();
+                        } else {
+                            ToastUtils.showShortToast("选择负责人");
+                        }
                     }
                 } else {
-                    deletemessage();
+                    checklistmeuntext.setText("保存");
+                    checkMessageSwitch.setClickable(true);
+                    setStatusT();
                 }
                 break;
             case R.id.check_message_data:
@@ -584,7 +605,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 break;
             default:
                 break;
-
         }
     }
 
@@ -612,8 +632,9 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 file.add(new File(Imagepath.get(i).getName()));
             }
         }
-        PostRequest Request = OkGo.post(Requests.CREATE_NOTICE_BY_APP)
+        OkGo.post(Requests.CREATE_NOTICE_BY_APP)
                 .isMultipart(true)
+                .params("id", messageid)
                 .params("detailsId", taskId)
                 //违反标准
                 .params("standardDelName", checkMessageStandar.getText().toString())
@@ -623,7 +644,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 .params("checkPersonName", SPUtils.getString(mContext, "id", ""))
                 // 检查组织
                 .params("checkOrgid", orgId)
-                .params("detailsId", tyepId)
                 //检查时间
                 .params("checkDate", MessageData.getText().toString())
                 //整改期限
@@ -631,78 +651,32 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 //整改负责人Id
                 .params("rectificationPerson", nameId)
                 .addFileParams("imagesList", file)
-                .params("copyFileIds", Dates.listToStrings(ids));
-
-        if (messageid.length() > 0) {
-            //删除id
-            Request.params("deleteFileId", Dates.listToStrings(deleteId))
-                    .params("id", messageid)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                if (ret == 0) {
-                                    //更新通知单状态
-                                    BrightCallBackUtils.removeCallBackMethod();
-                                    ids.clear();
-                                    Imagepath.clear();
-                                    JSONObject data = jsonObject.getJSONObject("data");
-                                    messageid = data.getString("id");
-                                    JSONArray jsonArray = data.getJSONArray("attachmentList");
-                                    if (jsonArray.length() > 0) {
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject json = jsonArray.getJSONObject(i);
-                                            Imagepath.add(new Audio(json.getString("filepath"), json.getString("id")));
-                                        }
-                                    }
-                                }
-                                photoAdapter.getData(Imagepath, false);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                .params("copyFileIds", Dates.listToStrings(ids))
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject data = jsonObject.getJSONObject("daa");
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("messageId", data.getString("id"));
+                                MapCallbackUtils.removeCallBackMethod(map);
                             }
-                        }
-                    });
 
-        } else {
-            //copyId
-            Request.params("copyFileIds", Dates.listToStrings(ids))
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                if (ret == 0) {
-                                    BrightCallBackUtils.removeCallBackMethod();
-                                    ids.clear();
-                                    Imagepath.clear();
-                                    JSONObject data = jsonObject.getJSONObject("data");
-                                    messageid = data.getString("id");
-                                    JSONArray jsonArray = data.getJSONArray("attachmentList");
-                                    if (jsonArray.length() > 0) {
-                                        for (int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject json = jsonArray.getJSONObject(i);
-                                            Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
-                                        }
-                                    }
-                                }
-                                photoAdapter.getData(Imagepath, false);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        finish();
+                    }
 
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                        }
-                    });
-        }
-
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
 
     }
 
@@ -737,10 +711,21 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                                 checkMessageStandar.setText(json.getString("standardDelName"));
                                 check_message_describe.setText(json.getString("rectificationReason"));
                                 checkMessageUser.setText(json.getString("checkPersonName"));
+                                //
                                 checkMessageOrg.setText(json.getString("checkOrgName"));
+                                //负责人ID
+                                nameId = json.getString("rectificationPerson");
                                 MessageData.setText(json.getString("checkDate").substring(0, 10));
                                 checkMessageUsernameText.setText(json.getString("rectificationPersonName"));
                                 checkMessageTime.setText(json.getString("rectificationDate").subSequence(0, 10));
+                                JSONArray jsonArray = json.getJSONArray("attachments");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json1 = jsonArray.getJSONObject(i);
+                                        Imagepath.add(new Audio(Requests.networks + json1.getString("filepath"), json1.getString("id")));
+                                    }
+                                }
+                                setStatusF();
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -777,4 +762,33 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 });
     }
 
+    public String getsttus() {
+        return checklistmeuntext.getText().toString();
+    }
+
+    public void setTitleView() {
+        for (int i = 0; i < arrayList.size(); i++) {
+            arrayList.get(i).setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setTitleView1() {
+        for (int i = 0; i < arrayList.size(); i++) {
+            arrayList.get(i).setVisibility(View.GONE);
+        }
+    }
+
+    public void setStatusT() {
+        check_message_username.setClickable(true);
+        checklistmeuntext.setText("保存");
+        photoAdapter.getData(Imagepath, true);
+        setTitleView();
+    }
+
+    public void setStatusF() {
+        setTitleView1();
+        check_message_username.setClickable(false);
+        checklistmeuntext.setText("编辑");
+        photoAdapter.getData(Imagepath, false);
+    }
 }

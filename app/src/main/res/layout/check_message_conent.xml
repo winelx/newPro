@@ -203,6 +203,7 @@
                     android:textSize="15sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/oneIcon"
                     android:layout_width="10dp"
                     android:layout_height="30dp"
                     android:layout_alignTop="@+id/mine_text"
@@ -257,6 +258,7 @@
                     android:textSize="15sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/twoIcon"
                     android:layout_width="10dp"
                     android:layout_height="30dp"
                     android:layout_alignTop="@+id/mine_text"
@@ -310,6 +312,7 @@
                     android:textSize="15sp" />
 
                 <com.joanzapata.iconify.widget.IconTextView
+                    android:id="@+id/threeIcon"
                     android:layout_width="10dp"
                     android:layout_height="30dp"
                     android:layout_alignTop="@+id/mine_text"
@@ -334,6 +337,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="附件"
                 android:textColor="@color/black" />
 

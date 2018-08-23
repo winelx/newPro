@@ -35,52 +35,41 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:maxEms="20"
+            android:maxEms="17"
             android:singleLine="true"
             android:text=""
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/management_wbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/management_title"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:textSize="13sp"
+            android:ellipsize="end"
+            android:maxEms="18"
+            android:singleLine="true"
+            android:text="wbswbswbswbswbswbswbswbswbswbswbswbswbswbs"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/management_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/management_title"
-            android:layout_marginTop="2dp"
+            android:textSize="13sp"
+            android:layout_below="@+id/management_wbs"
+            android:layout_marginTop="5dp"
             android:text="张三    2018-00-00"
             android:textColor="@color/graytext" />
 
-        <TextView
-            android:id="@+id/management_block"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_user"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:ellipsize="end"
-            android:maxEms="16"
-            android:singleLine="true"
-            android:text="所属标段:0XXXXXXXXXXXX" />
-
-        <TextView
-            android:id="@+id/management_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/management_block"
-            android:layout_toEndOf="@+id/management_title"
-            android:layout_toRightOf="@+id/management_title"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxEms="20"
-            android:singleLine="true"
-            android:text="检查类别:XXXXXXXXXXXX"
-            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/management_org"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/management_category"
+            android:layout_below="@+id/management_user"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:ellipsize="end"

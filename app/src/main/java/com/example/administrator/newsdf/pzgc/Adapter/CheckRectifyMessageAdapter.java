@@ -51,9 +51,9 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         //设置内容布局的宽为屏幕宽度
         holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
         holder.managementTitle.setText(mDatas.get(position).getPartDetails());
-        holder.managementUser.setText(mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
-        holder.managementBlock.setText("所属标段:" + mDatas.get(position).getRectificationOrgName());
-        holder.managementCategory.setText("所属类别:" + mDatas.get(position).getStandardDelName());
+        holder.managementUser.setText("下发人：" + mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
+        holder.managementwbs.setText(mDatas.get(position).getRectificationOrgName());
+        holder.managementTitle.setText(mDatas.get(position).getStandardDelName());
         holder.managementOrg.setText("检查组织:" + mDatas.get(position).getCheckOrgName());
         holder.managementNumber.setText(setText("扣分:" + mDatas.get(position).getStandardDelScore(), 2));
         holder.noticeUser.setText("整改负责人:" + mDatas.get(position).getNoticeuser());
@@ -114,7 +114,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
                     closeMenu();//关闭菜单
                 } else {
                     ChecknoticeMessagelistActivity activity = (ChecknoticeMessagelistActivity) mContext;
-                    activity.status(holder.infaceItemMessage.getText(),mDatas.get(position).getNoticeId(),position);
+                    activity.status(holder.infaceItemMessage.getText(), mDatas.get(position).getNoticeId(), position);
 
                 }
             }
@@ -143,19 +143,18 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
 
         public TextView tvSet, title, tvDelete;
         public RelativeLayout subLayoutContent;
-        private TextView managementTitle, managementUser, managementBlock, managementCategory, managementOrg, managementNumber;
+        private TextView managementTitle, managementUser, managementBlock, managementCategory, managementOrg, managementNumber, managementwbs;
         private TextView noticeUser, noticeLasttime;
         private SlantedTextView infaceItemMessage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tvSet = itemView.findViewById(R.id.tv_set);
+            managementwbs = itemView.findViewById(R.id.management_wbs);
             infaceItemMessage = itemView.findViewById(R.id.inface_item_message);
             subLayoutContent = itemView.findViewById(R.id.sub_layout_content);
             managementTitle = itemView.findViewById(R.id.management_title);
             managementUser = itemView.findViewById(R.id.management_user);
-            managementBlock = itemView.findViewById(R.id.management_block);
-            managementCategory = itemView.findViewById(R.id.management_category);
             managementOrg = itemView.findViewById(R.id.management_org);
             managementNumber = itemView.findViewById(R.id.management_number);
             noticeUser = itemView.findViewById(R.id.notice_user);

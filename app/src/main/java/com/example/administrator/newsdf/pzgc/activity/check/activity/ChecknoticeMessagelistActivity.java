@@ -221,14 +221,12 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         } catch (JSONException e) {
                                             partDetails = "";
                                         }
-                                        //所属类别
-                                        String standardTypeName =json.getString("checkOrgName");
                                         //检查组织
                                         String checkOrgName = json.getString("checkOrgName");
                                         //责任人
                                         String sendPersonName = json.getString("checkPersonName");
                                         //所属标段
-                                        String rectificationOrgName = json.getString("rectificationOrgName");
+                                        String rectificationOrgName = json.getString("rectificationPartName");
                                         //更新时间
                                         String updateDate;
                                         try {
@@ -255,9 +253,9 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         String sdealId = json.getString("sdealId");
                                         String verificationId;
                                         try {
-                                             verificationId = json.getString("verificationId");
-                                        }catch (JSONException e){
-                                            verificationId="";
+                                            verificationId = json.getString("verificationId");
+                                        } catch (JSONException e) {
+                                            verificationId = "";
                                         }
 
                                         //是否回复
@@ -267,7 +265,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         String rectificationDate = json.getString("rectificationDate");
                                         rectificationDate = rectificationDate.substring(0, 10);
                                         mData.add(new MyNoticeDataBean(partDetails, checkOrgName, sendPersonName,
-                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, sdealId,verificationId, isDeal));
+                                                rectificationOrgName, updateDate, standardDelScore, standardDelName, noticeId, status, motionNode, checkPersonName, rectificationDate, sdealId, verificationId, isDeal));
                                     }
                                 }
                             } else {
@@ -311,9 +309,25 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         getWindow().setAttributes(lp);
     }
 
-    public void detele(int pos) {
-        mData.remove(pos);
-        mAdapter.getnoti(pos);
+    public void detele(final int pos) {
+        OkGo.post(Requests.checkdeleteDateApp)
+                .params("noticeId", mData.get(pos).getNoticeId())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.getInt("ret") == 0) {
+                                mData.remove(pos);
+                                mAdapter.getData(mData);
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("mesg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     public void status(String status, String ids, int pos) {
@@ -323,9 +337,9 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
             startActivity(intent);
         } else {
             Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
-            intent.putExtra("id",  mData.get(pos).getNoticeId());
-         intent.putExtra("verificationId", mData.get(pos).getVerificationId());
-            intent.putExtra("title",titleView.getText().toString());
+            intent.putExtra("id", mData.get(pos).getNoticeId());
+            intent.putExtra("verificationId", mData.get(pos).getVerificationId());
+            intent.putExtra("title", titleView.getText().toString());
             intent.putExtra("sdealId", mData.get(pos).getSdealId());
             intent.putExtra("isDeal", mData.get(pos).isDeal());
             startActivity(intent);

@@ -122,9 +122,9 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                 for (int i = 0; i < list.size(); i++) {
                     imagepath.add(new Audio(list.get(i), ids.get(i)));
                 }
+                mAdapter.getData(imagepath,true);
             }
         } catch (Exception e) {
-
         }
 
     }
@@ -298,7 +298,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
     public void delete(int pos) {
         String conet = imagepath.get(pos).getContent();
         if (conet.length() > 0) {
-            deleteLis.add(imagepath.get(pos).getName());
+            deleteLis.add(imagepath.get(pos).getContent());
         }
         imagepath.remove(pos);
         mAdapter.getData(imagepath, true);

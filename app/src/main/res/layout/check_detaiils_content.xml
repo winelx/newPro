@@ -40,6 +40,7 @@
             <TextView
                 android:id="@+id/details_result_data"
                 android:layout_width="wrap_content"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -64,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="回复人:张三"
+                android:textColor="@color/black"
                 android:textSize="13sp" />
 
             <TextView
@@ -71,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:textColor="@color/black"
                 android:text="整改结果:已整改"
                 android:textSize="13sp" />
 
@@ -78,6 +81,7 @@
                 android:id="@+id/details_result_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_marginTop="2dp"
                 android:text="整改描述:已按照标准完成整改"
                 android:textSize="13sp" />
@@ -86,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:textColor="@color/black"
                 android:text="附件:"
                 android:textSize="13sp" />
 

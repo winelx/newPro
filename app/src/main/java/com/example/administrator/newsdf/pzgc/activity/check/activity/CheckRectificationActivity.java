@@ -44,6 +44,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -59,6 +60,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
+import static com.lzy.okgo.OkGo.post;
 
 /**
  * description: 新增整改
@@ -91,8 +93,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     private ArrayList<View> listVIew = new ArrayList<>();
     private ArrayList<View> listEn = new ArrayList<>();
     private boolean status = true;
-    private ArrayList<Audio> imageArray = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,6 +148,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         checkRectifi = (LinearLayout) findViewById(R.id.check_rectifi);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checkRectifiData = (TextView) findViewById(R.id.check_rectifi_data);
+        checkRectifiData.setText(Dates.getDay());
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setText("保存");
         titleView.setText("新增整改");
@@ -178,7 +179,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 checklistmeuntext.setText("编辑");
                 checkRectifiSubmit.setBackgroundResource(R.color.Orange);
                 Visibility(8);
-                Enabled(false);
+                Enabled(true);
                 getdata();
             }
         } catch (Exception e) {
@@ -331,7 +332,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                     if (temporarysite.length() > 0 || wsbpath.length() > 0) {
                                         save();
                                     } else {
-                                    ToastUtils.showShortToast("检查部位不能为空");
+                                        ToastUtils.showShortToast("检查部位不能为空");
                                     }
                                 } else {
                                     ToastUtils.showShortToast("违反标准不能为空");
@@ -349,6 +350,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                         Enabled(true);
                         checklistmeuntext.setText("保存");
                         checkRectifiSubmit.setBackgroundResource(R.color.gray);
+                        photoAdapter.getData(Imagepath,true);
                     }
                     break;
                 case R.id.check_rectifi_submit:
@@ -596,17 +598,19 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             deleteList.add(id);
         }
     }
-
+    ArrayList<File> files;
     public void save() {
         Dates.getDialog(CheckRectificationActivity.this, "保存数据中...");
-        ArrayList<File> files = new ArrayList<>();
+      files = new ArrayList<>();
         if (Imagepath.size() > 0) {
             for (int i = 0; i < Imagepath.size(); i++) {
-                files.add(new File(Imagepath.get(i).getName()));
+                String content = Imagepath.get(i).getContent();
+                if (content.isEmpty()) {
+                    files.add(new File(Imagepath.get(i).getName()));
+                }
             }
         }
-        OkGo.post(Requests.SAVE_NOTICE_APP)
-                .isMultipart(true)
+        PostRequest str = OkGo.post(Requests.SAVE_NOTICE_APP)
                 .params("rectificationOrgid", OrgId)
                 .params("rectificationOrgName", orgName)
                 .params("rectificationPart", nodeId)
@@ -623,56 +627,56 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 .params("rectificationReason", check_rectifi_result.getText().toString())
                 .params("rectificationPartName", nodeName)
                 .params("partDetails", check_new_temporarysite.getText().toString())
-                .addFileParams("attachment", files)
                 .params("id", id)
-                .params("deleteFileId", Dates.listToStrings(deleteList))
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                id = data.getString("id");
-                                checklistmeuntext.setText("编辑");
-                                checkRectifiSubmit.setBackgroundResource(R.color.Orange);
-                                JSONArray jsonArray = data.getJSONArray("attachmentList");
-                                if (jsonArray.length() > 0) {
-                                    Imagepath.clear();
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
-                                    }
-                                }
-                                photoAdapter.getData(Imagepath, false);
-                                Visibility(8);
-                                Enabled(false);
-
-                            } else {
-                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                .params("deleteFileId", Dates.listToStrings(deleteList));
+        if (files.size() > 0) {
+            str.addFileParams("attachment", files);
+        } else {
+            str.isMultipart(true);
+        }
+        str.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        id = data.getString("id");
+                        checklistmeuntext.setText("编辑");
+                        checkRectifiSubmit.setBackgroundResource(R.color.Orange);
+                        JSONArray jsonArray = data.getJSONArray("attachmentList");
+                        Imagepath.clear();
+                        if (jsonArray.length() > 0) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                        Dates.disDialog();
+                        photoAdapter.getData(Imagepath, false);
+                        Visibility(8);
+                        Enabled(false);
+                    } else {
+                        ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        Dates.disDialog();
-                        ToastUtils.showLongToast("请求失败");
-                    }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Dates.disDialog();
+            }
 
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+                ToastUtils.showLongToast("请求失败");
+            }
+        });
     }
-
     public void getdata() {
         Dates.getDialog(CheckRectificationActivity.this, "请求数据中...");
-        OkGo.post(Requests.GET_NOTICE_DATE_APP)
+        OkGo.<String>post(Requests.getNoticeDateApp)
                 .params("noticeId", id)
                 .execute(new StringCallback() {
                     @Override
@@ -682,7 +686,8 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Imagepath.clear();
-                                JSONObject json = jsonObject.getJSONObject("data");
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                JSONObject json = jsonObject1.getJSONObject("notice");
                                 nodeId = json.getString("rectificationPart");
                                 nodeName = json.getString("rectificationPartName");
                                 check_wbspath.setText(nodeName);
@@ -705,7 +710,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 check_new_tasktitle.setText(json.getString("standardDelName"));
                                 standardDelCode = json.getString("standardDelCode");
                                 standardDelScore = json.getString("standardDelScore");
-                                JSONArray attachment = json.getJSONArray("attachment");
+                                JSONArray attachment = json.getJSONArray("attachmentList");
                                 if (attachment.length() > 0) {
                                     for (int i = 0; i < attachment.length(); i++) {
                                         JSONObject att = attachment.getJSONObject(i);
@@ -732,7 +737,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
 
     public void sendData() {
         Dates.getDialog(CheckRectificationActivity.this, "请求数据中...");
-        OkGo.post(Requests.SEND_MESSAGE_DATA)
+        post(Requests.SEND_MESSAGE_DATA)
                 .params("id", id)
                 .execute(new StringCallback() {
                     @Override
@@ -744,7 +749,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 try {
                                     TaskCallbackUtils.CallBackMethod();
                                 } catch (Exception e) {
-
                                 }
                                 finish();
                             } else {

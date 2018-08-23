@@ -10,13 +10,17 @@ public class CheckDetailsContents {
     String replyPersonName;
     String replyDescription;
     String replyDate;
+    String count;
+    String stsuts;
     ArrayList<Audio> imageList;
 
-    public CheckDetailsContents(String replyPersonName, String replyDescription, String replyDate, ArrayList<Audio> imageList) {
+    public CheckDetailsContents(String replyPersonName, String replyDescription, String replyDate, String count, String stsuts, ArrayList<Audio> imageList) {
         this.replyPersonName = replyPersonName;
         this.replyDescription = replyDescription;
         this.replyDate = replyDate;
         this.imageList = imageList;
+        this.stsuts = stsuts;
+        this.count = count;
     }
 
     public String getReplyPersonName() {
@@ -49,5 +53,21 @@ public class CheckDetailsContents {
 
     public void setImageList(ArrayList<Audio> imageList) {
         this.imageList = imageList;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getStsuts() {
+        return stsuts;
+    }
+
+    public void setStsuts(String stsuts) {
+        this.stsuts = stsuts;
     }
 }

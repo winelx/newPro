@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 
 import java.util.ArrayList;
+
+import static com.example.administrator.newsdf.R.id.task_cord;
 
 /**
  * Created by Administrator on 2018/8/22 0022.
@@ -28,6 +31,8 @@ public class CheckHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
         wbs_listview = (ListView) findViewById(R.id.wbs_listview);
+        TextView com_title = (TextView) findViewById(R.id.com_title);
+        com_title.setText("历史记录");
         Intent intent = getIntent();
         msg = intent.getStringArrayListExtra("msg");
         data = intent.getStringArrayListExtra("data");
@@ -37,10 +42,10 @@ public class CheckHistoryActivity extends AppCompatActivity {
         adapter = new SettingAdapter<Audio>(mdata, R.layout.taskrecord_item) {
             @Override
             public void bindView(ViewHolder holder, Audio obj) {
-                holder.setText(R.id.task_cord_data, obj.getName());
+                holder.setText(task_cord, obj.getName());
                 String data = obj.getContent();
                 data = data.substring(0, 10);
-                holder.setText(R.id.task_cord, data);
+                holder.setText(R.id.task_cord_data, data);
             }
         };
         wbs_listview.setAdapter(adapter);

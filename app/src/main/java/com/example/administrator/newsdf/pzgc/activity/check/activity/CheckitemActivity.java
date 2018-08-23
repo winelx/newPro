@@ -40,8 +40,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBack;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.MapCallback;
+import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
@@ -62,6 +62,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -80,7 +81,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/7 0007
  *         version:
  */
-public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener, BrightCallBack, TaskCallback {
+public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener, MapCallback, TaskCallback {
     private DKDragView dkDragView;
     private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
     private TextView checkItemTabupText, checkItemTadownText, titleView, checkitemcontentStatus, checklistmeuntext;
@@ -100,7 +101,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
-    private String noticeid;
+    private String  success, checkManageId,itemId;
     private Boolean generate;
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
@@ -110,14 +111,16 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
         checkUtils = new CheckUtils();
-        BrightCallBackUtils.setCallBack(this);
+        MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
+        id = intent.getStringExtra("id");
         orgId = intent.getStringExtra("orgId");
         pos = intent.getIntExtra("position", 0);
         number = intent.getIntExtra("number", 0);
         size = intent.getIntExtra("size", 0);
+        success = intent.getStringExtra("success");
         mData = new ArrayList<>();
         Imagepath = new ArrayList<>();
         mContext = this;
@@ -136,8 +139,12 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         };
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("编辑");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        findViewById(checklistmeun).setOnClickListener(this);
+        if (success != null) {
+            checklistmeuntext.setVisibility(View.GONE);
+        } else {
+            checklistmeuntext.setVisibility(View.VISIBLE);
+            findViewById(checklistmeun).setOnClickListener(this);
+        }
         //是否无此项
         switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
@@ -430,13 +437,12 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra("orgId", orgId);
                 //状态
                 intent.putExtra("status", generate);
-                //检查项Id
-                intent.putExtra("id", noticeid);
+                intent.putExtra("messageid", checkManageId);
                 intent.putExtra("typeId", mData.get(pos).getId());
                 //具体描述
                 intent.putExtra("describe", checkItemContentDescribe.getText().toString());
                 intent.putExtra("content", checkItemContentBz.getText().toString());
-                intent.putExtra("taskId", taskId);
+                intent.putExtra("taskId", itemId);
                 startActivity(intent);
                 break;
             case checklistmeun:
@@ -498,7 +504,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 }
 
                                 JSONObject json = jsonObject.getJSONObject("data");
-                                noticeid = json.getString("noticeId");
+                                checkManageId = json.getString("noticeId");
+                                itemId = json.getString("id");
+
                                 checkItemContentName.setText(json.getString("name"));
                                 checkItemContentContentname.setText(json.getString("content"));
                                 checkItemContentBz.setText(json.getString("standard"));
@@ -693,18 +701,22 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return checklistmeuntext.getText().toString();
     }
 
-    @Override
-    public void bright() {
-        getcheckitemList();
-        generate = true;
-        checkitemcontentStatus.setText("是");
-    }
 
     @Override
     public void taskCallback() {
         getcheckitemList();
         generate = false;
         checkitemcontentStatus.setText("否");
+    }
+
+    //更新界面
+    @Override
+    public void getdata(Map<String, Object> map) {
+        getcheckitemList();
+        generate = true;
+        ToastUtils.showLongToast("T");
+        checkitemcontentStatus.setText("是");
+        checkManageId = (String) map.get("messageId");
     }
 }
 

@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +42,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -76,7 +76,7 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
     private ArrayList<String> ids = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
     private EditText replyDescription;
-    private String status, id = "";
+    private String status = "", id = "";
     private LinearLayout validation_status;
     private TextView category_item;
     TextView checklistmeuntext;
@@ -126,6 +126,21 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
             list = intent.getStringArrayListExtra("list");
             ids = intent.getStringArrayListExtra("ids");
             id = intent.getStringExtra("id");
+            status = intent.getStringExtra("status");
+            if (status != null) {
+                switch (status) {
+                    case "1":
+                        category_item.setText("通过");
+                        category_item.setTextColor(Color.parseColor("#28c26A"));
+                        break;
+                    case "2":
+                        category_item.setText("打回");
+                        category_item.setTextColor(Color.parseColor("#FE0000"));
+                        break;
+                    default:
+                        break;
+                }
+            }
             replyDescription.setText(repycontent);
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
@@ -148,7 +163,6 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                     ToastUtils.showShortToast("还没确认验证是否通过");
                 }
                 break;
-
             case R.id.checklistback:
                 //删除无用图片
                 for (int i = 0; i < imagepath.size(); i++) {
@@ -338,7 +352,7 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
     public void delete(int pos) {
         String conet = imagepath.get(pos).getContent();
         if (conet.length() > 0) {
-            deleteLis.add(imagepath.get(pos).getName());
+            deleteLis.add(imagepath.get(pos).getContent());
         }
         imagepath.remove(pos);
         mAdapter.getData(imagepath, true);
@@ -355,42 +369,45 @@ public class CheckValidationActivity extends AppCompatActivity implements View.O
                         files.add(new File(imagepath.get(i).getName()));
                     }
                 }
-                Dates.getDialog(CheckValidationActivity.this,"提交数据中...");
-                OkGo.post(Requests.saveVerificationDataApp)
-                        .isMultipart(true)
-                        .params("id", id)
-                        .params("noticeId", noticeId)
-                        .params("replyId", repyId)
-                        .params("isby", status)
-                        .params("deleteFileId", Dates.listToStrings(deleteLis))
-                        .params("verificationOpinion", replyDescription.getText().toString())
-                        .addFileParams("attachment", files)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    int ret = jsonObject.getInt("ret");
-                                    if (ret == 0) {
-                                        MoreTaskCallbackUtils.removeCallBackMethod();
-                                        finish();
-                                    } else {
-                                        ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Dates.disDialog();
-                            }
-
-                            @Override
-                            public void onError(Call call, Response response, Exception e) {
-                                super.onError(call, response, e);
-                                Dates.disDialog();
-                            }
-                        });
-
             }
+            Dates.getDialog(CheckValidationActivity.this, "提交数据中...");
+            PostRequest str = OkGo.post(Requests.saveVerificationDataApp)
+                    .params("id", id)
+                    .params("noticeId", noticeId)
+                    .params("replyId", repyId)
+                    .params("isby", status)
+                    .params("deleteFileId",Dates.listToStrings(deleteLis))
+                    .params("verificationOpinion", replyDescription.getText().toString());
+            if (files.size() > 0) {
+                str.addFileParams("attachment", files);
+            } else {
+                str.isMultipart(true);
+            }
+            str.execute(new StringCallback() {
+                @Override
+                public void onSuccess(String s, Call call, Response response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int ret = jsonObject.getInt("ret");
+                        if (ret == 0) {
+                            MoreTaskCallbackUtils.removeCallBackMethod();
+                            finish();
+                        } else {
+                            ToastUtils.showShortToast(jsonObject.getString("msg"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Dates.disDialog();
+                }
+
+                @Override
+                public void onError(Call call, Response response, Exception e) {
+                    super.onError(call, response, e);
+                    Dates.disDialog();
+                }
+            });
+
         } else {
             ToastUtils.showShortToast("请输入验证描述不能为空");
         }

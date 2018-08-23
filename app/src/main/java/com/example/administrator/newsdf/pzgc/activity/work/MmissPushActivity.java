@@ -215,7 +215,7 @@ public class MmissPushActivity extends AppCompatActivity {
                 mTreeAdapter = new PushListviewAdapter<>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                mTree.setEmptyView(findViewById(R.id.activity_wbs));
+
                 initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

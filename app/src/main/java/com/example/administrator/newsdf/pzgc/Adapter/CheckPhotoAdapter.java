@@ -103,21 +103,11 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "Message":
                             CheckmassageActivity message = (CheckmassageActivity) mContext;
-                            message.deleteid(photoPaths.get(position).getContent());
-                            //删除本地图片
-                            FileUtils.deleteFile(photoPaths.get(position).getName());
-                            //删除集合数据
-                            photoPaths.remove(position);
-                            //刷新界面
-                            notifyDataSetChanged();
-                            break;
-                        case "Rectifi":
-                            CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
-                            String rectifi = Rectifi.getstatus();
-                            if ("编辑".equals(rectifi)) {
+                            String str = message.getsttus();
+                            if (str.equals("编辑")) {
                                 ToastUtils.showShortToast("当前状态不可编辑");
                             } else {
-                                Rectifi.delete(photoPaths.get(position).getName());
+                                message.deleteid(photoPaths.get(position).getContent());
                                 //删除本地图片
                                 FileUtils.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
@@ -125,21 +115,37 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                                 //刷新界面
                                 notifyDataSetChanged();
                             }
+
+                            break;
+                        case "Rectifi":
+                            CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
+                            String rectifi = Rectifi.getstatus();
+                            if ("编辑".equals(rectifi)) {
+                                ToastUtils.showShortToast("当前状态不可编辑");
+                            } else {
+                                if (photoPaths.get(position).getContent().length() > 0) {
+                                    Rectifi.delete(photoPaths.get(position).getContent());
+                                }
+                                //删除本地图片
+                                FileUtils.deleteFile(photoPaths.get(position).getName());
+                                //删除集合数据
+                                photoPaths.remove(position);
+                                //刷新界面
+                                notifyDataSetChanged();
+                            }
+                            break;
                         case "CheckReply":
                             CheckReplyActivity CheckReply = (CheckReplyActivity) mContext;
-
                             CheckReply.delete(position);
                             break;
                         case "validation":
-                            CheckValidationActivity   CheckValida= (CheckValidationActivity) mContext;
+                            CheckValidationActivity CheckValida = (CheckValidationActivity) mContext;
                             //
                             CheckValida.delete(position);
                             break;
                         default:
                             break;
                     }
-
-
                 }
             });
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +166,6 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                 @Override
                 public void onClick(View v) {
                     switch (status) {
-
                         case "Reply":
                             ReplyActivity reply = (ReplyActivity) mContext;
                             //调用相机
@@ -178,8 +183,14 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "Message":
                             CheckmassageActivity message = (CheckmassageActivity) mContext;
-                            //调用相机
-                            message.showPopwindow();
+                        String getsttus=message.getsttus();
+                            if ("编辑".equals(getsttus)) {
+                                ToastUtils.showShortToast("当前状态不可编辑");
+                            }else {
+                                //调用相机
+                                message.showPopwindow();
+                            }
+
                             break;
                         case "Rectifi":
                             CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;

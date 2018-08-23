@@ -6,10 +6,11 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    //public static final String networks = "http://192.168.20.33:8080/";
-  //public static final String networks = "http://192.168.20.35:8080/pzgc/";
+ //public static final String networks="http://192.168.20.81:8080/baseframe/";
+    public static final String networks = "http://192.168.20.36:8080/";
+ //public static final String networks = "http://192.168.20.35:8080/pzgc/";
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
-  public static final String networks = "http://117.187.27.78:58081/pzgc/";
+//public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
@@ -311,7 +312,6 @@ public class Requests {
      * 检查是否允许提交
      */
     public static final String CHECK_FINISH = networks + "iface/mobile/appcheck/checkFinish";
-    //通知
     /**
      * 全部我的
      */
@@ -332,10 +332,6 @@ public class Requests {
      */
     public static final String SAVE_NOTICE_APP = networks + "admin/check/checknoticeform/saveNoticeApp";
     /**
-     * 通知单详情
-     */
-    public static final String GET_NOTICE_DATE_APP = networks + "admin/check/checknoticeform/getNoticeDateApp";
-    /**
      * 下发
      */
     public static final String SEND_MESSAGE_DATA = networks + "admin/check/checknoticeform/sendData";
@@ -355,10 +351,19 @@ public class Requests {
     /**
      * ?replyId=
      */
-    public static final String replySubmit = networks + "admin/check/checkreplyform/replySubmit";
+    public static final String verificationSubmit = networks + "admin/check/checkverificationform/verificationSubmit";
     /**
      * 验证保存
-     * admin/check/checkverificationform/saveVerificationDataApp
+     *
      */
     public static final String saveVerificationDataApp = networks + "admin/check/checkverificationform/saveVerificationDataApp";
+
+   /**
+    * ?replyId=
+    */
+   public static final String replySubmit = networks + "admin/check/checkreplyform/replySubmit";
+   /**
+    * 删除未下发
+    */
+   public static final String checkdeleteDateApp = networks + "admin/check/checknoticeform/deleteDateApp";
 }

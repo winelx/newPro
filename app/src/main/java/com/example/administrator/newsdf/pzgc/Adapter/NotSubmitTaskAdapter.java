@@ -84,6 +84,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
                     intent.putExtra("id", success.getId());
+                    intent.putExtra("status", "success");
                     mContext.startActivity(intent);
                 }
             });

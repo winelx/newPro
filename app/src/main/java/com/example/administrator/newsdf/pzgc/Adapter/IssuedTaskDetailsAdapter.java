@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -54,7 +53,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                         inflate(R.layout.check_detaiils_content, parent, false));
             case TYPE_RESULT:
                 return new DetailsContents(LayoutInflater.from(parent.getContext()).
-                                inflate(R.layout.check_delaiils_contents, parent, false));
+                        inflate(R.layout.check_delaiils_contents, parent, false));
             default:
                 return null;
         }
@@ -66,18 +65,19 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (holder instanceof IssuedTaskDetailsAdapter.DetailsTop) {
             CheckDetailsTop top = (CheckDetailsTop) obj;
             ((DetailsTop) holder).checkDetailsTitle.setText(top.getStandardDelName());
-            ((DetailsTop) holder).checkDetailsUserdata.setText(top.getSendPersonName() + "  " + top.getSendDate());
-            ((DetailsTop) holder).checkDetailsBlock.setText("所属标段:" + top.getRectificationOrgName());
+            String data = top.getSendDate();
+            ((DetailsTop) holder).checkDetailsUserdata.setText(top.getSendPersonName() + "  " + data.substring(0, 10));
             ((DetailsTop) holder).checkDetailsStandard.setText("违反标准:" + top.getWbspath());
             if (top.getCheckplan().length() > 0) {
-                ((DetailsTop) holder).checkDetailsWhy.setText("整改事由:" + top.getCheckplan());
+                ((DetailsTop) holder).checkDetailsWhy.setText("整改事由:" + top.getRectificationOrgName());
             } else {
                 ((DetailsTop) holder).checkDetailsWhy.setVisibility(View.GONE);
             }
 
             ((DetailsTop) holder).checkDetailsOrg.setText("检查组织:" + top.getCheckOrgName());
-            ((DetailsTop) holder).checkDetailsRectificationUser.setText("整改负责人：" + top.getRectificationPersonName());
-            ((DetailsTop) holder).checkDetailsLasetime.setText("整改期限：" + top.getRectificationDate());
+            ((DetailsTop) holder).checkDetailsRectificationUser.setText(setText2("整改负责人：" + top.getRectificationPersonName(),5,R.color.colorAccent));
+            String sub = top.getRectificationDate();
+            ((DetailsTop) holder).checkDetailsLasetime.setText("整改期限：" + sub.substring(0, 10));
 //            通知单回复状态(0:未下发；1：未回复;2:未验证；3：打回；5:完成)
             String status = top.getStatus();
             switch (status) {
@@ -107,44 +107,54 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             for (int i = 0; i < list.size(); i++) {
                 path.add(list.get(i).getName());
             }
-            CheckmessageRec adapter = new CheckmessageRec(mContext, path, title);
-            ((DetailsTop) holder).checkDetailsRec.setAdapter(adapter);
+            RectifierAdapter adapter1 = new RectifierAdapter(mContext, path, title);
+            ((DetailsTop) holder).checkDetailsRec.setAdapter(adapter1);
             ((DetailsTop) holder).checkDetailsRec.addItemDecoration(new DividerItemDecoration(mContext,
                     DividerItemDecoration.VERTICAL_LIST));
         } else if (holder instanceof DetailsContent) {
             CheckDetailsContent Content = (CheckDetailsContent) obj;
             ((DetailsContent) holder).detailsResultData.setText(Content.getReplyDate());
-            //回复人
-            ((DetailsContent) holder).detailsResultUser.setText("回复人：" + Content.getReplyPersonName());
+            //回复人replyDescription
+            ((DetailsContent) holder).detailsResultUser.setText(setText2("回复人：" + Content.getReplyPersonName(), 3, R.color.colorAccent));
             ((DetailsContent) holder).detailsResultDescribe.setText("整改事由：" + Content.getReplyDescription());
             ((DetailsContent) holder).detailsResultRec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<Audio> list1 = new ArrayList<>();
             list1 = (Content).getImageList();
             ArrayList<String> path1 = new ArrayList<>();
             ArrayList<String> title1 = new ArrayList<>();
-            CheckmessageRec adapter = new CheckmessageRec(mContext, path1, title1);
+            RectifierAdapter adapter = new RectifierAdapter(mContext, path1, title1);
             for (int i = 0; i < list1.size(); i++) {
                 path1.add(list1.get(i).getName());
             }
-
             ((DetailsContent) holder).detailsResultRec.setAdapter(adapter);
-
         } else if (holder instanceof DetailsContents) {
             CheckDetailsContents Contents = (CheckDetailsContents) obj;
             ((DetailsContents) holder).detailsValidationData.setText(Contents.getReplyDate());
             //回复人
-            ((DetailsContents) holder).detailsValidationUser.setText("回复人：" + Contents.getReplyPersonName());
+            ((DetailsContents) holder).detailsValidationUser.setText(setText2("回复人：" + Contents.getReplyPersonName(), 3, R.color.colorAccent));
             ((DetailsContents) holder).detailsValidationDescribe.setText("整改事由：" + Contents.getReplyDescription());
             ((DetailsContents) holder).detailsValidationRec.setLayoutManager(new GridLayoutManager(mContext, 4));
-            ArrayList<Audio> list = new ArrayList<>();
-            list = (Contents).getImageList();
-            ArrayList<String> path = new ArrayList<>();
-            ArrayList<String> title = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                path.add(list.get(i).getName());
+            String status = Contents.getStsuts();
+            switch (status) {
+                case "1":
+                    ((DetailsContents) holder).detailsValidationResult.setText(setText2("验证结果：通过", 4, R.color.finish_green));
+                    break;
+                case "2":
+                    ((DetailsContents) holder).detailsValidationResult.setText(setText2("验证结果:打回", 4, R.color.red));
+                    break;
+                default:
+                    break;
+
             }
-            CheckmessageRec adapter = new CheckmessageRec(mContext, path, title);
-            ((DetailsContents) holder).detailsValidationRec.setAdapter(adapter);
+            ArrayList<Audio> list1 = new ArrayList<>();
+            list1 = (Contents).getImageList();
+            ArrayList<String> path2 = new ArrayList<>();
+            ArrayList<String> title2 = new ArrayList<>();
+            for (int i = 0; i < list1.size(); i++) {
+                path2.add(list1.get(i).getName());
+            }
+            RectifierAdapter adapter2 = new RectifierAdapter(mContext, path2, title2);
+            ((DetailsContents) holder).detailsValidationRec.setAdapter(adapter2);
         }
     }
 
@@ -155,10 +165,9 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             return TYPE_TOP;
         } else if (mData.get(position) instanceof CheckDetailsContent) {
             return TYPE_CONTENT;
-        }else if (mData.get(position) instanceof CheckDetailsContents){
+        } else if (mData.get(position) instanceof CheckDetailsContents) {
             return TYPE_RESULT;
-        }
-        else  {
+        } else {
             return super.getItemViewType(position);
         }
     }
@@ -179,7 +188,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             super(itemView);
             checkDetailsTitle = itemView.findViewById(R.id.check_details_title);
             checkDetailsUserdata = itemView.findViewById(R.id.check_details_userData);
-            checkDetailsBlock = itemView.findViewById(R.id.check_details_block);
+
             checkDetailsStandard = itemView.findViewById(R.id.check_details_standard);
             checkDetailsWhy = itemView.findViewById(R.id.check_details_why);
             checkDetailsOrg = itemView.findViewById(R.id.check_details_org);
@@ -259,4 +268,16 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         return sp;
     }
 
+    public SpannableString setText2(String text, int num, int color2) {
+        SpannableString sp = new SpannableString(text);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.black)), 0,
+                num,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(color2)), num + 1,
+                text.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
+    }
 }
