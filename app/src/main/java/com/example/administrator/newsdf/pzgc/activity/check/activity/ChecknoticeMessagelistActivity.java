@@ -237,9 +237,15 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
 
                                         updateDate = updateDate.substring(0, 10);
                                         //积分
-                                        String standardDelScore = json.getString("standardDelScore");
+                                        String standardDelScore;
+                                        try {
+                                            standardDelScore = json.getString("standardDelScore");
+                                        }catch (JSONException e){
+                                            standardDelScore="";
+                                        }
+
                                         //检查类别
-                                        String standardDelName = json.getString("standardDelName");
+                                        String standardDelName = json.getString("standardTypeName");
                                         //id
                                         String noticeId = json.getString("noticeId");
                                         //状态

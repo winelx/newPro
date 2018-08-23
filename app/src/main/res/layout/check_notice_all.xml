@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@color/back"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
@@ -36,8 +37,9 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxEms="17"
+            android:textSize="15sp"
             android:singleLine="true"
-            android:text=""
+            android:text="11111111111111111111111111"
             android:textColor="@color/black" />
 
         <TextView
@@ -83,11 +85,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/management_org"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="3dp"
             android:text="总分:99"
             android:textColor="@color/red"
-            android:textSize="12sp" />
+            android:textSize="13sp" />
 
 
 
@@ -95,8 +97,7 @@
             android:layout_below="@+id/management_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:minHeight="25dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView

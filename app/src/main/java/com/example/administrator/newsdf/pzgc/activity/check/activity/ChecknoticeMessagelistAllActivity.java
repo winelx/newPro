@@ -274,7 +274,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                                         //
                                         String standardDelScore = json.getString("standardDelScore");
                                         //检查类别
-                                        String standardDelName = json.getString("standardDelName");
+                                        String standardDelName = json.getString("standardTypeName");
                                         //id
                                         //状态
                                         String status = json.getString("status");
