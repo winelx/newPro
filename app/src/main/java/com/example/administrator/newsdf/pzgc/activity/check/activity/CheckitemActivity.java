@@ -97,7 +97,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private static final int IMAGE_PICKER = 101;
     private String taskId, orgId, id;
     private int pos, size, number;
-    private CheckUtils checkUtils;
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
@@ -110,7 +109,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
-        checkUtils = new CheckUtils();
+
         MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
         Intent intent = getIntent();
@@ -714,9 +713,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     public void getdata(Map<String, Object> map) {
         getcheckitemList();
         generate = true;
-        ToastUtils.showLongToast("T");
         checkitemcontentStatus.setText("是");
         checkManageId = (String) map.get("messageId");
+
     }
 }
 

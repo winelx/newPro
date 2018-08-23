@@ -660,16 +660,16 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             ToastUtils.showShortToast(jsonObject.getString("msg"));
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                JSONObject data = jsonObject.getJSONObject("daa");
+                                JSONObject data = jsonObject.getJSONObject("data");
                                 Map<String, Object> map = new HashMap<>();
                                 map.put("messageId", data.getString("id"));
-                                MapCallbackUtils.removeCallBackMethod(map);
+                                MapCallbackUtils.CallBackMethod(map);
+                                finish();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        finish();
+
                     }
 
                     @Override

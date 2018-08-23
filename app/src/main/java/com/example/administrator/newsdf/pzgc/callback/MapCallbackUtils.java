@@ -14,7 +14,7 @@ public class MapCallbackUtils {
         mCallBack = callBack;
     }
 
-    public static void removeCallBackMethod(Map<String, Object> map) {
+    public static void CallBackMethod(Map<String, Object> map) {
         mCallBack.getdata( map);
     }
 }

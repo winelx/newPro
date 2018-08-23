@@ -286,8 +286,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         if (content.length() > 0 || wbspath.length() > 0) {
                             String title = checkNewTasktitle.getText().toString();
                             if (title.length() > 0) {
-                                //如果存在一个或者都存在，就调用接口
-                                Save(wbspath, nodeId);
+                                    //如果存在一个或者都存在，就调用接口
+                                    Save(wbspath, nodeId);
+                            }else {
+                                ToastUtils.showLongToast("检查计划名称不能为空");
                             }
                         } else {
                             ToastUtils.showLongToast("检查部位不能为空");
@@ -634,7 +636,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     wbsName.setText(wbspath);
                                     wbsName.setVisibility(View.VISIBLE);
                                 }
-                                checkNewTemporarysite.setText(json.getString("wbsMainName"));
+//                                checkNewTemporarysite.setText(json.getString("wbsMainName"));
                                 //检查人
                                 checkUsername.setText(json.getString("realname"));
                                 //检查标题
