@@ -73,11 +73,16 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             //标题
             ((MyViewHolder) holder).managementTitle.setText(success.getWbsMainName());
             //
-            ((MyViewHolder) holder).managementBlock.setText("所属标段：" + success.getOrgName());
+            ((MyViewHolder) holder).management_wbs.setText(success.getOrgName());
 
             ((MyViewHolder) holder).managementOrg.setText("检查组织：" + success.getCheckOrgName());
             //分数
-            ((MyViewHolder) holder).managementNumber.setText(setText("总分:" + success.getScore()));
+            if ( success.getScore().isEmpty()){
+                ((MyViewHolder) holder).managementNumber.setText("总分:");
+            }else {
+                ((MyViewHolder) holder).managementNumber.setText(setText("总分:" + success.getScore()));
+            }
+
             ((MyViewHolder) holder).managementUser.setText("检查人:" + success.getCheckUser() + "   " + success.getCreateDate());
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,10 +99,10 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             final SCheckTasklistAdapter Sub = (SCheckTasklistAdapter) obj;
             //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
             //设置内容布局的宽为屏幕宽度
-            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
+            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 70;
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
-            ((SubViewHolder) holder).managementUser.setText(Sub.getCheckUser() + "      " + Sub.getCreateDate());
-            ((SubViewHolder) holder).sub_management_block.setText("所属标段：" + Sub.getOrgName());
+            ((SubViewHolder) holder).managementUser.setText("检查人:"+Sub.getCheckUser() + "    " + Sub.getCreateDate());
+            ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
             ((SubViewHolder) holder).subManagementOrg.setText("检查组织:" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
             ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
@@ -135,13 +140,13 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView managementTitle, managementUser;
-        private TextView managementNumber, managementBlock, managementOrg, tvSet;
+        private TextView managementNumber, management_wbs, managementOrg, tvSet;
         private RelativeLayout item;
 
         MyViewHolder(View itemView) {
             super(itemView);
             item = itemView.findViewById(R.id.item_not);
-            managementBlock = itemView.findViewById(R.id.management_block);
+            management_wbs = itemView.findViewById(R.id.management_wbs);
             managementOrg = itemView.findViewById(R.id.management_org);
             managementNumber = itemView.findViewById(R.id.management_number);
             managementUser = itemView.findViewById(R.id.management_user);
@@ -158,7 +163,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         SubViewHolder(View itemView) {
             super(itemView);
             subManagementOrg = itemView.findViewById(R.id.sub_management_org);
-            sub_management_block = itemView.findViewById(R.id.sub_management_block);
+            sub_management_block = itemView.findViewById(R.id.sub_management_wbs);
             slantedTextView = itemView.findViewById(R.id.sub_inface_item_message);
             managementUser = itemView.findViewById(R.id.sub_management_user);
             managementTitle = itemView.findViewById(R.id.sub_management_title);

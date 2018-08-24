@@ -27,8 +27,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.HideCallback;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -57,7 +57,7 @@ import okhttp3.Response;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener,HideCallback {
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
@@ -81,7 +81,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
         mContext = CheckTasklistActivity.this;
-        TaskCallbackUtils.setCallBack(this);
+        HideCallbackUtils.setCallBack(this);
         checkUtils = new CheckUtils();
         checkjson = new Checkjson();
         try {
@@ -134,10 +134,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 pages = 1;
-                list.clear();
                 checkmamgrlist();
-
-
             }
         });
         //上拉加载
@@ -220,7 +217,6 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                 checkmamgrlist();
             }
         };
-
         contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
@@ -233,12 +229,11 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         lp.alpha = bgAlpha;
         getWindow().setAttributes(lp);
     }
-
     //编辑页面新增或者修改后刷新界面
+
     @Override
-    public void taskCallback() {
+    public void deleteTop() {
         pages = 1;
-        list.clear();
         checkmamgrlist();
     }
 
@@ -262,11 +257,13 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            if (pages==1){
+                                list.clear();
+                            }
                             checkjson.taskmanagerlist(s, list, mAdapter);
                             smartrefreshlayout.finishRefresh(true);
                             smartrefreshlayout.finishLoadmore(true);
                         }
-
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
@@ -277,20 +274,20 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
+                    if (pages==1){
+                        list.clear();
+                    }
                     checkjson.taskmanagerlist(s, list, mAdapter);
                     smartrefreshlayout.finishRefresh(true);
                     smartrefreshlayout.finishLoadmore(true);
                 }
-
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
                     ToastUtils.showShortToast("请求失败");
                 }
             });
-
         }
-
     }
 
     public void submit(String id) {
@@ -302,6 +299,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
     }
 
     public void delete(final int pos, String id) {
+        Dates.getDialog(CheckTasklistActivity.this, "删除数据..");
         OkGo.post(Requests.BATCHDELETE)
                 .params("id", id)
                 .execute(new StringCallback() {
@@ -316,10 +314,16 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
+                            Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
 
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

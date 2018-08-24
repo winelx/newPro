@@ -210,6 +210,9 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                    if (page==1){
+                                        mData.clear();
+                                    }
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -243,7 +246,6 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         }catch (JSONException e){
                                             standardDelScore="";
                                         }
-
                                         //检查类别
                                         String standardDelName = json.getString("standardTypeName");
                                         //id
@@ -263,10 +265,8 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         } catch (JSONException e) {
                                             verificationId = "";
                                         }
-
                                         //是否回复
                                         Boolean isDeal = json.getBoolean("isDeal");
-
                                         String checkPersonName = json.getString("rectificationPersonName");
                                         String rectificationDate = json.getString("rectificationDate");
                                         rectificationDate = rectificationDate.substring(0, 10);
@@ -294,7 +294,6 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     @Override
     public void taskCallback() {
         page = 1;
-        mData.clear();
         getdate();
     }
 

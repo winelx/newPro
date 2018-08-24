@@ -15,6 +15,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,7 +38,6 @@ import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.MapCallback;
@@ -52,6 +52,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -100,10 +101,11 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
-    private String  success, checkManageId,itemId;
+    private String success, checkManageId, itemId;
     private Boolean generate;
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
+    private String score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,12 +140,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         };
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("编辑");
-        if (success != null) {
-            checklistmeuntext.setVisibility(View.GONE);
-        } else {
-            checklistmeuntext.setVisibility(View.VISIBLE);
-            findViewById(checklistmeun).setOnClickListener(this);
-        }
+
         //是否无此项
         switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
@@ -160,6 +157,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
         //得分
         checkItemContentCore = (EditText) findViewById(R.id.check_item_content_core);
+        checkItemContentCore.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
@@ -275,12 +273,17 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 //                    mText.setText("开启");
-                    BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
-                    if (Standarcore == null) {
-                        Standarcore = new BigDecimal("0");
+                    if (checkItemContentStandarcore.getText().toString().isEmpty()) {
+                        checkItemContentCore.setText("0");
+                    } else {
+                        BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
+                        if (Standarcore == null) {
+                            Standarcore = new BigDecimal("0");
+                        }
+                        checkItemContentCore.setEnabled(false);
+                        checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
                     }
-                    checkItemContentCore.setEnabled(false);
-                    checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
+
                 } else {
 //                    mText.setText("关闭");
                     checkItemContentCore.setEnabled(true);
@@ -290,6 +293,13 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             }
         });
         getdate(taskId, number);
+        if (success != null) {
+            checkItemContentMassage.setClickable(true);
+            checklistmeuntext.setVisibility(View.GONE);
+        } else {
+            checklistmeuntext.setVisibility(View.VISIBLE);
+            findViewById(checklistmeun).setOnClickListener(this);
+        }
     }
 
     //添加图片
@@ -420,29 +430,35 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 }
                 finish();
                 break;
-            case check_item_content_massage:
-                ArrayList<String> ids = new ArrayList<>();
-                ArrayList<String> path = new ArrayList<>();
-                for (int i = 0; i < Imagepath.size(); i++) {
-                    ids.add(Imagepath.get(i).getContent());
-                    path.add(Imagepath.get(i).getName());
+            case R.id.check_item_content_massage:
+                boolean status = switch1.isChecked();
+                //判断是从哪个界面进入
+                if (success != null) {
+                    //从已完成进入
+                    String string = checkitemcontentStatus.getText().toString();
+                    if (status){
+                        ToastUtils.showLongToast("该项暂无通知单");
+                    }else {
+                        if (string.equals("是")) {
+                            messages();
+                        } else {
+                            ToastUtils.showShortToast("没有通知单哦！");
+                        }
+                    }
+                } else {
+                    if (status){
+                        ToastUtils.showLongToast("该项暂无通知单");
+                    }else {
+                        //从未完成进入
+                        String string = checkitemcontentStatus.getText().toString();
+                        if (string.equals("是")) {
+                            messages();
+                        } else {
+                            message();
+                        }
+                    }
+
                 }
-                Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
-                //图片id
-                intent.putExtra("ids", ids);
-                //图片路径
-                intent.putExtra("path", path);
-                //查询责任人
-                intent.putExtra("orgId", orgId);
-                //状态
-                intent.putExtra("status", generate);
-                intent.putExtra("messageid", checkManageId);
-                intent.putExtra("typeId", mData.get(pos).getId());
-                //具体描述
-                intent.putExtra("describe", checkItemContentDescribe.getText().toString());
-                intent.putExtra("content", checkItemContentBz.getText().toString());
-                intent.putExtra("taskId", itemId);
-                startActivity(intent);
                 break;
             case checklistmeun:
                 String text1 = checklistmeuntext.getText().toString();
@@ -460,7 +476,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -473,7 +488,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         }
         return true;
     }
-
 
     public void getdate(String Id, final Integer page) {
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
@@ -501,20 +515,16 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                     checkItemTabup.setVisibility(View.VISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
                                 }
-
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 checkManageId = json.getString("noticeId");
                                 itemId = json.getString("id");
-
                                 checkItemContentName.setText(json.getString("name"));
                                 checkItemContentContentname.setText(json.getString("content"));
                                 checkItemContentBz.setText(json.getString("standard"));
                                 checkItemContentStandarcore.setText(json.getString("standardScore"));
-                                checkItemContentCore.setText(json.getString("score"));
+
                                 String describe = json.getString("describe");
-                                if (describe.length() > 0) {
-                                    checkItemContentDescribe.setText(describe);
-                                }
+                                checkItemContentDescribe.setText(describe);
                                 try {
                                     generate = json.getBoolean("generate");
                                     if (generate) {
@@ -539,6 +549,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                     Imagepath.clear();
                                     photoAdapter.getData(Imagepath, false);
                                 }
+                                score = json.getString("score");
+                                checkItemContentCore.setText(score);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -546,7 +558,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -605,67 +616,26 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         boolean lean = checkItemContentCore.getText().toString().isEmpty();
         if (!lean) {
             Dates.getDialog(CheckitemActivity.this, "提交数据中...");
-            ArrayList<File> file = new ArrayList<>();
-            for (int i = 0; i < Imagepath.size(); i++) {
-                if (Imagepath.get(i).getContent().length() > 0) {
+            String standacore = checkItemContentStandarcore.getText().toString();
+            BigDecimal ContentCore = new BigDecimal(checkItemContentCore.getText().toString());
+            if (standacore.isEmpty()) {
+                if (ContentCore != null) {
+                    Save(isdata, Tabup);
                 } else {
-                    file.add(new File(Imagepath.get(i).getName()));
+                    ToastUtils.showLongToast("得分还未填写");
+                }
+            } else {
+                BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
+                if (Standarcore == null) {
+                    Standarcore = new BigDecimal("0");
+                }
+                if (Standarcore.subtract(ContentCore).compareTo(new BigDecimal("0.0")) >= 0) {
+                    Save(isdata, Tabup);
+                } else {
+                    ToastUtils.showLongToast("得分必须在0与标准分之间");
                 }
             }
-            BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
-            BigDecimal ContentCore = new BigDecimal(checkItemContentCore.getText().toString());
-            if (Standarcore == null) {
-                Standarcore = new BigDecimal("0");
-            }
-            if (Standarcore.subtract(ContentCore).compareTo(new BigDecimal("0.0")) >= 0) {
-                OkGo.post(Requests.SAVE_DETAILS)
-                        .isMultipart(true)
-                        .params("checkManageId", taskId)
-                        .params("noSuch", switch1.isChecked())
-                        //是否生成整改通知单
-                        .params("generate", generate)
-                        //Id
-                        .params("id", mData.get(pos - 1).getId())
-                        //得分
-                        .params("score", checkItemContentCore.getText().toString())
-                        //具体描述
-                        .params("describe", checkItemContentDescribe.getText().toString())
-                        .params("deleteFileId", Dates.listToStrings(deleteid))
-                        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
-                        .addFileParams("imagesList", file)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(String s, Call call, Response response) {
-                                Dates.disDialog();
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    int ret = jsonObject.getInt("ret");
-                                    if (ret == 0) {
-                                        if (isdata) {
-                                            if (Tabup.equals("Tabup")) {
-                                                getdate(taskId, pos - 1);
-                                            } else if (Tabup.equals("Tadown")) {
-                                                getdate(taskId, pos + 1);
-                                            }
-                                        }
-                                        tClickableF();
-                                        checklistmeuntext.setText("编辑");
-                                        getcheckitemList();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
 
-                            @Override
-                            public void onError(Call call, Response response, Exception e) {
-                                super.onError(call, response, e);
-                                Dates.disDialog();
-                            }
-                        });
-            } else {
-                ToastUtils.showLongToast("得分必须在0与标准分之间");
-            }
         } else {
             ToastUtils.showShortToastCenter("得分还未填写");
         }
@@ -700,14 +670,13 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         return checklistmeuntext.getText().toString();
     }
 
-
     @Override
     public void taskCallback() {
         getcheckitemList();
         generate = false;
+        checkManageId = "";
         checkitemcontentStatus.setText("否");
     }
-
     //更新界面
     @Override
     public void getdata(Map<String, Object> map) {
@@ -716,6 +685,114 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkitemcontentStatus.setText("是");
         checkManageId = (String) map.get("messageId");
 
+    }
+
+    public void Save(final boolean isdata, final String Tabup) {
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < Imagepath.size(); i++) {
+            if (Imagepath.get(i).getContent().length() > 0) {
+            } else {
+                file.add(new File(Imagepath.get(i).getName()));
+            }
+        }
+        PostRequest mPostRequest = OkGo.post(Requests.SAVE_DETAILS)
+                .params("checkManageId", taskId)
+                .params("noSuch", switch1.isChecked())
+                //是否生成整改通知单
+                .params("generate", generate)
+                //Id
+                .params("id", mData.get(pos - 1).getId())
+                //得分
+                .params("score", checkItemContentCore.getText().toString())
+                //具体描述
+                .params("describe", checkItemContentDescribe.getText().toString())
+                .params("deleteFileId", Dates.listToStrings(deleteid));
+        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
+        if (file.size() > 0) {
+            mPostRequest.addFileParams("imagesList", file);
+        } else {
+            mPostRequest.isMultipart(true);
+        }
+        mPostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                Dates.disDialog();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        deleteid.clear();
+                        Imagepath.clear();
+                        if (isdata) {
+                            checkItemContentDescribe.setText("");
+                            checkItemContentDescribe.setText("");
+                            if (Tabup.equals("Tabup")) {
+
+                                getdate(taskId, pos - 1);
+                            } else if (Tabup.equals("Tadown")) {
+
+                                getdate(taskId, pos + 1);
+
+                            }
+                        } else {
+                            getdate(taskId, pos);
+                        }
+                        tClickableF();
+                        checklistmeuntext.setText("编辑");
+                        getcheckitemList();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+            }
+        });
+    }
+
+    public void message() {
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<String> path = new ArrayList<>();
+        for (int i = 0; i < Imagepath.size(); i++) {
+            ids.add(Imagepath.get(i).getContent());
+            path.add(Imagepath.get(i).getName());
+        }
+        Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
+        //图片id
+        intent.putExtra("ids", ids);
+        //图片路径
+        intent.putExtra("path", path);
+        //查询责任人
+        intent.putExtra("orgId", orgId);
+        intent.putExtra("success", success);
+        //状态
+        intent.putExtra("status", generate);
+        intent.putExtra("messageid", checkManageId);
+        intent.putExtra("typeId", mData.get(pos - 1).getId());
+        //具体描述
+        intent.putExtra("describe", checkItemContentDescribe.getText().toString());
+        intent.putExtra("content", checkItemContentBz.getText().toString());
+        intent.putExtra("taskId", itemId);
+        startActivity(intent);
+    }
+
+    public void messages() {
+        Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
+        //查询责任人
+        intent.putExtra("orgId", orgId);
+        intent.putExtra("success", success);
+        //状态
+        intent.putExtra("status", generate);
+        intent.putExtra("messageid", checkManageId);
+        intent.putExtra("typeId", mData.get(pos - 1).getId());
+        //具体描述
+        intent.putExtra("describe", checkItemContentDescribe.getText().toString());
+        intent.putExtra("content", checkItemContentBz.getText().toString());
+        intent.putExtra("taskId", itemId);
+        startActivity(intent);
     }
 }
 

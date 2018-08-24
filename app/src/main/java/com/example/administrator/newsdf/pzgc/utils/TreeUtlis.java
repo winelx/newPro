@@ -236,7 +236,7 @@ public class TreeUtlis {
              * 解析数据
              */
             ArrayList<OrganizationEntity> addOrganizationList = new ArrayList<>();
-            addOrganizationList = homeUtils.parseOrganizationList(result);
+            addOrganizationList = HomeUtils.parseOrganizationList(result);
             /**
              * 动态添加
              */

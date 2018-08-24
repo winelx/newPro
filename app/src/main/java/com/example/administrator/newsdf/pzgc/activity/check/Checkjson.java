@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -77,20 +78,24 @@ public class Checkjson {
                         String id = json.getString("id");
                         String orgName;
                         try {
-                            orgName = json.getString("orgName");
+                            orgName = json.getString("wbsMainName");
                         } catch (JSONException e) {
                             orgName = "";
                         }
                         String score;
                         try {
                             score = json.getString("score");
+                            BigDecimal bigDecimal = new BigDecimal(score);
+                            if (bigDecimal.compareTo(new BigDecimal("0.0")) == 0) {
+                                score ="0";
+                            }
                         } catch (JSONException e) {
                             score = "";
                         }
                         String status = json.getString("status");
                         String wbsMai;
                         try {
-                            wbsMai = json.getString("wbsMainName");
+                            wbsMai = json.getString("name");
                         } catch (JSONException e) {
                             wbsMai = "";
                         }

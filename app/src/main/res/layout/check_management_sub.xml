@@ -73,47 +73,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
+                    android:textSize="16sp"
                     android:singleLine="true"
-                    android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
                     android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/sub_management_wbs"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text=""
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:layout_below="@+id/sub_management_title"
+                    android:textColor="@color/graytext" />
 
                 <TextView
                     android:id="@+id/sub_management_user"
                     android:layout_width="wrap_content"
-
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/sub_management_title"
-                    android:text="张三    2018-00-00"
-                    android:textColor="@color/graytext" />
-
-                <TextView
-                    android:id="@+id/sub_management_block"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sub_management_user"
+                    android:layout_below="@+id/sub_management_wbs"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:singleLine="true"
-                    android:text="所属标段:0XXXXXXXXXXXX11111111111111111"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/sub_management_org"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/sub_management_block"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:singleLine="true"
-                    android:text="所属组织:0XXXXXXXXXXXX11111111111111"
-                    android:textColor="@color/black" />
+                    android:text="所属组织:"
+                    android:textColor="@color/black"
+                    android:layout_below="@+id/sub_management_user" />
             </RelativeLayout>
 
         </RelativeLayout>

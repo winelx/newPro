@@ -112,6 +112,7 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             childHold = (ChildHold) convertView.getTag();
         }
         childHold.homeItemImg.setBackgroundResource(R.drawable.home_item_blue);
+        childHold.homeItemImg.setText(content.get(classes.get(groupPosition)).get(childPosition).getParentname());
         childHold.checkMeTitle.setText(content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
         int number = Integer.parseInt(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
         if (number > 0) {

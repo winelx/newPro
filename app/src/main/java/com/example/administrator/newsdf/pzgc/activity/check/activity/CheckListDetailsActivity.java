@@ -53,12 +53,12 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private TextView datatime, categoryItem, checklistmeuntext, titleView,
+    private TextView datatime, categoryItem, checkNewNumber, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout check_new_data, checkImport, checkCategory, checkNewAddNumber;
     private DrawerLayout drawerLayout;
     private GridView checklist;
-    private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
+    private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
@@ -81,6 +81,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
     ArrayList<View> tVisibility = new ArrayList<>();
     private ArrayList<chekitemList> checkitem;
     String success;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,8 +115,8 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
         checkNewButton = (Button) findViewById(R.id.check_new_buttons);
         checkNewButton.setOnClickListener(this);
         //分数
-        checkNewNumber = (EditText) findViewById(R.id.check_new_number);
-        checkNewNumber.setEnabled(false);
+        checkNewNumber = (TextView) findViewById(R.id.check_new_number);
+
         //标题
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
         viewlist.add(checkNewTasktitle);
@@ -201,7 +202,7 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                 drawerLayout.openDrawer(GravityCompat.END);
             }
         });
-        titleView.setText("新增检查");
+        titleView.setText("检查详情");
         adapter = new CheckNewAdapter(mContext, mData);
         checklist.setAdapter(adapter);
         checkNewButton.setVisibility(View.GONE);
@@ -398,14 +399,13 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-                            ToastUtils.showShortToast(jsonObject.getString("msg"));
                             JSONObject json = jsonObject.getJSONObject("data");
                             //具体时间
                             datatime.setText(json.getString("checkDate"));
                             //检查标准类别
                             categoryItem.setText(json.getString("wbsTaskTypeName"));
                             //检查组织
-                            checkNewOrgname.setText(json.getString("orgName"));
+                            checkNewOrgname.setText(json.getString("checkOrgName"));
                             //检查部位wbs
                             String wbspath = json.getString("wbsMainName");
                             if (wbspath.length() > 0) {
@@ -433,7 +433,17 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                             } else {
                                 checkNewTemporarysite.setText("未输入");
                             }
-                            checkNewNumber.setText(json.getString("score"));
+                            String score;
+                            try {
+                                score = json.getString("score");
+                                if (score.equals("0.0")) {
+                                    checkNewNumber.setText("0");
+                                }else {
+                                    checkNewNumber.setText(score);
+                                }
+                            } catch (JSONException e) {
+                                score = "";
+                            }
                             taskId = json.getString("id");
                             checkItem();
                         } catch (JSONException e) {

@@ -124,10 +124,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
      * 右侧wbs节点
      */
     private ListView drawerLayoutList;
-    /**
-     * 判断是否刷新还是上拉加载
-     */
-    private String notall = "false";
+
     /**
      * 下拉刷新控件
      */

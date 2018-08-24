@@ -27,7 +27,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -66,17 +66,17 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private TextView datatime, categoryItem, checklistmeuntext, titleView,
+    private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber;
     private DrawerLayout drawerLayout;
     private GridView checklist;
-    private EditText checkNewNumber, checkNewTasktitle, checkNewTemporarysite;
+    private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId, categoryId = "", taskId, nodeId;
+    private String name, orgId, categoryId = "", taskId="", nodeId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -86,7 +86,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout checklistmeun;
     private SmartRefreshLayout smallLabel;
     private RelativeLayout checkNewDialog;
-
+    int number = 0;
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
@@ -122,7 +122,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         } else {
             getdata();
             statusT();
-
         }
     }
 
@@ -130,7 +129,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     protected void onStart() {
         super.onStart();
         getcheckitemList();
-
     }
 
     private void findbyid() {
@@ -157,7 +155,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checkNewButton = (Button) findViewById(R.id.check_new_buttons);
         checkNewButton.setOnClickListener(this);
         //分数
-        checkNewNumber = (EditText) findViewById(R.id.check_new_number);
+        checkNewNumber = (TextView) findViewById(R.id.check_new_number);
         //标题
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
         viewlist.add(checkNewTasktitle);
@@ -203,7 +201,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         dateMonth = myDate.getMonth();
         //天
         dayDate = myDate.getDate() - 1;
-
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
@@ -286,9 +283,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         if (content.length() > 0 || wbspath.length() > 0) {
                             String title = checkNewTasktitle.getText().toString();
                             if (title.length() > 0) {
-                                    //如果存在一个或者都存在，就调用接口
-                                    Save(wbspath, nodeId);
-                            }else {
+                                //如果存在一个或者都存在，就调用接口
+                                Save(wbspath, nodeId);
+                            } else {
                                 ToastUtils.showLongToast("检查计划名称不能为空");
                             }
                         } else {
@@ -358,7 +355,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == 1 && resultCode == 2) {
             //选择类别的返回数据
             categoryItem.setText(data.getStringExtra("data"));
-            //类别Id，保存时上传Id即可
+            //类别Id，保存时上传类别的Id即可
             categoryId = data.getStringExtra("id");
         } else if (requestCode == 2 && resultCode == 3) {
             //导入wbs的返回数据
@@ -384,7 +381,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(datatime, 200, 200);
+        mPopupWindow.showAsDropDown(titleView);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
@@ -538,7 +535,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                 //更新列表界面
                                 JSONObject json = jsonObject1.getJSONObject("data");
                                 taskId = json.getString("id");
-                                TaskCallbackUtils.CallBackMethod();
                                 getcheckitemList();
                                 statusT();
                             } else {
@@ -561,7 +557,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
     }
-
+//     checkNewNumber.setText(number+"");
     /**
      * 生成检查后的检查项列表
      */
@@ -582,7 +578,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
                                         String id = json.getString("id");
+
                                         String score = json.getString("score");
+
                                         String sequence = json.getString("sequence");
                                         String standardScore = json.getString("standardScore");
                                         boolean noSuch = json.getBoolean("noSuch");
@@ -595,6 +593,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                         boolean penalty = json.getBoolean("penalty");
                                         int number = i + 1;
                                         mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
+
                                     }
                                 }
                             }
@@ -607,6 +606,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
 
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
                 });
     }
 
@@ -623,27 +626,37 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 //具体时间
                                 datatime.setText(json.getString("checkDate"));
                                 //检查标准类别
                                 categoryItem.setText(json.getString("wbsTaskTypeName"));
                                 //检查组织
-                                checkNewOrgname.setText(json.getString("orgName"));
-                                //检查部位wbs
-                                String wbspath = json.getString("wbsMainName");
-                                if (wbspath.length() > 0) {
-                                    wbsName.setText(wbspath);
-                                    wbsName.setVisibility(View.VISIBLE);
+                                checkNewOrgname.setText(json.getString("checkOrgName"));
+                                try {
+                                    nodeId = json.getString("nodeId");
+                                } catch (JSONException e) {
+                                    nodeId = "";
                                 }
-//                                checkNewTemporarysite.setText(json.getString("wbsMainName"));
+                                //检查部位wbs
+                                try {
+                                    wbsName.setText(json.getString("wbsMainName"));
+                                    wbsName.setVisibility(View.VISIBLE);
+                                } catch (JSONException e) {
+                                    wbsName.setText("");
+                                }
+
                                 //检查人
                                 checkUsername.setText(json.getString("realname"));
                                 //检查标题
                                 String titikle = json.getString("name");
-                                if (titikle.length() > 0) {
-                                    checkNewTasktitle.setText(json.getString("name"));
+                                try {
+                                    checkNewNumber.setText(json.getString("score"));
+                                } catch (JSONException e) {
+                                    checkNewNumber.setText("");
                                 }
+                                checkNewTasktitle.setText(titikle);
                                 //所属标段
                                 checkNewWebtext.setText(json.getString("orgName"));
                                 //检查部位
@@ -652,8 +665,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
-                                categoryId = json.getString("id");
-                                nodeId = json.getString("WbsTaskTypeId");
+
+                                categoryId = json.getString("WbsTaskTypeId");
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -682,11 +695,13 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-                            ToastUtils.showShortToast(jsonObject.getString("msg"));
+
                             if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 categoryId = json.getString("id");
                                 categoryItem.setText(json.getString("name"));
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -709,13 +724,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                statusT();
-                                //刷新列表界面
-                                TaskCallbackUtils.CallBackMethod();
-                                checklistmeuntext.setText("");
-                                checkNewButton.setVisibility(View.GONE);
+                            if (jsonObject.getInt("ret") == 0) {
+                                HideCallbackUtils.removeCallBackMethod();
+                                finish();
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -727,6 +740,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         super.onError(call, response, e);
                     }
                 });
+
     }
 
     public void checkFinish() {
@@ -742,8 +756,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 Boolean lean = jsonObject1.getBoolean("finish");
                                 if (lean) {
+
                                     checkNewButton.setText("提交");
                                     checkNewButton.setBackgroundResource(R.color.Orange);
+
                                 }
                             }
                         } catch (JSONException e) {

@@ -46,12 +46,9 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         }catch (NumberFormatException e){
             number=0;
         }
-        if (number > 0) {
-            holder.homeItemMessage.setText(number + "");
-            holder.homeItemMessage.setVisibility(View.VISIBLE);
-        } else {
+
             holder.homeItemMessage.setVisibility(View.GONE);
-        }
+
         holder.checkMeTitle.setText(mDatas.get(position).getOrgname());
         holder.homeItemImg.setText(mDatas.get(position).getParentname());
         holder.check_relati.setOnClickListener(new View.OnClickListener() {

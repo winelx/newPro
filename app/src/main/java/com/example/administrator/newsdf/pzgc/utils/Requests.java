@@ -6,12 +6,11 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
- //public static final String networks="http://192.168.20.81:8080/baseframe/";
-   // public static final String networks = "http://192.168.20.36:8080/";
+  //public static final String networks = "http://192.168.20.36:8080/";
  //public static final String networks = "http://192.168.20.35:8080/pzgc/";
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
-public static final String networks = "http://117.187.27.78:58081/pzgc/";
-    //  public static final String networks = "http://120.79.142.15/pzgc/";
+//public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -354,16 +353,15 @@ public static final String networks = "http://117.187.27.78:58081/pzgc/";
     public static final String verificationSubmit = networks + "admin/check/checkverificationform/verificationSubmit";
     /**
      * 验证保存
-     *
      */
     public static final String saveVerificationDataApp = networks + "admin/check/checkverificationform/saveVerificationDataApp";
 
-   /**
-    * ?replyId=
-    */
-   public static final String replySubmit = networks + "admin/check/checkreplyform/replySubmit";
-   /**
-    * 删除未下发
-    */
-   public static final String checkdeleteDateApp = networks + "admin/check/checknoticeform/deleteDateApp";
+    /**
+     * ?replyId=
+     */
+    public static final String replySubmit = networks + "admin/check/checkreplyform/replySubmit";
+    /**
+     * 删除未下发
+     */
+    public static final String checkdeleteDateApp = networks + "admin/check/checknoticeform/deleteDateApp";
 }

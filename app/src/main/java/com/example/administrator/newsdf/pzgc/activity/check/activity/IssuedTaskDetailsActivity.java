@@ -253,7 +253,7 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                 String sendPersonName = json.getString("sendPersonName");
                                 String sendDate = json.getString("sendDate");
                                 motionNode = json.getString("motionNode");
-                                //所属标段
+                                //整改事由
                                 String rectificationOrgName = json.getString("rectificationReason");
                                 //违反标准
                                 String standardDelName = json.getString("standardDelName");

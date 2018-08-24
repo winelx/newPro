@@ -93,6 +93,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
     private ArrayList<View> listVIew = new ArrayList<>();
     private ArrayList<View> listEn = new ArrayList<>();
     private boolean status = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -350,7 +351,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                         Enabled(true);
                         checklistmeuntext.setText("保存");
                         checkRectifiSubmit.setBackgroundResource(R.color.gray);
-                        photoAdapter.getData(Imagepath,true);
+                        photoAdapter.getData(Imagepath, true);
                     }
                     break;
                 case R.id.check_rectifi_submit:
@@ -598,10 +599,12 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             deleteList.add(id);
         }
     }
+
     ArrayList<File> files;
+
     public void save() {
         Dates.getDialog(CheckRectificationActivity.this, "保存数据中...");
-      files = new ArrayList<>();
+        files = new ArrayList<>();
         if (Imagepath.size() > 0) {
             for (int i = 0; i < Imagepath.size(); i++) {
                 String content = Imagepath.get(i).getContent();
@@ -617,9 +620,9 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 .params("standardDel", categoryedid)
                 .params("standardDelCode", standardDelCode)
                 .params("standardDelScore", standardDelScore)
-                .params("standardDelName",check_new_tasktitle.getText().toString())
+                .params("standardDelName", category_item.getText().toString())
                 .params("standardType", categoryid)
-                .params("standardTypeName",  category_item.getText().toString())
+                .params("standardTypeName", check_new_tasktitle.getText().toString())
                 .params("checkDate", checkNewDataTx.getText().toString())
                 .params("rectificationPerson", userId)
                 .params("rectificationPersonName", userName)
@@ -674,6 +677,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             }
         });
     }
+
     public void getdata() {
         Dates.getDialog(CheckRectificationActivity.this, "请求数据中...");
         OkGo.<String>post(Requests.getNoticeDateApp)
@@ -694,20 +698,21 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 check_wbspath.setVisibility(View.VISIBLE);
                                 id = json.getString("id");
                                 OrgId = json.getString("rectificationOrgid");
-                                category_item.setText(json.getString("standardTypeName"));
+                                category_item.setText(json.getString("standardDelName"));
                                 orgName = json.getString("rectificationOrgName");
                                 checkRectifiWbs.setText(orgName);
                                 check_new_temporarysite.setText(json.getString("partDetails"));
                                 userName = json.getString("rectificationPersonName");
                                 check_rectifi_font.setText(userName);
                                 userId = json.getString("rectificationPerson");
-                                checkRectifiData.setText(json.getString("rectificationDate"));
+                                String rectificationDate = json.getString("rectificationDate");
+                                checkRectifiData.setText(rectificationDate.substring(0, 10));
                                 categoryedid = json.getString("standardDel");
-                                checkRectifiData.setText(json.getString("checkDate"));
+                                String checkDate = json.getString("checkDate");
+                                checkNewDataTx.setText(checkDate.substring(0, 10));
                                 check_rectifi_result.setText(json.getString("rectificationReason"));
-                                category_item.setText(json.getString("standardTypeName"));
                                 categoryid = json.getString("standardType");
-                                check_new_tasktitle.setText(json.getString("standardDelName"));
+                                check_new_tasktitle.setText(json.getString("standardTypeName"));
                                 standardDelCode = json.getString("standardDelCode");
                                 standardDelScore = json.getString("standardDelScore");
                                 JSONArray attachment = json.getJSONArray("attachmentList");

@@ -147,6 +147,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@null"
                         android:hint="请输入临时部位"
+                        android:textColor="@color/black"
                         android:minHeight="35dp"
                         android:textColorHint="@color/graytext"
                         android:textSize="13sp" />
@@ -252,6 +253,7 @@
                             android:id="@+id/check_new_tasktitle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textColor="@color/black"
                             android:layout_gravity="end"
                             android:gravity="center"
                             android:layout_weight="7"
@@ -389,6 +391,7 @@
 
 
                     <TextView
+                        android:id="@+id/textView18"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -469,6 +472,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
+                        android:textColor="@color/black"
                         android:hint="请输入整改事由"
                         android:minHeight="35dp"
                         android:textColorHint="@color/graytext"

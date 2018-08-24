@@ -467,7 +467,6 @@ public class Dates {
     }
     public static List<String> stringToLists(String strs) {
         if (strs == "" && strs.isEmpty()) {
-
         } else {
             String str[] = strs.split(",");
             return Arrays.asList(str);

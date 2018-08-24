@@ -86,6 +86,14 @@ public class CheckNewAdapter extends BaseAdapter {
                         holder.LabelView.setVisibility(View.GONE);
                     }
                 } else {
+                    //是否被下通知
+                    boolean Generate = imagePaths.get(position).isGenerate();
+                    if (Generate) {
+                        holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                        holder.LabelView.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.LabelView.setVisibility(View.GONE);
+                    }
                     holder.chekItemRe.setBackgroundResource(R.color.finish_green);
                 }
             }

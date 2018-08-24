@@ -37,7 +37,7 @@
                     app:slantedBackgroundColor="@color/finish_green"
                     app:slantedLength="28dp"
                     app:slantedMode="right_triangle"
-                    app:slantedText="未完成"
+                    app:slantedText="已提交"
                     app:slantedTextColor="@color/writer"
                     app:slantedTextSize="10sp" />
 
@@ -49,36 +49,40 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
+                    android:textSize="16sp"
                     android:singleLine="true"
                     android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/management_user"
+                    android:id="@+id/management_wbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/management_title"
-                    android:text="张三    2018-00-00"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxEms="16"
+                    android:singleLine="true"
                     android:textColor="@color/graytext" />
 
                 <TextView
-                    android:id="@+id/management_block"
+                    android:id="@+id/management_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/management_user"
+                    android:layout_below="@+id/management_wbs"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:ellipsize="end"
                     android:maxEms="16"
                     android:singleLine="true"
-                    android:text="所属标段:0XXXXXXXXXXXX" />
+                   />
 
                 <TextView
                     android:id="@+id/management_org"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/management_block"
+                    android:layout_below="@+id/management_user"
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
                     android:ellipsize="end"

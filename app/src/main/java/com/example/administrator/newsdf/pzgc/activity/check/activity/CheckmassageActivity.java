@@ -64,6 +64,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static com.example.administrator.newsdf.R.id.check_message_org;
+import static com.example.administrator.newsdf.R.id.checklistmeun;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 import static com.lzy.okgo.OkGo.post;
 
@@ -96,11 +97,11 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout checkMessageLasttiem, checkMessageDialog, checkMessageDate;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private RelativeLayout checkMessageContent;
-    private EditText check_message_describe;
-    private TextView checkMessageUser, checkMessageOrg, MessageData, checkMessageStandar, titleView;
+    private EditText check_message_describe,checkMessageStandar;
+    private TextView checkMessageUser, checkMessageOrg, MessageData,  titleView;
     private Boolean generate;
     private String orgId, nameId = "";
-    private String messageid = "", taskId;
+    private String messageid = "", taskId, success;
     ArrayList<String> ids;
     private IconTextView threeIcon, twoIco, ontIcon;
     private ArrayList<View> arrayList = new ArrayList<>();
@@ -150,7 +151,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //整改事由
         check_message_describe = (EditText) findViewById(R.id.check_message_describe);
         //违反标段
-        checkMessageStandar = (TextView) findViewById(R.id.checkmessage_standar);
+        checkMessageStandar = (EditText) findViewById(R.id.checkmessage_standar);
         //滚动父布局
         checkMessageContent = (RelativeLayout) findViewById(R.id.check_message_content);
         //标题
@@ -167,7 +168,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
         check_message_username = (LinearLayout) findViewById(R.id.check_message_username);
         check_message_username.setOnClickListener(this);
-        findViewById(R.id.checklistmeun).setOnClickListener(this);
+        findViewById(checklistmeun).setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         checkMessageDate.setOnClickListener(this);
         checkMessageLasttiem.setOnClickListener(this);
@@ -192,12 +193,17 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         orgId = intent.getStringExtra("orgId");
         generate = intent.getBooleanExtra("status", false);
         messageid = intent.getStringExtra("messageid");
+        success = intent.getStringExtra("success");
         taskId = intent.getStringExtra("taskId");
-        //组装id和路径
-        if (ids.size() > 0) {
-            for (int i = 0; i < ids.size(); i++) {
-                Imagepath.add(new Audio(path.get(i), ids.get(i)));
+        try {
+            //组装id和路径
+            if (ids.size() > 0) {
+                for (int i = 0; i < ids.size(); i++) {
+                    Imagepath.add(new Audio(path.get(i), ids.get(i)));
+                }
             }
+        } catch (NullPointerException e) {
+
         }
         checkMessageStandar.setText(intent.getStringExtra("content"));
         if (generate) {
@@ -246,6 +252,10 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         checkMessageSwitch.setClickable(false);
         photoAdapter.getData(Imagepath, false);
         titleView.setText("生成整改通知单");
+        if (success != null) {
+            findViewById(checklistmeun).setVisibility(View.GONE);
+        }
+
     }
 
     //添加图片选择功能
@@ -580,7 +590,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 }
                 finish();
                 break;
-            case R.id.checklistmeun:
+            case checklistmeun:
                 String meuntext = checklistmeuntext.getText().toString();
                 if ("保存".equals(meuntext)) {
                     boolean lean = checkMessageSwitch.isChecked();
@@ -638,7 +648,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 .params("detailsId", taskId)
                 //违反标准
                 .params("standardDelName", checkMessageStandar.getText().toString())
-//                //整改事宜
+                //整改事宜
                 .params("rectificationReason", check_message_describe.getText().toString())
                 //检查人
                 .params("checkPersonName", SPUtils.getString(mContext, "id", ""))
@@ -651,7 +661,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 //整改负责人Id
                 .params("rectificationPerson", nameId)
                 .addFileParams("imagesList", file)
-                .params("copyFileIds", Dates.listToStrings(ids))
+                .params("deleteFileId", Dates.listToStrings(deleteId))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -679,18 +689,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 });
 
     }
-
     ArrayList<String> deleteId = new ArrayList<>();
-
     public void deleteid(String id) {
-        if (ids.size() > 0) {
-            for (int i = 0; i < ids.size(); i++) {
-                String name = ids.get(i);
-                if (name.equals(id)) {
-                    ids.remove(i);
-                }
-            }
-        }
         deleteId.add(id);
     }
 
@@ -708,11 +708,15 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 messageid = json.getString("id");
-                                checkMessageStandar.setText(json.getString("standardDelName"));
-                                check_message_describe.setText(json.getString("rectificationReason"));
-                                checkMessageUser.setText(json.getString("checkPersonName"));
+                                String stard = json.getString("standardDelName");
+                                checkMessageStandar.setText(stard);
+                                String Reaso = json.getString("rectificationReason");
+                                check_message_describe.setText(Reaso);
+                                String messageuser = json.getString("checkPersonName");
+                                checkMessageUser.setText(messageuser);
                                 //
-                                checkMessageOrg.setText(json.getString("checkOrgName"));
+                                String checkOrgName = json.getString("checkOrgName");
+                                checkMessageOrg.setText(checkOrgName);
                                 //负责人ID
                                 nameId = json.getString("rectificationPerson");
                                 MessageData.setText(json.getString("checkDate").substring(0, 10));
@@ -754,6 +758,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
                             if (jsonObject.getInt("ret") == 0) {
                                 TaskCallbackUtils.CallBackMethod();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -780,6 +785,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 
     public void setStatusT() {
         check_message_username.setClickable(true);
+        checkMessageStandar.setClickable(true);
         checklistmeuntext.setText("保存");
         photoAdapter.getData(Imagepath, true);
         setTitleView();
@@ -788,6 +794,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     public void setStatusF() {
         setTitleView1();
         check_message_username.setClickable(false);
+        checkMessageStandar.setClickable(false);
         checklistmeuntext.setText("编辑");
         photoAdapter.getData(Imagepath, false);
     }

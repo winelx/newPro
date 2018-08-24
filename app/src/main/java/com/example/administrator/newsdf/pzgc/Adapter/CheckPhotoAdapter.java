@@ -107,7 +107,10 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             if (str.equals("编辑")) {
                                 ToastUtils.showShortToast("当前状态不可编辑");
                             } else {
-                                message.deleteid(photoPaths.get(position).getContent());
+                                String strs = photoPaths.get(position).getContent();
+                                if (strs.length() > 0) {
+                                    message.deleteid(photoPaths.get(position).getContent());
+                                }
                                 //删除本地图片
                                 FileUtils.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
@@ -183,10 +186,10 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "Message":
                             CheckmassageActivity message = (CheckmassageActivity) mContext;
-                        String getsttus=message.getsttus();
+                            String getsttus = message.getsttus();
                             if ("编辑".equals(getsttus)) {
                                 ToastUtils.showShortToast("当前状态不可编辑");
-                            }else {
+                            } else {
                                 //调用相机
                                 message.showPopwindow();
                             }

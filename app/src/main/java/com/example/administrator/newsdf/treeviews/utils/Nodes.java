@@ -24,7 +24,7 @@ public class Nodes {
     private String name;
     private String ids;
     private String pids;
-
+    private String type;
     /**
      * 树的层级
      */
@@ -100,6 +100,14 @@ public class Nodes {
 
     public void setIds(String ids) {
         this.ids = ids;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**

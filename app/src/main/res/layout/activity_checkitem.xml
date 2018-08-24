@@ -23,7 +23,8 @@
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/linearLayout8">
 
                 <LinearLayout
                     android:id="@+id/check_item_tabup"
@@ -65,11 +66,11 @@
                 android:id="@+id/float_suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="74dp"
+                android:background="@mipmap/float_suspension"
+                android:layout_above="@+id/linearLayout8"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="150dp"
-                android:background="@mipmap/float_suspension" />
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 
