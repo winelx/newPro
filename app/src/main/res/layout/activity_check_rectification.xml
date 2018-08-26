@@ -32,8 +32,14 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingLeft="15dp"
+                    android:paddingLeft="10dp"
                     android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        android:textColor="@color/red" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -101,7 +107,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="检查部位"
+                            android:text="整改部位"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -147,8 +153,8 @@
                         android:layout_marginTop="5dp"
                         android:background="@null"
                         android:hint="请输入临时部位"
-                        android:textColor="@color/black"
                         android:minHeight="35dp"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/graytext"
                         android:textSize="13sp" />
 
@@ -199,8 +205,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:hint="请选择"
                             android:layout_marginLeft="18dp"
+                            android:hint="请选择"
                             android:minHeight="20dp"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
@@ -253,13 +259,13 @@
                             android:id="@+id/check_new_tasktitle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:textColor="@color/black"
                             android:layout_gravity="end"
-                            android:gravity="center"
                             android:layout_weight="7"
                             android:background="@null"
+                            android:gravity="center"
                             android:hint="违反标准自动返回"
                             android:minWidth="45dp"
+                            android:textColor="@color/black"
                             android:textSize="15sp" />
                     </LinearLayout>
 
@@ -472,9 +478,9 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:background="@null"
-                        android:textColor="@color/black"
                         android:hint="请输入整改事由"
                         android:minHeight="35dp"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/graytext"
                         android:textSize="13sp" />
 

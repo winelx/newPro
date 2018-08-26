@@ -37,7 +37,6 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         mContext = context;
 
     }
-
     @Override
     public int getItemCount() {
         return mDatas.size();
@@ -55,7 +54,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         holder.managementwbs.setText(mDatas.get(position).getRectificationOrgName());
         holder.managementTitle.setText(mDatas.get(position).getStandardDelName());
         holder.managementOrg.setText("检查组织:" + mDatas.get(position).getCheckOrgName());
-        holder.managementNumber.setText(setText("扣分:" + mDatas.get(position).getStandardDelScore(), 2));
+        holder.managementNumber.setText(setText("扣分:" + mDatas.get(position).getStandardDelScore(), 3));
         holder.noticeUser.setText("整改负责人:" + mDatas.get(position).getNoticeuser());
         holder.noticeLasttime.setText("整改期限:" + mDatas.get(position).getNoticetime());
         Boolean isDeal = mDatas.get(position).isDeal();

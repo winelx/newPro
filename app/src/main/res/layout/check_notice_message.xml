@@ -78,34 +78,34 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
-
                     android:singleLine="true"
                     android:text="1111111111111111111111"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/management_wbs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/management_title"
-                    android:textSize="13sp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="18"
                     android:singleLine="true"
                     android:text="11111111111111"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/management_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/management_wbs"
-                    android:textSize="13sp"
                     android:layout_marginTop="2dp"
                     android:text="张三    2018-00-00"
-                    android:textColor="@color/graytext" />
+                    android:textColor="@color/graytext"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/management_org"
@@ -131,7 +131,6 @@
                     android:text="扣分:99"
                     android:textColor="@color/red"
                     android:textSize="14sp" />
-
 
 
                 <LinearLayout

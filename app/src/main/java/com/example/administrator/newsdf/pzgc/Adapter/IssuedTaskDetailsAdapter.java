@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -99,6 +100,11 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             ((DetailsTop) holder).checkDetailsRec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<Audio> list = new ArrayList<>();
             list = ((CheckDetailsTop) obj).getAttachmentList();
+            if (list.size() > 0) {
+                ((DetailsTop) holder).notimgeview.setVisibility(View.GONE);
+            } else {
+                ((DetailsTop) holder).notimgeview.setVisibility(View.VISIBLE);
+            }
             ArrayList<String> path = new ArrayList<>();
             ArrayList<String> title = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -179,11 +185,13 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 checkDetailsStandard, checkDetailsWhy, checkDetailsOrg;
         RecyclerView checkDetailsRec;
         TextView checkDetailsRectificationUser, checkDetailsLasetime, checkDetailsStatus;
+        ImageView notimgeview;
 
         DetailsTop(View itemView) {
             super(itemView);
             checkDetailsTitle = itemView.findViewById(R.id.check_details_title);
             checkDetailsUserdata = itemView.findViewById(R.id.check_details_userData);
+            notimgeview = itemView.findViewById(R.id.notimgeview);
 
             checkDetailsStandard = itemView.findViewById(R.id.check_details_standard);
             checkDetailsWhy = itemView.findViewById(R.id.check_details_why);

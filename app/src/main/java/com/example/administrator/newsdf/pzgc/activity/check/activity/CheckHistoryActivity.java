@@ -32,7 +32,7 @@ public class CheckHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.checkuser_list);
         wbs_listview = (ListView) findViewById(R.id.wbs_listview);
         TextView com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("历史记录");
+        com_title.setText("c处理记录");
         Intent intent = getIntent();
         msg = intent.getStringArrayListExtra("msg");
         data = intent.getStringArrayListExtra("data");
@@ -44,8 +44,9 @@ public class CheckHistoryActivity extends AppCompatActivity {
             public void bindView(ViewHolder holder, Audio obj) {
                 holder.setText(task_cord, obj.getName());
                 String data = obj.getContent();
-                data = data.substring(0, 10);
                 holder.setText(R.id.task_cord_data, data);
+                holder.setSize(R.id.task_cord_data, 10);
+
             }
         };
         wbs_listview.setAdapter(adapter);

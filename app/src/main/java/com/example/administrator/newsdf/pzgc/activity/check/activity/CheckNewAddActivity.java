@@ -27,6 +27,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
+import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -725,7 +726,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.getInt("ret") == 0) {
-                                HideCallbackUtils.removeCallBackMethod();
+                                CheckTaskCallbackUtils.CallBackMethod();
                                 finish();
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));

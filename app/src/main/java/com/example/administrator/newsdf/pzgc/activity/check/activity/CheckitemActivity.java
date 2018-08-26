@@ -46,6 +46,7 @@ import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.MyRelativeLayout;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -103,8 +104,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private Switch switch1;
     private String success, checkManageId, itemId;
     private Boolean generate;
+    private MyRelativeLayout check_item_content;
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
+
     private String score;
 
     @Override
@@ -114,6 +117,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
         MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
+
+        check_item_content= (MyRelativeLayout) findViewById(R.id.check_item_content);
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
         id = intent.getStringExtra("id");
@@ -463,6 +468,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             case checklistmeun:
                 String text1 = checklistmeuntext.getText().toString();
                 if ("编辑".equals(text1)) {
+
                     tClickableT();
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(text1)) {
@@ -794,5 +800,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         intent.putExtra("taskId", itemId);
         startActivity(intent);
     }
+
 }
 

@@ -1,6 +1,9 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -315,7 +318,7 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                                 }
                                             }
                                             if (i == 0) {
-                                                for (int j = 0; j <replyimgArray.size(); j++) {
+                                                for (int j = 0; j < replyimgArray.size(); j++) {
                                                     replyArray.add(replyimgArray.get(j));
                                                 }
                                             }
@@ -327,13 +330,13 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                             String replyPersonName2 = jsonObject2.getString("verificationPersonName");
                                             String replyDate2 = jsonObject2.getString("updateDate");
                                             replyDate2 = replyDate2.substring(0, 10);
-                                            String isby=jsonObject2.getString("isby");
+                                            String isby = jsonObject2.getString("isby");
                                             motionCount2 = jsonObject2.getString("motionCount");
                                             if (i == 0) {
                                                 if (motionCount1.equals(motionCount2)) {
                                                     repycontent = jsonObject2.getString("verificationOpinion");
                                                     resultId = jsonObject2.getString("id");
-                                                    verstatus=jsonObject2.getString("isby");
+                                                    verstatus = jsonObject2.getString("isby");
                                                 }
                                             }
                                             String repycontent2 = jsonObject2.getString("verificationOpinion");
@@ -348,12 +351,12 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                             if (i == 0) {
                                                 if (motionCount1.equals(motionCount2)) {
                                                     replyArray.clear();
-                                                    for (int j = 0; j <replyimgArray4.size(); j++) {
+                                                    for (int j = 0; j < replyimgArray4.size(); j++) {
                                                         replyArray.add(replyimgArray4.get(j));
                                                     }
                                                 }
                                             }
-                                            mData3.add(new CheckDetailsContents(replyPersonName2, repycontent2, replyDate2, motionCount2,isby, replyimgArray4));
+                                            mData3.add(new CheckDetailsContents(replyPersonName2, repycontent2, replyDate2, motionCount2, isby, replyimgArray4));
                                         }
 
                                     }
@@ -431,38 +434,19 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
 //    noticeId 通知单id
 
     public void saveAssignPersonApp() {
-        OkGo.post(Requests.saveAssignPersonApp)
-                //指派人ID
-                .params("acceptPerson", userId)
-                //指派人名称
-                .params("acceptPersonName", userId)
-                .params("assignDate", Dates.getDay())
-                .params("id", sdealId)
-                .params("noticeId", id)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                isDeal = true;
-                                TaskCallbackUtils.CallBackMethod();
-                                getData();
-                            } else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("")
+                .setMessage("确定将任务指派给" + userName + "吗?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setuser();
                     }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
                     }
                 });
-
     }
 
     //整改回复成功关闭界面
@@ -524,4 +508,39 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                     }
                 });
     }
+
+    public void setuser() {
+        OkGo.post(Requests.saveAssignPersonApp)
+                //指派人ID
+                .params("acceptPerson", userId)
+                //指派人名称
+                .params("acceptPersonName", userId)
+                .params("assignDate", Dates.getDay())
+                .params("id", sdealId)
+                .params("noticeId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                isDeal = true;
+                                TaskCallbackUtils.CallBackMethod();
+                                getData();
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
 }
+

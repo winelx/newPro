@@ -27,6 +27,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallback;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -57,7 +59,7 @@ import okhttp3.Response;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener,HideCallback {
+public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener,CheckTaskCallback {
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
@@ -81,7 +83,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
         mContext = CheckTasklistActivity.this;
-        HideCallbackUtils.setCallBack(this);
+        CheckTaskCallbackUtils.setCallBack(this);
         checkUtils = new CheckUtils();
         checkjson = new Checkjson();
         try {
@@ -231,8 +233,9 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
     }
     //编辑页面新增或者修改后刷新界面
 
+
     @Override
-    public void deleteTop() {
+    public void updata() {
         pages = 1;
         checkmamgrlist();
     }

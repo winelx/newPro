@@ -239,7 +239,13 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             }
             return this;
         }
-
+        public ViewHolder setSize(int id, int size) {
+            View view = getView(id);
+            if (view instanceof TextView) {
+                ((TextView) view).setTextSize(size);
+            }
+            return this;
+        }
         public ViewHolder setBackgroud(int id, String drawableRes) {
             View view = getView(id);
             if (view instanceof ImageView) {
