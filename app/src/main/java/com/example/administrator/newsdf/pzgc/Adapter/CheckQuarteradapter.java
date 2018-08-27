@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/8/27 0027.
+ * 统计报表
  */
 
 public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -41,10 +44,11 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void bindView(ViewHolder holder, int position) {
-        holder.listRanking.setText((position + 1)+"");
+        holder.listRanking.setText((position + 1) + "");
         holder.listCompanyName.setText("所属公司：" + mData.get(position).getCompany());
         holder.listOrgidName.setText(mData.get(position).getOrgname());
-        holder.number.setText(mData.get(position).getNumber());
+        String str=mData.get(position).getNumber().replace(".0", "");
+        holder.number.setText( str);
         if (position == 0) {
             holder.listRanking.setBackgroundResource(R.drawable.home_item_one);
         } else if (position == 1) {
@@ -52,10 +56,10 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (position == 2) {
             holder.listRanking.setBackgroundResource(R.drawable.home_item_three);
         } else if (position == mData.size() - 1 || position == mData.size() - 2 || position == mData.size() - 3) {
-            if (mData.size()>3){
+            if (mData.size() > 3) {
                 holder.listRanking.setBackgroundResource(R.drawable.check_item_last);
             }
-        }else {
+        } else {
             holder.listRanking.setBackgroundResource(R.drawable.check_item_green);
         }
 

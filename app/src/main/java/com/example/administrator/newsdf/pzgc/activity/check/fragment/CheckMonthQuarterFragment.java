@@ -17,10 +17,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -32,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -59,14 +64,17 @@ public class CheckMonthQuarterFragment extends Fragment {
     private PopupWindow mPopupWindow;
     private int dateMonth;
     private Date myDate = new Date();
+    private LinearLayout checkQueater;
+    private String yeare, mqnum;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_checkquarter, container, false);
         mData = new ArrayList<>();
-        mContext = getActivity();
+        mContext = CheckReportActivity.getInstance();
         dataTime = view.findViewById(R.id.linear_data);
+        checkQueater = view.findViewById(R.id.check_queater);
         title = view.findViewById(R.id.title);
         categoryList = view.findViewById(R.id.category_list);
         linearDataTime = view.findViewById(R.id.linear_data_time);
@@ -82,7 +90,11 @@ public class CheckMonthQuarterFragment extends Fragment {
         dataTime.setText(Dates.getMonth());
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-        getdate(Dates.getYear(), Dates.getHH());
+        mAdapter = new CheckQuarteradapter(mContext, mData);
+        categoryList.setAdapter(mAdapter);
+        yeare = Dates.getYear();
+        mqnum = Dates.stringToList(Dates.getMonth(), "-").get(1);
+        getdate();
         return view;
     }
 
@@ -117,12 +129,12 @@ public class CheckMonthQuarterFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.pop_determine:
                         //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
+                        yeare = Utils.year[yearPicker.getValue()];
                         //获取月
                         int month = monthPicker.getValue();
-                        String monthdata = Utils.month[month];
-                        dataTime.setText(yeardata + "-" + monthdata);
-                        getdate(yeardata, monthdata);
+                        mqnum = Utils.month[month];
+                        dataTime.setText(yeare + "-" + mqnum);
+                        getdate();
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -144,6 +156,7 @@ public class CheckMonthQuarterFragment extends Fragment {
         return contentView;
     }
 
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -154,21 +167,23 @@ public class CheckMonthQuarterFragment extends Fragment {
         }
     }
 
-    public void getdate(String Year, String Que) {
+    public void getdate() {
+        LogUtil.i("12", orgId);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)
                 //查询年份
-                .params("year", Year)
+                .params("year", yeare)
                 //查询季度
-                .params("mqnum", Que)
+                .params("mqnum", mqnum)
                 //查询类型：季度
-                .params("selectType", "Q")
+                .params("selectType", "M")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        //   ToastUtils.shwShortToast(s);
+                        ToastUtils.showShortToast(s);
                         try {
+                            mData.clear();
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             if (jsonArray.length() > 0) {
@@ -182,12 +197,29 @@ public class CheckMonthQuarterFragment extends Fragment {
                                     mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
                                 }
                             }
-                            mAdapter = new CheckQuarteradapter(mContext, mData);
-                            categoryList.setAdapter(mAdapter);
+                            if (mData.size() > 0) {
+                                checkQueater.setVisibility(View.GONE);
+                                mAdapter.getData(mData);
+                            } else {
+                                mData.clear();
+                                mAdapter.getData(mData);
+                                checkQueater.setVisibility(View.VISIBLE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
                 });
+    }
+
+    public void setOrgId(String id) {
+        orgId = id;
+        LogUtil.i("sss",orgId);
+        getdate();
     }
 }

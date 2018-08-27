@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +17,24 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallback2;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+
+import org.greenrobot.greendao.annotation.Id;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,10 +42,6 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.example.administrator.newsdf.pzgc.utils.Utils.getquarter;
-import static com.example.administrator.newsdf.pzgc.utils.Utils.quarter;
-import static com.example.administrator.newsdf.pzgc.utils.Utils.year;
 
 
 /**
@@ -47,25 +56,32 @@ public class CheckMonthReportFragment extends Fragment {
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
-    private TextView data_time, title;
+    private TextView dataTime, title;
     private LinearLayout nullposion;
     private CheckQuarteradapter mAdapter;
-    private ArrayList<CheckQuarterBean> mData;
-    private PopupWindow mPopupWindow;
-    private LinearLayout linearDataTime;
-    private String orgId, years, mqnum, data;
     private NumberPicker yearPicker, monthPicker;
+    private ArrayList<CheckQuarterBean> mData;
+    private LinearLayout linearDataTime;
+    private String orgId, data, years;
+    private PopupWindow mPopupWindow;
+    private int dateMonth;
+    private Date myDate = new Date();
+    private LinearLayout checkQueater;
+    private String yeare, mqnum;
+    TextView data_time;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_checkquarter, container, false);
         mData = new ArrayList<>();
-        mContext = getActivity();
+        mContext = CheckReportActivity.getInstance();
         categoryList = view.findViewById(R.id.category_list);
-        linearDataTime=view.findViewById(R.id.linear_data_time);
+        checkQueater = view.findViewById(R.id.check_queater);
+        linearDataTime = view.findViewById(R.id.linear_data_time);
         data_time = view.findViewById(R.id.linear_data);
         title = view.findViewById(R.id.title);
-        nullposion = view.findViewById(R.id.nullposion);
+
 //        mAdapter = new CheckQuarteradapter(mContext);
         title.setText("统计季度");
         linearDataTime.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +94,16 @@ public class CheckMonthReportFragment extends Fragment {
         String date = df.format(new Date());
         int quarter = Utils.getquarter();
         data_time.setText(date + Utils.quarter[quarter - 1]);
+        categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        mAdapter = new CheckQuarteradapter(mContext, mData);
+        categoryList.setAdapter(mAdapter);
+        mqnum = Utils.getquarter() + "";
+        years = Dates.getYear();
+        getdate();
         return view;
     }
+
     //弹出框
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
@@ -107,14 +131,14 @@ public class CheckMonthReportFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.pop_determine:
                         //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
+                        years = Utils.year[yearPicker.getValue()];
                         //获取季度
                         int month = monthPicker.getValue();
-                        String monthdata = quarter[month];
-                        data_time.setText(yeardata + monthdata);
-                        month = month + 1;
-//                        data = yeardata + "-" + month;
-//                        okgo(data, true);
+
+                        String monthdata = Utils.quarter[month];
+                        data_time.setText(years + monthdata);
+                        mqnum = month + 1 + "";
+                        getdate();
                         break;
                     case R.id.pop_dismiss:
                     default:
@@ -132,11 +156,13 @@ public class CheckMonthReportFragment extends Fragment {
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         yearPicker = contentView.findViewById(R.id.years);
-        Utils.setPicker(yearPicker, year, Utils.titleyear());
+        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
         monthPicker = contentView.findViewById(R.id.month);
-        Utils.setPicker(monthPicker, quarter, getquarter() - 1);
+        Utils.setPicker(monthPicker, Utils.quarter, Utils.getquarter() - 1);
         return contentView;
     }
+
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -146,7 +172,9 @@ public class CheckMonthReportFragment extends Fragment {
             Utils.backgroundAlpha(1f, CheckReportActivity.getInstance());
         }
     }
+
     public void getdate() {
+        LogUtil.i("12", orgId);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)
@@ -159,8 +187,38 @@ public class CheckMonthReportFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        ToastUtils.showShortToast(s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                    String id = jsonObject1.getString("id");
+                                    String name = jsonObject1.getString("name");
+                                    String parent_id = jsonObject1.getString("parent_id");
+                                    String parent_name = jsonObject1.getString("parent_name");
+                                    String score = jsonObject1.getString("score");
+                                    mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
+                                }
+                            }
+                            if (mData.size() > 0) {
+                                checkQueater.setVisibility(View.GONE);
+                                mAdapter.getData(mData);
+                            } else {
+                                mData.clear();
+                                mAdapter.getData(mData);
+                                checkQueater.setVisibility(View.VISIBLE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+    }
+    public void setOrgId(String id) {
+        orgId = id;
+        LogUtil.i("sss",orgId);
+        getdate();
     }
 }

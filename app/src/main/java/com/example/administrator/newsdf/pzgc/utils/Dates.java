@@ -465,6 +465,15 @@ public class Dates {
         }
         return null;
     }
+    public static List<String> stringToList(String strs,String type) {
+        if (strs == "" && strs.isEmpty()) {
+
+        } else {
+            String str[] = strs.split(type);
+            return Arrays.asList(str);
+        }
+        return null;
+    }
     public static List<String> stringToLists(String strs) {
         if (strs == "" && strs.isEmpty()) {
         } else {

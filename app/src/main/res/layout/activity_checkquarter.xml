@@ -81,7 +81,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="暂 无 数 据 ！" />
+                android:text="没有统计数据，换个组织试试吧！" />
 
         </LinearLayout>
     </FrameLayout>

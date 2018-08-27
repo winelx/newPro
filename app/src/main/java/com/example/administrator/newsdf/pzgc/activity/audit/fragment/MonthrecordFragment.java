@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
@@ -54,7 +55,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     private int dateMonth;
     private ReportActivity activity;
     private String data;
-
+    private LinearLayout checkQueater;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
             daily_list = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
+            checkQueater = rootView.findViewById(R.id.check_queater);
             rootView.findViewById(R.id.audit_title).setOnClickListener(this);
             rootView.findViewById(R.id.monthRetry).setOnClickListener(this);
         }
