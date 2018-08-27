@@ -1,4 +1,5 @@
-package com.example.administrator.newsdf.treeviews;
+package com.example.administrator.newsdf.pzgc.Adapter;
+
 
 import android.content.Context;
 import android.view.View;
@@ -9,26 +10,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.administrator.newsdf.treeviews.utils.TreeHelpers;
 import com.example.administrator.newsdf.treeviews.utils.adapter.TreeListViewAdapters;
 
 import java.util.List;
 
-
 /**
- * description:
- *
- * @author lx
- *         date: 2018/3/20 0020 下午 4:52
- *         update: 2018/3/20 0020
- *         version:
+ * Created by Administrator on 2018/8/27 0027.
  */
-public class ReportTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
 
-    public ReportTreeListViewAdapters(ListView tree, Context context,
-                                      List<T> datas, int defaultExpandLevel)
+public class CheckReportTreeListViewAdapters <T> extends TreeListViewAdapters<T> {
+    public CheckReportTreeListViewAdapters(ListView tree, Context context,
+                                           List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
     }
@@ -39,7 +34,7 @@ public class ReportTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public View getConvertView(final Nodes node, final int position, View convertView,
                                ViewGroup parent) {
         ViewHolder holder = null;
-        final ReportActivity mian = (ReportActivity) mContext;
+        final CheckReportActivity mian = (CheckReportActivity) mContext;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_node, parent, false);
             holder = new ViewHolder();
@@ -69,7 +64,6 @@ public class ReportTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
                 expandOrCollapse(position);
             }
         });
-
         holder.mText.setText(node.getName());
         //点击
         holder.mText.setOnClickListener(new View.OnClickListener() {

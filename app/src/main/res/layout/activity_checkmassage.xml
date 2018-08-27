@@ -35,6 +35,8 @@
                 android:id="@+id/check_message_switch"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:thumb="@drawable/switch_selector"
+                android:track="@drawable/switch_track"
                 android:layout_margin="0dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"

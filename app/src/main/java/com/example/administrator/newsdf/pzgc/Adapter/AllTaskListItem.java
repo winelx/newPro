@@ -19,17 +19,16 @@ import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by Administrator on 2018/8/1 0001.
- */
-/** 
  * description: 全部任务界面列表
+ *
  * @author lx
- * date: 2018/8/16 0016 上午 10:15 
- * update: 2018/8/16 0016
- * version: 
-*/
-public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+ *         date: 2018/8/16 0016 上午 10:15
+ *         update: 2018/8/16 0016
+ *         version:
+ */
+public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Inface_all_item> list;
     private Context mContext;
     private RecycleAdapterType adapterType;
@@ -38,9 +37,11 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.list = list;
         this.mContext = mContext;
     }
+
     public AllTaskListItem() {
 
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false);
@@ -86,11 +87,12 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 break;
         }
-        if (list.get(position).getUpload().size()>0){
+        holder.comments.setText("(" + list.get(position).getComments() + ")");
+        if (list.get(position).getUpload().size() > 0) {
             holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(),position);
+            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(), position);
             holder.taskcontent.setAdapter(adapterType);
-        }else {
+        } else {
             holder.inface_image.setVisibility(View.GONE);
         }
 
@@ -106,7 +108,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.inface_no_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AllListmessageActivity activity= (AllListmessageActivity) mContext;
+                AllListmessageActivity activity = (AllListmessageActivity) mContext;
                 activity.getumber(position);
             }
         });
@@ -131,7 +133,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class TypeViewholder extends RecyclerView.ViewHolder {
-        TextView interTitle;
+        TextView interTitle, comments;
         TextView interTime;
         TextView infaceWbsPath;
         TextView interContent;
@@ -145,10 +147,12 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RelativeLayout inter_rl;
         NetworkImageView inface_no_image;
         LinearLayout inface_image;
+
         public TypeViewholder(View itemView) {
             super(itemView);
-            inface_image=itemView.findViewById(R.id.inface_image);
-            inface_no_image=itemView.findViewById(R.id.inface_no_image);
+            comments = itemView.findViewById(R.id.textView4);
+            inface_image = itemView.findViewById(R.id.inface_image);
+            inface_no_image = itemView.findViewById(R.id.inface_no_image);
             inter_rl = itemView.findViewById(R.id.inter_rl);
             interTitle = itemView.findViewById(R.id.inter_title);
             interTime = itemView.findViewById(R.id.inter_time);

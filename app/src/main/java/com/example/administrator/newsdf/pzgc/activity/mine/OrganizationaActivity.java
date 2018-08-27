@@ -13,7 +13,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
@@ -77,7 +76,7 @@ public class OrganizationaActivity extends AppCompatActivity {
     }
 
     private void initDatas() {
-        Dates.getDialog(OrganizationaActivity.this,"请求数据中...");
+        Dates.getDialog(OrganizationaActivity.this, "请求数据中...");
         OkGo.<String>post(Requests.Swatchmakeup)
                 .execute(new StringCallback() {
                     @Override
@@ -97,6 +96,13 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                     Id = "";
                                 }
+                                String type;
+                                try {
+                                    type = json.getString("orgType");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    type = "";
+                                }
                                 String parentId;
                                 try {
                                     parentId = json.getString("parentId");
@@ -106,7 +112,7 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     parentId = "";
                                     //当做第一级处理
                                     status = false;
-                                    mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId));
+                                    mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
                                 }
                                 String name;
                                 try {
@@ -122,7 +128,7 @@ public class OrganizationaActivity extends AppCompatActivity {
                                 } catch (IllegalAccessException e) {
                                     e.printStackTrace();
                                 }
-                                mData.add(new OrgenBeans(Id, parentId, name));
+                                mData.add(new OrgenBeans(Id, parentId, name, type));
                             }
                             if (status) {
                                 //拿到所有的ID
@@ -140,7 +146,7 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     } else {
 
                                         //不存在相同的当做第一级
-                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId()));
+                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
                                         try {
                                             mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
                                                     mDatas2, 0);
@@ -175,7 +181,7 @@ public class OrganizationaActivity extends AppCompatActivity {
         for (int i = 0; i < mData.size(); i++) {
             String pid = mData.get(i).getParentId();
             if (str.equals(pid)) {
-                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId());
+                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType());
             }
         }
 
@@ -196,15 +202,18 @@ public class OrganizationaActivity extends AppCompatActivity {
     /**
      * 切换组织
      */
-    public void member(final String orgid, final String name) {
-        if (data.equals("Rectifi")){
-            Intent intent = new Intent();
-            //回传数据到主Activity
-            intent.putExtra("id", orgid);
-            intent.putExtra("name", name);
-            setResult(2, intent);
-            finish();
-        }else {
+    public void member(final String orgid, final String name, String type) {
+        if (data.equals("Rectifi")) {
+            if (type.contains("5")) {
+                Intent intent = new Intent();
+                //回传数据到主Activity
+
+                intent.putExtra("id", orgid);
+                intent.putExtra("name", name);
+                setResult(2, intent);
+                finish();
+            }
+        } else {
             OkGo.post(Requests.Swatch)
                     .params("orgId", orgid)
                     .execute(new StringCallback() {

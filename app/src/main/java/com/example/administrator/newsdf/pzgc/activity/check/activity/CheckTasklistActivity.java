@@ -29,8 +29,6 @@ import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.callback.HideCallback;
-import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -59,7 +57,7 @@ import okhttp3.Response;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener,CheckTaskCallback {
+public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener, CheckTaskCallback {
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
@@ -251,6 +249,7 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
     }
 
     public void checkmamgrlist() {
+        Dates.getDialogs(CheckTasklistActivity.this, "请求数据中...");
         PostRequest mPostRequest = OkGo.<String>post(Requests.CHECKMANGERLIST)
                 .params("orgId", orgId)
                 .params("page", pages)
@@ -260,34 +259,40 @@ public class CheckTasklistActivity extends AppCompatActivity implements View.OnC
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            if (pages==1){
+                            if (pages == 1) {
                                 list.clear();
                             }
                             checkjson.taskmanagerlist(s, list, mAdapter);
                             smartrefreshlayout.finishRefresh(true);
                             smartrefreshlayout.finishLoadmore(true);
+                            Dates.disDialog();
                         }
+
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
                             ToastUtils.showShortToast("请求失败");
+                            Dates.disDialog();
                         }
                     });
         } else {
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    if (pages==1){
+                    if (pages == 1) {
                         list.clear();
                     }
                     checkjson.taskmanagerlist(s, list, mAdapter);
                     smartrefreshlayout.finishRefresh(true);
                     smartrefreshlayout.finishLoadmore(true);
+                    Dates.disDialog();
                 }
+
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
                     ToastUtils.showShortToast("请求失败");
+                    Dates.disDialog();
                 }
             });
         }

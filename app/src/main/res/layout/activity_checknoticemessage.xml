@@ -9,8 +9,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/SmartRefreshLayout"
@@ -32,6 +32,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/back_not_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/nonews" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image"
+                android:layout_centerInParent="true"
+                android:text="暂无数据！" />
+
+        </RelativeLayout>
     </FrameLayout>
 
 </LinearLayout>

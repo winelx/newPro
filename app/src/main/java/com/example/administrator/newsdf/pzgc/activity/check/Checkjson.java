@@ -122,8 +122,6 @@ public class Checkjson {
                 list.add("str");
                 mAdapter.getData(list);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

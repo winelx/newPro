@@ -457,7 +457,6 @@ public class CheckListDetailsActivity extends AppCompatActivity implements View.
                     }
                 });
     }
-
     /**
      * 生成检查后的检查项列表
      */

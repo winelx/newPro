@@ -17,6 +17,7 @@ import static com.example.administrator.newsdf.R.id.task_cord;
 
 /**
  * Created by Administrator on 2018/8/22 0022.
+ * 审核通知单记录
  */
 
 public class CheckHistoryActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class CheckHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.checkuser_list);
         wbs_listview = (ListView) findViewById(R.id.wbs_listview);
         TextView com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("c处理记录");
+        com_title.setText("处理记录");
         Intent intent = getIntent();
         msg = intent.getStringArrayListExtra("msg");
         data = intent.getStringArrayListExtra("data");

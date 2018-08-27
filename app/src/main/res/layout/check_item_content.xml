@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <com.example.administrator.newsdf.pzgc.utils.MyRelativeLayout
+    <RelativeLayout
         android:id="@+id/check_item_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -171,9 +171,11 @@
                 <Switch
                     android:id="@+id/switch1"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_margin="0dp"
                     android:layout_weight="1"
+                    android:thumb="@drawable/switch_selector"
+                    android:track="@drawable/switch_track"
                     android:gravity="center_vertical"
                     android:padding="0dp"
                     android:textColor="@color/black" />
@@ -342,5 +344,5 @@
         </LinearLayout>
 
 
-    </com.example.administrator.newsdf.pzgc.utils.MyRelativeLayout>
+    </RelativeLayout>
 </ScrollView>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
@@ -68,6 +69,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     private String status = "3";
     private int page = 1;
     private CheckRectifyMessageAdapter mAdapter;
+    private RelativeLayout back_not_null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +81,13 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
         id = intent.getStringExtra("id");
         resolution = ScreenUtil.getDensity(App.getInstance());
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        back_not_null = (RelativeLayout) findViewById(R.id.back_not_null);
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
         checklistmeunimage.setVisibility(View.VISIBLE);
         listView = (RecyclerView) findViewById(R.id.maber_tree);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
-
         mData = new ArrayList<>();
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +200,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
     }
 
     public void getdate() {
+        Dates.getDialog(ChecknoticeMessagelistActivity.this,"请求数据中..");
         OkGo.post(Requests.GET_MY_NOTICE_DATA_APP)
                 .params("rectificationOrgid", id)
                 .params("status", status)
@@ -210,9 +213,9 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                    if (page==1){
-                                        mData.clear();
-                                    }
+                                if (page == 1) {
+                                    mData.clear();
+                                }
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -243,8 +246,8 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                                         String standardDelScore;
                                         try {
                                             standardDelScore = json.getString("standardDelScore");
-                                        }catch (JSONException e){
-                                            standardDelScore="";
+                                        } catch (JSONException e) {
+                                            standardDelScore = "";
                                         }
                                         //检查类别
                                         String standardDelName = json.getString("standardTypeName");
@@ -277,7 +280,13 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
+                            if (mData.size() > 0) {
+                                back_not_null.setVisibility(View.GONE);
+                            } else {
+                                back_not_null.setVisibility(View.VISIBLE);
+                            }
                             mAdapter.getData(mData);
+                            Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -286,6 +295,7 @@ public class ChecknoticeMessagelistActivity extends AppCompatActivity implements
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

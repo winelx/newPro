@@ -111,10 +111,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private LinearLayout meun_standard, meun_photo;
     private boolean liststatus = true;
     boolean anim = true;
-
-
     private AllTaskListItem adapters;
-    RecyclerView recycler_att;
+   private RecyclerView recycler_att;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

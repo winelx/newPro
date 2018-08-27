@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.treeviews.bean;
 
 
+import com.example.administrator.newsdf.treeView.inface.TreeNodeTypes;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeId;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeIds;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeLabel;
@@ -18,14 +19,17 @@ public class OrgBeans {
     private String ids;
     @TreeNodePids
     private String pids;
+    @TreeNodeTypes
+    private String Types;
 
 
-    public OrgBeans(int _id, int parentId, String name, String ids, String pids) {
+    public OrgBeans(int _id, int parentId, String name, String ids, String pids,String Types) {
         this._id = _id;
         this.parentId = parentId;
         this.name = name;
         this.ids = ids;
         this.pids = pids;
+        this.Types = Types;
     }
 
     public int get_id() {
@@ -66,5 +70,13 @@ public class OrgBeans {
 
     public void setPids(String pids) {
         this.pids = pids;
+    }
+
+    public String getTypes() {
+        return Types;
+    }
+
+    public void setTypes(String types) {
+        Types = types;
     }
 }

@@ -73,7 +73,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View v) {
                 OrganizationaActivity activity = (OrganizationaActivity) mContext;
-                    activity.member(node.getIds(), node.getName());
+                    activity.member(node.getIds(), node.getName(),node.getType());
             }
         });
         return convertView;
@@ -91,11 +91,11 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
      * @param position
      * @param names
      */
-    public void addExtraNode(int position, String names, String ids, String pids) {
+    public void addExtraNode(int position, String names, String ids, String pids,String type) {
         Nodes node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
         // Node
-        Nodes extraNode = new Nodes(-1, node.getId(), names, ids, pids);
+        Nodes extraNode = new Nodes(-1, node.getId(), names, ids, pids,type);
         extraNode.setParent(node);
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -438,15 +437,18 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
         builder.setTitle("")
                 .setMessage("确定将任务指派给" + userName + "吗?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         setuser();
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });
+        builder.show();
     }
 
     //整改回复成功关闭界面

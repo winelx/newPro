@@ -141,7 +141,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
 
         public TextView tvSet, title, tvDelete;
         public RelativeLayout subLayoutContent;
-        private TextView managementTitle, managementUser, managementBlock, managementCategory, managementOrg, managementNumber, managementwbs;
+        private TextView managementTitle, managementUser, managementOrg, managementNumber, managementwbs;
         private TextView noticeUser, noticeLasttime;
         private SlantedTextView infaceItemMessage;
 
@@ -209,10 +209,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
      * @return
      */
     public Boolean menuIsOpen() {
-        if (mMenu != null) {
-            return true;
-        }
-        return false;
+        return mMenu != null;
     }
 
     public void getData(List<MyNoticeDataBean> shops) {
@@ -237,6 +234,5 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
 
     public void getnoti(int pos) {
         notifyItemChanged(pos);
-
     }
 }

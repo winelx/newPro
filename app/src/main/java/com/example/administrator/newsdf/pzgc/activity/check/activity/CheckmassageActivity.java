@@ -97,8 +97,8 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout checkMessageLasttiem, checkMessageDialog, checkMessageDate;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private RelativeLayout checkMessageContent;
-    private EditText check_message_describe,checkMessageStandar;
-    private TextView checkMessageUser, checkMessageOrg, MessageData,  titleView;
+    private EditText check_message_describe, checkMessageStandar;
+    private TextView checkMessageUser, checkMessageOrg, MessageData, titleView;
     private Boolean generate;
     private String orgId, nameId = "";
     private String messageid = "", taskId, success;
@@ -231,7 +231,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 // TODO Auto-generated method stub
-
                 if (isChecked) {
                     //打开
                     checkMessageTime.setText(Dates.getDay());
@@ -247,15 +246,16 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
-        checklistmeuntext.setText("编辑");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        checkMessageSwitch.setClickable(false);
-        photoAdapter.getData(Imagepath, false);
+        if (messageid == null) {
+            checklistmeuntext.setText("保存");
+            checklistmeuntext.setVisibility(View.VISIBLE);
+            checkMessageSwitch.setClickable(true);
+            photoAdapter.getData(Imagepath, false);
+        }
         titleView.setText("生成整改通知单");
         if (success != null) {
             findViewById(checklistmeun).setVisibility(View.GONE);
         }
-
     }
 
     //添加图片选择功能
@@ -295,18 +295,15 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                         Intent intent = new Intent(mContext, ImageGridActivity.class);
                         startActivityForResult(intent, IMAGE_PICKER);
                         break;
-                    //
                     case R.id.btn_camera_pop_cancel:
                         //关闭pop
                     case R.id.btn_pop_add:
                     default:
-
                         break;
                 }
                 popWindow.dismiss();
             }
         };
-
         btnCamera.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
@@ -689,7 +686,13 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 });
 
     }
+
     ArrayList<String> deleteId = new ArrayList<>();
+
+    /**
+     * 删除接口返回的图片，保存时上传Id
+     * @param id
+     */
     public void deleteid(String id) {
         deleteId.add(id);
     }

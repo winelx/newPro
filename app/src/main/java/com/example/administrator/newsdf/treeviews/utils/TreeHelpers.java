@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.treeviews.utils;
 import android.util.Log;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.treeView.inface.TreeNodeTypes;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeId;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeIds;
 import com.example.administrator.newsdf.treeviews.utils.annotation.TreeNodeLabel;
@@ -35,6 +36,7 @@ public class TreeHelpers
 			String label = null;
 			String pids = null;
 			String ids = null;
+			String type = null;
 
 			node = new Nodes();
 			Class clazz = t.getClass();
@@ -66,8 +68,13 @@ public class TreeHelpers
 					field.setAccessible(true);
 					pids = (String) field.get(t);
 				}
+				if (field.getAnnotation(TreeNodeTypes.class) != null)
+				{
+					field.setAccessible(true);
+					type = (String) field.get(t);
+				}
 			}
-			node = new Nodes(id, pid, label,ids,pids);
+			node = new Nodes(id, pid, label,ids,pids,type);
 			nodes.add(node);
 		}// for end
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -64,7 +65,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
     private String status = "";
     private int page = 1;
     private SmartRefreshLayout refreshLayout;
-
+    private LinearLayout nullposion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
         resolution = ScreenUtil.getDensity(App.getInstance());
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
         checklistmeunimage.setVisibility(View.VISIBLE);
         findViewById(R.id.checklistmeun).setOnClickListener(this);
@@ -115,7 +117,6 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
             }
         };
         listView.setAdapter(adapter);
-        listView.setEmptyView(findViewById(R.id.nullposion));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -231,6 +232,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
     }
 
     public void getdate() {
+        Dates.getDialog(ChecknoticeMessagelistAllActivity.this,"请求数据中");
         OkGo.post(Requests.GET_NOTICE_DATA_APP)
                 .params("rectificationOrgid", id)
 //通知单回复状态(0:未下发；1：未回复;2:未验证；3：打回；5:完成) (保存：0,提交 1)
@@ -303,6 +305,12 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
+                            if (mData.size()>0){
+                                nullposion.setVisibility(View.GONE);
+                            }else {
+                                nullposion.setVisibility(View.VISIBLE);
+                            }
+                            Dates.disDialog();
                             adapter.getData(mData);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -312,6 +320,7 @@ public class ChecknoticeMessagelistAllActivity extends AppCompatActivity impleme
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

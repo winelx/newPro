@@ -28,7 +28,6 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -77,7 +76,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId, categoryId = "", taskId="", nodeId;
+    private String name, orgId, categoryId = "", taskId = "", nodeId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -88,6 +87,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private SmartRefreshLayout smallLabel;
     private RelativeLayout checkNewDialog;
     int number = 0;
+
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
@@ -284,6 +284,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         if (content.length() > 0 || wbspath.length() > 0) {
                             String title = checkNewTasktitle.getText().toString();
                             if (title.length() > 0) {
+                                checklistmeun.setClickable(false);
                                 //如果存在一个或者都存在，就调用接口
                                 Save(wbspath, nodeId);
                             } else {
@@ -544,11 +545,13 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        checklistmeun.setClickable(true);
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        checklistmeun.setClickable(true);
                         try {
                             String str = response.body().string();
                             ToastUtils.showLongToast(str);
@@ -559,6 +562,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 //     checkNewNumber.setText(number+"");
+
     /**
      * 生成检查后的检查项列表
      */
@@ -579,9 +583,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
                                         String id = json.getString("id");
-
                                         String score = json.getString("score");
-
                                         String sequence = json.getString("sequence");
                                         String standardScore = json.getString("standardScore");
                                         boolean noSuch = json.getBoolean("noSuch");

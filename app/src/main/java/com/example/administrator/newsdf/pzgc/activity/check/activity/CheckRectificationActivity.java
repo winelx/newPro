@@ -125,7 +125,9 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         listVIew.add(threeIcon);
         listVIew.add(fourIcon);
         listVIew.add(fiveIcon);
+
         check_org = (LinearLayout) findViewById(R.id.check_org);
+        listEn.add(check_org);
         check_org.setOnClickListener(this);
         check_new_tasktitle = (TextView) findViewById(R.id.check_new_tasktitle);
         check_rectifi_result = (EditText) findViewById(R.id.check_rectifi_result);
@@ -136,17 +138,22 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         category_item = (TextView) findViewById(R.id.category_item);
         checkNewDataTx = (TextView) findViewById(R.id.check_new_data_tx);
         check_standard = (LinearLayout) findViewById(R.id.check_standard);
+        listEn.add(check_standard);
         check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
+        listEn.add(check_new_data);
         check_rectifi_font = (TextView) findViewById(R.id.check_rectifi_font);
         check_rectifi_user = (LinearLayout) findViewById(R.id.check_rectifi_user);
+        listEn.add(check_rectifi_user);
         checkRectifiWbs = (TextView) findViewById(R.id.check_rectifi_wbs);
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checkRectifiSubmit = (TextView) findViewById(R.id.check_rectifi_submit);
         check_wbspath = (TextView) findViewById(R.id.check_wbspath);
         check_import = (LinearLayout) findViewById(R.id.check_import);
+        listVIew.add(check_import);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         titleView = (TextView) findViewById(R.id.titleView);
         checkRectifi = (LinearLayout) findViewById(R.id.check_rectifi);
+        listEn.add(checkRectifi);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checkRectifiData = (TextView) findViewById(R.id.check_rectifi_data);
         checkRectifiData.setText(Dates.getDay());
@@ -180,7 +187,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 checklistmeuntext.setText("编辑");
                 checkRectifiSubmit.setBackgroundResource(R.color.Orange);
                 Visibility(8);
-                Enabled(true);
+                Enabled(false);
                 getdata();
             }
         } catch (Exception e) {
@@ -322,30 +329,24 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                 case R.id.checklistmeun:
                     String str = checklistmeuntext.getText().toString();
                     if ("保存".equals(str)) {
-                        String rectifi = check_rectifi_result.getText().toString();
-                        if (rectifi.length() > 0) {
-                            String user = check_rectifi_font.getText().toString();
-                            if (user.length() > 0) {
-                                String tasktitle = check_new_tasktitle.getText().toString();
-                                if (tasktitle.length() > 0) {
-                                    String temporarysite = check_new_temporarysite.getText().toString();
-                                    String wsbpath = check_wbspath.getText().toString();
-                                    if (temporarysite.length() > 0 || wsbpath.length() > 0) {
-                                        save();
-                                    } else {
-                                        ToastUtils.showShortToast("检查部位不能为空");
-                                    }
+
+                        String user = check_rectifi_font.getText().toString();
+                        if (user.length() > 0) {
+                            String tasktitle = check_new_tasktitle.getText().toString();
+                            if (tasktitle.length() > 0) {
+                                String temporarysite = check_new_temporarysite.getText().toString();
+                                String wsbpath = check_wbspath.getText().toString();
+                                if (temporarysite.length() > 0 || wsbpath.length() > 0) {
+                                    save();
                                 } else {
-                                    ToastUtils.showShortToast("违反标准不能为空");
+                                    ToastUtils.showShortToast("检查部位不能为空");
                                 }
-                                ;
                             } else {
-                                ToastUtils.showShortToast("整改负责人不能为空");
+                                ToastUtils.showShortToast("违反标准不能为空");
                             }
                         } else {
-                            ToastUtils.showShortToast("整改事由不能为空");
+                            ToastUtils.showShortToast("整改负责人不能为空");
                         }
-
                     } else {
                         Visibility(0);
                         Enabled(true);
@@ -518,7 +519,6 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
         public void onDismiss() {
             Utils.backgroundAlpha(1f, CheckRectificationActivity.this);
         }
-
     }
 
     //添加图片

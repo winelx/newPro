@@ -7,12 +7,13 @@ public class Nodes {
     public Nodes() {
     }
 
-    public Nodes(int id, int pId, String name, String ids, String pids) {
+    public Nodes(int id, int pId, String name, String ids, String pids,String type) {
         this.id = id;
         this.pId = pId;
         this.name = name;
         this.ids = ids;
         this.pids = pids;
+        this.type = type;
     }
 
 

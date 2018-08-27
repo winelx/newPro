@@ -46,7 +46,6 @@ import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.MyRelativeLayout;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -104,7 +103,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private Switch switch1;
     private String success, checkManageId, itemId;
     private Boolean generate;
-    private MyRelativeLayout check_item_content;
+
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
 
@@ -114,11 +113,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
-
         MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
-
-        check_item_content= (MyRelativeLayout) findViewById(R.id.check_item_content);
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
         id = intent.getStringExtra("id");
@@ -236,9 +232,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
                     checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
                     checkItemContentDescribe.setText("");
-                    getdate(taskId, pos - 1);
                     checkItemTabup.setClickable(false);
                     checkItemTadown.setClickable(false);
+                    getdate(taskId, pos - 1);
                 } else {
                     saveDetails(true, "Tabup");
                 }
@@ -273,11 +269,14 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         });
         tClickableF();
         getcheckitemList();
+        /**
+         * 无此项的打卡和关闭判断
+         */
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-//                    mText.setText("开启");
+
                     if (checkItemContentStandarcore.getText().toString().isEmpty()) {
                         checkItemContentCore.setText("0");
                     } else {
@@ -290,7 +289,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     }
 
                 } else {
-//                    mText.setText("关闭");
+
                     checkItemContentCore.setEnabled(true);
                     checkItemContentCore.setText("");
                     checkItemContentCore.setHint("输入得分");
@@ -441,9 +440,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 if (success != null) {
                     //从已完成进入
                     String string = checkitemcontentStatus.getText().toString();
-                    if (status){
+                    if (status) {
                         ToastUtils.showLongToast("该项暂无通知单");
-                    }else {
+                    } else {
                         if (string.equals("是")) {
                             messages();
                         } else {
@@ -451,9 +450,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
                 } else {
-                    if (status){
+                    if (status) {
                         ToastUtils.showLongToast("该项暂无通知单");
-                    }else {
+                    } else {
                         //从未完成进入
                         String string = checkitemcontentStatus.getText().toString();
                         if (string.equals("是")) {
@@ -511,16 +510,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 Imagepath.clear();
                                 pos = page;
                                 titleView.setText(page + "/" + size);
-                                if (page == 1) {
-                                    checkItemTabup.setVisibility(View.INVISIBLE);
-                                    checkItemTadown.setVisibility(View.VISIBLE);
-                                } else if (page == size) {
-                                    checkItemTabup.setVisibility(View.VISIBLE);
-                                    checkItemTadown.setVisibility(View.INVISIBLE);
-                                } else {
-                                    checkItemTabup.setVisibility(View.VISIBLE);
-                                    checkItemTadown.setVisibility(View.VISIBLE);
-                                }
+
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 checkManageId = json.getString("noticeId");
                                 itemId = json.getString("id");
@@ -557,6 +547,16 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 }
                                 score = json.getString("score");
                                 checkItemContentCore.setText(score);
+                                if (page == 1) {
+                                    checkItemTabup.setVisibility(View.INVISIBLE);
+                                    checkItemTadown.setVisibility(View.VISIBLE);
+                                } else if (page == size) {
+                                    checkItemTabup.setVisibility(View.VISIBLE);
+                                    checkItemTadown.setVisibility(View.INVISIBLE);
+                                } else {
+                                    checkItemTabup.setVisibility(View.VISIBLE);
+                                    checkItemTadown.setVisibility(View.VISIBLE);
+                                }
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -564,6 +564,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -618,6 +619,12 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                 });
     }
 
+    /**
+     * 保存前的逻辑判断
+     *
+     * @param isdata
+     * @param Tabup
+     */
     public void saveDetails(final boolean isdata, final String Tabup) {
         boolean lean = checkItemContentCore.getText().toString().isEmpty();
         if (!lean) {
@@ -647,12 +654,20 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    /**
+     * 删除图片的id
+     *
+     * @param position
+     */
     public void delete(String position) {
         if (position.length() > 0) {
             deleteid.add(position);
         }
     }
 
+    /**
+     * 保存状态
+     */
     public void tClickableF() {
         photoAdapter.getData(Imagepath, false);
         switch1.setClickable(false);
@@ -663,6 +678,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * 编辑状态
+     */
     public void tClickableT() {
         switch1.setClickable(true);
         checkItemContentCore.setEnabled(true);
@@ -672,10 +690,18 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * 给适配器做判断用
+     *
+     * @return
+     */
     public String getstatus() {
         return checklistmeuntext.getText().toString();
     }
 
+    /**
+     * 删除通知单后刷新界面
+     */
     @Override
     public void taskCallback() {
         getcheckitemList();
@@ -683,7 +709,10 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         checkManageId = "";
         checkitemcontentStatus.setText("否");
     }
-    //更新界面
+
+    /**
+     * 生成通知单或者修改通知单后更新界面
+     */
     @Override
     public void getdata(Map<String, Object> map) {
         getcheckitemList();
@@ -693,6 +722,12 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    /**
+     * 保存接口
+     *
+     * @param isdata
+     * @param Tabup
+     */
     public void Save(final boolean isdata, final String Tabup) {
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < Imagepath.size(); i++) {
@@ -751,6 +786,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
@@ -759,6 +795,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         });
     }
 
+    /**
+     * 没有通知单时进入通知单
+     */
     public void message() {
         ArrayList<String> ids = new ArrayList<>();
         ArrayList<String> path = new ArrayList<>();
@@ -785,6 +824,9 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
+    /**
+     * 有通知单时进入通知单
+     */
     public void messages() {
         Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
         //查询责任人

@@ -123,6 +123,13 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             ((DetailsContent) holder).detailsResultRec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<Audio> list1 = new ArrayList<>();
             list1 = (Content).getImageList();
+            if (list1.size() > 0) {
+                ((DetailsContent) holder).content_top_image.setVisibility(View.GONE);
+                ((DetailsContent) holder).detailsResultRec.setVisibility(View.VISIBLE);
+            } else {
+                ((DetailsContent) holder).content_top_image.setVisibility(View.VISIBLE);
+                ((DetailsContent) holder).detailsResultRec.setVisibility(View.GONE);
+            }
             ArrayList<String> path1 = new ArrayList<>();
             ArrayList<String> title1 = new ArrayList<>();
             RectifierAdapter adapter = new RectifierAdapter(mContext, path1, title1);
@@ -150,6 +157,13 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             ArrayList<Audio> list1 = new ArrayList<>();
             list1 = (Contents).getImageList();
+            if (list1.size() > 0) {
+                ((DetailsContents) holder).content_result_image.setVisibility(View.GONE);
+                ((DetailsContents) holder).content_result_image.setVisibility(View.VISIBLE);
+            } else {
+                ((DetailsContents) holder).content_result_image.setVisibility(View.GONE);
+                ((DetailsContents) holder).content_result_image.setVisibility(View.VISIBLE);
+            }
             ArrayList<String> path2 = new ArrayList<>();
             ArrayList<String> title2 = new ArrayList<>();
             for (int i = 0; i < list1.size(); i++) {
@@ -159,7 +173,6 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             ((DetailsContents) holder).detailsValidationRec.setAdapter(adapter2);
         }
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -207,14 +220,17 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
     private class DetailsContent extends RecyclerView.ViewHolder {
         TextView detailsResultData, detailsResultUser, detailsResultResult, detailsResultDescribe;
         RecyclerView detailsResultRec;
+        ImageView content_top_image;
 
         DetailsContent(View itemView) {
             super(itemView);
             /*
               回复
              */
+
             //时间
             detailsResultData = itemView.findViewById(R.id.details_result_data);
+            content_top_image = itemView.findViewById(R.id.content_top_image);
             //用户
             detailsResultUser = itemView.findViewById(R.id.details_result_user);
             //整改结果
@@ -231,6 +247,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         LinearLayout details_validation;
         RecyclerView detailsValidationRec;
         TextView detailsValidationData, detailsValidationUser, detailsValidationResult, detailsValidationDescribe;
+        ImageView content_result_image;
 
         public DetailsContents(View itemView) {
             super(itemView);
@@ -238,6 +255,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
              * 验证
                */
             details_validation = itemView.findViewById(R.id.details_validation);
+            content_result_image = itemView.findViewById(R.id.content_result_image);
             //验证时间
             detailsValidationData = itemView.findViewById(R.id.details_validation_data);
             //验证用户

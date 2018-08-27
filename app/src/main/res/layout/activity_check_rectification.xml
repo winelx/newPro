@@ -263,7 +263,7 @@
                             android:layout_weight="7"
                             android:background="@null"
                             android:gravity="center"
-                            android:hint="违反标准自动返回"
+                            android:hint="选择违反标准返回"
                             android:minWidth="45dp"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
@@ -395,7 +395,6 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="10dp">
 
-
                     <TextView
                         android:id="@+id/textView18"
                         android:layout_width="0dp"
@@ -453,15 +452,12 @@
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="* "
-                            android:textColor="@color/red" />
 
                         <TextView
+                            android:id="@+id/textView19"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_weight="1"
                             android:text="整改事由"
                             android:textColor="@color/black"

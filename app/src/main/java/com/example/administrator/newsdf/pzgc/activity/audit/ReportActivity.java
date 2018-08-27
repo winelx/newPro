@@ -74,7 +74,6 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_report);
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
-
         //初始化控件
         mContext = this;
         mData = new ArrayList<>();
@@ -100,6 +99,12 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportQuarter.setOnClickListener(this);
         reprotBack.setOnClickListener(this);
         findViewById(R.id.switchorg).setOnClickListener(this);
+        //关闭边缘滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //侧滑栏关闭手势滑动
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //展示侧拉界面后，背景透明度（当前透明度为完全透明）
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
     }
 
     private void initData() {
@@ -114,7 +119,6 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         reportViewpager.setOffscreenPageLimit(3);
         reportViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 0;
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {
@@ -247,7 +251,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                                     parentId = "";
                                     //当做第一级处理
                                     status = false;
-                                    mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId));
+                                    mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, json.getString("orgtype")));
                                 }
                                 String name;
                                 try {
@@ -256,6 +260,13 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                                     e.printStackTrace();
                                     name = "";
                                 }
+                                String type;
+                                try {
+                                    type = json.getString("orgtype");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    type = "";
+                                }
                                 try {
                                     mAdapter = new ReportTreeListViewAdapters<OrgBeans>(mTree, ReportActivity.this,
                                             mDatas2, 0);
@@ -263,7 +274,8 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                                 } catch (IllegalAccessException e) {
                                     e.printStackTrace();
                                 }
-                                mData.add(new OrgenBeans(Id, parentId, name));
+
+                                mData.add(new OrgenBeans(Id, parentId, name, type));
                             }
                             if (status) {
                                 //拿到所有的ID
@@ -279,11 +291,10 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                                     if (IDs.contains(pernID)) {
                                         //存在相同的的不处理
                                     } else {
-
                                         //不存在相同的当做第一级
-                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId()));
+                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
                                         try {
-                                            mAdapter = new ReportTreeListViewAdapters<OrgBeans>(mTree, ReportActivity.this,
+                                            mAdapter = new ReportTreeListViewAdapters<>(mTree, ReportActivity.this,
                                                     mDatas2, 0);
                                             mTree.setAdapter(mAdapter);
                                         } catch (IllegalAccessException e) {
@@ -306,7 +317,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < mData.size(); i++) {
             String pid = mData.get(i).getParentId();
             if (str.equals(pid)) {
-                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId());
+                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(),mData.get(i).getType());
             }
         }
 
