@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/writer"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/writer"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="25dp">
+            <TextView
+                android:id="@+id/check_report_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXXXXXXXXXXXXX"
+                android:ellipsize="end"
+                android:layout_gravity="center"
+                android:maxEms="11"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/check_report_item_score"
+                android:text="-12分"
+                android:textColor="@color/writer"
+                android:textSize="9sp"
+                android:background="@color/red"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/check_report_item_wbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxEms="17"
+            android:singleLine="true"
+            android:text="对危险性较大的高边坡、高墩、，未进行风险评估"
+            android:textColor="@color/graytext"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/check_report_item_checkuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/graytext"
+            android:text="下发人:XXX    XXXX-XX-XX"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/check_report_item_org"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:text="检查组织：XXXXX"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/check_report_item_user"
+                android:layout_width="0dp"
+                android:textColor="@color/graytext"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="11111111"
+
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/check_report_item_checkdata"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/graytext"
+                android:layout_weight="1"
+                android:text="121212"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

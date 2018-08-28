@@ -27,10 +27,12 @@ import java.util.List;
 public class CheckstandardListActivity extends AppCompatActivity {
     private NoScrollViewPager viewpager;
     private String name,strid;
-
+    private String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent =getIntent();
+        title=  intent.getStringExtra("title");
         setContentView(R.layout.activity_check_task_category);
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
@@ -76,16 +78,18 @@ public class CheckstandardListActivity extends AppCompatActivity {
     }
 
     public void result(String str,String id,String score,String code) {
-        Intent intent = new Intent();
-        //回传数据到主Activity
-        intent.putExtra("content", str);
-        intent.putExtra("id", id);
-        intent.putExtra("datastr", name);
-        intent.putExtra("dataid", strid);
-        intent.putExtra("score", score);
-        intent.putExtra("stancode", code);
-        setResult(2, intent);
-        finish();
+        if (title!=null){
+            Intent intent = new Intent();
+            //回传数据到主Activity
+            intent.putExtra("content", str);
+            intent.putExtra("id", id);
+            intent.putExtra("datastr", name);
+            intent.putExtra("dataid", strid);
+            intent.putExtra("score", score);
+            intent.putExtra("stancode", code);
+            setResult(2, intent);
+            finish();
+        }
     }
 
 

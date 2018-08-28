@@ -77,9 +77,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             ((MyViewHolder) holder).managementOrg.setText("检查组织：" + success.getCheckOrgName());
             //分数
-            if ( success.getScore().isEmpty()){
+            if (success.getScore().isEmpty()) {
                 ((MyViewHolder) holder).managementNumber.setText("总分:");
-            }else {
+            } else {
                 ((MyViewHolder) holder).managementNumber.setText(setText("总分:" + success.getScore()));
             }
 
@@ -99,9 +99,14 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             final SCheckTasklistAdapter Sub = (SCheckTasklistAdapter) obj;
             //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
             //设置内容布局的宽为屏幕宽度
-            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 70;
+            boolean lean = menuIsOpen();
+            if (lean) {
+                closeMenu();
+            }
+            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
+            ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext)-80;
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
-            ((SubViewHolder) holder).managementUser.setText("检查人:"+Sub.getCheckUser() + "    " + Sub.getCreateDate());
+            ((SubViewHolder) holder).managementUser.setText("检查人:" + Sub.getCheckUser() + "    " + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
             ((SubViewHolder) holder).subManagementOrg.setText("检查组织:" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
@@ -155,7 +160,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     class SubViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layoutContent;
+        RelativeLayout layoutContent,Content;
         private TextView managementTitle, managementUser, subManagementOrg;
         private TextView tvDelete, sub_management_block;
         private SlantedTextView slantedTextView;
@@ -168,7 +173,8 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             managementUser = itemView.findViewById(R.id.sub_management_user);
             managementTitle = itemView.findViewById(R.id.sub_management_title);
             tvDelete = itemView.findViewById(R.id.tv_delete);
-            layoutContent = itemView.findViewById(R.id.sub_layout_content);
+            layoutContent = itemView.findViewById(R.id.item_not);
+            Content = itemView.findViewById(R.id.sub_layout_content);
             ((LeftSlideView) itemView).setSlidingButtonListener(NotSubmitTaskAdapter.this);
         }
     }

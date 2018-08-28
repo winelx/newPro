@@ -5,5 +5,5 @@ package com.example.administrator.newsdf.pzgc.callback;
  */
 
 public interface CheckCallback2 {
-    void upate(String id);
+    void update(String id);
 }

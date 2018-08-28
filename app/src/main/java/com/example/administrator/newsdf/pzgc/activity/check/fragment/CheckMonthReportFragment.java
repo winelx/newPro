@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,12 +18,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
-import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback2;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -31,7 +31,6 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.greenrobot.greendao.annotation.Id;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +51,7 @@ import okhttp3.Response;
  *         update: 2018/8/14 0014
  *         version:
  */
-public class CheckMonthReportFragment extends Fragment {
+public class CheckMonthReportFragment extends Fragment implements CheckCallback2 {
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
@@ -62,12 +61,10 @@ public class CheckMonthReportFragment extends Fragment {
     private NumberPicker yearPicker, monthPicker;
     private ArrayList<CheckQuarterBean> mData;
     private LinearLayout linearDataTime;
-    private String orgId, data, years;
+    private String orgId, years, mqnum;
     private PopupWindow mPopupWindow;
-    private int dateMonth;
-    private Date myDate = new Date();
+
     private LinearLayout checkQueater;
-    private String yeare, mqnum;
     TextView data_time;
 
     @Nullable
@@ -75,6 +72,7 @@ public class CheckMonthReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_checkquarter, container, false);
         mData = new ArrayList<>();
+        CheckCallBackUTils2.setCallBack(this);
         mContext = CheckReportActivity.getInstance();
         categoryList = view.findViewById(R.id.category_list);
         checkQueater = view.findViewById(R.id.check_queater);
@@ -82,7 +80,6 @@ public class CheckMonthReportFragment extends Fragment {
         data_time = view.findViewById(R.id.linear_data);
         title = view.findViewById(R.id.title);
 
-//        mAdapter = new CheckQuarteradapter(mContext);
         title.setText("统计季度");
         linearDataTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +98,18 @@ public class CheckMonthReportFragment extends Fragment {
         mqnum = Utils.getquarter() + "";
         years = Dates.getYear();
         getdate();
+        mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, CheckReportOrgDetailsActivity.class);
+                intent.putExtra("name", mData.get(position).getOrgname());
+                intent.putExtra("id", mData.get(position).getId());
+                intent.putExtra("year", years);
+                intent.putExtra("mqnum", mqnum);
+                intent.putExtra("type", "Q");
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
@@ -162,6 +171,12 @@ public class CheckMonthReportFragment extends Fragment {
         return contentView;
     }
 
+    @Override
+    public void update(String id) {
+        orgId = id;
+        getdate();
+    }
+
 
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
@@ -174,7 +189,6 @@ public class CheckMonthReportFragment extends Fragment {
     }
 
     public void getdate() {
-        LogUtil.i("12", orgId);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)
@@ -187,28 +201,31 @@ public class CheckMonthReportFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        ToastUtils.showShortToast(s);
+                        LogUtil.d("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            if (jsonArray.length() > 0) {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                    String id = jsonObject1.getString("id");
-                                    String name = jsonObject1.getString("name");
-                                    String parent_id = jsonObject1.getString("parent_id");
-                                    String parent_name = jsonObject1.getString("parent_name");
-                                    String score = jsonObject1.getString("score");
-                                    mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
-                                }
-                            }
-                            if (mData.size() > 0) {
-                                checkQueater.setVisibility(View.GONE);
-                                mAdapter.getData(mData);
-                            } else {
+                            if (jsonObject.getInt("ret") == 0) {
                                 mData.clear();
-                                mAdapter.getData(mData);
-                                checkQueater.setVisibility(View.VISIBLE);
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                        String id = jsonObject1.getString("id");
+                                        String name = jsonObject1.getString("name");
+                                        String parent_id = jsonObject1.getString("parent_id");
+                                        String parent_name = jsonObject1.getString("parent_name");
+                                        String score = jsonObject1.getString("score");
+                                        mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
+                                    }
+                                }
+                                if (mData.size() > 0) {
+                                    checkQueater.setVisibility(View.GONE);
+                                    mAdapter.getData(mData);
+                                } else {
+                                    mData.clear();
+                                    mAdapter.getData(mData);
+                                    checkQueater.setVisibility(View.VISIBLE);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -216,9 +233,9 @@ public class CheckMonthReportFragment extends Fragment {
                     }
                 });
     }
+
     public void setOrgId(String id) {
         orgId = id;
-        LogUtil.i("sss",orgId);
         getdate();
     }
 }

@@ -12,6 +12,6 @@ public class CheckCallBackUTils2 {
     }
 
     public static void CheckCallback2(String id) {
-        detailsCallback.upate(id);
+        detailsCallback.update(id);
     }
 }

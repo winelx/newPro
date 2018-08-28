@@ -63,6 +63,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.check_message_lasttiem;
 import static com.example.administrator.newsdf.R.id.check_message_org;
 import static com.example.administrator.newsdf.R.id.checklistmeun;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
@@ -163,7 +164,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         //整改最后时间
         checkMessageTime = (TextView) findViewById(R.id.check_message_time);
         //整改最后时间linear
-        checkMessageLasttiem = (LinearLayout) findViewById(R.id.check_message_lasttiem);
+        checkMessageLasttiem = (LinearLayout) findViewById(check_message_lasttiem);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
         check_message_username = (LinearLayout) findViewById(R.id.check_message_username);
@@ -175,7 +176,6 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initData() {
-
         //获取当前月份
         dateMonth = myDate.getMonth();
         //拿到月
@@ -214,12 +214,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
         } else {
             checkMessageTime.setText(Dates.getDay());
             MessageData.setText(Dates.getDay());
-            check_message_username.setClickable(false);
+            check_message_username.setClickable(true);
             check_message_describe.setText(intent.getStringExtra("describe"));
             checkMessageUser.setText(SPUtils.getString(mContext, "staffName", ""));
             checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
             checkMessageContent.setVisibility(View.GONE);
-            checklistmeuntext.setVisibility(View.GONE);
+            checklistmeuntext.setVisibility(View.VISIBLE);
         }
         //附件的recycleraview的适配器
         photoadd.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
@@ -233,11 +233,17 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 // TODO Auto-generated method stub
                 if (isChecked) {
                     //打开
+                    checklistmeuntext.setText("保存");
                     checkMessageTime.setText(Dates.getDay());
                     MessageData.setText(Dates.getDay());
                     checkMessageContent.setVisibility(View.VISIBLE);
                 } else {
                     // 关闭
+                    if (messageid.length() > 0) {
+                        checklistmeuntext.setText("保存");
+                    } else {
+                        checklistmeuntext.setText("");
+                    }
                     if (messageid.length() > 0) {
                         checkMessageContent.setVisibility(View.GONE);
                     } else {
@@ -246,12 +252,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
-        if (messageid == null) {
-            checklistmeuntext.setText("保存");
-            checklistmeuntext.setVisibility(View.VISIBLE);
-            checkMessageSwitch.setClickable(true);
-            photoAdapter.getData(Imagepath, false);
-        }
+//        if (messageid == null) {
+//            checklistmeuntext.setText("保存");
+//            checklistmeuntext.setVisibility(View.VISIBLE);
+//            checkMessageSwitch.setClickable(true);
+//            photoAdapter.getData(Imagepath, false);
+//        }
         titleView.setText("生成整改通知单");
         if (success != null) {
             findViewById(checklistmeun).setVisibility(View.GONE);
@@ -572,7 +578,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.check_message_lasttiem:
+            case check_message_lasttiem:
                 meunpop("last");
                 break;
             case R.id.check_message_username:
@@ -601,10 +607,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
                             ToastUtils.showShortToast("选择负责人");
                         }
                     }
-                } else {
+                } else if ("编辑".equals(meuntext)) {
                     checklistmeuntext.setText("保存");
                     checkMessageSwitch.setClickable(true);
                     setStatusT();
+                } else {
+
                 }
                 break;
             case R.id.check_message_data:
@@ -691,6 +699,7 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * 删除接口返回的图片，保存时上传Id
+     *
      * @param id
      */
     public void deleteid(String id) {
@@ -787,8 +796,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void setStatusT() {
+        checkMessageStandar.setEnabled(true);
+        checkMessageLasttiem.setClickable(true);
+        checkMessageDate.setClickable(true);
+        check_message_describe.setEnabled(true);
         check_message_username.setClickable(true);
-        checkMessageStandar.setClickable(true);
+        checkMessageSwitch.setEnabled(true);
         checklistmeuntext.setText("保存");
         photoAdapter.getData(Imagepath, true);
         setTitleView();
@@ -796,8 +809,12 @@ public class CheckmassageActivity extends AppCompatActivity implements View.OnCl
 
     public void setStatusF() {
         setTitleView1();
+        checkMessageSwitch.setEnabled(false);
+        checkMessageStandar.setEnabled(false);
+        checkMessageLasttiem.setClickable(false);
+        checkMessageDate.setClickable(false);
+        check_message_describe.setEnabled(false);
         check_message_username.setClickable(false);
-        checkMessageStandar.setClickable(false);
         checklistmeuntext.setText("编辑");
         photoAdapter.getData(Imagepath, false);
     }

@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,10 +18,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils3;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -46,7 +49,7 @@ import okhttp3.Response;
  *         update: 2018/8/14 0014
  *         version:
  */
-public class CheckMonthYearFragment extends Fragment {
+public class CheckMonthYearFragment extends Fragment implements CheckCallback3 {
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
@@ -57,7 +60,7 @@ public class CheckMonthYearFragment extends Fragment {
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker;
     private LinearLayout linearDataTime;
-    private String orgId, years, mqnum, data;
+    private String orgId = "", years = "", mqnum, data;
     private LinearLayout checkQueater;
 
     @Nullable
@@ -67,13 +70,14 @@ public class CheckMonthYearFragment extends Fragment {
         mData = new ArrayList<>();
         mContext = CheckReportActivity.getInstance();
         years = Dates.getYear();
+        CheckCallBackUTils3.setCallBack(this);
         checkQueater = view.findViewById(R.id.check_queater);
         categoryList = view.findViewById(R.id.category_list);
         nullposion = view.findViewById(R.id.nullposion);
         linearDataTime = view.findViewById(R.id.linear_data_time);
         data_time = view.findViewById(R.id.linear_data);
         title = view.findViewById(R.id.title);
-//        mAdapter = new CheckQuarteradapter(mContext);
+
         title.setText("统计年度");
         data_time.setText(Dates.getYear());
         linearDataTime.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +91,17 @@ public class CheckMonthYearFragment extends Fragment {
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
         getdate();
+        mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, CheckReportOrgDetailsActivity.class);
+                intent.putExtra("name", mData.get(position).getOrgname());
+                intent.putExtra("id", mData.get(position).getId());
+                intent.putExtra("year", years);
+                intent.putExtra("type", "Y");
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
@@ -137,6 +152,12 @@ public class CheckMonthYearFragment extends Fragment {
         return contentView;
     }
 
+    @Override
+    public void update(String id) {
+        orgId = id;
+        getdate();
+    }
+
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
@@ -148,22 +169,22 @@ public class CheckMonthYearFragment extends Fragment {
     }
 
     public void getdate() {
-        LogUtil.i("12", orgId);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)
-                //查询年费
+                //查询年
                 .params("year", years)
                 //查询类型：季度
                 .params("selectType", "Y")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        ToastUtils.showShortToast(s);
+                        LogUtil.d("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             if (jsonArray.length() > 0) {
+                                mData.clear();
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                     String id = jsonObject1.getString("id");
@@ -186,12 +207,12 @@ public class CheckMonthYearFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
                 });
     }
 
-    public void setOrgId(String id) {
-        orgId = id;
-        LogUtil.i("sss",orgId);
-        getdate();
-    }
 }

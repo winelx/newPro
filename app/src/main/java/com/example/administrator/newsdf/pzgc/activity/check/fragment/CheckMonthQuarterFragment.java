@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,9 +18,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
@@ -36,7 +37,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,7 +50,7 @@ import okhttp3.Response;
  *         update: 2018/8/14 0014
  *         version:
  */
-public class CheckMonthQuarterFragment extends Fragment {
+public class CheckMonthQuarterFragment extends Fragment implements CheckCallback {
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
@@ -65,13 +65,15 @@ public class CheckMonthQuarterFragment extends Fragment {
     private int dateMonth;
     private Date myDate = new Date();
     private LinearLayout checkQueater;
-    private String yeare, mqnum;
+    private String yeare="", mqnum="";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_checkquarter, container, false);
         mData = new ArrayList<>();
+        yeare = Dates.getYear();
+        CheckCallBackUTils1.setCallBack(this);
         mContext = CheckReportActivity.getInstance();
         dataTime = view.findViewById(R.id.linear_data);
         checkQueater = view.findViewById(R.id.check_queater);
@@ -92,9 +94,20 @@ public class CheckMonthQuarterFragment extends Fragment {
         categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
-        yeare = Dates.getYear();
         mqnum = Dates.stringToList(Dates.getMonth(), "-").get(1);
         getdate();
+        mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(mContext, CheckReportOrgDetailsActivity.class);
+                intent.putExtra("name", mData.get(position).getOrgname());
+                intent.putExtra("id", mData.get(position).getId());
+                intent.putExtra("year", yeare);
+                intent.putExtra("mqnum", mqnum);
+                intent.putExtra("type", "M");
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
@@ -156,6 +169,12 @@ public class CheckMonthQuarterFragment extends Fragment {
         return contentView;
     }
 
+    @Override
+    public void update(String id) {
+        orgId = id;
+        getdate();
+    }
+
 
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
@@ -168,20 +187,23 @@ public class CheckMonthQuarterFragment extends Fragment {
     }
 
     public void getdate() {
-        LogUtil.i("12", orgId);
+
+        LogUtil.i("yeare",yeare);
+        String str=dataTime.getText().toString().substring(0,3);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)
                 //查询年份
                 .params("year", yeare)
-                //查询季度
+                //查询
                 .params("mqnum", mqnum)
                 //查询类型：季度
                 .params("selectType", "M")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        ToastUtils.showShortToast(s);
+//                        ToastUtils.showShortToast(s);
+                        LogUtil.d("ss", s);
                         try {
                             mData.clear();
                             JSONObject jsonObject = new JSONObject(s);
@@ -217,9 +239,4 @@ public class CheckMonthQuarterFragment extends Fragment {
                 });
     }
 
-    public void setOrgId(String id) {
-        orgId = id;
-        LogUtil.i("sss",orgId);
-        getdate();
-    }
 }

@@ -291,6 +291,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
             switch (v.getId()) {
                 case R.id.check_standard:
                     Intent intent = new Intent(mContext, CheckstandardListActivity.class);
+                    intent.putExtra("title","title");
                     startActivityForResult(intent, 1);
                     break;
                 case R.id.checklistback:

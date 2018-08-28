@@ -7,7 +7,8 @@ package com.example.administrator.newsdf.pzgc.utils;
  */
 public class Requests {
     //public static final String networks = "http://192.168.20.36:8080/";
-    //public static final String networks = "http://192.168.20.35:8080/pzgc/";
+    //-
+    // +public static final String networks = "http://192.168.20.35:8080/pzgc/";
     // public static final String networks = "http://192.168.20.81:8080/baseframe/";
     public static final String networks = "http://117.187.27.78:58081/pzgc/";
     //  public static final String networks = "http://120.79.142.15/pzgc/";
@@ -373,4 +374,10 @@ public class Requests {
      * admin/check/checkmanage/getOrgRanking?
      */
     public static final String getOrgRanking = networks + "admin/check/checkmanage/getOrgRanking";
+    /**
+     * 报表统计标段得分
+     */
+    public static final String getOrgScoreDetail = networks + "admin/check/checkmanage/getOrgScoreDetail";
+
+
 }

@@ -517,7 +517,8 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 checkItemContentName.setText(json.getString("name"));
                                 checkItemContentContentname.setText(json.getString("content"));
                                 checkItemContentBz.setText(json.getString("standard"));
-                                checkItemContentStandarcore.setText(json.getString("standardScore"));
+                                String srcor = json.getString("standardScore");
+                                checkItemContentStandarcore.setText(srcor.replace(".0", ""));
 
                                 String describe = json.getString("describe");
                                 checkItemContentDescribe.setText(describe);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,30 +44,30 @@ public class OrganizationaActivity extends AppCompatActivity {
     private Context mContext;
     private boolean status = true;
     public String data;
+    private LinearLayout nullposion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
+        mDatas2 = new ArrayList<OrgBeans>();
+        mData = new ArrayList<OrgenBeans>();
+        mContext = OrganizationaActivity.this;
         Intent intent = getIntent();
         String title = intent.getExtras().getString("title");
         data = intent.getExtras().getString("data");
-
-        mContext = OrganizationaActivity.this;
-        mData = new ArrayList<OrgenBeans>();
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
         TextView comtitle = (TextView) findViewById(R.id.com_title);
+        mTree = (ListView) findViewById(R.id.organ_list_item);
+
+        comtitle.setText(title);
+        initDatas();
         findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initDatas();
-
             }
         });
-        comtitle.setText(title);
-        mTree = (ListView) findViewById(R.id.organ_list_item);
-        mTree.setEmptyView(findViewById(R.id.nullposion));
-        mDatas2 = new ArrayList<OrgBeans>();
-        initDatas();
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,78 +87,83 @@ public class OrganizationaActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray1.length(); i++) {
-                                JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
-                                JSONObject json = jsonObject1.getJSONObject("organization");
-                                String Id;
-                                try {
-                                    Id = json.getString("id");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Id = "";
-                                }
-                                String type;
-                                try {
-                                    type = json.getString("orgType");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    type = "";
-                                }
-                                String parentId;
-                                try {
-                                    parentId = json.getString("parentId");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    //如果父ID为null
-                                    parentId = "";
-                                    //当做第一级处理
-                                    status = false;
-                                    mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
-                                }
-                                String name;
-                                try {
-                                    name = json.getString("name");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    name = "";
-                                }
-                                try {
-                                    mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
-                                            mDatas2, 0);
-                                    mTree.setAdapter(mAdapter);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                                mData.add(new OrgenBeans(Id, parentId, name, type));
-                            }
-                            if (status) {
-                                //拿到所有的ID
-                                final ArrayList<String> IDs = new ArrayList<String>();
-                                for (int i = 0; i < mData.size(); i++) {
-                                    IDs.add(mData.get(i).getId());
-                                }
-                                //循环集合
-                                for (int i = 0; i < mData.size(); i++) {
-                                    //取出父ID，
-                                    String pernID = mData.get(i).getParentId();
-                                    //用ID判断是否有父级相同的
-                                    if (IDs.contains(pernID)) {
-                                        //存在相同的的不处理
-                                    } else {
-
-                                        //不存在相同的当做第一级
-                                        mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
-                                        try {
-                                            mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
-                                                    mDatas2, 0);
-                                            mTree.setAdapter(mAdapter);
-                                        } catch (IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        }
+                            if (jsonArray1.length() > 0) {
+                                for (int i = 0; i < jsonArray1.length(); i++) {
+                                    JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
+                                    JSONObject json = jsonObject1.getJSONObject("organization");
+                                    String Id;
+                                    try {
+                                        Id = json.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Id = "";
                                     }
-
+                                    String type;
+                                    try {
+                                        type = json.getString("orgType");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        type = "";
+                                    }
+                                    String parentId;
+                                    try {
+                                        parentId = json.getString("parentId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        //如果父ID为null
+                                        parentId = "";
+                                        //当做第一级处理
+                                        status = false;
+                                        mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
+                                    }
+                                    String name;
+                                    try {
+                                        name = json.getString("name");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        name = "";
+                                    }
+                                    try {
+                                        mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
+                                                mDatas2, 0);
+                                        mTree.setAdapter(mAdapter);
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    }
+                                    mData.add(new OrgenBeans(Id, parentId, name, type));
                                 }
+                                if (status) {
+                                    //拿到所有的ID
+                                    final ArrayList<String> IDs = new ArrayList<String>();
+                                    for (int i = 0; i < mData.size(); i++) {
+                                        IDs.add(mData.get(i).getId());
+                                    }
+                                    //循环集合
+                                    for (int i = 0; i < mData.size(); i++) {
+                                        //取出父ID，
+                                        String pernID = mData.get(i).getParentId();
+                                        //用ID判断是否有父级相同的
+                                        if (IDs.contains(pernID)) {
+                                            //存在相同的的不处理
+                                        } else {
+                                            //不存在相同的当做第一级
+                                            mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
+                                            try {
+                                                mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, OrganizationaActivity.this,
+                                                        mDatas2, 0);
+                                                mTree.setAdapter(mAdapter);
+                                            } catch (IllegalAccessException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                    }
+                                }
+                                nullposion.setVisibility(View.GONE);
+                            } else {
+                                nullposion.setVisibility(View.VISIBLE);
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

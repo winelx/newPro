@@ -1,9 +1,9 @@
 package com.example.administrator.newsdf.pzgc.callback;
 
 /**
- * Created by 10942 on 2018/8/27 0027.
+ * Created by Administrator on 2018/8/28 0028.
  */
 
-public interface CheckCallback {
+public interface CheckCallback3 {
     void update(String id);
 }

@@ -67,11 +67,9 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             CheckDetailsTop top = (CheckDetailsTop) obj;
             ((DetailsTop) holder).checkDetailsTitle.setText(top.getWbspath());
             String data = top.getSendDate();
-            ((DetailsTop) holder).checkDetailsUserdata.setText(top.getSendPersonName() + "  " + data.substring(0, 10));
+            ((DetailsTop) holder).checkDetailsUserdata.setText("下发人:"+top.getSendPersonName() + "  " + data.substring(0, 10));
             ((DetailsTop) holder).checkDetailsStandard.setText("违反标准：" + top.getStandardDelName());
             ((DetailsTop) holder).checkDetailsWhy.setText("整改事由：" + top.getRectificationOrgName());
-
-
             ((DetailsTop) holder).checkDetailsOrg.setText("检查组织：" + top.getCheckOrgName());
             ((DetailsTop) holder).checkDetailsRectificationUser.setText(setText2("整改负责人：" + top.getRectificationPersonName(), 5, R.color.colorAccent));
             String sub = top.getRectificationDate();
@@ -159,9 +157,9 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             list1 = (Contents).getImageList();
             if (list1.size() > 0) {
                 ((DetailsContents) holder).content_result_image.setVisibility(View.GONE);
-                ((DetailsContents) holder).content_result_image.setVisibility(View.VISIBLE);
+                ((DetailsContents) holder).detailsValidationRec.setVisibility(View.VISIBLE);
             } else {
-                ((DetailsContents) holder).content_result_image.setVisibility(View.GONE);
+                ((DetailsContents) holder).detailsValidationRec.setVisibility(View.GONE);
                 ((DetailsContents) holder).content_result_image.setVisibility(View.VISIBLE);
             }
             ArrayList<String> path2 = new ArrayList<>();
@@ -224,10 +222,6 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
         DetailsContent(View itemView) {
             super(itemView);
-            /*
-              回复
-             */
-
             //时间
             detailsResultData = itemView.findViewById(R.id.details_result_data);
             content_top_image = itemView.findViewById(R.id.content_top_image);

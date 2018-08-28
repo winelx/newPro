@@ -26,7 +26,7 @@
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
@@ -74,7 +74,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:ellipsize="end"
-                    android:maxEms="16"
+                    android:maxEms="17"
                     android:singleLine="true"
                    />
 
@@ -86,7 +86,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:maxEms="16"
+                    android:maxEms="17"
                     android:textColor="@color/black"
                     android:singleLine="true"
                     android:text="检查组织:XXXXXXXXXXXX" />
@@ -103,9 +103,6 @@
                     android:textSize="12sp" />
 
             </RelativeLayout>
-
         </RelativeLayout>
-
-
     </RelativeLayout>
 </LinearLayout>

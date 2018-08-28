@@ -5,14 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2018/8/27 0027.
@@ -43,7 +42,7 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void bindView(ViewHolder holder, int position) {
+    private void bindView(final ViewHolder holder, int position) {
         holder.listRanking.setText((position + 1) + "");
         holder.listCompanyName.setText("所属公司：" + mData.get(position).getCompany());
         holder.listOrgidName.setText(mData.get(position).getOrgname());
@@ -62,7 +61,15 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             holder.listRanking.setBackgroundResource(R.drawable.check_item_green);
         }
-
+        holder.checkReportItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1
+                int position = holder.getLayoutPosition();
+                // 2
+                mOnItemClickListener.onItemClick(holder.itemView, position);
+            }
+        });
     }
 
     @Override
@@ -77,13 +84,14 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView listOrgidName, listCompanyName, number, listRanking;
-
+        private RelativeLayout checkReportItem;
         public ViewHolder(View itemView) {
             super(itemView);
             listOrgidName = itemView.findViewById(R.id.list_orgid_name);
             listCompanyName = itemView.findViewById(R.id.list_company_name);
             number = itemView.findViewById(R.id.number);
             listRanking = itemView.findViewById(R.id.list_ranking);
+            checkReportItem = itemView.findViewById(R.id.check_report_item);
         }
     }
 
@@ -91,4 +99,18 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mData = Paths;
         notifyDataSetChanged();
     }
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
 }

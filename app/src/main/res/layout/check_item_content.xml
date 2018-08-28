@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
     android:focusable="true"
+    android:background="@color/writer"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
@@ -56,7 +57,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,7 +88,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,7 +120,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -185,7 +186,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -235,7 +236,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -271,7 +272,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:id="@+id/check_item_content_massage"
@@ -314,7 +315,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -8,12 +8,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckReportTreeListViewAdapters;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthReportFragment;
@@ -21,6 +19,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthY
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils3;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -56,9 +55,7 @@ public class CheckReportActivity extends AppCompatActivity implements View.OnCli
     private TextView textView;
     private static CheckReportActivity mContext;
     private DrawerLayout Reportdrawer;
-    private CheckMonthQuarterFragment fragment1;
-    private CheckMonthReportFragment fragment2;
-    private CheckMonthYearFragment fragment3;
+
 
     public static CheckReportActivity getInstance() {
         return mContext;
@@ -86,6 +83,7 @@ public class CheckReportActivity extends AppCompatActivity implements View.OnCli
         reportQuarter.setOnClickListener(this);
         comButton.setOnClickListener(this);
         comButton.setText("选择组织");
+        comButton.setTextSize(10);
         textView.setText("检查报表");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +142,6 @@ public class CheckReportActivity extends AppCompatActivity implements View.OnCli
         Reportdrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //展示侧拉界面后，背景透明度（当前透明度为完全透明）
         Reportdrawer.setScrimColor(Color.TRANSPARENT);
-        fragment1 = new CheckMonthQuarterFragment();
-        fragment2 = new CheckMonthReportFragment();
-        fragment3 = new CheckMonthYearFragment();
         initDatas();
     }
 
@@ -323,9 +318,9 @@ public class CheckReportActivity extends AppCompatActivity implements View.OnCli
         orgId = id;
         textView.setText(name);
         Reportdrawer.closeDrawers();
-        fragment3.setOrgId(orgId);
-        fragment2.setOrgId(orgId);
-        fragment1.setOrgId(orgId);
+        CheckCallBackUTils1.CheckCallback(id);
+        CheckCallBackUTils2.CheckCallback2(id);
+        CheckCallBackUTils3.CheckCallback3(id);
 
     }
 }

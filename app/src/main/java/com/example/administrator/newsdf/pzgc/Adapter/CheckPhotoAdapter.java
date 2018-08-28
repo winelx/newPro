@@ -90,7 +90,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckitemActivity Checkitem = (CheckitemActivity) mContext;
                             String status = Checkitem.getstatus();
                             if ("编辑".equals(status)) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 Checkitem.delete(photoPaths.get(position).getContent());
                                 //删除本地图片
@@ -105,7 +105,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckmassageActivity message = (CheckmassageActivity) mContext;
                             String str = message.getsttus();
                             if (str.equals("编辑")) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 String strs = photoPaths.get(position).getContent();
                                 if (strs.length() > 0) {
@@ -124,7 +124,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
                             String rectifi = Rectifi.getstatus();
                             if ("编辑".equals(rectifi)) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 if (photoPaths.get(position).getContent().length() > 0) {
                                     Rectifi.delete(photoPaths.get(position).getContent());
@@ -178,7 +178,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckitemActivity Checkitem = (CheckitemActivity) mContext;
                             String ststus = Checkitem.getstatus();
                             if ("编辑".equals(ststus)) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 //调用相机
                                 Checkitem.showPopwindow();
@@ -188,7 +188,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckmassageActivity message = (CheckmassageActivity) mContext;
                             String getsttus = message.getsttus();
                             if ("编辑".equals(getsttus)) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 //调用相机
                                 message.showPopwindow();
@@ -199,7 +199,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             CheckRectificationActivity Rectifi = (CheckRectificationActivity) mContext;
                             String rectifi = Rectifi.getstatus();
                             if ("编辑".equals(rectifi)) {
-                                ToastUtils.showShortToast("当前状态不可编辑");
+                                ToastUtils.showShortToast("当前不是编辑状态哦");
                             } else {
                                 //调用相机
                                 Rectifi.showPopwindow();
