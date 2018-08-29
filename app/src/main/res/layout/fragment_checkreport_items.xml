@@ -54,7 +54,7 @@
             android:text="wbs路径"
             android:layout_marginTop="5sp"
             android:ellipsize="end"
-            android:maxEms="20"
+            android:maxEms="25"
             android:singleLine="true"
             android:textColor="@color/graytext"
             android:id="@+id/check_t_wbspath"

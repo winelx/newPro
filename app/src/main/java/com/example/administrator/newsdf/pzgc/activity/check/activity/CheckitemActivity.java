@@ -261,15 +261,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 if ("编辑".equals(text)) {
                     pos = position + 1;
                     getdate(taskId, pos);
-                    drawerLayout.closeDrawers();
                 } else {
-                    boolean lean = checkItemContentCore.getText().toString().isEmpty();
-                    pos = position + 1;
-                    if (!lean) {
-                        ToastUtils.showShortToast("请先保存");
-                    } else {
-                        getdate(taskId, pos);
-                    }
+                    item=position;
+                    saveDetails(true, "item");
                 }
                 drawerLayout.closeDrawer(drawerlayoutRight);
             }
@@ -664,6 +658,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 } else if (Tabup.equals("Tadown")) {
                     getdate(taskId, pos + 1);
                 } else if (Tabup.equals("item")) {
+                    pos=item;
                     getdate(taskId, pos + 1);
                 }
 
@@ -790,7 +785,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                             } else if ("Tadown".equals(Tabup)) {
                                 getdate(taskId, pos + 1);
                             } else if ("item".equals(Tabup)) {
-                                getdate(taskId, item + 1);
+                              pos=item;
+                             getdate(taskId, pos + 1);
+                                getcheckitemList();
                             }
                         } else {
                             getdate(taskId, pos);

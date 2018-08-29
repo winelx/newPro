@@ -80,7 +80,7 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             ((ViewHolder) holder).wbspath.setText(Tbean.getWbsName());
             ((ViewHolder) holder).score.setText("-"+Tbean.getStandardDelScore().replace(".0","")+"分");
            String str= Tbean.getCheckDate().substring(0,10);
-            ((ViewHolder) holder).checkuser.setText("下发人："+Tbean.getRectificationPersonName()+" "+str);
+            ((ViewHolder) holder).checkuser.setText("下发人："+Tbean.getRectificationPersonName()+"     "+str);
             ((ViewHolder) holder).orgname.setText("检查组织："+Tbean.getCheckOrgName());
             ((ViewHolder) holder).user.setText("整改负责人："+Tbean.getCheckPersonName());
             ((ViewHolder) holder).checkdata.setText("整改期限："+Tbean.getRectificationDate().substring(0,10));
@@ -109,7 +109,7 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             ((ViewHolder2) holder).title.setText(Fbean.getCheck_plan_name());
             ((ViewHolder2) holder).wbspath.setText(Fbean.getWbs_name());
             ((ViewHolder2) holder).Score.setText("+"+Fbean.getScore().replace(".0","")+"分");
-            ((ViewHolder2) holder).checkuser.setText("检查人："+Fbean.getCheck_user_name()+"  "+Fbean.getCheck_date());
+            ((ViewHolder2) holder).checkuser.setText("检查人："+Fbean.getCheck_user_name()+"     "+Fbean.getCheck_date());
             ((ViewHolder2) holder).orgname.setText("检查组织："+Fbean.getCheck_org_name());
             ((ViewHolder2) holder).layout_linear.setOnClickListener(new View.OnClickListener() {
                 @Override

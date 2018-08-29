@@ -259,15 +259,14 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            Dates.disDialog();
                             if (pages == 1) {
                                 list.clear();
                             }
                             checkjson.taskmanagerlist(s, list, mAdapter);
                             smartrefreshlayout.finishRefresh(true);
                             smartrefreshlayout.finishLoadmore(true);
-                            Dates.disDialog();
                         }
-
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
@@ -279,13 +278,14 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
+                    Dates.disDialog();
                     if (pages == 1) {
                         list.clear();
                     }
                     checkjson.taskmanagerlist(s, list, mAdapter);
                     smartrefreshlayout.finishRefresh(true);
                     smartrefreshlayout.finishLoadmore(true);
-                    Dates.disDialog();
+
                 }
 
                 @Override

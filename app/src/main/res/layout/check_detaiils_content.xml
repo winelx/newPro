@@ -47,7 +47,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
-                android:text="2018-07-03"
+
                 android:textSize="13sp" />
 
         </RelativeLayout>
@@ -64,7 +64,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="回复人:张三"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
@@ -76,14 +75,13 @@
                 android:textColor="@color/black"
                 android:text="整改结果：已整改"
                 android:textSize="13sp" />
-
             <TextView
                 android:id="@+id/details_result_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:lineSpacingMultiplier="1.2"
                 android:layout_marginTop="2dp"
-                android:text="整改描述:已按照标准完成整改"
                 android:textSize="13sp" />
 
             <TextView

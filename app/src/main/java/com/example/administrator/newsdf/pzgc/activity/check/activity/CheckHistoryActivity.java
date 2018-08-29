@@ -46,7 +46,7 @@ public class CheckHistoryActivity extends BaseActivity {
                 holder.setText(task_cord, obj.getName());
                 String data = obj.getContent();
                 holder.setText(R.id.task_cord_data, data);
-                holder.setSize(R.id.task_cord_data, 10);
+                holder.setSize(R.id.task_cord_data, 12);
 
             }
         };

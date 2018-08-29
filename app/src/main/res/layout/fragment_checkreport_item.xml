@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:ellipsize="end"
-            android:maxEms="17"
+            android:maxEms="25"
             android:singleLine="true"
             android:text="对危险性较大的高边坡、高墩、，未进行风险评估"
             android:textColor="@color/graytext"

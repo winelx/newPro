@@ -532,6 +532,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         try {
                             JSONObject jsonObject1 = new JSONObject(s);
                             int ret = jsonObject1.getInt("ret");
