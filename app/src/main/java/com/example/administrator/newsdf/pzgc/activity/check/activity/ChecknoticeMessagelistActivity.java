@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckRectifyMessageAdapter;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -56,7 +56,7 @@ import okhttp3.Response;
  *         update: 2018/8/8 0008
  *         version:
  */
-public class ChecknoticeMessagelistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class ChecknoticeMessagelistActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private RecyclerView listView;
     private ArrayList<MyNoticeDataBean> mData;
     private Context mContext;

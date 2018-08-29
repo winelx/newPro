@@ -3,13 +3,13 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CategoryContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Categorylist;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckTaskCategoryActivity extends AppCompatActivity {
+public class CheckTaskCategoryActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
 
 

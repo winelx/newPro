@@ -103,8 +103,8 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (lean) {
                 closeMenu();
             }
-            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
-            ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext)-80;
+//            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
+            ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
             ((SubViewHolder) holder).managementUser.setText("检查人:" + Sub.getCheckUser() + "    " + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());

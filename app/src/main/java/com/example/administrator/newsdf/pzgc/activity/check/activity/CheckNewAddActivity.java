@@ -44,7 +44,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -68,7 +67,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
-    private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber;
+    private LinearLayout checkNewData;
+    private LinearLayout checkImport;
+    private LinearLayout checkCategory;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewTasktitle, checkNewTemporarysite;
@@ -99,6 +100,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_check_new_add);
         setContentView(R.layout.activity_check_new_add);
         Intent intent = getIntent();
         //导入时的wbs
@@ -135,7 +137,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private void findbyid() {
         smallLabel = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //分数
-        checkNewAddNumber = (LinearLayout) findViewById(R.id.check_new_add_number);
         //wbs路径
         wbsName = (TextView) findViewById(R.id.check_wbspath);
         //指示箭头 类别和时间
@@ -508,6 +509,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
      * @param nodeId
      */
     public void Save(String content, String nodeId) {
+        Dates.getDialogs(CheckNewAddActivity.this,"提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
                 .params("name", checkNewTasktitle.getText().toString())
@@ -536,15 +538,18 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             if (ret == 0) {
                                 //更新列表界面
                                 JSONObject json = jsonObject1.getJSONObject("data");
+                                CheckTaskCallbackUtils.CallBackMethod();
                                 taskId = json.getString("id");
                                 getcheckitemList();
                                 statusT();
                             } else {
                                 ToastUtils.showShortToast(jsonObject1.getString("msg"));
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                         checklistmeun.setClickable(true);
                     }
 
@@ -552,17 +557,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         checklistmeun.setClickable(true);
-                        try {
-                            String str = response.body().string();
-                            ToastUtils.showLongToast(str);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                        Dates.disDialog();
                     }
                 });
     }
-//     checkNewNumber.setText(number+"");
-
     /**
      * 生成检查后的检查项列表
      */

@@ -37,13 +37,15 @@ public class AuditdetailsActivity extends AppCompatActivity implements View.OnCl
     public static AuditdetailsActivity getInstance() {
         return mContext;
     }
+
     HomeUtils homeUtils;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditdetails);
         Intent intnt = getIntent();
-        homeUtils=new HomeUtils();
+        homeUtils = new HomeUtils();
         mContext = this;
         //审核界面回调
         AuditDetailsCallbackUtils.setCallBack(this);

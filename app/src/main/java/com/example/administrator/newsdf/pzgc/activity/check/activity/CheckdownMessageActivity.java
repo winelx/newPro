@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +11,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageMeFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  *         update: 2018/8/8 0008
  *         version:
  */
-public class CheckdownMessageActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckdownMessageActivity extends BaseActivity implements View.OnClickListener {
     private TextView checkDownAll, checkDownMe,titleView;
     private ViewPager checkDownViewpager;
     private ArrayList<Fragment> mFragment;

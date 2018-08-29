@@ -3,13 +3,13 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckstandardContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Checkstandarditem;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
  *         version:
  */
 
-public class CheckstandardListActivity extends AppCompatActivity {
+public class CheckstandardListActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
     private String name,strid;
     private String title;

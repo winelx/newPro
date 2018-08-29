@@ -27,6 +27,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckCallback2;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -74,6 +75,7 @@ public class CheckMonthReportFragment extends Fragment implements CheckCallback2
         mData = new ArrayList<>();
         CheckCallBackUTils2.setCallBack(this);
         mContext = CheckReportActivity.getInstance();
+        orgId= SPUtils.getString(mContext,"orgId","");
         categoryList = view.findViewById(R.id.category_list);
         checkQueater = view.findViewById(R.id.check_queater);
         linearDataTime = view.findViewById(R.id.linear_data_time);

@@ -126,7 +126,8 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
     //    OrgDetailsFBean
     @Override
     public int getItemCount() {
-        return mData.size();
+
+      return mData.size();
     }
 
 

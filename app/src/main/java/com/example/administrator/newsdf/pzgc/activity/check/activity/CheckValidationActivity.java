@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +34,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -65,7 +65,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  *         update: 2018/8/9 0009
  *         version:
  */
-public class CheckValidationActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckValidationActivity extends BaseActivity implements View.OnClickListener {
     private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
     private ArrayList<Audio> imagepath;

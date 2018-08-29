@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import static com.example.administrator.newsdf.R.id.task_cord;
  * 审核通知单记录
  */
 
-public class CheckHistoryActivity extends AppCompatActivity {
+public class CheckHistoryActivity extends BaseActivity {
     private SettingAdapter adapter;
     ArrayList<String> data = new ArrayList<>();
     ArrayList<String> msg = new ArrayList<>();

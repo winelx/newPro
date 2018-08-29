@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAd
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils3;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -45,7 +45,7 @@ import okhttp3.Response;
  *         update: 2018/8/10 0010
  *         version:
  */
-public class CheckReportActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckReportActivity extends BaseActivity implements View.OnClickListener {
     private TextView reportDaily, reportMonth, reportQuarter, comButton;
     private ViewPager viewpager;
     private ListView checkReport;
@@ -84,7 +84,7 @@ public class CheckReportActivity extends AppCompatActivity implements View.OnCli
         comButton.setOnClickListener(this);
         comButton.setText("选择组织");
         comButton.setTextSize(10);
-        textView.setText("检查报表");
+        textView.setText("统计排名");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

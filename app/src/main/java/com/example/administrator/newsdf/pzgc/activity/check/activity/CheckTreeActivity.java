@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
@@ -28,7 +28,7 @@ import java.util.List;
  *         version:
  */
 
-public class CheckTreeActivity extends AppCompatActivity {
+public class CheckTreeActivity extends BaseActivity {
     //tree
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;

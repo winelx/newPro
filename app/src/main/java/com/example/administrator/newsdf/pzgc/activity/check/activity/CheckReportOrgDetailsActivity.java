@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsF;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsT;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.Map;
  *         update: 2018/8/28 0028
  *         version:
  */
-public class CheckReportOrgDetailsActivity extends AppCompatActivity {
+public class CheckReportOrgDetailsActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments;

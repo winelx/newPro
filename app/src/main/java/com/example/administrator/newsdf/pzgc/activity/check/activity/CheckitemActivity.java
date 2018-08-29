@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +43,7 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -68,6 +68,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.example.administrator.newsdf.R.id.check_item_content_core;
 import static com.example.administrator.newsdf.R.id.check_item_content_massage;
 import static com.example.administrator.newsdf.R.id.check_item_tadown;
 import static com.example.administrator.newsdf.R.id.checklistmeun;
@@ -82,7 +83,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/7 0007
  *         version:
  */
-public class CheckitemActivity extends AppCompatActivity implements View.OnClickListener, MapCallback, TaskCallback {
+public class CheckitemActivity extends BaseActivity implements View.OnClickListener, MapCallback, TaskCallback {
     private DKDragView dkDragView;
     private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
     private TextView checkItemTabupText, checkItemTadownText, titleView, checkitemcontentStatus, checklistmeuntext;
@@ -96,18 +97,17 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
     private Context mContext;
     private ArrayList<Audio> Imagepath;
     private static final int IMAGE_PICKER = 101;
-    private String taskId, orgId, id;
-    private int pos, size, number;
+    private String taskId, orgId;
+    private int pos, size, number, item;
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore;
     private EditText checkItemContentCore, checkItemContentDescribe;
     private Switch switch1;
     private String success, checkManageId, itemId;
     private Boolean generate;
-
+    private LinearLayout drawerlayoutRight;
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
-
-    private String score;
+    private String score, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +141,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         };
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("编辑");
-
+        drawerlayoutRight = (LinearLayout) findViewById(R.id.drawerLayout_right);
         //是否无此项
         switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
@@ -157,7 +157,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         //标准分
         checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
         //得分
-        checkItemContentCore = (EditText) findViewById(R.id.check_item_content_core);
+        checkItemContentCore = (EditText) findViewById(check_item_content_core);
         checkItemContentCore.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //标题
@@ -263,8 +263,15 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     getdate(taskId, pos);
                     drawerLayout.closeDrawers();
                 } else {
-                    ToastUtils.showShortToast("请先保存数据");
+                    boolean lean = checkItemContentCore.getText().toString().isEmpty();
+                    pos = position + 1;
+                    if (!lean) {
+                        ToastUtils.showShortToast("请先保存");
+                    } else {
+                        getdate(taskId, pos);
+                    }
                 }
+                drawerLayout.closeDrawer(drawerlayoutRight);
             }
         });
         tClickableF();
@@ -276,7 +283,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
                     if (checkItemContentStandarcore.getText().toString().isEmpty()) {
                         checkItemContentCore.setText("0");
                     } else {
@@ -467,7 +473,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
             case checklistmeun:
                 String text1 = checklistmeuntext.getText().toString();
                 if ("编辑".equals(text1)) {
-
                     tClickableT();
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(text1)) {
@@ -510,7 +515,6 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                 Imagepath.clear();
                                 pos = page;
                                 titleView.setText(page + "/" + size);
-
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 checkManageId = json.getString("noticeId");
                                 itemId = json.getString("id");
@@ -547,7 +551,7 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                     photoAdapter.getData(Imagepath, false);
                                 }
                                 score = json.getString("score");
-                                checkItemContentCore.setText(score);
+                                checkItemContentCore.setText(score.replace(".0", ""));
                                 if (page == 1) {
                                     checkItemTabup.setVisibility(View.INVISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
@@ -558,6 +562,14 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                                     checkItemTabup.setVisibility(View.VISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
                                 }
+                                if (score.isEmpty()) {
+                                    checklistmeuntext.setText("保存");
+                                    tClickableT();
+                                } else {
+                                    checklistmeuntext.setText("编辑");
+                                    tClickableF();
+                                }
+
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -631,27 +643,31 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
         if (!lean) {
             Dates.getDialog(CheckitemActivity.this, "提交数据中...");
             String standacore = checkItemContentStandarcore.getText().toString();
-            BigDecimal ContentCore = new BigDecimal(checkItemContentCore.getText().toString());
+            BigDecimal contentcore = new BigDecimal(checkItemContentCore.getText().toString());
             if (standacore.isEmpty()) {
-                if (ContentCore != null) {
-                    Save(isdata, Tabup);
-                } else {
-                    ToastUtils.showLongToast("得分还未填写");
-                }
+                Save(isdata, Tabup);
             } else {
                 BigDecimal Standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
-                if (Standarcore == null) {
-                    Standarcore = new BigDecimal("0");
-                }
-                if (Standarcore.subtract(ContentCore).compareTo(new BigDecimal("0.0")) >= 0) {
+                if (Standarcore.subtract(contentcore).compareTo(new BigDecimal("0.0")) >= 0) {
                     Save(isdata, Tabup);
                 } else {
                     ToastUtils.showLongToast("得分必须在0与标准分之间");
                 }
             }
-
         } else {
-            ToastUtils.showShortToastCenter("得分还未填写");
+            //如果没有填分数
+            if ("1".equals(Tabup)) {
+                ToastUtils.showShortToastCenter("得分还未填");
+            } else {
+                if (Tabup.equals("Tabup")) {
+                    getdate(taskId, pos - 1);
+                } else if (Tabup.equals("Tadown")) {
+                    getdate(taskId, pos + 1);
+                } else if (Tabup.equals("item")) {
+                    getdate(taskId, pos + 1);
+                }
+
+            }
         }
     }
 
@@ -765,23 +781,23 @@ public class CheckitemActivity extends AppCompatActivity implements View.OnClick
                     if (ret == 0) {
                         deleteid.clear();
                         Imagepath.clear();
+                        getcheckitemList();
                         if (isdata) {
                             checkItemContentDescribe.setText("");
                             checkItemContentDescribe.setText("");
-                            if (Tabup.equals("Tabup")) {
-
+                            if ("Tabup".equals(Tabup)) {
                                 getdate(taskId, pos - 1);
-                            } else if (Tabup.equals("Tadown")) {
-
+                            } else if ("Tadown".equals(Tabup)) {
                                 getdate(taskId, pos + 1);
-
+                            } else if ("item".equals(Tabup)) {
+                                getdate(taskId, item + 1);
                             }
                         } else {
                             getdate(taskId, pos);
                         }
-                        tClickableF();
-                        checklistmeuntext.setText("编辑");
-                        getcheckitemList();
+
+                    } else {
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +22,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -51,7 +51,7 @@ import okhttp3.Response;
  *         version:
  */
 
-public class ChecknoticeMessagelistAllActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChecknoticeMessagelistAllActivity extends BaseActivity implements View.OnClickListener {
 
     private SettingAdapter adapter;
     private ListView listView;

@@ -27,6 +27,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -71,6 +72,7 @@ public class CheckMonthYearFragment extends Fragment implements CheckCallback3 {
         mContext = CheckReportActivity.getInstance();
         years = Dates.getYear();
         CheckCallBackUTils3.setCallBack(this);
+        orgId = SPUtils.getString(mContext, "orgId", "");
         checkQueater = view.findViewById(R.id.check_queater);
         categoryList = view.findViewById(R.id.category_list);
         nullposion = view.findViewById(R.id.nullposion);

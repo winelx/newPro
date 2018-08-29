@@ -43,11 +43,15 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
         int number;
         try {
              number = Integer.parseInt(mDatas.get(position).getUnfinish());
-        }catch (NumberFormatException e){
+        }catch (Exception e){
             number=0;
         }
-
-            holder.homeItemMessage.setVisibility(View.GONE);
+            if (number==0){
+                holder.homeItemMessage.setVisibility(View.GONE);
+            }else {
+                holder.homeItemMessage.setText(number+"");
+                holder.homeItemMessage.setVisibility(View.VISIBLE);
+            }
 
         holder.checkMeTitle.setText(mDatas.get(position).getOrgname());
         holder.homeItemImg.setText(mDatas.get(position).getParentname());

@@ -89,14 +89,8 @@ public class CheckdownMessageAllFragment extends Fragment {
                 startActivity(new Intent(mContext, CheckRectificationActivity.class));
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         getdata();
+        return view;
     }
 
     public void getdata() {

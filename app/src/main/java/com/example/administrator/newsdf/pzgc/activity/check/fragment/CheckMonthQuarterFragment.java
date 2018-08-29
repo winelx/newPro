@@ -27,6 +27,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -74,7 +75,9 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         mData = new ArrayList<>();
         yeare = Dates.getYear();
         CheckCallBackUTils1.setCallBack(this);
+
         mContext = CheckReportActivity.getInstance();
+        orgId= SPUtils.getString(mContext,"orgId","");
         dataTime = view.findViewById(R.id.linear_data);
         checkQueater = view.findViewById(R.id.check_queater);
         title = view.findViewById(R.id.title);
@@ -187,9 +190,6 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
     }
 
     public void getdate() {
-
-        LogUtil.i("yeare",yeare);
-        String str=dataTime.getText().toString().substring(0,3);
         OkGo.post(Requests.getOrgRanking)
                 //组织Id
                 .params("orgId", orgId)

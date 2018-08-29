@@ -53,9 +53,10 @@ public class CheckReportOrgDetailsF extends Fragment {
     private Map<String, Object> map;
     private CheckReportOrgDetailsActivity activity;
     private ArrayList<Object> list;
-    private LinearLayout check_queater,layout_loading;
+    private LinearLayout check_queater, layout_loading;
     private SmartRefreshLayout recycler_att;
-    private int page=1;
+    private int page = 1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class CheckReportOrgDetailsF extends Fragment {
         categoryList = view.findViewById(R.id.category_list);
         check_queater = view.findViewById(R.id.check_queater);
         layout_loading = view.findViewById(R.id.layout_loading);
-        recycler_att=view.findViewById(R.id.recycler_att);
+        recycler_att = view.findViewById(R.id.recycler_att);
         recycler_att.setEnableRefresh(false);//是否启用下拉刷新功能
         recycler_att.setEnableOverScrollBounce(true);//是否启用越界回弹
         recycler_att.setDisableContentWhenLoading(true);//加载时禁止操作界面
@@ -75,7 +76,7 @@ public class CheckReportOrgDetailsF extends Fragment {
         map = activity.getOrgId();
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-        mAdapter = new CheckReportOrgDetailsAdapter(list,mContext);
+        mAdapter = new CheckReportOrgDetailsAdapter(list, mContext);
         categoryList.setAdapter(mAdapter);
         getdata();
 
@@ -92,12 +93,12 @@ public class CheckReportOrgDetailsF extends Fragment {
         mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Object obj=list.get(position);
-                Intent intent =new Intent(mContext, IssuedTaskDetailsActivity.class);
-                OrgDetailsFBean tBean= (OrgDetailsFBean) obj;
-                intent.putExtra("id",tBean.getId());
-                intent.putExtra("title",tBean.getRectificationOrgName());
-                intent.putExtra("isDeal",true);
+                Object obj = list.get(position);
+                Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
+                OrgDetailsFBean tBean = (OrgDetailsFBean) obj;
+                intent.putExtra("id", tBean.getId());
+                intent.putExtra("title", tBean.getRectificationOrgName());
+                intent.putExtra("isDeal", true);
                 startActivity(intent);
             }
         });
@@ -119,8 +120,8 @@ public class CheckReportOrgDetailsF extends Fragment {
                 .params("selectType", map.get("type") + "")
                 //统计时间数值 季/月
                 .params("mqnum", mqnum)
-                .params("page",page)
-                .params("row",20)
+                .params("page", page)
+                .params("row", 20)
                 //查询类别
                 .params("modeType", "ZG")
                 .execute(new StringCallback() {
@@ -135,50 +136,93 @@ public class CheckReportOrgDetailsF extends Fragment {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
                                         String checkDate = json.getString("check_date");
-                                        String checkOrgName = json.getString("check_org_name");
+                                        String checkOrgName;
+                                        try {
+                                            checkOrgName = json.getString("check_org_name");
+                                        } catch (JSONException e) {
+                                            checkOrgName = "";
+                                        }
                                         String checkPersonName;
                                         try {
-                                            checkPersonName   = json.getString("check_person_name");
-                                        }catch (JSONException e){
-                                            checkPersonName="";
+                                            checkPersonName = json.getString("check_person_name");
+                                        } catch (JSONException e) {
+                                            checkPersonName = "";
                                         }
                                         String id = json.getString("id");
-                                        String partDetails ;
+                                        String partDetails;
                                         try {
                                             partDetails = json.getString("part_details");
-                                        }catch (JSONException e){
-                                            partDetails="";
+                                        } catch (JSONException e) {
+                                            partDetails = "";
                                         }
                                         String rectificationDate;
                                         try {
                                             rectificationDate = json.getString("rectification_date");
-                                        }catch (JSONException e){
-                                            rectificationDate="";
+                                        } catch (JSONException e) {
+                                            rectificationDate = "";
                                         }
-                                        String rectificationOrgName = json.getString("rectification_org_name");
-                                        String rectificationPersonName = json.getString("rectification_person_name");
-                                        String rectificationReason = json.getString("rectification_reason");
-                                        String standardDelName = json.getString("standard_del_name");
-                                        String  standardDelScore = json.getString("standard_del_score");
-                                        String wbsName = json.getString("wbs_name");
-                                        String standardTypeName = json.getString("standardType_name");
+                                        String rectificationOrgName;
+                                        try {
+                                            rectificationOrgName = json.getString("rectification_org_name");
+                                        } catch (JSONException e) {
+                                            rectificationOrgName = "";
+                                        }
+
+                                        String rectificationPersonName;
+                                        try {
+                                            rectificationPersonName = json.getString("rectification_person_name");
+                                        } catch (JSONException e) {
+                                            rectificationPersonName = "";
+                                        }
+                                        String rectificationReason;
+                                        try {
+                                            rectificationReason = json.getString("rectification_reason");
+                                        } catch (JSONException e) {
+                                            rectificationReason = "";
+                                        }
+
+                                        String standardDelName;
+                                        try {
+                                            standardDelName = json.getString("standard_del_name");
+                                        } catch (JSONException e) {
+                                            standardDelName = "";
+                                        }
+
+                                        String standardDelScore;
+                                        try {
+                                            standardDelScore = json.getString("standard_del_score");
+                                        } catch (JSONException e) {
+                                            standardDelScore = "";
+                                        }
+                                        String wbsName;
+                                        try {
+                                            wbsName = json.getString("wbs_name");
+                                        } catch (JSONException e) {
+                                            wbsName = "";
+                                        }
+
+                                        String standardTypeName;
+                                        try {
+                                            standardTypeName = json.getString("standardType_name");
+                                        } catch (JSONException e) {
+                                            standardTypeName = "";
+                                        }
                                         list.add(new OrgDetailsFBean(checkDate, checkOrgName, checkPersonName, id, partDetails, rectificationDate,
-                                                rectificationOrgName, rectificationPersonName, rectificationReason, standardDelName, standardDelScore, wbsName,standardTypeName));
+                                                rectificationOrgName, rectificationPersonName, rectificationReason, standardDelName, standardDelScore, wbsName, standardTypeName));
                                     }
                                     if (list.size() > 0) {
                                         check_queater.setVisibility(View.GONE);
                                     } else {
                                         check_queater.setVisibility(View.VISIBLE);
                                     }
-                                    mAdapter.getmData(list);
-                                }else {
-                                    if (list.size()>0){
+                                } else {
+                                    if (list.size() > 0) {
                                         check_queater.setVisibility(View.GONE);
-                                    }else {
+                                    } else {
                                         check_queater.setVisibility(View.VISIBLE);
                                     }
-                                    mAdapter.getmData(list);
                                 }
+                                mAdapter.getmData(list);
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }

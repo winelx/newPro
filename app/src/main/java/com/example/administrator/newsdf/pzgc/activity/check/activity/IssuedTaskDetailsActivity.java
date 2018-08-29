@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -46,7 +46,7 @@ import static com.example.administrator.newsdf.R.id.check_details_submit;
  *         update: 2018/8/8 0008
  *         version:
  */
-public class IssuedTaskDetailsActivity extends AppCompatActivity implements View.OnClickListener, MoreTaskCallback {
+public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnClickListener, MoreTaskCallback {
     private RecyclerView detailsRejected;
     private TextView infaceWbsPath, titleView, checklistmeuntext, checkDetailsSubmit,
             checkDetailsBlue, checkDetailsOrgin;
@@ -298,7 +298,6 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                                 repyId = jsonObject1.getString("id");
                                                 repycontent = jsonObject1.getString("replyDescription");
                                             }
-                                            replyDate = replyDate.substring(0, 10);
                                             String rectificationReason;
                                             motionCount1 = jsonObject1.getString("motionCount");
                                             try {
@@ -328,7 +327,6 @@ public class IssuedTaskDetailsActivity extends AppCompatActivity implements View
                                             JSONObject jsonObject2 = verificationList.getJSONObject(i);
                                             String replyPersonName2 = jsonObject2.getString("verificationPersonName");
                                             String replyDate2 = jsonObject2.getString("updateDate");
-                                            replyDate2 = replyDate2.substring(0, 10);
                                             String isby = jsonObject2.getString("isby");
                                             motionCount2 = jsonObject2.getString("motionCount");
                                             if (i == 0) {

@@ -6,8 +6,6 @@
 
     <include layout="@layout/titlestyle" />
 
-
-
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/SmartRefreshLayout"
         android:layout_width="match_parent"

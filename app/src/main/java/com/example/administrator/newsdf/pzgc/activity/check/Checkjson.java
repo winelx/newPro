@@ -61,9 +61,7 @@ public class Checkjson {
      * version:
      */
     public void taskmanagerlist(String str, ArrayList<Object> list, NotSubmitTaskAdapter mAdapter) {
-        ArrayList<CheckTasklistAdapter> mdata = new ArrayList<>();
-        ArrayList<CheckTasklistAdapter> listsuccess = new ArrayList<>();
-        ArrayList<SCheckTasklistAdapter> listsub = new ArrayList<>();
+
         try {
             JSONObject jsonObject = new JSONObject(str);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
@@ -99,21 +97,15 @@ public class Checkjson {
                         } catch (JSONException e) {
                             wbsMai = "";
                         }
-                        if (status.equals("0")) {
-                            listsub.add(new SCheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, status, wbsMai));
+                        if ("0".equals(status)) {
+                            list.add(new SCheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, status, wbsMai));
                         } else {
-                            listsuccess.add(new CheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, score, status, wbsMai));
+                            list.add(new CheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, score, status, wbsMai));
                         }
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                }
-                if (listsuccess.size() > 0) {
-                    list.addAll(listsuccess);
-                }
-                if (listsub.size() > 0) {
-                    list.addAll(listsub);
                 }
             }
             if (list.size() > 0) {

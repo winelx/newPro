@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckManagementAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -39,7 +39,7 @@ import static com.example.administrator.newsdf.R.id.expandable;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckmanagementActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckmanagementActivity extends BaseActivity implements View.OnClickListener {
     private ExpandableListView expandableListView;
     private SmartRefreshLayout refreshLayout;
     private TextView comtitle;
@@ -66,6 +66,7 @@ public class CheckmanagementActivity extends AppCompatActivity implements View.O
         mContext = CheckmanagementActivity.this;
         expandableListView = (ExpandableListView) findViewById(expandable);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        refreshLayout.setEnableLoadmore(false);
         comtitle = (TextView) findViewById(R.id.titleView);
         comtitle.setText("检查管理");
         findViewById(R.id.checklistback).setOnClickListener(this);

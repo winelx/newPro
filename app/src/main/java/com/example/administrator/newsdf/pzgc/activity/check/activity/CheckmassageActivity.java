@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +36,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -77,7 +77,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/9 0009
  *         version:
  */
-public class CheckmassageActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckmassageActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int IMAGE_PICKER = 101;
     private int dateMonth, dayDate;

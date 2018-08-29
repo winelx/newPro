@@ -113,6 +113,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
             mAdapter.closeMenu();
         }
     }
+
     //收藏全部任务后刷新该界面
     @Override
     public void deleteTop() {
@@ -188,13 +189,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
                             listView.setVisibility(View.GONE);
                             nullposion.setVisibility(View.VISIBLE);
                         }
-
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showShortToast("网络连接失败");
                         listView.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
                     }

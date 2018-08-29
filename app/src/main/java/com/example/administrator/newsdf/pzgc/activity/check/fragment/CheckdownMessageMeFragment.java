@@ -131,7 +131,7 @@ public class CheckdownMessageMeFragment extends Fragment {
                                         JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                         String id = jsonObject1.getString("id");
                                         String name = jsonObject1.getString("name");
-                                        String orgtype = jsonObject1.getString("org_type");
+                                        String orgtype = jsonObject1.getString("count");
                                         String parentId = jsonObject1.getString("parentId");
                                         String parentName = jsonObject1.getString("parentName");
                                         mData.add(new Home_item("", "", id, "", name, orgtype, "", parentName, parentId, false));

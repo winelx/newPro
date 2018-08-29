@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +34,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -70,7 +70,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/9 0009
  *         version:
  */
-public class CheckRectificationActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckRectificationActivity extends BaseActivity implements View.OnClickListener {
     private TextView titleView, checklistmeuntext, checkRectifiData, check_wbspath, checkRectifiSubmit,
             checkRectifiWbs, check_rectifi_font, category_item, check_new_tasktitle;
     private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data, check_standard;
@@ -340,7 +340,7 @@ public class CheckRectificationActivity extends AppCompatActivity implements Vie
                                 if (temporarysite.length() > 0 || wsbpath.length() > 0) {
                                     save();
                                 } else {
-                                    ToastUtils.showShortToast("检查部位不能为空");
+                                    ToastUtils.showShortToast("整改部位不能为空");
                                 }
                             } else {
                                 ToastUtils.showShortToast("违反标准不能为空");

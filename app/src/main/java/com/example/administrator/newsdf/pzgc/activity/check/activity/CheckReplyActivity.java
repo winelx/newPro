@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +30,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -60,14 +60,14 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  *         update: 2018/8/9 0009
  *         version:
  */
-public class CheckReplyActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckReplyActivity extends BaseActivity implements View.OnClickListener {
     private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
     private ArrayList<Audio> imagepath;
     private Context mContext;
     private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
-    private String id, noticeId, sdealId = "", repyId,repycontent;
+    private String id, noticeId, sdealId = "", repyId, repycontent;
     private EditText replyDescription;
     private ArrayList<String> list = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
@@ -113,7 +113,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
         try {
             repyId = intent.getStringExtra("repyId");
             id = intent.getStringExtra("noticeId");
-            repycontent=intent.getStringExtra("repycontent");
+            repycontent = intent.getStringExtra("repycontent");
             sdealId = intent.getStringExtra("sdealId");
             list = intent.getStringArrayListExtra("list");
             ids = intent.getStringArrayListExtra("ids");
@@ -122,7 +122,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
                 for (int i = 0; i < list.size(); i++) {
                     imagepath.add(new Audio(list.get(i), ids.get(i)));
                 }
-                mAdapter.getData(imagepath,true);
+                mAdapter.getData(imagepath, true);
             }
         } catch (Exception e) {
         }
@@ -317,7 +317,7 @@ public class CheckReplyActivity extends AppCompatActivity implements View.OnClic
 
                 }
             }
-            Dates.getDialog(CheckReplyActivity.this,"提交数据中...");
+            Dates.getDialog(CheckReplyActivity.this, "提交数据中...");
             OkGo.post(Requests.saveReplyDataApp)
                     .isMultipart(true)
                     .params("id", repyId)

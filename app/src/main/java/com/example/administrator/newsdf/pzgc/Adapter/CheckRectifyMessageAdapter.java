@@ -48,7 +48,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
             closeMenu();//关闭菜单
         }
         //设置内容布局的宽为屏幕宽度
-        holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext) - 80;
+     holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         holder.managementTitle.setText(mDatas.get(position).getPartDetails());
         holder.managementUser.setText("验证人：" + mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
         holder.managementwbs.setText(mDatas.get(position).getRectificationOrgName());
@@ -85,14 +85,17 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
                 } else {
                     if ("1".equals(motionNode) || "0".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("未回复");
+                        holder.tvSet.setVisibility(View.GONE);
                         holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
 
                     } else if ("2".equals(motionNode) || "3".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("未验证");
+                        holder.tvSet.setVisibility(View.GONE);
                         holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
 
                     } else if ("5".equals(motionNode)) {
                         holder.infaceItemMessage.setTextString("已完成");
+                        holder.tvSet.setVisibility(View.GONE);
                         holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
 
                     } else {

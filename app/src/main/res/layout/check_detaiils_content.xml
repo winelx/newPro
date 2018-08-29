@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textColor="@color/black"
-                android:text="整改结果:已整改"
+                android:text="整改结果：已整改"
                 android:textSize="13sp" />
 
             <TextView

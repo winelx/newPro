@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.zlaq.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.zlaq.presenter.UnifiedPresenter;
 import com.example.administrator.newsdf.zlaq.utils.StatusBarUtil;
 import com.example.administrator.newsdf.zlaq.view.UnifiedView;

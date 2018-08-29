@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +28,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -57,7 +57,7 @@ import okhttp3.Response;
  *         update: 2018/8/2 0002
  *         version:
  */
-public class CheckTasklistActivity extends AppCompatActivity implements View.OnClickListener, CheckTaskCallback {
+public class CheckTasklistActivity extends BaseActivity implements View.OnClickListener, CheckTaskCallback {
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
