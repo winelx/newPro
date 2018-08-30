@@ -195,7 +195,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView checkDetailsTitle, checkDetailsUserdata, checkDetailsBlock,
                 checkDetailsStandard, checkDetailsWhy, checkDetailsOrg;
         RecyclerView checkDetailsRec;
-        TextView checkDetailsRectificationUser, checkDetailsLasetime, checkDetailsStatus;
+        TextView checkDetailsRectificationUser, checkDetailsLasetime, checkDetailsStatus,attachment;
         ImageView notimgeview;
 
         DetailsTop(View itemView) {
@@ -203,6 +203,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             checkDetailsTitle = itemView.findViewById(R.id.check_details_title);
             checkDetailsUserdata = itemView.findViewById(R.id.check_details_userData);
             notimgeview = itemView.findViewById(R.id.notimgeview);
+            attachment = itemView.findViewById(R.id.attachment);
 
             checkDetailsStandard = itemView.findViewById(R.id.check_details_standard);
             checkDetailsWhy = itemView.findViewById(R.id.check_details_why);

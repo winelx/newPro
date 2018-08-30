@@ -185,10 +185,9 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     //动画类
     private FloatMeunAnims floatMeunAnims;
     private CircleImageView fab;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meunStandard, meunPhoto, nullposion;
     private boolean liststatus = true;
     boolean anim = true;
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -418,7 +417,6 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         drawerLayoutList.setAdapter(taskAdapter);
         //任务界面数据填充
         uslistView.setAdapter(mAdapter);
-        uslistView.setEmptyView(findViewById(R.id.nullposion));
     }
 
 
@@ -538,10 +536,10 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.fab:
                 if (anim) {
-                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclickt(meunPhoto, meunStandard, fab);
                     anim = false;
                 } else {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
                     anim = true;
                 }
                 break;
@@ -661,33 +659,47 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    String id = json.getString("id");
-                    //任务id
-                    String taskId = json.getString("taskId");
-                    ///检查点id
-                    String cascadeId = json.getString("cascadeId");
-                    //任务状态，0 和1;
-                    String isFinish = json.getString("isFinish");
-                    //推送内容
-                    String content = json.getString("content");
-                    //负责人
-                    String groupName = json.getString("groupName");
-                    //创建时间;
-                    String createTime = json.getString("createTime");
-                    //检查点名称
-                    String pointName = json.getString("pointName");
-                    // Wbs路径;
-                    String wbsPath = json.getString("wbsPath");
-                    String wbsId = json.getString("wbsId");
-                    mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
-                }
-                mAdapter.getDate(mDatas);
-                try {
-                    Dates.disDialog();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                if (jsonArray.length() > 0) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        String id = json.getString("id");
+                        //任务id
+                        String taskId = json.getString("taskId");
+                        ///检查点id
+                        String cascadeId = json.getString("cascadeId");
+                        //任务状态，0 和1;
+                        String isFinish = json.getString("isFinish");
+                        //推送内容
+                        String content = json.getString("content");
+                        //负责人
+                        String groupName = json.getString("groupName");
+                        //创建时间;
+                        String createTime = json.getString("createTime");
+                        //检查点名称
+                        String pointName = json.getString("pointName");
+                        // Wbs路径;
+                        String wbsPath = json.getString("wbsPath");
+                        String wbsId = json.getString("wbsId");
+                        mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
+                    }
+                    if (mDatas.size() > 0) {
+                        nullposion.setVisibility(View.GONE);
+                    } else {
+                        nullposion.setVisibility(View.VISIBLE);
+                    }
+                    mAdapter.getDate(mDatas);
+                    try {
+                        Dates.disDialog();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (mDatas.size() > 0) {
+                        nullposion.setVisibility(View.GONE);
+                    } else {
+                        nullposion.setVisibility(View.VISIBLE);
+                    }
+                    mAdapter.getDate(mDatas);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -708,7 +720,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
     //任务状态弹出窗
     private void MeunPop() {
         if (!anim) {
-            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+            floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
             anim = true;
         }
         View contentView = getPopupWindowContentView();
@@ -855,6 +867,8 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
 
     //初始化控件
     private void findview() {
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
+        nullposion.setVisibility(View.GONE);
         drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         //返回
         findViewById(R.id.com_back).setOnClickListener(this);
@@ -880,13 +894,13 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //侧拉界面的下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
-        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        meun_standard.setVisibility(View.GONE);
-        meun_photo.setVisibility(View.GONE);
+        meunStandard = (LinearLayout) findViewById(R.id.meun_standard);
+        meunPhoto = (LinearLayout) findViewById(R.id.meun_photo);
+        meunStandard.setVisibility(View.GONE);
+        meunPhoto.setVisibility(View.GONE);
         fab.setVisibility(View.GONE);
-        meun_photo.setOnClickListener(this);
-        meun_standard.setOnClickListener(this);
+        meunPhoto.setOnClickListener(this);
+        meunStandard.setOnClickListener(this);
         fab.setOnClickListener(this);
     }
 

@@ -56,7 +56,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     CameDialog cameDialog;
     boolean isFavorite;
     //判断workfragment是否初始化，如果没有，提亮的时候就不用刷新界面
-    boolean workbright;
+    boolean workbright=false;
 
     public RecycleAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
@@ -65,7 +65,12 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         cameDialog = new CameDialog();
         mDatas = new ArrayList<>();
         MainActivity mian = MainActivity.getInstance();
-        workbright = mian.wbright();
+        try {
+            workbright = mian.wbright();
+        }catch (NullPointerException e){
+            workbright=false;
+        }
+
     }
 
     @Override

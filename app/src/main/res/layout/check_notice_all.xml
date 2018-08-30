@@ -51,7 +51,7 @@
             android:layout_weight="1"
             android:textSize="13sp"
             android:ellipsize="end"
-            android:maxEms="18"
+            android:maxEms="19"
             android:singleLine="true"
             android:text="wbswbswbswbswbswbswbswbswbswbswbswbswbswbs"
             android:textColor="@color/black" />

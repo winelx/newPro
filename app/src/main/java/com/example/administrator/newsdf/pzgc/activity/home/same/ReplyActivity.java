@@ -425,6 +425,7 @@ public class ReplyActivity extends AppCompatActivity implements View.OnClickList
         };
 
         btnCamera.setOnClickListener(listener);
+        btn_camera_pop.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
         ColorDrawable dw = new ColorDrawable(0x30000000);

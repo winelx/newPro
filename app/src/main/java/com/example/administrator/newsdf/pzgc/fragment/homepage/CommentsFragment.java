@@ -176,7 +176,7 @@ public class CommentsFragment extends Fragment {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showShortToast("网络连接失败");
+
                         listView.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
                     }

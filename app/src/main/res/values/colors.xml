@@ -5,6 +5,7 @@
     <color name="colorAccent">#5096F8</color>
     <color name="back_ground">#e3e1e1</color>
     <color name="back">#F0F0F0</color>
+    <color name="back2">#e0e0e0</color>
     <color name="writer">#ffffff</color>
     <color name="inconfy">#e2c1bfc1</color>
     <color name="textViwe">#323232</color>
@@ -38,6 +39,7 @@
     <color name="__picker_selected_bg">#44000000</color>
     <color name="__picker_black_40">#282828</color>
     <color name="__picker_common_primary">#f3f3f3</color>
+
 
     <color name="__picker_text_40">#282828</color>
     <color name="__picker_text_80">#505050</color>

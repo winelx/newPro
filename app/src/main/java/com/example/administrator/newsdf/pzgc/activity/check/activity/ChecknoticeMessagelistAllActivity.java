@@ -66,6 +66,7 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
     private int page = 1;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout nullposion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,13 +88,13 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
         adapter = new SettingAdapter<MyNoticeDataBean>(mData, R.layout.check_notice_all) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, MyNoticeDataBean obj) {
-                holder.setText(R.id.management_title,  obj.getStandardDelName());
-                holder.setText(R.id.management_user, "下发人:"+obj.getCheckPersonName() + "    " + obj.getUpdateDate());
-                holder.setText(R.id.management_org, "检查组织:" + obj.getCheckOrgName());
-                holder.setText(mContext, R.id.management_number, "扣分:" + obj.getStandardDelScore(), 3, R.color.red);
-                holder.setText(R.id.notice_user, "整改负责人:" + obj.getNoticeuser());
-                holder.setText(R.id.notice_lasttime, "整改期限:" + obj.getNoticetime());
-                holder.setText(R.id.management_wbs,obj.getRectificationOrgName());
+                holder.setText(R.id.management_title, obj.getStandardDelName());
+                holder.setText(R.id.management_user, "下发人：" + obj.getCheckPersonName() + "    " + obj.getUpdateDate());
+                holder.setText(R.id.management_org, "检查组织：" + obj.getCheckOrgName());
+                holder.setText(mContext, R.id.management_number, "扣分：" + obj.getStandardDelScore(), 3, R.color.red);
+                holder.setText(R.id.notice_user, "整改负责人：" + obj.getNoticeuser());
+                holder.setText(R.id.notice_lasttime, "整改期限：" + obj.getNoticetime());
+                holder.setText(R.id.management_wbs, obj.getRectificationOrgName());
                 String status = obj.getStatus();
                 switch (status) {
                     case "0":
@@ -232,7 +233,7 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
     }
 
     public void getdate() {
-        Dates.getDialog(ChecknoticeMessagelistAllActivity.this,"请求数据中");
+        Dates.getDialog(ChecknoticeMessagelistAllActivity.this, "请求数据中");
         OkGo.post(Requests.GET_NOTICE_DATA_APP)
                 .params("rectificationOrgid", id)
 //通知单回复状态(0:未下发；1：未回复;2:未验证；3：打回；5:完成) (保存：0,提交 1)
@@ -305,9 +306,9 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
                             } else {
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
-                            if (mData.size()>0){
+                            if (mData.size() > 0) {
                                 nullposion.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 nullposion.setVisibility(View.VISIBLE);
                             }
                             Dates.disDialog();

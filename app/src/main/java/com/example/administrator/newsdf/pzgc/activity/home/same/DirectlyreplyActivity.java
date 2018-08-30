@@ -447,6 +447,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
+        btn_camera_pop.setOnClickListener(listener);
         ColorDrawable dw = new ColorDrawable(0x30000000);
         popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);

@@ -13,12 +13,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckReportTreeListViewAdapters;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
-import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthReportFragment;
-import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthYearFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
-import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
-import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils3;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
@@ -94,8 +90,8 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new CheckMonthQuarterFragment());
-        fragments.add(new CheckMonthReportFragment());
-        fragments.add(new CheckMonthYearFragment());
+//        fragments.add(new CheckMonthReportFragment());
+//        fragments.add(new CheckMonthYearFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), fragments);
         viewpager.setAdapter(adapter);
         //缓存界面
@@ -319,8 +315,8 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         textView.setText(name);
         Reportdrawer.closeDrawers();
         CheckCallBackUTils1.CheckCallback(id);
-        CheckCallBackUTils2.CheckCallback2(id);
-        CheckCallBackUTils3.CheckCallback3(id);
+//        CheckCallBackUTils2.CheckCallback2(id);
+//        CheckCallBackUTils3.CheckCallback3(id);
 
     }
 }

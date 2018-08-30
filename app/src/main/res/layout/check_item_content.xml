@@ -57,7 +57,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,7 +120,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,7 +151,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/back" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                 <Switch
                     android:id="@+id/switch1"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_margin="0dp"
                     android:layout_weight="1"
                     android:thumb="@drawable/switch_selector"
@@ -186,7 +186,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -236,7 +236,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -272,7 +272,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:id="@+id/check_item_content_massage"
@@ -315,7 +315,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray" />
+                android:background="@color/back2" />
 
             <LinearLayout
                 android:layout_width="match_parent"

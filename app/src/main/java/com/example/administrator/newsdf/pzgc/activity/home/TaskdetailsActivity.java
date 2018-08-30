@@ -794,14 +794,25 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                              */
                             for (int i = 0; i < comments.length(); i++) {
                                 JSONObject json = comments.getJSONObject(i);
-                                JSONObject user = json.getJSONObject("user");
+                                JSONObject user;
+                                try {
+                                    user = json.getJSONObject("user");
+                                } catch (JSONException e) {
+                                    user = new JSONObject();
+                                }
+
                                 //回复评论列表
                                 //唯一标识
                                 String comments_id = json.getString("id");
                                 //回复人ID
                                 String replyId = json.getString("replyId");
                                 //回复人姓名(路径：comments –> user -> realname)
-                                String realname = user.getString("realname");
+                                String realname;
+                                try {
+                                    realname = user.getString("realname");
+                                } catch (JSONException e) {
+                                    realname = "";
+                                }
                                 String portrait;
                                 try {
                                     portrait = user.getString("portrait");
@@ -876,6 +887,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

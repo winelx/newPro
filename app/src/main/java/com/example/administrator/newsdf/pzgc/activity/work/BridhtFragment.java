@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -42,13 +43,14 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.stampToDate;
  *         update: 2018/4/25 0025
  *         version:
  */
-public class BridhtFragment extends Fragment  {
+public class BridhtFragment extends Fragment {
     View view;
     private int pos = 0;
     private BridhtAdapter mAdapter;
     private RecyclerView brightspot_list;
     private ArrayList<BrightBean> mData = new ArrayList<>();
     private SmartRefreshLayout refreshlayout;
+    private LinearLayout nulllauout;
 
     public BridhtFragment(int pos) {
         this.pos = pos;
@@ -62,7 +64,7 @@ public class BridhtFragment extends Fragment  {
         view = inflater.inflate(R.layout.bright_list_view, container, false);
         brightspot_list = view.findViewById(R.id.brightspot_list);
         refreshlayout = view.findViewById(R.id.refreshlayout);
-
+        nulllauout = view.findViewById(R.id.nulllauout);
         refreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         refreshlayout.setEnableLoadmore(false);//禁止上拉
         refreshlayout.setEnableRefresh(true);
@@ -180,6 +182,11 @@ public class BridhtFragment extends Fragment  {
                                 if (stauts) {
                                     ToastUtils.showLongToast("暂无数据");
                                 }
+                            }
+                            if (mData.size() > 0) {
+                                nulllauout.setVisibility(View.GONE);
+                            } else {
+                                nulllauout.setVisibility(View.VISIBLE);
                             }
                             mAdapter.getData(mData);
                         } catch (JSONException e) {

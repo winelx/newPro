@@ -51,7 +51,11 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
         int lenght = username.length();
         String content = mDatas.get(posotion).getContent();
         content = username + "：" + content;
-        holder.audi_user.setText(setText(content, lenght, R.color.colorAccent, R.color.gray));
+        if (username.length() > 0) {
+            holder.audi_user.setText(setText(content, lenght, R.color.colorAccent, R.color.gray));
+        } else {
+            holder.audi_user.setText(content);
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.image_viewpager.setLayoutManager(linearLayoutManager);

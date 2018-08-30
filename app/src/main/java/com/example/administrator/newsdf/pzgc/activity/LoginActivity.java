@@ -236,7 +236,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //手机号
                             SPUtils.putString(mContext, "phone", moblie);
                             //是否保存数据
-
                             if (status) {
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);

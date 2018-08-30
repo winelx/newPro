@@ -221,7 +221,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showShortToast("网络连接失败");
+
                         nullposion.setVisibility(View.VISIBLE);
                         expandable.setVisibility(View.GONE);
                     }

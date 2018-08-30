@@ -27,6 +27,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
+import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
+import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -61,7 +63,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener, CheckNewCallback {
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
@@ -101,7 +103,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-        setContentView(R.layout.activity_check_new_add);
+        CheckNewCallbackUtils.setCallback(this);
         Intent intent = getIntent();
         //导入时的wbs
         orgId = intent.getStringExtra("orgId");
@@ -125,13 +127,8 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         } else {
             getdata();
             statusT();
+            getcheckitemList();
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getcheckitemList();
     }
 
     private void findbyid() {
@@ -233,6 +230,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                 intent2.putExtra("taskId", taskId);
                 intent2.putExtra("orgId", orgId);
@@ -241,6 +239,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 intent2.putExtra("size", mData.size());
                 intent2.putExtra("id", mData.get(position).getId());
                 startActivity(intent2);
+
             }
         });
         smallLabel.setOnRefreshListener(new OnRefreshListener() {
@@ -491,6 +490,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
 
         return contentView;
     }
+    //每次冲检查项返回时刷新当前界面数据
+    @Override
+    public void updata() {
+        getcheckitemList();
+    }
 
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
@@ -509,7 +513,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
      * @param nodeId
      */
     public void Save(String content, String nodeId) {
-        Dates.getDialogs(CheckNewAddActivity.this,"提交数据中...");
+        Dates.getDialogs(CheckNewAddActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
                 .params("name", checkNewTasktitle.getText().toString())
@@ -562,6 +566,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
     }
+
     /**
      * 生成检查后的检查项列表
      */
@@ -619,11 +624,13 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
      * 未提交的检查项获取数据
      */
     public void getdata() {
+        Dates.getDialogs(CheckNewAddActivity.this, "请求数据中...");
         post(Requests.CHECKGET_BY_ID)
                 .params("Id", taskId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -680,7 +687,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showLongToast("请求失败");
+                        Dates.disDialog();
                     }
                 });
     }
@@ -697,7 +704,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-
                             if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 categoryId = json.getString("id");

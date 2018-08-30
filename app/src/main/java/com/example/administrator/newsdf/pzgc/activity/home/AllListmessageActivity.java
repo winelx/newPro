@@ -39,7 +39,6 @@ import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.example.administrator.newsdf.treeView.Node;
@@ -99,7 +98,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
 
-    private LinearLayout drawerContent, imageViewMeun;
+    private LinearLayout drawerContent, imageViewMeun, nullposion;
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
 
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
@@ -112,7 +111,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     private boolean liststatus = true;
     boolean anim = true;
     private AllTaskListItem adapters;
-   private RecyclerView recycler_att;
+    private RecyclerView recycler_att;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -536,6 +535,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
 
     //初始化控件
     private void findbyId() {
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
         recycler_att = (RecyclerView) findViewById(R.id.recycler_att);
         recycler_att.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -678,7 +678,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void smart() {
         String content = searchEditext.getText().toString();
-
         //判断是否需要传内容
         if (content.length() != 0) {
             //判断是否有节点ID
@@ -716,14 +715,14 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
-                    LogUtil.i("sesfdsew", pages);
-
+                    Dates.disDialog();
                     parsingjson(s);
                 }
 
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
+                    Dates.disDialog();
                 }
             });
         } else {
@@ -731,12 +730,14 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            Dates.disDialog();
                             parsingjson(s);
                         }
 
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
+                            Dates.disDialog();
                         }
                     });
         }
@@ -769,7 +770,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         try {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-            if (jsonArray1.length() != 0) {
+            if (jsonArray1.length() > 0) {
                 for (int i = 0; i < jsonArray1.length(); i++) {
                     JSONObject json = jsonArray1.getJSONObject(i);
                     JSONObject json1 = new JSONObject();
@@ -894,12 +895,21 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                     Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                             pointName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                 }
-                if (Alldata.size() != 0) {
-                    adapters.getData(Alldata);
+                if (Alldata.size() > 0) {
+                    nullposion.setVisibility(View.GONE);
+                } else {
+                    nullposion.setVisibility(View.VISIBLE);
                 }
+                adapters.getData(Alldata);
+
             } else {
                 if (!swip) {
                     Alldata.clear();
+                }
+                if (Alldata.size() > 0) {
+                    nullposion.setVisibility(View.GONE);
+                } else {
+                    nullposion.setVisibility(View.VISIBLE);
                 }
                 adapters.getData(Alldata);
             }
@@ -910,7 +920,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
-    public  void  getumber(int pos){
+
+    public void getumber(int pos) {
         String status = Alldata.get(pos).getIsFinish() + "";
         if ("2".equals(status)) {
             Intent intent = new Intent(mContext, TaskdetailsActivity.class);
@@ -926,5 +937,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
             intent.putExtra("status", "true");
             intent.putExtra("activity", "all");
             startActivity(intent);
-    }}
+        }
+    }
 }

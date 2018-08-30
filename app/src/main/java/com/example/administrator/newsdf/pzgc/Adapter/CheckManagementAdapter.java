@@ -149,17 +149,17 @@ public class CheckManagementAdapter extends BaseExpandableListAdapter implements
         String childName = content.get(classes.get(groupPosition)).get(childPosition).getContent();
         //消息数量
         Integer number = Integer.decode(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
-        int mix = 99;
-        if (number > 0) {
-            if (number > mix) {
-                childHold.homeItemMessage.setText("99+");
-            } else {
-                childHold.homeItemMessage.setText(number + "");
-            }
-        } else {
-            childHold.homeItemMessage.setVisibility(View.GONE);
-        }
-
+//        int mix = 99;
+//        if (number > 0) {
+//            if (number > mix) {
+//                childHold.homeItemMessage.setText("99+");
+//            } else {
+//                childHold.homeItemMessage.setText(number + "");
+//            }
+//        } else {
+//
+//        }
+        childHold.homeItemMessage.setVisibility(View.GONE);
         //动态设置字项item宽度(嵌套层次太深，无法获取父级宽度)
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);

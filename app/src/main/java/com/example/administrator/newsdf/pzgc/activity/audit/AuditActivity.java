@@ -68,6 +68,7 @@ public class AuditActivity extends AppCompatActivity {
     private Integer integer = 1;
     private String orgId = "", name;
     private SmartRefreshLayout refreshLayout;
+    private LinearLayout nulllauout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class AuditActivity extends AppCompatActivity {
         ste = ScreenUtil.getDensity(App.getInstance());
         title = new ArrayList<>();
         TextView titles = (TextView) findViewById(R.id.title);
+        nulllauout = (LinearLayout) findViewById(R.id.nulllauout);
         titles.setText(name);
         audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
         aduit_back = (IconTextView) findViewById(R.id.aduit_back);
@@ -133,7 +135,7 @@ public class AuditActivity extends AppCompatActivity {
                 finish();
             }
         });
-        getData(integer,true);
+//        getData(integer,true);
         /**
          * 下拉
          */
@@ -142,7 +144,7 @@ public class AuditActivity extends AppCompatActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 integer = 1;
-                getData(integer,true);
+                getData(integer, true);
                 refreshlayout.finishRefresh(800);
             }
         });
@@ -152,7 +154,7 @@ public class AuditActivity extends AppCompatActivity {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 integer++;
-                getData(integer,false);
+                getData(integer, false);
                 refreshlayout.finishLoadmore(800);
             }
         });
@@ -162,7 +164,7 @@ public class AuditActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         integer = 1;
-        getData(integer,true);
+        getData(integer, true);
     }
 
     //弹出框
@@ -218,7 +220,8 @@ public class AuditActivity extends AppCompatActivity {
         }
     }
 
-    public void getData(Integer integer,final boolean lean) {
+    public void getData(final Integer integer, final boolean lean) {
+        Dates.getDialog(AuditActivity.this,"请求数据中..");
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")
@@ -227,10 +230,11 @@ public class AuditActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         LogUtil.i("ss", s);
-                    if (lean){
-                        title.clear();
-                    }
+                        if (integer == 1) {
+                            title.clear();
+                        }
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -248,10 +252,22 @@ public class AuditActivity extends AppCompatActivity {
                                 }
                                 title.add(new Audittitlebean(cnDay, ratio + "%", tip, day));
                             }
+                            if (title.size() > 0) {
+                                nulllauout.setVisibility(View.GONE);
+                            } else {
+                                nulllauout.setVisibility(View.VISIBLE);
+                            }
                             adapter.getData(title);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

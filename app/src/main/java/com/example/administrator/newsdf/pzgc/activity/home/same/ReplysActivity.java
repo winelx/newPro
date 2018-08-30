@@ -27,24 +27,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotosAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
-import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
-import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.PhotosAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
+import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
@@ -610,7 +611,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                         .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
-
+        RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = (Button) popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = (Button) popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = (Button) popView.findViewById(R.id.btn_camera_pop_cancel);
@@ -644,6 +645,8 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
                     //关闭pop
                     case R.id.btn_camera_pop_cancel:
                         break;
+                    case R.id.btn_pop_add:
+                        break;
                     default:
                         break;
                 }
@@ -654,7 +657,7 @@ public class ReplysActivity extends AppCompatActivity implements View.OnClickLis
         btnCamera.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
-
+        btn_camera_pop.setOnClickListener(listener);
         ColorDrawable dw = new ColorDrawable(0x30000000);
         popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);

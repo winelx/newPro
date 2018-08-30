@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,6 +210,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         //初始化控件
+        RelativeLayout btn_pop_add=popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
@@ -252,6 +254,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
 
         btnCamera.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
+        btn_pop_add.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
         //设置背景颜色
         ColorDrawable dw = new ColorDrawable(0x30000000);

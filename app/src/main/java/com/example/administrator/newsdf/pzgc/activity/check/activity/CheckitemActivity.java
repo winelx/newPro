@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
+import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
@@ -68,9 +70,6 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.R.id.check_item_content_core;
-import static com.example.administrator.newsdf.R.id.check_item_content_massage;
-import static com.example.administrator.newsdf.R.id.check_item_tadown;
 import static com.example.administrator.newsdf.R.id.checklistmeun;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
 import static com.lzy.okgo.OkGo.post;
@@ -108,7 +107,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
     private String score, id;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,13 +155,13 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //标准分
         checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
         //得分
-        checkItemContentCore = (EditText) findViewById(check_item_content_core);
+        checkItemContentCore = (EditText) findViewById(R.id.check_item_content_core);
         checkItemContentCore.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //整改通知
-        checkItemContentMassage = (LinearLayout) findViewById(check_item_content_massage);
+        checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
         checkItemContentMassage.setOnClickListener(this);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
@@ -174,7 +172,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //右侧拉布局
         checklist = (GridView) findViewById(R.id.checklist);
         //下一项
-        checkItemTadown = (LinearLayout) findViewById(check_item_tadown);
+        checkItemTadown = (LinearLayout) findViewById(R.id.check_item_tadown);
         //上一项
         checkItemTabup = (LinearLayout) findViewById(R.id.check_item_tabup);
         //上一项文字
@@ -201,18 +199,18 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 String text = checklistmeuntext.getText().toString();
+                //点击下一项时，上一项文字变为灰色
+                checkItemTabupText.setTextColor(Color.parseColor("#646464"));
+                //文字变为白色
+                checkItemTadownText.setTextColor(Color.parseColor("#ffffff"));
+                //下一项背景变为灰色
+                checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down_gray);
+                //上一下背景变为白色
+                checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
+                checkItemTabup.setClickable(false);
+                checkItemTadown.setClickable(false);
+                checkItemContentDescribe.setText("");
                 if ("编辑".equals(text)) {
-                    //点击下一项时，上一项文字变为灰色
-                    checkItemTabupText.setTextColor(Color.parseColor("#646464"));
-                    //文字变为白色
-                    checkItemTadownText.setTextColor(Color.parseColor("#ffffff"));
-                    //下一项背景变为灰色
-                    checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down_gray);
-                    //上一下背景变为白色
-                    checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
-                    checkItemTabup.setClickable(false);
-                    checkItemTadown.setClickable(false);
-                    checkItemContentDescribe.setText("");
                     getdate(taskId, pos + 1);
                 } else {
                     saveDetails(true, "Tadown");
@@ -225,15 +223,15 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 String text = checklistmeuntext.getText().toString();
+                //参考下一项点击事件
+                checkItemTabupText.setTextColor(Color.parseColor("#ffffff"));
+                checkItemTadownText.setTextColor(Color.parseColor("#646464"));
+                checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
+                checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
+                checkItemContentDescribe.setText("");
+                checkItemTabup.setClickable(false);
+                checkItemTadown.setClickable(false);
                 if ("编辑".equals(text)) {
-                    //参考下一项点击事件
-                    checkItemTabupText.setTextColor(Color.parseColor("#ffffff"));
-                    checkItemTadownText.setTextColor(Color.parseColor("#646464"));
-                    checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
-                    checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
-                    checkItemContentDescribe.setText("");
-                    checkItemTabup.setClickable(false);
-                    checkItemTadown.setClickable(false);
                     getdate(taskId, pos - 1);
                 } else {
                     saveDetails(true, "Tabup");
@@ -262,13 +260,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     pos = position + 1;
                     getdate(taskId, pos);
                 } else {
-                    item=position;
+                    item = position;
                     saveDetails(true, "item");
                 }
                 drawerLayout.closeDrawer(drawerlayoutRight);
             }
         });
-        tClickableF();
         getcheckitemList();
         /**
          * 无此项的打卡和关闭判断
@@ -306,13 +303,16 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    //添加图片
+    /**
+     *  添加图片
+     */
     public void showPopwindow() {
         //弹出现在相机和图册的蒙层
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         //初始化控件
+        RelativeLayout  btn_pop_add=popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
@@ -347,7 +347,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                         //关闭pop
                     case R.id.btn_pop_add:
                     default:
-
                         break;
                 }
                 popWindow.dismiss();
@@ -355,6 +354,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         };
 
         btnCamera.setOnClickListener(listener);
+        btn_pop_add.setOnClickListener(listener);
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
         //设置背景颜色
@@ -428,6 +428,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checklistback:
+                CheckNewCallbackUtils.CallBackMethod();
                 //删除已有图片
                 for (int i = 0; i < Imagepath.size(); i++) {
                     FileUtils.deleteFile(Imagepath.get(i).getName());
@@ -461,10 +462,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                             message();
                         }
                     }
-
                 }
                 break;
-            case checklistmeun:
+            case R.id.checklistmeun:
                 String text1 = checklistmeuntext.getText().toString();
                 if ("编辑".equals(text1)) {
                     tClickableT();
@@ -487,6 +487,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             for (int i = 0; i < Imagepath.size(); i++) {
                 FileUtils.deleteFile(Imagepath.get(i).getName());
             }
+            CheckNewCallbackUtils.CallBackMethod();
             finish();
             return true;
         }
@@ -494,12 +495,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void getdate(String Id, final Integer page) {
+        Dates.getDialogs(CheckitemActivity.this, "请求数据中...");
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
                 .params("id", Id)
                 .params("page", page)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         checkItemTabup.setClickable(true);
                         checkItemTadown.setClickable(true);
                         try {
@@ -517,21 +520,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                 checkItemContentBz.setText(json.getString("standard"));
                                 String srcor = json.getString("standardScore");
                                 checkItemContentStandarcore.setText(srcor.replace(".0", ""));
-
                                 String describe = json.getString("describe");
                                 checkItemContentDescribe.setText(describe);
-                                try {
-                                    generate = json.getBoolean("generate");
-                                    if (generate) {
-                                        checkitemcontentStatus.setText("是");
-                                    } else {
-                                        checkitemcontentStatus.setText("否");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    generate = false;
-                                    checkitemcontentStatus.setText("否");
-                                }
+
                                 switch1.setChecked(json.getBoolean("noSuch"));
                                 JSONArray attachments = json.getJSONArray("attachments");
                                 if (attachments.length() > 0) {
@@ -563,7 +554,21 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     checklistmeuntext.setText("编辑");
                                     tClickableF();
                                 }
-
+                                try {
+                                    generate = json.getBoolean("generate");
+                                    if (generate) {
+                                        checkitemcontentStatus.setText("是");
+                                        if (success != null) {
+                                            checkItemContentMassage.setClickable(true);
+                                        }
+                                    } else {
+                                        checkitemcontentStatus.setText("否");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    generate = false;
+                                    checkitemcontentStatus.setText("否");
+                                }
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -575,6 +580,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                         checkItemTabup.setClickable(true);
                         checkItemTadown.setClickable(true);
                     }
@@ -658,7 +664,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 } else if (Tabup.equals("Tadown")) {
                     getdate(taskId, pos + 1);
                 } else if (Tabup.equals("item")) {
-                    pos=item;
+                    pos = item;
                     getdate(taskId, pos + 1);
                 }
 
@@ -686,8 +692,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkItemContentCore.setEnabled(false);
         checkItemContentDescribe.setEnabled(false);
         checkItemContentMassage.setClickable(false);
-
-
     }
 
     /**
@@ -699,7 +703,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkItemContentDescribe.setEnabled(true);
         photoAdapter.getData(Imagepath, true);
         checkItemContentMassage.setClickable(true);
-
     }
 
     /**
@@ -785,8 +788,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                             } else if ("Tadown".equals(Tabup)) {
                                 getdate(taskId, pos + 1);
                             } else if ("item".equals(Tabup)) {
-                              pos=item;
-                             getdate(taskId, pos + 1);
+                                pos = item;
+                                getdate(taskId, pos + 1);
                                 getcheckitemList();
                             }
                         } else {

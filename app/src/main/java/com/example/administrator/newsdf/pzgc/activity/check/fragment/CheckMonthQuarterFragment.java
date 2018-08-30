@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -94,7 +93,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         });
         dataTime.setText(Dates.getMonth());
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+//        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
         mqnum = Dates.stringToList(Dates.getMonth(), "-").get(1);
@@ -202,7 +201,6 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-//                        ToastUtils.showShortToast(s);
                         LogUtil.d("ss", s);
                         try {
                             mData.clear();
