@@ -15,7 +15,6 @@
         android:layout_alignParentStart="true">
 
         <RelativeLayout
-            android:id="@+id/check_new_dialog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/back"
@@ -41,7 +40,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/graytext"
-                android:text="开始检查"
+                android:text="开始"
                 android:textColor="@color/writer" />
 
             <com.example.administrator.newsdf.pzgc.utils.DKDragView

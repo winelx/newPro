@@ -10,12 +10,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
@@ -162,10 +166,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                 MeunPop();
                 break;
             case R.id.newcheck:
-                Intent intent = new Intent(mContext, CheckNewAddActivity.class);
-                intent.putExtra("orgId", orgId);
-                intent.putExtra("name", name);
-                startActivity(intent);
+                showPopwindow();
                 break;
             default:
                 break;
@@ -267,6 +268,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                             smartrefreshlayout.finishRefresh(true);
                             smartrefreshlayout.finishLoadmore(true);
                         }
+
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
@@ -285,7 +287,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                     checkjson.taskmanagerlist(s, list, mAdapter);
                     smartrefreshlayout.finishRefresh(true);
                     smartrefreshlayout.finishLoadmore(true);
-
                 }
 
                 @Override
@@ -334,5 +335,64 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                         Dates.disDialog();
                     }
                 });
+    }
+
+
+    //添加图片
+    public void showPopwindow() {
+        //弹出现在相机和图册的蒙层
+        View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
+        //初始化布局
+        View popView = View.inflate(this, R.layout.camera_pop_floatbutton, null);
+        //初始化控件
+        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
+        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
+        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
+        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
+        //获取屏幕宽高
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        final PopupWindow popWindow = new PopupWindow(popView, width, height+100);
+        popWindow.setAnimationStyle(R.style.AnimBottom);
+        popWindow.setFocusable(true);
+        // 设置同意在外点击消失
+        popWindow.setOutsideTouchable(true);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btn_camera_pop_camera:
+                        Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
+                        intent.putExtra("orgId", orgId);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
+                        break;
+                    //相册图片
+                    case R.id.btn_camera_pop_album:
+                        Intent intent1 = new Intent(mContext, CheckNewAddActivity.class);
+                        intent1.putExtra("orgId", orgId);
+                        intent1.putExtra("name", name);
+                        startActivity(intent1);
+                        break;
+                    case R.id.btn_camera_pop_cancel:
+                        //关闭pop
+                    case R.id.btn_pop_add:
+                    default:
+
+                        break;
+                }
+                popWindow.dismiss();
+            }
+        };
+
+        btnCamera.setOnClickListener(listener);
+        btn_pop_add.setOnClickListener(listener);
+        btnAlbum.setOnClickListener(listener);
+        btnCancel.setOnClickListener(listener);
+        //设置背景颜色
+        ColorDrawable dw = new ColorDrawable(0x30000000);
+        popWindow.setBackgroundDrawable(dw);
+        //显示位置
+        popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 }

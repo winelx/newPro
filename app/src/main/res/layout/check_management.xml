@@ -41,24 +41,46 @@
                     app:slantedTextColor="@color/writer"
                     app:slantedTextSize="10sp" />
 
-                <TextView
-                    android:id="@+id/management_title"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxEms="16"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:text="测试公司测试公司测试公司测试公司测试公司测试公司测试公司"
-                    android:textColor="@color/black" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/management_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:maxEms="14"
+                        android:singleLine="true"
+                        android:text="测试公司测试公司测试公司"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/management_industry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/check_list_text"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="内业"
+                        android:visibility="gone"
+                        android:textColor="@color/Orange"
+                        android:textSize="7sp" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/management_wbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/management_title"
+                    android:layout_below="@+id/title"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="16"
@@ -72,11 +94,10 @@
                     android:layout_below="@+id/management_wbs"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
                     android:ellipsize="end"
                     android:maxEms="17"
                     android:singleLine="true"
-                   />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/management_org"
@@ -87,9 +108,9 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxEms="17"
-                    android:textColor="@color/black"
                     android:singleLine="true"
-                    android:text="检查组织:XXXXXXXXXXXX" />
+                    android:text="检查组织:XXXXXXXXXXXX"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/management_number"

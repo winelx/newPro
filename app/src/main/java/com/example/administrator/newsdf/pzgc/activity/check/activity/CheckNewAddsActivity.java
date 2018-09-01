@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -53,16 +53,12 @@ import okhttp3.Response;
 
 import static com.lzy.okgo.OkGo.post;
 
-
 /**
- * description:新增检查
- *
- * @author lx
- *         date: 2018/8/3 0006
- *         update: 2018/8/6 0006
- *         version:
+ * Created by Administrator on 2018/8/31 0031.
+ * 内业检查新增界面
  */
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener, CheckNewCallback {
+
+public class CheckNewAddsActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;
@@ -83,12 +79,14 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
     private ArrayList<chekitemList> mData;
-    private static CheckNewAddActivity mContext;
+    private static CheckNewAddsActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
     private SmartRefreshLayout smallLabel;
+    private LinearLayout checkNewDialog;
+    int number = 0;
 
-    public static CheckNewAddActivity getInstance() {
+    public static CheckNewAddsActivity getInstance() {
         return mContext;
     }
 
@@ -123,7 +121,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             statusF();
         } else {
             getdata();
-            statusT();
+//            statusT();
             getcheckitemList();
         }
     }
@@ -141,7 +139,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         tVisibility.add(icontextviewtwo);
         //检查人
         checkUsername = (TextView) findViewById(R.id.check_username);
-
+        //检查名称
+        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
+        checkNewDialog.setVisibility(View.GONE);
         //检查标段
         checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
         //检查组织
@@ -222,7 +222,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         titleView.setText("新增检查");
         adapter = new CheckNewAdapter(mContext, mData);
         checklist.setAdapter(adapter);
-
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -256,7 +255,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 meunpop();
                 break;
             case R.id.check_import:
-                Intent intent1 = new Intent(CheckNewAddActivity.this, CheckTreeActivity.class);
+                Intent intent1 = new Intent(CheckNewAddsActivity.this, CheckTreeActivity.class);
                 intent1.putExtra("orgId", orgId);
                 intent1.putExtra("name", name);
                 startActivityForResult(intent1, 2);
@@ -348,6 +347,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
 
     /**
      * 界面回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -387,7 +387,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
         mPopupWindow.showAsDropDown(titleView);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
-        Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
+        Utils.backgroundAlpha(0.5f, CheckNewAddsActivity.this);
     }
 
     /**
@@ -506,7 +506,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     class poponDismissListener implements PopupWindow.OnDismissListener {
         @Override
         public void onDismiss() {
-            Utils.backgroundAlpha(1f, CheckNewAddActivity.this);
+            Utils.backgroundAlpha(1f, CheckNewAddsActivity.this);
         }
     }
 
@@ -517,7 +517,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
      * @param nodeId
      */
     public void Save(String content, String nodeId) {
-        Dates.getDialogs(CheckNewAddActivity.this, "提交数据中...");
+        Dates.getDialogs(CheckNewAddsActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
                 .params("name", checkNewTasktitle.getText().toString())
@@ -627,7 +627,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
      * 未提交的检查项获取数据
      */
     public void getdata() {
-        Dates.getDialogs(CheckNewAddActivity.this, "请求数据中...");
+        Dates.getDialogs(CheckNewAddsActivity.this, "请求数据中...");
         post(Requests.CHECKGET_BY_ID)
                 .params("Id", taskId)
                 .execute(new StringCallback() {
@@ -783,5 +783,4 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
     }
-
 }

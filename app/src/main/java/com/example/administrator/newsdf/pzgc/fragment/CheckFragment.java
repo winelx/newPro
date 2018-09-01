@@ -47,7 +47,7 @@ public class CheckFragment extends Fragment {
         list = new ArrayList<>();
         list.add(new Checkbean("检查标准", R.mipmap.check_standard));
         list.add(new Checkbean("监督检查", R.mipmap.check_management));
-        list.add(new Checkbean("通知管理", R.mipmap.check_notice));
+        list.add(new Checkbean("整改通知", R.mipmap.check_notice));
        list.add(new Checkbean("统计报表", R.mipmap.check_statistical));
         check_recycler.setLayoutManager(new GridLayoutManager(mContext, 3));
         adapter = new CheckFragmentAdapter(mContext, list);

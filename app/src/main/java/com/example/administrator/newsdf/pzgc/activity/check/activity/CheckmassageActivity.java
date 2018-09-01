@@ -637,7 +637,9 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         return true;
     }
 
-
+    /**
+     * 保存
+     */
     public void Save() {
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < Imagepath.size(); i++) {
