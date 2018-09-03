@@ -47,7 +47,6 @@ public class CheckHistoryActivity extends BaseActivity {
                 String data = obj.getContent();
                 holder.setText(R.id.task_cord_data, data);
                 holder.setSize(R.id.task_cord_data, 12);
-
             }
         };
         wbs_listview.setAdapter(adapter);
