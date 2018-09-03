@@ -1,10 +1,10 @@
-package com.example.administrator.newsdf.pzgc.Adapter;
+package com.example.administrator.newsdf.pzgc.bean;
 
 /**
- * Created by Administrator on 2018/8/13 0013.
+ * Created by Administrator on 2018/8/9 0009.
  */
 
-public class SCheckTasklistAdapter {
+public class CheckTasklistBean {
     String checkOrgName;
     String checkUser;
     String createDate;
@@ -12,6 +12,7 @@ public class SCheckTasklistAdapter {
     String orgName;
     String score;
     String status;
+    int iwork;
     String wbsMainName;
 
 //        "checkOrgName": "测试9标",
@@ -24,16 +25,16 @@ public class SCheckTasklistAdapter {
 //                "wbsMainName": "K77+046～K77+287.455"
 
 
-    public SCheckTasklistAdapter(String checkOrgName, String checkUser, String createDate, String id, String orgName, String status,String wbsMainName) {
+    public CheckTasklistBean(String checkOrgName, String checkUser, String createDate, String id, String orgName, String score, String status, int iwork, String wbsMainName) {
         this.checkOrgName = checkOrgName;
         this.checkUser = checkUser;
         this.createDate = createDate;
         this.id = id;
         this.orgName = orgName;
-        this.wbsMainName = wbsMainName;
-
+        this.score = score;
         this.status = status;
-
+        this.iwork = iwork;
+        this.wbsMainName = wbsMainName;
     }
 
     public String getCheckOrgName() {
@@ -76,14 +77,6 @@ public class SCheckTasklistAdapter {
         this.orgName = orgName;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getScore() {
         return score;
     }
@@ -92,11 +85,27 @@ public class SCheckTasklistAdapter {
         this.score = score;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getWbsMainName() {
         return wbsMainName;
     }
 
     public void setWbsMainName(String wbsMainName) {
         this.wbsMainName = wbsMainName;
+    }
+
+    public int getIwork() {
+        return iwork;
+    }
+
+    public void setIwork(int iwork) {
+        this.iwork = iwork;
     }
 }

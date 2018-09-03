@@ -25,13 +25,14 @@ import java.util.List;
  */
 public class CheckTaskCategoryActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
-
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_category);
-
+        Intent intent = getIntent();
+        type = intent.getStringExtra("type");
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
         //图册
@@ -64,6 +65,10 @@ public class CheckTaskCategoryActivity extends BaseActivity {
         viewpager.setCurrentItem(1);
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void dismiss() {
         int item = viewpager.getCurrentItem();
         if (item == 1) {
@@ -73,7 +78,7 @@ public class CheckTaskCategoryActivity extends BaseActivity {
         }
     }
 
-    public void result(String str,String id) {
+    public void result(String str, String id) {
         Intent intent = new Intent();
         //回传数据到主Activity
         intent.putExtra("data", str);

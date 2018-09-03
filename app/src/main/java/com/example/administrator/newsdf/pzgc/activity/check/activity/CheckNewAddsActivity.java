@@ -120,9 +120,9 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             checkNewWebtext.setText(name);
             statusF();
         } else {
-            getdata();
-//            statusT();
+            statusT();
             getcheckitemList();
+            getdata();
         }
     }
 
@@ -263,6 +263,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             case R.id.Check_category:
                 Intent intent = new Intent(mContext, CheckTaskCategoryActivity.class);
                 intent.putExtra("wbsId", orgId);
+                intent.putExtra("type", "2");
                 startActivityForResult(intent, 1);
                 break;
             case R.id.checklistmeun:
@@ -275,17 +276,13 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                     //获取输入框内容，对比wbsName,
                     if (categoryItem.length() > 0) {
                         //选择的webs和手动输入内容必须存在一个，
-                        if (content.length() > 0 || wbspath.length() > 0) {
-                            String title = checkNewTasktitle.getText().toString();
-                            if (title.length() > 0) {
-                                checklistmeun.setClickable(false);
-                                //如果存在一个或者都存在，就调用接口
-                                Save(wbspath, nodeId);
-                            } else {
-                                ToastUtils.showLongToast("检查计划名称不能为空");
-                            }
+                        String title = checkNewTasktitle.getText().toString();
+                        if (title.length() > 0) {
+                            checklistmeun.setClickable(false);
+                            //如果存在一个或者都存在，就调用接口
+                            Save(wbspath, nodeId);
                         } else {
-                            ToastUtils.showLongToast("检查部位不能为空");
+                            ToastUtils.showLongToast("检查计划名称不能为空");
                         }
                     } else {
                         ToastUtils.showLongToast("类别不能为空");
@@ -523,6 +520,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
+                .params("iwork", "1")
                 //检查部位Id
                 .params("wbsMainId", nodeId)
                 //手动输入的检查部位
@@ -593,7 +591,13 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String standardScore = json.getString("standardScore");
+                                        String standardScore;
+                                        try {
+                                            standardScore = json.getString("standardScore");
+                                        } catch (JSONException e) {
+                                            standardScore = "";
+                                        }
+
                                         boolean noSuch = json.getBoolean("noSuch");
                                         boolean generate;
                                         try {
@@ -601,9 +605,10 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                         } catch (JSONException e) {
                                             generate = false;
                                         }
+                                        boolean gray = json.getBoolean("gray");
                                         boolean penalty = json.getBoolean("penalty");
                                         int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate, gray));
                                     }
                                 }
                             }

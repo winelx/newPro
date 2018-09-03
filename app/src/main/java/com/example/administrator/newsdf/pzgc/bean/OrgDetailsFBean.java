@@ -33,10 +33,10 @@ public class OrgDetailsFBean {
     private String standardDelScore;
     private String wbsName;
     private String standardtypeName;
-
+    private int iwork;
     public OrgDetailsFBean(String checkDate, String checkOrgName, String checkPersonName, String id, String partDetails,
                            String rectificationDate, String rectificationOrgName, String rectificationPersonName,
-                           String rectificationReason, String standardDelName, String standardDelScore, String wbsName,String standardtypeName) {
+                           String rectificationReason, String standardDelName, String standardDelScore, String wbsName,String standardtypeName,int iwork) {
         this.checkDate = checkDate;
         this.checkOrgName = checkOrgName;
         this.checkPersonName = checkPersonName;
@@ -50,6 +50,7 @@ public class OrgDetailsFBean {
         this.standardDelScore = standardDelScore;
         this.wbsName = wbsName;
         this.standardtypeName = standardtypeName;
+        this.iwork = iwork;
     }
 
     public String getCheckDate() {

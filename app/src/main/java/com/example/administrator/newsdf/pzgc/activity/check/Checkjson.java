@@ -1,8 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.check;
 
 import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistAdapter;
-import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
+import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,40 +17,6 @@ import java.util.ArrayList;
 
 public class Checkjson {
 
-    public ArrayList<CheckTasklistAdapter> checkmangerlist(String str) {
-        ArrayList<CheckTasklistAdapter> list = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(str);
-            JSONArray jsonArray = jsonObject.getJSONArray("results");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                try {
-                    String checkOrgName = json.getString("checkOrgName");
-                    String checkUser = json.getString("checkUser");
-                    String createDate = json.getString("createDate");
-                    String id = json.getString("id");
-                    String orgName = json.getString("orgName");
-                    String score = json.getString("score");
-                    String status = json.getString("status");
-                    String wbsMai = json.getString("wbsMai");
-                    list.add(new CheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, score, status, wbsMai));
-                } catch (NullPointerException e) {
-                    String checkOrgName = "";
-                    String checkUser = "";
-                    String createDate = "";
-                    String id = "";
-                    String orgName = "";
-                    String score = "";
-                    String status = "";
-                    String wbsMai = "";
-                }
-            }
-            return list;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * description:检查管理列表
@@ -85,7 +51,7 @@ public class Checkjson {
                             score = json.getString("score");
                             BigDecimal bigDecimal = new BigDecimal(score);
                             if (bigDecimal.compareTo(new BigDecimal("0.0")) == 0) {
-                                score ="0";
+                                score = "0";
                             }
                         } catch (JSONException e) {
                             score = "";
@@ -97,10 +63,17 @@ public class Checkjson {
                         } catch (JSONException e) {
                             wbsMai = "";
                         }
+                        int iwork;
+                        try {
+                            iwork = json.getInt("iwork");
+                        } catch (JSONException e) {
+                            iwork = 1;
+                        }
+
                         if ("0".equals(status)) {
-                            list.add(new SCheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, status, wbsMai));
+                            list.add(new SCheckTasklistBean(checkOrgName, checkUser, createDate, id, orgName, status, iwork, wbsMai));
                         } else {
-                            list.add(new CheckTasklistAdapter(checkOrgName, checkUser, createDate, id, orgName, score, status, wbsMai));
+                            list.add(new CheckTasklistBean(checkOrgName, checkUser, createDate, id, orgName, score, status, iwork, wbsMai));
                         }
 
                     } catch (NullPointerException e) {

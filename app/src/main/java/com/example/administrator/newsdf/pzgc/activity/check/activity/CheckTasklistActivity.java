@@ -26,10 +26,10 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
-import com.example.administrator.newsdf.pzgc.bean.CheckTasklistAdapter;
+import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -65,8 +65,8 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
-    private ArrayList<CheckTasklistAdapter> listsuccess;
-    private ArrayList<SCheckTasklistAdapter> listsub;
+    private ArrayList<CheckTasklistBean> listsuccess;
+    private ArrayList<SCheckTasklistBean> listsub;
 
     private Context mContext;
     private PopupWindow mPopupWindow;
@@ -114,8 +114,8 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         smartrefreshlayout.setDisableContentWhenLoading(true);
         //是否启用列表惯性滑动到底部时自动加载更多
         smartrefreshlayout.setEnableAutoLoadmore(false);
-
-        smartrefreshlayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+//是否启用越界拖动（仿苹果效果）1.0.4
+        smartrefreshlayout.setEnableOverScrollDrag(true);
         ImageView checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setVisibility(View.VISIBLE);
         checklistmeunimage.setBackgroundResource(R.mipmap.meun);
@@ -299,12 +299,21 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    public void submit(String id) {
-        Intent intent = new Intent(mContext, CheckNewAddActivity.class);
-        intent.putExtra("orgId", orgId);
-        intent.putExtra("name", name);
-        intent.putExtra("taskId", id);
-        startActivity(intent);
+    public void submit(String id, int iwork) {
+        if (iwork == 1) {
+            Intent intent = new Intent(mContext, CheckNewAddActivity.class);
+            intent.putExtra("orgId", orgId);
+            intent.putExtra("name", name);
+            intent.putExtra("taskId", id);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
+            intent.putExtra("orgId", orgId);
+            intent.putExtra("name", name);
+            intent.putExtra("taskId", id);
+            startActivity(intent);
+        }
+
     }
 
     public void delete(final int pos, String id) {
@@ -352,7 +361,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         //获取屏幕宽高
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-        final PopupWindow popWindow = new PopupWindow(popView, width, height+100);
+        final PopupWindow popWindow = new PopupWindow(popView, width, height);
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setFocusable(true);
         // 设置同意在外点击消失

@@ -13,8 +13,9 @@ public class chekitemList {
     boolean generate;
     boolean noSuch;
     boolean penalty;
+    boolean gray;
 
-    public chekitemList(String id, String score, String sequence, String standardScore, String number, boolean noSuch, boolean penalty, boolean generate) {
+    public chekitemList(String id, String score, String sequence, String standardScore, String number, boolean noSuch, boolean penalty, boolean generate,boolean gray) {
         this.id = id;
         this.score = score;
         this.sequence = sequence;
@@ -23,6 +24,7 @@ public class chekitemList {
         this.penalty = penalty;
         this.generate = generate;
         this.number = number;
+        this.gray = gray;
     }
 
     public String getId() {
@@ -87,5 +89,13 @@ public class chekitemList {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public boolean isGray() {
+        return gray;
+    }
+
+    public void setGray(boolean gray) {
+        this.gray = gray;
     }
 }

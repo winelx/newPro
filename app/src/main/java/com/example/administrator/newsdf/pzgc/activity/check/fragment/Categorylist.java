@@ -41,7 +41,7 @@ public class Categorylist extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_categorylist, container, false);
         categoryList = view.findViewById(R.id.category_list);
-        TextView titleView =view.findViewById(R.id.titleView);
+        TextView titleView = view.findViewById(R.id.titleView);
         titleView.setText("类别");
         checkUtils = new CheckUtils();
         mData = new ArrayList<>();
@@ -62,7 +62,7 @@ public class Categorylist extends Fragment {
                 if (integer > 0) {
                     CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
                     activity.setItem();
-                    CategoryCallbackUtils.CallBackMethod(mData.get(position).getId(),"");
+                    CategoryCallbackUtils.CallBackMethod(mData.get(position).getId(), "");
                 } else {
                     ToastUtils.showShortToastCenter("没有更多");
                 }
@@ -76,8 +76,8 @@ public class Categorylist extends Fragment {
                 activity.dismiss();
             }
         });
-
-        checkUtils.taskTypeList("", mData, adapter);
+        CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
+        checkUtils.taskTypeList("", mData, activity.getType(), adapter);
         return view;
     }
 

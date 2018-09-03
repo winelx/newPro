@@ -1,16 +1,18 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Administrator on 2018/8/31 0031.
  */
 
 public class ChekItemBean {
     String id;
-    int score;
+    BigDecimal score;
     String content;
     String status;
     String stype;
-    public ChekItemBean(String id, int score, String content, String status,String stype) {
+    public ChekItemBean(String id, BigDecimal score, String content, String status,String stype) {
         this.id = id;
         this.score = score;
         this.content = content;
@@ -26,11 +28,11 @@ public class ChekItemBean {
         this.id = id;
     }
 
-    public int getScore() {
+    public BigDecimal getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(BigDecimal score) {
         this.score = score;
     }
 

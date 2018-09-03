@@ -84,6 +84,7 @@ public class CategoryContent extends Fragment implements CategoryCallback {
     @Override
     public void updata(String str, String str1) {
         mData.clear();
-        checkUtils.taskTypeList(str, mData, adapter);
+        CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
+        checkUtils.taskTypeList(str, mData,activity.getType(), adapter);
     }
 }

@@ -45,15 +45,13 @@ import okhttp3.Response;
 
 public class CheckReportOrgDetailsT extends Fragment {
     private View view;
-    private LinearLayout checkQueater;
     private RecyclerView categoryList;
     private CheckReportOrgDetailsAdapter mAdapter;
-    private String year, selectType, mqnum, orgId;
     private Context mContext;
     private Map<String, Object> map;
     private CheckReportOrgDetailsActivity activity;
     private ArrayList<Object> list;
-    private LinearLayout check_queater,layout_loading;
+    private LinearLayout checkQueater,layout_loading;
     private SmartRefreshLayout recycler_att;
 
     private int page=1;
@@ -61,9 +59,8 @@ public class CheckReportOrgDetailsT extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_checkreportdetails, container, false);
-        checkQueater = view.findViewById(R.id.check_queater);
         categoryList = view.findViewById(R.id.category_list);
-        check_queater = view.findViewById(R.id.check_queater);
+        checkQueater = view.findViewById(R.id.check_queater);
         layout_loading = view.findViewById(R.id.layout_loading);
         recycler_att=view.findViewById(R.id.recycler_att);
         recycler_att.setEnableRefresh(false);//是否启用下拉刷新功能
@@ -150,22 +147,27 @@ public class CheckReportOrgDetailsT extends Fragment {
                                         }catch (JSONException e){
                                             wbs_name="";
                                         }
-
+                                        int iwork;
+                                        try{
+                                            iwork=json.getInt("iwork");
+                                        }catch (JSONException e){
+                                            iwork=1;
+                                        }
                                        String wbs_type_name=json.getString("wbs_type_name");
 
-                                        list.add(new OrgDetailsTBean(check_date,check_org_name,check_plan_name,check_user_name,id,part_detail,score,wbs_name,wbs_type_name));
+                                        list.add(new OrgDetailsTBean(check_date,check_org_name,check_plan_name,check_user_name,id,part_detail,score,wbs_name,wbs_type_name,iwork));
                                     }
                                     if (list.size() > 0) {
                                         mAdapter.getmData(list);
-                                        check_queater.setVisibility(View.GONE);
+                                        checkQueater.setVisibility(View.GONE);
                                     } else {
-                                        check_queater.setVisibility(View.VISIBLE);
+                                        checkQueater.setVisibility(View.VISIBLE);
                                     }
                                 }else {
                                     if (list.size()>0){
-                                        check_queater.setVisibility(View.GONE);
+                                        checkQueater.setVisibility(View.GONE);
                                     }else {
-                                        check_queater.setVisibility(View.VISIBLE);
+                                        checkQueater.setVisibility(View.VISIBLE);
                                     }
                                     mAdapter.getmData(list);
                                 }
@@ -182,7 +184,7 @@ public class CheckReportOrgDetailsT extends Fragment {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         layout_loading.setVisibility(View.GONE);
-                        check_queater.setVisibility(View.VISIBLE);
+                        checkQueater.setVisibility(View.VISIBLE);
                     }
                 });
     }

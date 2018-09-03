@@ -479,9 +479,15 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String standardScore = json.getString("standardScore");
+                                        String standardScore;
+                                        try {
+                                            standardScore = json.getString("standardScore");
+                                        } catch (JSONException e) {
+                                            standardScore = "";
+                                        }
                                         boolean noSuch = json.getBoolean("noSuch");
                                         boolean penalty = json.getBoolean("penalty");
+                                        boolean gray = json.getBoolean("gray");
                                         boolean generate;
                                         try {
                                             generate = json.getBoolean("generate");
@@ -489,7 +495,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                             generate = false;
                                         }
                                         int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate,gray));
                                     }
                                 }
 

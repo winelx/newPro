@@ -91,9 +91,10 @@ public class CheckUtils {
 
 
     //类别分类
-    public void taskTypeList(String wbsId, final ArrayList<Tenanceview> data, final SettingAdapter adapter) {
+    public void taskTypeList(String wbsId, final ArrayList<Tenanceview> data, String type, final SettingAdapter adapter) {
         OkGo.post(Requests.TASK_TYPE_LIST)
                 .params("Id", wbsId)
+                .params("type", type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -127,7 +128,7 @@ public class CheckUtils {
     /**
      * 违反标准
      */
-    public void CheckStandardApp( final ArrayList<standarBean> List, final SettingAdapter mAdapter, String id) {
+    public void CheckStandardApp(final ArrayList<standarBean> List, final SettingAdapter mAdapter, String id) {
         if (id.length() > 0) {
             OkGo.post(Requests.GET_CHECK_STANDARD_DEAL_APP)
                     .params("checkStandardId", id)
@@ -151,7 +152,7 @@ public class CheckUtils {
                                         String standardTypeName = json.getString("standardTypeName");
                                         List.add(new standarBean(standardDel, standardDelCode, standardDelName, standardDelScore, standardType, standardTypeName));
                                     }
-                                }else {
+                                } else {
                                     ToastUtils.showShortToast(jsonObject.getString("msg"));
                                 }
                                 mAdapter.getData(List);
@@ -168,7 +169,7 @@ public class CheckUtils {
         }
     }
 
-    public  void getdatecon(final ArrayList<Audio> mData,final SettingAdapter mAdapter){
+    public void getdatecon(final ArrayList<Audio> mData, final SettingAdapter mAdapter) {
         OkGo.post(Requests.CheckStandardApp)
                 .execute(new StringCallback() {
                     @Override
@@ -185,7 +186,7 @@ public class CheckUtils {
                                     String id = json.getString("id");
                                     mData.add(new Audio(checkType, id));
                                 }
-                            }else {
+                            } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
                             mAdapter.getData(mData);

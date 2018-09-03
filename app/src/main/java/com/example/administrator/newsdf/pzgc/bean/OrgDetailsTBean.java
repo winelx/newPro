@@ -26,9 +26,11 @@ public class OrgDetailsTBean {
     private String score;
     private String wbs_name;
     private String wbs_type_name;
+    private int  iwork;
 
 
-    public OrgDetailsTBean(String check_date, String check_org_name, String check_plan_name, String check_user_name, String id, String part_details, String score, String wbs_name, String wbs_type_name) {
+    public OrgDetailsTBean(String check_date, String check_org_name, String check_plan_name, String check_user_name,
+                           String id, String part_details, String score, String wbs_name, String wbs_type_name, int  iwork) {
         this.check_date = check_date;
         this.check_org_name = check_org_name;
         this.check_plan_name = check_plan_name;
@@ -38,6 +40,7 @@ public class OrgDetailsTBean {
         this.score = score;
         this.wbs_name = wbs_name;
         this.wbs_type_name = wbs_type_name;
+        this.iwork = iwork;
     }
 
     public String getCheck_date() {
@@ -71,7 +74,6 @@ public class OrgDetailsTBean {
     public void setCheck_user_name(String check_user_name) {
         this.check_user_name = check_user_name;
     }
-
     public String getId() {
         return id;
     }
@@ -110,5 +112,13 @@ public class OrgDetailsTBean {
 
     public void setWbs_type_name(String wbs_type_name) {
         this.wbs_type_name = wbs_type_name;
+    }
+
+    public int getIwork() {
+        return iwork;
+    }
+
+    public void setIwork(int iwork) {
+        this.iwork = iwork;
     }
 }

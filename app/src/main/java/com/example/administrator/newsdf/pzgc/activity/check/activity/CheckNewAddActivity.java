@@ -122,9 +122,10 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             checkNewWebtext.setText(name);
             statusF();
         } else {
-            getdata();
             statusT();
             getcheckitemList();
+            getdata();
+
         }
     }
 
@@ -264,6 +265,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
             case R.id.Check_category:
                 Intent intent = new Intent(mContext, CheckTaskCategoryActivity.class);
                 intent.putExtra("wbsId", orgId);
+                intent.putExtra("type","1");
                 startActivityForResult(intent, 1);
                 break;
             case R.id.checklistmeun:
@@ -332,7 +334,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void statusT() {
-        checklistmeuntext.setText("编辑");
+      checklistmeuntext.setText("编辑");
         checkNewButton.setText("开始检查");
         checkImport.setVisibility(View.VISIBLE);
         checkNewButton.setBackgroundResource(R.color.colorAccent);
@@ -523,6 +525,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                 .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
+                .params("iwork", "1")
                 //检查部位Id
                 .params("wbsMainId", nodeId)
                 //手动输入的检查部位
@@ -593,7 +596,12 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String standardScore = json.getString("standardScore");
+                                        String standardScore;
+                                        try {
+                                             standardScore = json.getString("standardScore");
+                                        }catch (JSONException e){
+                                            standardScore="";
+                                        }
                                         boolean noSuch = json.getBoolean("noSuch");
                                         boolean generate;
                                         try {
@@ -602,8 +610,9 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                             generate = false;
                                         }
                                         boolean penalty = json.getBoolean("penalty");
+                                        boolean gray = json.getBoolean("gray");
                                         int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate));
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate,gray));
                                     }
                                 }
                             }
@@ -638,7 +647,6 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 //具体时间
                                 datatime.setText(json.getString("checkDate"));

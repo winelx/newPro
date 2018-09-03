@@ -772,7 +772,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
                             if (jsonObject.getInt("ret") == 0) {
                                 TaskCallbackUtils.CallBackMethod();
-
+                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

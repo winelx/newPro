@@ -65,6 +65,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +102,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore, checkItemContentCore;
     private EditText checkItemContentDescribe;
     private Switch switch1;
-    private String success, checkManageId, itemId;
+    private String success, checkManageId, itemId, checkitemtype = "";
     private Boolean generate;
     private LinearLayout drawerlayoutRight;
     //删除的图片Id
@@ -139,7 +140,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
 
         setScore(0);
-//        mAdapter.getData(chekItem);
         //下一项点击事件
         checkItemTadown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +161,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     saveDetails(true, "Tadown");
                 }
-
             }
         });
         //上一项点击事件
@@ -213,9 +212,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     //如果打开switch，将所有的项设置为合格
                     for (ChekItemBean item : chekItem) {
                         item.setStatus("true");
-                        socre = socre + item.getScore();
                     }
-                    checkItemContentCore.setText(socre + "");
+                    setScore(0);
                     //并刷新界面
                     mAdapter.getData(chekItem);
 //                    if (checkItemContentStandarcore.getText().toString().isEmpty()) {
@@ -235,7 +233,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     //刷新界面
                     mAdapter.getData(chekItem);
                     checkItemContentCore.setText("");
-                    checkItemContentCore.setHint("输入得分");
+                    checkItemContentCore.setHint("");
                 }
             }
         });
@@ -293,19 +291,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //检查描述
         checkItemContentDescribe = (EditText) findViewById(R.id.check_item_content_describe);
-        //检查项名称
-        checkItemContentName = (TextView) findViewById(R.id.check_item_content_name);
         //检查项内容名称
         checkItemContentContentname = (TextView) findViewById(R.id.check_item_content_contentname);
-        //检查项要求
-        checkItemContentBz = (TextView) findViewById(R.id.check_item_content_bz);
         //标准分
         checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
         //得分
         checkItemContentCore = (TextView) findViewById(R.id.check_item_content_core);
-        checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
-        //标题
-        titleView = (TextView) findViewById(R.id.titleView);
         //整改通知
         checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
         checkItemContentMassage.setOnClickListener(this);
@@ -314,29 +305,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //抽屉控件
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         //拖动控件
-        //检查标准
-        checkStandardRec = (RecyclerView) findViewById(R.id.check_standard_rec);
-        //操作键（保存/剑姬）
-        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("编辑");
-        //侧拉界面的父布局
-        drawerlayoutRight = (LinearLayout) findViewById(R.id.drawerLayout_right);
-        //是否无此项
-        switch1 = (Switch) findViewById(R.id.switch1);
         //是否生成整改通知
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
-        //检查描述
-        checkItemContentDescribe = (EditText) findViewById(R.id.check_item_content_describe);
+
         //检查项名称
         checkItemContentName = (TextView) findViewById(R.id.check_item_content_name);
-        //检查项内容名称
-        checkItemContentContentname = (TextView) findViewById(R.id.check_item_content_contentname);
         //检查项要求
         checkItemContentBz = (TextView) findViewById(R.id.check_item_content_bz);
-        //标准分
-        checkItemContentStandarcore = (TextView) findViewById(R.id.check_item_content_standarcore);
-        //得分
-        checkItemContentCore = (TextView) findViewById(R.id.check_item_content_core);
         checkitemcontentStatus = (TextView) findViewById(R.id.checkItemContent_status);
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
@@ -564,7 +540,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 if (success != null) {
                     //从已完成进入
                     if (status) {
-                        ToastUtils.showLongToast("该项暂无通知单");
+                        ToastUtils.showLongToast("已选择无此项");
                     } else {
                         //获取文字做判断
                         if ("是".equals(messageStr)) {
@@ -576,9 +552,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     //从未完成进入
                     if (status) {
-                        ToastUtils.showLongToast("该项暂无通知单");
+                        ToastUtils.showLongToast("已选择无此项");
                     } else {
-                        //获取文字做判断
                         if ("是".equals(messageStr)) {
                             messages();
                         } else {
@@ -637,46 +612,31 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * @param tabup
      */
     public void saveDetails(final boolean isdata, final String tabup) {
-        boolean lean = false;
+        int count = 0;
         for (int i = 0; i < chekItem.size(); i++) {
             String status = chekItem.get(i).getStatus();
             if (status.isEmpty()) {
-                lean = false;
-                break;
-            } else {
-                lean = true;
+                count++;
             }
         }
-        if (lean) {
-            Dates.getDialog(CheckitemActivity.this, "提交数据中...");
-//            String standacore = checkItemContentStandarcore.getText().toString();
-//            BigDecimal contentcore = new BigDecimal(checkItemContentCore.getText().toString());
+        if (count == 0) {
+            //全部操作过
             Save(isdata, tabup);
-//            if (standacore.isEmpty()) {
-//
-//            } else {
-//                BigDecimal standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
-//                if (standarcore.subtract(contentcore).compareTo(new BigDecimal("0.0")) >= 0) {
-//                    Save(isdata, tabup);
-//                } else {
-//                    ToastUtils.showLongToast("得分必须在0与标准分之间");
-//                }
-//            }
-        } else {
-            //如果没有填分数
-            if ("1".equals(tabup)) {
-                ToastUtils.showShortToastCenter("检查项还未填完");
-            } else {
-                if (tabup.equals("Tabup")) {
-                    getdate(taskId, pos - 1);
-                } else if (tabup.equals("Tadown")) {
-                    getdate(taskId, pos + 1);
-                } else if (tabup.equals("item")) {
-                    pos = item;
-                    getdate(taskId, pos + 1);
-                }
-
+        } else if (count == chekItem.size()) {
+            //没有操作过
+            if ("Tabup".equals(tabup)) {
+                getdate(taskId, pos - 1);
+            } else if ("Tadown".equals(tabup)) {
+                getdate(taskId, pos + 1);
+            } else if ("item".equals(tabup)) {
+                pos = item;
+                getdate(taskId, pos + 1);
             }
+        } else {
+            //没有操作完、
+            checkItemTabup.setClickable(true);
+            checkItemTadown.setClickable(true);
+            ToastUtils.showShortToastCenter("检查项还未填完");
         }
     }
 
@@ -776,8 +736,16 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         intent.putExtra("typeId", mData.get(pos - 1).getId());
         //具体描述
         intent.putExtra("describe", checkItemContentDescribe.getText().toString());
-        intent.putExtra("content", checkItemContentBz.getText().toString());
-        intent.putExtra("taskId", itemId);
+        //获取文字做判断
+        String str = checkItemContentName.getText().toString() + "-" + checkItemContentContentname.getText().toString();
+        for (int i = 0; i < chekItem.size(); i++) {
+            String status1 = chekItem.get(i).getStatus();
+            if ("false".equals(status1)) {
+                str = str + "-" + chekItem.get(i).getContent();
+            }
+        }
+        intent.putExtra("content", str);
+        intent.putExtra("taskId", chekItem.get(0).getId());
         startActivity(intent);
     }
 
@@ -795,8 +763,16 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         intent.putExtra("typeId", mData.get(pos - 1).getId());
         //具体描述
         intent.putExtra("describe", checkItemContentDescribe.getText().toString());
-        intent.putExtra("content", checkItemContentBz.getText().toString());
-        intent.putExtra("taskId", itemId);
+        //获取文字做判断
+        String str = checkItemContentName.getText().toString() + "-" + checkItemContentContentname.getText().toString();
+        for (int i = 0; i < chekItem.size(); i++) {
+            String status1 = chekItem.get(i).getStatus();
+            if (status1.equals("false")) {
+                str = str + "-" + chekItem.get(i).getContent();
+            }
+        }
+        intent.putExtra("content", str);
+        intent.putExtra("taskId", chekItem.get(0).getId());
         startActivity(intent);
     }
 
@@ -804,19 +780,20 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 检查项分数计算
      */
     public void setScore(int pos) {
-        int score = 0;
-        for (int i = 0; i < chekItem.size(); i++) {
-            String status = chekItem.get(i).getStatus();
-            if ("ture".equals(status)) {
-                score = score + chekItem.get(i).getScore();
+        BigDecimal score = new BigDecimal("0");
+        if (!"2".equals(checkitemtype)) {
+            for (int i = 0; i < chekItem.size(); i++) {
+                String status = chekItem.get(i).getStatus();
+                if ("ture".equals(status)) {
+                    score = score.add(chekItem.get(i).getScore());
+                }
+            }
+            if (score.compareTo(new BigDecimal("0")) == 0) {
+                checkItemContentCore.setText("");
+            } else {
+                checkItemContentCore.setText(score + "");
             }
         }
-        if (score == 0) {
-            checkItemContentCore.setText("");
-        } else {
-            checkItemContentCore.setText(score + "");
-        }
-
     }
 
     /**
@@ -846,6 +823,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                 titleView.setText(page + "/" + size);
                                 JSONObject jsonObject = jsonO.getJSONObject("data");
                                 JSONArray json = jsonObject.getJSONArray("data");
+                                switch1.setChecked(jsonObject.getBoolean("noSuch"));
                                 if (json.length() > 0) {
                                     for (int i = 0; i < json.length(); i++) {
                                         JSONObject jsonObject1 = json.getJSONObject(i);
@@ -866,10 +844,11 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                         }
                                         String stype = jsonObject1.getString("stype");
                                         if (standardScore.isEmpty()) {
-                                            chekItem.add(new ChekItemBean(id, 0, standard, status, stype));
+                                            BigDecimal decimal = new BigDecimal("0");
+                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype));
                                         } else {
-                                            int score = Integer.parseInt(standardScore);
-                                            chekItem.add(new ChekItemBean(id, score, standard, status, stype));
+                                            BigDecimal decimal = new BigDecimal(standardScore);
+                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype));
                                         }
                                     }
                                 }
@@ -882,6 +861,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     itemId = "";
                                 }
                                 checkItemContentName.setText(jsonObject.getString("name"));
+                                checkitemtype = jsonObject.getString("stype");
                                 checkItemContentContentname.setText(jsonObject.getString("content"));
                                 try {
                                     checkItemContentBz.setText(jsonObject.getString("bigstandard"));
@@ -895,8 +875,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     checkItemContentStandarcore.setText("");
                                 }
                                 String describe = jsonObject.getString("describe");
+
                                 checkItemContentDescribe.setText(describe);
-                                switch1.setChecked(jsonObject.getBoolean("noSuch"));
+
                                 JSONArray attachments = jsonObject.getJSONArray("attachments");
                                 if (attachments.length() > 0) {
                                     for (int i = 0; i < attachments.length(); i++) {
@@ -920,12 +901,13 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     checkItemTabup.setVisibility(View.VISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
                                 }
-                                if (score.isEmpty()) {
-                                    checklistmeuntext.setText("保存");
-                                    tClickableT();
-                                } else {
+                                boolean gray= jsonObject.getBoolean("gray");
+                                if (gray) {
                                     checklistmeuntext.setText("编辑");
                                     tClickableF();
+                                }else {
+                                    checklistmeuntext.setText("保存");
+                                    tClickableT();
                                 }
                                 try {
                                     generate = jsonObject.getBoolean("generate");
@@ -942,6 +924,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     generate = false;
                                     checkitemcontentStatus.setText("否");
                                 }
+
                             } else {
                                 ToastUtils.showShortToast(jsonO.getString("msg"));
                             }
@@ -982,8 +965,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                         String id = json.getString("id");
                                         String score = json.getString("score");
                                         String sequence = json.getString("sequence");
-                                        String standardScore = json.getString("standardScore");
+                                        String standardScore;
+                                        try {
+                                            standardScore = json.getString("standardScore");
+                                        } catch (JSONException e) {
+                                            standardScore = "";
+                                        }
                                         boolean noSuch = json.getBoolean("noSuch");
+                                        boolean gray = json.getBoolean("gray");
                                         boolean penalty = json.getBoolean("penalty");
                                         boolean generate;
                                         try {
@@ -992,7 +981,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                             generate = false;
                                         }
                                         int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate));
+                                        mData.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate, gray));
                                     }
                                 }
                             }
@@ -1042,9 +1031,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 .params("describe", checkItemContentDescribe.getText().toString())
                 .params("deleteFileId", Dates.listToStrings(deleteid));
         //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
-        if (file.size() > 0)
-
-        {
+        if (file.size() > 0) {
             mPostRequest.addFileParams("imagesList", file);
         } else
 
