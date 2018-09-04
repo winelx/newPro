@@ -50,7 +50,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         //设置内容布局的宽为屏幕宽度
      holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         holder.managementTitle.setText(mDatas.get(position).getPartDetails());
-        holder.managementUser.setText("验证人：" + mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
+        holder.managementUser.setText("下发人：" + mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
         holder.managementwbs.setText(mDatas.get(position).getRectificationOrgName());
         holder.managementTitle.setText(mDatas.get(position).getStandardDelName());
         holder.managementOrg.setText("检查组织：" + mDatas.get(position).getCheckOrgName());

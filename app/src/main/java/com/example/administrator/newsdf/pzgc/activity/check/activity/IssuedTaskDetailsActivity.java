@@ -527,7 +527,7 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
                             if (ret == 0) {
                                 isDeal = true;
                                 TaskCallbackUtils.CallBackMethod();
-                                getData();
+                               finish();
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
