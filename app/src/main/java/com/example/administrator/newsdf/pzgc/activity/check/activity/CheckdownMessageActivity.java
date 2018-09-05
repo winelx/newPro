@@ -39,7 +39,7 @@ public class CheckdownMessageActivity extends BaseActivity implements View.OnCli
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);
         titleView= (TextView) findViewById(R.id.titleView);
-        titleView.setText("通知管理");
+        titleView.setText("整改通知");
         checkDownViewpager = (ViewPager) findViewById(R.id.check_down_viewpager);
         checkDownMe.setOnClickListener(this);
         checkDownAll.setOnClickListener(this);

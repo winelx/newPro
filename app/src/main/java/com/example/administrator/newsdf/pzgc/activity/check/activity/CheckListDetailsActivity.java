@@ -55,7 +55,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, categoryItem, checkNewNumber, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
-    private LinearLayout check_new_data, checkImport, checkCategory, checkNewAddNumber;
+    private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber, checkNewDialog;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewTasktitle, checkNewTemporarysite;
@@ -63,24 +63,23 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId, status = "", Id, categoryId = "", taskId;
+    private String type,name, Id, categoryId = "", taskId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
     private ArrayList<chekitemList> mData;
     private static CheckListDetailsActivity mContext;
-    private IconTextView IconTextViewone, IconTextViewtwo;
+    private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
 
     public static CheckListDetailsActivity getInstance() {
         return mContext;
     }
-
     private CheckUtils checkUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
-    private ArrayList<chekitemList> checkitem;
-    String success;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,23 +87,30 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.activity_check_new_add);
         Intent intent = getIntent();
         Id = intent.getStringExtra("id");
+        type = intent.getStringExtra("type");
         findbyid();
         initData();
         getCategory();
+        if ("1".equals(type)){
+            checkNewDialog.setVisibility(View.VISIBLE);
+        }else {
+            checkNewDialog.setVisibility(View.GONE);
+        }
     }
 
     private void findbyid() {
+        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
         //分数
         checkNewAddNumber = (LinearLayout) findViewById(R.id.check_new_add_number);
         checkNewAddNumber.setVisibility(View.VISIBLE);
         //wbs路径
         wbsName = (TextView) findViewById(R.id.check_wbspath);
         //指示箭头 类别和时间
-        IconTextViewone = (IconTextView) findViewById(R.id.IconTextViewone);
-        IconTextViewtwo = (IconTextView) findViewById(R.id.IconTextViewtwo);
+        icontextviewone = (IconTextView) findViewById(R.id.IconTextViewone);
+        icontextviewtwo = (IconTextView) findViewById(R.id.IconTextViewtwo);
         //添加入集合，根据操作进行隐藏
-        tVisibility.add(IconTextViewone);
-        tVisibility.add(IconTextViewtwo);
+        tVisibility.add(icontextviewone);
+        tVisibility.add(icontextviewtwo);
         //检查人
         checkUsername = (TextView) findViewById(R.id.check_username);
         //检查标段
@@ -143,8 +149,8 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //具体时间
         datatime = (TextView) findViewById(R.id.check_new_data_tx);
         //现在时间（弹出时间选择器）
-        check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
-        viewlist.add(check_new_data);
+        checkNewData = (LinearLayout) findViewById(R.id.check_new_data);
+        viewlist.add(checkNewData);
         //拖动控件
         dkDragView = (DKDragView) findViewById(R.id.float_suspension);
         dkDragView.setOnDragViewClickListener(new DKDragView.onDragViewClickListener() {
@@ -167,6 +173,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void initData() {
+
         mData = new ArrayList<>();
         checkUtils = new CheckUtils();
         //拿到月
@@ -187,7 +194,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         //展示侧拉界面后，背景透明度（当前透明度为完全透明）
         drawerLayout.setScrimColor(Color.TRANSPARENT);
-        check_new_data.setOnClickListener(this);
+        checkNewData.setOnClickListener(this);
         checkImport.setOnClickListener(this);
         checkCategory.setOnClickListener(this);
         checkNewButton.setOnClickListener(this);
@@ -399,53 +406,59 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-                            JSONObject json = jsonObject.getJSONObject("data");
-                            //具体时间
-                            datatime.setText(json.getString("checkDate"));
-                            //检查标准类别
-                            categoryItem.setText(json.getString("wbsTaskTypeName"));
-                            //检查组织
-                            checkNewOrgname.setText(json.getString("checkOrgName"));
-                            //检查部位wbs
-                            String wbspath = json.getString("wbsMainName");
-                            if (wbspath.length() > 0) {
-                                wbsName.setText(wbspath);
-                                wbsName.setVisibility(View.VISIBLE);
-                            }
-                            checkNewTemporarysite.setText(json.getString("wbsMainName"));
-                            //检查人
-                            checkUsername.setText(json.getString("realname"));
-                            //检查标题
-                            String titikle = json.getString("name");
-                            if (titikle.length() > 0) {
-                                checkNewTasktitle.setText(json.getString("name"));
-                            } else {
-                                checkNewTasktitle.setText("未输入");
-                                checkNewTasktitle.setTextColor(Color.parseColor("#000000"));
-                            }
-                            //所属标段
-                            checkNewWebtext.setText(json.getString("orgName"));
-                            //检查部位
-                            String partDetails = json.getString("partDetails");
-                            if (partDetails.length() > 0) {
-                                checkNewTemporarysite.setText(partDetails);
-                                checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
-                            } else {
-                                checkNewTemporarysite.setText("未输入");
-                            }
-                            String score;
-                            try {
-                                score = json.getString("score");
-                                if (score.equals("0.0")) {
-                                    checkNewNumber.setText("0");
-                                }else {
-                                    checkNewNumber.setText(score);
+                            if (ret==0){
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                //具体时间
+                                datatime.setText(json.getString("checkDate"));
+                                //检查标准类别
+                                categoryItem.setText(json.getString("wbsTaskTypeName"));
+                                //检查组织
+                                checkNewOrgname.setText(json.getString("checkOrgName"));
+                                //检查部位wbs
+                                String wbspath = json.getString("wbsMainName");
+                                if (wbspath.length() > 0) {
+                                    wbsName.setText(wbspath);
+                                    wbsName.setVisibility(View.VISIBLE);
                                 }
-                            } catch (JSONException e) {
-                                score = "";
+                                checkNewTemporarysite.setText(json.getString("wbsMainName"));
+                                //检查人
+                                checkUsername.setText(json.getString("realname"));
+                                //检查标题
+                                String titikle = json.getString("name");
+                                if (titikle.length() > 0) {
+                                    checkNewTasktitle.setText(json.getString("name"));
+                                } else {
+                                    checkNewTasktitle.setHint("未输入");
+
+                                }
+                                //所属标段
+                                checkNewWebtext.setText(json.getString("orgName"));
+                                //检查部位
+                                String partDetails = json.getString("partDetails");
+                                if (partDetails.length() > 0) {
+                                    checkNewTemporarysite.setText(partDetails);
+                                    checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
+                                } else {
+                                    checkNewTemporarysite.setText("未输入");
+                                    checkNewTemporarysite.setTextColor(Color.parseColor("#888888"));
+                                }
+                                String score;
+                                try {
+                                    score = json.getString("score");
+                                    if (score.equals("0.0")) {
+                                        checkNewNumber.setText("0");
+                                    }else {
+                                        checkNewNumber.setText(score);
+                                    }
+                                } catch (JSONException e) {
+                                    score = "";
+                                }
+                                taskId = json.getString("id");
+                                checkItem();
+                            }else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
-                            taskId = json.getString("id");
-                            checkItem();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

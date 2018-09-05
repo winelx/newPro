@@ -159,20 +159,31 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:background="@color/back"
                 android:orientation="vertical">
-
+            <LinearLayout
+                android:id="@+id/check_standard"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/red"
+                    android:textSize="15sp"
+                    android:text="*"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
                 <TextView
                     android:id="@+id/check_stander_font"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="match_parent"
                     android:text="检测标准"
                     android:textColor="@color/graytext"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
+
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/check_item_content_bz"
@@ -188,7 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/writer"
-                    android:layout_below="@+id/check_stander_font"
+                    android:layout_below="@+id/check_standard"
                     android:layout_marginTop="5dp" />
 
             </RelativeLayout>
@@ -238,6 +249,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:hint="标准分自动计算"
                     android:gravity="end|center"
                     android:textColor="@color/black"
                     android:textSize="15sp" />

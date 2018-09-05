@@ -6,12 +6,14 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-   public static final String networks = "http://192.168.20.36:8080/";
-    // +public static final String networks = "http://192.168.20.35:8080/pzgc/";
-    // public static final String networks = "http://192.168.20.81:8080/baseframe/";
+ //public static final String networks = "http://192.168.20.36:8080/";
+ //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
-   //public static final String networks = "http://117.187.27.78:58081/pzgc/";
-    //  public static final String networks = "http://120.79.142.15/pzgc/";
+    // +public static final String networks = "http://192.168.20.35:8080/pzgc/";
+  // public static final String networks = "http://192.168.20.81:8080/baseframe/";
+
+ // public static final String networks = "http://117.187.27.78:58081/pzgc/";
+    public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -156,7 +158,7 @@ public class Requests {
     /**
      * 项目成员的组织树接口
      */
-    public static final String ORGTREE = networks + "/iface/mobile/user/orgTree";
+    public static final String ORGTREE = networks + "iface/mobile/user/orgTree";
     /**
      * 查看记录
      */
@@ -170,11 +172,11 @@ public class Requests {
     public static final String ListByType = networks + "iface/mobile/smartProject/getListByType";
     public static final String ListByType1 = networks + "iface/mobile/smartProject/workbright";
     //评论回复
-    public static final String SAVECOMMENT = networks + "/iface/mobile/taskmain/saveComment";
+    public static final String SAVECOMMENT = networks + "iface/mobile/taskmain/saveComment";
     //标准分部分项
-    public static final String StandardList = networks + "/iface/mobile/standard/findStandardList";
+    public static final String StandardList = networks + "iface/mobile/standard/findStandardList";
     //标准分类标准
-    public static final String STANDARD_TREE = networks + "/iface/mobile/standard/findStandardTree";
+    public static final String STANDARD_TREE = networks + "iface/mobile/standard/findStandardTree";
     public static final String STANDARD_BY_GROUP = networks + "iface/mobile/standard/findStandardByGroup";
     /**
      * 任务
@@ -194,7 +196,7 @@ public class Requests {
     /**
      * 标段收藏
      */
-    public static final String WBSSAVE = networks + "/iface/mobile/wbs/favorite/save";
+    public static final String WBSSAVE = networks + "iface/mobile/wbs/favorite/save";
     /**
      * 收藏列表界面的tree
      */

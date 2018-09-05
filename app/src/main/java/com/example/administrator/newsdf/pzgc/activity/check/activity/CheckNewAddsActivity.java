@@ -120,7 +120,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             checkNewWebtext.setText(name);
             statusF();
         } else {
-            statusT();
             getcheckitemList();
             getdata();
         }
@@ -148,7 +147,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         checkNewOrgname = (TextView) findViewById(R.id.check_new_orgname);
         //检查按钮
         checkNewButton = (Button) findViewById(R.id.check_new_buttons);
-        checkNewButton.setOnClickListener(this);
         //分数
         checkNewNumber = (TextView) findViewById(R.id.check_new_number);
         //标题
@@ -341,7 +339,20 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             viewlist.get(i).setEnabled(false);
         }
     }
-
+    private void submit() {
+        checklistmeuntext.setText("编辑");
+        checkNewButton.setText("提交");
+        checkImport.setVisibility(View.VISIBLE);
+        checkNewButton.setBackgroundResource(R.color.Orange);
+        dkDragView.setVisibility(View.VISIBLE);
+        for (int i = 0; i < tVisibility.size(); i++) {
+            tVisibility.get(i).setVisibility(View.GONE);
+        }
+        for (int i = 0; i < viewlist.size(); i++) {
+            viewlist.get(i).setClickable(false);
+            viewlist.get(i).setEnabled(false);
+        }
+    }
     /**
      * 界面回调
      *
@@ -520,7 +531,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
-                .params("iwork", "1")
+                .params("iwork", "2")
                 //检查部位Id
                 .params("wbsMainId", nodeId)
                 //手动输入的检查部位
@@ -682,7 +693,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
-
                                 categoryId = json.getString("WbsTaskTypeId");
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
@@ -772,9 +782,12 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 Boolean lean = jsonObject1.getBoolean("finish");
                                 if (lean) {
-                                    checkNewButton.setText("提交");
-                                    checkNewButton.setBackgroundResource(R.color.Orange);
+
+                                    submit();
+                                }else {
+                                    statusT();
                                 }
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

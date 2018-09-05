@@ -156,4 +156,12 @@ public class OrgDetailsFBean {
     public void setStandardtypeName(String standardtypeName) {
         this.standardtypeName = standardtypeName;
     }
+
+    public int getIwork() {
+        return iwork;
+    }
+
+    public void setIwork(int iwork) {
+        this.iwork = iwork;
+    }
 }

@@ -5,77 +5,97 @@
     android:background="@color/writer"
     android:layout_marginTop="5dp"
     android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/layout_linear"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/writer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
+
         <LinearLayout
-            android:background="@color/writer"
             android:layout_width="match_parent"
             android:layout_height="25dp"
+            android:background="@color/writer"
             android:orientation="horizontal">
 
             <TextView
-                android:text="2018检查任务"
+                android:id="@+id/check_t_titele"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:ellipsize="end"
                 android:maxEms="11"
                 android:singleLine="true"
-                android:layout_gravity="center"
-                android:textSize="17sp"
+                android:text="2018检查任务"
                 android:textColor="@color/black"
-                android:id="@+id/check_t_titele"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/check_t_score"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:paddingLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:paddingRight="5dp"
-                android:gravity="center"
-                android:background="@color/finish_green"
-                android:text="+12分"
                 android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/finish_green"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="+12分"
                 android:textColor="@color/writer"
                 android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/management_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/check_list_text"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="内业"
+                android:textColor="@color/Orange"
+                android:textSize="7sp" />
         </LinearLayout>
 
 
         <TextView
-            android:text="wbs路径"
+            android:id="@+id/check_t_wbspath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5sp"
             android:ellipsize="end"
             android:maxEms="25"
             android:singleLine="true"
-            android:textColor="@color/graytext"
-            android:id="@+id/check_t_wbspath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="wbs路径"
+            android:textColor="@color/graytext" />
 
         <TextView
-            android:text="责任人"
-            android:layout_marginTop="5sp"
-            android:textColor="@color/graytext"
             android:id="@+id/check_t_user"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:text="责任人"
+            android:textColor="@color/graytext" />
 
         <TextView
-            android:text="标段"
-            android:layout_marginTop="5sp"
             android:id="@+id/check_t_orgname"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:text="检查组织：XXXXX"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

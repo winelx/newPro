@@ -17,6 +17,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.fragment.homepage.CollectionlistActivity;
+import com.example.administrator.newsdf.pzgc.fragment.homepage.CommentmessageActivity;
 
 import java.util.ArrayList;
 
@@ -29,10 +31,12 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     private ArrayList<Audio> list;
     private int pos;
-    public RecycleAdapterType(Context mContext, ArrayList<Audio> list,int pos) {
+    String status;
+    public RecycleAdapterType(Context mContext, ArrayList<Audio> list,int pos,String status) {
         this.mContext = mContext;
         this.list = list;
         this.pos = pos;
+        this.status = status;
 
     }
 
@@ -152,8 +156,17 @@ public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.contact_acatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AllListmessageActivity activity = (AllListmessageActivity) mContext;
-                    activity.getumber(pos);
+                    if ("all".equals(status)){
+                        AllListmessageActivity activity = (AllListmessageActivity) mContext;
+                        activity.getumber(pos);
+                    }else if ("message".equals(status)){
+                        CommentmessageActivity activity = (CommentmessageActivity) mContext;
+                        activity.getumber(pos);
+                    }else if ("action".equals(status)){
+                        CollectionlistActivity activity = (CollectionlistActivity) mContext;
+                        activity.getumber(pos);
+                    }
+
                 }
             });
         }

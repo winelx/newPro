@@ -110,7 +110,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private String score;
     private CheckitemAdapter mAdapter;
     private ArrayList<ChekItemBean> chekItem;
-    private ArrayList<ChekItemBean> submitItem;
     private RecyclerView checkStandardRec, photoadd;
     private GridView checklist;
     private DKDragView dkDragView;
@@ -208,12 +207,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    int socre = 0;
                     //如果打开switch，将所有的项设置为合格
                     for (ChekItemBean item : chekItem) {
                         item.setStatus("true");
                     }
-                    setScore(0);
+                    checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
+//                    setScore(0);
                     //并刷新界面
                     mAdapter.getData(chekItem);
 //                    if (checkItemContentStandarcore.getText().toString().isEmpty()) {
@@ -228,7 +227,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     //如果打开switch，将所有的项设置为未选择
                     for (ChekItemBean item : chekItem) {
-                        item.setStatus("0");
+                        item.setStatus("");
                     }
                     //刷新界面
                     mAdapter.getData(chekItem);
@@ -256,7 +255,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         success = intent.getStringExtra("success");
         mData = new ArrayList<>();
         imagepath = new ArrayList<>();
-        submitItem = new ArrayList<>();
         chekItem = new ArrayList<>();
         mContext = this;
         //检查相机权限
@@ -568,13 +566,28 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     tClickableT();
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(text1)) {
-                    saveDetails(false, "1");
+                    savecontent(false, "1");
                 } else {
 
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void savecontent(final boolean isdata, final String tabup) {
+        int count = 0;
+        for (int i = 0; i < chekItem.size(); i++) {
+            String status = chekItem.get(i).getStatus();
+            if (status.isEmpty()) {
+                count++;
+            }
+        }
+        if (count>0){
+            ToastUtils.showShortToastCenter("检查项还未填完");
+        }else {
+            Save(isdata, tabup);
         }
     }
 
@@ -631,6 +644,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             } else if ("item".equals(tabup)) {
                 pos = item;
                 getdate(taskId, pos + 1);
+            }else if ("1".equals(tabup)){
+                getdate(taskId, pos);
             }
         } else {
             //没有操作完、
@@ -784,15 +799,11 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         if (!"2".equals(checkitemtype)) {
             for (int i = 0; i < chekItem.size(); i++) {
                 String status = chekItem.get(i).getStatus();
-                if ("ture".equals(status)) {
+                if ("true".equals(status)) {
                     score = score.add(chekItem.get(i).getScore());
                 }
             }
-            if (score.compareTo(new BigDecimal("0")) == 0) {
-                checkItemContentCore.setText("");
-            } else {
                 checkItemContentCore.setText(score + "");
-            }
         }
     }
 
@@ -835,7 +846,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                         } catch (JSONException e) {
                                             status = "";
                                         }
-
                                         String standardScore;
                                         try {
                                             standardScore = jsonObject1.getString("standardScore");
@@ -890,7 +900,29 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     photoAdapter.getData(imagepath, false);
                                 }
                                 score = jsonObject.getString("bigscore");
-                                checkItemContentCore.setText(score.replace(".0", ""));
+                                if ("0.0".equals(score)){
+                                    //如果的得分为0
+                                    int count=0;
+                                    //便利数据，判断集合的数据是否被操作
+                                    for (int i = 0; i < chekItem.size(); i++) {
+                                        String status = chekItem.get(i).getStatus();
+                                        if (status.isEmpty()) {
+                                            count++;
+                                        }
+                                    }
+                                    if (count==chekItem.size()){
+                                        //没有操作过
+                                        checkItemContentCore.setText("");
+                                        checkItemContentCore.setHint("标准分自动计算");
+                                    }else {
+                                        //操作过
+                                        checkItemContentCore.setText("0");
+                                    }
+                                }else {
+                                    //分数不为0
+                                    checkItemContentCore.setText(score.replace(".0", ""));
+                                }
+
                                 if (page == 1) {
                                     checkItemTabup.setVisibility(View.INVISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
@@ -1001,6 +1033,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * @param tabup
      */
     public void Save(final boolean isdata, final String tabup) {
+        checklistmeuntext.setText("");
+        Dates.getDialog(CheckitemActivity.this,"保存数据中...");
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < imagepath.size(); i++) {
             if (imagepath.get(i).getContent().length() > 0) {
@@ -1033,9 +1067,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
         if (file.size() > 0) {
             mPostRequest.addFileParams("imagesList", file);
-        } else
-
-        {
+        } else {
             mPostRequest.isMultipart(true);
         }
         mPostRequest.execute(new StringCallback() {
@@ -1077,6 +1109,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
                 Dates.disDialog();
+                checklistmeuntext.setText("保存");
             }
         });
     }

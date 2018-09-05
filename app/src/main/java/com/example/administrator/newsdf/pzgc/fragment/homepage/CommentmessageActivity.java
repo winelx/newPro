@@ -12,13 +12,14 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,7 +29,7 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
+import com.example.administrator.newsdf.pzgc.Adapter.AllTaskListItem;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
@@ -75,16 +76,14 @@ import okhttp3.Response;
  */
 public class CommentmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
-
-    private TextView Titlew, deleteSearch, drawer_layout_text;
+    private LinearLayout nullposion;
+    private TextView Titlew, deleteSearch, drawerLayoutText;
     private EditText searchEditext;
     private String orgid, wbsid, name, titles;
     //
     private String notall = "10", nodeiD = "1";
 
     private CircleImageView circle;
-    //主界面适配器
-    private Imageloaders mAdapter;
     //抽屉控件
     private DrawerLayout drawerLayout;
 
@@ -94,7 +93,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     private PopupWindow mPopupWindow;
 
-    private ListView mTree, uslistView, drawerLayoutList;
+    private ListView mTree, drawerLayoutList;
     private TaskPhotoAdapter taskAdapter;
 
     //状态值
@@ -103,7 +102,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     private int pages = 1;
     //图册
     private ArrayList<Audio> paths;
-    private List<Inface_all_item> Alldata;
+    private ArrayList<Inface_all_item> Alldata;
     private ArrayList<PhotoBean> imagePaths;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;
@@ -116,7 +115,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
 
     //动画类
     private FloatMeunAnims floatMeunAnims;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meunStandard, meunPhoto;
     private boolean liststatus = true;
     boolean anim = true;
 
@@ -126,7 +125,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-
         floatMeunAnims = new FloatMeunAnims();
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -175,7 +173,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 swip = false;
                 pages = 1;
                 smart();
-                uslistView.setSelection(0);
+
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -249,46 +247,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 //打开弹出框
                 MeunPop();
 
-            }
-        });
-        //listview的点击事件
-        uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String status = Alldata.get(position).getIsFinish() + "";
-                if ("2".equals(status)) {
-                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(mContext, MoretaskActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                }
-            }
-        });
-        //listview的触摸监听
-        uslistView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        // 触摸移动时的操作
-                        searchEditext.clearFocus();//失去焦点
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
-                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
             }
         });
 
@@ -410,10 +368,10 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.fab:
                 if (anim) {
-                    floatMeunAnims.doclickt(meun_photo, meun_standard, circle);
+                    floatMeunAnims.doclickt(meunPhoto, meunStandard, circle);
                     anim = false;
                 } else {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, circle);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, circle);
                     anim = true;
                 }
                 break;
@@ -426,7 +384,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 //网络请求
                 imagePaths.clear();
                 taskAdapter.getData(imagePaths, "");
-                drawer_layout_text.setText("图纸");
+                drawerLayoutText.setText("图纸");
                 Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
                 //上拉加载的状态判断
@@ -442,7 +400,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 //上拉加载的状态判断
                 liststatus = false;
                 imagePaths.clear();
-                drawer_layout_text.setText("标准");
+                drawerLayoutText.setText("标准");
                 taskAdapter.getData(imagePaths, "");
                 Dates.getDialog(CommentmessageActivity.this, "请求数据中...");
                 HomeUtils.getStard(nodeiD, page, imagePaths, drew, taskAdapter, titles);
@@ -490,7 +448,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "10";
-                        uslistView.setSelection(0);
+
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -527,7 +485,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         swip = false;
         pages = 1;
         smart();
-        uslistView.setSelection(0);
+
     }
 
     /**
@@ -551,7 +509,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         nodeiD = node.getPhone();
         circle.setVisibility(View.VISIBLE);
         swip = false;
-        uslistView.setSelection(0);
+
         page = 1;
         pages = 1;
         okgoall(nodeiD, null, pages);
@@ -564,11 +522,14 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mTreeDatas = new ArrayList<>();
         organizationList = new ArrayList<>();
     }
-
+    private AllTaskListItem adapters;
+    private RecyclerView recyclerAtt;
     //初始化控件
     private void findbyId() {
         //获得控件id，初始化id
-        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
+        //数据提示
+        nullposion= (LinearLayout) findViewById(R.id.nullposion);
+        drawerLayoutText = (TextView) findViewById(R.id.drawer_layout_text);
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         mTree = (ListView) findViewById(R.id.wbslist);
@@ -580,26 +541,72 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //列表界面listview的下拉
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
-
         findViewById(R.id.com_back).setOnClickListener(this);
-        //列表
-        uslistView = (ListView) findViewById(R.id.list_recycler);
         //标题
         Titlew = (TextView) findViewById(R.id.com_title);
         //meun
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
-        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
-        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        meun_standard.setVisibility(View.GONE);
-        meun_photo.setVisibility(View.GONE);
-        meun_photo.setOnClickListener(this);
-        meun_standard.setOnClickListener(this);
+        meunStandard = (LinearLayout) findViewById(R.id.meun_standard);
+        meunPhoto = (LinearLayout) findViewById(R.id.meun_photo);
+        recyclerAtt = (RecyclerView) findViewById(R.id.recycler_att);
+        meunStandard.setVisibility(View.GONE);
+        meunPhoto.setVisibility(View.GONE);
+        meunPhoto.setOnClickListener(this);
+        meunStandard.setOnClickListener(this);
         circle.setOnClickListener(this);
+        recyclerAtt.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //初始化适配器
+        adapters = new AllTaskListItem(Alldata, mContext,"message");
+        recyclerAtt.setAdapter(adapters);
+        adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
+            }
+        });
+        recyclerAtt.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //滑动关闭软键盘
+                searchEditext.clearFocus();//失去焦点
+                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
+                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //触摸关闭图册和标准
+                if (!anim) {
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, circle);
+                    anim = true;
+                }
+
+            }
+        });
     }
 
     //初始化数据
@@ -617,11 +624,6 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         Titlew.setText(name);
         //设置标题字体
         Titlew.setTextSize(17);
-        //主界面适配器
-        mAdapter = new Imageloaders(mContext, Alldata);
-        //主界面
-        uslistView.setAdapter(mAdapter);
-        uslistView.setEmptyView(findViewById(R.id.nullposion));
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
@@ -864,16 +866,44 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                     Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                             groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                 }
-                mAdapter.getData(Alldata);
+                if (Alldata.size()>0){
+                    nullposion.setVisibility(View.GONE);
+                }else {
+                    nullposion.setVisibility(View.VISIBLE);
+                }
+                adapters.getData(Alldata);
             } else {
                 //.判断是否是下拉加载
                 if (!swip) {
                     Alldata.clear();
                 }
-                mAdapter.getData(Alldata);
+                if (Alldata.size()>0){
+                    nullposion.setVisibility(View.GONE);
+                }else {
+                    nullposion.setVisibility(View.VISIBLE);
+                }
+                adapters.getData(Alldata);
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+    public void getumber(int pos) {
+        String status = Alldata.get(pos).getIsFinish() + "";
+        if ("2".equals(status)) {
+            Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(mContext, MoretaskActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
         }
     }
 }

@@ -23,14 +23,13 @@
                 android:id="@+id/check_report_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="XXXXXXXXXXXXXX"
-                android:ellipsize="end"
                 android:layout_gravity="center"
+                android:ellipsize="end"
                 android:maxEms="11"
                 android:singleLine="true"
+                android:text="2018检查任务"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/check_report_item_score"
@@ -46,6 +45,19 @@
                 android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/management_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/check_list_text"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="内业"
+                android:textColor="@color/Orange"
+                android:textSize="7sp" />
         </LinearLayout>
 
 

@@ -68,7 +68,7 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableLoadmore(false);
         comtitle = (TextView) findViewById(R.id.titleView);
-        comtitle.setText("检查管理");
+        comtitle.setText("监管检查");
         findViewById(R.id.checklistback).setOnClickListener(this);
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {

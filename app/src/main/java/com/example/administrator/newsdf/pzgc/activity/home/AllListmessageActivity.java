@@ -107,11 +107,11 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //动画类
     private FloatMeunAnims floatMeunAnims;
     private CircleImageView fab;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meunStandard, meunPhoto;
     private boolean liststatus = true;
     boolean anim = true;
     private AllTaskListItem adapters;
-    private RecyclerView recycler_att;
+    private RecyclerView recyclerAtt;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -357,10 +357,10 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.fab:
                 if (anim) {
-                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclickt(meunPhoto, meunStandard, fab);
                     anim = false;
                 } else {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
                     anim = true;
                 }
                 break;
@@ -427,7 +427,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "10";
-                        recycler_att.scrollToPosition(0);
+                        recyclerAtt.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -440,7 +440,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "0";
-                        recycler_att.scrollToPosition(0);
+                        recyclerAtt.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -454,7 +454,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "2";
-                        recycler_att.scrollToPosition(0);
+                        recyclerAtt.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -467,7 +467,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "3";
-                        recycler_att.scrollToPosition(0);
+                        recyclerAtt.scrollToPosition(0);
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, pages);
                         } else {
@@ -536,8 +536,8 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //初始化控件
     private void findbyId() {
         nullposion = (LinearLayout) findViewById(R.id.nullposion);
-        recycler_att = (RecyclerView) findViewById(R.id.recycler_att);
-        recycler_att.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerAtt = (RecyclerView) findViewById(R.id.recycler_att);
+        recyclerAtt.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -553,7 +553,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
                 super.onScrolled(recyclerView, dx, dy);
                 //触摸关闭图册和标准
                 if (!anim) {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
                     anim = true;
                 }
 
@@ -584,19 +584,19 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         imageViewMeun = (LinearLayout) findViewById(R.id.com_img);
         //搜索
         searchEditext = (EditText) findViewById(R.id.search_editext);
-        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
-        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        meun_standard.setVisibility(View.GONE);
-        meun_photo.setVisibility(View.GONE);
-        meun_photo.setOnClickListener(this);
-        meun_standard.setOnClickListener(this);
+        meunStandard = (LinearLayout) findViewById(R.id.meun_standard);
+        meunPhoto = (LinearLayout) findViewById(R.id.meun_photo);
+        meunStandard.setVisibility(View.GONE);
+        meunPhoto.setVisibility(View.GONE);
+        meunPhoto.setOnClickListener(this);
+        meunStandard.setOnClickListener(this);
         fab.setOnClickListener(this);
 
-        recycler_att.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recycler_att.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerAtt.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //初始化适配器
-        adapters = new AllTaskListItem(Alldata, mContext);
-        recycler_att.setAdapter(adapters);
+        adapters = new AllTaskListItem(Alldata, mContext,"all");
+        recyclerAtt.setAdapter(adapters);
         adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
 
             @Override
@@ -657,7 +657,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
     //弹出框
     private void MeunPop() {
         if (!anim) {
-            floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+            floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
             anim = true;
         }
         View contentView = getPopupWindowContentView();

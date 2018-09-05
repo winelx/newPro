@@ -32,7 +32,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int TYPE_SUB = 1;
     private static final int TYPE_END = 2;
     private Context mContext;
-
+    int iwork;
     private List<Object> mDatas = new ArrayList<>();
 
     private LeftSlideView mMenu = null;
@@ -78,27 +78,28 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((MyViewHolder) holder).managementOrg.setText("检查组织：" + success.getCheckOrgName());
             //分数
             if (success.getScore().isEmpty()) {
-                ((MyViewHolder) holder).managementNumber.setText("总分:");
+                ((MyViewHolder) holder).managementNumber.setText("总分：");
             } else {
-                ((MyViewHolder) holder).managementNumber.setText(setText("总分:" + success.getScore()));
+                ((MyViewHolder) holder).managementNumber.setText(setText("总分：" + success.getScore()));
             }
 
-            ((MyViewHolder) holder).managementUser.setText("检查人:" + success.getCheckUser() + "   " + success.getCreateDate());
-            ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
-                    intent.putExtra("id", success.getId());
-                    intent.putExtra("status", "success");
-                    mContext.startActivity(intent);
-                }
-            });
-            int iwork = success.getIwork();
+            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   " + success.getCreateDate());
+            iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);
             } else {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
+            ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+                    intent.putExtra("type", success.getIwork()+"");
+                    intent.putExtra("id", success.getId());
+                    mContext.startActivity(intent);
+                }
+            });
+
 
         } else if (holder instanceof SubViewHolder) {
             final SCheckTasklistBean Sub = (SCheckTasklistBean) obj;
@@ -111,9 +112,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 //            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
-            ((SubViewHolder) holder).managementUser.setText("检查人:" + Sub.getCheckUser() + "    " + Sub.getCreateDate());
+            ((SubViewHolder) holder).managementUser.setText("检查人：" + Sub.getCheckUser() + "    " + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
-            ((SubViewHolder) holder).subManagementOrg.setText("检查组织:" + Sub.getCheckOrgName());
+            ((SubViewHolder) holder).subManagementOrg.setText("检查组织：" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
             int iworl = Sub.getIwork();
             if (iworl == 1) {
@@ -133,7 +134,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View v) {
                     CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
-                    addActivity.submit(Sub.getId(),Sub.iwork);
+                    addActivity.submit(Sub.getId(), Sub.iwork);
                 }
             });
 

@@ -14,6 +14,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
+import com.example.administrator.newsdf.pzgc.fragment.homepage.CollectionlistActivity;
+import com.example.administrator.newsdf.pzgc.fragment.homepage.CommentmessageActivity;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
 import java.util.ArrayList;
@@ -32,10 +34,12 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<Inface_all_item> list;
     private Context mContext;
     private RecycleAdapterType adapterType;
+    private String status;
 
-    public AllTaskListItem(ArrayList<Inface_all_item> list, Context mContext) {
+    public AllTaskListItem(ArrayList<Inface_all_item> list, Context mContext, String status) {
         this.list = list;
         this.mContext = mContext;
+        this.status = status;
     }
 
     public AllTaskListItem() {
@@ -90,7 +94,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.comments.setText("(" + list.get(position).getComments() + ")");
         if (list.get(position).getUpload().size() > 0) {
             holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(), position);
+            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(), position,status);
             holder.taskcontent.setAdapter(adapterType);
         } else {
             holder.inface_image.setVisibility(View.GONE);
@@ -108,8 +112,17 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.inface_no_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AllListmessageActivity activity = (AllListmessageActivity) mContext;
-                activity.getumber(position);
+                if ("all".equals(status)) {
+                    AllListmessageActivity activity = (AllListmessageActivity) mContext;
+                    activity.getumber(position);
+                } else if ("message".equals(status)){
+                    CommentmessageActivity activity = (CommentmessageActivity) mContext;
+                    activity.getumber(position);
+                }else if ("action".equals(status)){
+                    CollectionlistActivity activity = (CollectionlistActivity) mContext;
+                    activity.getumber(position);
+                }
+
             }
         });
         //判断是否设置了监听器

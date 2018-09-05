@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -37,6 +38,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
         mContext = context;
 
     }
+
     @Override
     public int getItemCount() {
         return mDatas.size();
@@ -48,13 +50,19 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
             closeMenu();//关闭菜单
         }
         //设置内容布局的宽为屏幕宽度
-     holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
+        holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         holder.managementTitle.setText(mDatas.get(position).getPartDetails());
         holder.managementUser.setText("下发人：" + mDatas.get(position).getCheckPersonName() + "   " + mDatas.get(position).getUpdateDate());
         holder.managementwbs.setText(mDatas.get(position).getRectificationOrgName());
         holder.managementTitle.setText(mDatas.get(position).getStandardDelName());
         holder.managementOrg.setText("检查组织：" + mDatas.get(position).getCheckOrgName());
-        holder.managementNumber.setText(setText("扣分：" + mDatas.get(position).getStandardDelScore(), 3));
+        String score = mDatas.get(position).getStandardDelScore();
+        if (!score.isEmpty()) {
+            holder.managementNumber.setText(setText("扣分：" + mDatas.get(position).getStandardDelScore(), 3));
+        } else {
+            holder.managementNumber.setText("扣分：" + mDatas.get(position).getStandardDelScore());
+            holder.managementNumber.setTextColor(Color.parseColor("#000000"));
+        }
         holder.noticeUser.setText("整改负责人：" + mDatas.get(position).getNoticeuser());
         holder.noticeLasttime.setText("整改期限：" + mDatas.get(position).getNoticetime());
         Boolean isDeal = mDatas.get(position).isDeal();

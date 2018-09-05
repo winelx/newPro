@@ -67,7 +67,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     private ArrayList<Object> list;
     private ArrayList<CheckTasklistBean> listsuccess;
     private ArrayList<SCheckTasklistBean> listsub;
-
     private Context mContext;
     private PopupWindow mPopupWindow;
     private LinearLayout checklistmeun;
@@ -371,17 +370,19 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.btn_camera_pop_camera:
-                        Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
-                        intent.putExtra("orgId", orgId);
-                        intent.putExtra("name", name);
-                        startActivity(intent);
-                        break;
-                    //相册图片
-                    case R.id.btn_camera_pop_album:
                         Intent intent1 = new Intent(mContext, CheckNewAddActivity.class);
                         intent1.putExtra("orgId", orgId);
                         intent1.putExtra("name", name);
                         startActivity(intent1);
+                        break;
+                    //相册图片
+                    case R.id.btn_camera_pop_album:
+
+                        Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
+                        intent.putExtra("orgId", orgId);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
+
                         break;
                     case R.id.btn_camera_pop_cancel:
                         //关闭pop

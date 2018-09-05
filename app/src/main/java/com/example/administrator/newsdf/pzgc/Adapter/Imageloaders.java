@@ -17,6 +17,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
@@ -241,13 +245,23 @@ public class Imageloaders extends BaseAdapter {
                             holder.inface_imag1.setDefaultImageResId(R.mipmap.image_loading);
                             holder.inface_imag1.setErrorImageResId(R.mipmap.image_error);
 
-//                            //截取出后缀
-//                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
-//                            //拿到截取后缀后的字段
-//                            imgUrl = imgUrl.replace(pas, "");
-//                            //在字段后面添加_min后再拼接后缀
-//                            imgUrl = imgUrl + "_min" + pas;
-                            holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
+                            //截取出后缀
+                            String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
+                            //拿到截取后缀后的字段
+                            imgUrl = imgUrl.replace(pas, "");
+                            //在字段后面添加_min后再拼接后缀
+                            imgUrl = imgUrl + "_min" + pas;
+                            RequestOptions options = new RequestOptions()
+                                    .centerCrop()
+                                    .dontAnimate()
+                                    .error(R.mipmap.image_loading)//加载失败
+                                    .placeholder(R.mipmap.image_loading)//加载中
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                            Glide.with(context)
+                                    .load(imgUrl)
+                                    .apply(options)
+                                    .transition(new DrawableTransitionOptions().crossFade(1000))
+                                    .into(holder.inface_imag1);
                         }
                         if (path.size() >= 2) {
                             holder.inface_relat3.setVisibility(View.GONE);
@@ -317,7 +331,17 @@ public class Imageloaders extends BaseAdapter {
                                     imgUrl1 = imgUrl1.replace(pas, "");
                                     //在字段后面添加_min后再拼接后缀
                                     imgUrl1 = imgUrl1 + "_min" + pas;
-                                    holder.inface_image2.setImageUrl(imgUrl1, imageLoader);
+                                    RequestOptions options = new RequestOptions()
+                                            .centerCrop()
+                                            .dontAnimate()
+                                            .error(R.mipmap.image_loading)//加载失败
+                                            .placeholder(R.mipmap.image_loading)//加载中
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                                    Glide.with(context)
+                                            .load(imgUrl)
+                                            .apply(options)
+                                            .transition(new DrawableTransitionOptions().crossFade(1000))
+                                            .into(holder.inface_imag1);
                                 }
                                 if (path.size() >= 3) {
                                     String imgUrl2 = path.get(2).getName();
@@ -390,7 +414,17 @@ public class Imageloaders extends BaseAdapter {
                                             imgUrl2 = imgUrl2.replace(pas, "");
                                             //在字段后面添加_min后再拼接后缀
                                             imgUrl2 = imgUrl2 + "_min" + pas;
-                                            holder.inface_image3.setImageUrl(imgUrl2, imageLoader);
+                                            RequestOptions options = new RequestOptions()
+                                                    .centerCrop()
+                                                    .dontAnimate()
+                                                    .error(R.mipmap.image_loading)//加载失败
+                                                    .placeholder(R.mipmap.image_loading)//加载中
+                                                    .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                                            Glide.with(context)
+                                                    .load(imgUrl)
+                                                    .apply(options)
+                                                    .transition(new DrawableTransitionOptions().crossFade(1000))
+                                                    .into(holder.inface_imag1);
                                         }
                                     }
                                 }
@@ -491,7 +525,18 @@ public class Imageloaders extends BaseAdapter {
                             imgUrl = imgUrl.replace(pas, "");
                             //在字段后面添加_min后再拼接后缀
                             imgUrl = imgUrl + "_min" + pas;
-                            holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
+//                            holder.inface_imag1.setImageUrl(imgUrl, imageLoader);
+                            RequestOptions options = new RequestOptions()
+                                    .centerCrop()
+                                    .dontAnimate()
+                                    .error(R.mipmap.image_loading)//加载失败
+                                    .placeholder(R.mipmap.image_loading)//加载中
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                            Glide.with(context)
+                                    .load(imgUrl)
+                                    .apply(options)
+                                    .transition(new DrawableTransitionOptions().crossFade(1000))
+                                    .into(holder.inface_imag1);
                         }
                         if (path.size() >= 2) {
                             holder.inface_relat3.setVisibility(View.GONE);
@@ -628,7 +673,17 @@ public class Imageloaders extends BaseAdapter {
                                             imgUrl2 = imgUrl2.replace(pas, "");
                                             //在字段后面添加_min后再拼接后缀
                                             imgUrl2 = imgUrl2 + "_min" + pas;
-                                            holder.inface_image3.setImageUrl(imgUrl2, imageLoader);
+                                            RequestOptions options = new RequestOptions()
+                                                    .centerCrop()
+                                                    .dontAnimate()
+                                                    .error(R.mipmap.image_loading)//加载失败
+                                                    .placeholder(R.mipmap.image_loading)//加载中
+                                                    .diskCacheStrategy(DiskCacheStrategy.ALL);//全家缓存
+                                            Glide.with(context)
+                                                    .load(imgUrl)
+                                                    .apply(options)
+                                                    .transition(new DrawableTransitionOptions().crossFade(1000))
+                                                    .into(holder.inface_imag1);
                                         }
                                     }
                                 }

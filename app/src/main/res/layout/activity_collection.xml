@@ -155,10 +155,8 @@
                     <com.scwang.smartrefresh.layout.header.ClassicsHeader
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_att"
+                    <ListView
+                        android:id="@+id/list_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
@@ -167,19 +165,21 @@
                         android:divider="@color/back"
                         android:dividerHeight="10dp"
                         android:padding="0dp"
-                        android:scrollbars="none" />
+                        android:scrollbars="none"
+                        android:visibility="gone"
+                        tools:listitem="@layout/interface_item" />
 
                     <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                         android:layout_width="match_parent"
                         android:layout_height="45dp" />
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+
                 <LinearLayout
-                    android:id="@+id/nullposion"
+                    android:id="@+id/nullposions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <ImageView
@@ -230,7 +230,6 @@
                     android:id="@+id/drawer_layout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     android:divider="@color/back"
                     android:dividerHeight="1px"
                     android:scrollbars="none" />

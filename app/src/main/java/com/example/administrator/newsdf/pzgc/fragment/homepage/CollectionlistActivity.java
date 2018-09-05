@@ -12,13 +12,14 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,7 +30,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.Imageloaders;
+import com.example.administrator.newsdf.pzgc.Adapter.AllTaskListItem;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
@@ -82,29 +83,22 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
     private EditText searchEditext;
     private String id, wbsid, name, titles;
     private String notall = "10", nodeiD = "1";
-
     private CircleImageView circle;
-    //主界面适配器
-    private Imageloaders mAdapter;
     //抽屉控件
     private DrawerLayout drawerLayout;
-
     //判断是否是加载更多
     private boolean swip = false;
     private boolean drew = true;
-
     private PopupWindow mPopupWindow;
-
-    private ListView mTree, uslistView, drawerLayoutList;
+    private ListView mTree, drawerLayoutList;
     private TaskPhotoAdapter taskAdapter;
-
     //状态值
     private int addPosition;
     private int page = 1;
     private int pages = 1;
     //图册
     private ArrayList<Audio> paths;
-    private List<Inface_all_item> Alldata;
+    private ArrayList<Inface_all_item> Alldata;
     private ArrayList<PhotoBean> imagePaths;
     private List<OrganizationEntity> mTreeDatas;
     private ArrayList<OrganizationEntity> organizationList;
@@ -112,10 +106,11 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
 
     private LinearLayout drawerContent, imageViewMeun;
     private SmartRefreshLayout refreshLayout, drawerlayoutSmart;
-
+    private LinearLayout nullposion;
     private TaskTreeListViewAdapter<OrganizationEntity> mTreeAdapter;
     private float ste;
-
+    private AllTaskListItem adapters;
+    private RecyclerView recyclerAtt;
     //动画类
     private FloatMeunAnims floatMeunAnims;
     private LinearLayout meun_standard, meun_photo;
@@ -129,7 +124,6 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         TaskCallbackUtils.setCallBack(this);
-
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
@@ -179,7 +173,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                 swip = false;
                 pages = 1;
                 smart();
-                uslistView.setSelection(0);
+
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -255,46 +249,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
 
             }
         });
-        //listview的点击事件
-        uslistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String status = Alldata.get(position).getIsFinish() + "";
-                if ("2".equals(status)) {
-                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(mContext, MoretaskActivity.class);
-                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-                    intent.putExtra("status", "true");
-                    intent.putExtra("activity", "all");
-                    startActivity(intent);
-                }
-            }
-        });
-        //listview的触摸监听
-        uslistView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        // 触摸移动时的操作
-                        searchEditext.clearFocus();//失去焦点
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
-                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+
 
         OrganizationEntity bean = new OrganizationEntity(wbsid, "",
                 name, "0", true,
@@ -498,7 +453,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "10";
-                        uslistView.setSelection(0);
+
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, notall);
                         } else {
@@ -511,7 +466,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "0";
-                        uslistView.setSelection(0);
+
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, notall);
                         } else {
@@ -525,7 +480,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "2";
-                        uslistView.setSelection(0);
+
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, notall);
                         } else {
@@ -538,7 +493,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         pages = 1;
                         swip = false;
                         notall = "3";
-                        uslistView.setSelection(0);
+
                         if (nodeiD != "1") {
                             okgoall(nodeiD, null, notall);
                         } else {
@@ -567,7 +522,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         swip = false;
         pages = 1;
         smart();
-        uslistView.setSelection(0);
+
     }
 
     /**
@@ -591,7 +546,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         circle.setVisibility(View.VISIBLE);
         swip = false;
         HomeUtils.photoAdm(nodeiD, page, imagePaths, drew, taskAdapter, titles);
-        uslistView.setSelection(0);
+
         page = 1;
         pages = 1;
         okgoall(nodeiD, null, notall);
@@ -612,6 +567,8 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
      * 初始化控件
      */
     private void findbyId() {
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
+        recyclerAtt = (RecyclerView) findViewById(R.id.recycler_att);
         drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         //获得控件id，初始化id
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
@@ -629,8 +586,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
 
         findViewById(R.id.com_back).setOnClickListener(this);
-        //列表
-        uslistView = (ListView) findViewById(R.id.list_recycler);
+
         //标题
         Titlew = (TextView) findViewById(R.id.com_title);
         //meun
@@ -644,6 +600,55 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         meun_photo.setOnClickListener(this);
         meun_standard.setOnClickListener(this);
         circle.setOnClickListener(this);
+        recyclerAtt.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //初始化适配器
+        adapters = new AllTaskListItem(Alldata, mContext, "action");
+        recyclerAtt.setAdapter(adapters);
+        adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                String status = Alldata.get(position).getIsFinish() + "";
+                if ("2".equals(status)) {
+                    Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, MoretaskActivity.class);
+                    intent.putExtra("TaskId", Alldata.get(position).getTaskId());
+                    intent.putExtra("wbsid", Alldata.get(position).getWbsId());
+                    intent.putExtra("status", "true");
+                    intent.putExtra("activity", "all");
+                    startActivity(intent);
+                }
+            }
+        });
+        recyclerAtt.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //滑动关闭软键盘
+                searchEditext.clearFocus();//失去焦点
+                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
+                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //触摸关闭图册和标准
+                if (!anim) {
+                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, circle);
+                    anim = true;
+                }
+
+            }
+        });
     }
 
 
@@ -664,11 +669,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
         Titlew.setText(name);
         //设置标题字体
         Titlew.setTextSize(17);
-        //主界面适配器
-        mAdapter = new Imageloaders(mContext, Alldata);
-        //主界面
-        uslistView.setAdapter(mAdapter);
-        uslistView.setEmptyView(findViewById(R.id.nullposion));
+
         //打开抽屉控件的圆形控件
         circle.setVisibility(View.GONE);
         //图册适配器
@@ -836,16 +837,26 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
+                    if (Alldata.size()>0){
+                       nullposion.setVisibility(View.GONE);
+                    }else {
+                        nullposion.setVisibility(View.VISIBLE);
+                    }
+                    adapters.getData(Alldata);
                 } else {
                     if (!swip) {
                         Alldata.clear();
                     }
-                    mAdapter.getData(Alldata);
+                    if (Alldata.size()>0){
+                        nullposion.setVisibility(View.GONE);
+                    }else {
+                        nullposion.setVisibility(View.VISIBLE);
+                    }
+                   adapters.getData(Alldata);
                 }
                 Dates.disDialog();
-                if (Alldata.size() != 0) {
-                    mAdapter.getData(Alldata);
-
+                if (Alldata.size() > 0) {
+                   adapters.getData(Alldata);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -855,7 +866,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             if (!swip) {
                 Alldata.clear();
             }
-            mAdapter.getData(Alldata);
+          adapters.getData(Alldata);
         }
     }
 
@@ -942,6 +953,25 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                             super.onError(call, response, e);
                         }
                     });
+        }
+    }
+
+    public void getumber(int pos) {
+        String status = Alldata.get(pos).getIsFinish() + "";
+        if ("2".equals(status)) {
+            Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(mContext, MoretaskActivity.class);
+            intent.putExtra("TaskId", Alldata.get(pos).getTaskId());
+            intent.putExtra("wbsid", Alldata.get(pos).getWbsId());
+            intent.putExtra("status", "true");
+            intent.putExtra("activity", "all");
+            startActivity(intent);
         }
     }
 }

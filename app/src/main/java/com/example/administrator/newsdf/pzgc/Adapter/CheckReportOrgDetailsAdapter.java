@@ -80,9 +80,9 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             ((ViewHolder) holder).wbspath.setText(Tbean.getWbsName());
             ((ViewHolder) holder).score.setText("-"+Tbean.getStandardDelScore().replace(".0","")+"分");
            String str= Tbean.getCheckDate().substring(0,10);
-            ((ViewHolder) holder).checkuser.setText("下发人："+Tbean.getRectificationPersonName()+"     "+str);
+            ((ViewHolder) holder).checkuser.setText("下发人："+  Tbean.getCheckPersonName()+"     "+str);
             ((ViewHolder) holder).orgname.setText("检查组织："+Tbean.getCheckOrgName());
-            ((ViewHolder) holder).user.setText("整改负责人："+Tbean.getCheckPersonName());
+            ((ViewHolder) holder).user.setText("整改负责人："+Tbean.getRectificationPersonName());
             ((ViewHolder) holder).checkdata.setText("整改期限："+Tbean.getRectificationDate().substring(0,10));
             ((ViewHolder) holder).layout_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +93,12 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
+            int iwork=Tbean.getIwork();
+            if (iwork==1){
+                ((ViewHolder) holder).managementIndustry.setVisibility(View.GONE);
+            }else {
+                ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+            }
         } else if (holder instanceof ViewHolder2){
             /**
              * check_date : 2018-08-24
@@ -108,7 +114,7 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             OrgDetailsTBean Fbean= (OrgDetailsTBean) obj;
             ((ViewHolder2) holder).title.setText(Fbean.getCheck_plan_name());
             ((ViewHolder2) holder).wbspath.setText(Fbean.getWbs_name());
-            ((ViewHolder2) holder).Score.setText("+"+Fbean.getScore().replace(".0","")+"分");
+            ((ViewHolder2) holder).Score.setText(Fbean.getScore().replace(".0","")+"分");
             ((ViewHolder2) holder).checkuser.setText("检查人："+Fbean.getCheck_user_name()+"     "+Fbean.getCheck_date());
             ((ViewHolder2) holder).orgname.setText("检查组织："+Fbean.getCheck_org_name());
             ((ViewHolder2) holder).layout_linear.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +126,12 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
                     mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
+            int iwork=Fbean.getIwork();
+            if (iwork==1){
+                ((ViewHolder2) holder).managementIndustry.setVisibility(View.GONE);
+            }else {
+                ((ViewHolder2) holder).managementIndustry.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -132,11 +144,12 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title, wbspath, checkuser, orgname, user, checkdata,score;
+        private TextView title, wbspath, checkuser, orgname, user, checkdata,score, managementIndustry;
         private LinearLayout layout_linear;
         public ViewHolder(View itemView) {
             super(itemView);
             layout_linear=itemView.findViewById(R.id.layout_linear);
+            managementIndustry =itemView.findViewById(R.id.management_industry);
             title = itemView.findViewById(R.id.check_report_item_title);
             wbspath = itemView.findViewById(R.id.check_report_item_wbs);
             checkuser = itemView.findViewById(R.id.check_report_item_checkuser);
@@ -148,11 +161,12 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     class ViewHolder2 extends RecyclerView.ViewHolder {
-        private TextView title, wbspath, checkuser, orgname,Score;
+        private TextView title, wbspath, checkuser, orgname,Score,managementIndustry;
         private LinearLayout layout_linear;
         public ViewHolder2(View itemView) {
             super(itemView);
             layout_linear=itemView.findViewById(R.id.layout_linear);
+            managementIndustry =itemView.findViewById(R.id.management_industry);
             title = itemView.findViewById(R.id.check_t_titele);
             wbspath = itemView.findViewById(R.id.check_t_wbspath);
             checkuser = itemView.findViewById(R.id.check_t_user);

@@ -91,7 +91,13 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
                 holder.setText(R.id.management_title, obj.getStandardDelName());
                 holder.setText(R.id.management_user, "下发人：" + obj.getCheckPersonName() + "    " + obj.getUpdateDate());
                 holder.setText(R.id.management_org, "检查组织：" + obj.getCheckOrgName());
-                holder.setText(mContext, R.id.management_number, "扣分：" + obj.getStandardDelScore(), 3, R.color.red);
+                String score=obj.getStandardDelScore();
+                if (score.isEmpty()){
+                    holder.setText( R.id.management_number, "扣分：");
+                }else {
+                    holder.setText(mContext, R.id.management_number, "扣分：" + obj.getStandardDelScore(), 3, R.color.red);
+                }
+
                 holder.setText(R.id.notice_user, "整改负责人：" + obj.getNoticeuser());
                 holder.setText(R.id.notice_lasttime, "整改期限：" + obj.getNoticetime());
                 holder.setText(R.id.management_wbs, obj.getRectificationOrgName());
@@ -275,7 +281,13 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
 
                                         updateDate = updateDate.substring(0, 10);
                                         //
-                                        String standardDelScore = json.getString("standardDelScore");
+                                        String standardDelScore;
+                                        try {
+                                            standardDelScore = json.getString("standardDelScore");
+                                        }catch (JSONException e){
+                                            standardDelScore ="";
+                                        }
+
                                         //检查类别
                                         String standardDelName = json.getString("standardTypeName");
                                         //id

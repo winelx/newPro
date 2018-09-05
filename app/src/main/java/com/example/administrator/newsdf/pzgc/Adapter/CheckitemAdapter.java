@@ -43,7 +43,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void bindView(final ViewHolder holder, final int position) {
-        holder.textView.setText(mData.get(position).getContent());
+        holder.textView.setText(position+1+"、"+mData.get(position).getContent());
         //判断初始状态
         if ("true".equals(mData.get(position).getStatus())) {
             holder.checkItemTrue.setBackgroundResource(R.mipmap.checkitemsuccess_t);
