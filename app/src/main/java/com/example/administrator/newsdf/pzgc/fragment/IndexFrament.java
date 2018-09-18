@@ -83,6 +83,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
         JPushCallUtils.setCallBack(this);
         homeageViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 0;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

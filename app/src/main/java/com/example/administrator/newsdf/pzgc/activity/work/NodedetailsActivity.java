@@ -625,8 +625,13 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.node_lin_workarea:
                 //修改工区
-                Intent intent1 = new Intent(mContext, WorkareaActivity.class);
-                startActivityForResult(intent1, 2);
+                if (status.equals("0")){
+                    Intent intent1 = new Intent(mContext, WorkareaActivity.class);
+                    startActivityForResult(intent1, 2);
+                }else {
+                    ToastUtils.showShortToast("已启动，不可修改工区");
+                }
+
                 break;
             default:
                 break;

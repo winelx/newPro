@@ -8,14 +8,14 @@
     <!--state_checkable ture表示勾选状态下使用。false表示非勾选状态下使用-->
     <!--state_window_focused true 表示应用程序窗口有焦点时使用，false表示无焦点时使用-->
 
-    <item android:drawable="@mipmap/tabcheck" android:state_focused="false" android:state_pressed="false" android:state_selected="false" />
-    <item android:drawable="@mipmap/tabcheck_in" android:state_focused="false" android:state_pressed="false" android:state_selected="true" />
+    <item android:drawable="@mipmap/fr_bright" android:state_focused="false" android:state_pressed="false" android:state_selected="false" />
+    <item android:drawable="@mipmap/fr_bright_in" android:state_focused="false" android:state_pressed="false" android:state_selected="true" />
 
-    <item android:drawable="@mipmap/tabcheck_in" android:state_focused="true" android:state_pressed="false" android:state_selected="false" />
-    <item android:drawable="@mipmap/tabcheck_in" android:state_focused="true" android:state_pressed="true" android:state_selected="false" />
+    <item android:drawable="@mipmap/fr_bright_in" android:state_focused="true" android:state_pressed="false" android:state_selected="false" />
+    <item android:drawable="@mipmap/fr_bright_in" android:state_focused="true" android:state_pressed="true" android:state_selected="false" />
 
-    <item android:drawable="@mipmap/tabcheck_in" android:state_pressed="true" android:state_selected="false" />
-    <item android:drawable="@mipmap/tabcheck_in" android:state_pressed="true" />
+    <item android:drawable="@mipmap/fr_bright_in" android:state_pressed="true" android:state_selected="false" />
+    <item android:drawable="@mipmap/fr_bright_in" android:state_pressed="true" />
 
 
 </selector>

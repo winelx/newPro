@@ -1,9 +1,13 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
-/**
- * Created by Administrator on 2018/4/2 0002.
- */
 
+/**
+ * description:屏幕工具
+ * @author lx
+ * date: 2018/9/5 0005 上午 10:21
+ * update: 2018/9/5 0005
+ * version:
+*/
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -15,7 +15,15 @@ import com.example.administrator.newsdf.R;
 
 /**
  * Created by Administrator on 2018/6/25 0025.
+ *
  */
+/**
+ * description: floatmeun,的动画类，（多处使用':详情，列表，任务下发，任务管理）
+ * @author lx
+ * date: 2018/9/5 0005 上午 10:14
+ * update: 2018/9/5 0005
+ * version:
+*/
 
 public class FloatMeunAnims {
     public void doclickt(final View view, final View view2, final View view3) {

@@ -9,10 +9,6 @@ import com.lzy.imagepicker.loader.ImageLoader;
 
 import java.io.File;
 
-/**
- * Created by Administrator on 2018/2/5 0005.
- */
-
 
 /**
  * description:
@@ -33,8 +29,6 @@ public class PicassoImageLoader implements ImageLoader {
                 //设置图片路径(fix #8,文件名包含%符号 无法识别和显示)
                 .load(Uri.fromFile(new File(path)))
                 .into(imageView);
-
-
     }
 
     @Override

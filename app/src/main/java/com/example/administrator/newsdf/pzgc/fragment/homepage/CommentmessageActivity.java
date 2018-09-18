@@ -522,13 +522,15 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         mTreeDatas = new ArrayList<>();
         organizationList = new ArrayList<>();
     }
+
     private AllTaskListItem adapters;
     private RecyclerView recyclerAtt;
+
     //初始化控件
     private void findbyId() {
         //获得控件id，初始化id
         //数据提示
-        nullposion= (LinearLayout) findViewById(R.id.nullposion);
+        nullposion = (LinearLayout) findViewById(R.id.nullposion);
         drawerLayoutText = (TextView) findViewById(R.id.drawer_layout_text);
         drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
@@ -561,7 +563,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
         recyclerAtt.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //初始化适配器
-        adapters = new AllTaskListItem(Alldata, mContext,"message");
+        adapters = new AllTaskListItem(Alldata, mContext, "message");
         recyclerAtt.setAdapter(adapters);
         adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
 
@@ -866,9 +868,9 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                     Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                             groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                 }
-                if (Alldata.size()>0){
+                if (Alldata.size() > 0) {
                     nullposion.setVisibility(View.GONE);
-                }else {
+                } else {
                     nullposion.setVisibility(View.VISIBLE);
                 }
                 adapters.getData(Alldata);
@@ -877,9 +879,9 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
                 if (!swip) {
                     Alldata.clear();
                 }
-                if (Alldata.size()>0){
+                if (Alldata.size() > 0) {
                     nullposion.setVisibility(View.GONE);
-                }else {
+                } else {
                     nullposion.setVisibility(View.VISIBLE);
                 }
                 adapters.getData(Alldata);
@@ -888,6 +890,7 @@ public class CommentmessageActivity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
+
     public void getumber(int pos) {
         String status = Alldata.get(pos).getIsFinish() + "";
         if ("2".equals(status)) {

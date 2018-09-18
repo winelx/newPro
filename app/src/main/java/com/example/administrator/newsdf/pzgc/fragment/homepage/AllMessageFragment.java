@@ -54,15 +54,14 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             refreshLayout.setEnableLoadmore(false);
             //仿ios越界
             refreshLayout.setEnableOverScrollBounce(true);
+            initdata();
+            Onclick();
         }
-
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
-        initdata();
-        Onclick();
         return rootView;
     }
 

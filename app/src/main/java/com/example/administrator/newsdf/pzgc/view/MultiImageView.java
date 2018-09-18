@@ -134,7 +134,7 @@ public class MultiImageView extends ViewGroup {
     public MultiImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPicSpace = 10;
-        mSingleExpectMaxViewSize = 500;
+        mSingleExpectMaxViewSize = 400;
         mSingleExpectMaxViewSize = 300;
 
     }
@@ -330,7 +330,11 @@ public class MultiImageView extends ViewGroup {
             viewHeight = mSingleSrcHeight == 0 ? viewHeight : mSingleSrcHeight;
         }
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        setMeasuredDimension(widthSize, viewHeight);
+        if (viewHeight>250){
+            setMeasuredDimension(widthSize, viewHeight/2);
+        }else {
+            setMeasuredDimension(widthSize, viewHeight);
+        }
 
         int heightSize = mChildEdgeSize;
         widthSize = heightSize;

@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 
 /**
- * 自定义View,继承水平滚动条
- */
+ * description:
+ * @author lxapp内所有的侧滑的基本父布局
+ * version:
+*/
 public class LeftSlideView extends HorizontalScrollView {
 
     private TextView mTextView_Set;//设置按钮

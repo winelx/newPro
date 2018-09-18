@@ -14,14 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.BrightspotActivity;
 import com.example.administrator.newsdf.pzgc.bean.BrightBean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.view.MultiImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 
 /**
@@ -62,7 +64,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             holder.brightFrMark.setBackgroundResource(R.mipmap.markthree);
         }
         holder.hrightItemViewgroup.setMaxChildCount(5);
-        holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.ic_launcher);
+        holder.hrightItemViewgroup.setMoreImgBg(R.mipmap.image_loading);
         try {
             List<String> impath = mData.get(position).getList();
             String[] urls = Dates.listToString(impath).split("，");
@@ -70,44 +72,42 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-//如果只包含一张图片     //multiImageView.setSingleImg("https://img4.duitang.com/uploads/item/201502/11/20150211005650_AEyUX.jpeg",400,300);
         int length = mData.get(position).getLeadername().length();
         String name = mData.get(position).getLeadername();
         String content = mData.get(position).getTaskName();
         content = name + " 回复: " + content;
         SpannableString sp1 = new SpannableString(content);
-        sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
+        sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
                         .getColor(R.color.brighr_people)), 0,
                 length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sp1.setSpan(new ForegroundColorSpan(BrightspotActivity.getInstance().getResources()
+        sp1.setSpan(new ForegroundColorSpan(MainActivity.getInstance().getResources()
                         .getColor(R.color.persomal_text)), length + 1,
                 length + 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.content.setText(sp1);
         holder.brightItemBlock.setText(mData.get(position).getOrgName());
         holder.brightItemTime.setText(mData.get(position).getUpdateDate());
-        holder.hright_item.setOnClickListener(new View.OnClickListener() {
+        holder.hrightItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                intent.putExtra("TaskId", mData.get(position).getTaskId());
-                intent.putExtra("status", "false");
-                intent.putExtra("bright", true);
-                mContext.startActivity(intent);
+                click(position);
             }
         });
         holder.hrightItemViewgroup.setClickCallback(new MultiImageView.ClickCallback() {
             @Override
             public void callback(int index, String[] str) {
-                Intent intent = new Intent(mContext, TaskdetailsActivity.class);
-                intent.putExtra("TaskId", mData.get(position).getTaskId());
-                intent.putExtra("status", "false");
-                intent.putExtra("bright", true);
-                mContext.startActivity(intent);
+                click(position);
             }
         });
     }
-
+    //跳转界面
+    public  void  click(int position){
+        Intent intent = new Intent(mContext, TaskdetailsActivity.class);
+        intent.putExtra("TaskId", mData.get(position).getTaskId());
+        intent.putExtra("status", "false");
+        intent.putExtra("bright", true);
+        mContext.startActivity(intent);
+    }
     @Override
     public int getItemCount() {
         return mData.size();
@@ -116,7 +116,7 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class Viewholder extends RecyclerView.ViewHolder {
         MultiImageView hrightItemViewgroup;
         TextView content, brightItemBlock, brightItemTime;
-        RelativeLayout hright_item;
+        RelativeLayout hrightItem;
         private ImageView brightFrMark;
 
         public Viewholder(View itemView) {
@@ -125,13 +125,14 @@ public class BridhtAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             content = itemView.findViewById(R.id.content);
             brightItemBlock = itemView.findViewById(R.id.bright_item_block);
             brightItemTime = itemView.findViewById(R.id.bright_item_time);
-            hright_item = itemView.findViewById(R.id.hright_item);
+            hrightItem = itemView.findViewById(R.id.hright_item);
             brightFrMark = itemView.findViewById(R.id.bright_fr_mark);
         }
-    }
+        }
 
     public void getData(ArrayList<BrightBean> list) {
         this.mData = list;
         notifyDataSetChanged();
     }
+
 }

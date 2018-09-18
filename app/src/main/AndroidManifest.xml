@@ -78,7 +78,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/StartTheme"
-
             android:uiOptions="splitActionBarWhenNarrow">
             <intent-filter>
                 <action
@@ -204,11 +203,6 @@
         <activity
             android:name=".pzgc.activity.work.NodedetailsActivity"
             android:screenOrientation="portrait" />
-
-        <service
-            android:name=".pzgc.utils.UpdateService"
-            android:enabled="true" />
-
         <activity
             android:name=".pzgc.activity.home.same.ReplysActivity"
             android:screenOrientation="portrait"
@@ -228,9 +222,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".pzgc.activity.work.TaskWbsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".pzgc.activity.work.BrightspotActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".pzgc.activity.mine.ProjectMembersTreeActivity"
@@ -367,6 +358,8 @@
         <activity
             android:name=".pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".pzgc.activity.check.activity.CheckStatisticalActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckWebActivity"></activity>
     </application>
 
 </manifest>

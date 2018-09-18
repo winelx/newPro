@@ -11,7 +11,7 @@ public class BrightCallBackUtils {
         mCallBack = callBack;
     }
 
-    public static void removeCallBackMethod() {
+    public static void CallBackMethod() {
         mCallBack.bright();
     }
 

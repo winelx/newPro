@@ -34,12 +34,12 @@ public class AllmessagePer {
     public void getMode() {
         //显示进度
         //将数据传递到fragment
-            messageModel.getData(new AllMessageModel.OnClickListener() {
-                @Override
-                public void onComple(List<String> list, Map<String, List<Home_item>> map) {
-                    uiAllMessage.setAdapter(list, map);
-                }
-            });
+        messageModel.getData(new AllMessageModel.OnClickListener() {
+            @Override
+            public void onComple(List<String> list, Map<String, List<Home_item>> map) {
+                uiAllMessage.setAdapter(list, map);
+            }
+        });
 
     }
 }

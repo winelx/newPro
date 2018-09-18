@@ -319,7 +319,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                                 String name = json.getString("name");
                                 String appWbsPath = json.getString("appWbsPath");
                                 String status = json.getString("pass");
-                                String updateDate = json.getString("updateDate");
+                                String updateDate = json.getString("uploadTime");
                                 updateDate = updateDate.substring(10, 16);
                                 String id = json.getString("id");
                                 mData.add(new AuditrecordBean(id, name, appWbsPath, updateDate, status));

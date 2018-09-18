@@ -11,13 +11,15 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-
 /**
- * Created by Administrator on 2018/8/7 0007.
- */
+ * description:  图片展示的自动控件，进行圆角处理，（从相机图册获取的图片的展示imageview控件）
+ * @author lx
+ * date: 2018/9/5 0005 上午 10:21
+ * update: 2018/9/5 0005
+ * version:
+*/
 
 public class RoundImageView extends android.support.v7.widget.AppCompatImageView {
-
 
     //圆角大小，默认为10
     private int mBorderRadius = 15;

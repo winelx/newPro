@@ -16,20 +16,24 @@
         android:orientation="vertical">
 
         <LinearLayout
-
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:background="@color/writer"
+            android:minHeight="50dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="*"
                 android:textColor="@color/red"
                 android:textSize="15sp" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="7dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
@@ -39,7 +43,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="6"
                 android:orientation="vertical"
                 android:weightSum="6">
@@ -50,10 +55,10 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:layout_weight="7"
-                    android:textColor="@color/black"
                     android:background="@null"
                     android:hint="请输入"
                     android:minWidth="45dp"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -116,8 +121,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="75dp"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -167,19 +172,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black"
-                android:visibility="gone"
                 android:textSize="13sp"
-               />
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/check_new_temporarysite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/black"
                 android:background="@null"
                 android:hint="请输入临时部位"
                 android:minHeight="35dp"
+                android:textColor="@color/black"
                 android:textColorHint="@color/graytext"
                 android:textSize="13sp" />
 
@@ -201,7 +205,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:minHeight="45dp"
                 android:orientation="horizontal">
@@ -224,16 +228,20 @@
 
             <LinearLayout
                 android:id="@+id/Check_category"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="7"
+                android:gravity="end"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/category_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="请选择"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:hint="请输入"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

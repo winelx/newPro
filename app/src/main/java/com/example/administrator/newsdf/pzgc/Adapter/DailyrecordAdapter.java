@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
 import java.util.ArrayList;

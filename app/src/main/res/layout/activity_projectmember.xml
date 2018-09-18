@@ -157,6 +157,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+
                 <ListView
                     android:id="@+id/us_listView"
                     android:layout_width="match_parent"
@@ -166,7 +171,9 @@
                     android:divider="@color/back"
                     android:dividerHeight="1.5px"
                     tools:listitem="@layout/setting_member_item" />
-
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
 
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

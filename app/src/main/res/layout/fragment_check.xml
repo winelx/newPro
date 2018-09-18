@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
         <TextView
-            android:text="检查"
+            android:text="亮点"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/writer"
@@ -16,11 +16,6 @@
             android:layout_height="50dp" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/check_recycler"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" />
+
 
 </LinearLayout>

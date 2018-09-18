@@ -12,8 +12,8 @@ public class Requests {
     // +public static final String networks = "http://192.168.20.35:8080/pzgc/";
   // public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
- // public static final String networks = "http://117.187.27.78:58081/pzgc/";
-    public static final String networks = "http://120.79.142.15/pzgc/";
+public static final String networks = "http://117.187.27.78:58081/pzgc/";
+ // public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录

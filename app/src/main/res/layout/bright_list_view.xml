@@ -28,17 +28,19 @@
 
 
         <LinearLayout
-            android:id="@+id/nulllauout1"
+            android:id="@+id/layout_loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <ProgressBar
                 android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@mipmap/nonews" />
+                android:layout_height="70dp" />
+            <TextView
+                android:text="加载数据中..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -47,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"

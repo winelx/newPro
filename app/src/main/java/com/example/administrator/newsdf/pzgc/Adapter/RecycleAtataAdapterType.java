@@ -17,8 +17,9 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
-import com.example.administrator.newsdf.pzgc.callback.BridhtFragmentCallbackUtil;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
+import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils1;
+import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils2;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -427,15 +428,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             if (ret == 0) {
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
-                                //判断是否是从点亮界面进入
-                                if (activity.getbright()) {
                                     //如果是刷新界面
-                                    BridhtFragmentCallbackUtil.updata();
-                                }
-                                //刷新工作界面
-                                if (workbright) {
-                                    BrightCallBackUtils.removeCallBackMethod();
-                                }
+                                BrightCallBackUtils.CallBackMethod();
+                                BrightCallBackUtils1.CallBackMethod();
+                                BrightCallBackUtils2.CallBackMethod();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -463,14 +459,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             if (ret == 0) {
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 //判断是否是从点亮界面进入
-                                if (activity.getbright()) {
                                     //如果是刷新界面
-                                    BridhtFragmentCallbackUtil.updata();
-                                }
-                                //刷新工作界面
-                                if (workbright) {
-                                    BrightCallBackUtils.removeCallBackMethod();
-                                }
+                                BrightCallBackUtils.CallBackMethod();
+                                BrightCallBackUtils1.CallBackMethod();
+                                BrightCallBackUtils2.CallBackMethod();
                                 activity.deleteTop();
                             }
                         } catch (JSONException e) {

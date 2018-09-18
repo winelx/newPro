@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.bean.ChekItemBean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 
@@ -43,7 +44,12 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void bindView(final ViewHolder holder, final int position) {
-        holder.textView.setText(position+1+"、"+mData.get(position).getContent());
+        BigDecimal str = mData.get(position).getScore();
+        if (str.compareTo(new BigDecimal("0")) == 0) {
+            holder.textView.setText(mData.get(position).getContent());
+        } else {
+            holder.textView.setText(mData.get(position).getContent()  + "（" + str + "分" + ")");
+        }
         //判断初始状态
         if ("true".equals(mData.get(position).getStatus())) {
             holder.checkItemTrue.setBackgroundResource(R.mipmap.checkitemsuccess_t);

@@ -9,6 +9,7 @@ import android.graphics.Rect;
 
 /**
  * Created by 10942 on 2017/12/2 0002.
+ * 给图片添加水印
  */
 
 public class ImageUtil {

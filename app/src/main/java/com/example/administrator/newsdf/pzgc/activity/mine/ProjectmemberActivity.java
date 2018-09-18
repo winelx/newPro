@@ -114,8 +114,9 @@ public class ProjectmemberActivity extends AppCompatActivity {
         //下拉
         drawerLayout_smart= (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         drawerLayout_smart.setEnableRefresh(false);//禁止下拉
-        drawerLayout_smart.setEnableOverScrollBounce(true);//仿ios越界
-        drawerLayout_smart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+        drawerLayout_smart.setEnableLoadmore(false);//禁止上拉
+//        drawerLayout_smart.setEnableOverScrollBounce(true);//仿ios越界
+//        drawerLayout_smart.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         //返回键
         comback = (LinearLayout) findViewById(R.id.com_back);
         //设置标题

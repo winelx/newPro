@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 
-/**
- * Created by Administrator on 2017/12/25 0025.
- */
 
+/**
+ * description:自定义弹窗
+ * @author lx
+ * version:
+*/
 public class WbsDialog extends Dialog {
     private Button yes;//确定按钮
     private Button no;//取消按钮

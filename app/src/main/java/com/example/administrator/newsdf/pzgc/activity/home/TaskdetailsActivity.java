@@ -69,7 +69,7 @@ import okhttp3.Response;
 public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback, View.OnClickListener {
     //界面适配器
     private AudioAdapter mAdapter;
-    private String TaskId;
+    private String taskid;
     private ArrayList<Aduio_content> contents;
     private ArrayList<Aduio_data> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
@@ -118,11 +118,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
+        //动画类实现
         floatMeunAnims = new FloatMeunAnims();
+        //初始化集合
         newArray();
+        //初始化控件
         finById();
         mContext = this;
-        //权限
+       //接口回调，回复任务后刷新界面
         DetailsCallbackUtils.setCallBack(this);
         //侧滑栏关闭
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -131,10 +134,28 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
         //关闭下拉刷新
         drawerLayoutSmart.setEnableRefresh(false);
         comTitle.setText("部位详情");
+        //recyclervie显示管理器设置
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new AudioAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
-
+        //获取传递的数据
+        Intent intent = getIntent();
+        try {
+            //任务ID
+            taskid = intent.getExtras().getString("TaskId");
+            //状态
+            status = intent.getExtras().getString("status");
+            //是否从提亮界面进入
+            brightlean = intent.getExtras().getBoolean("bright");
+            if ("true".equals(status)) {
+                iconTextView.setVisibility(View.VISIBLE);
+            } else {
+                iconTextView.setVisibility(View.GONE);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            brightlean = false;
+        }
         /**
          *    侧拉listview上拉加载
          */
@@ -153,27 +174,14 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 refreshlayout.finishLoadmore(1000);
             }
         });
-        Intent intent = getIntent();
-        try {
-            TaskId = intent.getExtras().getString("TaskId");
-            status = intent.getExtras().getString("status");
-            brightlean = intent.getExtras().getBoolean("bright");
-            if (status.equals("true")) {
-                iconTextView.setVisibility(View.VISIBLE);
-            } else {
-                iconTextView.setVisibility(View.GONE);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            brightlean = false;
-        }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        okgo(TaskId);
+        //请求网络
+        okgo(taskid);
+        //抽屉控件图片适配器
         taskPhotoAdapter = new TaskPhotoAdapter(imagePaths, TaskdetailsActivity.this);
         drawerLayoutList.setAdapter(taskPhotoAdapter);
     }
@@ -277,11 +285,11 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      */
     @Override
     public void deleteTop() {
-        okgo(TaskId);
+        okgo(taskid);
     }
 
     public String gettaskId() {
-        return TaskId;
+        return taskid;
     }
 
     @Override
@@ -334,13 +342,13 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
             case R.id.com_img:
                 //任务详情界面
                 Intent intent1 = new Intent(TaskdetailsActivity.this, TaskRecordActivity.class);
-                intent1.putExtra("taskId", TaskId);
+                intent1.putExtra("taskId", taskid);
                 startActivity(intent1);
                 break;
             case R.id.com_text:
                 //任务回复界面
                 Intent intent = new Intent(TaskdetailsActivity.this, DirectlyreplysActivity.class);
-                intent.putExtra("id", TaskId);
+                intent.putExtra("id", taskid);
                 intent.putExtra("status", true);
                 intent.putExtra("partContent", partContent);
                 startActivityForResult(intent, 1);

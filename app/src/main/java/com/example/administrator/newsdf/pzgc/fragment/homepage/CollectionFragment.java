@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CollectionFrAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.HideCallback;
@@ -57,52 +56,59 @@ public class CollectionFragment extends Fragment implements HideCallback {
     private Context mContext;
 
     private LinearLayout nullposion;
-
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_collection, container, false);
-        mContext = getActivity();
-        mData = new ArrayList<>();
-        Okgo();
-        refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
-        refreshLayout.setEnableLoadmore(false);//禁止上拉
-        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
-        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
-        listView = view.findViewById(R.id.home_list);
-        nullposion = view.findViewById(R.id.nullposion);
-        HideCallbackUtils.setCallBack(this);
-        //设置布局管理器
-        listView.setLayoutManager(new LinearLayoutManager(mContext));
-        //设置适配器
-        mAdapter = new CollectionFrAdapter(mContext, mData);
-        listView.setAdapter(mAdapter);
-        //设置控制Item增删的动画
-        listView.setItemAnimator(new DefaultItemAnimator());
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.setEnableAutoLoadmore(false);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(final RefreshLayout refreshlayout) {
-                //传入false表示刷新失败
-                if (mAdapter.menuIsOpen()) {
-                    mAdapter.closeMenu();
+        if (view==null){
+            view = inflater.inflate(R.layout.fragment_collection, container, false);
+            mContext = getActivity();
+            mData = new ArrayList<>();
+            Okgo();
+            refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
+            refreshLayout.setEnableLoadmore(false);//禁止上拉
+            refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+            refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
+            listView = view.findViewById(R.id.home_list);
+            nullposion = view.findViewById(R.id.nullposion);
+            HideCallbackUtils.setCallBack(this);
+            //设置布局管理器
+            listView.setLayoutManager(new LinearLayoutManager(mContext));
+            //设置适配器
+            mAdapter = new CollectionFrAdapter(mContext, mData);
+            listView.setAdapter(mAdapter);
+            //设置控制Item增删的动画
+            listView.setItemAnimator(new DefaultItemAnimator());
+            refreshLayout.setEnableLoadmore(false);
+            refreshLayout.setEnableAutoLoadmore(false);
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(final RefreshLayout refreshlayout) {
+                    //传入false表示刷新失败
+                    if (mAdapter.menuIsOpen()) {
+                        mAdapter.closeMenu();
+                    }
+                    mData.clear();
+                    Okgo();
+                    refreshlayout.finishRefresh(1200);
                 }
-                mData.clear();
-                Okgo();
-                refreshlayout.finishRefresh(1200);
-            }
-        });
+            });
 
-        mAdapter.setOnItemClickListener(new CollectionFrAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(mContext, CollectionlistActivity.class);
-                intent.putExtra("name", mData.get(position).getOrgname());
-                intent.putExtra("orgId", mData.get(position).getOrgid());
-                startActivity(intent);
-            }
-        });
+            mAdapter.setOnItemClickListener(new CollectionFrAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(mContext, CollectionlistActivity.class);
+                    intent.putExtra("name", mData.get(position).getOrgname());
+                    intent.putExtra("orgId", mData.get(position).getOrgid());
+                    startActivity(intent);
+                }
+            });
+        }
+        // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null) {
+            parent.removeView(view);
+        }
         return view;
     }
 
@@ -190,6 +196,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
                             nullposion.setVisibility(View.VISIBLE);
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

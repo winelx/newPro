@@ -5,7 +5,7 @@
     <string name="message">消息</string>
     <string name="application">应用</string>
     <string name="work">办公</string>
-    <string name="check">检查</string>
+    <string name="check">亮点</string>
 
     <string name="about_us">工程管理系统主要是路桥公司为了能对施工过程进行严格管控，对进度、技术、质量、安全、文明施工等一系列的施工过程做到实时监控而开发的一个平台。同时更好地保障工地员工实时的进行举证证明施工过程的规范性、安全性、按时性等。整个过程充分体现了”谁负责，谁举证“这一原则。</string>
     <string name="meun_one">选择WBS结构</string>
@@ -65,5 +65,16 @@
     <string name="switchorganization">切换组织</string>
     <string name="fa_angle_right">{fa-angle-right}</string>
     <string name="unified_title">交建统一登录平台</string>
+    <string name="check_standard">检查标准</string>
+    <string name="check_management">监管检查</string>
+    <string name="check_notice">整改通知</string>
+    <string name="check_statistical">审核报表</string>
+    <string name="fr_work_statistical">任务统计</string>
+    <string name="fr_work_rectification">整改统计</string>
+    <string name="fr_work_ranking">标段排名</string>
+    <string name="fr_work_miss">任务管理</string>
+    <string name="fr_work_push">任务下发</string>
+    <string name="fr_work_photo">图纸标准</string>
+    <string name="fr_work_upload">主动任务</string>
 
 </resources>

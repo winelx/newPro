@@ -8,7 +8,13 @@ import android.view.MotionEvent;
 /**
  * Created by Administrator on 2018/8/6 0006.
  */
-
+/**
+ * description: vieepage禁止滑动（检查标准，类别）
+ * @author lx
+ * date: 2018/9/5 0005 上午 10:18
+ * update: 2018/9/5 0005
+ * version:
+*/
 public class NoScrollViewPager extends ViewPager {
     private boolean noScroll = true;
 

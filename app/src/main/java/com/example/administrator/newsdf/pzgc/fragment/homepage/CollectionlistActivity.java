@@ -837,9 +837,9 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                         Alldata.add(new Inface_all_item(wbsPath, updateDate, content, taskId, id, wbsId, createTime,
                                 groupName, isFinish, upload_time, userId, uploador, upload_content, upload_addr, protrait, paths, comments, pathsname));
                     }
-                    if (Alldata.size()>0){
-                       nullposion.setVisibility(View.GONE);
-                    }else {
+                    if (Alldata.size() > 0) {
+                        nullposion.setVisibility(View.GONE);
+                    } else {
                         nullposion.setVisibility(View.VISIBLE);
                     }
                     adapters.getData(Alldata);
@@ -847,16 +847,16 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
                     if (!swip) {
                         Alldata.clear();
                     }
-                    if (Alldata.size()>0){
+                    if (Alldata.size() > 0) {
                         nullposion.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         nullposion.setVisibility(View.VISIBLE);
                     }
-                   adapters.getData(Alldata);
+                    adapters.getData(Alldata);
                 }
                 Dates.disDialog();
                 if (Alldata.size() > 0) {
-                   adapters.getData(Alldata);
+                    adapters.getData(Alldata);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -866,7 +866,7 @@ public class CollectionlistActivity extends AppCompatActivity implements View.On
             if (!swip) {
                 Alldata.clear();
             }
-          adapters.getData(Alldata);
+            adapters.getData(Alldata);
         }
     }
 

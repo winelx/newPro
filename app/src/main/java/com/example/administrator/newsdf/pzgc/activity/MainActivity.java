@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -7,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +23,9 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.work.BrightspotFragment;
 import com.example.administrator.newsdf.pzgc.bean.Tab;
 import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
-import com.example.administrator.newsdf.pzgc.fragment.CheckFragment;
 import com.example.administrator.newsdf.pzgc.fragment.IndexFrament;
 import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
@@ -68,14 +68,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView home_img_red;
     private List<Shop> list;
     private boolean workbtight=false;
-    private List<Fragment> fragmentList;
-
     public static MainActivity getInstance() {
         return mContext;
     }
 
     private long exitTime = 0;
     int width = 0;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mContext = this;
         workbtight = false;
-        fragmentList = new ArrayList<>();
+
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
@@ -206,14 +205,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initTab() {
-        fragmentList.add(new IndexFrament());
-        fragmentList.add(new WorkFragment());
-        fragmentList.add(new CheckFragment());
-        fragmentList.add(new MineFragment());
         //添加tab信息，存入集合进行展示
         Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style, 0);
         Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
-        Tab tab_check = new Tab(CheckFragment.class, R.string.check, R.drawable.tab_check_style, 0);
+        Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
         mTabs.add(tab_home);
         mTabs.add(tab_work);
