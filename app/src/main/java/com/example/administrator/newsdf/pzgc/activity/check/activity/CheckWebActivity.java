@@ -1,12 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -17,21 +19,25 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 public class CheckWebActivity extends AppCompatActivity {
     private TextView text;
     private LinearLayout linProbar;
     private WebView mWebView;
     private static CheckWebActivity mContext;
-//    private String url = "http://192.168.20.24:8080/m/#/";
-  private String url = "http://192.168.20.33:8080/#/";
+    //    private String url = "http://192.168.20.24:8080/m/#/";
+    private String url = "http://192.168.20.33:8080/#/";
+
     public static CheckWebActivity getInstance() {
         return mContext;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -48,8 +54,9 @@ public class CheckWebActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(false);
         webSettings.setUseWideViewPort(true);
-        //AndroidtoJS类对象映射到js的test对象
-        mWebView.getSettings().setDomStorageEnabled(true);  //很关键！！！！
+
+        mWebView.getSettings().setDomStorageEnabled(true);
+        //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJs(mContext), "view");
         //如果不设置WebViewClient，请求会跳转系统浏览器
         mWebView.setWebViewClient(new WebViewClient() {
@@ -97,8 +104,46 @@ public class CheckWebActivity extends AppCompatActivity {
                 }
             }
         });
+        LogUtil.i("ss", mWebView.getUrl());
     }
-    public void finsh(){
+
+    public void finsh() {
         mContext.finish();
+    }
+
+    //连续两次退出App
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (url.equals(mWebView.getUrl())) {
+                finish();
+            } else {
+                //后退
+                mWebView.goBack();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyWebView();
+    }
+
+    private void destroyWebView() {
+        mWebView.removeAllViews();
+
+        if (mWebView != null) {
+            mWebView.clearHistory();
+            mWebView.clearCache(true);
+            // clearView()应该改为loadUrl(“about:blank”)，因为clearView()现在已经被废弃了
+            mWebView.loadUrl("about:blank");
+            mWebView.freeMemory();
+            mWebView.pauseTimers();
+            // mWebView.destroy()和mWebView = null做同样的事情
+            mWebView = null;
+        }
     }
 }

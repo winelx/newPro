@@ -11,7 +11,6 @@ import com.example.administrator.newsdf.camera.ToastUtils;
  * @Created by: 2018/9/17 0017.
  * @description:
  */
-
 public class AndroidtoJs {
     private Context mContext;
 
@@ -23,7 +22,6 @@ public class AndroidtoJs {
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void back(String msg) {
-        ToastUtils.showShortToast(msg);
         CheckWebActivity activity = (CheckWebActivity) mContext;
         activity.finsh();
     }
