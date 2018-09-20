@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
@@ -11,30 +10,26 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
-public class CheckWebActivity extends AppCompatActivity {
+public class CheckRectificationWebActivity extends AppCompatActivity {
     private TextView text;
-    private LinearLayout linProbar;
+    private RelativeLayout linProbar;
     private WebView mWebView;
-    private static CheckWebActivity mContext;
+    private static CheckRectificationWebActivity mContext;
     //    private String url = "http://192.168.20.24:8080/m/#/";
     private String url = "http://192.168.20.33:8080/#/";
 
-    public static CheckWebActivity getInstance() {
+    public static CheckRectificationWebActivity getInstance() {
         return mContext;
     }
 
@@ -46,7 +41,7 @@ public class CheckWebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_web);
         mWebView = (WebView) findViewById(R.id.check);
         mContext = this;
-        linProbar = (LinearLayout) findViewById(R.id.lin_probar);
+        linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         text = (TextView) findViewById(R.id.text);
 
         WebSettings webSettings = mWebView.getSettings();
@@ -57,14 +52,12 @@ public class CheckWebActivity extends AppCompatActivity {
 
         mWebView.getSettings().setDomStorageEnabled(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext), "view");
+        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "st"), "view");
         //如果不设置WebViewClient，请求会跳转系统浏览器
         mWebView.setWebViewClient(new WebViewClient() {
+
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//                super.onReceivedSslError(view, handler, error);
-                // TODO Auto-generated method stub
-                //允许https://的访问
                 //Android使用WebView加载https地址打不开的问题  小米
                 handler.proceed();
             }
@@ -83,14 +76,18 @@ public class CheckWebActivity extends AppCompatActivity {
 //                Toast.makeText(WebActivity.this, "加载开始", Toast.LENGTH_SHORT).show();
             }
 
+            //处理网页加载失败时
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                // TODO Auto-generated method stub
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                //加载失败
-//          Toast.makeText(WebActivity.this, "加载失败", Toast.LENGTH_SHORT).show();
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                //6.0以上执行
+                linProbar.setVisibility(View.GONE);
             }
+
+
         });
+
+
         //加载url
         mWebView.loadUrl(url);
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -98,20 +95,19 @@ public class CheckWebActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                text.setText(newProgress + "");
+                text.setText(newProgress + "%");
                 if (newProgress == 100) {
                     linProbar.setVisibility(View.GONE);
                 }
             }
         });
-        LogUtil.i("ss", mWebView.getUrl());
+
     }
 
     public void finsh() {
         mContext.finish();
     }
-
-    //连续两次退出App
+    //退出界面
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -129,7 +125,7 @@ public class CheckWebActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyWebView();
+
     }
 
     private void destroyWebView() {
@@ -146,4 +142,6 @@ public class CheckWebActivity extends AppCompatActivity {
             mWebView = null;
         }
     }
+
+
 }

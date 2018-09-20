@@ -359,7 +359,8 @@
             android:name=".pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".pzgc.activity.check.activity.CheckStatisticalActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckWebActivity"></activity>
+        <activity android:name=".pzgc.activity.check.activity.CheckRectificationWebActivity" />
+        <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity"></activity>
     </application>
 
 </manifest>

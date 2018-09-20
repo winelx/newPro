@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckWebActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
-import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
@@ -126,10 +127,11 @@ public class WorkFragment extends Fragment implements BrightCallBack, View.OnCli
                 startActivity(new Intent(mContext, CheckstandardListActivity.class));
                 break;
             case R.id.fr_work_rectification:
-                startActivity(new Intent(mContext,CheckWebActivity.class));
+                startActivity(new Intent(mContext,CheckRectificationWebActivity.class));
                 //整改统计
                 break;
             case R.id.fr_work_statistical:
+                startActivity(new Intent(mContext, CheckTaskWebActivity.class));
                 //任务统计
                 break;
             default:
