@@ -26,9 +26,9 @@
 
             <LinearLayout
                 android:id="@+id/testmanager"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@color/writer"
                 android:orientation="vertical">
 
@@ -41,80 +41,15 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <LinearLayout
+                <GridView
+                    android:id="@+id/taskmanager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:numColumns="4" />
 
-                    <TextView
-                        android:id="@+id/task_management"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_miss"
-                        android:gravity="center"
-                        android:text="@string/fr_work_miss"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/push"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_push"
-                        android:gravity="center"
-                        android:text="@string/fr_work_push"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/pphotoadm"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_photo"
-                        android:gravity="center"
-                        android:text="@string/fr_work_photo"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/uploade"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_upload"
-                        android:gravity="center"
-                        android:text="@string/fr_work_upload"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -130,10 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/one"
-                android:background="@color/writer"
                 android:layout_marginTop="10dp"
+                android:background="@color/writer"
                 android:orientation="vertical">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,74 +78,16 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <LinearLayout
+                <GridView
+                    android:id="@+id/checkmanager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:numColumns="4" />
 
 
-                    <TextView
-                        android:id="@+id/check_standard"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/check_standard"
-                        android:gravity="center"
-                        android:text="@string/check_standard"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/check_management"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/check_management"
-                        android:gravity="center"
-                        android:text="@string/check_management"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/check_notice"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/check_notice"
-                        android:gravity="center"
-                        android:text="@string/check_notice"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:gravity="center"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -222,6 +98,7 @@
                 android:background="@color/back2" />
 
             <LinearLayout
+                android:id="@+id/reportlin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/two"
@@ -239,83 +116,17 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <LinearLayout
+                <GridView
+                    android:id="@+id/reportmanager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:numColumns="4" />
 
 
-                    <TextView
-                        android:id="@+id/statementsaudit"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/check_statistical"
-                        android:gravity="center"
-                        android:text="@string/check_statistical"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/fr_work_statistical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_statistical"
-                        android:gravity="center"
-                        android:text="@string/fr_work_statistical"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/fr_work_rectification"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_rectification"
-                        android:gravity="center"
-                        android:text="@string/fr_work_rectification"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-
-                    <TextView
-                        android:id="@+id/fr_work_ranking"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/writer"
-                        android:drawablePadding="10dp"
-                        android:drawableTop="@mipmap/fr_work_ranking"
-                        android:gravity="center"
-                        android:text="@string/fr_work_ranking"
-                        android:textColor="@color/textViwe"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
             </LinearLayout>
-
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/work_rec"

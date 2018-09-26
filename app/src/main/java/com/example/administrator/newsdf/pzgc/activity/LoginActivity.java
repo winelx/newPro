@@ -1,8 +1,10 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +13,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,6 +37,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.Cookie;
 import okhttp3.Response;
 
 
@@ -57,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Context mContext;
     private RelativeLayout backgroud;
     private Dialog progressDialog;
+    private List<Cookie> cookiesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,7 +251,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
-
+//                            CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+//                            HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+//                            List<Cookie> cookies = cookieStore.getCookie(httpUrl);
+//                            synCookies(mContext, cookies.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -283,6 +292,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         handler.sendMessage(mes);
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -317,5 +327,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         text.setText("登录中...");
         progressDialog.show();
     }
+
+    /**
+     * 同步一下cookie
+     */
+    public void synCookies(Context context, String cook) {
+        CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie(Requests.networks, cook);
+        if (Build.VERSION.SDK_INT < 21) {
+            CookieSyncManager.getInstance().sync();
+        } else {
+            CookieManager.getInstance().flush();
+        }
+    }
+
 
 }
