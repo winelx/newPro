@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,8 +12,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -49,6 +46,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "LoginActivity";
     /**
      * 状态图片
      */
@@ -112,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String passowd = password.getText().toString();
                     // 网络请求
                     okgo(user, passowd);
+
                 }
                 break;
             default:
@@ -164,13 +163,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");
-
                             ToastUtils.showLongToast(jsonObject.getString("msg"));
-
                             //删除数据库红点
                             greedao();
                             SPUtils.deleAll(mContext);
                             JSONObject jsom = jsonObject.getJSONObject("data");
+                            JSONObject extend = jsonObject.getJSONObject("extend");
+                            App.getInstance().jsonId=extend.getString("JSESSIONID");
                             String id;
                             try {
                                 id = jsom.getString("id");
@@ -271,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //重写返回键
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -286,6 +286,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     List<Shop> list;
 
+    //获取数据举数据
     private void greedao() {
         list = LoveDao.JPushCart();
         Message mes = new Message();
@@ -328,20 +329,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.show();
     }
 
-    /**
-     * 同步一下cookie
-     */
-    public void synCookies(Context context, String cook) {
-        CookieSyncManager.createInstance(context);
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptCookie(true);
-        cookieManager.setCookie(Requests.networks, cook);
-        if (Build.VERSION.SDK_INT < 21) {
-            CookieSyncManager.getInstance().sync();
-        } else {
-            CookieManager.getInstance().flush();
-        }
-    }
 
 
 }

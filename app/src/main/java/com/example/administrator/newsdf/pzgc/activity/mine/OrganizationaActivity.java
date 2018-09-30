@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils3;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -213,7 +216,6 @@ public class OrganizationaActivity extends AppCompatActivity {
             if (type.contains("5")) {
                 Intent intent = new Intent();
                 //回传数据到主Activity
-
                 intent.putExtra("id", orgid);
                 intent.putExtra("name", name);
                 setResult(2, intent);
@@ -238,6 +240,9 @@ public class OrganizationaActivity extends AppCompatActivity {
                                     SPUtils.putString(mContext, "username", name);
                                     //刷新全部和我的界面的数据
                                     OgranCallbackUtils.removeCallBackMethod();
+                                    OgranCallbackUtils1.removeCallBackMethod();
+                                    OgranCallbackUtils2.removeCallBackMethod();
+                                    OgranCallbackUtils3.removeCallBackMethod();
                                     finish(); //此方法后才能返回主Activity
                                 } else {
                                     Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();

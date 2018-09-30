@@ -73,8 +73,6 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-
         if (!node.isperent()) {
             holder.mIcon.setVisibility(View.INVISIBLE);
         } else {
@@ -84,11 +82,16 @@ public class TaskTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         holder.Lin_WBS.setVisibility(View.GONE);
         holder.handover_status_recycler.setHorizontalScrollBarEnabled(false);
         String num = node.getPhone();
-        int str = 0;
+        int str ;
         try {
-            str = Integer.parseInt(num);
+            if (num.equals("")){
+                str=0;
+            }else {
+                str = Integer.parseInt(num);
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            str=0;
         }
         if (str > 0) {
             holder.taskNum.setVisibility(View.VISIBLE);

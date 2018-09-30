@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
-import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.fragment.presenter.AllmessagePer;
 import com.example.administrator.newsdf.pzgc.fragment.view.UiAllMessageView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -99,7 +99,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
         //推送的接口回调（）
         CallBackUtils.setCallBack(this);
         //切换组织接口回调（OrganizationaActivity）
-        OgranCallbackUtils.setCallBack(this);
+        OgranCallbackUtils1.setCallBack(this);
 
     }
 

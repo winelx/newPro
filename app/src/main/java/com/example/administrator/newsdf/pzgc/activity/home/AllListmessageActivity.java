@@ -576,8 +576,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         //侧拉界面下拉
         drawerlayoutSmart = (SmartRefreshLayout) findViewById(R.id.drawerLayout_smart);
         findViewById(R.id.com_back).setOnClickListener(this);
-        //列表
-
         //标题
         Titlew = (TextView) findViewById(R.id.com_title);
         //meun
@@ -702,7 +700,6 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
      * @param i       页数
      */
     private void okgoall(String wbsId, String content, int i) {
-
         PostRequest mPostRequest = OkGo.<String>post(Requests.CascadeList)
                 .params("orgId", id)
                 .params("page", i)

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CommentsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -41,7 +43,7 @@ import okhttp3.Response;
  * 评论
  */
 
-public class CommentsFragment extends Fragment {
+public class CommentsFragment extends Fragment implements OgranCallback {
     private CommentsAdapter mAdapter;
     private Context mContext;
     List<Home_item> setList;
@@ -62,6 +64,7 @@ public class CommentsFragment extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_collection, container, false);
             mContext = getActivity();
+            OgranCallbackUtils2.setCallBack(this);
             mAdapter = new CommentsAdapter(mContext);
             nullposion = view.findViewById(R.id.nullposion);
             refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
@@ -184,4 +187,8 @@ public class CommentsFragment extends Fragment {
     }
 
 
+    @Override
+    public void taskCallback() {
+        Okgo(true);
+    }
 }

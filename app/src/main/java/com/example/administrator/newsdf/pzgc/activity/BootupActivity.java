@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -135,6 +136,8 @@ public class BootupActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(msg);
                             int str = jsonObject.getInt("ret");
                             message = jsonObject.getString("msg");
+                            JSONObject extend = jsonObject.getJSONObject("extend");
+                            App.getInstance().jsonId=extend.getString("JSESSIONID");
                             if (str == 0) {
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 String id = jsom.getString("id");

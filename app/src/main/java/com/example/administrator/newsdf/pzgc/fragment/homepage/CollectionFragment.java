@@ -18,6 +18,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.CollectionFrAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.HideCallback;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils3;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -41,7 +43,7 @@ import okhttp3.Response;
  *         收藏
  */
 
-public class CollectionFragment extends Fragment implements HideCallback {
+public class CollectionFragment extends Fragment implements HideCallback,OgranCallback {
     /**
      * 下拉控件
      */
@@ -72,6 +74,7 @@ public class CollectionFragment extends Fragment implements HideCallback {
             listView = view.findViewById(R.id.home_list);
             nullposion = view.findViewById(R.id.nullposion);
             HideCallbackUtils.setCallBack(this);
+            OgranCallbackUtils3.setCallBack(this);
             //设置布局管理器
             listView.setLayoutManager(new LinearLayoutManager(mContext));
             //设置适配器
@@ -205,5 +208,10 @@ public class CollectionFragment extends Fragment implements HideCallback {
                     }
 
                 });
+    }
+
+    @Override
+    public void taskCallback() {
+        Okgo();
     }
 }

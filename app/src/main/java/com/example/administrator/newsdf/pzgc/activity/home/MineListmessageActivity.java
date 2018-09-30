@@ -351,7 +351,7 @@ public class MineListmessageActivity extends AppCompatActivity implements View.O
         /**
          * 请求任务列表
          */
-        okgo(wbsid, status, null, pages);
+        okgo(null, status, null, pages);
         /**
          * 拼接 选择wbs的节点
          */

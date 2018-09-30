@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
@@ -16,6 +16,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -26,8 +29,16 @@ import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Cookie;
 
 public class CheckRectificationWebActivity extends AppCompatActivity {
     boolean lean = true;
@@ -36,8 +47,8 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-    private String url = "http://192.168.20.33:8080/#/";
-
+    private String url = "http://192.168.1.119:8088/#/";
+    private List<Cookie> cookiesList;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -46,13 +57,15 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_web);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
+        cookiesList = new ArrayList<>();
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
         text = (TextView) findViewById(R.id.text);
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
-
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        cookiesList = cookieStore.getAllCookie();
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
@@ -61,6 +74,7 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
         mWebView.getSettings().setDomStorageEnabled(true);
         //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
+        sycCook();
         //加载url
         mWebView.loadUrl(url);
         //加载进度
@@ -165,9 +179,33 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (mWebView != null) {
+            mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            mWebView.clearHistory();
+
+            ((ViewGroup) mWebView.getParent()).removeView(mWebView);
+            mWebView.destroy();
+            mWebView = null;
+        }
         super.onDestroy();
-      mWebView.clearCache(true);
 //        destroyWebView();
     }
-
+    public void sycCook() {
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeSessionCookies(null);
+            cookieManager.flush();
+        } else {
+            cookieManager.removeSessionCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+        cookieManager.setAcceptCookie(true);
+        cookieManager.removeSessionCookie();//移除
+        cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
+        if (Build.VERSION.SDK_INT < 21) {
+            CookieSyncManager.getInstance().sync();
+        } else {
+            CookieManager.getInstance().flush();
+        }
+    }
 }
