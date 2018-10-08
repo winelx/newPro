@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.zcjlmodule.ModuleMainActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -88,7 +89,8 @@ public class BootupActivity extends AppCompatActivity {
                 } else {
                     //如果已经存在，
                     // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
-                    BackTo(user, password);
+                    startActivity(new Intent(mContext, ModuleMainActivity.class));
+//                    BackTo(user, password);
                 }
                 return false;
             }
