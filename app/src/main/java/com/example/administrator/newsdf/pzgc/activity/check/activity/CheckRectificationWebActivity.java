@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
@@ -47,25 +48,21 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-    private String url = "http://192.168.1.119:8088/#/";
-    private List<Cookie> cookiesList;
+   //private String url = "http://192.168.1.119:8088/#/";
+    private String url = "http://120.79.142.15/m/";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_web);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
-        cookiesList = new ArrayList<>();
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
         text = (TextView) findViewById(R.id.text);
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
-        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-        cookiesList = cookieStore.getAllCookie();
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
@@ -179,6 +176,7 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        //缓存
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();
@@ -201,7 +199,8 @@ public class CheckRectificationWebActivity extends AppCompatActivity {
         }
         cookieManager.setAcceptCookie(true);
         cookieManager.removeSessionCookie();//移除
-        cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
+//        cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
+    cookieManager.setCookie(Requests.networks,"uid="+ App.getInstance().jsonId);
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {

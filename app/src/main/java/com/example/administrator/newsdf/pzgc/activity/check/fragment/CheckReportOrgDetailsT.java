@@ -51,10 +51,11 @@ public class CheckReportOrgDetailsT extends Fragment {
     private Map<String, Object> map;
     private CheckReportOrgDetailsActivity activity;
     private ArrayList<Object> list;
-    private LinearLayout checkQueater,layout_loading;
+    private LinearLayout checkQueater, layout_loading;
     private SmartRefreshLayout recycler_att;
 
-    private int page=1;
+    private int page = 1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class CheckReportOrgDetailsT extends Fragment {
         categoryList = view.findViewById(R.id.category_list);
         checkQueater = view.findViewById(R.id.check_queater);
         layout_loading = view.findViewById(R.id.layout_loading);
-        recycler_att=view.findViewById(R.id.recycler_att);
+        recycler_att = view.findViewById(R.id.recycler_att);
         recycler_att.setEnableRefresh(false);//是否启用下拉刷新功能
         recycler_att.setEnableOverScrollBounce(true);//是否启用越界回弹
         recycler_att.setDisableContentWhenLoading(true);//加载时禁止操作界面
@@ -73,7 +74,7 @@ public class CheckReportOrgDetailsT extends Fragment {
         map = activity.getOrgId();
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-        mAdapter = new CheckReportOrgDetailsAdapter(list,mContext);
+        mAdapter = new CheckReportOrgDetailsAdapter(list, mContext);
         categoryList.setAdapter(mAdapter);
         getdata();
         //上拉加载
@@ -86,13 +87,22 @@ public class CheckReportOrgDetailsT extends Fragment {
                 recycler_att.finishLoadmore(3000);
             }
         });
+
         mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Object obj=list.get(position);
-                Intent intent =new Intent(mContext, CheckListDetailsActivity.class);
-                OrgDetailsTBean tBean= (OrgDetailsTBean) obj;
-                intent.putExtra("id",tBean.getId());
+                Object obj = list.get(position);
+                Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+                OrgDetailsTBean tBean = (OrgDetailsTBean) obj;
+                int iworkd = tBean.getIwork();
+                if (iworkd == 1) {
+                    //外业标识
+                    intent.putExtra("type", "1");
+                } else {
+                    //内业标识
+                    intent.putExtra("type", "0");
+                }
+                intent.putExtra("id", tBean.getId());
                 startActivity(intent);
             }
         });
@@ -114,8 +124,8 @@ public class CheckReportOrgDetailsT extends Fragment {
                 .params("selectType", map.get("type") + "")
                 //统计时间数值 季/月
                 .params("mqnum", mqnum)
-                .params("row",20)
-                .params("page",1)
+                .params("row", 20)
+                .params("page", 1)
                 //查询类别
                 .params("modeType", "JC")
                 .execute(new StringCallback() {
@@ -129,33 +139,33 @@ public class CheckReportOrgDetailsT extends Fragment {
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
-                                       String check_date=json.getString("check_date");
-                                       String check_org_name=json.getString("check_org_name");
-                                       String check_plan_name=json.getString("check_plan_name");
-                                       String check_user_name=json.getString("check_user_name");
-                                       String id=json.getString("id");
-                                        String part_detail="";
+                                        String check_date = json.getString("check_date");
+                                        String check_org_name = json.getString("check_org_name");
+                                        String check_plan_name = json.getString("check_plan_name");
+                                        String check_user_name = json.getString("check_user_name");
+                                        String id = json.getString("id");
+                                        String part_detail = "";
                                         try {
-                                            part_detail=json.getString("part_details");
-                                        }catch (JSONException e){
-                                            part_detail="";
+                                            part_detail = json.getString("part_details");
+                                        } catch (JSONException e) {
+                                            part_detail = "";
                                         }
-                                       String  score=json.getString("score");
+                                        String score = json.getString("score");
                                         String wbs_name;
                                         try {
-                                            wbs_name=json.getString("wbs_name");
-                                        }catch (JSONException e){
-                                            wbs_name="";
+                                            wbs_name = json.getString("wbs_name");
+                                        } catch (JSONException e) {
+                                            wbs_name = "";
                                         }
                                         int iwork;
-                                        try{
-                                            iwork=json.getInt("iwork");
-                                        }catch (JSONException e){
-                                            iwork=1;
+                                        try {
+                                            iwork = json.getInt("iwork");
+                                        } catch (JSONException e) {
+                                            iwork = 1;
                                         }
-                                       String wbs_type_name=json.getString("wbs_type_name");
+                                        String wbs_type_name = json.getString("wbs_type_name");
 
-                                        list.add(new OrgDetailsTBean(check_date,check_org_name,check_plan_name,check_user_name,id,part_detail,score,wbs_name,wbs_type_name,iwork));
+                                        list.add(new OrgDetailsTBean(check_date, check_org_name, check_plan_name, check_user_name, id, part_detail, score, wbs_name, wbs_type_name, iwork));
                                     }
                                     if (list.size() > 0) {
                                         mAdapter.getmData(list);
@@ -163,10 +173,10 @@ public class CheckReportOrgDetailsT extends Fragment {
                                     } else {
                                         checkQueater.setVisibility(View.VISIBLE);
                                     }
-                                }else {
-                                    if (list.size()>0){
+                                } else {
+                                    if (list.size() > 0) {
                                         checkQueater.setVisibility(View.GONE);
-                                    }else {
+                                    } else {
                                         checkQueater.setVisibility(View.VISIBLE);
                                     }
                                     mAdapter.getmData(list);

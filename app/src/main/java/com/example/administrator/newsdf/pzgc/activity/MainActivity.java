@@ -197,16 +197,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
-
     public void initTab() {
         //添加tab信息，存入集合进行展示
-        Tab tab_home = new Tab(IndexFrament.class, R.string.home, R.drawable.tab_home_style, 0);
+        Tab tab_home = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_home_style, 0);
         Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
         Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);

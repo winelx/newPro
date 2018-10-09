@@ -26,8 +26,6 @@ import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBack;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -49,7 +47,7 @@ import okhttp3.Response;
  *         时间：2017/11/23 0023:下午 15:37
  *         说明：
  */
-public class WorkFragment extends Fragment implements BrightCallBack {
+public class WorkFragment extends Fragment {
     private View rootView;
     private Context mContext;
     private ArrayList<Audio> tasklist;
@@ -70,7 +68,6 @@ public class WorkFragment extends Fragment implements BrightCallBack {
             reportlist = new ArrayList<>();
             tasklist = new ArrayList<>();
             checklist = new ArrayList<>();
-            BrightCallBackUtils.setCallBack(this);
             //初始化控件Id
             findId();
             // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
@@ -158,10 +155,7 @@ public class WorkFragment extends Fragment implements BrightCallBack {
         reportlin = rootView.findViewById(R.id.reportlin);
     }
 
-    @Override
-    public void bright() {
 
-    }
 
     public void okgo() {
         OkGo.get(Requests.getMenu)
@@ -180,19 +174,19 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                                     String str6 = json.getString("审核报表");
                                     String str7 = json.getString("整改统计");
                                     String str9 = json.getString("标段排名");
-                                    if ("true".equals(str4)) {
-                                        reportlist.add(new Audio("任务统计", str4));
-                                    }
                                     if ("true".equals(str6)) {
                                         reportlist.add(new Audio("审核报表", str6));
                                     }
+                                    if ("true".equals(str4)) {
+                                        reportlist.add(new Audio("任务统计", str4));
+                                    }
+
                                     if ("true".equals(str7)) {
                                         reportlist.add(new Audio("整改统计", str7));
                                     }
                                     if ("true".equals(str9)) {
                                         reportlist.add(new Audio("标段排名", str9));
                                     }
-
 
                                     String str3 = json.getString("任务管理");
                                     String str = json.getString("主动任务");
@@ -248,7 +242,25 @@ public class WorkFragment extends Fragment implements BrightCallBack {
                         }
                     }
 
-
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        if (tasklist.size() > 0) {
+                            taskAdapter.getData(tasklist);
+                        } else {
+                            testmanager.setVisibility(View.GONE);
+                        }
+                        if (checklist.size() > 0) {
+                            checkAdapter.getData(checklist);
+                        } else {
+                            card_list.setVisibility(View.GONE);
+                        }
+                        if (reportlist.size() > 0) {
+                            reportAdapter.getData(reportlist);
+                        } else {
+                            reportlin.setVisibility(View.GONE);
+                        }
+                    }
                 });
     }
 

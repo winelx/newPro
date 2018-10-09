@@ -114,8 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="11111111"
-
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/check_report_item_checkdata"
@@ -124,7 +123,7 @@
                 android:textColor="@color/graytext"
                 android:layout_weight="1"
                 android:text="121212"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -14,7 +14,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "2.1"
+        versionName "2.2"
         resConfigs "zh-rCN"
         ndk {
             //选择要添加的对应cpu类型的.so库。

@@ -195,15 +195,16 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switch (v.getId()) {
                     case R.id.audit_audit:
+                        //未审核
                         page = 1;
                         mData.clear();
                         status = 1;
                         getData();
                         break;
                     case R.id.audit_noaudit:
+                        //以审核
                         page = 1;
                         mData.clear();
                         Success = 1;
@@ -211,6 +212,7 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                         http();
                         break;
                     case R.id.audit_statistical:
+                        //打回
                         page = 1;
                         Success = 2;
                         status = 3;
@@ -301,6 +303,10 @@ public class AuditrecordActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 
+
+    /**
+     * 已审核
+     */
     public void http() {
         Loading();
         OkGo.post(Requests.GET_AUDIT_TASK_LIST)

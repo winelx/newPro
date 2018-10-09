@@ -30,8 +30,16 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 
+//
 
+/**
+ * description: 任务报表
+ *
+ * @author lx
+ *         date: 2018/10/9 0009 上午 10:48
+ */
 public class CheckTaskWebActivity extends AppCompatActivity {
     boolean lean = true;
     private TextView text;
@@ -39,8 +47,9 @@ public class CheckTaskWebActivity extends AppCompatActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-    //private String url = "http://192.168.1.119:8088/m/TaskList";
-    private String url = "http://192.168.1.119:8088/m/TaskList";
+
+    // private String url = "http://192.168.1.119:8088/m/TaskList";
+    private String url = "http://120.79.142.15/m/#/tasklist";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -95,7 +104,7 @@ public class CheckTaskWebActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-            //    加载完成
+                //    加载完成
                 linProbar.setVisibility(View.GONE);
                 if (lean) {
                     mWebView.setVisibility(View.VISIBLE);
@@ -152,10 +161,12 @@ public class CheckTaskWebActivity extends AppCompatActivity {
         reloadTv.setMovementMethod(LinkMovementMethod.getInstance());
         reloadTv.setText(style);
     }
+
     //AndroidtoJs类调用，控制vue界面的返回
     public void finsh() {
         this.finish();
     }
+
     //退出界面
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -170,6 +181,7 @@ public class CheckTaskWebActivity extends AppCompatActivity {
         }
         return false;
     }
+
     @Override
     protected void onDestroy() {
         if (mWebView != null) {
@@ -194,8 +206,9 @@ public class CheckTaskWebActivity extends AppCompatActivity {
         }
         cookieManager.setAcceptCookie(true);
         cookieManager.removeSessionCookie();//移除
-        cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
-  //      cookieManager.setCookie("http://192.168.20.33:8081","uid="+ App.getInstance().jsonId);
+        //   cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
+        cookieManager.setCookie(Requests.networks, "uid=" + App.getInstance().jsonId);
+        //      cookieManager.setCookie("http://192.168.20.33:8081","uid="+ App.getInstance().jsonId);
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,6 @@ public class TabFragment extends Fragment {
     private ListView listVIew;
     private View view;
     private int i = 1;
-    boolean status = false;
     private SmartRefreshLayout refreshLayout;
     private RelativeLayout tab_frag_img;
     private TextView tab_img_text;
@@ -72,26 +72,24 @@ public class TabFragment extends Fragment {
         mContext = getActivity();
         mData = new ArrayList<>();
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
-        refreshLayout.setDisableContentWhenLoading(true);
+        refreshLayout.setEnableRefresh(true);//是否启用下拉刷新功能
+        refreshLayout.setEnableAutoLoadmore(false);//是否启用上拉加载功能
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 i = 1;
-                status = true;
-                okgo(ids.get(pos), 1);
+                okgo(ids.get(pos), i);
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(1500/*,false*/);
+                refreshlayout.finishRefresh(1100/*,false*/);
             }
         });
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                i = i + 1;
-                status = false;
-                LogUtil.i("tabloading", i + "");
+                i++;
                 okgo(ids.get(pos), i);
                 //传入false表示加载失败
-                refreshlayout.finishLoadmore(1500);
+                refreshlayout.finishLoadmore(1100);
             }
         });
 
@@ -121,10 +119,6 @@ public class TabFragment extends Fragment {
                     intent.putExtra("wbsid", wbeID);
                     startActivity(intent);
                 }
-
-//                intent.putExtra("TaskId", Alldata.get(position).getTaskId());
-//                intent.putExtra("wbsid", Alldata.get(position).getWbsId());
-//                intent.putExtra("status", "true");
             }
         });
 
@@ -149,7 +143,7 @@ public class TabFragment extends Fragment {
                     public void onSuccess(String s, Call call, Response response) {
                         if (s.contains("data")) {
                             try {
-                                if (status) {
+                                if (e == 1) {
                                     mData.clear();
                                 }
                                 JSONObject jsonObject = new JSONObject(s);
@@ -237,8 +231,8 @@ public class TabFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //重新加载数据，
-        status = true;
-        okgo(ids.get(pos) + "", 1);
+        i = 1;
+        okgo(ids.get(pos), i);
     }
 
     @Override
@@ -246,11 +240,5 @@ public class TabFragment extends Fragment {
         super.onDestroy();
         Dates.disDialog();
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
 
 }

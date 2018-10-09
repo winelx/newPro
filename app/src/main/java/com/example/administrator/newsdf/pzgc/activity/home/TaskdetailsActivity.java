@@ -368,7 +368,7 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
      * 完成详细数据
      */
     private void okgo(final String id) {
-        Dates.getDialog(TaskdetailsActivity.this, "请求数据中");
+
         OkGo.post(Requests.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {
@@ -889,11 +889,6 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                             taskManagement.setVisibility(View.VISIBLE);
                             wbspath.setText(wbsName);
                         }
-                        try {
-                            Dates.disDialog();
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                        }
                     }
 
                     @Override
@@ -930,9 +925,5 @@ public class TaskdetailsActivity extends AppCompatActivity implements DetailsCal
                 audioComMark.setBackgroundResource(R.mipmap.markone);
                 break;
         }
-    }
-
-    public boolean getbright() {
-        return brightlean;
     }
 }

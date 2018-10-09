@@ -3,6 +3,8 @@ package com.example.zcjlmodule;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.zcmodule.R;
+
 public class ModuleMainActivity extends AppCompatActivity {
 
     @Override

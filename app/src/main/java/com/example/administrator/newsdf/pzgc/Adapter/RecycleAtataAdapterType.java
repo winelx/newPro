@@ -57,7 +57,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     CameDialog cameDialog;
     boolean isFavorite;
     //判断workfragment是否初始化，如果没有，提亮的时候就不用刷新界面
-    boolean workbright=false;
+    boolean workbright = false;
 
     public RecycleAtataAdapterType(Context mContext, boolean status, int bright) {
         this.mContext = mContext;
@@ -68,8 +68,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         MainActivity mian = MainActivity.getInstance();
         try {
             workbright = mian.wbright();
-        }catch (NullPointerException e){
-            workbright=false;
+        } catch (NullPointerException e) {
+            workbright = false;
         }
 
     }
@@ -230,15 +230,17 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                         if (ret == 0) {
                                             TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                             activity.deleteTop();
-                                            HideCallbackUtils.removeCallBackMethod();
-                                            Dates.disDialog();
+                                            try {
+                                                HideCallbackUtils.removeCallBackMethod();
+                                                Dates.disDialog();
+                                            } catch (NullPointerException e) {
+                                            }
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
-                    Dates.disDialog();
                 } else {
                     OkGo.<String>post(Requests.SAVECOLLECTION)
                             .params("taskId", audio.gettaskId())
@@ -259,8 +261,10 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                     }
                                 }
                             });
-
-                    Dates.disDialog();
+                    try {
+                        Dates.disDialog();
+                    }catch (NullPointerException e){
+                    }
                 }
             }
         });
@@ -280,7 +284,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                     //没有提亮
                     if (mDatas.get(posotion).isSmartprojectMain1Up() || mDatas.get(posotion).isSmartprojectMain2Up() || mDatas.get(posotion).isSmartprojectMain3Up()) {
                         //判断是否提亮
-                            brightUp();
+                        brightUp();
                     } else {
                         //如果没有权限，那么就无法看到提亮功能
                         ToastUtils.showLongToast("您暂时没有提亮权限哦");
@@ -292,15 +296,15 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                         case 1:
                             if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                                 //判断是否提亮
-                                    ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
+                                ToastUtils.showLongToast("您暂时没有提亮权限哦!~");
                             }
                             break;
                         //如果为分公司
                         case 2:
                             if (mDatas.get(posotion).isSmartprojectMain1Up()) {
                                 //判断是否提亮
-                                    brightUp();
-                            } else  {
+                                brightUp();
+                            } else {
                                 //如果没有权限，那么就无法看到提亮功能
                                 ToastUtils.showLongToast("您暂时没有提亮权限哦");
                             }
@@ -428,10 +432,14 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             if (ret == 0) {
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 activity.deleteTop();
-                                    //如果是刷新界面
-                                BrightCallBackUtils.CallBackMethod();
-                                BrightCallBackUtils1.CallBackMethod();
-                                BrightCallBackUtils2.CallBackMethod();
+                                //如果是刷新界面
+                                try {
+                                    BrightCallBackUtils.CallBackMethod();
+                                    BrightCallBackUtils1.CallBackMethod();
+                                    BrightCallBackUtils2.CallBackMethod();
+                                } catch (NullPointerException e) {
+
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -459,10 +467,14 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             if (ret == 0) {
                                 TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                 //判断是否是从点亮界面进入
-                                    //如果是刷新界面
-                                BrightCallBackUtils.CallBackMethod();
-                                BrightCallBackUtils1.CallBackMethod();
-                                BrightCallBackUtils2.CallBackMethod();
+                                //如果是刷新界面
+                                try {
+                                    BrightCallBackUtils.CallBackMethod();
+                                    BrightCallBackUtils1.CallBackMethod();
+                                    BrightCallBackUtils2.CallBackMethod();
+                                } catch (NullPointerException e) {
+                                }
+
                                 activity.deleteTop();
                             }
                         } catch (JSONException e) {

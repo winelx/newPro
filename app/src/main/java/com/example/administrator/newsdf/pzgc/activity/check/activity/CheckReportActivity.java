@@ -80,7 +80,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         comButton.setOnClickListener(this);
         comButton.setText("选择组织");
         comButton.setTextSize(10);
-        textView.setText("统计排名");
+        textView.setText("标段排名");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
