@@ -14,8 +14,8 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  * @author lx
  *         date: 2018/10/9 0009 下午 3:59
  */
-public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment implements MvpView {
-    public P mPresenter;
+public abstract class MvpFragment<M extends MvpModel, V extends BaseView> extends BaseFragment implements MvpView {
+    public MvpPresenter mPresenter;
 
     @Nullable
     @Override
@@ -27,7 +27,7 @@ public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment i
     public void initMvp() {
         Mvp mvp = Mvp.getInstance();
         mvp.registerView(this.getClass(), this);
-        mPresenter = (P) mvp.getPresenter(Mvp.getGenericType(this, 0));
+        mPresenter = (MvpPresenter) mvp.getPresenter(Mvp.getGenericType(this, 0));
         mPresenter.initPresenter(getBaseView());
     }
 

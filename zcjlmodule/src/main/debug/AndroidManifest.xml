@@ -3,7 +3,7 @@
     package="com.example.zcjlmodule">
 
     <application>
-        <activity android:name=".ModuleMainActivity"></activity>
+        <activity android:name=".ui.activity.ModuleMainActivity"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ if (isUserModule.toBoolean()) {
 android {
     compileSdkVersion 26
     buildToolsVersion '25.0.0'
+    resourcePrefix "_zc"
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
@@ -49,4 +50,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 //
     compile project(':baselibrary')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
