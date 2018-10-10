@@ -3,6 +3,7 @@ package com.example.zcjlmodule.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class WorkFragmentZc extends BaseFragment {
             TextView toolbarTitle = rootView.findViewById(R.id.toolbar_title);
             toolbarTitle.setText("我的");
             mRecycler=rootView.findViewById(R.id.fragment_work_recycler);
+            mRecycler.setLayoutManager(new LinearLayoutManager(mContext));
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);
