@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import measure.jjxx.com.baselibrary.frame.Mvp;
 
 /**
  * @author lx
@@ -58,6 +59,7 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         String appVersion;
+        Mvp.getInstance().init(this);
         try {
             appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
         } catch (Exception e) {
