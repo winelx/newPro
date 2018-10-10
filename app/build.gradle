@@ -66,52 +66,36 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 
 
 dependencies {
-
     //图片
-
     //字体图标库
-
     //Recycler
-
     //圆角控件
-
     //自适应gridview
-
     //权限
-
     //网络框架
-
     //卡片布局
-
     //图片预览
-
     //compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
-
     //数据库
-
     //volley，用其中的图片控件，防止图片错位
-
     //刷新/上拉加载框架，两个相互使用
-
     //相册选图
-
     //极光推送
     compile files('libs/BaiduLBS_Android.jar')
-
     //阿里热修复
-
     //阿里热修复
-
     //工具类库
-
     //轮播图
     compile 'me.weyye.hipermission:library:1.0.7'
-
     //noinspection GradleDependency
     compile 'com.github.bumptech.glide:glide:4.1.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -139,7 +123,6 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.android.support.constraint:constraint-layout:1.1.2'
     testCompile 'junit:junit:4.12'
-
     //    compile project(':zcjlmodule')
-    compile project(':zcjlmodule')
+//    compile project(':zcjlmodule')
 }
