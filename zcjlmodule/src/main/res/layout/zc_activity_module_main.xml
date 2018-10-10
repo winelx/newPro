@@ -14,6 +14,7 @@
         android:layout_width="@dimen/x320"
         android:layout_height="@dimen/y50"
         android:layout_marginTop="@dimen/y80"
+        android:text="111"
         android:background="@drawable/bg_edt_normal"
         android:hint="@string/hint_account"
         android:paddingLeft="@dimen/x16"
@@ -27,6 +28,7 @@
         android:background="@drawable/bg_edt_normal"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
+        android:text="111"
         android:paddingLeft="@dimen/x16"
         android:textSize="@dimen/text_size_16" />
 

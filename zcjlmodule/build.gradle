@@ -7,7 +7,7 @@ if (isUserModule.toBoolean()) {
 android {
     compileSdkVersion 26
     buildToolsVersion '25.0.0'
-    resourcePrefix "_zc"
+    resourcePrefix "zc_"
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
@@ -39,16 +39,13 @@ android {
             }
         }
     }
-//
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_7
-//        targetCompatibility JavaVersion.VERSION_1_7
-//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-//
+    //
     compile project(':baselibrary')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
