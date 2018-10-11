@@ -38,36 +38,25 @@ public class ToastUtlis {
      *
      * @param message 消息
      */
-    public  void showLongToast(String message) {
-        if (mContext == null) {
-            return;
-        }
-        if (toast == null) {
-            toast = Toast.makeText(mContext, message, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.BOTTOM, 0, 100);
-            toast.show();
-        } else {
-            toast.setGravity(Gravity.BOTTOM, 0, 100);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setText(message);
-            toast.show();
-        }
+    public void showLongToast(String message) {
+
+
+        toast = Toast.makeText(mContext, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setText(message);
+        toast.show();
+
     }
 
-    public  void showLongToastCenter(String message) {
-        if (mContext == null) {
-            return;
-        }
-        if (toast == null) {
-            toast = Toast.makeText(mContext, message, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 100);
-            toast.show();
-        } else {
-            toast.setGravity(Gravity.CENTER, 0, 100);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setText(message);
-            toast.show();
-        }
+    public void showLongToastCenter(String message) {
+
+        toast = Toast.makeText(mContext, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setText(message);
+        toast.show();
+
     }
 
 
@@ -76,19 +65,13 @@ public class ToastUtlis {
      *
      * @param message 消息
      */
-    public  void showShortToast(String message) {
-        if (mContext == null)
-            return;
-        if (toast == null) {
-            toast = Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.BOTTOM, 0, 100);
-            toast.show();
-        } else {
-            toast.setGravity(Gravity.BOTTOM, 0, 100);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.setText(message);
-            toast.show();
-        }
+    public void showShortToast(String message) {
+
+        toast = Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM, 0, 100);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setText(message);
+        toast.show();
     }
 
     /**
@@ -96,19 +79,12 @@ public class ToastUtlis {
      *
      * @param message 消息
      */
-    public  void showShortToastCenter(String message) {
-        if (mContext == null)
-            return;
-        if (toast == null) {
-            toast = Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 100);
-            toast.show();
-        } else {
-            toast.setGravity(Gravity.CENTER, 0, 100);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.setText(message);
-            toast.show();
-        }
+    public void showShortToastCenter(String message) {
+        toast = Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 100);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setText(message);
+        toast.show();
     }
 
 }

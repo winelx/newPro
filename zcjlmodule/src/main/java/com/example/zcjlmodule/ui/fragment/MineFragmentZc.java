@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import com.example.zcmodule.R;
 
-import measure.jjxx.com.baselibrary.frame.BaseFragment;
+import measure.jjxx.com.baselibrary.base.BaseFragment;
 
-/** 
+
+/**
  * description: 征拆首页 我的 界面
  * @author lx
  * date: 2018/10/10 0010 下午 3:01 
@@ -30,7 +31,7 @@ public class MineFragmentZc extends BaseFragment {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_mine_zc, null);
             TextView toolbarTitle =rootView.findViewById(R.id.toolbar_title);
-            toolbarTitle.setText("工作");
+            toolbarTitle.setText("我的");
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);

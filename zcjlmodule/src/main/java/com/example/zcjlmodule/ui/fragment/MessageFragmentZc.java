@@ -18,23 +18,22 @@ import com.example.zcmodule.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import measure.jjxx.com.baselibrary.frame.BaseFragment;
+import measure.jjxx.com.baselibrary.base.BaseFragment;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * description: 征拆首页的消息界面
- *
  * @author lx
- *         date: 2018/10/10 0010 下午 2:54
- *         update: 2018/10/10 0010
- *         version:
- */
+ * date: 2018/10/10 0010 下午 2:54
+*/
 public class MessageFragmentZc extends BaseFragment {
-    private View rootView;
-    private Context mContext;
-    private RecyclerView mRecyclerview;
-    private List<MessageItem> mData;
-    private MessageAdapter mAdapter;
+    private View rootView;//界面控件
+    private Context mContext;//上下文
+    private RecyclerView mRecyclerview;//列表控件
+    private List<MessageItem> mData;//数据
+    private MessageAdapter mAdapter;//适配器
+
+
 
     @Nullable
     @Override
@@ -43,14 +42,14 @@ public class MessageFragmentZc extends BaseFragment {
         if (rootView == null) {
             mContext = getActivity();
             mData = new ArrayList<>();
+            //初始化数据
+            setmData();
             rootView = inflater.inflate(R.layout.fragment_message_zc, null);
             TextView toolbarTitle = rootView.findViewById(R.id.toolbar_title);
             toolbarTitle.setText("消息");
-            mData.add(new MessageItem(R.mipmap.zc_fragment_message_notice, "公告通知", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-            mData.add(new MessageItem(R.mipmap.zc_fragment_message_pendingtask, "代办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-            mData.add(new MessageItem(R.mipmap.zc_fragment_message_dothetask, "已办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-            mData.add(new MessageItem(R.mipmap.zc_fragment_message_myinitiation, "我的发起", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+
             mRecyclerview = rootView.findViewById(R.id.message_fragment_recyclerview);
+            //设置控件显示样式
             mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
             /**
              *             自定义分割线
@@ -58,7 +57,9 @@ public class MessageFragmentZc extends BaseFragment {
              divider.setDrawable(ContextCompat.getDrawable(mContext,R.drawable.custom_divider));
              mRecyclerview.addItemDecoration(divider);
              */
+            //调加适配器，初始化布局和数据
             mRecyclerview.setAdapter(mAdapter = new MessageAdapter(R.layout.fragment_message_item_zc, mData));
+            mAdapter.openLoadAnimation();
             mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -80,7 +81,6 @@ public class MessageFragmentZc extends BaseFragment {
                     }
                 }
             });
-
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);
@@ -88,20 +88,32 @@ public class MessageFragmentZc extends BaseFragment {
         }
         return rootView;
     }
+
     //recyclerview适配器
     public class MessageAdapter extends BaseQuickAdapter<MessageItem, BaseViewHolder> {
         public MessageAdapter(int layoutResId, List data) {
             super(layoutResId, data);
         }
+
         @Override
         protected void convert(BaseViewHolder helper, MessageItem item) {
+            //图标
             helper.setImageResource(R.id.fragment_message_item_icon, item.getIcon());
+            //标题
             helper.setText(R.id.fragment_message_item_title, item.getTitle());
+            //消息内容
             helper.setText(R.id.fragment_message_item_content, item.getMessagecontent());
+            //消息数量
             helper.setText(R.id.fragment_message_item_messagenumner, item.getMessagenumber().toString());
+            //时间
             helper.setText(R.id.fragment_message_item_time, item.getData());
-
         }
     }
 
+    public void setmData() {
+        mData.add(new MessageItem(R.mipmap.zc_fragment_message_notice, "公告通知", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageItem(R.mipmap.zc_fragment_message_pendingtask, "代办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageItem(R.mipmap.zc_fragment_message_dothetask, "已办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageItem(R.mipmap.zc_fragment_message_myinitiation, "我的发起", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+    }
 }

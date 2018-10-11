@@ -41,12 +41,12 @@ import cn.jpush.android.api.JPushInterface;
 
 public class App extends Application {
     public String jsonId;
-    private static App instance;
+
     /**
      * 用于存放所有启动的Activity的集合
      */
     private List<Activity> oList;
-
+    private static App instance;
     public static App getInstance() {
         return instance;
     }
@@ -59,7 +59,6 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         String appVersion;
-//        Mvp.getInstance().init(this);
         try {
             appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
         } catch (Exception e) {

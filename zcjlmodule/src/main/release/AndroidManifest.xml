@@ -5,6 +5,7 @@
     <application
         android:name="release.Application"
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
         android:screenOrientation="portrait"
@@ -19,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.zcjlmodule.ui.activity.HomeActivityZc"/>
+        <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistActivity"></activity>
     </application>
 
 </manifest>
