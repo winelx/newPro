@@ -1,12 +1,14 @@
 package com.example.zcjlmodule.model;
 
+import measure.jjxx.com.baselibrary.base.BaseView;
+
 /**
  * Created by Administrator on 2018/10/11 0011.
  */
 
 public class ModuleMainBaseViewIpm {
 
-   public interface ModuleMainBaseView {
+   public interface ModuleMainBaseView extends BaseView {
         String register(String user, String pass);
     }
 

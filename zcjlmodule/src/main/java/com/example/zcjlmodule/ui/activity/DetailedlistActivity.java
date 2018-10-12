@@ -2,10 +2,10 @@ package com.example.zcjlmodule.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,11 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.zcjlmodule.bean.DetailedBean;
-import com.example.zcjlmodule.bean.MessageItem;
-import com.example.zcjlmodule.model.DetailedlistModel;
 import com.example.zcjlmodule.presenter.DetailedlistPresenter;
-import com.example.zcjlmodule.ui.fragment.MessageFragmentZc;
 import com.example.zcjlmodule.view.DetailedlistView;
 import com.example.zcmodule.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -27,28 +23,30 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * description: 支付清册
+ * 这个界面使用recycler作为展示控件，SmartRefreshLayout为刷新加载控件，使用mvp模式来处理数据，减少界面的代码量。
+ * （从 WorkfragmentAC的WorkFragmentItemAdapter 跳转）
  *
  * @author lx
  *         date: 2018/10/11 0011 下午 3:33
  */
 public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter> implements DetailedlistView, View.OnClickListener {
-    private DetailedlistActivity.RecyclerAdapter mAdapter;//适配器
+    //适配器
+    private DetailedlistActivity.RecyclerAdapter mAdapter;
     private ArrayList<String> list;
     private Context mContext;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private TextView prompt;
     private SmartRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +57,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
         //返回键初始化并添加点击事件
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         //刷新加载
-        refreshLayout= (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //空布局
         emptyView = (LinearLayout) findViewById(R.id.detailedlist_emptyView);
         //进入时界面时显示等待条
@@ -68,6 +66,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
         prompt = (TextView) findViewById(R.id.detailedlist_emptyView_text);
         //标题初始化
         TextView textView = (TextView) findViewById(R.id.toolbar_icon_title);
+        //recycler
         RecyclerView detailedlist_recycler = (RecyclerView) findViewById(R.id.detailedlist_recycler);
         textView.setText("支付清册");
         list = new ArrayList<>();
@@ -87,18 +86,15 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ToastUtlis.getInstance().showShortToast(position + "");
+                startActivity(new Intent(mContext, PayCheckZcActivity.class));
             }
         });
 
-        /**
-         *   下拉刷新
-         */
+        //  下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-
-
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(800);
             }
@@ -108,7 +104,6 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(800);
             }
@@ -116,6 +111,11 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
 
     }
 
+    /**
+     * 点击事件
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

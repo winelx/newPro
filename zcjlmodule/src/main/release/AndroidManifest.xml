@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistActivity"></activity>
+        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.PayCheckZcActivity"></activity>
     </application>
 
 </manifest>

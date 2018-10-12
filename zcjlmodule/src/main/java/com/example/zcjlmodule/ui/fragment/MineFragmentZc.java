@@ -14,7 +14,7 @@ import measure.jjxx.com.baselibrary.base.BaseFragment;
 
 
 /**
- * description: 征拆首页 我的 界面
+ * description: 征拆首页 我的 界面  （承载界面HomeZcActivity）
  * @author lx
  * date: 2018/10/10 0010 下午 3:01 
  * update: 2018/10/10 0010

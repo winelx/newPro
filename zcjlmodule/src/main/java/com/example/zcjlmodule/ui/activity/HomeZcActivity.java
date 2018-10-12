@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.BaseTab;
 
-
+/**
+ * description: 消息，工作，我的三个界面的承载界面，使用list来存fragment，减少list的数据就可以删减界面
+ * @author lx
+ * date: 2018/10/12 0012 上午 8:53
+ * update: 2018/10/12 0012
+ * version:
+*/
 public class HomeZcActivity extends BaseActivity {
     private Context mContext;
     private FragmentTabHost mTabHost;

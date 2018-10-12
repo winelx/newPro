@@ -21,7 +21,8 @@ import measure.jjxx.com.baselibrary.base.BaseFragment;
 
 /**
  * description:  征拆首页的工作界面
- *
+ *  这个界面使用了recyclerview的嵌套使用，使用了两层
+ *  （承载界面HomeZcActivity）
  * @author lx
  *         date: 2018/10/10 0010 下午 2:59
  *         update: 2018/10/10 0010

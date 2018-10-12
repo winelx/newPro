@@ -23,16 +23,18 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * description: 征拆首页的消息界面
+ * 使用recyclerview的展示控件，根据点击的position判断点击的项，
+ * （承载界面HomeZcActivity）
+ *
  * @author lx
- * date: 2018/10/10 0010 下午 2:54
-*/
+ *         2018/10/10 0010 下午 2:54
+ */
 public class MessageFragmentZc extends BaseFragment {
     private View rootView;//界面控件
     private Context mContext;//上下文
     private RecyclerView mRecyclerview;//列表控件
     private List<MessageItem> mData;//数据
     private MessageAdapter mAdapter;//适配器
-
 
 
     @Nullable
@@ -47,7 +49,6 @@ public class MessageFragmentZc extends BaseFragment {
             rootView = inflater.inflate(R.layout.fragment_message_zc, null);
             TextView toolbarTitle = rootView.findViewById(R.id.toolbar_title);
             toolbarTitle.setText("消息");
-
             mRecyclerview = rootView.findViewById(R.id.message_fragment_recyclerview);
             //设置控件显示样式
             mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));

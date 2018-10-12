@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.bean.WorkItemBean;
 import com.example.zcjlmodule.ui.activity.DetailedlistActivity;
-import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcmodule.R;
 
 import java.util.List;
@@ -22,7 +21,7 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 /**
  * @author lx
  * @Created by: 2018/10/11 0011.
- * @description:
+ * @description: 工作界面的功能的recyclerview，这个adapter是嵌套在WorkFragmentAdapter里面的
  */
 
 public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -55,11 +54,11 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 String content = list.get(position).getName();
+                //根据点击的功能名称处理跳转时间
                 switch (content) {
                     case "支付清册":
                         mContext.startActivity(new Intent(mContext,DetailedlistActivity.class));
                         ToastUtlis.getInstance().showShortToast("支付清册");
-
                         break;
                     case "原始勘丈表":
                         ToastUtlis.getInstance().showShortToast("原始勘丈表");
