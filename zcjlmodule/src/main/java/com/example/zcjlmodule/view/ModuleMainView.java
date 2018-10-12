@@ -7,5 +7,5 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public interface ModuleMainView  extends BaseView {
-       void getdata(String anem);
+       void getdata(int anem);
 }

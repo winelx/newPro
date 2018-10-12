@@ -1,6 +1,18 @@
 package com.example.zcjlmodule.model;
 
+import com.example.zcjlmodule.utils.Api;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.cookie.store.CookieStore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import measure.jjxx.com.baselibrary.base.BaseView;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/10/11 0011.
@@ -8,18 +20,69 @@ import measure.jjxx.com.baselibrary.base.BaseView;
 
 public class ModuleMainBaseViewIpm {
 
-   public interface ModuleMainBaseView extends BaseView {
-        String register(String user, String pass);
+    public interface Model extends BaseView {
+        /**
+         * 获取数据的方法
+         *
+         * @param onClickListener
+         */
+        String getData(String name, String pass, OnClickListener onClickListener);
+
+        /**
+         * 接口
+         */
+        interface OnClickListener {
+            void onComple(int  string);
+        }
     }
 
-    public static class ModuleMainBaseViewIPml implements ModuleMainBaseView {
+    public static class ModuleMainBaseViewIPml implements Model {
         @Override
-        public String register(String user, String pass) {
-            if ("name".equals(user) && "pass".equals(pass)) {
-                return "成功";
-            } else {
-                return "失败";
-            }
+        public String getData(String user, String pass, OnClickListener onClickListener) {
+            okgo(user, pass, onClickListener);
+            return user;
         }
+    }
+
+    public static void okgo(final String user, final String pass, final Model.OnClickListener onClickListener) {
+        HttpUrl httpUrl = HttpUrl.parse(Api.networks);
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        cookieStore.removeCookie(httpUrl);
+        OkGo.post(Api.networks)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        login(user, pass, onClickListener);
+                    }
+                    //这个错误是网络级错误，不是请求失败的错误
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        ToastUtlis.getInstance().showLongToast("网络无法连接到internet");
+                    }
+                });
+    }
+    public static void login(String user, String pass, final Model.OnClickListener onClickListener) {
+        OkGo.post(Api.LOGIN)
+                .params("username", user)
+                .params("password", pass)
+                .params("mobileLogin", true)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject =new JSONObject(s);
+                            int ret=jsonObject.getInt("ret");
+                            onClickListener.onComple(ret);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 }
