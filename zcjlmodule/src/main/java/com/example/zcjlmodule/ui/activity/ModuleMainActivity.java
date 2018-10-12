@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.zcjlmodule.view.ModuleMainView;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.ModuleMainPresenter;
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 

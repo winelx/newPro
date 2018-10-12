@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.DetailedlistPresenter;
 import com.example.zcjlmodule.view.DetailedlistView;
-import com.example.zcmodule.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -118,12 +118,11 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
      */
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            default:
-                break;
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else {
         }
     }
 

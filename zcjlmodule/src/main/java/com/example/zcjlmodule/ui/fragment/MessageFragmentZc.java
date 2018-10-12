@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.MessageItem;
-import com.example.zcmodule.R;
 
 import java.util.ArrayList;
 import java.util.List;

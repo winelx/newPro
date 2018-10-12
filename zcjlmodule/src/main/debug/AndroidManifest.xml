@@ -2,8 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zcjlmodule">
 
-    <application>
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
         <activity android:name=".ui.activity.ModuleMainActivity"></activity>
+        <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.PayCheckZcActivity"></activity>
     </application>
 
 </manifest>

@@ -8,10 +8,6 @@ android {
     compileSdkVersion 26
     buildToolsVersion '25.0.0'
     resourcePrefix "zc_"
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
-    }
 
     defaultConfig {
         minSdkVersion 14
@@ -46,7 +42,7 @@ android {
 }
 
 dependencies {
-    //
+   compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':baselibrary')
-
+    testCompile 'junit:junit:4.12'
 }

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.WorkBean;
-import com.example.zcmodule.R;
 
 import java.util.List;
 
@@ -56,7 +56,6 @@ public class WorkFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TypeAdapter = new WorkFragmentItemAdapter(mContext, mData.get(position).getList());
         holder.workFrTypeRecycler.setAdapter(TypeAdapter);
     }
-
     //数据长度
     @Override
     public int getItemCount() {
@@ -71,7 +70,7 @@ public class WorkFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TypeViewholder(View itemView) {
             super(itemView);
             workFrTypeTitle = itemView.findViewById(R.id.work_fr_type_title);
-            workFrTypeRecycler = itemView.findViewById(R.id.work_fr_type_recycler);
+           workFrTypeRecycler = itemView.findViewById(R.id.work_fr_type_recycler);
         }
     }
 }

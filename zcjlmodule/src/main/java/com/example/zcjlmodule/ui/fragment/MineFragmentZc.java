@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.R;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
 
