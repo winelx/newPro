@@ -1,6 +1,5 @@
 package com.example.zcjlmodule.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -28,16 +27,19 @@ import measure.jjxx.com.baselibrary.bean.BaseTab;
  * version:
 */
 public class HomeZcActivity extends BaseActivity {
-    private Context mContext;
+    private static HomeZcActivity mContext;
     private FragmentTabHost mTabHost;
     private TextView home_img_red;
     private LayoutInflater mInflater;
     private ArrayList<BaseTab> mTabs = new ArrayList<>();
-
+    public static HomeZcActivity getInstance() {
+        return mContext;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_zc);
+        mContext = this;
         //初始化控件
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
         initTab();

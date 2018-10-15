@@ -81,7 +81,7 @@ public class CropImageUtils {
      * 打开系统相机
      */
     public void takePhoto(Activity activity) {
-        DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
+         DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
         if (isSdCardExist()) {
             photo_image = createImagePath(APP_NAME + DATE);
             File file = new File(photo_image);

@@ -12,9 +12,6 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 public class ModuleMainPresenter extends BasePresenters<ModuleMainView> {
     private ModuleMainBaseViewIpm.ModuleMainBaseViewIPml model;
 
-    public ModuleMainPresenter() {
-
-    }
 
     public void register(String name, String pass) {
 

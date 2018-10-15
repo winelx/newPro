@@ -39,7 +39,8 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
 
     @Override
     public void onClick(View view) {
-        mPresenter.register("admin", "123456");
+//        mPresenter.register("admin", "123456");
+        startActivity(new Intent(this,HomeZcActivity.class));
     }
 
     //拿到数据

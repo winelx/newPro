@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">BaseLibrary</string>
+
+    <string name="title_activity_missionpush">MissionpushActivity</string>
+    <string name="sdcard_no_exist">SD卡不存在</string>
+    <string name="camera_not_prepared">摄像头尚未准备好</string>
+    <string name="cancel_value">取消</string>
+    <string name="permission_request_error">"申请权限失败"</string>
+    <string name="permission_storage">登录需要读写内存权限，被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！</string>
+    <string name="permission_image">我们需要拍照和读写内存权限的被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！</string>
+    <string name="permission_cus_item_phone">如果您想直接拨打电话，请选择同意</string>
+    <string name="camera_pop_camera">拍摄</string>
+    <string name="camera_pop_album">从相册选择</string>
+    <string name="camera_pop_cancel">取消</string>
 </resources>

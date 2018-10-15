@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 
 /**
  * description: 支付清册
@@ -46,6 +46,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
     private ProgressBar gressBar;
     private TextView prompt;
     private SmartRefreshLayout refreshLayout;
+    private TakePictureManager takePictureManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
         mContext = this;
         mPresenter = new DetailedlistPresenter();
         mPresenter.mView = this;
+
         //返回键初始化并添加点击事件
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         //刷新加载
@@ -85,8 +87,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtlis.getInstance().showShortToast(position + "");
-                startActivity(new Intent(mContext, PayCheckZcActivity.class));
+            startActivity(new Intent(mContext, PayCheckZcActivity.class));
             }
         });
 
@@ -143,4 +144,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
 
         }
     }
+
+
+
 }

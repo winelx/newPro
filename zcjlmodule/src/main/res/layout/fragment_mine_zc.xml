@@ -4,4 +4,11 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/toolbar_title_zc" />
+
+
+    <TextView
+        android:text="相机"
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

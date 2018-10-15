@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.bean.WorkItemBean;
 import com.example.zcjlmodule.ui.activity.DetailedlistActivity;
+import com.example.zcjlmodule.ui.activity.OriginalZcActivity;
 import com.example.zcmodule.R;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                         break;
                     case "原始勘丈表":
                         ToastUtlis.getInstance().showShortToast("原始勘丈表");
+                        mContext.startActivity(new Intent(mContext,OriginalZcActivity.class));
                         break;
                     case "征拆标准":
                         ToastUtlis.getInstance().showShortToast("征拆标准");

@@ -17,6 +17,9 @@
     <string name="message">消息</string>
     <string name="work">工作</string>
     <string name="mine">我的</string>
+    <string name="camera_pop_camera">拍摄</string>
+    <string name="camera_pop_album">从相册选择</string>
+    <string name="camera_pop_cancel">取消</string>
 
 
 </resources>

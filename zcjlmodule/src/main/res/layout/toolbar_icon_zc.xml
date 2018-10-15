@@ -43,14 +43,14 @@
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.3"
-        android:visibility="invisible"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@mipmap/zc_toolbar_back" />
+            android:background="@mipmap/toolbar_icon_menu" />
     </LinearLayout>
 
 </LinearLayout>

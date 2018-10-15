@@ -13,10 +13,15 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  * @description:
  */
 
-public class Application extends BaseApplication {
+public class App extends BaseApplication {
+    private static App instance;
+    public static App getInstance() {
+        return instance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
+        instance=this;
         ToastUtlis.getInstance().init(this);
         //网络加载库
         OkGo.init(this);

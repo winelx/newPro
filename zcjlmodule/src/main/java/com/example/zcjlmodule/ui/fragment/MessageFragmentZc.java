@@ -1,10 +1,13 @@
 package com.example.zcjlmodule.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,17 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.bean.MessageItem;
+import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcmodule.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
+
+import measure.jjxx.com.baselibrary.utils.DialogUtils;
+import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
@@ -29,13 +37,13 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  * @author lx
  *         2018/10/10 0010 下午 2:54
  */
-public class MessageFragmentZc extends BaseFragment {
+public class MessageFragmentZc extends BaseFragment  {
     private View rootView;//界面控件
     private Context mContext;//上下文
     private RecyclerView mRecyclerview;//列表控件
     private List<MessageItem> mData;//数据
     private MessageAdapter mAdapter;//适配器
-
+    private TakePictureManager takePictureManager;
 
     @Nullable
     @Override
@@ -44,6 +52,7 @@ public class MessageFragmentZc extends BaseFragment {
         if (rootView == null) {
             mContext = getActivity();
             mData = new ArrayList<>();
+
             //初始化数据
             setmData();
             rootView = inflater.inflate(R.layout.fragment_message_zc, null);
@@ -66,16 +75,47 @@ public class MessageFragmentZc extends BaseFragment {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     switch (position) {
                         case 0:
-                            ToastUtlis.getInstance().showShortToast(mData.get(position).getTitle());
+                            DialogUtils dialogUtils = new DialogUtils();
+                            dialogUtils.showPopwindow(HomeZcActivity.getInstance(), new DialogUtils.CameraCallback() {
+
+                                @Override
+                                public void onComple(String str) {
+                                    switch (str) {
+                                        case "相机":
+                                            takePictureManager = new TakePictureManager(MessageFragmentZc.this);
+                                            //开启裁剪 比例 1:3 宽高 350 350  (默认不裁剪)
+                                            takePictureManager.setTailor(1, 3, 450, 450);
+                                            //拍照方式
+                                            takePictureManager.startTakeWayByCarema();
+                                            //回调
+                                            takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                                                //成功拿到图片,isTailor 是否裁剪？ ,outFile 拿到的文件 ,filePath拿到的URl
+                                                @Override
+                                                public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                                    ToastUtlis.getInstance().showShortToast(filePath+"");
+                                                }
+
+                                                //失败回调
+                                                @Override
+                                                public void failed(int errorCode, List<String> deniedPermissions) {
+                                                    Log.e("==w",deniedPermissions.toString());
+                                                }
+                                            });
+                                            break;
+                                        case "相册":
+                                            break;
+                                        default:
+                                            break;
+
+                                    }
+                                }
+                            });
                             break;
                         case 1:
-                            ToastUtlis.getInstance().showShortToast(mData.get(position).getTitle());
                             break;
                         case 2:
-                            ToastUtlis.getInstance().showShortToast(mData.get(position).getTitle());
                             break;
                         case 3:
-                            ToastUtlis.getInstance().showShortToast(mData.get(position).getTitle());
                             break;
                         default:
                             break;
@@ -89,6 +129,9 @@ public class MessageFragmentZc extends BaseFragment {
         }
         return rootView;
     }
+
+
+
 
     //recyclerview适配器
     public class MessageAdapter extends BaseQuickAdapter<MessageItem, BaseViewHolder> {
@@ -116,5 +159,13 @@ public class MessageFragmentZc extends BaseFragment {
         mData.add(new MessageItem(R.mipmap.zc_fragment_message_pendingtask, "代办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
         mData.add(new MessageItem(R.mipmap.zc_fragment_message_dothetask, "已办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
         mData.add(new MessageItem(R.mipmap.zc_fragment_message_myinitiation, "我的发起", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+    }
+
+    //相机的回调
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
+
     }
 }
