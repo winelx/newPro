@@ -41,28 +41,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/layout_emptyview_zc" />
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/original_refreshlayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
             android:layout_height="match_parent">
 
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/original_refreshlayout"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="45dp"
+                android:layout_marginTop="15dp">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/original_recycler"
+                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/original_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+                android:layout_marginBottom="65dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@mipmap/original_menu_add" />
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/bg_white"
+                android:gravity="center_vertical"
+                android:textSize="13sp"
+                android:elevation="10dp"
+                android:textColor="@color/graytext"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:text="合计金额：12121212121" />
 
-            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                android:layout_width="match_parent"
-                android:layout_height="45dp" />
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-
+            <include layout="@layout/layout_emptyview_zc" />
+        </RelativeLayout>
     </FrameLayout>
 </LinearLayout>

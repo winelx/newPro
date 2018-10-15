@@ -2,13 +2,17 @@ package com.example.zcjlmodule.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
+import measure.jjxx.com.baselibrary.utils.DatesUtils;
+import measure.jjxx.com.baselibrary.utils.ScreenUtil;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import release.App;
 
 /**
  * description: 原始勘丈表
@@ -44,6 +52,9 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private ProgressBar emptyViewBar;
     private List<String> list;
     private Context mContext;
+    private PopupWindow mPopupWindow;
+    //根据评论分辨率返回的尺寸
+    private float ste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +62,8 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         setContentView(R.layout.activity_original_zc);
         mContext = this;
         list = new ArrayList<>();
+        //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
+        ste = ScreenUtil.getDensity(App.getInstance());
         mPresenter = new OriginalPresenter();
         mPresenter.mView = this;
         for (int i = 0; i < 10; i++) {
@@ -87,7 +100,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
 
             }
         });
-
         //  下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -117,7 +129,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 finish();
                 break;
             case R.id.toolbar_icon_meun:
-
+                MeunPop();
                 break;
             default:
                 break;
@@ -143,4 +155,79 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
 
     }
 
+    //任务状态弹出窗
+    private void MeunPop() {
+        View contentView = getPopupWindowContentView();
+        mPopupWindow = new PopupWindow(contentView,
+                DatesUtils.withFontSize(ste) + 20, DatesUtils.higtFontSize(ste), true);
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+        // 默认在mButton2的左下角显示
+        mPopupWindow.showAsDropDown(toolbarIconMeun);
+        backgroundAlpha(0.5f);
+        //添加pop窗口关闭事件
+        mPopupWindow.setOnDismissListener(new poponDismissListener());
+    }
+
+    //设置pop的点击事件
+    private View getPopupWindowContentView() {
+        // 一个自定义的布局，作为显示的内容
+        // 布局ID
+        int layoutId = R.layout.activity_original_pop_zc;
+        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
+        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.pop_dismantling_zc:
+                        ToastUtlis.getInstance().showShortToast("征拆类型查询");
+                        break;
+                    case R.id.pop_region_zc:
+                        ToastUtlis.getInstance().showShortToast("按区域查询");
+                        break;
+                    case R.id.pop_form_zc:
+                        ToastUtlis.getInstance().showShortToast("按表单查询");
+                        break;
+                    case R.id.pop_details_zc:
+                        ToastUtlis.getInstance().showShortToast("按户主明细查询");
+                        break;
+                    case R.id.pop_data_zc:
+                        ToastUtlis.getInstance().showShortToast("按期数查询");
+                        break;
+                    default:
+                        break;
+                }
+                if (mPopupWindow != null) {
+                    mPopupWindow.dismiss();
+                }
+            }
+        };
+        contentView.findViewById(R.id.pop_dismantling_zc).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_region_zc).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_form_zc).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_details_zc).setOnClickListener(menuItemOnClickListener);
+        contentView.findViewById(R.id.pop_data_zc).setOnClickListener(menuItemOnClickListener);
+        return contentView;
+    }
+
+    //界面亮度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().setAttributes(lp);
+    }
+
+    /**
+     * popWin关闭的事件，主要是为了将背景透明度改回来
+     */
+    class poponDismissListener implements PopupWindow.OnDismissListener {
+        @Override
+        public void onDismiss() {
+            backgroundAlpha(1f);
+        }
+    }
+
+
+    
 }

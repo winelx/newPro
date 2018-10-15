@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="@color/back"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:background="@color/bg_white"
         android:orientation="vertical">
 
@@ -81,6 +80,7 @@
             android:maxEms="18"
             android:maxLines="1"
             android:paddingLeft="18dp"
+            android:layout_marginTop="5dp"
             android:paddingRight="15dp"
             android:text="征拆类别：拆迁管理/拆迁管理/拆迁管理/拆迁管理"
             android:textColor="@color/black"
@@ -107,7 +107,7 @@
                 android:layout_weight="1"
                 android:text="创建人：张三"
                 android:textColor="@color/D999999"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:text="创建日期：2018-02-02"
                 android:textColor="@color/D999999"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
     </LinearLayout>
