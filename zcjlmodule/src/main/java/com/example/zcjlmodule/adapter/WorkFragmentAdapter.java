@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.zcjlmodule.bean.WorkBean;
+import com.example.zcjlmodule.bean.WorkZcBean;
 import com.example.zcmodule.R;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.List;
  */
 
 public class WorkFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<WorkBean> mData;
+    private List<WorkZcBean> mData;
     private Context mContext;
     private WorkFragmentItemAdapter TypeAdapter;
 
-    public WorkFragmentAdapter(Context mContext, List<WorkBean> mData) {
+    public WorkFragmentAdapter(Context mContext, List<WorkZcBean> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }

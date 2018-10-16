@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.zcjlmodule.bean.WorkItemBean;
+import com.example.zcjlmodule.bean.WorkItemZcBean;
 import com.example.zcjlmodule.ui.activity.DetailedlistActivity;
 import com.example.zcjlmodule.ui.activity.OriginalZcActivity;
 import com.example.zcmodule.R;
@@ -26,10 +26,10 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  */
 
 public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<WorkItemBean> list;
+    private List<WorkItemZcBean> list;
     private Context mContext;
 
-    public WorkFragmentItemAdapter(Context mContext, List<WorkItemBean> list) {
+    public WorkFragmentItemAdapter(Context mContext, List<WorkItemZcBean> list) {
         this.list = list;
         this.mContext = mContext;
     }

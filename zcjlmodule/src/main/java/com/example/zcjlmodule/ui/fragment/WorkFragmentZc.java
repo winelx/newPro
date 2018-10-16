@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.adapter.WorkFragmentAdapter;
-import com.example.zcjlmodule.bean.WorkBean;
-import com.example.zcjlmodule.bean.WorkItemBean;
+import com.example.zcjlmodule.bean.WorkZcBean;
+import com.example.zcjlmodule.bean.WorkItemZcBean;
 import com.example.zcmodule.R;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class WorkFragmentZc extends BaseFragment {
     private Context mContext;
     private RecyclerView mRecycler;
     private WorkFragmentAdapter adapter;
-    private ArrayList<WorkBean> mData;
+    private ArrayList<WorkZcBean> mData;
 
     @Nullable
     @Override
@@ -55,17 +55,17 @@ public class WorkFragmentZc extends BaseFragment {
         mContext = getActivity();
         mData = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            ArrayList<WorkItemBean> item = new ArrayList<>();
+            ArrayList<WorkItemZcBean> item = new ArrayList<>();
             if (i == 0) {
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_payment, "支付清册"));
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_original, "原始勘丈表"));
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_standard, "征拆标准"));
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_applysingle, "资金申请单"));
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_capitalapprova, "资金审批单"));
-                mData.add(new WorkBean("征拆协调", item));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_payment, "支付清册"));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_original, "原始勘丈表"));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_standard, "征拆标准"));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_applysingle, "资金申请单"));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_capitalapprova, "资金审批单"));
+                mData.add(new WorkZcBean("征拆协调", item));
             } else {
-                item.add(new WorkItemBean(R.mipmap.zc_fragment_work_meteringapproval, "计量单据审核"));
-                mData.add(new WorkBean("计量支付", item));
+                item.add(new WorkItemZcBean(R.mipmap.zc_fragment_work_meteringapproval, "计量单据审核"));
+                mData.add(new WorkZcBean("计量支付", item));
             }
         }
         TextView toolbarTitle = rootView.findViewById(R.id.toolbar_title);

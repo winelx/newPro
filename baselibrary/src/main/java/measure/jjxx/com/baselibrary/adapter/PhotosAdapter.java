@@ -1,5 +1,10 @@
-package com.example.administrator.newsdf.pzgc.Adapter;
+package measure.jjxx.com.baselibrary.adapter;
 
+/**
+ * @author lx
+ * @Created by: 2018/10/16 0016.
+ * @description:
+ */
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,14 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
-import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 
 import java.util.ArrayList;
 
+import measure.jjxx.com.baselibrary.R;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * @author lx
@@ -32,7 +35,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     public final static int TYPE_ADD = 1;
     final static int TYPE_PHOTO = 2;
-
     final static int MAX = 100;
 
     public PhotosAdapter(Context mContext, ArrayList<String> photoPaths) {
@@ -47,10 +49,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         View itemView = null;
         switch (viewType) {
             case TYPE_ADD:
-                itemView = inflater.inflate(R.layout.item_add, parent, false);
+                itemView = inflater.inflate(R.layout.base_item_add, parent, false);
                 break;
             case TYPE_PHOTO:
-                itemView = inflater.inflate(R.layout.picker_item_photo, parent, false);
+                itemView = inflater.inflate(R.layout.base_picker_item_photo, parent, false);
                 break;
             default:
                 break;
@@ -65,30 +67,31 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
+
+            //删除
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FileUtils.deleteFile(photoPaths.get(position));
                     photoPaths.remove(position);
                     notifyDataSetChanged();
                 }
             });
+            //点击图片
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<String> paths = new ArrayList<String>();
-                    ArrayList<String> imagepath = new ArrayList<String>();
-                    paths.addAll(photoPaths);
-                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
-                            .start((Activity) mContext);
+
                 }
             });
         } else {
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ReplysActivity reply = (ReplysActivity) mContext;
-                    reply.Cream();
+                    ToastUtlis.getInstance().showShortToast("添加");
+                    // 1
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
                 }
             });
         }
@@ -125,4 +128,18 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         this.photoPaths = photoPaths;
         notifyDataSetChanged();
     }
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
 }

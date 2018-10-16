@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.zcjlmodule.bean.MessageItem;
+import com.example.zcjlmodule.bean.MessageZcItem;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcmodule.R;
 
@@ -25,7 +25,7 @@ import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
 
-import measure.jjxx.com.baselibrary.utils.DialogUtils;
+import measure.jjxx.com.baselibrary.utils.CameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
@@ -41,7 +41,7 @@ public class MessageFragmentZc extends BaseFragment  {
     private View rootView;//界面控件
     private Context mContext;//上下文
     private RecyclerView mRecyclerview;//列表控件
-    private List<MessageItem> mData;//数据
+    private List<MessageZcItem> mData;//数据
     private MessageAdapter mAdapter;//适配器
     private TakePictureManager takePictureManager;
 
@@ -75,8 +75,8 @@ public class MessageFragmentZc extends BaseFragment  {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     switch (position) {
                         case 0:
-                            DialogUtils dialogUtils = new DialogUtils();
-                            dialogUtils.showPopwindow(HomeZcActivity.getInstance(), new DialogUtils.CameraCallback() {
+                            CameraUtils cameraUtils = new CameraUtils();
+                            cameraUtils.showPopwindow(HomeZcActivity.getInstance(), new CameraUtils.CameraCallback() {
 
                                 @Override
                                 public void onComple(String str) {
@@ -134,13 +134,13 @@ public class MessageFragmentZc extends BaseFragment  {
 
 
     //recyclerview适配器
-    public class MessageAdapter extends BaseQuickAdapter<MessageItem, BaseViewHolder> {
+    public class MessageAdapter extends BaseQuickAdapter<MessageZcItem, BaseViewHolder> {
         public MessageAdapter(int layoutResId, List data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, MessageItem item) {
+        protected void convert(BaseViewHolder helper, MessageZcItem item) {
             //图标
             helper.setImageResource(R.id.fragment_message_item_icon, item.getIcon());
             //标题
@@ -155,10 +155,10 @@ public class MessageFragmentZc extends BaseFragment  {
     }
 
     public void setmData() {
-        mData.add(new MessageItem(R.mipmap.zc_fragment_message_notice, "公告通知", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-        mData.add(new MessageItem(R.mipmap.zc_fragment_message_pendingtask, "代办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-        mData.add(new MessageItem(R.mipmap.zc_fragment_message_dothetask, "已办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
-        mData.add(new MessageItem(R.mipmap.zc_fragment_message_myinitiation, "我的发起", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageZcItem(R.mipmap.zc_fragment_message_notice, "公告通知", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageZcItem(R.mipmap.zc_fragment_message_pendingtask, "代办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageZcItem(R.mipmap.zc_fragment_message_dothetask, "已办任务", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
+        mData.add(new MessageZcItem(R.mipmap.zc_fragment_message_myinitiation, "我的发起", "这是第一条消息这是第一条消息这是第一条消息这是第一条消息这是第一条消息", "2018-02-12", 52));
     }
 
     //相机的回调

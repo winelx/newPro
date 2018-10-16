@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.zcjlmodule.bean.PayCheckBean;
+import com.example.zcjlmodule.bean.PayCheckZcBean;
 import com.example.zcjlmodule.presenter.PayCheckPresenter;
 import com.example.zcjlmodule.view.PayCheckView;
 import com.example.zcmodule.R;
@@ -45,7 +45,7 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
     private ProgressBar gressBar;
     private TextView prompt;
     private List<String> list;
-    private ArrayList<PayCheckBean> mData;
+    private ArrayList<PayCheckZcBean> mData;
     private Context mContext;
 
     @Override
@@ -56,6 +56,7 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
         mData = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add("sss");
+            mData.add(new PayCheckZcBean("1", "李白", "12", "1212", "12", "54545"));
         }
         mContext = this;
         //获取实例
@@ -64,6 +65,8 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
         mPresenter.mView = this;
         //传递数据到presenter层处理
         mPresenter.init("12");
+        TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
+        title.setText("支付清册核查");
         emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待的滚动条
         gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
@@ -76,7 +79,7 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
         //设置展示数据样式，list或者grid
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //调加适配器，初始化布局和数据
-        recyclerView.setAdapter(adapter = new PayCheckZcActivity.RecyclerAdapter(R.layout.adapter_paycheck_zc, list));
+        recyclerView.setAdapter(adapter = new PayCheckZcActivity.RecyclerAdapter(R.layout.adapter_paycheck_zc, mData));
         //数据加载动画
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         if (list.size() > 0) {
@@ -109,6 +112,12 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
                 refreshlayout.finishLoadmore(800);
             }
         });
+        findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     // 处理数据
@@ -118,14 +127,18 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
     }
 
     //recyclerview适配器
-    public class RecyclerAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public class RecyclerAdapter extends BaseQuickAdapter<PayCheckZcBean, BaseViewHolder> {
         public RecyclerAdapter(int layoutResId, List data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, String item) {
-//            helper.setText(R.id.activity_paycheck_payname)
+        protected void convert(BaseViewHolder helper, PayCheckZcBean item) {
+            helper.setText(R.id.activity_paycheck_name, item.getName());
+            helper.setText(R.id.activity_paycheck_number, item.getNumber());
+            helper.setText(R.id.activity_paycheck_payname, item.getName());
+            helper.setText(R.id.activity_paycheck_paymoney, item.getPaymoney());
+            helper.setText(R.id.activity_paycheck_checkmoney, item.getCheckmoney());
         }
     }
 }

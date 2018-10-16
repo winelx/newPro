@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * @description:
  */
 
-public class WorkBean {
+public class WorkZcBean {
     String title;
-    ArrayList<WorkItemBean> list;
+    ArrayList<WorkItemZcBean> list;
 
-    public WorkBean(String title, ArrayList<WorkItemBean> list) {
+    public WorkZcBean(String title, ArrayList<WorkItemZcBean> list) {
         this.title = title;
         this.list = list;
     }
@@ -25,11 +25,11 @@ public class WorkBean {
         this.title = title;
     }
 
-    public ArrayList<WorkItemBean> getList() {
+    public ArrayList<WorkItemZcBean> getList() {
         return list;
     }
 
-    public void setList(ArrayList<WorkItemBean> list) {
+    public void setList(ArrayList<WorkItemZcBean> list) {
         this.list = list;
     }
 }

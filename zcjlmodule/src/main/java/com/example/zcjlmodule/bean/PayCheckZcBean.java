@@ -4,7 +4,7 @@ package com.example.zcjlmodule.bean;
  * Created by Administrator on 2018/10/12 0012.
  */
 
-public class PayCheckBean {
+public class PayCheckZcBean {
     String id;
     String name;
     String number;
@@ -13,7 +13,7 @@ public class PayCheckBean {
     String checkmoney;
 
 
-    public PayCheckBean(String id, String name, String number, String payname, String paymoney, String checkmoney) {
+    public PayCheckZcBean(String id, String name, String number, String payname, String paymoney, String checkmoney) {
         this.id = id;
         this.name = name;
         this.number = number;

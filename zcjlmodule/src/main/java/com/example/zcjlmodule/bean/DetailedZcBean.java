@@ -6,7 +6,7 @@ package com.example.zcjlmodule.bean;
  * @description:
  */
 
-public class DetailedBean {
+public class DetailedZcBean {
     String title;
     String titlecode;
     String titlenumber;
@@ -15,7 +15,7 @@ public class DetailedBean {
     String Tcheckedsum;
     String Fcheckedsum;
 
-    public DetailedBean(String title, String titlecode, String titlenumber, String content, String paysum, String tcheckedsum, String fcheckedsum) {
+    public DetailedZcBean(String title, String titlecode, String titlenumber, String content, String paysum, String tcheckedsum, String fcheckedsum) {
         this.title = title;
         this.titlecode = titlecode;
         this.titlenumber = titlenumber;

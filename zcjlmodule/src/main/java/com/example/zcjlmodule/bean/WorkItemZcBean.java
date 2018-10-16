@@ -6,11 +6,11 @@ package com.example.zcjlmodule.bean;
  * @description:
  */
 
-public class WorkItemBean {
+public class WorkItemZcBean {
     int icon;
     String name;
 
-    public WorkItemBean(int icon, String name) {
+    public WorkItemZcBean(int icon, String name) {
         this.icon = icon;
         this.name = name;
     }

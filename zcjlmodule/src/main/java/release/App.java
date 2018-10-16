@@ -3,6 +3,7 @@ package release;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
+import com.zxy.tiny.Tiny;
 
 import measure.jjxx.com.baselibrary.base.BaseApplication;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
@@ -22,6 +23,8 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         instance=this;
+        //图片压缩
+        Tiny.getInstance().init(this);
         ToastUtlis.getInstance().init(this);
         //网络加载库
         OkGo.init(this);

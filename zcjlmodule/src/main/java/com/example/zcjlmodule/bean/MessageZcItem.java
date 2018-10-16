@@ -4,7 +4,7 @@ package com.example.zcjlmodule.bean;
  * Created by Administrator on 2018/10/10 0010.
  */
 
-public class MessageItem {
+public class MessageZcItem {
     //图标
     int Icon;
     //标题
@@ -16,7 +16,7 @@ public class MessageItem {
     //消息数量
     Integer messagenumber;
 
-    public MessageItem(int icon, String title, String messagecontent, String data, Integer messagenumber) {
+    public MessageZcItem(int icon, String title, String messagecontent, String data, Integer messagenumber) {
         Icon = icon;
         this.title = title;
         this.messagecontent = messagecontent;

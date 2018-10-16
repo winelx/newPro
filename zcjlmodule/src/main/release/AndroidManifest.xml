@@ -59,7 +59,9 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
-        <activity android:name="com.example.zcjlmodule.ui.activity.OriginalZcActivity"></activity>
+        <activity android:name="com.example.zcjlmodule.ui.activity.OriginalZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.PeriodsQueryZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.NewAddOriginalZcActivity"></activity>
     </application>
 
 </manifest>

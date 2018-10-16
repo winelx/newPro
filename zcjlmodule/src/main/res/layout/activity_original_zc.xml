@@ -68,6 +68,7 @@
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
             <ImageView
+                android:id="@+id/original_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -80,12 +81,13 @@
                 android:background="@mipmap/original_menu_add" />
 
             <TextView
+                android:id="@+id/original_moneynumber"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/bg_white"
                 android:gravity="center_vertical"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:elevation="10dp"
                 android:textColor="@color/graytext"
                 android:orientation="horizontal"
