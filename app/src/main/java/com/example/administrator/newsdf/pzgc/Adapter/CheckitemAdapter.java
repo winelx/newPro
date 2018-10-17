@@ -23,6 +23,9 @@ import java.util.ArrayList;
  */
 
 public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_ONE = 10001;
+    private static final int TYPE_TWO = 10002;
+
     private ArrayList<ChekItemBean> mData;
     private Context mContext;
 
@@ -33,14 +36,27 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.check_item_adapter, parent, false));
+        switch (viewType) {
+            case TYPE_ONE:
+                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.check_item_adapter, parent, false));
+            case TYPE_TWO:
+                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.check_item_adapter2, parent, false));
+            default:
+                return null;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ViewHolder) {
+        if (holder instanceof CheckitemAdapter.ViewHolder) {
             bindView((ViewHolder) holder, position);
+        } else if (holder instanceof CheckitemAdapter.ViewHolder2) {
+            bindView2((ViewHolder) holder, position);
         }
+    }
+
+    private void bindView2(ViewHolder holder, int position) {
+
     }
 
     private void bindView(final ViewHolder holder, final int position) {
@@ -48,7 +64,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (str.compareTo(new BigDecimal("0")) == 0) {
             holder.textView.setText(mData.get(position).getContent());
         } else {
-            holder.textView.setText(mData.get(position).getContent()  + "（" + str + "分" + ")");
+            holder.textView.setText(mData.get(position).getContent() + "（" + str + "分" + ")");
         }
         //判断初始状态
         if ("true".equals(mData.get(position).getStatus())) {
@@ -131,7 +147,17 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             checkItemFalse = itemView.findViewById(R.id.check_item_false);
         }
     }
+    class ViewHolder2 extends RecyclerView.ViewHolder {
+        private TextView textView;
+        private ImageView checkItemTrue, checkItemFalse;
 
+        public ViewHolder2(View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.check_item_flont);
+            checkItemTrue = itemView.findViewById(R.id.check_item_true);
+            checkItemFalse = itemView.findViewById(R.id.check_item_false);
+        }
+    }
     public void getData(ArrayList<ChekItemBean> mData) {
         this.mData = mData;
         notifyDataSetChanged();
