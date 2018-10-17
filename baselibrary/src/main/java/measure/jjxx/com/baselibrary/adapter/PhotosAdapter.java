@@ -7,7 +7,6 @@ package measure.jjxx.com.baselibrary.adapter;
  */
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.R;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import measure.jjxx.com.baselibrary.utils.FileUtils;
 
 /**
  * @author lx
@@ -36,6 +35,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     public final static int TYPE_ADD = 1;
     final static int TYPE_PHOTO = 2;
     final static int MAX = 100;
+    private boolean status = false;
 
     public PhotosAdapter(Context mContext, ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
@@ -67,11 +67,20 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
-
+            if (status) {
+                holder.vSelected.setVisibility(View.VISIBLE);
+            } else {
+                holder.vSelected.setVisibility(View.GONE);
+            }
             //删除
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    try {
+                        FileUtils.delete(photoPaths.get(position));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     photoPaths.remove(position);
                     notifyDataSetChanged();
                 }
@@ -80,14 +89,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    // 1
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    mOnItemClickListener.photoClick(holder.itemView, position);
                 }
             });
         } else {
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtlis.getInstance().showShortToast("添加");
                     // 1
                     int position = holder.getLayoutPosition();
                     // 2
@@ -128,12 +139,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         this.photoPaths = photoPaths;
         notifyDataSetChanged();
     }
+
     /**
      * 内部接口
      */
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+        void photoClick(View view,int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -142,4 +155,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
+    public void status(boolean lean) {
+        this.status = lean;
+        notifyDataSetChanged();
+    }
 }

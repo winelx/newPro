@@ -2,7 +2,6 @@ package com.example.zcjlmodule.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 
 import com.example.zcmodule.R;
 
-import java.io.File;
-import java.util.List;
-
 import measure.jjxx.com.baselibrary.base.BaseFragment;
+import measure.jjxx.com.baselibrary.ui.activity.PhotoViewActivity;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 
 
@@ -45,20 +42,7 @@ public class MineFragmentZc extends BaseFragment {
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    takePictureManager = new TakePictureManager(MineFragmentZc.this);
-
-                    takePictureManager.startTakeWayByCarema();
-                    takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
-                        @Override
-                        public void successful(boolean isTailor, File outFile, Uri filePath) {
-
-                        }
-
-                        @Override
-                        public void failed(int errorCode, List<String> deniedPermissions) {
-
-                        }
-                    });
+                   startActivity(new Intent(mContext, PhotoViewActivity.class));
                 }
             });
             toolbarTitle.setText("我的");
@@ -67,8 +51,6 @@ public class MineFragmentZc extends BaseFragment {
                 parent.removeView(rootView);
             }
         }
-
-
         return rootView;
     }
 
