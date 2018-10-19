@@ -96,6 +96,9 @@ public class BootupActivity extends AppCompatActivity {
 
     //假登录
     private void okgo(final String user, final String passowd) {
+        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        cookieStore.removeCookie(httpUrl);
         OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
                     @Override

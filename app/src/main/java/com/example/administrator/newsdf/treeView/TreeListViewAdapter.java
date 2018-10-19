@@ -21,8 +21,6 @@ public abstract class TreeListViewAdapter<T> extends BaseAdapter {
 
     protected ListView mTree;
 
-
-
     /**
      * 设置Node的点击回调
      *

@@ -37,9 +37,9 @@ import measure.jjxx.com.baselibrary.utils.TakePictureManager;
  * @author lx
  *         date: 2018/10/11 0011 下午 3:33
  */
-public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter> implements DetailedlistView, View.OnClickListener {
+public class DetailedlistZcActivity extends BaseMvpActivity<DetailedlistPresenter> implements DetailedlistView, View.OnClickListener {
     //适配器
-    private DetailedlistActivity.RecyclerAdapter mAdapter;
+    private DetailedlistZcActivity.RecyclerAdapter mAdapter;
     private ArrayList<String> list;
     private Context mContext;
     private LinearLayout emptyView;
@@ -82,7 +82,7 @@ public class DetailedlistActivity extends BaseMvpActivity<DetailedlistPresenter>
         //设置控件显示样式
         detailedlist_recycler.setLayoutManager(new LinearLayoutManager(mContext));
         //调加适配器，初始化布局和数据
-        detailedlist_recycler.setAdapter(mAdapter = new DetailedlistActivity.RecyclerAdapter(R.layout.adapter_detailedlist_activity_ac, list));
+        detailedlist_recycler.setAdapter(mAdapter = new DetailedlistZcActivity.RecyclerAdapter(R.layout.adapter_detailedlist_activity_ac, list));
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

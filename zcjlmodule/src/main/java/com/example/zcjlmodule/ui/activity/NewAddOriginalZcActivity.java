@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.zcmodule.R;
@@ -26,6 +28,7 @@ import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.utils.CameraUtils;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 
 /**
@@ -38,16 +41,34 @@ import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 public class NewAddOriginalZcActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
     private TextView title;
+
     private RecyclerView photrecycler;
     private PhotosAdapter mPhotosAdapter;
     private ArrayList<String> list;
     private TakePictureManager takePictureManager;
+    //根据status 类处理当前界面点击事件或者输入框是否可点击或者编辑
+    private boolean status = true;
+    /**
+     * 界面控件
+     */
+    //所属项目  所属标段  指挥部
+    private LinearLayout newAddOriginalProject, newAddOriginalBids, newAddOriginalCommand;
+    //标准分解
+    private LinearLayout Standarddecomposition, newAddOriginalApplydate;
+    //所属项目名称   所属标段名称  指挥部名称
+    private TextView newAddOriginalProjectname, newAddOriginalBidstext, newAddOriginalCommandtext;
+    //标准分解名称  申报期数
+    private TextView Standarddecompositiontext, newAddOriginalApplydateText;
+    //原始单号
+    private EditText newAddOriginalOriginalnumber;
 
+    //所属标段
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_add_original_zc);
         mContext = this;
+        findId();
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("新增原始勘丈表");
@@ -64,12 +85,41 @@ public class NewAddOriginalZcActivity extends BaseActivity implements View.OnCli
         init();
     }
 
+    private void findId() {
+        //所属项目
+        newAddOriginalProject = (LinearLayout) findViewById(R.id.new_add_original_project);
+        newAddOriginalProject.setOnClickListener(this);
+        //所属项目名称
+        newAddOriginalProjectname = (TextView) findViewById(R.id.new_add_original_projectname);
+        //所属标段
+        newAddOriginalBids = (LinearLayout) findViewById(R.id.new_add_original_bids);
+        newAddOriginalBids.setOnClickListener(this);
+        //所属标段名称
+        newAddOriginalBidstext = (TextView) findViewById(R.id.new_add_original_bidstext);
+        //指挥部
+        newAddOriginalCommand = (LinearLayout) findViewById(R.id.new_add_original_command);
+        newAddOriginalCommand.setOnClickListener(this);
+        //指挥部名称
+        newAddOriginalCommandtext = (TextView) findViewById(R.id.new_add_original_commandtext);
+        //标准分解
+        Standarddecomposition = (LinearLayout) findViewById(R.id.new_add_original_standarddecomposition);
+        Standarddecomposition.setOnClickListener(this);
+        //标准分解名称
+        Standarddecompositiontext = (TextView) findViewById(R.id.new_add_original_standarddecompositiontext);
+        //原始单号
+        newAddOriginalOriginalnumber = (EditText) findViewById(R.id.new_add_original_originalnumber);
+        //申报期数
+        newAddOriginalApplydate = (LinearLayout) findViewById(R.id.new_add_original_applydate);
+        newAddOriginalApplydate.setOnClickListener(this);
+        newAddOriginalApplydateText = (TextView) findViewById(R.id.new_add_original_applydate_text);
+    }
+
     private void init() {
         photrecycler = (RecyclerView) findViewById(R.id.newaddoriginal_recycler);
-        mPhotosAdapter = new PhotosAdapter(this, list);
+        mPhotosAdapter = new PhotosAdapter(this, list,true);
         photrecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photrecycler.setAdapter(mPhotosAdapter);
-        //点击事件
+        //点击事件--- 弹窗选择相机还是相册，理相机相册返回的图片--展示
         mPhotosAdapter.setOnItemClickListener(new PhotosAdapter.OnItemClickListener() {
             //添加图片
             @Override
@@ -119,7 +169,7 @@ public class NewAddOriginalZcActivity extends BaseActivity implements View.OnCli
             //点击图片查看
             @Override
             public void photoClick(View view, int position) {
-                PhotoPreview.builder().setPhotos(list).setCurrentItem(position).start((Activity) mContext);
+               PhotoPreview.builder().setPhotos(list).setCurrentItem(position).start((Activity) mContext);
             }
         });
 
@@ -130,6 +180,46 @@ public class NewAddOriginalZcActivity extends BaseActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.toolbar_icon_back:
                 finish();
+                break;
+            case R.id.new_add_original_project:
+                //所属项目
+                if (status) {
+                    startActivity(new Intent(mContext, ChoiceProjectZcActivity.class));
+                } else {
+                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+                }
+                break;
+            case R.id.new_add_original_bids:
+                //所属标段
+                if (status) {
+                    startActivity(new Intent(mContext, ChoiceBidsZcActivity.class));
+                } else {
+                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+                }
+                break;
+            case R.id.new_add_original_command:
+                //指挥部
+                if (status) {
+                    startActivity(new Intent(mContext, ChoiceHeadquartersZcActivity.class));
+                } else {
+                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+                }
+                break;
+            case R.id.new_add_original_standarddecomposition:
+                //分解标准
+                if (status) {
+                    startActivity(new Intent(mContext, StandardDecomposeZcActivity.class));
+                } else {
+                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+                }
+                break;
+            case R.id.new_add_original_applydate:
+                //分解标准
+                if (status) {
+                    startActivity(new Intent(mContext, ApplyDateZcActivity.class));
+                } else {
+                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+                }
                 break;
             default:
                 break;

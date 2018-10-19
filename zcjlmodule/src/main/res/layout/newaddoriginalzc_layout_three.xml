@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/new_add_original_applydate"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="8dp"
@@ -23,6 +24,7 @@
             android:textSize="17sp" />
 
         <TextView
+            android:id="@+id/new_add_original_applydate_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -124,9 +126,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableLeft="@mipmap/warning_zc"
             android:gravity="start"
             android:text="申报数量"
-            android:drawableLeft="@mipmap/warning_zc"
             android:textColor="@color/black"
             android:textSize="17sp" />
 

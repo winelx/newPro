@@ -12,12 +12,16 @@ public class ChekItemBean {
     String content;
     String status;
     String stype;
-    public ChekItemBean(String id, BigDecimal score, String content, String status,String stype) {
+    String resultscore;
+
+    public ChekItemBean(String id, BigDecimal score, String content, String status, String stype, String resultscore) {
         this.id = id;
         this.score = score;
         this.content = content;
         this.status = status;
         this.stype = stype;
+        this.resultscore = resultscore;
+
     }
 
     public String getId() {
@@ -58,5 +62,13 @@ public class ChekItemBean {
 
     public void setStype(String stype) {
         this.stype = stype;
+    }
+
+    public String getResultscore() {
+        return resultscore;
+    }
+
+    public void setResultscore(String resultscore) {
+        this.resultscore = resultscore;
     }
 }

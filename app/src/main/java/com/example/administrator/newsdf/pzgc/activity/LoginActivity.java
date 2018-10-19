@@ -27,6 +27,7 @@ import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.cookie.store.CookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 
@@ -119,6 +121,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void okgo(final String user, final String passowd) {
+        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        cookieStore.removeCookie(httpUrl);
         OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override

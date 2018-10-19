@@ -37,9 +37,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     final static int MAX = 100;
     private boolean status = false;
 
-    public PhotosAdapter(Context mContext, ArrayList<String> photoPaths) {
+    public PhotosAdapter(Context mContext, ArrayList<String> photoPaths,boolean status) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
+        this.status = status;
         inflater = LayoutInflater.from(mContext);
 
     }

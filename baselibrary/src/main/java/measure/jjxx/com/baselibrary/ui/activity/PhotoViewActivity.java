@@ -31,7 +31,7 @@ public class PhotoViewActivity extends BaseActivity {
         mContext = this;
         list = new ArrayList<>();
         Intent intent = getIntent();
-        pos=intent.getIntExtra("position",0);
+        pos=intent.getIntExtra("current_item",0);
         list=intent.getStringArrayListExtra("photos");
         ArrayList<PhotoviewBean>mData=new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {

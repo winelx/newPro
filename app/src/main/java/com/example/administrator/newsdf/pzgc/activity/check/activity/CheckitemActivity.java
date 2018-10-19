@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -113,11 +114,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private RecyclerView checkStandardRec, photoadd;
     private GridView checklist;
     private DKDragView dkDragView;
+    InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
+        //输入法
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initdata();
         findId();
         //请求侧拉节目的列表
@@ -206,6 +210,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                hintKeyBoard();
                 if (isChecked) {
                     //如果打开switch，将所有的项设置为合格
                     for (ChekItemBean item : chekItem) {
@@ -215,15 +220,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
 //                    setScore(0);
                     //并刷新界面
                     mAdapter.getData(chekItem);
-//                    if (checkItemContentStandarcore.getText().toString().isEmpty()) {
-//                        checkItemContentCore.setText("0");
-//                    } else {
-//                        BigDecimal standarcore = new BigDecimal((String) checkItemContentStandarcore.getText());
-//                        if (standarcore == null) {
-//                            standarcore = new BigDecimal("0");
-//                        }
-//                        checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
-//                    }
                 } else {
                     //如果打开switch，将所有的项设置为未选择
                     for (ChekItemBean item : chekItem) {
@@ -376,7 +372,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         LinearLayoutManager layoutmanager = new LinearLayoutManager(this);
         //设置RecyclerView 布局
         checkStandardRec.setLayoutManager(layoutmanager);
-        mAdapter = new CheckitemAdapter(mContext, chekItem);
+        mAdapter = new CheckitemAdapter(mContext, chekItem, inputMethodManager);
         checkStandardRec.setAdapter(mAdapter);
     }
 
@@ -578,16 +574,42 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
 
     private void savecontent(final boolean isdata, final String tabup) {
         int count = 0;
+        int size = 0;
         for (int i = 0; i < chekItem.size(); i++) {
-            String status = chekItem.get(i).getStatus();
-            if (status.isEmpty()) {
-                count++;
+            String type = chekItem.get(i).getStype();
+            if ("2".equals(type)) {
+                String status = chekItem.get(i).getStatus();
+                if (status.isEmpty()) {
+                    count++;
+                }
+            } else {
+                String score = chekItem.get(i).getResultscore();
+                if (score.isEmpty()) {
+                    count++;
+                } else {
+                    BigDecimal bigDecimal = new BigDecimal(score);
+                    int maxsize = bigDecimal.compareTo(chekItem.get(i).getScore());
+                    int minsize = bigDecimal.compareTo(new BigDecimal("0"));
+                    if (maxsize < 1) {
+                        if (minsize >= 0) {
+                        } else {
+                            size++;
+                        }
+                    } else {
+                        size++;
+                    }
+                }
             }
         }
-        if (count>0){
+        if (count > 0) {
             ToastUtils.showShortToastCenter("检查项还未填完");
-        }else {
-            Save(isdata, tabup);
+        } else {
+            if (size > 0) {
+                Toast.makeText(CheckitemActivity.this,"检查项得分大于等0或者小于等于标准分",Toast.LENGTH_LONG).show();
+            } else {
+                Save(isdata, tabup);
+            }
+
         }
     }
 
@@ -626,15 +648,43 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      */
     public void saveDetails(final boolean isdata, final String tabup) {
         int count = 0;
+        int size = 0;
         for (int i = 0; i < chekItem.size(); i++) {
-            String status = chekItem.get(i).getStatus();
-            if (status.isEmpty()) {
-                count++;
+            String type = chekItem.get(i).getStype();
+            if ("2".equals(type)) {
+                String status = chekItem.get(i).getStatus();
+                if (status.isEmpty()) {
+                    count++;
+                }
+            }else {
+                String score = chekItem.get(i).getResultscore();
+                if (score.isEmpty()) {
+                    count++;
+                } else {
+                    BigDecimal bigDecimal = new BigDecimal(score);
+                    int maxsize = bigDecimal.compareTo(chekItem.get(i).getScore());
+                    int minsize = bigDecimal.compareTo(new BigDecimal("0"));
+                    if (maxsize < 1) {
+                        if (minsize >= 0) {
+                        } else {
+                            size++;
+                        }
+                    } else {
+                        size++;
+                    }
+                }
             }
+
         }
         if (count == 0) {
             //全部操作过
-            Save(isdata, tabup);
+            if (size > 0) {
+                checkItemTabup.setClickable(true);
+                checkItemTadown.setClickable(true);
+                Toast.makeText(CheckitemActivity.this,"检查项得分大于等0或者小于等于标准分",Toast.LENGTH_LONG).show();
+            }else {
+                 Save(isdata, tabup);
+            }
         } else if (count == chekItem.size()) {
             //没有操作过
             if ("Tabup".equals(tabup)) {
@@ -644,7 +694,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             } else if ("item".equals(tabup)) {
                 pos = item;
                 getdate(taskId, pos + 1);
-            }else if ("1".equals(tabup)){
+            } else if ("1".equals(tabup)) {
                 getdate(taskId, pos);
             }
         } else {
@@ -670,10 +720,16 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 保存状态
      */
     public void tClickableF() {
+        //图片
         photoAdapter.getData(imagepath, false);
+        //无此项
         switch1.setClickable(false);
+        //内容
         checkItemContentDescribe.setEnabled(false);
+        //整改通知
         checkItemContentMassage.setClickable(false);
+        //刷新检查项
+        mAdapter.getData(chekItem);
     }
 
     /**
@@ -684,6 +740,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkItemContentDescribe.setEnabled(true);
         photoAdapter.getData(imagepath, true);
         checkItemContentMassage.setClickable(true);
+        mAdapter.getData(chekItem);
     }
 
     /**
@@ -803,7 +860,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     score = score.add(chekItem.get(i).getScore());
                 }
             }
-                checkItemContentCore.setText(score + "");
+            checkItemContentCore.setText(score + "");
         }
     }
 
@@ -844,7 +901,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                         try {
                                             status = jsonObject1.getString("pass");
                                         } catch (JSONException e) {
-                                            status = "";
+                                            status = "false";
                                         }
                                         String standardScore;
                                         try {
@@ -852,13 +909,21 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                         } catch (JSONException e) {
                                             standardScore = "";
                                         }
+                                        String resultscore;
+                                        try {
+                                            resultscore = jsonObject1.getString("score");
+                                        } catch (JSONException e) {
+                                            resultscore = "";
+                                        }
+                                        //基本项：1  检查项：2
                                         String stype = jsonObject1.getString("stype");
+                                        //
                                         if (standardScore.isEmpty()) {
                                             BigDecimal decimal = new BigDecimal("0");
-                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype));
+                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype, resultscore));
                                         } else {
                                             BigDecimal decimal = new BigDecimal(standardScore);
-                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype));
+                                            chekItem.add(new ChekItemBean(id, decimal, standard, status, stype, resultscore));
                                         }
                                     }
                                 }
@@ -900,9 +965,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     photoAdapter.getData(imagepath, false);
                                 }
                                 score = jsonObject.getString("bigscore");
-                                if ("0.0".equals(score)){
+                                if ("0.0".equals(score)) {
                                     //如果的得分为0
-                                    int count=0;
+                                    int count = 0;
                                     //便利数据，判断集合的数据是否被操作
                                     for (int i = 0; i < chekItem.size(); i++) {
                                         String status = chekItem.get(i).getStatus();
@@ -910,15 +975,15 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                             count++;
                                         }
                                     }
-                                    if (count==chekItem.size()){
+                                    if (count == chekItem.size()) {
                                         //没有操作过
                                         checkItemContentCore.setText("");
                                         checkItemContentCore.setHint("标准分自动计算");
-                                    }else {
+                                    } else {
                                         //操作过
                                         checkItemContentCore.setText("0");
                                     }
-                                }else {
+                                } else {
                                     //分数不为0
                                     checkItemContentCore.setText(score.replace(".0", ""));
                                 }
@@ -933,11 +998,11 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     checkItemTabup.setVisibility(View.VISIBLE);
                                     checkItemTadown.setVisibility(View.VISIBLE);
                                 }
-                                boolean gray= jsonObject.getBoolean("gray");
+                                boolean gray = jsonObject.getBoolean("gray");
                                 if (gray) {
                                     checklistmeuntext.setText("编辑");
                                     tClickableF();
-                                }else {
+                                } else {
                                     checklistmeuntext.setText("保存");
                                     tClickableT();
                                 }
@@ -1034,7 +1099,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      */
     public void Save(final boolean isdata, final String tabup) {
         checklistmeuntext.setText("");
-        Dates.getDialog(CheckitemActivity.this,"保存数据中...");
+        Dates.getDialog(CheckitemActivity.this, "保存数据中...");
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < imagepath.size(); i++) {
             if (imagepath.get(i).getContent().length() > 0) {
@@ -1044,11 +1109,23 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
         List<Map<String, Object>> list = new ArrayList<>();
         for (int i = 0; i < chekItem.size(); i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", chekItem.get(i).getId());
-            map.put("pass", chekItem.get(i).getStatus());
-            map.put("stype", chekItem.get(i).getStype());
-            list.add(map);
+            String type = chekItem.get(i).getStype();
+            if ("2".equals(type)) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", chekItem.get(i).getId());
+                map.put("pass", chekItem.get(i).getStatus());
+                map.put("stype", chekItem.get(i).getStype());
+                map.put("score", chekItem.get(i).getScore());
+                list.add(map);
+            } else {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", chekItem.get(i).getId());
+                map.put("pass", chekItem.get(i).getStatus());
+                map.put("stype", chekItem.get(i).getStype());
+                map.put("score", chekItem.get(i).getResultscore());
+                list.add(map);
+            }
+
         }
         JSONArray json2 = new JSONArray(list);
         PostRequest mPostRequest = OkGo.post(Requests.SAVE_DETAILS)
@@ -1114,5 +1191,17 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 }
 

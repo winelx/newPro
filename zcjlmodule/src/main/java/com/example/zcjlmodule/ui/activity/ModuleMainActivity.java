@@ -12,7 +12,7 @@ import com.example.zcjlmodule.view.ModuleMainView;
 import com.example.zcmodule.R;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
-
+//登录页
 public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> implements ModuleMainView, View.OnClickListener {
     private EditText edtAccount, edtPassword;
     private Button btnLogin;

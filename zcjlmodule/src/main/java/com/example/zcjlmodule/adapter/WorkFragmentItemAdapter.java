@@ -11,8 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.bean.WorkItemZcBean;
-import com.example.zcjlmodule.ui.activity.DetailedlistActivity;
+import com.example.zcjlmodule.ui.activity.DetailedlistZcActivity;
 import com.example.zcjlmodule.ui.activity.OriginalZcActivity;
+import com.example.zcjlmodule.ui.activity.StandardDismantlingZcActivity;
 import com.example.zcmodule.R;
 
 import java.util.List;
@@ -58,15 +59,13 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                 //根据点击的功能名称处理跳转时间
                 switch (content) {
                     case "支付清册":
-                        mContext.startActivity(new Intent(mContext,DetailedlistActivity.class));
-                        ToastUtlis.getInstance().showShortToast("支付清册");
+                        mContext.startActivity(new Intent(mContext,DetailedlistZcActivity.class));
                         break;
                     case "原始勘丈表":
-                        ToastUtlis.getInstance().showShortToast("原始勘丈表");
                         mContext.startActivity(new Intent(mContext,OriginalZcActivity.class));
                         break;
                     case "征拆标准":
-                        ToastUtlis.getInstance().showShortToast("征拆标准");
+                        mContext.startActivity(new Intent(mContext,StandardDismantlingZcActivity.class));
                         break;
                     case "资金申请单":
                         ToastUtlis.getInstance().showShortToast("资金申请单");

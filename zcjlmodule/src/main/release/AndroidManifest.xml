@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.DetailedlistZcActivity" />
         <activity android:name="com.example.zcjlmodule.ui.activity.PayCheckZcActivity" />
 
         <provider
@@ -61,7 +61,16 @@
 
         <activity android:name="com.example.zcjlmodule.ui.activity.OriginalZcActivity" />
         <activity android:name="com.example.zcjlmodule.ui.activity.PeriodsQueryZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.NewAddOriginalZcActivity"></activity>
+        <activity android:name="com.example.zcjlmodule.ui.activity.NewAddOriginalZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceProjectZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceBidsZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceHeadquartersZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.StandardDecomposeZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.DismantlingtypequeryZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.ApplyDateZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.StandardDismantlingZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.UnknitstandardActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.ExamineDismantlingActivity"></activity>
     </application>
 
 </manifest>

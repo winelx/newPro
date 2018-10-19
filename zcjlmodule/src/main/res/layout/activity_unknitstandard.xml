@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back"
+    android:orientation="vertical"
+    tools:context="com.example.zcjlmodule.ui.activity.PayCheckZcActivity">
+
+
+    <include layout="@layout/toolbar_icon_zc" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/bg_white"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="清册文件编号：独国土资拨(2016) 05号"
+        android:textColor="#5096F8"
+        android:textSize="13sp" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_emptyview_zc" />
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/SmartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="match_parent">
+
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/unknit_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+    </FrameLayout>
+
+
+</LinearLayout>
