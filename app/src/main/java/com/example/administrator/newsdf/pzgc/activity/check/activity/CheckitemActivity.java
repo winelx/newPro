@@ -215,6 +215,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     //如果打开switch，将所有的项设置为合格
                     for (ChekItemBean item : chekItem) {
                         item.setStatus("true");
+                        item.setResultscore(item.getScore() + "");
                     }
                     checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
 //                    setScore(0);
@@ -224,6 +225,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     //如果打开switch，将所有的项设置为未选择
                     for (ChekItemBean item : chekItem) {
                         item.setStatus("");
+                        item.setResultscore("");
                     }
                     //刷新界面
                     mAdapter.getData(chekItem);
@@ -605,7 +607,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             ToastUtils.showShortToastCenter("检查项还未填完");
         } else {
             if (size > 0) {
-                Toast.makeText(CheckitemActivity.this,"检查项得分大于等0或者小于等于标准分",Toast.LENGTH_LONG).show();
+                Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
                 Save(isdata, tabup);
             }
@@ -656,7 +658,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 if (status.isEmpty()) {
                     count++;
                 }
-            }else {
+            } else {
                 String score = chekItem.get(i).getResultscore();
                 if (score.isEmpty()) {
                     count++;
@@ -676,14 +678,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             }
 
         }
-        if (count == 0) {
+        if (size == 0 && size == 0) {
             //全部操作过
             if (size > 0) {
                 checkItemTabup.setClickable(true);
                 checkItemTadown.setClickable(true);
-                Toast.makeText(CheckitemActivity.this,"检查项得分大于等0或者小于等于标准分",Toast.LENGTH_LONG).show();
-            }else {
-                 Save(isdata, tabup);
+                Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
+            } else {
+                Save(isdata, tabup);
             }
         } else if (count == chekItem.size()) {
             //没有操作过
@@ -891,6 +893,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                 titleView.setText(page + "/" + size);
                                 JSONObject jsonObject = jsonO.getJSONObject("data");
                                 JSONArray json = jsonObject.getJSONArray("data");
+
                                 switch1.setChecked(jsonObject.getBoolean("noSuch"));
                                 if (json.length() > 0) {
                                     for (int i = 0; i < json.length(); i++) {
@@ -985,7 +988,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                     }
                                 } else {
                                     //分数不为0
-                                    checkItemContentCore.setText(score.replace(".0", ""));
+                                    checkItemContentCore.setText(score);
                                 }
 
                                 if (page == 1) {

@@ -31,6 +31,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/standard_dismantiling_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -42,6 +43,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/standard_dismantiling_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -51,6 +53,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/standard_dismantiling_filename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

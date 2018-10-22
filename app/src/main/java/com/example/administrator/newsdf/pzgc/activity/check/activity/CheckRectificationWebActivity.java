@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
-
+//整改报表
 public class CheckRectificationWebActivity extends AppCompatActivity {
     boolean lean = true;
     private TextView text;

@@ -38,35 +38,30 @@ import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
  *         跳转界面:DetailedlistActivity
  *         传递参数 :
  */
-public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> implements PayCheckView {
+public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> implements PayCheckView, View.OnClickListener {
     private PayCheckZcActivity.RecyclerAdapter adapter;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private TextView prompt;
-    private List<String> list;
     private ArrayList<PayCheckZcBean> mData;
     private Context mContext;
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_check_zc);
-        list = new ArrayList<>();
         mData = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add("sss");
-            mData.add(new PayCheckZcBean("1", "李白", "12", "1212", "12", "54545"));
-        }
         mContext = this;
         //获取实例
         mPresenter = new PayCheckPresenter();
         //拿到当前界面的实例
         mPresenter.mView = this;
-        //传递数据到presenter层处理
-        mPresenter.init("12");
+
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("支付清册核查");
+        findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待的滚动条
         gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
@@ -74,31 +69,22 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
         prompt = (TextView) findViewById(R.id.layout_emptyView_text);
         //刷新加载
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        //是否启用列表惯性滑动到底部时自动加载更多
+        refreshLayout.setEnableAutoLoadmore(false);
         //展示数据
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.paycheck_recycler);
         //设置展示数据样式，list或者grid
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //调加适配器，初始化布局和数据
         recyclerView.setAdapter(adapter = new PayCheckZcActivity.RecyclerAdapter(R.layout.adapter_paycheck_zc, mData));
-        //数据加载动画
-        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        if (list.size() > 0) {
-            emptyView.setVisibility(View.GONE);
-        }
-        //item的点击事件
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-        });
-        //  下拉刷新
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //传入false表示刷新失败
-//                mPresenter.init();
+                page = 1;
+                mPresenter.init("12");
                 refreshlayout.finishRefresh(800);
             }
         });
@@ -108,22 +94,53 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 //传入false表示加载失败
-//                mPresenter.init();
+                page++;
+                mPresenter.init("12");
                 refreshlayout.finishLoadmore(800);
             }
         });
-        findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
+        //传递数据到presenter层处理
+        mPresenter.init("12");
+        //item的点击事件
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
             }
         });
     }
 
     // 处理数据
     @Override
-    public void getdata(String str) {
-        //   adapter.getData(mData);
+    public void getdata(ArrayList<PayCheckZcBean> list) {
+        //判断加载页，判断是否删除之前的数据
+        if (page == 1) {
+            mData.clear();
+        }
+        //将网络请求的数据添加到集合
+        mData.addAll(list);
+        //如果集合的数据大于0，就隐藏空白数据提示
+        if (mData.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+        } else {
+            //如果不大于0，显示空白页，隐藏等待框，显示提示
+            gressBar.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+            prompt.setVisibility(View.VISIBLE);
+        }
+        //更新数据
+        adapter.setNewData(mData);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.toolbar_icon_back:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     //recyclerview适配器

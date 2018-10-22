@@ -50,7 +50,7 @@ public class PushAdapter extends BaseFragmentPagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        tagList.add(makeFragmentName(container.getId(), getItemId(position))); //把tag存起来
+        tagList.add(makeFragmentName(container.getId(), position)); //把tag存起来
         return super.instantiateItem(container, position);
     }
 

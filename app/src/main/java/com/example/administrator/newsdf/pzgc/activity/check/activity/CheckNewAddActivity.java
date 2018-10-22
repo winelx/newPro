@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -314,7 +316,22 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
-                    senddata();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("提示");
+                    builder.setMessage("是否提交数据");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            senddata();
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
                 }
                 break;
             default:

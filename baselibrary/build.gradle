@@ -31,8 +31,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     //recycler 的适配器
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-//    //上拉下拉
-  compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
+    //上拉下拉
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
     //轮播图
     compile 'me.weyye.hipermission:library:1.0.7'
     //网络请求

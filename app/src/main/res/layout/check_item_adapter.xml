@@ -54,6 +54,7 @@
         android:fadeScrollbars="false"
         android:background="@null"
         android:gravity="center"
+        android:textColor="@color/black"
         android:inputType="number|numberDecimal"
         android:text=""
         android:hint="输入分数"

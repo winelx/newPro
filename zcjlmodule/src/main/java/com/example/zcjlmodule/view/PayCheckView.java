@@ -1,5 +1,10 @@
 package com.example.zcjlmodule.view;
 
+import com.example.zcjlmodule.bean.PayCheckZcBean;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import measure.jjxx.com.baselibrary.base.BaseView;
 
 /**
@@ -7,5 +12,5 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public interface PayCheckView extends BaseView {
-    void getdata(String str);
+    void getdata(ArrayList<PayCheckZcBean> list);
 }

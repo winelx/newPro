@@ -1,5 +1,9 @@
 package com.example.zcjlmodule.view;
 
+import com.example.zcjlmodule.bean.PayDetailedlistBean;
+
+import java.util.ArrayList;
+
 import measure.jjxx.com.baselibrary.base.BaseView;
 
 /**
@@ -9,5 +13,5 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public interface DetailedlistView extends BaseView {
-    void getdata(String str);
+    void getdata(ArrayList<PayDetailedlistBean> str);
 }

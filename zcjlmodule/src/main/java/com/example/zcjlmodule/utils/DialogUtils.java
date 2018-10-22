@@ -43,20 +43,20 @@ public class DialogUtils {
                 switch (v.getId()) {
                     case R.id.pop_dismantling_zc:
 //                        mPopupWindow.dismiss();
-                        onclick.Openonclick("征拆类型查询");
+                        onclick.openonclick("征拆类型查询");
                         break;
                     case R.id.pop_region_zc:
-                        onclick.Openonclick("按区域查询");
+                        onclick.openonclick("按区域查询");
                         break;
                     case R.id.pop_form_zc:
-                        onclick.Openonclick("按表单查询");
+                        onclick.openonclick("按表单查询");
                         break;
                     case R.id.pop_details_zc:
-                        onclick.Openonclick("按户主明细查询");
+                        onclick.openonclick("按户主明细查询");
                         break;
                     case R.id.pop_data_zc:
 //                        mPopupWindow.dismiss();
-                        onclick.Openonclick("按期数查询");
+                        onclick.openonclick("按期数查询");
                         break;
                     default:
                         break;
@@ -95,7 +95,7 @@ public class DialogUtils {
 
     //orgiinalZcActivity的menu回调接口
     public interface onclick {
-        void Openonclick(String string);
+        void openonclick(String string);
     }
 
 
@@ -120,7 +120,7 @@ public class DialogUtils {
         success.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                click.Openonclick(content.getText().toString());
+                click.openonclick(content.getText().toString());
                 dialog.dismiss();// 对话框消失
             }
         });

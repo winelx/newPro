@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -118,8 +119,8 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void bindView(final ViewHolder holder, final int position) {
-
         CheckitemActivity activity = (CheckitemActivity) mContext;
         holder.checkItemEditext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -130,11 +131,10 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
         });
-        holder.checkItemEditext.setText(mData.get(position).getResultscore());
+
         if ("保存".equals(activity.getstatus())) {
             //编辑状态根据有无此项判断是否可以进行编辑
             if (activity.getswitchstatus()) {
-                ToastUtils.showShortToast("已选择无此项，无法进行操作");
                 holder.checkItemEditext.setClickable(false);
                 holder.checkItemEditext.setEnabled(false);
                 holder.checkItemEditext.setText(mData.get(position).getScore() + "");
@@ -147,6 +147,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //没有进入编辑状态不可编辑
             holder.checkItemEditext.setEnabled(false);
             holder.checkItemEditext.setClickable(false);
+            holder.checkItemEditext.setText(mData.get(position).getResultscore());
         }
         String status = mData.get(position).getStype();
         if ("1".equals(status)) {
@@ -226,6 +227,9 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
         });
+        //放在最后，避免界面刷新无法显示分数
+        String number =mData.get(position).getResultscore();
+        holder.checkItemEditext.setText(number);
     }
 
     @Override

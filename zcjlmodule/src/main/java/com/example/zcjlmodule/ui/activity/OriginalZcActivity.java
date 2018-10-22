@@ -34,6 +34,7 @@ import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.ScreenUtil;
+import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import release.App;
 
@@ -55,9 +56,11 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private List<OriginalZcBean> list;
     private TextView moneynumber;
     private Context mContext;
-    //根据评论分辨率返回的尺寸
+    private String str = "合计金额：154512748";
+    //页数
+    private int page = 1;
+    //根据手机分辨率返回的尺寸
     private float DIMENSION;
-    String str = "合计金额：154512748";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +72,13 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         DIMENSION = ScreenUtil.getDensity(App.getInstance());
         mPresenter = new OriginalPresenter();
         mPresenter.mView = this;
-        for (int i = 0; i < 5; i++) {
-            list.add(new OriginalZcBean("0", "MSTJ-01-002", "赫章县高速公路铁路建设指挥部",
-                    "第 01 期", "户主名字：集体土地 (1245421.5)", "征拆类别：拆迁管理/拆迁管理/拆迁管理/拆迁管理",
-                    "张三", "2018-03-01"));
-        }
+        //调加
+        findViewById(R.id.original_add).setOnClickListener(this);
+        //返回
+        findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
+        //合计金额
         moneynumber = (TextView) findViewById(R.id.original_moneynumber);
-        SpannableString string = setText(str, str.indexOf("：") + 1);
-        moneynumber.setText(string);
+        moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
         //加载错误提示
         emptyViewText = (TextView) findViewById(R.id.layout_emptyView_text);
         emptyViewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
@@ -84,10 +86,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         //标题
         toolbarIconTitle = (TextView) findViewById(R.id.toolbar_icon_title);
         toolbarIconTitle.setText("原始勘丈表");
-        //调加
-        findViewById(R.id.original_add).setOnClickListener(this);
-        //返回
-        findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         //menu 状态处理
         toolbarIconMeun = (LinearLayout) findViewById(R.id.toolbar_icon_meun);
         toolbarIconMeun.setVisibility(View.VISIBLE);
@@ -96,26 +94,20 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         originalRecycler = (RecyclerView) findViewById(R.id.original_recycler);
         //刷新加载
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
+        //是否启用列表惯性滑动到底部时自动加载更多
+        refreshLayout.setEnableAutoLoadmore(false);
         //设置控件显示样式
         originalRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         //调加适配器，初始化布局和数据
         originalRecycler.setAdapter(mAdapter = new OriginalZcActivity.OriginalAdapter(R.layout.adapter_original_zc, list));
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        if (list.size() > 0) {
-            layoutEmptyView.setVisibility(View.GONE);
-        }
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-        });
         //  下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //传入false表示刷新失败
+                page = 1;
+                mPresenter.getdata();
                 refreshlayout.finishRefresh(800);
             }
         });
@@ -124,13 +116,20 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                mPresenter.getdata();
                 //传入false表示加载失败
                 refreshlayout.finishLoadmore(800);
             }
         });
+        mPresenter.getdata();
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+            }
+        });
     }
-
 
     //点击事件
     @Override
@@ -146,22 +145,20 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 //menu
                 DialogUtils.meunPop(OriginalZcActivity.this, toolbarIconMeun, DIMENSION, new DialogUtils.onclick() {
                     @Override
-                    public void Openonclick(String string) {
+                    public void openonclick(String string) {
                         if ("征拆类型查询".equals(string)) {
                             DialogUtils.dismantling(mContext, new DialogUtils.onclick() {
                                 @Override
-                                public void Openonclick(String string) {
+                                public void openonclick(String string) {
                                     ToastUtlis.getInstance().showShortToast(string);
                                 }
                             });
                         } else if ("按区域查询".equals(string)) {
-
+                            ToastUtlis.getInstance().showShortToast("按区域查询");
                         } else if ("按表单查询".equals(string)) {
                             ToastUtlis.getInstance().showShortToast("按表单查询");
-
                         } else if ("按户主明细查询".equals(string)) {
                             ToastUtlis.getInstance().showShortToast("按户主明细查询");
-
                         } else if ("按期数查询".equals(string)) {
                             Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
                             startActivity(intent);
@@ -176,6 +173,24 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         }
     }
 
+    //处理数据
+    @Override
+    public void getData(ArrayList<OriginalZcBean> data) {
+        if (page == 1) {
+            list.clear();
+        }
+        list.addAll(data);
+        if (list.size() > 0) {
+            //list大于0，隐藏空白提示布局
+            layoutEmptyView.setVisibility(View.GONE);
+        } else {
+            //list小于0，显示空白提示布局，隐藏等待框
+            emptyViewText.setVisibility(View.VISIBLE);
+            layoutEmptyView.setVisibility(View.VISIBLE);
+            emptyViewBar.setVisibility(View.GONE);
+        }
+        mAdapter.setNewData(list);
+    }
 
     //recyclerview适配器
     public class OriginalAdapter extends BaseQuickAdapter<OriginalZcBean, BaseViewHolder> {
@@ -192,7 +207,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //内容
             helper.setText(R.id.original_adapter_content, item.getContent());
             //户主名称
-            SpannableString string = setText(item.getNamecontent(), item.getNamecontent().indexOf("("));
+            SpannableString string = TextUtils.setText(mContext, item.getNamecontent(), item.getNamecontent().indexOf("("));
             helper.setText(R.id.original_adapter_namecontent, string);
             //类别
             helper.setText(R.id.original_adapter_category, item.getCategory());
@@ -201,24 +216,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //创建时间
             helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreatedata());
         }
-    }
-
-    //处理数据
-    @Override
-    public void getData() {
-
-    }
-
-    /**
-     * 设置有颜色文字
-     */
-    public SpannableString setText(String str, int num) {
-        SpannableString sp = new SpannableString(str);
-        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                        .getColor(R.color.red)), num,
-                str.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sp;
     }
 
 }

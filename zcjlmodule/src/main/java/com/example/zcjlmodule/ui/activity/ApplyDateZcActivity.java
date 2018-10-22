@@ -77,7 +77,7 @@ public class ApplyDateZcActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-
+    //适配器
     private class AttachProjectAdapter extends BaseQuickAdapter<AttachProjectBean, BaseViewHolder> {
         public AttachProjectAdapter(@LayoutRes int layoutResId, @Nullable List data) {
             super(layoutResId, data);

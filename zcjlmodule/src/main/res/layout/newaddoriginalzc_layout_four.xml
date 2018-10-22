@@ -25,7 +25,7 @@
             android:gravity="start"
             android:text="户主姓名"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -62,7 +62,7 @@
             android:gravity="start"
             android:text="户主身份证"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -98,7 +98,7 @@
             android:gravity="start"
             android:text="户主电话"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -135,7 +135,7 @@
             android:gravity="start"
             android:text="受益人"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -162,7 +162,7 @@
             android:gravity="start"
             android:text="详细地址"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="match_parent"
@@ -170,6 +170,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
             android:background="@null"
+            android:textSize="16sp"
             android:hint="请输入"
             android:minHeight="20dp"
             android:paddingLeft="11dp" />

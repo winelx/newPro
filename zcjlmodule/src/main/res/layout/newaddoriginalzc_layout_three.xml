@@ -21,7 +21,7 @@
             android:drawableLeft="@mipmap/warning_zc"
             android:text="申报期数"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/new_add_original_applydate_text"
@@ -33,7 +33,7 @@
             android:gravity="end"
             android:hint="请选择"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="1dp"
@@ -64,7 +64,7 @@
             android:gravity="start"
             android:text="计量单位"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
             android:gravity="end"
             android:text="㎡"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <View
@@ -95,7 +95,7 @@
             android:gravity="start"
             android:text="单价"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
             android:gravity="end"
             android:text="100.0"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -130,7 +130,7 @@
             android:gravity="start"
             android:text="申报数量"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -163,7 +163,7 @@
             android:gravity="start"
             android:text="申报金额"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -172,6 +172,6 @@
             android:gravity="end"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>

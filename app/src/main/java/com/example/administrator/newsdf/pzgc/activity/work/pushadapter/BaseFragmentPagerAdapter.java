@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity.work.pushadapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
  * Created by Administrator on 2018/4/9 0009.
  */
 
-public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
+public abstract class BaseFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private FragmentManager mFragmentManager;
     private List<String> tagList ;
@@ -26,14 +27,14 @@ public abstract class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        tagList.add(makeFragmentName(container.getId(), getItemId(position)));
+        tagList.add(makeFragmentName(container.getId(), position));
         return super.instantiateItem(container, position);
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
-        tagList.remove(makeFragmentName(container.getId(), getItemId(position)));
+        tagList.remove(makeFragmentName(container.getId(), position));
     }
 
     private static String makeFragmentName(int viewId, long id) {

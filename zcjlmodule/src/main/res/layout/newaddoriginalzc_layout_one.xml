@@ -7,27 +7,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:minHeight="45dp"
         android:paddingLeft="17dp"
         android:paddingRight="15dp">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
+            android:layout_marginTop="10dp"
             android:text="单据编号"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:gravity="end"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            android:text="单据编号"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -53,7 +54,7 @@
             android:gravity="start"
             android:text="原始单号"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/new_add_original_originalnumber"
@@ -94,7 +95,7 @@
                 android:paddingLeft="17dp"
                 android:text="所属项目"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/new_add_original_projectname"
@@ -104,7 +105,7 @@
                 android:paddingLeft="17dp"
                 android:text="所属项目"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -138,7 +139,7 @@
             android:paddingLeft="17dp"
             android:text="所属标段"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/new_add_original_bidstext"
@@ -150,7 +151,7 @@
             android:gravity="end"
             android:text="所属标段"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="1dp"
@@ -181,7 +182,7 @@
             android:layout_weight="1"
             android:text="指挥部"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/new_add_original_commandtext"
@@ -193,7 +194,7 @@
             android:paddingLeft="17dp"
             android:text="新浦新区指挥部"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="1dp"
@@ -225,7 +226,7 @@
             android:drawableLeft="@mipmap/warning_zc"
             android:text="分解标准"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/new_add_original_standarddecompositiontext"
@@ -237,7 +238,7 @@
             android:gravity="end"
             android:hint="请选择"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="1dp"
@@ -268,7 +269,7 @@
             android:gravity="start"
             android:text="征拆类型"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -276,6 +277,6 @@
             android:layout_weight="7"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>

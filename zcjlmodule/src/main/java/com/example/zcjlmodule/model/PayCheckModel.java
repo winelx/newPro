@@ -1,5 +1,9 @@
 package com.example.zcjlmodule.model;
 
+import com.example.zcjlmodule.bean.PayCheckZcBean;
+
+import java.util.ArrayList;
+
 import measure.jjxx.com.baselibrary.base.BaseView;
 
 /**
@@ -7,14 +11,22 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public class PayCheckModel {
-    public interface Model extends BaseView {
-        String init(String user);
+    public interface OnClickListener {
+        void onComple(ArrayList<PayCheckZcBean> list);
     }
+    public interface Model extends BaseView {
+        void init(String user, OnClickListener clickListener);
 
+    }
     public static class PayCheckModelPml implements Model {
         @Override
-        public String init(String pass) {
-           return "12";
+        public void init(String user, OnClickListener clickListener) {
+            ArrayList<PayCheckZcBean> list = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                list.add(new PayCheckZcBean("测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据"));
+            }
+            clickListener.onComple(list);
         }
     }
+
 }

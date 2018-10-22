@@ -9,23 +9,27 @@
         android:layout_height="match_parent"
         android:background="@color/black">
 
-        <TextView
-            android:id="@+id/viewpager_item"
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:text="121212"
-            android:textColor="@color/bg_white"
-            android:textSize="15sp" />
+            android:layout_height="20dp">
+
+            <TextView
+                android:id="@+id/viewpager_item"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="121212"
+                android:textColor="@color/bg_white"
+                android:textSize="15sp" />
+
+        </HorizontalScrollView>
 
 
-        <measure.jjxx.com.baselibrary.view.TouchImageView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <measure.jjxx.com.baselibrary.view.TouchImageView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/iv_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:gravity="center"
-             />
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/base_photo_updown"
@@ -34,11 +38,11 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textColor="@color/bg_white"
             android:layout_marginBottom="22dp"
             android:layout_marginEnd="23dp"
             android:layout_marginRight="23dp"
-            android:text="下载" />
+            android:text="下载"
+            android:textColor="@color/bg_white" />
 
     </RelativeLayout>
 

@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
@@ -292,7 +294,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
             switch (v.getId()) {
                 case R.id.check_standard:
                     Intent intent = new Intent(mContext, CheckstandardListActivity.class);
-                    intent.putExtra("title","title");
+                    intent.putExtra("title", "title");
                     startActivityForResult(intent, 1);
                     break;
                 case R.id.checklistback:
@@ -358,9 +360,26 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     }
                     break;
                 case R.id.check_rectifi_submit:
+                    //下发
                     String str1 = checklistmeuntext.getText().toString();
                     if ("编辑".equals(str1)) {
-                        sendData();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                .setTitle("提示")
+                                .setMessage("是否下发整改")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        sendData();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        builder.show();
+
                     }
                     break;
                 case R.id.check_rectifi_user:
@@ -530,7 +549,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         //初始化控件
-        RelativeLayout btn_pop_add=popView.findViewById(R.id.btn_pop_add);
+        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);

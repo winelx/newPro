@@ -2,7 +2,9 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -126,8 +128,25 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((SubViewHolder) holder).tvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
-                    addActivity.delete(position, Sub.getId());
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("提示");
+                    builder.setMessage("是否删除数据");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
+                            addActivity.delete(position, Sub.getId());
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+
+
                 }
             });
             ((SubViewHolder) holder).layoutContent.setOnClickListener(new View.OnClickListener() {

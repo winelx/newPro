@@ -69,7 +69,6 @@ public class MessageFragmentZc extends BaseFragment  {
              */
             //调加适配器，初始化布局和数据
             mRecyclerview.setAdapter(mAdapter = new MessageAdapter(R.layout.fragment_message_item_zc, mData));
-            mAdapter.openLoadAnimation();
             mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

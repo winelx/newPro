@@ -1,5 +1,9 @@
 package com.example.zcjlmodule.view;
 
+import com.example.zcjlmodule.bean.OriginalZcBean;
+
+import java.util.ArrayList;
+
 import measure.jjxx.com.baselibrary.base.BaseView;
 
 /**
@@ -7,5 +11,5 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public interface OriginalView extends BaseView {
-    void getData();
+    void getData(ArrayList<OriginalZcBean> list);
 }

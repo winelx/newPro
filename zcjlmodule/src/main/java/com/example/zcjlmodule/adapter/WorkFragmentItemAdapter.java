@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.bean.WorkItemZcBean;
-import com.example.zcjlmodule.ui.activity.DetailedlistZcActivity;
+import com.example.zcjlmodule.ui.activity.PayDetailedlistZcActivity;
 import com.example.zcjlmodule.ui.activity.OriginalZcActivity;
 import com.example.zcjlmodule.ui.activity.StandardDismantlingZcActivity;
 import com.example.zcmodule.R;
@@ -59,7 +59,7 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                 //根据点击的功能名称处理跳转时间
                 switch (content) {
                     case "支付清册":
-                        mContext.startActivity(new Intent(mContext,DetailedlistZcActivity.class));
+                        mContext.startActivity(new Intent(mContext,PayDetailedlistZcActivity.class));
                         break;
                     case "原始勘丈表":
                         mContext.startActivity(new Intent(mContext,OriginalZcActivity.class));
