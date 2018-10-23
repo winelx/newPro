@@ -130,7 +130,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View v) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("提示");
-                    builder.setMessage("是否删除数据");
+                    builder.setMessage("是否删除除改检查项");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

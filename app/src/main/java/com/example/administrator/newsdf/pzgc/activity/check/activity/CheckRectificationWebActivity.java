@@ -33,14 +33,11 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cookie.store.CookieStore;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * 整改报表
+  */
 
-import okhttp3.Cookie;
-//整改报表
 public class CheckRectificationWebActivity extends AppCompatActivity {
     boolean lean = true;
     private TextView text;

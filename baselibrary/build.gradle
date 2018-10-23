@@ -46,5 +46,7 @@ dependencies {
     compile 'com.zxy.android:tiny:0.0.6'
     //状态栏
     compile 'com.githang:status-bar-compat:latest.integration'
+    //圆形图标
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
 }

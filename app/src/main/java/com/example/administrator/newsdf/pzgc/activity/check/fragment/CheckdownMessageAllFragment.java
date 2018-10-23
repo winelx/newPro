@@ -108,7 +108,6 @@ public class CheckdownMessageAllFragment extends Fragment {
                             if (jsonArray.length() > 0) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json = jsonArray.getJSONObject(i);
-
                                     String count = json.getString("count");
                                     String id = json.getString("id");
                                     String name = json.getString("name");

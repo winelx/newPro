@@ -365,7 +365,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     if ("编辑".equals(str1)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                 .setTitle("提示")
-                                .setMessage("是否下发整改")
+                                .setMessage("是否立刻下发整改通知单")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int id) {
