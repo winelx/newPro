@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTasklistActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
@@ -138,7 +137,7 @@ public class CheckRectifyMessageAdapter extends RecyclerView.Adapter<CheckRectif
             public void onClick(View view) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("提示");
-                builder.setMessage("是否删除数据");
+                builder.setMessage("是否删除本条整改通知");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

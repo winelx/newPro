@@ -130,7 +130,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View v) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("提示");
-                    builder.setMessage("是否删除除改检查项");
+                    builder.setMessage("确认删除该检查单？");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -142,10 +142,10 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            closeMenu();
                         }
                     });
                     builder.show();
-
 
                 }
             });
@@ -162,7 +162,6 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(int position) {
-
         if (mDatas.get(position) instanceof CheckTasklistBean) {
             return TYPE_SUCCESS;
         } else if (mDatas.get(position) instanceof SCheckTasklistBean) {

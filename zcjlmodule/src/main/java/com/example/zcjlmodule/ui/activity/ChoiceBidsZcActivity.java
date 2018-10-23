@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +61,11 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            default:
-                break;
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else {
         }
     }
 

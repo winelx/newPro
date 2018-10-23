@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,23 +67,19 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            case R.id.standard_dec_region:
-                //地区查询
-                break;
-            case R.id.standard_dec_type:
-                startActivity(new Intent(mContext, DismantlingtypequeryZcActivity.class));
-                //类型查询
-                break;
-            case R.id.standard_dec_Price:
-                //单价查询
-                break;
-            default:
-                break;
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
 
+        } else if (i == R.id.standard_dec_region) {//地区查询
+
+        } else if (i == R.id.standard_dec_type) {
+            startActivity(new Intent(mContext, DismantlingtypequeryZcActivity.class));
+            //类型查询
+
+        } else if (i == R.id.standard_dec_Price) {//单价查询
+
+        } else {
         }
     }
 

@@ -9,21 +9,18 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.presenter.OriginalPresenter;
 import com.example.zcjlmodule.utils.DialogUtils;
 import com.example.zcjlmodule.view.OriginalView;
-import com.example.zcmodule.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -134,42 +131,41 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     //点击事件
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            case R.id.original_add:
-                startActivity(new Intent(mContext, NewAddOriginalZcActivity.class));
-                break;
-            case R.id.toolbar_icon_meun:
-                //menu
-                DialogUtils.meunPop(OriginalZcActivity.this, toolbarIconMeun, DIMENSION, new DialogUtils.onclick() {
-                    @Override
-                    public void openonclick(String string) {
-                        if ("征拆类型查询".equals(string)) {
-                            DialogUtils.dismantling(mContext, new DialogUtils.onclick() {
-                                @Override
-                                public void openonclick(String string) {
-                                    ToastUtlis.getInstance().showShortToast(string);
-                                }
-                            });
-                        } else if ("按区域查询".equals(string)) {
-                            ToastUtlis.getInstance().showShortToast("按区域查询");
-                        } else if ("按表单查询".equals(string)) {
-                            ToastUtlis.getInstance().showShortToast("按表单查询");
-                        } else if ("按户主明细查询".equals(string)) {
-                            ToastUtlis.getInstance().showShortToast("按户主明细查询");
-                        } else if ("按期数查询".equals(string)) {
-                            Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
-                            startActivity(intent);
-                        } else {
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
 
-                        }
+        } else if (i == R.id.original_add) {
+            startActivity(new Intent(mContext, NewAddOriginalZcActivity.class));
+
+        } else if (i == R.id.toolbar_icon_meun) {
+            //menu
+            DialogUtils.meunPop(OriginalZcActivity.this, toolbarIconMeun, DIMENSION, new DialogUtils.onclick() {
+                @Override
+                public void openonclick(String string) {
+                    if ("征拆类型查询".equals(string)) {
+                        DialogUtils.dismantling(mContext, new DialogUtils.onclick() {
+                            @Override
+                            public void openonclick(String string) {
+                                ToastUtlis.getInstance().showShortToast(string);
+                            }
+                        });
+                    } else if ("按区域查询".equals(string)) {
+                        ToastUtlis.getInstance().showShortToast("按区域查询");
+                    } else if ("按表单查询".equals(string)) {
+                        ToastUtlis.getInstance().showShortToast("按表单查询");
+                    } else if ("按户主明细查询".equals(string)) {
+                        ToastUtlis.getInstance().showShortToast("按户主明细查询");
+                    } else if ("按期数查询".equals(string)) {
+                        Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
+                        startActivity(intent);
+                    } else {
+
                     }
-                });
-                break;
-            default:
-                break;
+                }
+            });
+
+        } else {
         }
     }
 

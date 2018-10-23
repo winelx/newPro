@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.SdDismantlingBean;
 import com.example.zcjlmodule.presenter.SdDismantlingPresenter;
 import com.example.zcjlmodule.view.SdDismantlingView;
-import com.example.zcmodule.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -29,7 +29,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 
 /**
@@ -92,12 +91,10 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.see_standard_dismantiling:
-                        startActivity(new Intent(mContext, UnknitstandardActivity.class));
-                        break;
-                    default:
-                        break;
+                int i = view.getId();
+                if (i == R.id.see_standard_dismantiling) {
+                    startActivity(new Intent(mContext, UnknitstandardActivity.class));
+                } else {
                 }
             }
         });
@@ -145,6 +142,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         //更新数据
         mAdapter.setNewData(list);
     }
+
     class DismantAdapter extends BaseQuickAdapter<SdDismantlingBean, BaseViewHolder> {
         public DismantAdapter(@LayoutRes int layoutResId, @Nullable List<SdDismantlingBean> data) {
             super(layoutResId, data);

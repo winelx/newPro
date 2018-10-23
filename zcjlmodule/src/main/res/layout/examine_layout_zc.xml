@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_white"
+
     android:orientation="vertical">
 
     <LinearLayout
@@ -64,6 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <TextView
@@ -264,6 +266,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <TextView
@@ -275,6 +278,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/zc_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -292,6 +296,7 @@
         android:background="@color/back" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/examine_layout_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

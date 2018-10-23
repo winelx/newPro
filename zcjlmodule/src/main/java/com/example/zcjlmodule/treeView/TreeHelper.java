@@ -2,6 +2,7 @@ package com.example.zcjlmodule.treeView;
 
 import android.util.Log;
 
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.treeView.inface.TreeNodeId;
 import com.example.zcjlmodule.treeView.inface.TreeNodeIsLeaf;
 import com.example.zcjlmodule.treeView.inface.TreeNodeLabel;
@@ -9,7 +10,6 @@ import com.example.zcjlmodule.treeView.inface.TreeNodePid;
 import com.example.zcjlmodule.treeView.inface.TreeNodeTypes;
 import com.example.zcjlmodule.treeView.inface.TreeNodeisparent;
 import com.example.zcjlmodule.treeView.inface.TreeNodeiswas;
-import com.example.zcmodule.R;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -1,10 +1,8 @@
 package com.example.zcjlmodule.ui.activity;
 
 import android.content.Context;
-
-import android.support.annotation.LayoutRes;
-
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +13,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.QueryBeanZc;
-import com.example.zcmodule.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +71,11 @@ public class PeriodsQueryZcActivity extends BaseActivity implements View.OnClick
     //点击事件
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            default:
-                break;
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else {
         }
     }
 

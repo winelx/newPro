@@ -15,16 +15,15 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.MessageZcItem;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
-import com.example.zcmodule.R;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
-
 import measure.jjxx.com.baselibrary.utils.CameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;

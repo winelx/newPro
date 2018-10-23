@@ -9,15 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.ui.fragment.MessageFragmentZc;
 import com.example.zcjlmodule.ui.fragment.MineFragmentZc;
 import com.example.zcjlmodule.ui.fragment.WorkFragmentZc;
-import com.example.zcmodule.R;
 
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.BaseTab;
+;
 
 /**
  * description: 消息，工作，我的三个界面的承载界面，使用list来存fragment，减少list的数据就可以删减界面

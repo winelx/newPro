@@ -11,7 +11,7 @@
         android:background="@mipmap/mine_toolbar_bg_zc"
         android:orientation="vertical">
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/mine_avatar"
+            android:id="@+id/mine_zc_avatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentTop="true"
@@ -21,10 +21,10 @@
             android:src="@mipmap/mine_avatar_zc" />
 
         <TextView
-            android:id="@+id/staffName"
+            android:id="@+id/mine_zc_ascription_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mine_avatar"
+            android:layout_below="@+id/mine_zc_avatar"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
@@ -34,10 +34,10 @@
 
 
         <TextView
-            android:id="@+id/mine_organization"
+            android:id="@+id/mine_zc_ascription_org"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/staffName"
+            android:layout_below="@+id/mine_zc_ascription_name"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
@@ -48,6 +48,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/mine_zc_organization"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/bg_white"
@@ -76,15 +77,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="12dp"
             android:background="@mipmap/zc_right" />
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/mine_zc_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@color/bg_white"
         android:orientation="horizontal">
 
@@ -115,6 +117,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mine_zc_aboutme"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
@@ -148,6 +151,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mine_zc_update"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
@@ -155,8 +159,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="28dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:background="@mipmap/new_version_zc" />
@@ -182,6 +186,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mine_zc_exit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"

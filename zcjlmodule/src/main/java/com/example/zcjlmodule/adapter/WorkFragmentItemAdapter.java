@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.WorkItemZcBean;
-import com.example.zcjlmodule.ui.activity.PayDetailedlistZcActivity;
 import com.example.zcjlmodule.ui.activity.OriginalZcActivity;
+import com.example.zcjlmodule.ui.activity.PayDetailedlistZcActivity;
 import com.example.zcjlmodule.ui.activity.StandardDismantlingZcActivity;
-import com.example.zcmodule.R;
 
 import java.util.List;
 

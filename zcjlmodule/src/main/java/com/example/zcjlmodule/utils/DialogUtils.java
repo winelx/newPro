@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,7 +11,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.R;
 
 import measure.jjxx.com.baselibrary.utils.DatesUtils;
 
@@ -40,26 +39,25 @@ public class DialogUtils {
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_dismantling_zc:
-//                        mPopupWindow.dismiss();
-                        onclick.openonclick("征拆类型查询");
-                        break;
-                    case R.id.pop_region_zc:
-                        onclick.openonclick("按区域查询");
-                        break;
-                    case R.id.pop_form_zc:
-                        onclick.openonclick("按表单查询");
-                        break;
-                    case R.id.pop_details_zc:
-                        onclick.openonclick("按户主明细查询");
-                        break;
-                    case R.id.pop_data_zc:
-//                        mPopupWindow.dismiss();
-                        onclick.openonclick("按期数查询");
-                        break;
-                    default:
-                        break;
+                int i = v.getId();
+                if (i == R.id.pop_dismantling_zc) {
+                    //                        mPopupWindow.dismiss();
+                    onclick.openonclick("征拆类型查询");
+
+                } else if (i == R.id.pop_region_zc) {
+                    onclick.openonclick("按区域查询");
+
+                } else if (i == R.id.pop_form_zc) {
+                    onclick.openonclick("按表单查询");
+
+                } else if (i == R.id.pop_details_zc) {
+                    onclick.openonclick("按户主明细查询");
+
+                } else if (i == R.id.pop_data_zc) {
+                    //                        mPopupWindow.dismiss();
+                    onclick.openonclick("按期数查询");
+
+                } else {
                 }
                 if (mPopupWindow != null) {
                     mPopupWindow.dismiss();

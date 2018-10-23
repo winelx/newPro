@@ -193,7 +193,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.disDialog();
                         Toast.makeText(mContext, "缓存清除成功", Toast.LENGTH_SHORT).show();
                         return false;
-                        //延迟发送任务
                     }
                 }).sendEmptyMessageDelayed(0, 1200);
                 break;

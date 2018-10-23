@@ -1,6 +1,6 @@
 package com.example.zcjlmodule.bean;
 
-import com.example.zcmodule.R;
+
 
 /**
  * @author lx

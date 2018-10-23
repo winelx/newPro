@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.WorkFragmentAdapter;
-import com.example.zcjlmodule.bean.WorkZcBean;
 import com.example.zcjlmodule.bean.WorkItemZcBean;
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.bean.WorkZcBean;
 
 import java.util.ArrayList;
 

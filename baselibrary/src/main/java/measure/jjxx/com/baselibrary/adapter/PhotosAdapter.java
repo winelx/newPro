@@ -103,12 +103,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                     // 1
                     int position = holder.getLayoutPosition();
                     // 2
-                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                    mOnItemClickListener.addlick(holder.itemView, position);
                 }
             });
         }
     }
-
     @Override
     public int getItemCount() {
         int count = photoPaths.size() + 1;
@@ -146,7 +145,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
      */
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void addlick(View view, int position);
         void photoClick(View view,int position);
     }
 

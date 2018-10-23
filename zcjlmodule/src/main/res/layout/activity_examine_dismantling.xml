@@ -17,11 +17,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <include layout="@layout/examine_layout_zc" />
 

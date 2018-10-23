@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.zcmodule.R;
+import com.example.zcjlmodule.R;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -123,7 +123,7 @@ public class NewAddOriginalZcActivity extends BaseActivity implements View.OnCli
         mPhotosAdapter.setOnItemClickListener(new PhotosAdapter.OnItemClickListener() {
             //添加图片
             @Override
-            public void onItemClick(View view, int position) {
+            public void addlick(View view, int position) {
                 CameraUtils cameraUtils = new CameraUtils();
                 cameraUtils.showPopwindow(NewAddOriginalZcActivity.this, new CameraUtils.CameraCallback() {
                     @Override
@@ -177,52 +177,51 @@ public class NewAddOriginalZcActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            case R.id.new_add_original_project:
-                //所属项目
-                if (status) {
-                    startActivity(new Intent(mContext, ChoiceProjectZcActivity.class));
-                } else {
-                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
-                }
-                break;
-            case R.id.new_add_original_bids:
-                //所属标段
-                if (status) {
-                    startActivity(new Intent(mContext, ChoiceBidsZcActivity.class));
-                } else {
-                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
-                }
-                break;
-            case R.id.new_add_original_command:
-                //指挥部
-                if (status) {
-                    startActivity(new Intent(mContext, ChoiceHeadquartersZcActivity.class));
-                } else {
-                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
-                }
-                break;
-            case R.id.new_add_original_standarddecomposition:
-                //分解标准
-                if (status) {
-                    startActivity(new Intent(mContext, StandardDecomposeZcActivity.class));
-                } else {
-                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
-                }
-                break;
-            case R.id.new_add_original_applydate:
-                //分解标准
-                if (status) {
-                    startActivity(new Intent(mContext, ApplyDateZcActivity.class));
-                } else {
-                    ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
-                }
-                break;
-            default:
-                break;
+        int i = view.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else if (i == R.id.new_add_original_project) {
+            //所属项目
+            if (status) {
+                startActivity(new Intent(mContext, ChoiceProjectZcActivity.class));
+            } else {
+                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+            }
+
+        } else if (i == R.id.new_add_original_bids) {
+            //所属标段
+            if (status) {
+                startActivity(new Intent(mContext, ChoiceBidsZcActivity.class));
+            } else {
+                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+            }
+
+        } else if (i == R.id.new_add_original_command) {
+            //指挥部
+            if (status) {
+                startActivity(new Intent(mContext, ChoiceHeadquartersZcActivity.class));
+            } else {
+                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+            }
+
+        } else if (i == R.id.new_add_original_standarddecomposition) {
+            //分解标准
+            if (status) {
+                startActivity(new Intent(mContext, StandardDecomposeZcActivity.class));
+            } else {
+                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+            }
+
+        } else if (i == R.id.new_add_original_applydate) {
+            //分解标准
+            if (status) {
+                startActivity(new Intent(mContext, ApplyDateZcActivity.class));
+            } else {
+                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
+            }
+
+        } else {
         }
     }
 
