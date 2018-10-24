@@ -97,7 +97,7 @@ public class DialogUtils {
     }
 
 
-    public static void dismantling(Context mContext,final onclick click) {
+    public static void dismantling(Context mContext, final onclick click) {
         // 创建对话框构建器
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         // 获取布局
@@ -124,6 +124,8 @@ public class DialogUtils {
         });
         dialog.show();
     }
+
+
 
 
 }

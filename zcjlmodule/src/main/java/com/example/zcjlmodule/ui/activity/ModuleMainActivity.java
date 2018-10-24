@@ -3,6 +3,8 @@ package com.example.zcjlmodule.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,8 @@ import com.example.zcjlmodule.presenter.ModuleMainPresenter;
 import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
+import measure.jjxx.com.baselibrary.utils.BaseDialog;
+
 //登录页
 public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> implements ModuleMainView, View.OnClickListener {
     private EditText edtAccount, edtPassword;
@@ -39,15 +43,31 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
 
     @Override
     public void onClick(View view) {
-//        mPresenter.register("admin", "123456");
-        startActivity(new Intent(this,HomeZcActivity.class));
+        BaseDialog.getDialog(this, "登录中..", false);
+        new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                BaseDialog.dialog.dismiss();
+                return false;
+                //表示延迟3秒发送任务
+            }
+        }).sendEmptyMessageDelayed(0, 3000);
+
+//        String name = edtAccount.getText().toString();
+//        String password = edtPassword.getText().toString();
+//        if (!name.isEmpty() && !password.isEmpty()) {
+//            mPresenter.register(name, password);
+//        } else {
+//            ToastUtlis.getInstance().showShortToast("用户名或密码为空");
+//        }
     }
 
     //拿到数据
     @Override
-    public void getdata(int anem) {
-        if (anem==0) {
+    public void getdata(int ret) {
+        if (ret == 0) {
             startActivity(new Intent(this, HomeZcActivity.class));
+            finish();
         }
     }
 }

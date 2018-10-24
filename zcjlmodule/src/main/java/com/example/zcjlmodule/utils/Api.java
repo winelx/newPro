@@ -10,7 +10,8 @@ public class Api {
    public static final String LOGIN = networks+"/admin/login";
    //退出
    public static final String LOGOUT = networks+"/iface/mobile/logout";
-
+   //修改密码
+   public static final String PASSWORD=networks+"/iface/mobile/user/alterPwd";
 
 
 }

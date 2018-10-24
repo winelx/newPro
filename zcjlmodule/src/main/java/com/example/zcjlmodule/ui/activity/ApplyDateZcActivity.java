@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.bean.AttachProjectBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,30 +89,5 @@ public class ApplyDateZcActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    //泛型实体
-    class AttachProjectBean {
-        private String id;
-        private String name;
 
-        public AttachProjectBean(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 }

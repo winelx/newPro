@@ -38,16 +38,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
-        <activity android:name="com.example.zcjlmodule.ui.activity.ModuleMainActivity">
+        <activity android:name=".ui.activity.ModuleMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.PayDetailedlistZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.PayCheckZcActivity" />
+        <activity android:name=".ui.activity.HomeZcActivity" />
+        <activity android:name=".ui.activity.PayDetailedlistZcActivity" />
+        <activity android:name=".ui.activity.PayCheckZcActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -59,18 +59,19 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
-        <activity android:name="com.example.zcjlmodule.ui.activity.OriginalZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.PeriodsQueryZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.NewAddOriginalZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceProjectZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceBidsZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.ChoiceHeadquartersZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.StandardDecomposeZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.DismantlingtypequeryZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.ApplyDateZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.StandardDismantlingZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.UnknitstandardActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.ExamineDismantlingActivity"></activity>
+        <activity android:name=".ui.activity.OriginalZcActivity" />
+        <activity android:name=".ui.activity.PeriodsQueryZcActivity" />
+        <activity android:name=".ui.activity.NewAddOriginalZcActivity" />
+        <activity android:name=".ui.activity.ChoiceProjectZcActivity" />
+        <activity android:name=".ui.activity.ChoiceBidsZcActivity" />
+        <activity android:name=".ui.activity.ChoiceHeadquartersZcActivity" />
+        <activity android:name=".ui.activity.StandardDecomposeZcActivity" />
+        <activity android:name=".ui.activity.DismantlingtypequeryZcActivity" />
+        <activity android:name=".ui.activity.ApplyDateZcActivity" />
+        <activity android:name=".ui.activity.StandardDismantlingZcActivity" />
+        <activity android:name=".ui.activity.UnknitstandardActivity" />
+        <activity android:name=".ui.activity.ExamineDismantlingActivity" />
+        <activity android:name=".ui.activity.PasswordActivity"></activity>
     </application>
 
 </manifest>

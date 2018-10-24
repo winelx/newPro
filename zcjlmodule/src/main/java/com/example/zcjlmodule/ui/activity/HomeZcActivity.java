@@ -83,4 +83,9 @@ public class HomeZcActivity extends BaseActivity {
         textview.setText(tab.getTitle());
         return view;
     }
+
+    public void logout(){
+        mTabs.clear();
+        this.finish();
+    }
 }

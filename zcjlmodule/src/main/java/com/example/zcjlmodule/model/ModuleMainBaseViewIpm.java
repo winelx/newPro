@@ -1,5 +1,7 @@
 package com.example.zcjlmodule.model;
 
+import android.util.Log;
+
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -70,10 +72,16 @@ public class ModuleMainBaseViewIpm {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Log.i("sss",s);
                         try {
                             JSONObject jsonObject =new JSONObject(s);
                             int ret=jsonObject.getInt("ret");
-                            onClickListener.onComple(ret);
+                            if (ret==0){
+                                onClickListener.onComple(ret);
+                            }else {
+                                ToastUtlis.getInstance().showShortToast("登录失败");
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

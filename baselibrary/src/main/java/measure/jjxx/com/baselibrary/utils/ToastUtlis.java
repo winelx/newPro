@@ -39,8 +39,6 @@ public class ToastUtlis {
      * @param message 消息
      */
     public void showLongToast(String message) {
-
-
         toast = Toast.makeText(mContext, message, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.BOTTOM, 0, 100);
         toast.setDuration(Toast.LENGTH_LONG);

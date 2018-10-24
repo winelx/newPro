@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.bean.AttachProjectBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,7 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_choice_project_zc);
         mContext = this;
         list = new ArrayList<>();
-//        for (int i = 0; i < 25; i++) {
-//            list.add(new AttachProjectBean("ss", "测试数据" + i));
-      //  }
+
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("选择所属标段");
@@ -80,30 +79,4 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    //泛型实体
-    class AttachProjectBean {
-        private String id;
-        private String name;
-
-        public AttachProjectBean(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 }

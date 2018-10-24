@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.ui.activity.HomeZcActivity;
+import com.example.zcjlmodule.ui.activity.ModuleMainActivity;
+import com.example.zcjlmodule.ui.activity.PasswordActivity;
+import com.example.zcjlmodule.utils.FragmentmineUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import measure.jjxx.com.baselibrary.base.BaseFragment;
@@ -28,13 +33,15 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
     private Context mContext;
     private CircleImageView mineZcAvatar;
     private TextView minename, ascriptionOrg;
+    private FragmentmineUtils utils;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //如果view为空就加载界面，否则就不加载，避免切换界面重新加载界面,减少界面的绘制，降低内存消耗
         if (rootView == null) {
-            mContext = getActivity();
+            mContext = HomeZcActivity.getInstance();
+            utils = new FragmentmineUtils();
             rootView = inflater.inflate(R.layout.fragment_mine_zc, null);
             //登录人头像
             mineZcAvatar = rootView.findViewById(R.id.mine_zc_avatar);
@@ -70,7 +77,7 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.mine_zc_password:
                 //修改密码
-                ToastUtlis.getInstance().showShortToast("修改密码");
+                startActivity(new Intent(mContext, PasswordActivity.class));
                 break;
             case R.id.mine_zc_aboutme:
                 //关于我们
@@ -82,10 +89,18 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.mine_zc_exit:
                 //退出
-                ToastUtlis.getInstance().showShortToast("退出登录");
+                utils.logout(new FragmentmineUtils.OnClickLister() {
+                    @Override
+                    public void onClickLister(int status) {
+                        mContext.startActivity(new Intent(mContext, ModuleMainActivity.class));
+                        getActivity().finish();
+                    }
+                });
                 break;
             default:
                 break;
         }
     }
+
+
 }
