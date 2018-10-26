@@ -101,8 +101,6 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
-        expandOrCollapse(position);
-
     }
 
 }

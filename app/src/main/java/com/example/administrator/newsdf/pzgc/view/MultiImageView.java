@@ -400,6 +400,7 @@ public class MultiImageView extends ViewGroup {
                 String url = imgs[i];
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
+                        .dontAnimate()
                         .error(R.mipmap.image_error)
                         .placeholder(R.mipmap.image_loading)
                         .diskCacheStrategy(DiskCacheStrategy.NONE);

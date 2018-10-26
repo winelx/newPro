@@ -129,6 +129,7 @@ public class PhotoViewpagerAdapter extends PagerAdapter {
         TouchImageView imageView = view.findViewById(R.id.iv_pager);
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
                 .error(R.mipmap.base_image_error)
                 .placeholder(R.mipmap.base_picker_ic_photo_black_48dp);
         Glide.with(mContext)

@@ -280,7 +280,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
             if (view instanceof ImageView) {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-
+                        .dontAnimate()
                         .error(R.mipmap.mine_avatar)
                         .diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(context)

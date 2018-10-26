@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
+import measure.jjxx.com.baselibrary.utils.BaseDialog;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
@@ -79,6 +80,7 @@ public class ModuleMainBaseViewIpm {
                             if (ret==0){
                                 onClickListener.onComple(ret);
                             }else {
+                                BaseDialog.dialog.dismiss();
                                 ToastUtlis.getInstance().showShortToast("登录失败");
                             }
 
@@ -90,6 +92,7 @@ public class ModuleMainBaseViewIpm {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        BaseDialog.dialog.dismiss();
                     }
                 });
     }

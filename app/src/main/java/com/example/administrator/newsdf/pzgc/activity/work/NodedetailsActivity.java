@@ -91,7 +91,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
-
+    private LinearLayout node_lin_start, node_lin_stop, node_lin_complete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +109,16 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
         wbsId = intent.getExtras().getString("wbsId");
         wbsName = intent.getExtras().getString("wbsName");
         wbspath = intent.getExtras().getString("wbspath");
-        findViewById(R.id.node_lin_complete).setOnClickListener(this);
+        node_lin_complete = (LinearLayout) findViewById(R.id.node_lin_complete);
+        node_lin_complete.setOnClickListener(this);
         findViewById(R.id.node_lin_pro).setOnClickListener(this);
-        findViewById(R.id.node_lin_stop).setOnClickListener(this);
-        findViewById(R.id.node_lin_start).setOnClickListener(this);
+        //暂停
+        node_lin_stop = (LinearLayout) findViewById(R.id.node_lin_stop);
+        node_lin_stop.setOnClickListener(this);
+        //启动
+        node_lin_start = (LinearLayout) findViewById(R.id.node_lin_start);
+        node_lin_start.setOnClickListener(this);
+
         findViewById(R.id.node_commit).setOnClickListener(this);
         findViewById(R.id.node_lin_workarea).setOnClickListener(this);
         fab = (CircleImageView) findViewById(R.id.fab);
@@ -180,6 +186,7 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+
     //请求数据
     void okgo() {
         OkGo.<String>post(Requests.Wbsdetails)
@@ -294,6 +301,10 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
      * 任务状态修改
      */
     void okgo1(final String str) {
+        node_lin_start.setClickable(false);
+        node_lin_stop.setClickable(false);
+        node_lin_complete.setClickable(false);
+        Dates.getDialogs(this,"请求数据中..");
         String leaderId = SPUtils.getString(mContext, "staffId", null);
         if (leaderId.equals(userID)) {
             OkGo.post(Requests.WbsTaskConfig)
@@ -305,18 +316,34 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
+                            Dates.disDialog();
+                            node_lin_start.setClickable(true);
+                            node_lin_stop.setClickable(true);
+                            node_lin_complete.setClickable(true);
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String msg = jsonObject.getString("msg");
                                 ToastUtils.showShortToast(msg);
-                                    okgo();
+                                okgo();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        }
 
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            Dates.disDialog();
+                            node_lin_start.setClickable(true);
+                            node_lin_stop.setClickable(true);
+                            node_lin_complete.setClickable(true);
                         }
                     });
         } else {
+            Dates.disDialog();
+            node_lin_start.setClickable(true);
+            node_lin_stop.setClickable(true);
+            node_lin_complete.setClickable(true);
             ToastUtils.showLongToast("只有责任人能修改状态");
         }
     }
@@ -625,10 +652,10 @@ public class NodedetailsActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.node_lin_workarea:
                 //修改工区
-                if (status.equals("0")){
+                if (status.equals("0")) {
                     Intent intent1 = new Intent(mContext, WorkareaActivity.class);
                     startActivityForResult(intent1, 2);
-                }else {
+                } else {
                     ToastUtils.showShortToast("已启动，不可修改工区");
                 }
 

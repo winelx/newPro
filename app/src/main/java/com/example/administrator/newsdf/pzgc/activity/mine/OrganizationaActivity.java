@@ -191,9 +191,10 @@ public class OrganizationaActivity extends AppCompatActivity {
             String pid = mData.get(i).getParentId();
             if (str.equals(pid)) {
                 mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType());
+                mAdapter.expandOrCollapse(position);
             }
+            mAdapter.expandOrCollapse(position);
         }
-
     }
 
     //判断是否显示图标

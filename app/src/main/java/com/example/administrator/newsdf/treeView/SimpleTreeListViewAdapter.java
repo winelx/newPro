@@ -147,7 +147,6 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
 
     }
 
-
     void okgo(String staffId) {
         OkGo.post(Requests.Personal)
                 .params("staffId", staffId)

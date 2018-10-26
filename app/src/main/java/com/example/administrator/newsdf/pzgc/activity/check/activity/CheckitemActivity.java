@@ -678,7 +678,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             }
 
         }
-        if (size == 0 && size == 0) {
+        if (count == 0 && size == 0) {
             //全部操作过
             if (size > 0) {
                 checkItemTabup.setClickable(true);
@@ -1098,10 +1098,11 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 保存接口
      *
      * @param isdata
-     * @param tabup
+     * @param tabup-+
      */
     public void Save(final boolean isdata, final String tabup) {
         checklistmeuntext.setText("");
+        hintKeyBoard();
         Dates.getDialog(CheckitemActivity.this, "保存数据中...");
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < imagepath.size(); i++) {

@@ -61,7 +61,7 @@ public class CheckNewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         int numbher = position + 1;
-        holder.pop_tast_item.setText(numbher + "");
+        holder.pop_tast_item.setText(numbher +"");
             //是否有此项
             boolean noSuch = imagePaths.get(position).isNoSuch();
             boolean gray=imagePaths.get(position).isGray();
@@ -102,6 +102,14 @@ public class CheckNewAdapter extends BaseAdapter {
                 //没有做过操作
                 holder.LabelView.setVisibility(View.GONE);
                 holder.chekItemRe.setBackgroundResource(R.color.gray);
+                //是否被下通知
+                boolean Generate = imagePaths.get(position).isGenerate();
+                if (Generate) {
+                    holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                    holder.LabelView.setVisibility(View.VISIBLE);
+                }else {
+                    holder.LabelView.setVisibility(View.GONE);
+                }
             }
         return convertView;
     }

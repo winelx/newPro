@@ -148,10 +148,11 @@ public class OrganiwbsActivity extends Activity {
             addOrganizationList = TreeUtlis.parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
-                    String departmentName = addOrganizationList.get(i).getDepartname();
-                    mTreeAdapter.addExtraNode(addPosition, addOrganizationList.get(i).getId(),
+                    mTreeAdapter.addExtraNode(addPosition,
+                            addOrganizationList.get(i).getId(),
                             addOrganizationList.get(i).getParentId(),
-                            departmentName, addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).getDepartname(),
+                            addOrganizationList.get(i).getIsleaf(),
                             addOrganizationList.get(i).iswbs(),
                             addOrganizationList.get(i).isparent(),
                             addOrganizationList.get(i).getTypes(),
@@ -169,8 +170,6 @@ public class OrganiwbsActivity extends Activity {
         } else {
             Dates.disDialog();
         }
-
-
     }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
@@ -192,7 +191,6 @@ public class OrganiwbsActivity extends Activity {
                 e.printStackTrace();
             }
         }
-
     }
 
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
@@ -207,7 +205,6 @@ public class OrganiwbsActivity extends Activity {
                         if (node.isperent()) {
                             addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
                         }
-
                     }
                 }
             }

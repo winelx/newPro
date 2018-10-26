@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -641,6 +642,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
      * 保存
      */
     public void Save() {
+        hintKeyBoard();
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < Imagepath.size(); i++) {
             if (Imagepath.get(i).getContent().length() > 0) {
@@ -695,6 +697,19 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
 
+    }
+
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     ArrayList<String> deleteId = new ArrayList<>();

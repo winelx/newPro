@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.callback.Callback;
+import com.example.zcjlmodule.callback.ChangOrgCallBackUtils;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcjlmodule.ui.activity.ModuleMainActivity;
 import com.example.zcjlmodule.ui.activity.PasswordActivity;
-import com.example.zcjlmodule.utils.FragmentmineUtils;
+import com.example.zcjlmodule.ui.activity.UserOrgZcActivity;
+import com.example.zcjlmodule.utils.fragment.FragmentmineUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import measure.jjxx.com.baselibrary.base.BaseFragment;
@@ -28,7 +31,7 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  *         update: 2018/10/10 0010
  *         version:
  */
-public class MineFragmentZc extends BaseFragment implements View.OnClickListener {
+public class MineFragmentZc extends BaseFragment implements View.OnClickListener,Callback {
     private View rootView;
     private Context mContext;
     private CircleImageView mineZcAvatar;
@@ -41,6 +44,7 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
         //如果view为空就加载界面，否则就不加载，避免切换界面重新加载界面,减少界面的绘制，降低内存消耗
         if (rootView == null) {
             mContext = HomeZcActivity.getInstance();
+            ChangOrgCallBackUtils.setCallBack(this);
             utils = new FragmentmineUtils();
             rootView = inflater.inflate(R.layout.fragment_mine_zc, null);
             //登录人头像
@@ -73,7 +77,7 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.mine_zc_organization:
                 //切换组织
-                ToastUtlis.getInstance().showShortToast("切换组织");
+               startActivity(new Intent(mContext, UserOrgZcActivity.class));
                 break;
             case R.id.mine_zc_password:
                 //修改密码
@@ -85,7 +89,12 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.mine_zc_update:
                 //更新
-                ToastUtlis.getInstance().showShortToast("检查更新");
+                utils.findversion(new FragmentmineUtils.OnClickLister() {
+                    @Override
+                    public void onClickLister(int status) {
+
+                    }
+                });
                 break;
             case R.id.mine_zc_exit:
                 //退出
@@ -102,5 +111,8 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void callback() {
 
+    }
 }

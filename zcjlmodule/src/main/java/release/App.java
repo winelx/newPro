@@ -25,8 +25,8 @@ public class App extends BaseApplication {
         instance=this;
         //图片压缩
         Tiny.getInstance().init(this);
+        //提示框
         ToastUtlis.getInstance().init(this);
-
         //网络加载库
         OkGo.init(this);
         //网络加载库配置

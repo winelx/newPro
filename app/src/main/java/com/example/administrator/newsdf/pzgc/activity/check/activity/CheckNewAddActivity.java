@@ -703,7 +703,7 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                                 //检查部位
                                 String partDetails = json.getString("partDetails");
                                 if (partDetails.length() > 0) {
-                                    checkNewTemporarysite.setText("partDetails");
+                                    checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
                                 categoryId = json.getString("WbsTaskTypeId");
@@ -774,13 +774,11 @@ public class CheckNewAddActivity extends AppCompatActivity implements View.OnCli
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                     }
                 });
-
     }
 
     public void checkFinish() {

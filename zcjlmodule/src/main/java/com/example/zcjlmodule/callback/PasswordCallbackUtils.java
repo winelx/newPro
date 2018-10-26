@@ -5,8 +5,8 @@ package com.example.zcjlmodule.callback;
  */
 
 public class PasswordCallbackUtils {
-    private static PasswordCallback mCallBack;
-    public static void setCallBack(PasswordCallback callBack) {
+    private static Callback mCallBack;
+    public static void setCallBack(Callback callBack) {
         mCallBack = callBack;
     }
 

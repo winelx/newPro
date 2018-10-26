@@ -30,7 +30,6 @@ import measure.jjxx.com.baselibrary.bean.BaseTab;
 public class HomeZcActivity extends BaseActivity {
     private static HomeZcActivity mContext;
     private FragmentTabHost mTabHost;
-    private TextView home_img_red;
     private LayoutInflater mInflater;
     private ArrayList<BaseTab> mTabs = new ArrayList<>();
     public static HomeZcActivity getInstance() {
@@ -66,7 +65,6 @@ public class HomeZcActivity extends BaseActivity {
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_BEGINNING);
         //设置默认打开的界面
         mTabHost.setCurrentTab(0);
-
     }
 
     private View buildIndicator(BaseTab tab) {
@@ -82,10 +80,5 @@ public class HomeZcActivity extends BaseActivity {
         imageView.setBackgroundResource(tab.getIcon());
         textview.setText(tab.getTitle());
         return view;
-    }
-
-    public void logout(){
-        mTabs.clear();
-        this.finish();
     }
 }

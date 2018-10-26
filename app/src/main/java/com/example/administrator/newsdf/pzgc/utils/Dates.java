@@ -169,6 +169,7 @@ public class Dates {
     public static void getImg(Context context, String imageUrl, ImageView view) {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
+                .dontAnimate()
                 .error(R.mipmap.mine_avatar)
                 .placeholder(R.mipmap.image_loading)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
@@ -182,6 +183,7 @@ public class Dates {
     public static void setback(Context context, String imageUrl, ImageView view) {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
+                .dontAnimate()
                 .error(R.mipmap.mine_avatar)
                 .placeholder(R.mipmap.mine_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
