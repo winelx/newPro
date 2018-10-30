@@ -10,10 +10,10 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".ui.activity.ModuleMainActivity"/>
+        <activity android:name=".ui.activity.login.ModuleMainActivity"/>
         <activity android:name="com.example.zcjlmodule.ui.activity.HomeZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.PayDetailedlistZcActivity" />
-        <activity android:name="com.example.zcjlmodule.ui.activity.PayCheckZcActivity"></activity>
+        <activity android:name="com.example.zcjlmodule.ui.activity.paydetail.PayDetailedlistZcActivity" />
+        <activity android:name="com.example.zcjlmodule.ui.activity.paydetail.PayCheckZcActivity"></activity>
     </application>
 
 </manifest>

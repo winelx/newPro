@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.mine;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseActivity;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
@@ -56,8 +57,7 @@ public class UserOrgZcActivity extends BaseActivity {
         title.setText("切换组织");
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onClick(View view) {finish();
             }
         });
         utils.getuserorg(new UserOrgZcUtils.OnClickListener() {
@@ -107,11 +107,17 @@ public class UserOrgZcActivity extends BaseActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name, String type) {
-        utils.changorg(orgid, orgid, new UserOrgZcUtils.OnChangeClickListener() {
+        utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
             @Override
             public void onClick(int ret) {
                 if (ret == 0) {
                     ToastUtlis.getInstance().showShortToast("切换组织成功");
+                    SPUtils.deleShare(mContext, "orgName");
+                    SPUtils.deleShare(mContext, "orgId");
+                    //所在组织ID
+                    SPUtils.putString(mContext, "orgId", orgid);
+                    //所在组织名称
+                    SPUtils.putString(mContext, "orgName", name);
                     ChangOrgCallBackUtils.CallBack();
                     finish();
                 }

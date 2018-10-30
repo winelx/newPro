@@ -11,7 +11,8 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 /**
  * @author lx
  * @Created by: 2018/10/22 0022.
- * @description:
+ * @description:  标准分解
+ * activity UnknitstandardActivity
  */
 
 public class UnknitstandardPresenter extends BasePresenters<UnknitstandardView> {

@@ -2,32 +2,26 @@ package com.example.zcjlmodule.bean;
 
 /**
  * Created by Administrator on 2018/10/12 0012.
+ * 支付清册核查
  */
 
 public class PayCheckZcBean {
-    String id;
+    //名称
     String name;
+    //
     String number;
     String payname;
     String paymoney;
     String checkmoney;
 
 
-    public PayCheckZcBean(String id, String name, String number, String payname, String paymoney, String checkmoney) {
-        this.id = id;
+    public PayCheckZcBean(String name, String number, String payname, String paymoney, String checkmoney) {
+
         this.name = name;
         this.number = number;
         this.payname = payname;
         this.paymoney = paymoney;
         this.checkmoney = checkmoney;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

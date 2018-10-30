@@ -1,7 +1,6 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.mine;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -15,11 +14,18 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
-
-public class PasswordActivity extends AppCompatActivity {
+/** 
+ * description: 修改密码
+ * @author lx
+ * date: 2018/10/29 0029 上午 11:16 
+ * update: 2018/10/29 0029
+ * version: 
+*/
+public class PasswordActivity extends BaseActivity {
     private EditText passwordOld, passwordNew, passwordNewtoo;
 
     @Override

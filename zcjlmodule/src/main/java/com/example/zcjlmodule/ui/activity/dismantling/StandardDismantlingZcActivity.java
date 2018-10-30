@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.dismantling;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 
 /**
  * description: 征拆标准
@@ -60,6 +61,17 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         list = new ArrayList<>();
         mPresenter = new SdDismantlingPresenter();
         mPresenter.mView = this;
+        init();
+        recycler();
+        refresh();
+        //网络请求
+        mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
+    }
+
+    /**
+     * /初始化
+     */
+    private void init() {
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,18 +88,26 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
         //是否启用列表惯性滑动到底部时自动加载更多
         refreshLayout.setEnableAutoLoadmore(false);
+    }
+
+    /**
+     * /初始化recyclerview
+     */
+    private void recycler() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.dismantling_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter = new DismantAdapter(R.layout.adapter_standard_dismantling_zc, list));
-        mPresenter.getdata();
 
+
+        //recyclerview的item 的点击事件
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 startActivity(new Intent(mContext, ExamineDismantlingActivity.class));
             }
         });
-        //子项的点击事件处理
+
+        //recyclerview的item子项的点击事件处理
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -98,15 +118,23 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
                 }
             }
         });
+    }
+
+    /**
+     * 刷新加载
+     */
+    private void refresh() {
         //下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //传入false表示刷新失败
+                //空白布局
+                blankview(3);
                 page = 1;
-                mPresenter.getdata();
-                refreshlayout.finishRefresh(800);
+                mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
+
             }
         });
         //上拉加载
@@ -115,34 +143,45 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-                mPresenter.getdata();
+                mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
                 //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
             }
         });
     }
 
+    /**
+     * @param data
+     */
     @Override
     public void getdata(ArrayList<SdDismantlingBean> data) {
         //判断加载页，判断是否删除之前的数据
         if (page == 1) {
             list.clear();
         }
+        //空白布局
+        blankview(3);
         //将网络请求的数据添加到集合
         list.addAll(data);
-        //如果集合的数据大于0，就隐藏空白数据提示
-        if (list.size() > 0) {
-            emptyView.setVisibility(View.GONE);
-        } else {
-            //如果不大于0，显示空白页，隐藏等待框，显示提示
-            gressBar.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-            prompt.setVisibility(View.VISIBLE);
-        }
         //更新数据
         mAdapter.setNewData(list);
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadmore();
     }
 
+    /**
+     * 加载失败
+     */
+
+    @Override
+    public void onError() {
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadmore();
+        blankview(1);
+    }
+
+    /**
+     * recyclerview 的适配器
+     */
     class DismantAdapter extends BaseQuickAdapter<SdDismantlingBean, BaseViewHolder> {
         public DismantAdapter(@LayoutRes int layoutResId, @Nullable List<SdDismantlingBean> data) {
             super(layoutResId, data);
@@ -156,6 +195,46 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             helper.setText(R.id.standard_dismantiling_content, item.getContent());
             helper.setText(R.id.standard_dismantiling_filename, item.getFilename());
             helper.setText(R.id.standard_dismantiling_region, item.getRegion());
+        }
+    }
+
+    /**
+     * 空白布局
+     *
+     * @param status
+     */
+    public void blankview(int status) {
+        switch (status) {
+            case 1:
+                //请求失败，
+                if (list.size() > 0) {
+                    emptyView.setVisibility(View.GONE);
+                } else {
+                    //如果不大于0，显示空白页，隐藏等待框，显示提示
+                    gressBar.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    prompt.setVisibility(View.VISIBLE);
+                    prompt.setText("请求失败");
+                }
+                break;
+            case 2:
+                //没有更多数据
+                if (list.size() > 0) {
+                    emptyView.setVisibility(View.GONE);
+                }
+                break;
+            case 3:
+                //空数据下拉刷新
+                if (list.size() > 0) {
+                    emptyView.setVisibility(View.GONE);
+                } else {
+                    gressBar.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    prompt.setVisibility(View.GONE);
+
+                }
+            default:
+                break;
         }
     }
 }

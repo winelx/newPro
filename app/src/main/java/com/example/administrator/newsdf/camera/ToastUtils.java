@@ -57,8 +57,9 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showShortToast(String message) {
-        if (App.getInstance() == null)
+        if (App.getInstance() == null) {
             return;
+        }
         if (toast == null) {
             toast = Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.BOTTOM, 0, 100);
@@ -77,8 +78,9 @@ public class ToastUtils {
      * @param message 消息
      */
     public static void showShortToastCenter(String message) {
-        if (App.getInstance() == null)
+        if (App.getInstance() == null) {
             return;
+        }
         if (toast == null) {
             toast = Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 100);

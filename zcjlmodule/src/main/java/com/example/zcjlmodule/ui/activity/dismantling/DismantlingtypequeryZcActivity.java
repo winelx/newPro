@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.dismantling;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

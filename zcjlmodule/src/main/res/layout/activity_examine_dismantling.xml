@@ -7,7 +7,7 @@
     android:background="@color/bg_white"
     android:orientation="vertical"
 
-    tools:context="com.example.zcjlmodule.ui.activity.ExamineDismantlingActivity">
+    tools:context="com.example.zcjlmodule.ui.activity.dismantling.ExamineDismantlingActivity">
 
 
     <include layout="@layout/toolbar_icon_zc" />

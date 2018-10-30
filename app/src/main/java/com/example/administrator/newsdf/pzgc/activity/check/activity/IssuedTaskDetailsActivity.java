@@ -96,8 +96,6 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
         checklistmeuntext.setTextSize(10);
         checklistmeuntext.setText("处理记录");
         ArrayList<String> path = new ArrayList<>();
-        mAdater = new IssuedTaskDetailsAdapter(mData, mContext);
-        detailsRejected.setAdapter(mAdater);
         checkDetailsSubmit.setOnClickListener(this);
         checkDetailsBlue.setOnClickListener(this);
         checkDetailsOrgin.setOnClickListener(this);
@@ -270,7 +268,7 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
                                 if (attachmentList.length() > 0) {
                                     for (int i = 0; i < attachmentList.length(); i++) {
                                         JSONObject jsonObject1 = attachmentList.getJSONObject(i);
-                                        achmentList.add(new Audio(Requests.networks + jsonObject1.getString("filepath"), jsonObject1.getString("id")));
+                                        achmentList.add(new Audio(Requests.networks + jsonObject1.getString("filepath"), jsonObject1.getString("filename")));
                                     }
                                 }
                                 //整改负责人
@@ -375,7 +373,8 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
                                         }
                                     }
                                 }
-                                mAdater.getData(mData);
+                                mAdater = new IssuedTaskDetailsAdapter(mData, mContext);
+                                detailsRejected.setAdapter(mAdater);
                                 //   0:未回复；1:回复未提交；2未验证；3:验证未提交；5完成)(保存：null,提交 0
                                 if (!isDeal) {
                                     if (motionNode.equals("0")) {

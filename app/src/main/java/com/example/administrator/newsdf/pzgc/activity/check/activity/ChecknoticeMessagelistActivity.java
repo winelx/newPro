@@ -44,9 +44,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Created by Administrator on 2018/8/8 0008.
- */
+
 
 /**
  * description: 检查通知单我的模块通知列表

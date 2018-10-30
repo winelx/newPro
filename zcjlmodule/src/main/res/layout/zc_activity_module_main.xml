@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.example.zcjlmodule.ui.activity.ModuleMainActivity">
+    tools:context="com.example.zcjlmodule.ui.activity.login.ModuleMainActivity">
 
 
     <EditText

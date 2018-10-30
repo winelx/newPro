@@ -8,21 +8,31 @@ import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 
-/**
- * @author lx
- * @Created by: 2018/10/22 0022.
- * @description:
- */
 
+/**
+ * description: 征拆标准
+ *
+ * @author lx
+ *         date: 2018/10/19 0019 下午 2:31
+ *         update: 2018/10/19 0019
+ *         version:
+ *         activity  StandardDismantlingZcActivity
+ */
 public class SdDismantlingPresenter extends BasePresenters<SdDismantlingView> {
     private SdDismantlingModel.Model model;
 
-    public void getdata() {
+    public void getdata(String orgId, int page) {
         model = new SdDismantlingModel.SdDismantlingModelIpm();
-        model.init("", new SdDismantlingModel.OnClickListener() {
+        model.init(orgId, page, new SdDismantlingModel.OnClickListener() {
             @Override
-            public void callBack(ArrayList<SdDismantlingBean> list) {
+            public void onSuccess(ArrayList<SdDismantlingBean> list) {
+                //请求成功
                 mView.getdata(list);
+            }
+            @Override
+            public void onError() {
+                //请求失败
+                mView.onError();
             }
         });
     }

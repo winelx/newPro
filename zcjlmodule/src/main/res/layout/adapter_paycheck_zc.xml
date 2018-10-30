@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/activity_paycheck_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,24 +25,24 @@
             android:textStyle="bold" />
 
         <TextView
+            android:layout_weight="8"
             android:id="@+id/activity_paycheck_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp"
             android:ellipsize="end"
             android:maxEms="10"
             android:maxLines="1"
             android:text="13564648947643476344564561"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/activity_paycheck_payname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:gravity="right"
+            android:layout_marginLeft="25dp"
+            android:gravity="end"
             android:layout_marginRight="10dp"
             android:text="支付人：李白"
             android:textColor="@color/graytext2"
@@ -52,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <TextView

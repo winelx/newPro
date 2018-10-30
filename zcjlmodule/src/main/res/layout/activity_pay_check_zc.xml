@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/back"
     android:orientation="vertical"
-    tools:context="com.example.zcjlmodule.ui.activity.PayCheckZcActivity">
+    tools:context="com.example.zcjlmodule.ui.activity.paydetail.PayCheckZcActivity">
 
 
     <include layout="@layout/toolbar_icon_zc" />
 
     <TextView
+        android:id="@+id/paycheck_filenumber"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/bg_white"

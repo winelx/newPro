@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.original;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.ui.activity.dismantling.StandardDecomposeZcActivity;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 

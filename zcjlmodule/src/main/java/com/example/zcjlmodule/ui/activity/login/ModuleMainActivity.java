@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.ModuleMainPresenter;
+import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;

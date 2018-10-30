@@ -1,8 +1,7 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.dismantling;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,6 +13,7 @@ import com.example.zcjlmodule.R;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.adapter.PhotosAdapter;
+import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 
@@ -26,7 +26,7 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  *         version:
  *         跳转界面StandardDecomposeZcActivity
  */
-public class ExamineDismantlingActivity extends AppCompatActivity {
+public class ExamineDismantlingActivity extends BaseActivity {
     private PhotosAdapter photosAdapter;
     private Context mContext;
     ArrayList<String> list = new ArrayList<>();

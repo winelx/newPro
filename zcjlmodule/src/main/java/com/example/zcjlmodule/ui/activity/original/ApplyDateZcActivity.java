@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.original;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,20 +23,22 @@ import java.util.List;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 
 /**
- * description: 选择指挥部
+ * description: 申请期数
  *
  * @author lx
  *         date: 2018/10/18 0018 下午 3:25
  *         update: 2018/10/18 0018
  *         跳转界面 NewAddOriginalZcActivity
- *         与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity  DismantlingtypequeryZcActivity  共用布局
+ *         与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity
+ *         ApplyDateZcActivity 共用布局
  */
-public class ChoiceHeadquartersZcActivity extends BaseActivity implements View.OnClickListener {
+public class ApplyDateZcActivity extends BaseActivity implements View.OnClickListener {
+
     private AttachProjectAdapter mAdapter;
     private ArrayList<AttachProjectBean> list;
     private Context mContext;
-    private ProgressBar layout_emptyView_bar;
-    private TextView layout_emptyView_text;
+    private ProgressBar layoutEmptyviewBar;
+    private TextView layoutEmptyviewText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +46,18 @@ public class ChoiceHeadquartersZcActivity extends BaseActivity implements View.O
         setContentView(R.layout.activity_choice_project_zc);
         mContext = this;
         list = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-            list.add(new AttachProjectBean("ss", "测试数据" + i));
-        }
-        layout_emptyView_bar= (ProgressBar) findViewById(R.id.layout_emptyView_bar);
-        layout_emptyView_text= (TextView) findViewById(R.id.layout_emptyView_text);
+//        for (int i = 0; i < 25; i++) {
+//            list.add(new AttachProjectBean("ss", "测试数据" + i));
+//        }
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
+        layoutEmptyviewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
+        layoutEmptyviewText = (TextView) findViewById(R.id.layout_emptyView_text);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("选择指挥部");
+        title.setText("选择期数");
         RecyclerView recycler = (RecyclerView) findViewById(R.id.attachproject_recycler);
-        //分割线
         DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.custom_divider));
         recycler.addItemDecoration(divider);
-        //显示类型
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(mAdapter = new AttachProjectAdapter(R.layout.adapter_choiceproject_zc, list));
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -77,7 +77,7 @@ public class ChoiceHeadquartersZcActivity extends BaseActivity implements View.O
         } else {
         }
     }
-
+    //适配器
     private class AttachProjectAdapter extends BaseQuickAdapter<AttachProjectBean, BaseViewHolder> {
         public AttachProjectAdapter(@LayoutRes int layoutResId, @Nullable List data) {
             super(layoutResId, data);

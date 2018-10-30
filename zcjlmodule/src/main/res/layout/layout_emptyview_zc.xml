@@ -19,7 +19,7 @@
         android:id="@+id/layout_emptyView_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_launcher_round"
+        android:drawableTop="@mipmap/nonews_zc"
         android:text="暂无数据"
         android:visibility="gone" />
 

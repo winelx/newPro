@@ -14,11 +14,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
-import release.App;
 
 /**
  * description:
@@ -109,9 +107,6 @@ public class UserOrgZcUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                SPUtils.putString(App.getInstance(), "orgname", jsonObject1.getString("orgname"));
-                                SPUtils.putString(App.getInstance(), "orgname", jsonObject1.getString("orgname"));
                                 onClickListener.onClick(ret);
                             } else {
                                 ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));

@@ -8,7 +8,13 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 /**
  * Created by Administrator on 2018/10/11 0011.
  */
-
+/**
+ * description: 登录页的presenter
+ * @author lx
+ * date: 2018/10/29 0029 上午 11:14
+ * update: 2018/10/29 0029
+ * version:
+*/
 public class ModuleMainPresenter extends BasePresenters<ModuleMainView> {
     private ModuleMainBaseViewIpm.ModuleMainBaseViewIPml model;
 

@@ -16,7 +16,13 @@ import measure.jjxx.com.baselibrary.R;
 import measure.jjxx.com.baselibrary.adapter.PhotoViewpagerAdapter;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
-
+/** 
+ * description: 图片预览界面
+ * @author lx
+ * date: 2018/10/26 0026 下午 2:39 
+ * update: 2018/10/26 0026
+ * version: 
+*/
 public class PhotoViewActivity extends BaseActivity {
     private Context mContext;
     private ArrayList<String> list;

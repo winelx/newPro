@@ -13,14 +13,16 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.ChangOrgCallBackUtils;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
-import com.example.zcjlmodule.ui.activity.ModuleMainActivity;
-import com.example.zcjlmodule.ui.activity.PasswordActivity;
-import com.example.zcjlmodule.ui.activity.UserOrgZcActivity;
+import com.example.zcjlmodule.ui.activity.login.ModuleMainActivity;
+import com.example.zcjlmodule.ui.activity.mine.PasswordActivity;
+import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
 import com.example.zcjlmodule.utils.fragment.FragmentmineUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import measure.jjxx.com.baselibrary.base.BaseFragment;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import release.App;
 
 
 /**
@@ -51,8 +53,10 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
             mineZcAvatar = rootView.findViewById(R.id.mine_zc_avatar);
             //登录人名称
             minename = rootView.findViewById(R.id.mine_zc_ascription_name);
+            minename.setText(SPUtils.getString(App.getInstance(),"staffName",""));
             //当前组织
-            rootView.findViewById(R.id.mine_zc_ascription_org).setOnClickListener(this);
+            ascriptionOrg= rootView.findViewById(R.id.mine_zc_ascription_org);
+            ascriptionOrg.setText("所属组织："+SPUtils.getString(App.getInstance(),"orgName",""));
             //切换组织
             rootView.findViewById(R.id.mine_zc_organization).setOnClickListener(this);
             //修改 密码
@@ -113,6 +117,7 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
 
     @Override
     public void callback() {
-
+        minename.setText(SPUtils.getString(App.getInstance(),"staffName",""));
+        ascriptionOrg.setText("所属组织："+SPUtils.getString(App.getInstance(),"orgName",""));
     }
 }

@@ -107,6 +107,7 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             ArrayList<String> title = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 path.add(list.get(i).getName());
+                title.add(list.get(i).getContent());
             }
             RectifierAdapter adapter1 = new RectifierAdapter(mContext, path, title);
             ((DetailsTop) holder).checkDetailsRec.setAdapter(adapter1);
@@ -133,6 +134,8 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             RectifierAdapter adapter = new RectifierAdapter(mContext, path1, title1);
             for (int i = 0; i < list1.size(); i++) {
                 path1.add(list1.get(i).getName());
+                title1.add(list1.get(i).getContent());
+
             }
             ((DetailsContent) holder).detailsResultRec.setAdapter(adapter);
         } else if (holder instanceof DetailsContents) {
@@ -166,9 +169,11 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             ArrayList<String> title2 = new ArrayList<>();
             for (int i = 0; i < list1.size(); i++) {
                 path2.add(list1.get(i).getName());
+                title2.add(list1.get(i).getContent());
             }
             RectifierAdapter adapter2 = new RectifierAdapter(mContext, path2, title2);
             ((DetailsContents) holder).detailsValidationRec.setAdapter(adapter2);
+            adapter2.getData(path2,title2);
         }
     }
 
@@ -197,7 +202,6 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         RecyclerView checkDetailsRec;
         TextView checkDetailsRectificationUser, checkDetailsLasetime, checkDetailsStatus,attachment;
         ImageView notimgeview;
-
         DetailsTop(View itemView) {
             super(itemView);
             checkDetailsTitle = itemView.findViewById(R.id.check_details_title);

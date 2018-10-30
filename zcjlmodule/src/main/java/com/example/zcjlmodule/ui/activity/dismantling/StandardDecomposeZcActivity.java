@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.dismantling;
 
 import android.content.Context;
 import android.content.Intent;

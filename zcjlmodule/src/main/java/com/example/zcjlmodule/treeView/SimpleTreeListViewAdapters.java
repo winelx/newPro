@@ -12,7 +12,7 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.treeView.utils.Nodes;
 import com.example.zcjlmodule.treeView.utils.TreeHelpers;
 import com.example.zcjlmodule.treeView.utils.adapter.TreeListViewAdapters;
-import com.example.zcjlmodule.ui.activity.UserOrgZcActivity;
+import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
 
 import java.util.List;
 
@@ -61,10 +61,20 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.id_item_lin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (node.getChildren().size() == 0) {
-                    mian.getAdd(position, node);
+                if (position==0){
+                    if (node.getChildren().size() == 0) {
+                        mian.getAdd(position, node);
+                    }
+                    //打开两次，不然第二级无法打开
+                    expandOrCollapse(position);
+                    expandOrCollapse(position);
+                }else {
+                    if (node.getChildren().size() == 0) {
+                        mian.getAdd(position, node);
+                    }
+                    expandOrCollapse(position);
                 }
-                expandOrCollapse(position);
+
             }
         });
         holder.mText.setText(node.getName());

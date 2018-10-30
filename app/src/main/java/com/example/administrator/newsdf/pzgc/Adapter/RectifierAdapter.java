@@ -16,10 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -37,7 +36,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context mContext;
     private ArrayList<String> mData;
     private ArrayList<String> Title;
-    private Dates dates = new Dates();
 
     public RectifierAdapter(Context mContext, ArrayList<String> listA, ArrayList<String> Title) {
         this.mContext = mContext;
@@ -76,7 +74,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if (strs.equals("doc") || strs.equals("docx")) {
+        } else if ("doc".equals(strs) || "docx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(Title.get(position) + ".doc");
@@ -84,7 +82,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if (strs.equals("xls") || strs.equals("xlsx")) {
+        } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(Title.get(position) + ".xsl");
@@ -178,8 +176,9 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void getData(ArrayList<String> mData) {
+    public void getData(ArrayList<String> mData,ArrayList<String>title) {
         this.mData = mData;
+        this.Title = title;
         notifyDataSetChanged();
     }
 

@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity;
+package com.example.zcjlmodule.ui.activity.original;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,22 +23,19 @@ import java.util.List;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 
 /**
- * description: 申请期数
- *
+ * description: 选择所属项目
  * @author lx
- *         date: 2018/10/18 0018 下午 3:25
- *         update: 2018/10/18 0018
- *         跳转界面 NewAddOriginalZcActivity
- *         与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity
- *         ApplyDateZcActivity 共用布局
+ * date: 2018/10/18 0018 下午 3:25
+ * update: 2018/10/18 0018
+ * 跳转界面 NewAddOriginalZcActivity
+ * 与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity共用布局
  */
-public class ApplyDateZcActivity extends BaseActivity implements View.OnClickListener {
-
+public class ChoiceProjectZcActivity extends BaseActivity implements View.OnClickListener {
     private AttachProjectAdapter mAdapter;
     private ArrayList<AttachProjectBean> list;
     private Context mContext;
-    private ProgressBar layoutEmptyviewBar;
-    private TextView layoutEmptyviewText;
+    private ProgressBar layout_emptyView_bar;
+    private TextView layout_emptyView_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +43,14 @@ public class ApplyDateZcActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_choice_project_zc);
         mContext = this;
         list = new ArrayList<>();
-//        for (int i = 0; i < 25; i++) {
-//            list.add(new AttachProjectBean("ss", "测试数据" + i));
-//        }
+        for (int i = 0; i < 25; i++) {
+            list.add(new AttachProjectBean("ss", "测试数据" + i));
+        }
+        layout_emptyView_bar= (ProgressBar) findViewById(R.id.layout_emptyView_bar);
+        layout_emptyView_text= (TextView) findViewById(R.id.layout_emptyView_text);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
-        layoutEmptyviewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
-        layoutEmptyviewText = (TextView) findViewById(R.id.layout_emptyView_text);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("选择期数");
+        title.setText("选择所属项目");
         RecyclerView recycler = (RecyclerView) findViewById(R.id.attachproject_recycler);
         DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.custom_divider));
@@ -77,7 +74,7 @@ public class ApplyDateZcActivity extends BaseActivity implements View.OnClickLis
         } else {
         }
     }
-    //适配器
+
     private class AttachProjectAdapter extends BaseQuickAdapter<AttachProjectBean, BaseViewHolder> {
         public AttachProjectAdapter(@LayoutRes int layoutResId, @Nullable List data) {
             super(layoutResId, data);
