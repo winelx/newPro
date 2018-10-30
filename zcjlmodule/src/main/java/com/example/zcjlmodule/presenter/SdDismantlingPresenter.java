@@ -27,7 +27,7 @@ public class SdDismantlingPresenter extends BasePresenters<SdDismantlingView> {
             @Override
             public void onSuccess(ArrayList<SdDismantlingBean> list) {
                 //请求成功
-                mView.getdata(list);
+                mView.onSuccess(list);
             }
             @Override
             public void onError() {

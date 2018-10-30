@@ -103,9 +103,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public void addExtraNode(int position, String names, String ids, String pids,String type) {
         Nodes node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
-
         Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids,type);
-
         extraNode.setParent(node);
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);
@@ -114,11 +112,5 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         expandOrCollapse(position);
     }
 
-    interface  setOnclick{
-        void click();
-    }
-    public void setOnclick(setOnclick setOnclick){
-
-    }
 }
 

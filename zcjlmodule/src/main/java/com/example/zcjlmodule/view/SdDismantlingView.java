@@ -16,6 +16,6 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  *         activity  StandardDismantlingZcActivity
  */
 public interface SdDismantlingView extends BaseView {
-        void getdata(ArrayList<SdDismantlingBean> list);
+        void onSuccess(ArrayList<SdDismantlingBean> list);
         void onError();
 }

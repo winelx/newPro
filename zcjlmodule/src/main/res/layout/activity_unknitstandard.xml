@@ -12,6 +12,7 @@
     <include layout="@layout/toolbar_icon_zc" />
 
     <TextView
+        android:id="@+id/unknits_title"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/bg_white"

@@ -39,6 +39,8 @@ public class SdDismantlingModel {
             final ArrayList<SdDismantlingBean> list = new ArrayList();
             OkGo.get(Api.GETLEVYSTANDARD)
                     .params("orgId", orgId)
+                    .params("page",page)
+                    .params("size",20)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
@@ -46,22 +48,73 @@ public class SdDismantlingModel {
                                 JSONObject jsonObject = new JSONObject(s);
                                 int ret = jsonObject.getInt("ret");
                                 if (ret == 0) {
-                                    JSONArray jsonArray =jsonObject.getJSONArray("data");
-                                    for (int i = 0; i < ; i++) {
-                                        JSONObject json =jsonArray.getJSONObject(i);
-                                        String number=json.getString("number");
-                                        String name=json.getString("name");
-                                        String fileName=json.getString("fileName");
-                                        String fileNumber=json.getString("fileNumber");
-                                        String createDate=json.getString("createDate");
-                                        String provinceName =json.getString("provinceName");
-                                        String cityName =json.getString("cityName");
-                                        String countyName =json.getString("countyName");
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String number;
+                                        try {
+                                            //title
+                                            number = json.getString("number");
+                                        } catch (Exception e) {
+                                            number = "";
+                                        }
+                                        //id
+                                        String id;
+                                        try {
+                                            id = json.getString("id");
+                                        } catch (Exception e) {
+                                            id = "";
+                                        }
+                                        //文件名称
+                                        String fileName;
+                                        try {
+                                            fileName = json.getString("fileName");
+                                        } catch (Exception e) {
+                                            fileName = "";
+                                        }
+                                        //文件编号
+                                        String fileNumber;
+                                        try {
+                                            fileNumber = json.getString("fileNumber");
+                                        } catch (Exception e) {
+                                            fileNumber = "";
+                                        }
+                                        //创建时间
+                                        String createDate;
+                                        try {
+                                            createDate = json.getString("createDate").substring(0, 10);
+                                        } catch (Exception e) {
+                                            createDate = "";
+                                        }
+                                        //省
+                                        String provinceName;
+                                        try {
+                                            provinceName = json.getString("provinceName");
+                                        } catch (Exception e) {
+                                            provinceName = "";
+                                        }
+                                        //城市
+                                        String cityName;
+                                        try {
+                                            cityName = json.getString("cityName");
+                                        } catch (Exception e) {
+                                            cityName = "";
+                                        }
+                                        //区域
+                                        String countyName;
+                                        try {
+                                            countyName = json.getString("countyName");
+                                        } catch (Exception e) {
+                                            countyName = "";
+                                        }
+                                        String cityNames = provinceName + cityName + countyName;
+                                        list.add(new SdDismantlingBean(id, number, fileNumber, fileName, cityNames, createDate));
                                     }
+
                                 } else {
                                     ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                                 }
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             onClickListener.onSuccess(list);

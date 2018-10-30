@@ -84,8 +84,6 @@ public class TreeHelpers
 			nodes.add(node);
 		}// for end
 
-		Log.e("TAG", nodes+"");
-
 		/**
 		 * 设置Node间的节点关系
 		 */
@@ -130,7 +128,6 @@ public class TreeHelpers
 			addNode(result, node, defaultExpandLevel, 1);
 		}
 
-		Log.e("TAG", result.size() + "");
 		return result;
 	}
 

@@ -13,5 +13,6 @@ import measure.jjxx.com.baselibrary.base.BaseView;
  */
 
 public interface UnknitstandardView  extends BaseView{
-    void getdata(ArrayList<UnknitstandardBean> data);
+    void onSuccess(ArrayList<UnknitstandardBean> data);
+    void onError();
 }

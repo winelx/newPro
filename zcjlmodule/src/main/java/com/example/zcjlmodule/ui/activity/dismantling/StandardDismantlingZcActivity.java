@@ -52,6 +52,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
     private List<SdDismantlingBean> list;
     private Context mContext;
     private int page = 1;
+    private boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,23 +98,26 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.dismantling_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter = new DismantAdapter(R.layout.adapter_standard_dismantling_zc, list));
-
-
         //recyclerview的item 的点击事件
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, ExamineDismantlingActivity.class));
+                Intent intent = new Intent(mContext, ExamineDismantlingActivity.class);
+                intent.putExtra("id", list.get(position).getId());
+
+                startActivity(intent);
             }
         });
 
-        //recyclerview的item子项的点击事件处理
+        //recyclerview的item子项的点击事件处理（查标准分解）
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 int i = view.getId();
                 if (i == R.id.see_standard_dismantiling) {
-                    startActivity(new Intent(mContext, UnknitstandardActivity.class));
+                    Intent intent = new Intent(mContext, UnknitstandardActivity.class);
+                    intent.putExtra("filenumber", list.get(position).getFilename());
+                    startActivity(intent);
                 } else {
                 }
             }
@@ -132,6 +136,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
                 //传入false表示刷新失败
                 //空白布局
                 blankview(3);
+                status = true;
                 page = 1;
                 mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
 
@@ -143,6 +148,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
+                status = false;
                 mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
                 //传入false表示加载失败
             }
@@ -150,33 +156,41 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
     }
 
     /**
-     * @param data
+     * 请求成功
      */
     @Override
-    public void getdata(ArrayList<SdDismantlingBean> data) {
+    public void onSuccess(ArrayList<SdDismantlingBean> data) {
         //判断加载页，判断是否删除之前的数据
         if (page == 1) {
             list.clear();
         }
-        //空白布局
-        blankview(3);
         //将网络请求的数据添加到集合
         list.addAll(data);
+        //空白布局
+        blankview(3);
         //更新数据
         mAdapter.setNewData(list);
-        refreshLayout.finishRefresh();
-        refreshLayout.finishLoadmore();
+        //判断加载刷新
+        if (status) {
+            refreshLayout.finishRefresh();
+        } else {
+            refreshLayout.finishLoadmore();
+        }
     }
 
     /**
      * 加载失败
      */
-
     @Override
     public void onError() {
-        refreshLayout.finishRefresh();
-        refreshLayout.finishLoadmore();
-        blankview(1);
+        //判断加载刷新
+        if (status) {
+            refreshLayout.finishRefresh();
+        } else {
+            refreshLayout.finishLoadmore();
+        }
+        //布局显示
+        blankview(3);
     }
 
     /**
@@ -193,13 +207,13 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             helper.setText(R.id.standard_dismantiling_title, item.getTitle());
             helper.setText(R.id.standard_dismantiling_date, item.getDatatime());
             helper.setText(R.id.standard_dismantiling_content, item.getContent());
-            helper.setText(R.id.standard_dismantiling_filename, item.getFilename());
-            helper.setText(R.id.standard_dismantiling_region, item.getRegion());
+            helper.setText(R.id.standard_dismantiling_filename, "文件名称：" + item.getFilename());
+            helper.setText(R.id.standard_dismantiling_region, "行政区域：" + item.getRegion());
         }
     }
 
     /**
-     * 空白布局
+     * 空白布局控制
      *
      * @param status
      */
@@ -228,11 +242,12 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
                 if (list.size() > 0) {
                     emptyView.setVisibility(View.GONE);
                 } else {
-                    gressBar.setVisibility(View.VISIBLE);
+                    gressBar.setVisibility(View.GONE);
                     emptyView.setVisibility(View.VISIBLE);
-                    prompt.setVisibility(View.GONE);
-
+                    prompt.setVisibility(View.VISIBLE);
+                    prompt.setText("暂无数据");
                 }
+                break;
             default:
                 break;
         }

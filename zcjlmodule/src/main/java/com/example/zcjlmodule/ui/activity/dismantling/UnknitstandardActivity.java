@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.dismantling;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 
 /**
  * description: 标准分解
@@ -43,27 +45,66 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
     private Context mContext;
     private ArrayList<UnknitstandardBean> list;
     private SmartRefreshLayout refreshLayout;
-    private TextView prompt;
+    private TextView prompt, unknits_title;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private int page = 1;
+
+    private boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unknitstandard);
         mContext = this;
+        Intent intent = getIntent();
         list = new ArrayList<>();
         mPresenter = new UnknitstandardPresenter();
         mPresenter.mView = this;
-        emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
-        //等待的滚动条
-        gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
-        //错误提示
-        prompt = (TextView) findViewById(R.id.layout_emptyView_text);
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("标准分解");
+        //界面初始化
+        init();
+        //recyclerview 初始化
+        recycler();
+        //刷新加载
+        refresh();
+        //标准编号
+        unknits_title.setText("标准编号：" + intent.getStringExtra("filenumber"));
+        list = new ArrayList<>();
+        //网络请求
+        mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+    }
+
+    /**
+     * 刷新加载
+     */
+    private void refresh() {
+        //  下拉刷新
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                page = 1;
+                status = true;
+                //传入false表示刷新失败
+                mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+            }
+        });
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                status = false;
+                mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+            }
+        });
+
+    }
+
+    /**
+     * recyclerview 初始化
+     */
+    private void recycler() {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.unknit_recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(mAdapter = new StandardDecomposeAdapter(R.layout.adapter_decompose_zc, list));
@@ -75,58 +116,72 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
 
             }
         });
-        //  下拉刷新
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                page=1;
-                //传入false表示刷新失败
-                mPresenter.getdata();
-                refreshlayout.finishRefresh(800);
-            }
-        });
-        //上拉加载
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page++;
-                mPresenter.getdata();
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore(800);
-            }
-        });
+    }
+
+    /**
+     * 初始化界面
+     */
+    private void init() {
+        unknits_title = (TextView) findViewById(R.id.unknits_title);
+
+        emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
+        //等待的滚动条
+        gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
+        //错误提示
+        prompt = (TextView) findViewById(R.id.layout_emptyView_text);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
+        title.setText("标准分解");
+        //返回
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        mPresenter.getdata();
     }
 
+    /**
+     * 请求成功
+     *
+     * @param data
+     */
     @Override
-    public void getdata(ArrayList<UnknitstandardBean> data) {
+    public void onSuccess(ArrayList<UnknitstandardBean> data) {
         //判断加载页，判断是否删除之前的数据
         if (page == 1) {
             list.clear();
         }
         //将网络请求的数据添加到集合
         list.addAll(data);
-        //如果集合的数据大于0，就隐藏空白数据提示
-        if (list.size() > 0) {
-            emptyView.setVisibility(View.GONE);
-        } else {
-            //如果不大于0，显示空白页，隐藏等待框，显示提示
-            gressBar.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-            prompt.setVisibility(View.VISIBLE);
-        }
         //更新数据
         mAdapter.setNewData(list);
-
+        blankview(3);
+        //判断加载刷新
+        if (status) {
+            refreshLayout.finishRefresh();
+        } else {
+            refreshLayout.finishLoadmore();
+        }
     }
 
+    /**
+     * 请求失败
+     */
+    @Override
+    public void onError() {
+        //判断加载刷新
+        if (status) {
+            refreshLayout.finishRefresh();
+        } else {
+            refreshLayout.finishLoadmore();
+        }
+        blankview(1);
+    }
+
+    /**
+     * recycler的适配器
+     */
     public class StandardDecomposeAdapter extends BaseQuickAdapter<UnknitstandardBean, BaseViewHolder> {
 
         public StandardDecomposeAdapter(@LayoutRes int layoutResId, @Nullable List<UnknitstandardBean> data) {
@@ -139,8 +194,39 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
             helper.setText(R.id.unknit_stand_compensate, item.getCompensate());
             helper.setText(R.id.unknit_stand_type, item.getType());
             helper.setText(R.id.unknit_stand_region, item.getRegion());
-            helper.setText(R.id.unknit_stand_unit, item.getUnit());
-            helper.setText(R.id.unknit_stand_price, item.getPrice());
+            helper.setText(R.id.unknit_stand_unit, "单位：" + item.getUnit());
+            helper.setText(R.id.unknit_stand_price, "单价：" + item.getPrice());
         }
+    }
+
+    /**
+     * 空布局
+     */
+    public void blankview(int status) {
+        //判断集合中是否有数据，如果有数据，隐藏空白布局，
+        if (list.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+        } else {
+            //如果列表为空，判断状态是请求成功没数据，还是请求失败没有数据
+            switch (status) {
+                case 1:
+                    //第一次进入界面或者下拉刷新数据请求失败
+                    gressBar.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    prompt.setVisibility(View.VISIBLE);
+                    prompt.setText("请求失败");
+                    break;
+                case 3:
+                    //第一次进入界面或者下拉刷新数据请求成功
+                    gressBar.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    prompt.setVisibility(View.VISIBLE);
+                    prompt.setText("暂无数据");
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 }
