@@ -17,7 +17,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.PayDetailedlistBean;
+import com.example.zcjlmodule.callback.Callback;
+import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.DetailedlistPresenter;
+import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
 import com.example.zcjlmodule.view.DetailedlistView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -26,6 +29,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
@@ -41,7 +45,7 @@ import release.App;
  *         date: 2018/10/11 0011 下午 3:33
  *         跳转界面：workFragment
  */
-public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPresenter> implements DetailedlistView, View.OnClickListener {
+public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPresenter> implements DetailedlistView, View.OnClickListener, Callback {
     //适配器
     private PayDetailedlistZcActivity.RecyclerAdapter mAdapter;
     private List<PayDetailedlistBean> list;
@@ -50,23 +54,25 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
     private ProgressBar gressBar;
     private TextView prompt, detailedlistProjectname;
     private SmartRefreshLayout refreshLayout;
-    private int page = 0;
+    private int page = 1;
     private boolean status = true;
-
+    private String orgId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailedlist_zc);
         mContext = this;
+        PayDetailCallBackUtils.setCallBack(this);
         //初始化presenter
         mPresenter = new DetailedlistPresenter();
         //初始化mview
         mPresenter.mView = this;
+        orgId=SPUtils.getString(mContext, "orgId", null);
         list = new ArrayList<>();
         findId();
         refresh();
         //请求网络
-        mPresenter.register(SPUtils.getString(mContext, "orgId", null), page);
+        mPresenter.register(orgId, (page-1));
         //列表的点击事件
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -146,7 +152,9 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
         if (i == R.id.toolbar_icon_back) {
             finish();
         } else if (i == R.id.detailedlist_project) {
-            ToastUtlis.getInstance().showShortToast("项目");
+            Intent intent = new Intent(mContext, UserOrgZcActivity.class);
+            intent.putExtra("status", 1);
+            startActivity(intent);
         } else {
 
         }
@@ -160,12 +168,13 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
      */
     @Override
     public void getdata(ArrayList<PayDetailedlistBean> str) {
+
         if (status) {
-            refreshLayout.finishRefresh(false);
+            refreshLayout.finishRefresh();
         } else {
-            refreshLayout.finishLoadmore(false);
+            refreshLayout.finishLoadmore();
         }
-        if (page == 0) {
+        if (page == 1) {
             list.clear();
         }
         //将网络请求的数据添加到list
@@ -174,6 +183,7 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
             //如果list大于0，隐藏空白数据提示
             emptyView.setVisibility(View.GONE);
         } else {
+            ToastUtlis.getInstance().showShortToast("暂无数据");
             //反之显示空数据提示，隐藏等待框
             emptyView.setVisibility(View.VISIBLE);
             prompt.setVisibility(View.VISIBLE);
@@ -207,6 +217,15 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
             refreshLayout.finishLoadmore();
         }
 
+    }
+
+
+    @Override
+    public void callback(Map<String, Object> map) {
+        orgId=(String) map.get("orgId");
+        detailedlistProjectname.setText( map.get("orgname")+"");
+        //请求网络
+        httprequest(true);
     }
 
     /**
@@ -244,7 +263,7 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
      */
     public void httprequest(boolean lean) {
         if (lean) {
-            page = 0;
+            page = 1;
             //标记刷新还是加载状态
             status = true;
         } else {
@@ -252,6 +271,6 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
             //标记刷新还是加载状态
             status = false;
         }
-        mPresenter.register(SPUtils.getString(mContext, "orgId", null), page);
+        mPresenter.register(orgId, (page-1));
     }
 }

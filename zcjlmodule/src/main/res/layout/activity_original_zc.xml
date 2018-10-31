@@ -10,6 +10,8 @@
     <include layout="@layout/toolbar_icon_zc" />
 
     <LinearLayout
+
+        android:id="@+id/original_org"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/bg_white"
@@ -26,6 +28,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/original_orgname"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="8"

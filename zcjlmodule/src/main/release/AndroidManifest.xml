@@ -65,8 +65,8 @@
         <activity android:name=".ui.activity.original.ChoiceProjectZcActivity" />
         <activity android:name=".ui.activity.original.ChoiceBidsZcActivity" />
         <activity android:name=".ui.activity.original.ChoiceHeadquartersZcActivity" />
-        <activity android:name=".ui.activity.dismantling.StandardDecomposeZcActivity" />
-        <activity android:name=".ui.activity.dismantling.DismantlingtypequeryZcActivity" />
+        <activity android:name=".ui.activity.original.StandardDecomposeZcActivity" />
+        <activity android:name=".ui.activity.original.DismantlingtypequeryZcActivity" />
         <activity android:name=".ui.activity.original.ApplyDateZcActivity" />
         <activity android:name=".ui.activity.dismantling.StandardDismantlingZcActivity" />
         <activity android:name=".ui.activity.dismantling.UnknitstandardActivity" />

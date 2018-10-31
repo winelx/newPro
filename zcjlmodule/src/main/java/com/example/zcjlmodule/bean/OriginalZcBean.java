@@ -22,9 +22,11 @@ public class OriginalZcBean {
     String createName;
     //创建时间
     String createdata;
+    //总价格
+    String totalPrice;
 
 
-    public OriginalZcBean(String id, String titile, String content, String datanumber, String namecontent, String category, String createName, String createdata) {
+    public OriginalZcBean(String id, String titile, String content, String datanumber, String namecontent, String category, String createName, String createdata, String totalPrice) {
         this.id = id;
         this.titile = titile;
         this.content = content;
@@ -33,6 +35,7 @@ public class OriginalZcBean {
         this.category = category;
         this.createName = createName;
         this.createdata = createdata;
+        this.totalPrice = totalPrice;
     }
 
     public String getId() {
@@ -97,5 +100,13 @@ public class OriginalZcBean {
 
     public void setCreatedata(String createdata) {
         this.createdata = createdata;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 
 import measure.jjxx.com.baselibrary.R;
 
@@ -18,11 +19,12 @@ public class TextUtils {
      * 设置有颜色文字
      */
     public static SpannableString setText(Context mContext,String str, int num) {
+        Log.i("11",num+"");
         SpannableString sp = new SpannableString(str);
-        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                        .getColor(R.color.red)), num,
-                str.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+//                        .getColor(R.color.red)), num,
+//                str.length(),
+//                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }
 }

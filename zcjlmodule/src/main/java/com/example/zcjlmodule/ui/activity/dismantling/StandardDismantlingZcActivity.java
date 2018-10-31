@@ -46,9 +46,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private TextView prompt;
-
     private DismantAdapter mAdapter;
-
     private List<SdDismantlingBean> list;
     private Context mContext;
     private int page = 1;
@@ -103,8 +101,28 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, ExamineDismantlingActivity.class);
+                //id
                 intent.putExtra("id", list.get(position).getId());
-
+                //省份
+                intent.putExtra("provincename", list.get(position).getProvinceName());
+                //城市
+                intent.putExtra("cityname", list.get(position).getCityName());
+                //区域
+                intent.putExtra("countyName", list.get(position).getCountyName());
+                //乡镇
+                intent.putExtra("townName", list.get(position).getTownName());
+                //文件名称
+                intent.putExtra("filename", list.get(position).getFilename());
+                //文件编号
+                intent.putExtra("filenumber", list.get(position).getFilenumber());
+                //备注
+                intent.putExtra("remarks", list.get(position).getRemarks());
+                //发布人
+                intent.putExtra("releasor", list.get(position).getReleasor());
+                //时间
+                intent.putExtra("createDate", list.get(position).getDatatime());
+                //标准编号
+                intent.putExtra("number", list.get(position).getNumber());
                 startActivity(intent);
             }
         });
@@ -204,9 +222,9 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         @Override
         protected void convert(BaseViewHolder helper, SdDismantlingBean item) {
             helper.addOnClickListener(R.id.see_standard_dismantiling);
-            helper.setText(R.id.standard_dismantiling_title, item.getTitle());
+            helper.setText(R.id.standard_dismantiling_title, item.getNumber());
             helper.setText(R.id.standard_dismantiling_date, item.getDatatime());
-            helper.setText(R.id.standard_dismantiling_content, item.getContent());
+            helper.setText(R.id.standard_dismantiling_content, item.getFilenumber());
             helper.setText(R.id.standard_dismantiling_filename, "文件名称：" + item.getFilename());
             helper.setText(R.id.standard_dismantiling_region, "行政区域：" + item.getRegion());
         }

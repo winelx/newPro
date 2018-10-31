@@ -25,9 +25,9 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 
 	/**
 	 * 设置Node的点击回调
-	 * 
+	 *
 	 * @author zhy
-	 * 
+	 *
 	 */
 	public interface OnTreeNodeClickListener
 	{
@@ -42,21 +42,19 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 	}
 
 	public TreeListViewAdapters(ListView tree, Context context, List<T> datas,
-                                int defaultExpandLevel) throws IllegalArgumentException,
-            IllegalAccessException
+								int defaultExpandLevel) throws IllegalArgumentException,
+			IllegalAccessException
 	{
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		mAllNodes = TreeHelpers.getSortedNodes(datas, defaultExpandLevel);
 		mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
-
 		mTree = tree;
-
 		mTree.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id)
+									int position, long id)
 			{
 				expandOrCollapse(position);
 
@@ -73,16 +71,16 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 
 	/**
 	 * 点击搜索或者展开
-	 * 
+	 *
 	 * @param position
 	 */
 	public void expandOrCollapse(int position)
 	{
 		Nodes n = mVisibleNodes.get(position);
-		if (n != null)
-		{
-			if (n.isLeaf())
+		if (n != null) {
+			if (n.isLeaf()) {
 				return;
+			}
 			n.setExpand(!n.isExpand());
 			mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
 			notifyDataSetChanged();
@@ -109,7 +107,6 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
-
 	{
 		Nodes node = mVisibleNodes.get(position);
 		convertView = getConvertView(node, position, convertView, parent);
@@ -119,6 +116,7 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 	}
 
 	public abstract View getConvertView(Nodes node, int position,
-                                        View convertView, ViewGroup parent);
+										View convertView, ViewGroup parent);
+
 
 }

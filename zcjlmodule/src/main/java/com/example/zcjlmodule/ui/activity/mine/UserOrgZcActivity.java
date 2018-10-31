@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.mine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.callback.ChangOrgCallBackUtils;
+import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.treeView.SimpleTreeListViewAdapters;
 import com.example.zcjlmodule.treeView.bean.OrgBeans;
 import com.example.zcjlmodule.treeView.bean.OrgenBeans;
@@ -41,6 +43,7 @@ public class UserOrgZcActivity extends BaseActivity {
     private Context mContext;
     private List<OrgenBeans> mData;
     private SimpleTreeListViewAdapters mAdapter;
+    private int status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,12 @@ public class UserOrgZcActivity extends BaseActivity {
         mContext = this;
         utils = new UserOrgZcUtils();
         mData = new ArrayList<>();
+        Intent intent = getIntent();
+        try {
+            status = intent.getIntExtra("status", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_user_org_zc);
         mTree = (ListView) findViewById(R.id.userorg_zc_list);
         linearLayout = (LinearLayout) findViewById(R.id.layout_emptyView);
@@ -57,7 +66,8 @@ public class UserOrgZcActivity extends BaseActivity {
         title.setText("切换组织");
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {finish();
+            public void onClick(View view) {
+                finish();
             }
         });
         utils.getuserorg(new UserOrgZcUtils.OnClickListener() {
@@ -107,22 +117,33 @@ public class UserOrgZcActivity extends BaseActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name, String type) {
-        utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
-            @Override
-            public void onClick(int ret) {
-                if (ret == 0) {
-                    ToastUtlis.getInstance().showShortToast("切换组织成功");
-                    SPUtils.deleShare(mContext, "orgName");
-                    SPUtils.deleShare(mContext, "orgId");
-                    //所在组织ID
-                    SPUtils.putString(mContext, "orgId", orgid);
-                    //所在组织名称
-                    SPUtils.putString(mContext, "orgName", name);
-                    ChangOrgCallBackUtils.CallBack();
-                    finish();
+        if (status == 0) {
+            utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
+                @Override
+                public void onClick(int ret) {
+                    if (ret == 0) {
+                        ToastUtlis.getInstance().showShortToast("切换组织成功");
+                        SPUtils.deleShare(mContext, "orgName");
+                        SPUtils.deleShare(mContext, "orgId");
+                        //所在组织ID
+                        SPUtils.putString(mContext, "orgId", orgid);
+                        //所在组织名称
+                        SPUtils.putString(mContext, "orgName", name);
+                        ChangOrgCallBackUtils.CallBack();
+                        finish();
+                    }
                 }
+            });
+        } else {
+            try {
+                PayDetailCallBackUtils.CallBack(orgid, name);
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+
+        }
+
     }
 
 }

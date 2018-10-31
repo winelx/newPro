@@ -37,7 +37,6 @@ public class DetailedlistModel {
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            Log.i("ss",s);
                             ArrayList<PayDetailedlistBean> list = new ArrayList<>();
                             if (s.contains("data")) {
                                 try {
@@ -64,15 +63,12 @@ public class DetailedlistModel {
                                             String number = json.getString("number");
                                             list.add(new PayDetailedlistBean(id, number, fileNumber, periodName, headquarterName, totalMoney, checkMoney, uncheckMoney));
                                         }
-                                    } else {
-                                        ToastUtlis.getInstance().showShortToast("暂无数据");
                                     }
                                     onClickListener.onComple(list);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             } else {
-                                ToastUtlis.getInstance().showShortToast("暂无数据");
                                 onClickListener.onComple(list);
                             }
                         }

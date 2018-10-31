@@ -13,16 +13,28 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Created by Administrator on 2018/10/24 0024.
- */
 
+/**
+ * description: 我的fragment界面
+ * @author lx
+ * date: 2018/10/31 0031 上午 10:54
+ * fragment ：minefragment
+*/
 public class FragmentmineUtils {
     public interface OnClickLister {
+        /**
+         * 检查更新接口请求成功后返回
+         * @param status  状态
+         */
         void onClickLister(int status);
     }
 
-    //退出登录
+
+    /**
+     * description: 退出登录
+     * @author lx
+     * date: 2018/10/31 0031 下午 1:46
+    */
     public void logout(final OnClickLister onClickListener) {
         OkGo.get(Api.LOGOUT)
                 .execute(new StringCallback() {
@@ -40,7 +52,6 @@ public class FragmentmineUtils {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -49,7 +60,6 @@ public class FragmentmineUtils {
     }
 
     public void findversion(final OnClickLister onClickListener) {
-
         OkGo.get(Api.FINDAPPVERSION)
                 .params("type", 2)
                 .execute(new StringCallback() {
@@ -67,7 +77,7 @@ public class FragmentmineUtils {
                                 String qrcodeUrl = jsonObject1.getString("qrcodeUrl");
                                 //版本
                                 String version = jsonObject1.getString("version");
-                                //藐视
+                                //描述
                                 String description = jsonObject1.getString("description");
                                 onClickListener.onClickLister(ret);
                             } else {

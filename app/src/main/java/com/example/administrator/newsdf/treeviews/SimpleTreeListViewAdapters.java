@@ -62,10 +62,18 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.id_item_lin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (node.getChildren().size() == 0) {
-                    mian.getAdd(position, node);
+                if (position==0){
+                    if (node.getChildren().size() == 0) {
+                        mian.getAdd(position, node);
+                    }
+                    //打开两次，不然第二级无法打开
+                    expandOrCollapse(position);
+                }else {
+                    if (node.getChildren().size() == 0) {
+                        mian.getAdd(position, node);
+                    }
+                    expandOrCollapse(position);
                 }
-                expandOrCollapse(position);
             }
         });
         holder.mText.setText(node.getName());
@@ -94,13 +102,13 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public void addExtraNode(int position, String names, String ids, String pids,String type) {
         Nodes node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
-        // Node
-        Nodes extraNode = new Nodes(-1, node.getId(), names, ids, pids,type);
+        Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids,type);
         extraNode.setParent(node);
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
+        expandOrCollapse(position);
     }
 
 }

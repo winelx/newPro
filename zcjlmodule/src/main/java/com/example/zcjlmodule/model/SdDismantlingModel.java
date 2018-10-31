@@ -39,8 +39,8 @@ public class SdDismantlingModel {
             final ArrayList<SdDismantlingBean> list = new ArrayList();
             OkGo.get(Api.GETLEVYSTANDARD)
                     .params("orgId", orgId)
-                    .params("page",page)
-                    .params("size",20)
+                    .params("page", page)
+                    .params("size", 20)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
@@ -51,6 +51,7 @@ public class SdDismantlingModel {
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
+                                        //编号
                                         String number;
                                         try {
                                             //title
@@ -107,10 +108,31 @@ public class SdDismantlingModel {
                                         } catch (Exception e) {
                                             countyName = "";
                                         }
+                                        //乡镇
+                                        String townName;
+                                        try {
+                                            townName = json.getString("townName");
+                                        } catch (Exception e) {
+                                            townName = "";
+                                        }
+                                        //备注
+                                        String remarks;
+                                        try {
+                                            remarks = json.getString("remarks");
+                                        } catch (Exception e) {
+                                            remarks = "";
+                                        }
+                                        //发布人
+                                        String releasor;
+                                        try {
+                                            releasor = json.getString("releasor");
+                                        } catch (Exception e) {
+                                            releasor = "";
+                                        }
                                         String cityNames = provinceName + cityName + countyName;
-                                        list.add(new SdDismantlingBean(id, number, fileNumber, fileName, cityNames, createDate));
+                                        list.add(new SdDismantlingBean(id, number, fileNumber, fileName, cityNames, createDate,
+                                                provinceName, cityName, countyName, townName, remarks, releasor));
                                     }
-
                                 } else {
                                     ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                                 }

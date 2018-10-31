@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity.dismantling;
+package com.example.zcjlmodule.ui.activity.original;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.ui.activity.original.DismantlingtypequeryZcActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,6 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
         int i = view.getId();
         if (i == R.id.toolbar_icon_back) {
             finish();
-
         } else if (i == R.id.standard_dec_region) {//地区查询
 
         } else if (i == R.id.standard_dec_type) {

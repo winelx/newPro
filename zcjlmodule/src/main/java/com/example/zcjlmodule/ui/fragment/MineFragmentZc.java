@@ -18,6 +18,8 @@ import com.example.zcjlmodule.ui.activity.mine.PasswordActivity;
 import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
 import com.example.zcjlmodule.utils.fragment.FragmentmineUtils;
 
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import measure.jjxx.com.baselibrary.base.BaseFragment;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
@@ -116,8 +118,9 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void callback() {
+    public void callback(Map<String, Object> map) {
         minename.setText(SPUtils.getString(App.getInstance(),"staffName",""));
         ascriptionOrg.setText("所属组织："+SPUtils.getString(App.getInstance(),"orgName",""));
     }
+
 }

@@ -16,7 +16,7 @@ public class Api {
     //测
    public static final String networks = "http://192.168.20.120:8082/dtjl/";
     //郑
-  //  public static final String networks = "http://192.168.20.40/dtjl/";
+ //  public static final String networks = "http://192.168.20.40/dtjl/";
     /**
      * 基础接口
      */
@@ -51,6 +51,8 @@ public class Api {
     public static final String GETLEVYSTANDARDDETAILS = networks + "/iface/levy/getLevyStandardDetails";
     //征拆标准获取征拆明细
     public static final String GETLEVYSTANDARDDETAILSBYSTANDARD = networks + "/iface/levy/getLevyStandardDetailsByStandard";
+    //或者征拆图片
+    public static final String GETATTACHMENTS = networks + "iface/sys/attachment/getAttachments";
 
     /**
      *

@@ -1,5 +1,7 @@
 package com.example.zcjlmodule.presenter;
 
+import android.util.Log;
+
 import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.model.DetailedlistModel;
 import com.example.zcjlmodule.view.DetailedlistView;
@@ -24,6 +26,7 @@ public class DetailedlistPresenter extends BasePresenters<DetailedlistView> {
         model.getData(orgId, page, new DetailedlistModel.Model.OnClickListener() {
             @Override
             public void onComple(ArrayList<PayDetailedlistBean> list) {
+                Log.i("page",list.size()+"");
                 mView.getdata(list);
             }
             @Override

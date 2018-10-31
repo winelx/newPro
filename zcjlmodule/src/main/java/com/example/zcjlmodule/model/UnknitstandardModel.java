@@ -110,7 +110,14 @@ public class UnknitstandardModel {
                                             } catch (Exception e) {
                                                 price = "";
                                             }
-                                            list.add(new UnknitstandardBean(id,number,levyTypeName,loadpath,price,meterUnitName,""));
+                                            //补偿类型
+                                            String compensateType;
+                                            try {
+                                                compensateType = json.getString("compensateType");
+                                            } catch (Exception e) {
+                                                compensateType = "";
+                                            }
+                                            list.add(new UnknitstandardBean(id,number,levyTypeName,loadpath,price,meterUnitName,compensateType));
                                         }
                                     }
                                 } else {

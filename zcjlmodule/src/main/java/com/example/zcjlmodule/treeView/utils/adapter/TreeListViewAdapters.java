@@ -107,7 +107,6 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
-
 	{
 		Nodes node = mVisibleNodes.get(position);
 		convertView = getConvertView(node, position, convertView, parent);

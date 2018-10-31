@@ -191,7 +191,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
         @Override
         protected void convert(BaseViewHolder helper, UnknitstandardBean item) {
             helper.setText(R.id.unknit_stand_title, item.getTitle());
-            helper.setText(R.id.unknit_stand_compensate, item.getCompensate());
+            helper.setText(R.id.unknit_stand_compensate,"补偿类型："+ item.getCompensate());
             helper.setText(R.id.unknit_stand_type, item.getType());
             helper.setText(R.id.unknit_stand_region, item.getRegion());
             helper.setText(R.id.unknit_stand_unit, "单位：" + item.getUnit());

@@ -29,7 +29,7 @@ public class ModuleMainBaseViewIpm {
          *
          * @param onClickListener
          */
-        String getData(String name, String pass, OnClickListener onClickListener);
+        void getData(String name, String pass, OnClickListener onClickListener);
 
         /**
          * 接口
@@ -41,9 +41,8 @@ public class ModuleMainBaseViewIpm {
 
     public static class ModuleMainBaseViewIPml implements Model {
         @Override
-        public String getData(String user, String pass, OnClickListener onClickListener) {
+        public void getData(String user, String pass, OnClickListener onClickListener) {
             okgo(user, pass, onClickListener);
-            return user;
         }
     }
 

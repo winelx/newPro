@@ -131,7 +131,6 @@ public class BootupActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String msg, Call call, Response response) {
-                        LogUtil.i("msg", msg);
                         String message;
                         try {
                             JSONObject jsonObject = new JSONObject(msg);
