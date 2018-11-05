@@ -24,9 +24,34 @@ public class OriginalZcBean {
     String createdata;
     //总价格
     String totalPrice;
-
-
-    public OriginalZcBean(String id, String titile, String content, String datanumber, String namecontent, String category, String createName, String createdata, String totalPrice) {
+    //省份
+    String provinceName;
+    //城市
+    String cityName;
+    //区
+    String countyName;
+    //乡镇
+    String townName;
+    //地址
+    String detailAddress;
+    //计量单位
+    String meterUnitName;
+    //单价
+    String price;
+    //身份证
+    String householderIdcard;
+    //申报数量
+    String declareNum;
+    //标准分解
+    String standardDetailNumber;
+    //原始单号
+    String rawNumber;
+    public OriginalZcBean(String id, String titile, String content, String datanumber,
+                          String namecontent, String category, String createName,
+                          String createdata, String totalPrice, String provinceName,
+                          String cityName, String countyName, String townName,
+                          String detailAddress, String meterUnitName, String price,
+                          String householderIdcard,String declareNum,String standardDetailNumber, String rawNumber) {
         this.id = id;
         this.titile = titile;
         this.content = content;
@@ -36,6 +61,57 @@ public class OriginalZcBean {
         this.createName = createName;
         this.createdata = createdata;
         this.totalPrice = totalPrice;
+        this.provinceName = provinceName;
+        this.cityName = cityName;
+        this.countyName = countyName;
+        this.townName = townName;
+        this.detailAddress = detailAddress;
+        this.meterUnitName = meterUnitName;
+        this.price = price;
+        this.householderIdcard = householderIdcard;
+        this.declareNum = declareNum;
+        this.standardDetailNumber = standardDetailNumber;
+        this.rawNumber = rawNumber;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
+    }
+
+    public String getTownName() {
+        return townName;
+    }
+
+    public void setTownName(String townName) {
+        this.townName = townName;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
     }
 
     public String getId() {
@@ -108,5 +184,53 @@ public class OriginalZcBean {
 
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getMeterUnitName() {
+        return meterUnitName;
+    }
+
+    public void setMeterUnitName(String meterUnitName) {
+        this.meterUnitName = meterUnitName;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getHouseholderIdcard() {
+        return householderIdcard;
+    }
+
+    public void setHouseholderIdcard(String householderIdcard) {
+        this.householderIdcard = householderIdcard;
+    }
+
+    public String getDeclareNum() {
+        return declareNum;
+    }
+
+    public void setDeclareNum(String declareNum) {
+        this.declareNum = declareNum;
+    }
+
+    public String getStandardDetailNumber() {
+        return standardDetailNumber;
+    }
+
+    public void setStandardDetailNumber(String standardDetailNumber) {
+        this.standardDetailNumber = standardDetailNumber;
+    }
+
+    public String getRawNumber() {
+        return rawNumber;
+    }
+
+    public void setRawNumber(String rawNumber) {
+        this.rawNumber = rawNumber;
     }
 }

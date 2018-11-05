@@ -20,7 +20,7 @@ import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.DetailedlistPresenter;
-import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
+import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
 import com.example.zcjlmodule.view.DetailedlistView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -152,8 +152,7 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
         if (i == R.id.toolbar_icon_back) {
             finish();
         } else if (i == R.id.detailedlist_project) {
-            Intent intent = new Intent(mContext, UserOrgZcActivity.class);
-            intent.putExtra("status", 1);
+            Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
             startActivity(intent);
         } else {
 

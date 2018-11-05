@@ -4,9 +4,11 @@ import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.model.OriginalModel;
 import com.example.zcjlmodule.view.OriginalView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * Created by Administrator on 2018/10/15 0015.
@@ -24,12 +26,17 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 public class OriginalPresenter extends BasePresenters<OriginalView> {
     private OriginalModel.Model model;
 
-    public void getdata(String orgId,int page) {
+    public void getdata(String orgId, int page) {
         model = new OriginalModel.OriginalModelPml();
         model.getdata(orgId, page, new OriginalModel.OnClicklister() {
             @Override
             public void onSuccess(ArrayList<OriginalZcBean> list) {
-                mView.onSuccess(list);
+                BigDecimal bigDecimal = new BigDecimal("0");
+                for (int i = 0; i < list.size(); i++) {
+                    BigDecimal price = new BigDecimal(list.get(i).getTotalPrice());
+                    bigDecimal = bigDecimal.add(price);
+                }
+                mView.onSuccess(list,bigDecimal);
             }
 
             @Override

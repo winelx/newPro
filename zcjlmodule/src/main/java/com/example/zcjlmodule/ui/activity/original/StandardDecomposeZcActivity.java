@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.ui.activity.original.DismantlingtypequeryZcActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,11 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Intent intent = new Intent();
+                // 获取用户计算后的结果
+                intent.putExtra("name", list.get(position));
+                setResult(105, intent);
+                finish(); //结束当前的activity的生命周期
             }
         });
     }

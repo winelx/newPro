@@ -46,8 +46,7 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.listRanking.setText((position + 1) + "");
         holder.listCompanyName.setText("所属分公司：" + mData.get(position).getCompany());
         holder.listOrgidName.setText(mData.get(position).getOrgname());
-        String str=mData.get(position).getNumber().replace(".0", "");
-        holder.number.setText( str);
+        holder.number.setText(mData.get(position).getNumber());
         if (position == 0) {
             holder.listRanking.setBackgroundResource(R.drawable.home_item_one);
         } else if (position == 1) {

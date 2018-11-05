@@ -32,6 +32,9 @@ public class UserOrgZcUtils {
     private boolean status = true;
     private List<OrgBeans> mDatas2 = new ArrayList<>();
     private List<OrgenBeans> mData = new ArrayList<>();
+
+    private List<OrgBeans> OrgsData2 = new ArrayList<>();
+    private List<OrgenBeans> OrgsData = new ArrayList<>();
     /**
      *  获取数据
      */
@@ -103,8 +106,8 @@ public class UserOrgZcUtils {
                                         e.printStackTrace();
                                         name = "";
                                     }
-                                    onClickListener.onClick(mDatas2, mData);
                                     mData.add(new OrgenBeans(id, parentId, name, type));
+                                    onClickListener.onClick(mDatas2, mData);
                                 }
                             }
                         } catch (JSONException e) {
@@ -146,4 +149,62 @@ public class UserOrgZcUtils {
                 });
     }
 
+    /**
+     * 获取组织数据
+     * @param onClickListener 点击事件接口
+     */
+    public void getOrgs(final OnClickListener onClickListener) {
+        OkGo.get(Api.GETORGS)
+                .params("types","3")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray1 = jsonObject.getJSONArray("data");
+                            if (jsonArray1.length() > 0) {
+                                for (int i = 0; i < jsonArray1.length(); i++) {
+                                    JSONObject json = jsonArray1.getJSONObject(i);
+                                    String id;
+                                    try {
+                                        id = json.getString("id");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        id = "";
+                                    }
+                                    String type;
+                                    try {
+                                        type = json.getString("orgType");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        type = "";
+                                    }
+                                    String parentId;
+                                    try {
+                                        parentId = json.getString("parentId");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        //如果父ID为null
+                                        parentId = "";
+                                        //当做第一级处理
+                                        status = false;
+                                        OrgsData2.add(new OrgBeans(1, 0, json.getString("name"), id, parentId, type));
+                                    }
+                                    String name;
+                                    try {
+                                        name = json.getString("name");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        name = "";
+                                    }
+                                    onClickListener.onClick(OrgsData2, OrgsData);
+                                    OrgsData.add(new OrgenBeans(id, parentId, name, type));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 }

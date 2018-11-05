@@ -36,6 +36,7 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
     private CheckUtils checkUtils;
     private SettingAdapter adapter;
     private Context mContext;
+    private boolean lean = true;
 
     @Nullable
     @Override
@@ -50,15 +51,19 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
         adapter = new SettingAdapter<standarBean>(mData, R.layout.task_category_item) {
             @Override
             public void bindView(ViewHolder holder, standarBean obj) {
-                int score = Integer.parseInt(obj.getStandardDelScore()) / 2;
-                String standardDelScore = "";
-                String StandardDelName = obj.getStandardDelName();
-                int num = StandardDelName.length();
-                for (int i = 0; i < score; i++) {
-                    standardDelScore = standardDelScore + "★";
+                if (lean) {
+                    int score = Integer.parseInt(obj.getStandardDelScore()) / 2;
+                    String standardDelScore = "";
+                    String StandardDelName = obj.getStandardDelName();
+                    int num = StandardDelName.length();
+                    for (int i = 0; i < score; i++) {
+                        standardDelScore = standardDelScore + "★";
+                    }
+                    StandardDelName = StandardDelName + standardDelScore;
+                    holder.setText(mContext, R.id.category_content, StandardDelName, num - 1, R.color.red);
+                } else {
+                    holder.setText(R.id.category_content, obj.getStandardDelName());
                 }
-                StandardDelName = StandardDelName + standardDelScore;
-                holder.setText(mContext, R.id.category_content, StandardDelName, num - 1, R.color.red);
             }
         };
         categoryList.setAdapter(adapter);
@@ -75,9 +80,9 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String DelName = mData.get(position).getStandardDelName();
                 DelName = DelName.substring(2, DelName.length());
-                String code=mData.get(position).getStandardDelCode();
+                String code = mData.get(position).getStandardDelCode();
                 CheckstandardListActivity activity = (CheckstandardListActivity) getActivity();
-                activity.result(DelName, mData.get(position).getStandardDel(),mData.get(position).getStandardDelScore(),code);
+                activity.result(DelName, mData.get(position).getStandardDel(), mData.get(position).getStandardDelScore(), code);
             }
         });
         view.findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -91,11 +96,44 @@ public class Checkstandarditem extends Fragment implements CategoryCallback {
         return view;
     }
 
+    public boolean isJO(int num) {
+        int a = num % 2;
+        if (a == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void updata(String str, String str1) {
         titleView.setText(str1);
         mData.clear();
-        checkUtils.CheckStandardApp(mData, adapter, str);
+        //网络请求
+        checkUtils.CheckStandardApp(str, new CheckUtils.Onclick() {
+            @Override
+            public void onSuccess(ArrayList<standarBean> List) {
+                int count = 0;
+                for (standarBean item : List) {
+                    try {
+                        int score = Integer.parseInt(item.getStandardDelScore());
+                        boolean status = isJO(score);
+                        if (!status) {
+                            count++;
+                        }
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+                 if (count == 0) {
+                    lean = true;
+                } else {
+                    lean = false;
+                }
+                mData.addAll(List);
+                adapter.getData(mData);
+            }
+        });
     }
 
 }

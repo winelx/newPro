@@ -39,17 +39,18 @@ import okhttp3.Response;
 /**
  * @author lx
  * @Created by: 2018/10/17 0017.
- * @description:
+ * @description:所有展示图片的viewpager
  */
 
 public class PhotoViewpagerAdapter extends PagerAdapter {
     private List<PhotoviewBean> datas;
     private Context mContext;
+    private boolean aBoolean;
 
-
-    public PhotoViewpagerAdapter(List<PhotoviewBean> datas, Context mContext) {
+    public PhotoViewpagerAdapter(List<PhotoviewBean> datas, boolean aBoolean, Context mContext) {
         this.datas = datas;
         this.mContext = mContext;
+        this.aBoolean = aBoolean;
 
     }
 
@@ -80,11 +81,17 @@ public class PhotoViewpagerAdapter extends PagerAdapter {
         //在这里可以做相应的操作
         TextView textView = view.findViewById(R.id.viewpager_item);
         TextView updown = view.findViewById(R.id.base_photo_updown);
-        if (datas.get(position).isStatus()) {
+        if ("true".equals(datas.get(position).isStatus())) {
             updown.setVisibility(View.VISIBLE);
+        } else if ("false".equals(datas.get(position).isStatus())) {
+            updown.setVisibility(View.GONE);
         } else {
             updown.setVisibility(View.GONE);
-
+        }
+        if (aBoolean) {
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setVisibility(View.GONE);
         }
         updown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,4 +189,6 @@ public class PhotoViewpagerAdapter extends PagerAdapter {
         }
         return null;
     }
+
+
 }

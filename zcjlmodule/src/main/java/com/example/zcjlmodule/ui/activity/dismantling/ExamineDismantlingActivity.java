@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.activity.dismantling;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,16 +18,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.bean.ExamineBean;
-import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.utils.activity.ExamineDismantlingUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import measure.jjxx.com.baselibrary.adapter.PhotosAdapter;
+import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
+import measure.jjxx.com.baselibrary.bean.ExamineBean;
+import measure.jjxx.com.baselibrary.utils.PdfUtils;
+import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 
@@ -43,7 +43,7 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 public class ExamineDismantlingActivity extends BaseActivity {
     private ExamineDismantlingAdapter mAdapter;
     private ExamineDismantlingUtils dismantlingUtils;
-    private ArrayList<String> list;
+    private ArrayList<ExamineBean> list;
     private RecyclerView recyclerView;
     private Context mContext;
     private int page = 1;
@@ -52,22 +52,26 @@ public class ExamineDismantlingActivity extends BaseActivity {
     private TextView examineProvincename, examineCityname, examineCountyname, examineTownname,
             examineReleasor, examineFilenumber, examineCreatedate, examine_number;
     private TextView examineFilename, examineRemarks;
+    private PdfUtils pdfUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        pdfUtils = new PdfUtils();
         setContentView(R.layout.activity_examine_dismantling);
         init();
         intent();
         recyclerView = (RecyclerView) findViewById(R.id.examine_layout_recycler);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(R.layout.adapter_examine_zc, list));
+        //请求图片
         dismantlingUtils.getData(id, new ExamineDismantlingUtils.onclick() {
             @Override
             public void onSuccess(ArrayList<ExamineBean> data) {
+                list.addAll(data);
                 //网络请求成功
-                recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(R.layout.adapter_examine_zc, data));
-                recyclerView.setAdapter(mAdapter);
+                mAdapter.setNewData(list);
             }
 
             @Override
@@ -81,6 +85,28 @@ public class ExamineDismantlingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        mAdapter.setDuration(4);
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                int i = view.getId();
+                if (i == R.id.examine_image) {
+                    String type = list.get(position).getType();
+                    if ("doc".equals(type) && "docx".equals(type) && "xls".equals(type) && "xlsx".equals(type)) {
+                        pdfUtils.getdata(mContext, list.get(position).getPath());
+                    } else if ("pdf".equals(type)) {
+                        ToastUtlis.getInstance().showShortToast("pdf");
+                    } else {
+                        //点击图片看大图
+                        PhotoPreview.builder()
+                                .setPhotos(PhotoUtils.getPhoto(list))
+                                .setCurrentItem(position)
+                                .setPhotoName(false)
+                                .start((Activity) mContext);
+                    }
+                }
             }
         });
     }
@@ -147,6 +173,7 @@ public class ExamineDismantlingActivity extends BaseActivity {
             //id
             id = intent.getStringExtra("id");
         } catch (NullPointerException e) {
+            id = "";
         }
         examineProvincename.setText(provincename);
         examineCityname.setText(cityname);
@@ -167,18 +194,38 @@ public class ExamineDismantlingActivity extends BaseActivity {
         public ExamineDismantlingAdapter(int layoutResId, @Nullable List<ExamineBean> data) {
             super(layoutResId, data);
         }
-
         @Override
         protected void convert(BaseViewHolder helper, ExamineBean item) {
-            RequestOptions options = new RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .dontAnimate()
-                    .error(measure.jjxx.com.baselibrary.R.mipmap.base_image_error)
-                    .placeholder(measure.jjxx.com.baselibrary.R.mipmap.base_picker_ic_photo_black_48dp);
-            Glide.with(mContext)
-                    .load(item.getPath())
-                    .apply(options)
-                    .into((ImageView) helper.getView(R.id.examine_image));
+            if (item.getType().equals("pdf")) {
+                helper.setText(R.id.examine_filename_content, item.getName());
+                helper.setGone(R.id.examine_image, false);
+                helper.setGone(R.id.examine_file, true);
+                helper.setText(R.id.examine_filename_icon, "P");
+            } else if (item.getType().equals("doc") || item.getType().equals("docx")) {
+                helper.setGone(R.id.examine_image, false);
+                helper.setGone(R.id.examine_file, true);
+                helper.setText(R.id.examine_filename_icon, "W");
+                helper.setText(R.id.examine_filename_content, item.getName());
+            } else if (item.getType().equals("xlsx") || item.getType().equals("xls")) {
+                helper.setGone(R.id.examine_image, false);
+                helper.setGone(R.id.examine_file, true);
+                helper.setText(R.id.examine_filename_icon, "X");
+                helper.setText(R.id.examine_filename_content, item.getName());
+            } else {
+                helper.setGone(R.id.examine_file, false);
+                helper.setGone(R.id.examine_image, true);
+                RequestOptions options = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .dontAnimate()
+                        .error(measure.jjxx.com.baselibrary.R.mipmap.base_image_error)
+                        .placeholder(measure.jjxx.com.baselibrary.R.mipmap.base_picker_ic_photo_black_48dp);
+                Glide.with(mContext)
+                        .load(item.getPath())
+                        .apply(options)
+                        .into((ImageView) helper
+                                .getView(R.id.examine_image));
+                helper.addOnClickListener(R.id.examine_image);
+            }
         }
     }
 }

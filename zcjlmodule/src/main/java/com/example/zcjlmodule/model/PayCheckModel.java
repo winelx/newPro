@@ -18,6 +18,7 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/10/12 0012.
+ * 获取支付清册核查
  */
 
 public class PayCheckModel {

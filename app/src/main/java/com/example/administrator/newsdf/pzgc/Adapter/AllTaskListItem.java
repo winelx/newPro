@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Inface_all_item;
 import com.example.administrator.newsdf.pzgc.fragment.homepage.CollectionlistActivity;
 import com.example.administrator.newsdf.pzgc.fragment.homepage.CommentmessageActivity;
@@ -92,13 +93,16 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
         }
         holder.comments.setText("(" + list.get(position).getComments() + ")");
+        holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
         if (list.get(position).getUpload().size() > 0) {
-            holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), list.get(position).getUpload(), position,status);
-            holder.taskcontent.setAdapter(adapterType);
+            holder.inface_image.setVerticalGravity(View.VISIBLE);
         } else {
             holder.inface_image.setVisibility(View.GONE);
         }
+        ArrayList<Audio> path  =new ArrayList<>();
+        path = list.get(position).getUpload();
+        adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), path, position, status);
+        holder.taskcontent.setAdapter(adapterType);
 
         holder.inter_rl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,14 +119,13 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if ("all".equals(status)) {
                     AllListmessageActivity activity = (AllListmessageActivity) mContext;
                     activity.getumber(position);
-                } else if ("message".equals(status)){
+                } else if ("message".equals(status)) {
                     CommentmessageActivity activity = (CommentmessageActivity) mContext;
                     activity.getumber(position);
-                }else if ("action".equals(status)){
+                } else if ("action".equals(status)) {
                     CollectionlistActivity activity = (CollectionlistActivity) mContext;
                     activity.getumber(position);
                 }
-
             }
         });
         //判断是否设置了监听器

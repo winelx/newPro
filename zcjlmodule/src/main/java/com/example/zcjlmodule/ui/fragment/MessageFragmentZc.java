@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
+import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
 import measure.jjxx.com.baselibrary.utils.CameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
@@ -110,6 +111,7 @@ public class MessageFragmentZc extends BaseFragment  {
                             });
                             break;
                         case 1:
+                            startActivity(new Intent(mContext,PdfActivity.class));
                             break;
                         case 2:
                             break;

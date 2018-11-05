@@ -36,6 +36,7 @@
             android:textSize="16sp" />
 
         <ImageView
+            android:id="@+id/new_add_original_applydate_image"
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -67,11 +68,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/new_add_original_meterUnitName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:gravity="end"
-            android:text="㎡"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </LinearLayout>
@@ -98,11 +99,11 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/new_add_original_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:gravity="end"
-            android:text="100.0"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -133,6 +134,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_declareNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -166,6 +168,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/new_add_original_totalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="7"

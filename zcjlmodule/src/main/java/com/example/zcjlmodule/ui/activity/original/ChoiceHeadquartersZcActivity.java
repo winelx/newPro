@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.original;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -63,7 +64,12 @@ public class ChoiceHeadquartersZcActivity extends BaseActivity implements View.O
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Intent intent = new Intent();
+                // 获取用户计算后的结果
+                intent.putExtra("name", list.get(position).getName());
+                intent.putExtra("id", list.get(position).getId());
+                setResult(104, intent);
+                finish(); //结束当前的activity的生命周期
             }
         });
     }

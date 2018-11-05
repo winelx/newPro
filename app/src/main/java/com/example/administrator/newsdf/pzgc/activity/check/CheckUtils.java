@@ -128,17 +128,16 @@ public class CheckUtils {
     /**
      * 违反标准
      */
-    public void CheckStandardApp(final ArrayList<standarBean> List, final SettingAdapter mAdapter, String id) {
+    public void CheckStandardApp(String id, final Onclick onclick) {
+        final ArrayList<standarBean> List = new ArrayList<>();
         if (id.length() > 0) {
             OkGo.post(Requests.GET_CHECK_STANDARD_DEAL_APP)
                     .params("checkStandardId", id)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            LogUtil.d("s", s);
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
-
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -155,7 +154,7 @@ public class CheckUtils {
                                 } else {
                                     ToastUtils.showShortToast(jsonObject.getString("msg"));
                                 }
-                                mAdapter.getData(List);
+                                onclick.onSuccess(List);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -200,5 +199,9 @@ public class CheckUtils {
                         super.onError(call, response, e);
                     }
                 });
+    }
+
+    public interface Onclick {
+        void onSuccess(ArrayList<standarBean> List);
     }
 }

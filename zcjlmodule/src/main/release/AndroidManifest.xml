@@ -72,7 +72,8 @@
         <activity android:name=".ui.activity.dismantling.UnknitstandardActivity" />
         <activity android:name=".ui.activity.dismantling.ExamineDismantlingActivity" />
         <activity android:name=".ui.activity.mine.PasswordActivity" />
-        <activity android:name=".ui.activity.mine.UserOrgZcActivity"></activity>
+        <activity android:name=".ui.activity.mine.UserOrgZcActivity"/>
+        <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity"/>
     </application>
 
 </manifest>

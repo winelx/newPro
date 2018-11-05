@@ -28,6 +28,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -65,6 +66,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -101,6 +103,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -138,6 +141,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_beneficiary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -165,6 +169,7 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/new_add_original_detailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

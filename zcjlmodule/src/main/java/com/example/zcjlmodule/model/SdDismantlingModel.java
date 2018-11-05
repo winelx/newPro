@@ -6,7 +6,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import okhttp3.Response;
 /**
  * @author lx
  * @Created by: 2018/10/22 0022.
- * @description:
+ * @description:获取征拆标准
  */
 
 public class SdDismantlingModel {

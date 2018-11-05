@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.original;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -23,11 +24,12 @@ import measure.jjxx.com.baselibrary.base.BaseActivity;
 
 /**
  * description: 选择所属标段
+ *
  * @author lx
- * date: 2018/10/18 0018 下午 3:25
- * update: 2018/10/18 0018
- * 跳转界面 NewAddOriginalZcActivity
- * 与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity共用布局
+ *         date: 2018/10/18 0018 下午 3:25
+ *         update: 2018/10/18 0018
+ *         跳转界面 NewAddOriginalZcActivity
+ *         与AttachProjectZcActivity ChoiceBidsZcActivity  ChoiceHeadquartersZcActivity共用布局
  */
 public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickListener {
     private AttachProjectAdapter mAdapter;
@@ -40,7 +42,9 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_choice_project_zc);
         mContext = this;
         list = new ArrayList<>();
-
+        for (int i = 0; i < 15; i++) {
+            list.add(new AttachProjectBean("1" + i,"测试数据" + i));
+        }
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("选择所属标段");
@@ -53,7 +57,12 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Intent intent = new Intent();
+                // 获取用户计算后的结果
+                intent.putExtra("name", list.get(position).getName());
+                intent.putExtra("id", list.get(position).getId());
+                setResult(103, intent);
+                finish(); //结束当前的activity的生命周期
             }
         });
     }

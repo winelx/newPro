@@ -1,6 +1,5 @@
 package com.example.zcjlmodule.model;
 
-import android.graphics.ColorSpace;
 import android.util.Log;
 
 import com.example.zcjlmodule.bean.UnknitstandardBean;
@@ -18,12 +17,11 @@ import measure.jjxx.com.baselibrary.base.BaseView;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
-import release.App;
 
 /**
  * @author lx
  * @Created by: 2018/10/22 0022.
- * @description:
+ * @description:获取征拆标准分解接口
  */
 
 public class UnknitstandardModel {

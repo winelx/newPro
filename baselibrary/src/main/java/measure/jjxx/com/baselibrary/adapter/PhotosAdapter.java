@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.R;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
+import measure.jjxx.com.baselibrary.view.SquareItemLayout;
 
 /**
  * @author lx
@@ -36,7 +37,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     final static int TYPE_PHOTO = 2;
     final static int MAX = 100;
     private boolean status = false;
-
+    private boolean lean=false;
     public PhotosAdapter(Context mContext, ArrayList<String> photoPaths,boolean status) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
@@ -68,6 +69,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                     .load(photoPaths.get(position))
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
+            //控制删除按钮
             if (status) {
                 holder.vSelected.setVisibility(View.VISIBLE);
             } else {
@@ -100,10 +102,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 1
-                    int position = holder.getLayoutPosition();
-                    // 2
-                    mOnItemClickListener.addlick(holder.itemView, position);
+                    if (lean){
+                        // 1
+                        int position = holder.getLayoutPosition();
+                        // 2
+                        mOnItemClickListener.addlick(holder.itemView, position);
+                    }
+
                 }
             });
         }
@@ -126,12 +131,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         private ImageView ivPhoto;
         private ImageView vSelected;
         private ImageView img_add;
-
+        private SquareItemLayout addview;
         public PhotoViewHolder(View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_photo);
             vSelected = itemView.findViewById(R.id.v_selected);
             img_add = itemView.findViewById(R.id.bt_add);
+            addview = itemView.findViewById(R.id.addview);
         }
     }
 
@@ -157,6 +163,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     public void status(boolean lean) {
         this.status = lean;
+        notifyDataSetChanged();
+    }
+    public void addview(boolean lean) {
+        this.lean = lean;
         notifyDataSetChanged();
     }
 }

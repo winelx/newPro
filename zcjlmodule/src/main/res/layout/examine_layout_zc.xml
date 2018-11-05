@@ -25,8 +25,8 @@
             android:id="@+id/examine_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -119,9 +119,9 @@
             android:id="@+id/examine_provincename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -149,9 +149,9 @@
             android:id="@+id/examine_cityname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -180,9 +180,9 @@
             android:id="@+id/examine_countyname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -210,10 +210,10 @@
             android:id="@+id/examine_townname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -240,9 +240,9 @@
             android:id="@+id/examine_releasor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -270,9 +270,9 @@
             android:id="@+id/examine_createDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="end"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -314,8 +314,17 @@
         android:layout_height="1dp"
         android:background="@color/back" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="附件:"
+        android:textColor="@color/black" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/examine_layout_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

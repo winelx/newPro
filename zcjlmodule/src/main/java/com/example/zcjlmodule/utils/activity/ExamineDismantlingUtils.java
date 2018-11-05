@@ -2,7 +2,6 @@ package com.example.zcjlmodule.utils.activity;
 
 import android.util.Log;
 
-import com.example.zcjlmodule.bean.ExamineBean;
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -12,9 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import measure.jjxx.com.baselibrary.bean.ExamineBean;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -58,13 +56,13 @@ public class ExamineDismantlingUtils {
                                         }
                                         String filepath;
                                         try {
-                                            filepath = Api.networks + json.getString("filepath");
+                                            filepath = Api.networks +"/"+json.getString("filepath");
                                         } catch (Exception e) {
                                             filepath = "";
                                         }
                                         String type;
                                         try {
-                                            type = json.getString("type");
+                                            type = json.getString("fileext");
                                         } catch (Exception e) {
                                             type = "";
                                         }

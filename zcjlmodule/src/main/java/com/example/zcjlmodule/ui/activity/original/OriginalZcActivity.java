@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,7 +20,7 @@ import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.OriginalPresenter;
-import com.example.zcjlmodule.ui.activity.mine.UserOrgZcActivity;
+import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
 import com.example.zcjlmodule.utils.DialogUtils;
 import com.example.zcjlmodule.view.OriginalView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -30,7 +28,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private static final String TYPE_THREE = "按表单查询";
     private static final String TYPE_FOUR = "按户主明细查询";
     private static final String TYPE_FIVE = "按期数查询";
-
+    private BigDecimal decimal;
     private String orgId;
 
     @Override
@@ -98,7 +99,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         originalOrgname.setText(SPUtils.getString(App.getInstance(), "orgName", ""));
         //合计金额
         moneynumber = (TextView) findViewById(R.id.original_moneynumber);
-        moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
         //加载错误提示
         emptyViewText = (TextView) findViewById(R.id.layout_emptyView_text);
         emptyViewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
@@ -134,7 +134,47 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Map<String, String> message = new HashMap<String, String>();
+                //id
+                message.put("id", list.get(position).getId());
+                //户主名字
+                message.put("namecontent", list.get(position).getNamecontent());
+                //征拆类型
+                message.put("category", list.get(position).getCategory());
+                //指挥部
+                message.put("content", list.get(position).getContent());
+                //单据编号
+                message.put("number", list.get(position).getTitile());
+                //省
+                message.put("provinceName", list.get(position).getProvinceName());
+                //城市
+                message.put("cityName", list.get(position).getCityName());
+                //区
+                message.put("countyName", list.get(position).getCountyName());
+                //乡镇
+                message.put("townName", list.get(position).getTownName());
+                //地址
+                message.put("detailAddress", list.get(position).getDetailAddress());
+                //申请期数
+                message.put("periodName",list.get(position).getDatanumber());
+                //单位
+                message.put("meterUnitName",list.get(position).getMeterUnitName());
+                //金额
+                message.put("totalPrice",list.get(position).getTotalPrice());
+                //单价
+                message.put("price",list.get(position).getPrice());
+                //身份证
+                message.put("householderIdcard",list.get(position).getHouseholderIdcard());
+                //申报数量
+                message.put("declareNum",list.get(position).getDeclareNum());
+                //标准分解
+                message.put("standardDetailNumber",list.get(position).getStandardDetailNumber());
+                //原始单号
+                message.put("title",list.get(position).getRawNumber());
+                Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
+                intent.putExtra("message", (Serializable) message);
+                intent.putExtra("type", "old");
+                startActivity(intent);
             }
         });
     }
@@ -170,11 +210,12 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         if (i == R.id.toolbar_icon_back) {
             finish();
         } else if (i == R.id.original_org) {
-            Intent intent = new Intent(mContext, UserOrgZcActivity.class);
-            intent.putExtra("status", 1);
+            Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
             startActivity(intent);
         } else if (i == R.id.original_add) {
-            startActivity(new Intent(mContext, NewAddOriginalZcActivity.class));
+            Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
+            intent.putExtra("type", "new");
+            startActivity(intent);
         } else if (i == R.id.toolbar_icon_meun) {
             //menu
             DialogUtils.meunPop(OriginalZcActivity.this, toolbarIconMeun, dimension, new DialogUtils.onclick() {
@@ -210,10 +251,16 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
      * @param data
      */
     @Override
-    public void onSuccess(ArrayList<OriginalZcBean> data) {
+    public void onSuccess(ArrayList<OriginalZcBean> data, BigDecimal price) {
+        String str;
         if (page == 1) {
             list.clear();
+            decimal = price;
+        } else {
+            decimal = decimal.add(price);
         }
+        str = "合计金额：" + decimal;
+        moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
         list.addAll(data);
         if (list.size() > 0) {
             //list大于0，隐藏空白提示布局
@@ -263,7 +310,9 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
      */
     @Override
     public void callback(Map<String, Object> map) {
-        originalOrgname.setText(map.get("orgName") + "");
+        //显示组织名称
+        originalOrgname.setText(map.get("orgname") + "");
+        //变更组织ID
         orgId = (String) map.get("orgId");
         httprequest(true);
     }
@@ -278,22 +327,22 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
 
         @Override
         protected void convert(BaseViewHolder helper, OriginalZcBean item) {
-            //标题
-            helper.setText(R.id.original_adapter_title, item.getTitile());
-            //期数
-            helper.setText(R.id.original_adapter_data, item.getDatanumber());
-            //内容
-            helper.setText(R.id.original_adapter_content, item.getContent());
-            //户主名称
-            String str = item.getNamecontent() + "(" + item.getTotalPrice() + ")";
-            SpannableString string = TextUtils.setText(mContext, "户主名称：" + str, item.getNamecontent().indexOf("("));
-            helper.setText(R.id.original_adapter_namecontent, str);
-            //类别
-            helper.setText(R.id.original_adapter_category, "征拆类别：" + item.getCategory());
-            //创建人
-            helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
-            //创建时间
-            helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreatedata());
+//            //标题
+//            helper.setText(R.id.original_adapter_title, item.getTitile());
+//            //期数
+//            helper.setText(R.id.original_adapter_data, item.getDatanumber());
+//            //内容
+//            helper.setText(R.id.original_adapter_content, item.getContent());
+//            //户主名称
+//            String str = "户主名称：" + item.getNamecontent() + "(" + item.getTotalPrice() + ")";
+//            SpannableString string = TextUtils.setText(mContext, str, str.indexOf("("));
+//            helper.setText(R.id.original_adapter_namecontent, string);
+//            //类别
+//            helper.setText(R.id.original_adapter_category, "征拆类别：" + item.getCategory());
+//            //创建人
+//            helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
+//            //创建时间
+//            helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreatedata());
         }
     }
 
@@ -314,5 +363,4 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         }
         mPresenter.getdata(orgId, page);
     }
-
 }

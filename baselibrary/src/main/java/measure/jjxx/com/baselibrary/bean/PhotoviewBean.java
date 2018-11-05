@@ -7,11 +7,14 @@ package measure.jjxx.com.baselibrary.bean;
  */
 
 public class PhotoviewBean {
+    //名字
     String pathtext;
+    //地址
     String imgpath;
-    boolean status;
+    //状态 是否需要下载
+    String status;
 
-    public PhotoviewBean(String pathtext, String imgpath, boolean status) {
+    public PhotoviewBean(String pathtext, String imgpath, String status) {
         this.pathtext = pathtext;
         this.imgpath = imgpath;
         this.status = status;
@@ -33,11 +36,11 @@ public class PhotoviewBean {
         this.imgpath = imgpath;
     }
 
-    public boolean isStatus() {
+    public String isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

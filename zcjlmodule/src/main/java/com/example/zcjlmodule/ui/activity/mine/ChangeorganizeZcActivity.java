@@ -10,8 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.callback.ChangOrgCallBackUtils;
-import com.example.zcjlmodule.treeView.SimpleTreeListViewAdapters;
+import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
+import com.example.zcjlmodule.treeView.ChangeTreeListViewAdapters;
 import com.example.zcjlmodule.treeView.bean.OrgBeans;
 import com.example.zcjlmodule.treeView.bean.OrgenBeans;
 import com.example.zcjlmodule.treeView.utils.Nodes;
@@ -21,19 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseActivity;
-import measure.jjxx.com.baselibrary.utils.SPUtils;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
- * description: 切换组织（获取当前用户的所有组织）
- *
  * @author lx
- *         date: 2018/10/25 0025 上午 9:50
- *         update: 2018/10/25 0025
- *         version:
- *         跳转界面 MineFragment
+ * @Created by: 2018/11/1 0001.
+ * @description:
  */
-public class UserOrgZcActivity extends BaseActivity {
+
+public class ChangeorganizeZcActivity extends BaseActivity {
     private ListView mTree;
     private LinearLayout linearLayout;
     private ProgressBar progressBar;
@@ -41,7 +36,7 @@ public class UserOrgZcActivity extends BaseActivity {
     private UserOrgZcUtils utils;
     private Context mContext;
     private List<OrgenBeans> mData;
-    private SimpleTreeListViewAdapters mAdapter;
+    private ChangeTreeListViewAdapters mAdapter;
     private int status = 0;
 
     @Override
@@ -70,7 +65,7 @@ public class UserOrgZcActivity extends BaseActivity {
                 finish();
             }
         });
-        utils.getuserorg(new UserOrgZcUtils.OnClickListener() {
+        utils.getOrgs(new UserOrgZcUtils.OnClickListener() {
             @Override
             public void onClick(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();
@@ -79,7 +74,7 @@ public class UserOrgZcActivity extends BaseActivity {
                 }
                 mData.addAll(data2);
                 try {
-                    mAdapter = new SimpleTreeListViewAdapters<OrgBeans>(mTree, mContext,
+                    mAdapter = new ChangeTreeListViewAdapters<OrgBeans>(mTree, mContext,
                             data, 0);
                     mTree.setAdapter(mAdapter);
                 } catch (IllegalAccessException e) {
@@ -117,21 +112,11 @@ public class UserOrgZcActivity extends BaseActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name, String type) {
-            utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
-                @Override
-                public void onClick(int ret) {
-                    if (ret == 0) {
-                        ToastUtlis.getInstance().showShortToast("切换组织成功");
-                        SPUtils.deleShare(mContext, "orgName");
-                        SPUtils.deleShare(mContext, "orgId");
-                        //所在组织ID
-                        SPUtils.putString(mContext, "orgId", orgid);
-                        //所在组织名称
-                        SPUtils.putString(mContext, "orgName", name);
-                        ChangOrgCallBackUtils.CallBack();
-                        finish();
-                    }
-                }
-            });
+        try {
+            PayDetailCallBackUtils.CallBack(orgid, name);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

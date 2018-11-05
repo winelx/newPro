@@ -1,10 +1,7 @@
-package com.example.zcjlmodule.bean;
+package measure.jjxx.com.baselibrary.bean;
 
 /**
- * @author lx
- * @Created by: 2018/10/31 0031.
- * @description:
- * 查看征拆标准 ExamineDismantlingActivity
+ * Created by Administrator on 2018/11/5 0005.
  */
 
 public class ExamineBean {

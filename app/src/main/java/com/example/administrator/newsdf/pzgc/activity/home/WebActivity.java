@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -75,6 +76,7 @@ public class WebActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //拿到pdf路径
         Url = intent.getStringExtra("http");
+        Log.i("pdf",Url);
         //将字符串转成集合，
         list = stringToList(Url);
         //通集合拿到pdf的名称
