@@ -200,6 +200,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.audioRec.setLayoutManager(linearLayoutManager);
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
+        adapter.setHasStableIds(true);
         holder.audioRec.setAdapter(adapter);
         holder.audioDataComm.setOnClickListener(new View.OnClickListener() {
             @Override

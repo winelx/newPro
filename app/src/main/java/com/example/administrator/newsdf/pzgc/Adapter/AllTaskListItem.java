@@ -103,7 +103,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         path = list.get(position).getUpload();
         adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), path, position, status);
         holder.taskcontent.setAdapter(adapterType);
-
         holder.inter_rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,5 +202,12 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

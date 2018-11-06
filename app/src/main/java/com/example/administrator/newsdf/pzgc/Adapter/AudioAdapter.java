@@ -241,7 +241,7 @@ public class AudioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.datas = datas;
         this.comms = comms;
         notifyDataSetChanged();
-    }
+}
 
 
 }

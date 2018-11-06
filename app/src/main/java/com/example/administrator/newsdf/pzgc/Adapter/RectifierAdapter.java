@@ -182,4 +182,8 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 }

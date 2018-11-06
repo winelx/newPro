@@ -594,6 +594,7 @@ public class AllListmessageActivity extends AppCompatActivity implements View.On
         recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //初始化适配器
         adapters = new AllTaskListItem(Alldata, mContext,"all");
+        adapters.setHasStableIds(true);
         recyclerAtt.setAdapter(adapters);
         adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
 
