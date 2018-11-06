@@ -73,4 +73,12 @@ public class WorkFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
            workFrTypeRecycler = itemView.findViewById(R.id.work_fr_type_recycler);
         }
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

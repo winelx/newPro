@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.adapter.ExamineDismantlingAdapter;
 import com.example.zcjlmodule.utils.activity.ExamineDismantlingUtils;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import java.util.List;
 import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
+import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
+import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
 import measure.jjxx.com.baselibrary.utils.PdfUtils;
 import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
@@ -64,7 +67,7 @@ public class ExamineDismantlingActivity extends BaseActivity {
         intent();
         recyclerView = (RecyclerView) findViewById(R.id.examine_layout_recycler);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(R.layout.adapter_examine_zc, list));
+        recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(list, mContext));
         //请求图片
         dismantlingUtils.getData(id, new ExamineDismantlingUtils.onclick() {
             @Override
@@ -87,25 +90,23 @@ public class ExamineDismantlingActivity extends BaseActivity {
                 finish();
             }
         });
-        mAdapter.setDuration(4);
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemClickListener(new ExamineDismantlingAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                int i = view.getId();
-                if (i == R.id.examine_image) {
-                    String type = list.get(position).getType();
-                    if ("doc".equals(type) && "docx".equals(type) && "xls".equals(type) && "xlsx".equals(type)) {
-                        pdfUtils.getdata(mContext, list.get(position).getPath());
-                    } else if ("pdf".equals(type)) {
-                        ToastUtlis.getInstance().showShortToast("pdf");
-                    } else {
-                        //点击图片看大图
-                        PhotoPreview.builder()
-                                .setPhotos(PhotoUtils.getPhoto(list))
-                                .setCurrentItem(position)
-                                .setPhotoName(false)
-                                .start((Activity) mContext);
-                    }
+            public void onItemClick(View view, int position) {
+                ExamineBean examineBean = list.get(position);
+                String type = examineBean.getType();
+                if ("pdf".equals(type)) {
+//                    pdfUtils.getdata(mContext, examineBean.getPath());
+                    Intent intent = new Intent(mContext, PdfActivity.class);
+                    intent.putExtra("http", examineBean.getPath());
+                    startActivity(intent);
+                } else if ("doc".equals(type) || "docx".equals(type)) {
+                    ToastUtlis.getInstance().showShortToast("请到pc端查看");
+                } else if ("xlsx".equals(type) || "xls".equals(type)) {
+                    ToastUtlis.getInstance().showShortToast("请到pc端查看");
+                } else {
+                    ToastUtlis.getInstance().showShortToast("图");
+                    PhotoPreview.builder().setCurrentItem(position).setPhotos(PhotoUtils.getPhoto(list)).start((Activity) mContext);
                 }
             }
         });
@@ -187,46 +188,5 @@ public class ExamineDismantlingActivity extends BaseActivity {
         examine_number.setText(number);
     }
 
-    /**
-     * recyclerview 的点击事件
-     */
-    private class ExamineDismantlingAdapter extends BaseQuickAdapter<ExamineBean, BaseViewHolder> {
-        public ExamineDismantlingAdapter(int layoutResId, @Nullable List<ExamineBean> data) {
-            super(layoutResId, data);
-        }
-        @Override
-        protected void convert(BaseViewHolder helper, ExamineBean item) {
-            if (item.getType().equals("pdf")) {
-                helper.setText(R.id.examine_filename_content, item.getName());
-                helper.setGone(R.id.examine_image, false);
-                helper.setGone(R.id.examine_file, true);
-                helper.setText(R.id.examine_filename_icon, "P");
-            } else if (item.getType().equals("doc") || item.getType().equals("docx")) {
-                helper.setGone(R.id.examine_image, false);
-                helper.setGone(R.id.examine_file, true);
-                helper.setText(R.id.examine_filename_icon, "W");
-                helper.setText(R.id.examine_filename_content, item.getName());
-            } else if (item.getType().equals("xlsx") || item.getType().equals("xls")) {
-                helper.setGone(R.id.examine_image, false);
-                helper.setGone(R.id.examine_file, true);
-                helper.setText(R.id.examine_filename_icon, "X");
-                helper.setText(R.id.examine_filename_content, item.getName());
-            } else {
-                helper.setGone(R.id.examine_file, false);
-                helper.setGone(R.id.examine_image, true);
-                RequestOptions options = new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .dontAnimate()
-                        .error(measure.jjxx.com.baselibrary.R.mipmap.base_image_error)
-                        .placeholder(measure.jjxx.com.baselibrary.R.mipmap.base_picker_ic_photo_black_48dp);
-                Glide.with(mContext)
-                        .load(item.getPath())
-                        .apply(options)
-                        .into((ImageView) helper
-                                .getView(R.id.examine_image));
-                helper.addOnClickListener(R.id.examine_image);
-            }
-        }
-    }
 }
 

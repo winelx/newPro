@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.EditText;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,40 +20,36 @@ import java.net.URLConnection;
  */
 
 public class PdfUtils {
-    public static final String path = "file:///android_asset/pdfjs/web/viewer.html?file=";
+    public static final String pathed = "file:///android_asset/pdfjs/web/viewer.html?file=";
     String paths;
     String pathname;
-    public  void getdata(final Context mContext, final String url) {
 
+    public void getdata(final Context mContext, final String url) {
         paths = mContext.getExternalCacheDir().getPath().replace("cache", "PDF/");
-        pathname = url.substring(url.lastIndexOf("/"), url.length());
+        pathname = url.substring(url.lastIndexOf("/") + 1, url.length());
         final boolean status = fileIsExists(paths + pathname);
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.fromFile((new File(path + paths + pathname)));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(uri, "application/pdf");
-                mContext.startActivity(intent);
+                OpenFileUtils.getPdfFileIntent(pathed + paths + pathname);
             }
         } else {
-            //不存在
-            new Handler(new Handler.Callback() {
+            new Thread(new Runnable() {
                 @Override
-                public boolean handleMessage(Message msg) {
+                public void run() {
                     //判断当前系统是否高于或等于6.0
                     final String download = download(url);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        Uri uri = Uri.parse(pathname + download);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setDataAndType(uri, "application/pdf");
-                        mContext.startActivity(intent);
+                    if (download != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            try {
+                                OpenFileUtils.getPdfFileIntent(pathname + download);
+                            } catch (Exception e) {
+
+                            }
+                        }
                     }
-                    return false;
                 }
-            }).sendEmptyMessageDelayed(0, 0);
+            }).start();
         }
     }
 

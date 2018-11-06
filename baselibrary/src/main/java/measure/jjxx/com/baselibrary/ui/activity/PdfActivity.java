@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -23,22 +24,19 @@ public class PdfActivity extends AppCompatActivity {
     String paths;
     String pathname;
     String url = "";
+    private File f;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static final String path = "file:///android_asset/pdfjs/web/viewer.html?file=";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
         paths = getExternalCacheDir().getPath();
         paths = paths.replace("cache", "PDF/");
-//        pathname="d5550d113371491085d06c21bc9705d3.pdf";
-        //        Intent intent = getIntent();
-//            url = intent.getStringExtra("http");
-        url = "http://120.79.142.15/pzgc/upload/2018/09/25/d5550d113371491085d06c21bc9705d3.pdf";
-        pathname = url.substring(url.lastIndexOf("/"), url.length());
+        Intent intent = getIntent();
+        url = intent.getStringExtra("http");
+        pathname = url.substring(url.lastIndexOf("/")+1, url.length());
         pdfView = (PDFView) findViewById(R.id.pdfView);
-        //网络下载打开，（）放字节数组
         /**
          *判断路径下下你文件是否存在
          */
@@ -46,17 +44,10 @@ public class PdfActivity extends AppCompatActivity {
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.fromFile((new File(path + paths + pathname)));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(uri, "application/pdf");
-                startActivity(intent);
-//                //设置pdf文件地址
-//                pdfView.fromUri(uri)
-//                        //设置默认显示第1页
-//                        .defaultPage(1)
-//                        .load();
-
+                pdfView.fromFile(f)
+                        .defaultPage(1)
+                        .enableSwipe(true)
+                        .load();
             }
         } else {
             //不存在
@@ -69,11 +60,12 @@ public class PdfActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri uri = Uri.parse(pathname+download);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setDataAndType(uri, "application/pdf");
-                                startActivity(intent);
+                                boolean status = fileIsExists(paths + pathname);
+                                pdfView.fromFile(f)
+                                        .defaultPage(1)
+                                        .enableSwipe(true)
+                                        .load();
+
                             }
                         }
                     });
@@ -126,12 +118,12 @@ public class PdfActivity extends AppCompatActivity {
         return null;
     }
 
-    /**
+     /**
      * 判断路径下指定文件是否存在
      */
     public boolean fileIsExists(String path) {
         try {
-            File f = new File(path);
+             f = new File(path);
             if (!f.exists()) {
                 //不存在
                 return false;

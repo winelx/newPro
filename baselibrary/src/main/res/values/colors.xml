@@ -9,6 +9,7 @@
     <color name="bg_white2">#ecebeb</color>
     <color name="back_ground">#e3e1e1</color>
     <color name="transparent">#00000000</color>
+    <color name="transparents">#55000000</color>
     <color name="blue">#167fe1</color>
     //浅红色 消息页面小红点
     <color name="lightred">#FB4F00</color>

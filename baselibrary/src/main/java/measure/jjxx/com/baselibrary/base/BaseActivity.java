@@ -15,6 +15,7 @@ import android.view.View;
 public class BaseActivity extends AppCompatActivity {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
+        //屏幕竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         return super.onCreateView(name, context, attrs);
     }

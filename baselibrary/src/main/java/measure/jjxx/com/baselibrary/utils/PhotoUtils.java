@@ -95,9 +95,14 @@ public class PhotoUtils {
 
     public static ArrayList<PhotoviewBean> getPhoto(List<ExamineBean> str) {
         ArrayList<PhotoviewBean> pathlsit = new ArrayList<>();
-        for (int i = 0; i < str.size(); i++) {
-            pathlsit.add(new PhotoviewBean(str.get(i).getName(), str.get(i).getPath(), "false"));
-        }
+            for (int i = 0; i < str.size(); i++) {
+                //筛选出图片
+                String type1 = str.get(i).getType();
+                if ("pdf".equals(type1) || "doc".equals(type1) || "docx".equals(type1) || "xlsx".equals(type1) || "xls".equals(type1)) {
+                } else {
+                    pathlsit.add(new PhotoviewBean(str.get(i).getName(), str.get(i).getPath(), "false"));
+                }
+            }
         return pathlsit;
     }
 }

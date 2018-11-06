@@ -100,4 +100,13 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
             line = itemView.findViewById(R.id.work_rec_item_line);
         }
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="15dp"
+
             android:paddingRight="15dp">
 
             <include layout="@layout/examine_layout_zc" />
