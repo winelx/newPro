@@ -7,6 +7,7 @@ import com.example.zcjlmodule.model.DetailedlistModel;
 import com.example.zcjlmodule.view.DetailedlistView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 
@@ -25,7 +26,7 @@ public class DetailedlistPresenter extends BasePresenters<DetailedlistView> {
         //请求数据并返回结果
         model.getData(orgId, page, new DetailedlistModel.Model.OnClickListener() {
             @Override
-            public void onComple(ArrayList<PayDetailedlistBean> list) {
+            public void onComple(List<PayDetailedlistBean> list) {
                 Log.i("page",list.size()+"");
                 mView.getdata(list);
             }

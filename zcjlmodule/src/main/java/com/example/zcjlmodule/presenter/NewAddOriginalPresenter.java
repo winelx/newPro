@@ -1,13 +1,17 @@
 package com.example.zcjlmodule.presenter;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.zcjlmodule.bean.PayDetailedlistBean;
+import com.example.zcjlmodule.model.NewAddOriginalModel;
 import com.example.zcjlmodule.view.NewAddOriginalView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 
@@ -18,6 +22,25 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
  */
 
 public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> {
+    private NewAddOriginalModel.Model model;
+
+    /**
+     * 保存数据
+     */
+    public void save(Map<String, Object> map) {
+        model = new NewAddOriginalModel.NewAddOriginalModelIpm();
+        model.getData(map, new NewAddOriginalModel.Model.OnClickListener() {
+            @Override
+            public void onComple(ArrayList<PayDetailedlistBean> list) {
+                mView.OnSuccess();
+            }
+            @Override
+            public void onError() {
+                mView.OnError();
+            }
+        });
+    }
+
     /**
      * 显示隐藏图标
      */

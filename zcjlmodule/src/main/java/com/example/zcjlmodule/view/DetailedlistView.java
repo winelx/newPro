@@ -3,6 +3,7 @@ package com.example.zcjlmodule.view;
 import com.example.zcjlmodule.bean.PayDetailedlistBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
 
@@ -15,6 +16,6 @@ import measure.jjxx.com.baselibrary.base.BaseView;
 
 
 public interface DetailedlistView extends BaseView {
-    void getdata(ArrayList<PayDetailedlistBean> str);
+    void getdata(List<PayDetailedlistBean> str);
     void onerror();
 }

@@ -166,8 +166,7 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
      * date: 2018/10/22 0022 下午 2:06
      */
     @Override
-    public void getdata(ArrayList<PayDetailedlistBean> str) {
-
+    public void getdata(List<PayDetailedlistBean> str) {
         if (status) {
             refreshLayout.finishRefresh();
         } else {

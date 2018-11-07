@@ -12,6 +12,7 @@ import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -27,6 +28,7 @@ public class PdfActivity extends AppCompatActivity {
     private File f;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static final String path = "file:///android_asset/pdfjs/web/viewer.html?file=";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,7 @@ public class PdfActivity extends AppCompatActivity {
         paths = paths.replace("cache", "PDF/");
         Intent intent = getIntent();
         url = intent.getStringExtra("http");
-        pathname = url.substring(url.lastIndexOf("/")+1, url.length());
+        pathname = url.substring(url.lastIndexOf("/") + 1, url.length());
         pdfView = (PDFView) findViewById(R.id.pdfView);
         /**
          *判断路径下下你文件是否存在
@@ -81,14 +83,16 @@ public class PdfActivity extends AppCompatActivity {
         });
     }
 
+    OutputStream os;
+    InputStream is;
 
-    private String download(String path) {
+    private String download(String path)  {
         try {
             URL url = new URL(path);
             //打开连接
             URLConnection conn = url.openConnection();
             //打开输入流
-            InputStream is = conn.getInputStream();
+            is = conn.getInputStream();
             File file = new File(paths);
             //不存在创建
             if (!file.exists()) {
@@ -103,27 +107,36 @@ public class PdfActivity extends AppCompatActivity {
             //创建字节流
             byte[] bs = new byte[1024];
             int len;
-            OutputStream os = new FileOutputStream(fileName);
+            os = new FileOutputStream(fileName);
             //写数据
+            int progress = 0;
             while ((len = is.read(bs)) != -1) {
                 os.write(bs, 0, len);
             }
-            //完成后关闭流
             os.close();
             is.close();
-            return  fileName;
+            return fileName;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                os.close();
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+
         return null;
     }
 
-     /**
+    /**
      * 判断路径下指定文件是否存在
      */
     public boolean fileIsExists(String path) {
         try {
-             f = new File(path);
+            f = new File(path);
             if (!f.exists()) {
                 //不存在
                 return false;

@@ -52,7 +52,6 @@ public class ChangeorganizeZcActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mTree = (ListView) findViewById(R.id.userorg_zc_list);
         linearLayout = (LinearLayout) findViewById(R.id.layout_emptyView);
         progressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);

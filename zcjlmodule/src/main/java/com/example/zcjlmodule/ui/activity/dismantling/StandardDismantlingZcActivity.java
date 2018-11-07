@@ -87,6 +87,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
         //是否启用列表惯性滑动到底部时自动加载更多
         refreshLayout.setEnableAutoLoadmore(false);
+
     }
 
     /**
@@ -101,6 +102,11 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, ExamineDismantlingActivity.class);
+                SdDismantlingBean bean=list.get(position);
+//                for (:
+//             ) {
+//
+//                }
                 //id
                 intent.putExtra("id", list.get(position).getId());
                 //省份

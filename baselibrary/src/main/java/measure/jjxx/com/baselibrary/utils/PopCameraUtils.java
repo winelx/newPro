@@ -14,8 +14,10 @@ import measure.jjxx.com.baselibrary.R;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
-
-public class CameraUtils {
+/**
+ * popwind类，相机相册选择弹窗
+ */
+public class PopCameraUtils {
 
     /**
      * 这是图册相机时的弹出框

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -84,7 +85,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         mContext = this;
         list = new ArrayList<>();
         PayDetailCallBackUtils.setCallBack(this);
-        orgId = SPUtils.getString(App.getInstance(), "orgName", "");
+        orgId = SPUtils.getString(App.getInstance(), "orgId", "");
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         dimension = ScreenUtil.getDensity(App.getInstance());
         mPresenter = new OriginalPresenter();
@@ -136,44 +137,47 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Map<String, String> message = new HashMap<String, String>();
                 //id
-                message.put("id", list.get(position).getId());
-                //户主名字
-                message.put("namecontent", list.get(position).getNamecontent());
-                //征拆类型
-                message.put("category", list.get(position).getCategory());
-                //指挥部
-                message.put("content", list.get(position).getContent());
-                //单据编号
-                message.put("number", list.get(position).getTitile());
-                //省
-                message.put("provinceName", list.get(position).getProvinceName());
-                //城市
-                message.put("cityName", list.get(position).getCityName());
-                //区
-                message.put("countyName", list.get(position).getCountyName());
-                //乡镇
-                message.put("townName", list.get(position).getTownName());
-                //地址
-                message.put("detailAddress", list.get(position).getDetailAddress());
-                //申请期数
-                message.put("periodName",list.get(position).getDatanumber());
-                //单位
-                message.put("meterUnitName",list.get(position).getMeterUnitName());
-                //金额
-                message.put("totalPrice",list.get(position).getTotalPrice());
-                //单价
-                message.put("price",list.get(position).getPrice());
-                //身份证
-                message.put("householderIdcard",list.get(position).getHouseholderIdcard());
-                //申报数量
-                message.put("declareNum",list.get(position).getDeclareNum());
-                //标准分解
-                message.put("standardDetailNumber",list.get(position).getStandardDetailNumber());
-                //原始单号
-                message.put("title",list.get(position).getRawNumber());
+//                message.put("id", list.get(position).getId());
+//                //户主名字
+//                message.put("namecontent", list.get(position).getNamecontent());
+//                //征拆类型
+//                message.put("category", list.get(position).getCategory());
+//                //指挥部
+//                message.put("content", list.get(position).getContent());
+//                //单据编号
+//                message.put("number", list.get(position).getTitile());
+//                //省
+//                message.put("provinceName", list.get(position).getProvinceName());
+//                //城市
+//                message.put("cityName", list.get(position).getCityName());
+//                //区
+//                message.put("countyName", list.get(position).getCountyName());
+//                //乡镇
+//                message.put("townName", list.get(position).getTownName());
+//                //地址
+//                message.put("detailAddress", list.get(position).getDetailAddress());
+//                //申请期数
+//                message.put("periodName", list.get(position).getDatanumber());
+//                //单位
+//                message.put("meterUnitName", list.get(position).getMeterUnitName());
+//                //金额
+//                message.put("totalPrice", list.get(position).getTotalPrice());
+//                //单价
+//                message.put("price", list.get(position).getPrice());
+//                //身份证
+//                message.put("householderIdcard", list.get(position).getHouseholderIdcard());
+//                //申报数量
+//                message.put("declareNum", list.get(position).getDeclareNum());
+//                //标准分解
+//                message.put("standardDetailNumber", list.get(position).getStandardDetailNumber());
+//                //原始单号
+//                message.put("oldnumber", list.get(position).getRawNumber());
+//                //备注
+//                message.put("remarks", list.get(position).getRemarks());
                 Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
                 intent.putExtra("message", (Serializable) message);
                 intent.putExtra("type", "old");
+                intent.putExtra("orgId", orgId);
                 startActivity(intent);
             }
         });
@@ -215,6 +219,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         } else if (i == R.id.original_add) {
             Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
             intent.putExtra("type", "new");
+            intent.putExtra("orgId", orgId);
             startActivity(intent);
         } else if (i == R.id.toolbar_icon_meun) {
             //menu
@@ -327,22 +332,22 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
 
         @Override
         protected void convert(BaseViewHolder helper, OriginalZcBean item) {
-//            //标题
-//            helper.setText(R.id.original_adapter_title, item.getTitile());
-//            //期数
-//            helper.setText(R.id.original_adapter_data, item.getDatanumber());
-//            //内容
-//            helper.setText(R.id.original_adapter_content, item.getContent());
-//            //户主名称
-//            String str = "户主名称：" + item.getNamecontent() + "(" + item.getTotalPrice() + ")";
-//            SpannableString string = TextUtils.setText(mContext, str, str.indexOf("("));
-//            helper.setText(R.id.original_adapter_namecontent, string);
-//            //类别
-//            helper.setText(R.id.original_adapter_category, "征拆类别：" + item.getCategory());
-//            //创建人
-//            helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
-//            //创建时间
-//            helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreatedata());
+            //标题
+            helper.setText(R.id.original_adapter_title, item.getNumber());
+            //期数
+            helper.setText(R.id.original_adapter_data, item.getPeriodName());
+            //指挥部
+            helper.setText(R.id.original_adapter_content, item.getHeadquarterName());
+            //户主名称
+            String str = "户主名称：" + item.getHeadquarterName() + "(" + item.getTotalPrice() + ")";
+            SpannableString string = TextUtils.setText(mContext, str, str.indexOf("("));
+            helper.setText(R.id.original_adapter_namecontent, string);
+            //类别
+            helper.setText(R.id.original_adapter_category, "征拆类别：" + item.getLevyTypeName());
+            //创建人
+            helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
+            //创建时间
+            helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreateDate());
         }
     }
 

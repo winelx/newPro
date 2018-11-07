@@ -7,10 +7,11 @@ import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by Administrator on 2018/10/26 0026.
+ * 内容看方法名
  */
 
 public class Utils {
-
+    //隐藏软键盘
     public void activity(Activity activity) {
         //拿到InputMethodManager
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);

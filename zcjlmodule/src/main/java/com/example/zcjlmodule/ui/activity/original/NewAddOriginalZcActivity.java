@@ -19,6 +19,11 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.NewAddOriginalPresenter;
+import com.example.zcjlmodule.ui.activity.original.enclosure.ApplyDateZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.ChoiceBidsZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.ChoiceHeadquartersZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.ChoiceProjectZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.StandardDecomposeZcActivity;
 import com.example.zcjlmodule.view.NewAddOriginalView;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
@@ -27,12 +32,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
 import measure.jjxx.com.baselibrary.adapter.PhotosAdapter;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
-import measure.jjxx.com.baselibrary.utils.CameraUtils;
+import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
 import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
@@ -70,7 +76,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     //所属项目  所属标段  指挥部  界面下排功能按钮
     private LinearLayout newAddOriginalProject, newAddOriginalBids, newAddOriginalCommand, newAddOriginalFunction;
     //标准分解   申报期数  标题栏保存按钮
-    private LinearLayout Standarddecomposition, newAddOriginalApplydate, toolbarIconText;
+    private LinearLayout standarddecomposition, newAddOriginalApplydate, toolbarIconText;
     //省 城 县 镇  修改
     private TextView provincename, cityname, countyname, townname;
     //所属项目名称   所属标段名称  指挥部名称   征拆类型    单据编号
@@ -78,13 +84,13 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     //  申报期数  计量单位   总金额   单价  标准分解
     private TextView newAddOriginalApplydateText, meterunitname, totalPrice, price, standardDetailNumber;
     //原始单号 申报数量
-    private EditText newAddOriginalOriginalnumber, declareNum;
+    private EditText newAddOriginalOriginalnumber, declareNum, remarks;
     //图标
     private ImageView newAddOriginalProjectnameImage, newAddOriginalBidstextImage, newAddOriginalCommandtextImage, newAddOriginalStandarddImage, newAddOriginalApplydateImage;
     //户主名字，省份证号码，电话，受益人
     private EditText newAddOriginalName, newAddOriginalNumber, newAddOriginalPhone, newAddOriginalBeneficiary, detailAddress;
     //orgid
-    private String orgId = "";
+    private String orgId = "", Id = "";
     //类型 判断是新建还是传递参数展示
     private String type = "";
     private Intent intent;
@@ -105,6 +111,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         editTexlist = new ArrayList<>();
         intent = getIntent();
         type = intent.getStringExtra("type");
+        orgId = intent.getStringExtra("orgId");
         findId();
         init();
     }
@@ -138,6 +145,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         newAddOriginalPhone = (EditText) findViewById(R.id.new_add_original_phone);
         newAddOriginalBeneficiary = (EditText) findViewById(R.id.new_add_original_beneficiary);
         detailAddress = (EditText) findViewById(R.id.new_add_original_detailAddress);
+        remarks = (EditText) findViewById(R.id.new_add_original_remarks);
         //保存
         toolbarIconText = (LinearLayout) findViewById(R.id.toolbar_text_text);
         toolbarIconText.setOnClickListener(this);
@@ -153,6 +161,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         editTexlist.add(newAddOriginalBeneficiary);
         //详细地址
         editTexlist.add(detailAddress);
+        editTexlist.add(remarks);
         //省
         provincename = (TextView) findViewById(R.id.new_add_original_provinceName);
         //城市
@@ -180,8 +189,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //指挥部名称
         newAddOriginalCommandtext = (TextView) findViewById(R.id.new_add_original_commandtext);
         //标准分解
-        Standarddecomposition = (LinearLayout) findViewById(R.id.new_add_original_standarddecomposition);
-        Standarddecomposition.setOnClickListener(this);
+        standarddecomposition = (LinearLayout) findViewById(R.id.new_add_original_standarddecomposition);
+        standarddecomposition.setOnClickListener(this);
         //原始单号
         newAddOriginalOriginalnumber = (EditText) findViewById(R.id.new_add_original_originalnumber);
         editTexlist.add(newAddOriginalOriginalnumber);
@@ -214,8 +223,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //或者传递过来的参数集合
             message = (HashMap<String, String>) intent.getSerializableExtra("message");
             //获取ID
-            orgId = message.get("id");
-            //原始单号
+            Id = message.get("id");
+
+            //单据编号
             originalDonumber.setText(message.get("number"));
             //户主名字
             newAddOriginalName.setText(message.get("namecontent"));
@@ -224,7 +234,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //指挥部
             newAddOriginalCommandtext.setText(message.get("content"));
             //原始单号
-            newAddOriginalOriginalnumber.setText(message.get("title"));
+            newAddOriginalOriginalnumber.setText(message.get("oldnumber"));
             //省
             provincename.setText(message.get("provinceName"));
             //城市
@@ -249,6 +259,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             declareNum.setText(message.get("declareNum"));
             //标准分解
             standardDetailNumber.setText(message.get("standardDetailNumber"));
+            //备注
+            remarks.setText(message.get("remarks"));
         } else {
             showview();
         }
@@ -259,8 +271,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //添加图片
             @Override
             public void addlick(View view, int position) {
-                CameraUtils cameraUtils = new CameraUtils();
-                cameraUtils.showPopwindow(NewAddOriginalZcActivity.this, new CameraUtils.CameraCallback() {
+                PopCameraUtils popCameraUtils = new PopCameraUtils();
+                popCameraUtils.showPopwindow(NewAddOriginalZcActivity.this, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void onComple(String string) {
                         if ("相机".equals(string)) {
@@ -307,10 +319,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                 for (int i = 0; i < list.size(); i++) {
                     pathlsit.add(new PhotoviewBean("", list.get(i), ""));
                 }
-                PhotoPreview.builder().setPhotos(PhotoUtils.getPhoto(list,false)).setCurrentItem(position).start((Activity) mContext);
+                PhotoPreview.builder().setPhotos(PhotoUtils.getPhoto(list, false)).setCurrentItem(position).start((Activity) mContext);
             }
         });
-
     }
 
     /**
@@ -327,25 +338,25 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //所属项目
             if (status) {
                 Intent intent1 = new Intent(mContext, ChoiceProjectZcActivity.class);
+                intent1.putExtra("orgId", orgId);
                 startActivityForResult(intent1, 102);
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
             }
-
         } else if (i == R.id.new_add_original_bids) {
             //所属标段
             if (status) {
                 Intent intent1 = new Intent(mContext, ChoiceBidsZcActivity.class);
+                intent1.putExtra("orgId", orgId);
                 startActivityForResult(intent1, 103);
-
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
             }
-
         } else if (i == R.id.new_add_original_command) {
             //指挥部
             if (status) {
                 Intent intent1 = new Intent(mContext, ChoiceHeadquartersZcActivity.class);
+                intent1.putExtra("orgId", orgId);
                 startActivityForResult(intent1, 104);
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
@@ -355,11 +366,11 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //分解标准
             if (status) {
                 Intent intent1 = new Intent(mContext, StandardDecomposeZcActivity.class);
+                intent1.putExtra("orgId", orgId);
                 startActivityForResult(intent1, 105);
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
             }
-
         } else if (i == R.id.new_add_original_applydate) {
             //申报期数
             if (status) {
@@ -370,15 +381,88 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             }
         } else if (i == R.id.new_add_original_modify) {
             //修改
-            showview();//显示
+            showview();  //显示布局
+
         } else if (i == R.id.toolbar_text_text) {
-            //保存完成
-            hide();//隐藏
+            //隐藏布局
+            hide();
+            //保存
+            save();
         } else if (i == R.id.new_add_original_copy) {
             ToastUtlis.getInstance().showShortToast("新增修改");
         } else {
-
         }
+    }
+
+    /**
+     * 保存数据
+     */
+    private void save() {
+        Map<String, Object> map = new HashMap<>();
+        //主键Id（不传则新增) 否
+        map.put("Id", Id);
+        //组织Id
+        map.put("orgId", orgId);
+        //单据编号
+        if (originalDonumber.getText().length() > 0) {
+            map.put("number", originalDonumber.getText());
+        }
+        //原始单号
+        if (newAddOriginalOriginalnumber.getText().length() > 0) {
+            map.put("rawNumber", newAddOriginalOriginalnumber.getText());
+        }
+        //所属项目
+        if (newAddOriginalProjectname.getText().length() > 0) {
+            map.put("project", "");
+        }
+        //所属标段
+        if (newAddOriginalBidstext.getText().length() > 0) {
+            map.put("tender", "");
+        }
+        //指挥部
+        if (newAddOriginalCommandtext.getText().length() > 0) {
+            map.put("headquarter", "");
+        }
+        //期数
+        if (newAddOriginalApplydateText.getText().length() > 0) {
+            map.put("period", "");
+        }
+        //标准分解Id
+        if (standardDetailNumber.getText().length() > 0) {
+            map.put("standardDetail", "");
+        }
+        //详细地址
+        if (detailAddress.getText().length() > 0) {
+            map.put("detailAddress", "");
+        }
+        //申报数量  Bigdecimal
+        if (declareNum.getText().length() > 0) {
+            map.put("declareNum", "");
+        }
+        //申报金额   Bigdecimal
+        if (totalPrice.getText().length() > 0) {
+            map.put("totalPrice", "");
+        }
+        //户主姓名
+        if (newAddOriginalName.getText().length() > 0) {
+            map.put("householder", "");
+        }
+        //户主身份证
+        if (newAddOriginalNumber.getText().length() > 0) {
+            map.put("householderIdcard", "");
+        }
+        //户主电话 否
+        map.put("householderPhone", "");
+        //受益人 否
+        if (newAddOriginalBeneficiary.getText().length() > 0) {
+            map.put("beneficiary", "");
+        }
+        //备注 否
+        if (remarks.getText().length() > 0) {
+            map.put("remarks", "");
+        }
+        //保存完成
+        mPresenter.save(map);
     }
 
     /**
@@ -421,6 +505,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         mPresenter.setMargins(scrollView, 0, 0, 0, 140);
     }
 
+    //所属项目ID 所属标段ID  指挥部Id
+    private String ProjectId, BidsId, CommandId, numberId;
+
     /**
      * 调用相机的回调
      */
@@ -436,59 +523,25 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         } else if (requestCode == 102 && resultCode == 102) {
             //所属项目
             newAddOriginalProjectname.setText(data.getStringExtra("name"));
-            String ProjectId = data.getStringExtra("id");
+            ProjectId = data.getStringExtra("id");
         } else if (requestCode == 103 && resultCode == 103) {
             //所属标段
             newAddOriginalBidstext.setText(data.getStringExtra("name"));
+            BidsId = data.getStringExtra("id");
         } else if (requestCode == 104 && resultCode == 104) {
             //指挥部
             newAddOriginalCommandtext.setText(data.getStringExtra("name"));
+            CommandId = data.getStringExtra("id");
         } else if (requestCode == 105 && resultCode == 105) {
             //分解标准
             standardDetailNumber.setText(data.getStringExtra("name"));
         } else if (requestCode == 106 && resultCode == 106) {
             //申报期数
             newAddOriginalApplydateText.setText(data.getStringExtra("name"));
+            numberId = data.getStringExtra("id");
         }
     }
 
-    /**
-     * 获取界面的内容保存
-     */
-    public void getcontent() {
-        //原始单号
-        originalDonumber.getText();
-        //所属标段
-        newAddOriginalBidstext.getText();
-        //指挥部
-        newAddOriginalCommandtext.getText();
-        //分解标准
-        standardDetailNumber.getText();
-        // 征拆类型
-        newAddOriginalCategory.getText();
-        // 省份
-        provincename.getText();
-        // 城市
-        cityname.getText();
-        // 区/县
-        countyname.getText();
-        //乡镇
-        townname.getText();
-        // 申报期数
-        // 单价
-        price.getText();
-        //申报数量
-
-        // 申报金额
-        //户主名字
-
-        //户主身份证
-        //电话
-        //受益人
-        //详细地址
-        //备注
-
-    }
 
     /**
      * 网络请求成功

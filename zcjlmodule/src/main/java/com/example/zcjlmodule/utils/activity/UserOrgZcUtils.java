@@ -197,8 +197,28 @@ public class UserOrgZcUtils {
                                         e.printStackTrace();
                                         name = "";
                                     }
-                                    onClickListener.onClick(OrgsData2, OrgsData);
-                                    OrgsData.add(new OrgenBeans(id, parentId, name, type));
+                                    if (status){
+                                        //不存在相同的当做第一级
+                                        OrgsData2.add(new OrgBeans(1, 0, json.getString("name"), id, parentId, type));
+//                                        //拿到所有的ID
+//                                        final ArrayList<String> IDs = new ArrayList<String>();
+//                                        for (int j = 0; j <mData.size() ; j++) {
+//                                            IDs.add(mData.get(i).getId());
+//                                        }
+//                                        for (int j = 0; j < mData.size() ; j++) {
+//                                            //取出父ID，
+//                                            String pernID = mData.get(i).getParentId();
+//                                            //用ID判断是否有父级相同的
+//                                            if (IDs.contains(pernID)) {
+//                                                //存在相同的的不处理
+//                                            } else {
+                                                                                            onClickListener.onClick(OrgsData2, OrgsData);
+//                                            }
+                                      //  }
+                                    }else {
+                                        OrgsData.add(new OrgenBeans(id, parentId, name, type));
+                                        onClickListener.onClick(OrgsData2, OrgsData);
+                                    }
                                 }
                             }
                         } catch (JSONException e) {

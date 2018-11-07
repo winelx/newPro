@@ -17,6 +17,8 @@ import java.net.URLConnection;
 
 /**
  * Created by Administrator on 2018/11/5 0005.
+ * 进行pdf的保存以及读取（另外还有pdfActivity）
+ * 但是局限于pdf，还可以用户word xls等。单是由于是调用系统外部软件，所以存在局限，可能手机没有软件支持这些文件，
  */
 
 public class PdfUtils {

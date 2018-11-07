@@ -25,7 +25,7 @@ import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
 import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
-import measure.jjxx.com.baselibrary.utils.CameraUtils;
+import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
@@ -74,8 +74,8 @@ public class MessageFragmentZc extends BaseFragment  {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     switch (position) {
                         case 0:
-                            CameraUtils cameraUtils = new CameraUtils();
-                            cameraUtils.showPopwindow(HomeZcActivity.getInstance(), new CameraUtils.CameraCallback() {
+                            PopCameraUtils popCameraUtils = new PopCameraUtils();
+                            popCameraUtils.showPopwindow(HomeZcActivity.getInstance(), new PopCameraUtils.CameraCallback() {
 
                                 @Override
                                 public void onComple(String str) {

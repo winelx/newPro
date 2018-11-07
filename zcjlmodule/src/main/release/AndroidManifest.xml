@@ -62,18 +62,19 @@
         <activity android:name=".ui.activity.original.OriginalZcActivity" />
         <activity android:name=".ui.activity.original.PeriodsQueryZcActivity" />
         <activity android:name=".ui.activity.original.NewAddOriginalZcActivity" />
-        <activity android:name=".ui.activity.original.ChoiceProjectZcActivity" />
-        <activity android:name=".ui.activity.original.ChoiceBidsZcActivity" />
-        <activity android:name=".ui.activity.original.ChoiceHeadquartersZcActivity" />
-        <activity android:name=".ui.activity.original.StandardDecomposeZcActivity" />
-        <activity android:name=".ui.activity.original.DismantlingtypequeryZcActivity" />
-        <activity android:name=".ui.activity.original.ApplyDateZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.ChoiceProjectZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.ChoiceBidsZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.ChoiceHeadquartersZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.StandardDecomposeZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.DismantlingtypequeryZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.ApplyDateZcActivity" />
         <activity android:name=".ui.activity.dismantling.StandardDismantlingZcActivity" />
         <activity android:name=".ui.activity.dismantling.UnknitstandardActivity" />
         <activity android:name=".ui.activity.dismantling.ExamineDismantlingActivity" />
         <activity android:name=".ui.activity.mine.PasswordActivity" />
-        <activity android:name=".ui.activity.mine.UserOrgZcActivity"/>
-        <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity"/>
+        <activity android:name=".ui.activity.mine.UserOrgZcActivity" />
+        <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.RegionZcActivity"></activity>
     </application>
 
 </manifest>
