@@ -41,9 +41,12 @@ public class ListJsonUtils {
                 return list;
             }
             for (Object object : jsonArray) {
-                JSONObject jsonObject = (JSONObject) object;
-                T t = JSONObject.toJavaObject(jsonObject, cls);
-                list.add(t);
+                try {
+                    JSONObject jsonObject = (JSONObject) object;
+                    T t = JSONObject.toJavaObject(jsonObject, cls);
+                    list.add(t);
+                }catch (Exception e){
+                }
             }
         return list;
     }

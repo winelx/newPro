@@ -42,9 +42,7 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 	}
 
 	public TreeListViewAdapters(ListView tree, Context context, List<T> datas,
-                                int defaultExpandLevel) throws IllegalArgumentException,
-            IllegalAccessException
-	{
+                                int defaultExpandLevel) throws IllegalArgumentException, IllegalAccessException {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		mAllNodes = TreeHelpers.getSortedNodes(datas, defaultExpandLevel);
@@ -54,23 +52,17 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id)
-			{
+                                    int position, long id) {
 				expandOrCollapse(position);
-
-				if (mListener != null)
-				{
+				if (mListener != null) {
 					mListener.onClick(mVisibleNodes.get(position), position);
 				}
-
 			}
-
 		});
-
 	}
-
+	boolean status=false;
 	/**
-	 * 点击搜索或者展开
+	 * 点击收缩或者展开
 	 * 
 	 * @param position
 	 */
@@ -81,7 +73,8 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 			if (n.isLeaf()) {
 				return;
 			}
-			n.setExpand(!n.isExpand());
+			boolean expand=n.isExpand();
+			n.setExpand(!expand);
 			mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
 			notifyDataSetChanged();
 		}

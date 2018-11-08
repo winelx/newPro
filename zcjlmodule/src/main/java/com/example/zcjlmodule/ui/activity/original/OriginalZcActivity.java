@@ -31,7 +31,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,43 +139,14 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Map<String, String> message = new HashMap<String, String>();
                 //id
-//                message.put("id", list.get(position).getId());
-//                //户主名字
-//                message.put("namecontent", list.get(position).getNamecontent());
-//                //征拆类型
-//                message.put("category", list.get(position).getCategory());
-//                //指挥部
-//                message.put("content", list.get(position).getContent());
-//                //单据编号
-//                message.put("number", list.get(position).getTitile());
-//                //省
-//                message.put("provinceName", list.get(position).getProvinceName());
-//                //城市
-//                message.put("cityName", list.get(position).getCityName());
-//                //区
-//                message.put("countyName", list.get(position).getCountyName());
-//                //乡镇
-//                message.put("townName", list.get(position).getTownName());
-//                //地址
-//                message.put("detailAddress", list.get(position).getDetailAddress());
-//                //申请期数
-//                message.put("periodName", list.get(position).getDatanumber());
-//                //单位
-//                message.put("meterUnitName", list.get(position).getMeterUnitName());
-//                //金额
-//                message.put("totalPrice", list.get(position).getTotalPrice());
-//                //单价
-//                message.put("price", list.get(position).getPrice());
-//                //身份证
-//                message.put("householderIdcard", list.get(position).getHouseholderIdcard());
-//                //申报数量
-//                message.put("declareNum", list.get(position).getDeclareNum());
-//                //标准分解
-//                message.put("standardDetailNumber", list.get(position).getStandardDetailNumber());
-//                //原始单号
-//                message.put("oldnumber", list.get(position).getRawNumber());
-//                //备注
-//                message.put("remarks", list.get(position).getRemarks());
+                OriginalZcBean bean = list.get(position);
+                String string = bean.toString();
+                List<String> strlist = stringToList(string);
+                for (int i = 0; i < strlist.size(); i++) {
+//                    cityName='遵义市'
+                    String str=strlist.get(i);
+                    message.put(str.substring(0,str.indexOf("=")) + "", str.substring(str.indexOf("=")+1,str.length()) + "");
+                }
                 Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
                 intent.putExtra("message", (Serializable) message);
                 intent.putExtra("type", "old");
@@ -181,6 +154,18 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 startActivity(intent);
             }
         });
+    }
+
+    /**
+     * string转集合
+     */
+    public static List<String> stringToList(String strs) {
+        if (strs == "" && strs.isEmpty()) {
+        } else {
+            String str[] = strs.split(",");
+            return Arrays.asList(str);
+        }
+        return null;
     }
 
     /**

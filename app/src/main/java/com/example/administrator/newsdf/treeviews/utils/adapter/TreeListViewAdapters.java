@@ -74,8 +74,7 @@ public abstract class TreeListViewAdapters<T> extends BaseAdapter
 	 *
 	 * @param position
 	 */
-	public void expandOrCollapse(int position)
-	{
+	public void expandOrCollapse(int position) {
 		Nodes n = mVisibleNodes.get(position);
 		if (n != null) {
 			if (n.isLeaf()) {

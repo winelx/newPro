@@ -141,9 +141,7 @@ public class RegionZcActivity extends AppCompatActivity implements View.OnClickL
     private class AttachProjectAdapter extends BaseQuickAdapter<AttachProjectBean, BaseViewHolder> {
         public AttachProjectAdapter(@LayoutRes int layoutResId, @Nullable List data) {
             super(layoutResId, data);
-
         }
-
         @Override
         protected void convert(BaseViewHolder helper, AttachProjectBean item) {
             helper.setText(R.id.attachproject_text, item.getName());

@@ -333,5 +333,39 @@ public class OriginalZcBean {
      * msg : 操作成功
      * ret : 0
      */
-
+    @Override
+    public String toString() {
+        return
+                "cityName=" + cityName +
+                ",countyName=" + countyName +
+                ",createDate=" + createDate +
+                ",createName=" + createName +
+                ",declareNum=" + declareNum +
+                ",detailAddress=" + detailAddress +
+                ",filePath=" + filePath +
+                ",headquarter=" + headquarter +
+                ",headquarterName=" + headquarterName +
+                ",householder=" + householder +
+                ",householderIdcard=" + householderIdcard +
+                ",householderPhone=" + householderPhone +
+                ",id=" + id +
+                ",levyTypeName=" + levyTypeName +
+                ",meterUnitName=" + meterUnitName +
+                ",newX=" + newX +
+                ",number=" + number +
+                ",orgId=" + orgId +
+                ",period=" + period +
+                ",periodName=" + periodName +
+                ",price=" + price +
+                ",provinceName=" + provinceName +
+                ",quoteNumber=" + quoteNumber +
+                ",rawNumber=" + rawNumber +
+                ",remarks=" + remarks +
+                ",standardDetail=" + standardDetail +
+                ",standardDetailNumber=" + standardDetailNumber +
+                ",status=" + status +
+                ",tender=" + tender +
+                ",totalPrice=" + totalPrice +
+                ",townName=" + townName;
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.zcjlmodule.treeView.utils;
 
-import android.util.Log;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.treeView.utils.annotation.TreeNodeId;
@@ -13,6 +12,7 @@ import com.example.zcjlmodule.treeView.utils.annotation.TreeNodeTypes;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * description:
  * @author lx
@@ -167,8 +167,7 @@ public class TreeHelpers
 		List<Nodes> result = new ArrayList<Nodes>();
 		for (Nodes node : nodes)
 		{
-			if (node.isRoot() || node.isParentExpand())
-			{
+			if (node.isRoot() || node.isParentExpand()) {
 				setNodeIcon(node);
 				result.add(node);
 			}

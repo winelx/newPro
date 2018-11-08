@@ -165,12 +165,12 @@ public class UserOrgZcUtils {
                             if (jsonArray1.length() > 0) {
                                 for (int i = 0; i < jsonArray1.length(); i++) {
                                     JSONObject json = jsonArray1.getJSONObject(i);
-                                    String id;
+                                    String Id;
                                     try {
-                                        id = json.getString("id");
+                                        Id = json.getString("id");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        id = "";
+                                        Id = "";
                                     }
                                     String type;
                                     try {
@@ -188,7 +188,7 @@ public class UserOrgZcUtils {
                                         parentId = "";
                                         //当做第一级处理
                                         status = false;
-                                        OrgsData2.add(new OrgBeans(1, 0, json.getString("name"), id, parentId, type));
+                                        mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
                                     }
                                     String name;
                                     try {
@@ -197,29 +197,30 @@ public class UserOrgZcUtils {
                                         e.printStackTrace();
                                         name = "";
                                     }
-                                    if (status){
-                                        //不存在相同的当做第一级
-                                        OrgsData2.add(new OrgBeans(1, 0, json.getString("name"), id, parentId, type));
-//                                        //拿到所有的ID
-//                                        final ArrayList<String> IDs = new ArrayList<String>();
-//                                        for (int j = 0; j <mData.size() ; j++) {
-//                                            IDs.add(mData.get(i).getId());
-//                                        }
-//                                        for (int j = 0; j < mData.size() ; j++) {
-//                                            //取出父ID，
-//                                            String pernID = mData.get(i).getParentId();
-//                                            //用ID判断是否有父级相同的
-//                                            if (IDs.contains(pernID)) {
-//                                                //存在相同的的不处理
-//                                            } else {
-                                                                                            onClickListener.onClick(OrgsData2, OrgsData);
-//                                            }
-                                      //  }
-                                    }else {
-                                        OrgsData.add(new OrgenBeans(id, parentId, name, type));
-                                        onClickListener.onClick(OrgsData2, OrgsData);
+                                    mData.add(new OrgenBeans(Id, parentId, name, type));
+                                    onClickListener.onClick(mDatas2,mData);
+                                }
+                                if (status) {
+                                    //拿到所有的ID
+                                    final ArrayList<String> IDs = new ArrayList<String>();
+                                    for (int i = 0; i < mData.size(); i++) {
+                                        IDs.add(mData.get(i).getId());
+                                    }
+                                    //循环集合
+                                    for (int i = 0; i < mData.size(); i++) {
+                                        //取出父ID，
+                                        String pernID = mData.get(i).getParentId();
+                                        //用ID判断是否有父级相同的
+                                        if (IDs.contains(pernID)) {
+                                            //存在相同的的不处理
+                                        } else {
+                                            //不存在相同的当做第一级
+                                            mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
+                                            onClickListener.onClick(mDatas2,mData);
+                                        }
                                     }
                                 }
+                            } else {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

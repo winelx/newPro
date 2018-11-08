@@ -116,7 +116,8 @@ public class Nodes {
      *
      * @return
      */
-    public boolean isRoot() {
+    public boolean isRoot()
+    {
         return parent == null;
     }
 
@@ -126,8 +127,9 @@ public class Nodes {
      * @return
      */
     public boolean isParentExpand() {
-        if (parent == null)
+        if (parent == null) {
             return false;
+        }
         return parent.isExpand();
     }
 
@@ -136,44 +138,52 @@ public class Nodes {
      *
      * @return
      */
-    public boolean isLeaf() {
+    public boolean isLeaf()
+    {
         return children.size() == 0;
     }
 
     /**
      * 得到当前节点的层级
-     *
      * @return
      */
-    public int getLevel() {
+    public int getLevel()
+    {
         return parent == null ? 0 : parent.getLevel() + 1;
     }
-    /**
-     * 是否是展开
-     */
-    public boolean isExpand() {
+
+    public boolean isExpand()
+    {
         return isExpand;
     }
 
-    public void setExpand(boolean isExpand) {
+    public void setExpand(boolean isExpand)
+    {
         this.isExpand = isExpand;
-        if (!isExpand) {
-            for (Nodes node : children) {
+
+        if(!isExpand)
+        {
+            for(Nodes node :children)
+            {
                 node.setExpand(false);
             }
         }
     }
 
 
-    public void setLevel(int level) {
+
+    public void setLevel(int level)
+    {
         this.level = level;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Node [id=" + id + ", pId=" + pId + ", name=" + name
                 + ", level=" + level + ", isExpand=" + isExpand + ", icon="
                 + icon + "]";
     }
+
 
 }

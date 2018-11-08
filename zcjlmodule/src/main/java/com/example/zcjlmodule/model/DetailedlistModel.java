@@ -44,29 +44,28 @@ public class DetailedlistModel {
                                 try {
                                     JSONObject jsonObject = new JSONObject(s);
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                    list = ListJsonUtils.getListByArray(PayDetailedlistBean.class, s);
-//                                    if (jsonArray.length() > 0) {
-//                                        for (int i = 0; i < jsonArray.length(); i++) {
-//                                            JSONObject json = jsonArray.getJSONObject(i);
-//                                            //期数
-//                                            String periodName = json.getString("periodName");
-//                                            //内容
-//                                            String headquarterName = json.getString("headquarterName");
-//                                            //id
-//                                            String id = json.getString("id");
-//                                            //支付金额
-//                                            String totalMoney = json.getString("totalMoney");
-//                                            //未检查
-//                                            String uncheckMoney = json.getString("uncheckMoney");
-//                                            //已检查
-//                                            String checkMoney = json.getString("checkMoney");
-//                                            //fileNumber编号
-//                                            String fileNumber = json.getString("fileNumber");
-//                                            //number==title
-//                                            String number = json.getString("number");
-//                                            list.add(new PayDetailedlistBean(id, number, fileNumber, periodName, headquarterName, totalMoney, checkMoney, uncheckMoney));
-//                                        }
-//                                    }
+                                    if (jsonArray.length() > 0) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject json = jsonArray.getJSONObject(i);
+                                            //期数
+                                            String periodName = json.getString("periodName");
+                                            //内容
+                                            String headquarterName = json.getString("headquarterName");
+                                            //id
+                                            String id = json.getString("id");
+                                            //支付金额
+                                            String totalMoney = json.getString("totalMoney");
+                                            //未检查
+                                            String uncheckMoney = json.getString("uncheckMoney");
+                                            //已检查
+                                            String checkMoney = json.getString("checkMoney");
+                                            //fileNumber编号
+                                            String fileNumber = json.getString("fileNumber");
+                                            //number==title
+                                            String number = json.getString("number");
+                                            list.add(new PayDetailedlistBean(id, number, fileNumber, periodName, headquarterName, totalMoney, checkMoney, uncheckMoney));
+                                        }
+                                    }
                                     onClickListener.onComple(list);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

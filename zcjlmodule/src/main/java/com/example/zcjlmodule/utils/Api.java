@@ -66,4 +66,5 @@ public class Api {
    public static final String SAVERAW=networks+"/iface/levy/saveRaw";
       //获取征拆部分初始化数据
    public static final String GETLEVYINITINFO=networks+"/iface/levy/getLevyInitInfo";
+
 }

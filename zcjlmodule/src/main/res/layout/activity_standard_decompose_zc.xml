@@ -66,7 +66,7 @@
             android:textSize="17sp" />
 
         <TextView
-
+            android:id="@+id/region_dismantle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -109,6 +109,7 @@
             android:textSize="17sp" />
 
         <EditText
+            android:id="@+id/standard_dec_pricenumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -121,11 +122,36 @@
             android:textSize="17sp" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/standard_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <FrameLayout
         android:layout_marginTop="15dp"
-        android:background="@color/bg_white" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/original_refreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="45dp"
+            android:layout_marginTop="15dp">
+
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/standard_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_white" />
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+    </FrameLayout>
+
 
 </LinearLayout>

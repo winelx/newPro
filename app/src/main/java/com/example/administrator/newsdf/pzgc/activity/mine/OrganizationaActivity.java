@@ -159,20 +159,17 @@ public class OrganizationaActivity extends AppCompatActivity {
                                                 e.printStackTrace();
                                             }
                                         }
-
                                     }
                                 }
                                 nullposion.setVisibility(View.GONE);
                             } else {
                                 nullposion.setVisibility(View.VISIBLE);
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         Dates.disDialog();
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

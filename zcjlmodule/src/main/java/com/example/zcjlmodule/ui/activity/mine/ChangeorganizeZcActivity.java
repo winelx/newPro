@@ -25,7 +25,7 @@ import measure.jjxx.com.baselibrary.base.BaseActivity;
 /**
  * @author lx
  * @Created by: 2018/11/1 0001.
- * @description:
+ * @description:列表切换组织
  */
 
 public class ChangeorganizeZcActivity extends BaseActivity {

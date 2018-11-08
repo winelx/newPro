@@ -13,10 +13,9 @@ import com.example.zcjlmodule.treeView.utils.Nodes;
 import com.example.zcjlmodule.treeView.utils.TreeHelpers;
 import com.example.zcjlmodule.treeView.utils.adapter.TreeListViewAdapters;
 import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.DismantlingtypequeryZcActivity;
 
 import java.util.List;
-
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 
 /**
@@ -26,8 +25,8 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  * update: 2018/10/25 0025
  * version:
 */
-public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
-    public ChangeTreeListViewAdapters(ListView tree, Context context,
+public class ZhengcTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
+    public ZhengcTreeListViewAdapters(ListView tree, Context context,
                                       List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
@@ -39,7 +38,7 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public View getConvertView(final Nodes node, final int position, View convertView,
                                ViewGroup parent) {
         ViewHolder holder = null;
-        final ChangeorganizeZcActivity mian = (ChangeorganizeZcActivity) mContext;
+        final DismantlingtypequeryZcActivity mian = (DismantlingtypequeryZcActivity) mContext;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_node_zc, parent, false);
             holder = new ViewHolder();
@@ -63,22 +62,17 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.id_item_lin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              boolean ex=  node.isExpand();
-
                 if (node.getChildren().size() == 0) {
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
-                if (position==0){
-                    expandOrCollapse(position);
-                }
             }
         });
         holder.mText.setText(node.getName());
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChangeorganizeZcActivity activity = (ChangeorganizeZcActivity) mContext;
+                DismantlingtypequeryZcActivity activity = (DismantlingtypequeryZcActivity) mContext;
                 activity.member(node.getIds(), node.getName(),node.getType());
             }
         });
@@ -91,10 +85,12 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         LinearLayout id_item_lin;
     }
 
+
     /**
      * 动态插入节点
      *
-     * @param position
+     * @para
+     * m position
      * @param names
      */
     public void addExtraNode(int position, String names, String ids, String pids,String type) {
@@ -105,8 +101,8 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
-        expandOrCollapse(position);
         notifyDataSetChanged();
     }
+
 }
 

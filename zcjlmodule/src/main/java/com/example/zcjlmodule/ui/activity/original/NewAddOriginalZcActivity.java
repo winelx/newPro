@@ -224,7 +224,6 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             message = (HashMap<String, String>) intent.getSerializableExtra("message");
             //获取ID
             Id = message.get("id");
-
             //单据编号
             originalDonumber.setText(message.get("number"));
             //户主名字
@@ -232,7 +231,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //征拆类型
             newAddOriginalCategory.setText(message.get("category"));
             //指挥部
-            newAddOriginalCommandtext.setText(message.get("content"));
+            newAddOriginalCommandtext.setText(message.get("headquarterName"));
             //原始单号
             newAddOriginalOriginalnumber.setText(message.get("oldnumber"));
             //省
@@ -361,12 +360,12 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
             }
-
         } else if (i == R.id.new_add_original_standarddecomposition) {
             //分解标准
             if (status) {
                 Intent intent1 = new Intent(mContext, StandardDecomposeZcActivity.class);
-                intent1.putExtra("orgId", orgId);
+                intent1.putExtra("type", type);//判断的新增还是修改
+                intent1.putExtra("orgId", orgId);//判断的新增还是修改
                 startActivityForResult(intent1, 105);
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
@@ -382,7 +381,6 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         } else if (i == R.id.new_add_original_modify) {
             //修改
             showview();  //显示布局
-
         } else if (i == R.id.toolbar_text_text) {
             //隐藏布局
             hide();

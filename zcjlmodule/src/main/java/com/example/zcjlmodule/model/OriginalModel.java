@@ -52,7 +52,7 @@ public class OriginalModel {
                                 if (ret == 0) {
                                     if (s.contains("data")) {
                                         JSONArray jsonArray=jsonObject.getJSONArray("data");
-                                        list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, s));
+                                        list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
 //                                        JSONArray jsonArray = jsonObject.getJSONArray("data");
 //                                        for (int i = 0; i < jsonArray.length(); i++) {
 //                                            JSONObject json = jsonArray.getJSONObject(i);
