@@ -139,6 +139,7 @@
             android:layout_gravity="center"
             android:layout_weight="7"
             android:background="@null"
+            android:digits="123456789."
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"

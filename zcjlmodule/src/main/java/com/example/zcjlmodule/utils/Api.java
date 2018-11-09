@@ -56,6 +56,7 @@ public class Api {
     public static final String GETLEVYSTANDARDDETAILSBYSTANDARD = networks + "/iface/levy/getLevyStandardDetailsByStandard";
     //或者征拆图片
     public static final String GETATTACHMENTS = networks + "/iface/sys/attachment/getAttachments";
+    public static final String VALIDATEHOUSEHOLDER = networks + "/iface/levy/validateHouseholder";
 
     /**
      *

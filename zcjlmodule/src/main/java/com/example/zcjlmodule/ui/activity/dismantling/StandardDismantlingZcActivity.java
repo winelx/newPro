@@ -103,10 +103,6 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, ExamineDismantlingActivity.class);
                 SdDismantlingBean bean=list.get(position);
-//                for (:
-//             ) {
-//
-//                }
                 //id
                 intent.putExtra("id", list.get(position).getId());
                 //省份

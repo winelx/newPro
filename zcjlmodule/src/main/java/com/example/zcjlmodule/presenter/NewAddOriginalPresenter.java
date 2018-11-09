@@ -8,12 +8,24 @@ import android.widget.ImageView;
 
 import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.model.NewAddOriginalModel;
+import com.example.zcjlmodule.utils.Api;
 import com.example.zcjlmodule.view.NewAddOriginalView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
+import measure.jjxx.com.baselibrary.base.BaseView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @author lx
@@ -27,13 +39,19 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
     /**
      * 保存数据
      */
-    public void save(Map<String, Object> map) {
+    public void save(Map<String, String> map, ArrayList<String> path) {
+
         model = new NewAddOriginalModel.NewAddOriginalModelIpm();
-        model.getData(map, new NewAddOriginalModel.Model.OnClickListener() {
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < path.size(); i++) {
+            file.add(new File(path.get(i)));
+        }
+        model.getData(map, file, new NewAddOriginalModel.Model.OnClickListener() {
             @Override
             public void onComple(ArrayList<PayDetailedlistBean> list) {
                 mView.OnSuccess();
             }
+
             @Override
             public void onError() {
                 mView.OnError();
@@ -87,4 +105,52 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
             v.requestLayout();
         }
     }
+
+
+    public void validateHouseholder(String orgId, String cardId, String householder, final OnClickListener listener) {
+        OkGo.get(Api.VALIDATEHOUSEHOLDER)
+                .params("orgId", orgId)
+                .params("idCard", cardId)
+                .params("householder", householder)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.getInt("ret") == 0) {
+                                listener.onsuccess(true);
+                            } else {
+                                listener.onsuccess(false);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    /**
+     * 接口
+     */
+    public interface OnClickListener {
+        void onsuccess(boolean lean);
+    }
+
+    //金额验证
+    public  boolean isNumber(String str) {
+        // 判断小数点后2位的数字的正则表达式
+        Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,4})?$");
+        Matcher match = pattern.matcher(str);
+        if (!match.matches()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

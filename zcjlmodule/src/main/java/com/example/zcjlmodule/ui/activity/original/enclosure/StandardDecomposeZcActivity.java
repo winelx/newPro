@@ -2,32 +2,40 @@ package com.example.zcjlmodule.ui.activity.original.enclosure;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.bean.AttachProjectBean;
 import com.example.zcjlmodule.bean.StandardDecomposeBean;
-import com.example.zcjlmodule.utils.activity.MeasureUtils;
+import com.example.zcjlmodule.callback.NewAddOriginalUtils;
 import com.example.zcjlmodule.utils.activity.StandardUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseActivity;
+import measure.jjxx.com.baselibrary.utils.BaseUtils;
 
 /**
  * description: 选择标准分解
@@ -47,16 +55,18 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
     private TextView regionname, region_dismantle;
     private EditText pricenumber;
     private SmartRefreshLayout refreshLayout;
-    private StandardUtils utils;
+    private StandardUtils standardUtils;
     private int page = 1;
+    private BaseUtils baseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard_decompose_zc);
         list = new ArrayList<>();
-        utils = new StandardUtils();
+        standardUtils = new StandardUtils();
         mContext = this;
+        baseUtils = new BaseUtils();
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         type = intent.getStringExtra("type");
@@ -92,9 +102,14 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
                 // 获取用户计算后的结果
-                intent.putExtra("name", list.get(position).getCountyName());
-                intent.putExtra("id", list.get(position).getId());
-                setResult(105, intent);
+                StandardDecomposeBean bean = list.get(position);
+                List<String> data = BaseUtils.stringToList(bean.toString());
+                Map<String, String> map = new HashMap<>();
+                for (int i = 0; i < data.size(); i++) {
+                    String str = data.get(i);
+                    map.put(str.substring(0, str.indexOf("=")) + "", str.substring(str.indexOf("=") + 1, str.length()) + "");
+                }
+                NewAddOriginalUtils.CallBack(map);
                 finish(); //结束当前的activity的生命周期
             }
         });
@@ -108,19 +123,37 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
          　　actionNext                下一项           EditorInfo.IME_ACTION_NEXT
          　　actionDone               完成              EditorInfo.IME_ACTION_DONE
          */
-        pricenumber.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        pricenumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId,
-                                          KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 
-                    pricenumber.requestFocus();
-                    return true;
+        /**
+         * editext回车键搜索
+         */
+        pricenumber.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        pricenumber.setOnKeyListener(new View.OnKeyListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //是否是回车键
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    String search = pricenumber.getText().toString();
+                    if (search.length() != 0) {
+                        httprequest();
+                        baseUtils.hidekeyboard(mContext, pricenumber);
+                    } else {
+                        Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
         });
+        //上拉加载
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                httprequest();
+            }
+        });
+
         httprequest();
 
     }
@@ -201,6 +234,10 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
             helper.setText(R.id.unknit_stand_compensate, "补偿类型：" + item.getCompensateType());
             //单价
             helper.setText(R.id.unknit_stand_price, "单价：" + item.getPrice());
+            //行政区
+            String str = item.getProvinceName() + item.getCityName() + item.getCountyName() + item.getTownName();
+            String[] region = str.split("null");
+            helper.setText(R.id.unknit_stand_region, region[0]);
         }
     }
 
@@ -210,22 +247,25 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
     private void httprequest() {
         Map<String, Object> map = new HashMap<>();
         //区域
-        map.put("regionId", regionId);
+        map.put("region", regionId);
         //页数
         map.put("page", page);
         //征拆类型
-        map.put("dismantleId", dismantleId);
+        map.put("levyType", dismantleId);
         //单价
         map.put("price", pricenumber.getText().toString());
         if (type.equals("old")) {
             //类型ID
             map.put("standardId", orgId);
         }
-        utils.request(map, new StandardUtils.OnClickListener() {
+        standardUtils.request(map, new StandardUtils.OnClickListener() {
             @Override
             public void onsuccess(List<StandardDecomposeBean> data) {
                 if (page == 1) {
                     list.clear();
+                } else {
+                    //关闭上拉加载
+                    refreshLayout.finishLoadmore();
                 }
                 list.addAll(data);
                 mAdapter.setNewData(list);
@@ -236,5 +276,22 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
 
             }
         });
+    }
+
+    public void aminshow() {
+        //控件显示的动画
+        TranslateAnimation mShowAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF
+                , -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAnim.setDuration(500);
+
+    }
+
+    public void aminhide() {
+        //控件隐藏的动画
+        TranslateAnimation HiddenAmin = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF
+                , 0.0f, Animation.RELATIVE_TO_SELF, -1.0f);
+        HiddenAmin.setDuration(500);
     }
 }

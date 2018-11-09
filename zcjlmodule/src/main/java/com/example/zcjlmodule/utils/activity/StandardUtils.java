@@ -72,7 +72,7 @@ public class StandardUtils {
                             Listter.onsuccess(list);
                         } else {
                             //请求成功没有数据
-                            Listter.onerror();
+                            Listter.onsuccess(list);
                         }
                     } else {
                         //请求失败（可能是参数之类的）

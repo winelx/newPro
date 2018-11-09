@@ -16,7 +16,7 @@ import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.BaseDialog;
-import measure.jjxx.com.baselibrary.utils.Utils;
+import measure.jjxx.com.baselibrary.utils.BaseUtils;
 
 
 /**
@@ -32,14 +32,14 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
     private LinearLayout mainbackground;
     private Button btnLogin;
     private Context mContext;
-    private Utils utils;
+    private BaseUtils baseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zc_activity_module_main);
         mContext = this;
-        utils = new Utils();
+        baseUtils = new BaseUtils();
         mPresenter = new ModuleMainPresenter();
         mPresenter.mView = this;
         initViews();
@@ -61,7 +61,7 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_login:
-                utils.hidekeyboard(this,edtAccount);
+                baseUtils.hidekeyboard(this,edtAccount);
                 BaseDialog.getDialog(this, "登录中..", false);
                 String name = edtAccount.getText().toString();
                 String password = edtPassword.getText().toString();
@@ -80,7 +80,7 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
                 }
                 break;
             case R.id.main_background:
-                utils.hidekeyboard(this,edtAccount);
+                baseUtils.hidekeyboard(this,edtAccount);
                 break;
             default:break;
         }

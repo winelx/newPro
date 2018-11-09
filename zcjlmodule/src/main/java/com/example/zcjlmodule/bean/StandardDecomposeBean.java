@@ -57,6 +57,7 @@ public class StandardDecomposeBean {
     private String standardId;
     private String standardName;
     private String standardNumber;
+    private String townName;
     private int status;
 
     public String getCity() {
@@ -243,31 +244,40 @@ public class StandardDecomposeBean {
         this.status = status;
     }
 
+    public String getTownName() {
+        return townName;
+    }
+
+    public void setTownName(String townName) {
+        this.townName = townName;
+    }
+
     @Override
     public String toString() {
-                 return
-                        "city" + city +
-                        ",cityName" + cityName +
-                        ",compensateType" + compensateType +
-                        ",county" + county +
-                        ",countyName" + countyName +
-                        ",createDate" + createDate +
-                        ",delFlag" + delFlag +
-                        ",id" + id +
-                        ",levyType" + levyType +
-                        ",levyTypeName" + levyTypeName +
-                        ",meterUnit" + meterUnit +
-                        ",meterUnitName" + meterUnitName +
-                        ",newX" + newX +
-                        ",number" + number +
-                        ",orgId" + orgId +
-                        ",price" + price +
-                        ",province" + province +
-                        ",provinceName" + provinceName +
-                        ",remarks" + remarks +
-                        ",standardId" + standardId +
-                        ",standardName" + standardName +
-                        ",standardNumber" + standardNumber +
-                        ",status" + status;
+        return
+                "city=" + city +
+                        ",cityName=" + cityName +
+                        ",compensateType=" + compensateType +
+                        ",county=" + county +
+                        ",countyName=" + countyName +
+                        ",createDate=" + createDate +
+                        ",delFlag=" + delFlag +
+                        ",id=" + id +
+                        ",levyType=" + levyType +
+                        ",levyTypeName=" + levyTypeName +
+                        ",meterUnit=" + meterUnit +
+                        ",meterUnitName=" + meterUnitName +
+                        ",newX=" + newX +
+                        ",number=" + number +
+                        ",orgId=" + orgId +
+                        ",price=" + price +
+                        ",province=" + province +
+                        ",provinceName=" + provinceName +
+                        ",remarks=" + remarks +
+                        ",standardId=" + standardId +
+                        ",standardName=" + standardName +
+                        ",standardNumber=" + standardNumber +
+                        ",status=" + status +
+                        ",townName=" + townName;
     }
 }

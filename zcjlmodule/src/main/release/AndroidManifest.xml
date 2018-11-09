@@ -30,7 +30,7 @@
     <application
         android:name="release.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_zc"
         android:label="@string/app_name"
         android:resizeableActivity="true"
         android:screenOrientation="portrait"
@@ -74,7 +74,11 @@
         <activity android:name=".ui.activity.mine.PasswordActivity" />
         <activity android:name=".ui.activity.mine.UserOrgZcActivity" />
         <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity" />
-        <activity android:name=".ui.activity.original.enclosure.RegionZcActivity"></activity>
+        <activity android:name=".ui.activity.original.enclosure.RegionZcActivity" />
+        <activity
+            android:name=".ui.activity.dismantling.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
