@@ -181,7 +181,6 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
             //如果list大于0，隐藏空白数据提示
             emptyView.setVisibility(View.GONE);
         } else {
-            ToastUtlis.getInstance().showShortToast("暂无数据");
             //反之显示空数据提示，隐藏等待框
             emptyView.setVisibility(View.VISIBLE);
             prompt.setVisibility(View.VISIBLE);

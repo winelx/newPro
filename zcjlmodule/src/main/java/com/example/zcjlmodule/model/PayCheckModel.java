@@ -96,7 +96,6 @@ public class PayCheckModel {
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
-                            ToastUtlis.getInstance().showShortToast("请求失败");
                             clickListener.onerror();
                         }
                     });

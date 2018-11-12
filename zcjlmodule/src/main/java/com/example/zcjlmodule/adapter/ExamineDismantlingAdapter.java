@@ -55,14 +55,6 @@ public class ExamineDismantlingAdapter extends RecyclerView.Adapter<RecyclerView
 
     @SuppressLint("SetTextI18n")
     private void bindGrid(Viewholder holder, final int position) {
-        int size = list.size();
-        size = size - 4;
-        if (position == 3) {
-            holder.examine_transparents.setText("+" + size);
-            holder.examine_transparents.setVisibility(View.VISIBLE);
-        } else {
-            holder.examine_transparents.setVisibility(View.GONE);
-        }
         if (list.get(position).getType().equals("pdf")) {
             holder.examine_file.setVisibility(View.VISIBLE);
             holder.examine_image.setVisibility(View.GONE);
@@ -110,12 +102,7 @@ public class ExamineDismantlingAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        if (list.size() >= 4) {
-            return 4;
-        } else {
-            return list.size();
-        }
-
+        return list.size();
     }
 
 
@@ -128,15 +115,12 @@ public class ExamineDismantlingAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView examine_filename_icon;
         //文件名称
         private TextView examine_filename_content;
-        //蒙层
-        private TextView examine_transparents;
 
         public Viewholder(View itemView) {
             super(itemView);
             examine_file = itemView.findViewById(R.id.examine_file);
             examine_filename_icon = itemView.findViewById(R.id.examine_filename_icon);
             examine_filename_content = itemView.findViewById(R.id.examine_filename_content);
-            examine_transparents = itemView.findViewById(R.id.examine_transparents);
             examine_image = itemView.findViewById(R.id.examine_image);
         }
     }

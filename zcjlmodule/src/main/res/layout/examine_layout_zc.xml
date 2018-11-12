@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_white"
-
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,8 +17,7 @@
             android:layout_weight="1"
             android:text="标准标号"
             android:textColor="@color/black"
-
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_number"
@@ -29,7 +27,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -49,7 +47,7 @@
             android:layout_weight="1"
             android:text="文件编号"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_filenumber"
@@ -59,7 +57,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -80,7 +78,7 @@
             android:layout_marginTop="10dp"
             android:text="文件名称"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_filename"
@@ -89,10 +87,9 @@
             android:layout_marginTop="10dp"
             android:background="@null"
             android:ellipsize="end"
-            android:maxLength="15"
-            android:maxLines="1"
             android:minHeight="30dp"
-            android:textSize="16sp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimens_14" />
 
     </LinearLayout>
 
@@ -113,7 +110,7 @@
             android:layout_weight="1"
             android:text="省份"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_provincename"
@@ -123,7 +120,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -143,7 +140,7 @@
             android:layout_weight="1"
             android:text="城市"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_cityname"
@@ -153,7 +150,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -174,7 +171,7 @@
             android:layout_weight="1"
             android:text="区/县"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_countyname"
@@ -184,7 +181,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -204,7 +201,7 @@
             android:layout_weight="1"
             android:text="乡/镇"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_townname"
@@ -214,7 +211,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -234,7 +231,7 @@
             android:layout_weight="1"
             android:text="发布人"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_releasor"
@@ -244,7 +241,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -254,7 +251,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/dimens_45"
         android:orientation="horizontal">
 
         <TextView
@@ -264,7 +261,7 @@
             android:layout_weight="1"
             android:text="发布时间"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_createDate"
@@ -274,7 +271,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
@@ -291,10 +288,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dimens_10"
             android:text="备注"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
 
         <TextView
             android:id="@+id/examine_remarks"
@@ -306,26 +303,28 @@
             android:maxLength="15"
             android:maxLines="1"
             android:minHeight="30dp"
-            android:textSize="16sp" />
+            android:textSize="@dimen/dimens_15" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/dimens_1"
         android:background="@color/back" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dimens_10"
         android:text="附件:"
         android:textColor="@color/black" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/examine_layout_recycler"
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginBottom="30dp"
+        android:scrollbars="none"
+        android:background="@color/bg_white"
+        android:layout_marginLeft="@dimen/dimens_10"
+        android:layout_marginTop="@dimen/dimens_10" />
 </LinearLayout>

@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -66,7 +69,13 @@ public class ExamineDismantlingActivity extends BaseActivity {
         init();
         intent();
         recyclerView = (RecyclerView) findViewById(R.id.examine_layout_recycler);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        //添加自定义分割线
+        DividerItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(this,R.drawable.custom_divider));
+        recyclerView.addItemDecoration(divider);
         recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(list, mContext));
         //请求图片
         dismantlingUtils.getData(id, new ExamineDismantlingUtils.onclick() {

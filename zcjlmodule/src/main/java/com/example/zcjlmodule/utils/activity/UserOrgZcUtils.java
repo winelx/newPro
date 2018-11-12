@@ -155,7 +155,7 @@ public class UserOrgZcUtils {
      */
     public void getOrgs(final OnClickListener onClickListener) {
         OkGo.get(Api.GETORGS)
-                .params("types","3")
+         
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
