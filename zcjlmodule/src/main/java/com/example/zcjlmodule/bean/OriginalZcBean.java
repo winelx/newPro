@@ -28,7 +28,7 @@ public class OriginalZcBean {
          * levyTypeName : 永久用地/旱地
          * meterUnitName : 元/亩
          * new : false
-         * number : XSXM-YQ-HD-00010
+         * number : XSXM-YQ-HD-00010  单价
          * orgId : 92ad8a9378864accb56b90fd7fab405e
          * period : 3e74613ba014446e8281a714a7d940b9
          * periodName : 第1期

@@ -9,12 +9,44 @@
 
     <include layout="@layout/toolbar_icon_zc" />
 
+    <LinearLayout
+        android:id="@+id/original_org"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/bg_white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="组织机构"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/original_orgname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:drawableRight="@mipmap/zc_right"
+            android:gravity="end|center"
+            android:text="新石公司项目办"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:background="@color/bg_white">
+
         <include layout="@layout/layout_emptyview_zc" />
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/original_refreshlayout"
             android:layout_width="match_parent"

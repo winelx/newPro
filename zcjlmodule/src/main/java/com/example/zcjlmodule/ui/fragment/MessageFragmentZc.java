@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,16 +19,20 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.MessageZcItem;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
+import com.example.zcjlmodule.ui.activity.original.NewAddOriginalZcActivity;
+import com.example.zcjlmodule.utils.Api;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.iwf.photopicker.PhotoPicker;
 import measure.jjxx.com.baselibrary.base.BaseFragment;
 import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
 import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import release.App;
 
 /**
  * description: 征拆首页的消息界面
@@ -37,7 +42,7 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
  * @author lx
  *         2018/10/10 0010 下午 2:54
  */
-public class MessageFragmentZc extends BaseFragment  {
+public class MessageFragmentZc extends BaseFragment {
     private View rootView;//界面控件
     private Context mContext;//上下文
     private RecyclerView mRecyclerview;//列表控件
@@ -91,17 +96,23 @@ public class MessageFragmentZc extends BaseFragment  {
                                                 //成功拿到图片,isTailor 是否裁剪？ ,outFile 拿到的文件 ,filePath拿到的URl
                                                 @Override
                                                 public void successful(boolean isTailor, File outFile, Uri filePath) {
-                                                    ToastUtlis.getInstance().showShortToast(filePath+"");
+                                                    ToastUtlis.getInstance().showShortToast(filePath + "");
                                                 }
 
                                                 //失败回调
                                                 @Override
                                                 public void failed(int errorCode, List<String> deniedPermissions) {
-                                                    Log.e("==w",deniedPermissions.toString());
+                                                    Log.e("==w", deniedPermissions.toString());
                                                 }
                                             });
                                             break;
                                         case "相册":
+                                            PhotoPicker.builder()
+                                                    .setPhotoCount(9)
+                                                    .setShowCamera(true)
+                                                    .setShowGif(true)
+                                                    .setPreviewEnabled(false)
+                                                    .start((Activity) mContext, PhotoPicker.REQUEST_CODE);
                                             break;
                                         default:
                                             break;
@@ -111,7 +122,7 @@ public class MessageFragmentZc extends BaseFragment  {
                             });
                             break;
                         case 1:
-                            startActivity(new Intent(mContext,PdfActivity.class));
+                            startActivity(new Intent(mContext, PdfActivity.class));
                             break;
                         case 2:
                             break;
@@ -129,8 +140,6 @@ public class MessageFragmentZc extends BaseFragment  {
         }
         return rootView;
     }
-
-
 
 
     //recyclerview适配器
@@ -165,7 +174,14 @@ public class MessageFragmentZc extends BaseFragment  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
 
+        if (requestCode == PhotoPicker.REQUEST_CODE) {
+            if (data != null) {
+                ArrayList<String> photos =
+                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            }
+        } else {
+            takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
+        }
     }
 }

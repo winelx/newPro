@@ -36,7 +36,7 @@
 
         <ImageView
             android:id="@+id/new_add_original_applydate_image"
-            android:layout_width="1dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
@@ -139,7 +139,7 @@
             android:layout_gravity="center"
             android:layout_weight="7"
             android:background="@null"
-            android:digits="123456789."
+            android:digits="0123456789."
             android:gravity="end"
             android:hint="请输入"
             android:textColor="@color/black"

@@ -31,7 +31,12 @@ public class DialogUtils {
         activity.getWindow().setAttributes(lp);
     }
 
-
+    /**
+     * @param activity
+     * @param view
+     * @param DIMENSION
+     * @param onclick
+     */
     //任务状态弹出窗
     public static void meunPop(final Activity activity, View view, float DIMENSION, final DialogUtils.onclick onclick) {
         int layoutId = R.layout.activity_original_pop_zc;
@@ -43,7 +48,6 @@ public class DialogUtils {
                 if (i == R.id.pop_dismantling_zc) {
                     //                        mPopupWindow.dismiss();
                     onclick.openonclick("征拆类型查询");
-
                 } else if (i == R.id.pop_region_zc) {
                     onclick.openonclick("按区域查询");
 
@@ -97,7 +101,7 @@ public class DialogUtils {
     }
 
 
-    public static void dismantling(Context mContext, final onclick click) {
+    public static void dismantling(Context mContext, String titles, final onclick click) {
         // 创建对话框构建器
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         // 获取布局
@@ -106,6 +110,8 @@ public class DialogUtils {
         final EditText content = (EditText) view.findViewById(R.id.dialog_editext);
         final TextView dismiss = (TextView) view.findViewById(R.id.dialog_dismiss);
         final TextView success = (TextView) view.findViewById(R.id.dialog_success);
+        final TextView title = (TextView) view.findViewById(R.id.dialog_title);
+        title.setText(titles);
         // 创建对话框
         final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
         dialog.setView(view);//添加布局
@@ -124,8 +130,6 @@ public class DialogUtils {
         });
         dialog.show();
     }
-
-
 
 
 }

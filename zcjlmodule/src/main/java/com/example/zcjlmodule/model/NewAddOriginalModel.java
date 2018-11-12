@@ -38,7 +38,7 @@ public class NewAddOriginalModel {
          * 接口
          */
         interface OnClickListener {
-            void onComple(ArrayList<PayDetailedlistBean> list);
+            void onComple();
 
             void onError();
         }
@@ -46,7 +46,7 @@ public class NewAddOriginalModel {
 
     public static class NewAddOriginalModelIpm implements NewAddOriginalModel.Model {
         @Override
-        public void getData(Map<String, String> map, ArrayList<File> files, OnClickListener onClickListener) {
+        public void getData(Map<String, String> map, ArrayList<File> files, final OnClickListener onClickListener) {
             final JSONObject json = new JSONObject(map);
             PostRequest request = OkGo.post(Api.SAVERAW);
             //遍历map中的值
@@ -63,9 +63,10 @@ public class NewAddOriginalModel {
                         JSONObject jsonObject = new JSONObject(s);
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
-                            ToastUtlis.getInstance().showShortToast("成功");
+                            onClickListener.onComple();
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
+                            onClickListener.onError();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -74,6 +75,7 @@ public class NewAddOriginalModel {
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
+                    onClickListener.onError();
                 }
             });
         }

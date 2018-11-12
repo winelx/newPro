@@ -191,7 +191,11 @@ public class MeasureUtils {
     /**
      * 区域
      */
-    public void ascriptionqyxx(String orgId, final OnClickListener Listener) {
+    private List<OrgBeans> OrgBeans = new ArrayList<>();
+    private List<OrgenBeans> OrgenBeans = new ArrayList<>();
+    private boolean status1 = true;
+
+    public void ascriptionqyxx(String orgId, final TypeOnClickListener Listener) {
         OkGo.get(Api.GETLEVYINITINFO)
                 .params("orgId", orgId)
                 .params("type", "QYXX")
@@ -208,12 +212,62 @@ public class MeasureUtils {
                                     JSONArray jsonArray = data.getJSONArray("QYXX");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
-                                        String id = json.getString("id");
-                                        String name = json.getString("name");
-                                        list.add(new AttachProjectBean(id, name));
+                                        String Id;
+                                        try {
+                                            Id = json.getString("id");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Id = "";
+                                        }
+                                        String type;
+                                        try {
+                                            type = json.getString("orgType");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            type = "";
+                                        }
+                                        String parentId;
+                                        try {
+                                            parentId = json.getString("parentId");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            //如果父ID为null
+                                            parentId = "";
+                                            //当做第一级处理
+                                            status1 = false;
+                                            OrgBeans.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
+                                        }
+                                        String name;
+                                        try {
+                                            name = json.getString("name");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            name = "";
+                                        }
+                                        OrgenBeans.add(new OrgenBeans(Id, parentId, name, type));
+                                        Listener.onsuccess(OrgBeans, OrgenBeans);
+                                    }
+                                    if (status1) {
+                                        //拿到所有的ID
+                                        final ArrayList<String> IDs = new ArrayList<String>();
+                                        for (int i = 0; i < OrgenBeans.size(); i++) {
+                                            IDs.add(OrgenBeans.get(i).getId());
+                                        }
+                                        //循环集合
+                                        for (int i = 0; i < OrgenBeans.size(); i++) {
+                                            //取出父ID，
+                                            String pernID = OrgenBeans.get(i).getParentId();
+                                            //用ID判断是否有父级相同的
+                                            if (IDs.contains(pernID)) {
+                                                //存在相同的的不处理
+                                            } else {
+                                                //不存在相同的当做第一级
+                                                OrgBeans.add(new OrgBeans(1, 0, OrgenBeans.get(i).getName(), OrgenBeans.get(i).getId(), OrgenBeans.get(i).getParentId(), OrgenBeans.get(i).getType()));
+                                                Listener.onsuccess(OrgBeans, OrgenBeans);
+                                            }
+                                        }
                                     }
                                 }
-                                Listener.onsuccess(list);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -237,6 +291,7 @@ public class MeasureUtils {
      * JSONObject data = jsonObject.getJSONObject("data");
      * JSONArray jsonArray1=data.getJSONArray("ZCLX");
      */
+
     public void collectiontype(String orgId, final TypeOnClickListener Listener) {
         OkGo.get(Api.GETLEVYINITINFO)
                 .params("orgId", orgId)
@@ -286,7 +341,7 @@ public class MeasureUtils {
                                         name = "";
                                     }
                                     mData.add(new OrgenBeans(Id, parentId, name, type));
-                                    Listener.onsuccess(mDatas2,mData);
+                                    Listener.onsuccess(mDatas2, mData);
                                 }
                                 if (status) {
                                     //拿到所有的ID
@@ -304,7 +359,7 @@ public class MeasureUtils {
                                         } else {
                                             //不存在相同的当做第一级
                                             mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
-                                            Listener.onsuccess(mDatas2,mData);
+                                            Listener.onsuccess(mDatas2, mData);
                                         }
                                     }
                                 }

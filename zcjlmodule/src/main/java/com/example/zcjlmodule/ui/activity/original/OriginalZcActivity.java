@@ -22,6 +22,8 @@ import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.OriginalPresenter;
 import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.DismantlingtypequeryZcActivity;
+import com.example.zcjlmodule.ui.activity.original.enclosure.RegionZcActivity;
 import com.example.zcjlmodule.utils.DialogUtils;
 import com.example.zcjlmodule.view.OriginalView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -78,7 +80,8 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private static final String TYPE_FOUR = "按户主明细查询";
     private static final String TYPE_FIVE = "按期数查询";
     private BigDecimal decimal;
-    private String orgId;
+    private String orgId, periodId;
+    private int stauts = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +90,9 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         mContext = this;
         list = new ArrayList<>();
         PayDetailCallBackUtils.setCallBack(this);
-        orgId = SPUtils.getString(App.getInstance(), "orgId", "");
+        orgId = SPUtils.getString(mContext, "orgId", "");
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
-        dimension = ScreenUtil.getDensity(App.getInstance());
+        dimension = ScreenUtil.getDensity(mContext);
         mPresenter = new OriginalPresenter();
         mPresenter.mView = this;
         //调加
@@ -99,7 +102,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         //组织机构
         findViewById(R.id.original_org).setOnClickListener(this);
         originalOrgname = (TextView) findViewById(R.id.original_orgname);
-        originalOrgname.setText(SPUtils.getString(App.getInstance(), "orgName", ""));
+        originalOrgname.setText(SPUtils.getString(mContext, "orgName", ""));
         //合计金额
         moneynumber = (TextView) findViewById(R.id.original_moneynumber);
         //加载错误提示
@@ -120,7 +123,8 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         recycler();
         refresh();
         //网络请求
-        mPresenter.getdata(orgId, page);
+        httprequest(true);
+        mPresenter.getdata(orgId, page, null);
 
     }
 
@@ -143,9 +147,9 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 String string = bean.toString();
                 List<String> strlist = stringToList(string);
                 for (int i = 0; i < strlist.size(); i++) {
-//                    cityName='遵义市'
-                    String str=strlist.get(i);
-                    message.put(str.substring(0,str.indexOf("=")) + "", str.substring(str.indexOf("=")+1,str.length()) + "");
+//
+                    String str = strlist.get(i);
+                    message.put(str.substring(0, str.indexOf("=")) + "", str.substring(str.indexOf("=") + 1, str.length()) + "");
                 }
                 Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
                 intent.putExtra("message", (Serializable) message);
@@ -177,7 +181,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                httprequest(true);
+
             }
         });
         //上拉加载
@@ -185,7 +189,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                httprequest(false);
+
             }
         });
     }
@@ -212,21 +216,47 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 @Override
                 public void openonclick(String string) {
                     if (TYPE_ONE.equals(string)) {
-                        DialogUtils.dismantling(mContext, new DialogUtils.onclick() {
+                        //按征拆类型查询
+                        stauts = 1;
+                        //征拆类型查询
+                        Intent intent = new Intent(mContext, DismantlingtypequeryZcActivity.class);
+                        intent.putExtra("orgId", orgId);
+                        startActivityForResult(intent, 103);
+                    } else if (TYPE_TWO.equals(string)) {
+                        //区域查询
+                        stauts = 2;
+                        Intent intent = new Intent(mContext, RegionZcActivity.class);
+                        intent.putExtra("orgId", orgId);
+                        startActivityForResult(intent, 102);
+                    } else if (TYPE_THREE.equals(string)) {
+                        //表单
+                        stauts = 3;
+                        DialogUtils.dismantling(mContext, "按征表单查询", new DialogUtils.onclick() {
                             @Override
                             public void openonclick(String string) {
-                                ToastUtlis.getInstance().showShortToast(string);
+                                ;
+                                periodId = string;
+                                //征拆类型
+                                httprequest(true);
                             }
                         });
-                    } else if (TYPE_TWO.equals(string)) {
-                        ToastUtlis.getInstance().showShortToast("按区域查询");
-                    } else if (TYPE_THREE.equals(string)) {
-                        ToastUtlis.getInstance().showShortToast("按表单查询");
                     } else if (TYPE_FOUR.equals(string)) {
-                        ToastUtlis.getInstance().showShortToast("按户主明细查询");
+                        stauts = 4;
+                        DialogUtils.dismantling(mContext, "按户主明细查询", new DialogUtils.onclick() {
+                            @Override
+                            public void openonclick(String string) {
+                                periodId = string;
+                                //征拆类型
+                                httprequest(true);
+                            }
+                        });
                     } else if (TYPE_FIVE.equals(string)) {
+                        //期数查询
+                        stauts = 5;
                         Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
-                        startActivity(intent);
+                        intent.putExtra("orgId", orgId);
+                        startActivityForResult(intent, 101);
+
                     } else {
                     }
                 }
@@ -351,6 +381,51 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //标记刷新还是加载状态
             status = false;
         }
-        mPresenter.getdata(orgId, page);
+        Map<String, String> param = new HashMap<>();
+        switch (stauts) {
+            case 1:
+                //征拆类型
+                param.put("levyType", periodId);
+                break;
+            case 2:
+                //区域查询
+                param.put("region", periodId);
+                break;
+            case 3:
+                //表单查询
+                param.put("queryNum", periodId);
+                break;
+            case 4:
+                //户主明细
+                param.put("householder", periodId);
+                break;
+            case 5:
+                //期数
+                param.put("period", periodId);
+                break;
+            case 0:
+            default:
+                break;
+
+        }
+        mPresenter.getdata(orgId, page, param);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == 101) {
+            //期数查询
+            periodId = data.getStringExtra("id");
+            httprequest(true);
+        } else if (requestCode == 102 && resultCode == 101) {
+            //区域查询
+            periodId = data.getStringExtra("id");
+            httprequest(true);
+        } else if (requestCode == 103 && resultCode == 101) {
+            //征拆类型查询
+            periodId = data.getStringExtra("id");
+            httprequest(true);
+        }
     }
 }

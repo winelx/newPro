@@ -53,7 +53,9 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.51'
     //pdf查看
     compile 'com.github.barteksc:android-pdf-viewer:2.7.0'
-
+    //
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //图片选择器
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.12@aar'
     testCompile 'junit:junit:4.12'
 }

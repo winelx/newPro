@@ -6,6 +6,7 @@ import com.example.zcjlmodule.view.OriginalView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
@@ -26,9 +27,9 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 public class OriginalPresenter extends BasePresenters<OriginalView> {
     private OriginalModel.Model model;
 
-    public void getdata(String orgId, int page) {
+    public void getdata(String orgId, int page, Map<String,String>map) {
         model = new OriginalModel.OriginalModelPml();
-        model.getdata(orgId, page, new OriginalModel.OnClicklister() {
+        model.getdata(orgId, page,map, new OriginalModel.OnClicklister() {
             @Override
             public void onSuccess(ArrayList<OriginalZcBean> list) {
                 BigDecimal bigDecimal = new BigDecimal("0");

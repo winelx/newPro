@@ -93,8 +93,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="17dp"
+                android:drawableLeft="@mipmap/warning_zc"
+                android:paddingLeft="7dp"
                 android:text="所属项目"
+
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -111,11 +113,11 @@
 
         <ImageView
             android:id="@+id/new_add_original_projectname_image"
-            android:layout_width="1dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@mipmap/zc_right"
             android:gravity="end" />
@@ -138,7 +140,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:paddingLeft="17dp"
+            android:drawableLeft="@mipmap/warning_zc"
+            android:paddingLeft="7dp"
+
             android:text="所属标段"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -155,14 +159,14 @@
 
         <ImageView
             android:id="@+id/new_add_original_bidstext_image"
-            android:layout_width="1dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
             android:layout_weight="0.8"
             android:background="@mipmap/zc_right"
-            android:gravity="end"  />
+            android:gravity="end" />
     </LinearLayout>
 
     <View
@@ -175,12 +179,14 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:paddingLeft="17dp"
+            android:drawableLeft="@mipmap/warning_zc"
+            android:paddingLeft="7dp"
             android:text="指挥部"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -189,6 +195,7 @@
             android:id="@+id/new_add_original_commandtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_gravity="center"
             android:layout_weight="7"
             android:gravity="end"
@@ -197,11 +204,12 @@
 
         <ImageView
             android:id="@+id/new_add_original_commandtext_image"
-            android:layout_width="1dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:background="@mipmap/zc_right"
             android:gravity="end" />
     </LinearLayout>
@@ -221,7 +229,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="7dp"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/warning_zc"
             android:text="分解标准"
@@ -241,11 +249,12 @@
 
         <ImageView
             android:id="@+id/new_add_original_standardd_image"
-            android:layout_width="1dp"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="1.2"
+            android:layout_weight="1"
             android:background="@mipmap/zc_right"
             android:gravity="end" />
     </LinearLayout>

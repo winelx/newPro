@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,6 +22,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.AttachProjectBean;
+import com.example.zcjlmodule.treeView.RegionTreeListViewAdapters;
+import com.example.zcjlmodule.treeView.ZhengcTreeListViewAdapters;
+import com.example.zcjlmodule.treeView.bean.OrgBeans;
+import com.example.zcjlmodule.treeView.bean.OrgenBeans;
+import com.example.zcjlmodule.treeView.utils.Nodes;
 import com.example.zcjlmodule.utils.activity.MeasureUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -37,16 +43,16 @@ import java.util.List;
  */
 public class RegionZcActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private RegionZcActivity.AttachProjectAdapter mAdapter;
-    private ArrayList<AttachProjectBean> list;
+    private RegionTreeListViewAdapters mAdapter;
     private Context mContext;
     private ProgressBar layout_emptyView_bar;
     private TextView layout_emptyView_text;
     private LinearLayout layout_emptyView;
     private MeasureUtils utils;
-    private SmartRefreshLayout refreshLayout;
     private String orgId;
+    private List<OrgenBeans> mData;
     private String regionId;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,50 +61,19 @@ public class RegionZcActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         mContext = this;
+        mData = new ArrayList<>();
         utils = new MeasureUtils();
-        list = new ArrayList<>();
         //提示布局
         layout_emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待进度
         layout_emptyView_bar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
         //空白提示
         layout_emptyView_text = (TextView) findViewById(R.id.layout_emptyView_text);
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
-        //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(true);
-        //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(false);
-        //是否启用越界拖动（仿苹果效果）1.0.4
-        refreshLayout.setEnableOverScrollDrag(true);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("选择所属项目");
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.attachproject_recycler);
-        DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.custom_divider));
-        recycler.addItemDecoration(divider);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler.setAdapter(mAdapter = new RegionZcActivity.AttachProjectAdapter(R.layout.adapter_choiceproject_zc, list));
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent();
-                // 获取用户计算后的结果
-                intent.putExtra("name", list.get(position).getName());
-                intent.putExtra("id", list.get(position).getId());
-                setResult(101, intent);
-                finish(); //结束当前的activity的生命周期
-            }
-        });
+        title.setText("地区查询");
+        mListView = (ListView) findViewById(R.id.attachproject_recycler);
         httprequest();
-        //  下拉刷新
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                httprequest();
-            }
-        });
     }
 
     /**
@@ -106,27 +81,40 @@ public class RegionZcActivity extends AppCompatActivity implements View.OnClickL
      */
     private void httprequest() {
         //网络请求
-        utils.ascriptionqyxx(orgId, new MeasureUtils.OnClickListener() {
+        utils.ascriptionqyxx(orgId, new MeasureUtils.TypeOnClickListener() {
             @Override
-            public void onsuccess(List<AttachProjectBean> data) {
-                refreshLayout.finishRefresh();
-                list.clear();
-                list.addAll(data);
-                mAdapter.setNewData(list);
-                if (list.size() <= 0) {
+            public void onsuccess(List<OrgBeans> data, List<OrgenBeans> data2) {
+                mData.clear();
+                if (data.size() > 0) {
+                    layout_emptyView.setVisibility(View.GONE);
+                } else {
+                    layout_emptyView.setVisibility(View.VISIBLE);
+                    layout_emptyView_bar.setVisibility(View.GONE);
+                    layout_emptyView_text.setText("暂无数据");
+                }
+                mData.addAll(data2);
+                try {
+                    mAdapter = new RegionTreeListViewAdapters<OrgBeans>(mListView, mContext,
+                            data, 0);
+                    mListView.setAdapter(mAdapter);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                if (data.size() <= 0) {
                     layout_emptyView_text.setText("暂无数据");
                 } else {
                     layout_emptyView.setVisibility(View.GONE);
                 }
                 layout_emptyView_bar.setVisibility(View.GONE);
             }
+
             @Override
             public void onerror() {
-                refreshLayout.finishRefresh();
+                layout_emptyView_text.setText("暂无数据");
                 layout_emptyView_bar.setVisibility(View.GONE);
-                layout_emptyView_text.setText("请求失败");
             }
         });
+
     }
 
     @Override
@@ -142,9 +130,60 @@ public class RegionZcActivity extends AppCompatActivity implements View.OnClickL
         public AttachProjectAdapter(@LayoutRes int layoutResId, @Nullable List data) {
             super(layoutResId, data);
         }
+
         @Override
         protected void convert(BaseViewHolder helper, AttachProjectBean item) {
             helper.setText(R.id.attachproject_text, item.getName());
+        }
+    }
+
+    /**
+     * /判断是否显示图标
+     */
+
+    public boolean getmIcon(Nodes node) {
+        String str = node.getIds();
+        for (int i = 0; i < mData.size(); i++) {
+            String pid = mData.get(i).getParentId() + "";
+            if (str.equals(pid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 添加数据
+     *
+     * @param position
+     * @param node
+     */
+
+
+    public void getAdd(int position, Nodes node) {
+        String str = node.getIds();
+        for (int i = 0; i < mData.size(); i++) {
+            String pid = mData.get(i).getParentId() + "";
+            if (str.equals(pid)) {
+                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId() + "", mData.get(i).getType());
+                mAdapter.expandOrCollapse(position);
+            }
+        }
+    }
+
+    /**
+     * 切换组织
+     */
+    public void member(final String id, final String name, String type) {
+        try {
+            Intent intent = new Intent();
+            // 获取用户计算后的结果
+            intent.putExtra("name", name);
+            intent.putExtra("id", id);
+            setResult(101, intent);
+            finish(); //结束当前的activity的生命周期
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

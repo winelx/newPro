@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 import measure.jjxx.com.baselibrary.base.BaseView;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -35,7 +36,7 @@ import okhttp3.Response;
 
 public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> {
     private NewAddOriginalModel.Model model;
-
+    private Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,4})?$");
     /**
      * 保存数据
      */
@@ -48,7 +49,7 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
         }
         model.getData(map, file, new NewAddOriginalModel.Model.OnClickListener() {
             @Override
-            public void onComple(ArrayList<PayDetailedlistBean> list) {
+            public void onComple() {
                 mView.OnSuccess();
             }
 
@@ -142,9 +143,8 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
     }
 
     //金额验证
-    public  boolean isNumber(String str) {
+    public boolean isNumber(String str) {
         // 判断小数点后2位的数字的正则表达式
-        Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,4})?$");
         Matcher match = pattern.matcher(str);
         if (!match.matches()) {
             return false;

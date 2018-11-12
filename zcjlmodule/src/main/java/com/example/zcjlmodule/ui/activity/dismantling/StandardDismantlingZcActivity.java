@@ -19,7 +19,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.SdDismantlingBean;
+import com.example.zcjlmodule.callback.Callback;
+import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.SdDismantlingPresenter;
+import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
 import com.example.zcjlmodule.view.SdDismantlingView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -28,9 +31,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
+import release.App;
 
 /**
  * description: 征拆标准
@@ -41,7 +46,7 @@ import measure.jjxx.com.baselibrary.utils.SPUtils;
  *         version:
  *         跳转界面 workFragment
  */
-public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantlingPresenter> implements SdDismantlingView {
+public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantlingPresenter> implements SdDismantlingView, Callback {
     private SmartRefreshLayout refreshLayout;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
@@ -51,15 +56,19 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
     private Context mContext;
     private int page = 1;
     private boolean status = true;
+    private TextView original_orgname;
+    private String orgId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard_dismantling_zc);
         mContext = this;
+        orgId = SPUtils.getString(mContext, "orgId", null);
         list = new ArrayList<>();
         mPresenter = new SdDismantlingPresenter();
         mPresenter.mView = this;
+        PayDetailCallBackUtils.setCallBack(this);
         init();
         recycler();
         refresh();
@@ -71,6 +80,14 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
      * /初始化
      */
     private void init() {
+        original_orgname = (TextView) findViewById(R.id.original_orgname);
+        findViewById(R.id.original_org).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +104,8 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
         //是否启用列表惯性滑动到底部时自动加载更多
         refreshLayout.setEnableAutoLoadmore(false);
-
+        //当前所在的标段
+        original_orgname.setText(SPUtils.getString(mContext, "orgName", ""));
     }
 
     /**
@@ -102,7 +120,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, ExamineDismantlingActivity.class);
-                SdDismantlingBean bean=list.get(position);
+                SdDismantlingBean bean = list.get(position);
                 //id
                 intent.putExtra("id", list.get(position).getId());
                 //省份
@@ -155,10 +173,9 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             public void onRefresh(RefreshLayout refreshlayout) {
                 //传入false表示刷新失败
                 //空白布局
-                blankview(3);
                 status = true;
                 page = 1;
-                mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
+                mPresenter.getdata(orgId, page);
 
             }
         });
@@ -169,7 +186,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 status = false;
-                mPresenter.getdata(SPUtils.getString(mContext, "orgId", null), page);
+                mPresenter.getdata(orgId, page);
                 //传入false表示加载失败
             }
         });
@@ -271,5 +288,21 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             default:
                 break;
         }
+    }
+
+    /**
+     * 切换组织
+     *
+     * @param map
+     */
+    @Override
+    public void callback(Map<String, Object> map) {
+        //显示组织名称
+        original_orgname.setText(map.get("orgname") + "");
+        //变更组织ID
+        orgId = (String) map.get("orgId");
+        status = true;
+        page = 1;
+        mPresenter.getdata(orgId, page);
     }
 }

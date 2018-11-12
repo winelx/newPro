@@ -7,11 +7,11 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
-        android:text="按征拆类型查询"
         android:textColor="@color/black"
         android:textSize="17sp"
         android:textStyle="bold" />
@@ -20,14 +20,14 @@
         android:id="@+id/dialog_editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="45dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="45dp"
         android:background="@drawable/dialog_meun_editext"
         android:hint="请输入关键字段"
-        android:textSize="15sp"
-        android:paddingLeft="15dp" />
+        android:minHeight="45dp"
+        android:paddingLeft="15dp"
+        android:textSize="15sp" />
 
 
     <LinearLayout

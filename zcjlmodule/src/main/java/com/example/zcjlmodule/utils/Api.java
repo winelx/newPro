@@ -12,7 +12,7 @@ package com.example.zcjlmodule.utils;
 public class Api {
     // public static final String =networks+"";
     //马
-   // public static final String networks = "http://192.168.20.36:8082";
+//  public static final String networks = "http://192.168.20.36:8082";
     //测
  public static final String networks = "http://192.168.20.120:8082/dtjl";
     //郑
