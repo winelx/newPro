@@ -64,7 +64,7 @@ public class ChangeorganizeZcActivity extends BaseActivity {
                 finish();
             }
         });
-        utils.getOrgs(new UserOrgZcUtils.OnClickListener() {
+        utils.getuserorg(new UserOrgZcUtils.OnClickListener() {
             @Override
             public void onClick(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();
@@ -112,7 +112,7 @@ public class ChangeorganizeZcActivity extends BaseActivity {
      */
     public void member(final String orgid, final String name, String type) {
         try {
-            PayDetailCallBackUtils.CallBack(orgid, name);
+            PayDetailCallBackUtils.CallBack(orgid, name, type);
             finish();
         } catch (Exception e) {
             e.printStackTrace();

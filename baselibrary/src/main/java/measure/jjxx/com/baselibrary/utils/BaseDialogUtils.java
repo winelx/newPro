@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import measure.jjxx.com.baselibrary.R;
@@ -16,9 +18,15 @@ import measure.jjxx.com.baselibrary.R;
 /**
  * 加载时的等待dialog
  */
-public class BaseDialog {
+public class BaseDialogUtils {
     public static Dialog dialog;
+    public static AlertDialog alertdialog;
 
+    /**
+     * @param mContext 上下文
+     * @param str      提示内容
+     * @param status   是否允许点击外部消失
+     */
     public static void getDialog(Context mContext, String str, boolean status) {
         dialog = new Dialog(mContext, R.style.progress_dialog);
         dialog.setContentView(R.layout.base_waiting_dialog);
@@ -29,6 +37,37 @@ public class BaseDialog {
         dialog.show();
     }
 
+    /**
+     * 提示
+     *
+     * @param mContext
+     * @param str
+     * @param status
+     */
+    public static void getprompt(Context mContext, String str, final onclicktlister onclicktlister) {
+        alertdialog = new AlertDialog.Builder(mContext).setMessage(str).
+                setPositiveButton("保存", null).setNegativeButton("放弃", null).create();
+        alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positionButton = alertdialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button negativeButton = alertdialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                positionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onclicktlister.onsuccess();
+                    }
+                });
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onclicktlister.onerror();
+                    }
+                });
+            }
+        });
+        alertdialog.show();
+    }
 
     /**
      * 打开 APP 的详情设置
@@ -53,4 +92,9 @@ public class BaseDialog {
         builder.show();
     }
 
+    public interface onclicktlister {
+        void onsuccess();
+
+        void onerror();
+    }
 }

@@ -37,7 +37,7 @@ public class PopCameraUtils {
         int height = activity.getResources().getDisplayMetrics().heightPixels;
         final PopupWindow popWindow = new PopupWindow(popView, width, height);
 //        //添加显示隐藏动画
-//        popWindow.setAnimationStyle(R.style.AnimBottom);
+       popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setFocusable(true);
         // 设置同意在外点击消失
         popWindow.setOutsideTouchable(true);

@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
-import measure.jjxx.com.baselibrary.utils.BaseDialog;
+import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
@@ -74,12 +74,12 @@ public class ModuleMainBaseViewIpm {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
+                                JSONObject json1 = jsonObject.getJSONObject("extend");
                                 //默认组织ID
                                 SPUtils.putString(App.getInstance(), "orgId", json.getString("orgId"));
 //                                //职员ID
@@ -88,6 +88,8 @@ public class ModuleMainBaseViewIpm {
                                 SPUtils.putString(App.getInstance(), "orgName", json.getString("orgName"));
 //                                //真实姓名
                                 SPUtils.putString(App.getInstance(), "staffName", json.getString("staffName"));
+                                //orgtype
+                                SPUtils.putString(App.getInstance(), "orgType", json1.getString("orgType"));
 //                                //id
                                 SPUtils.putString(App.getInstance(), "id", json.getString("id"));
 //                                //头像
@@ -96,7 +98,7 @@ public class ModuleMainBaseViewIpm {
                                 SPUtils.putString(App.getInstance(), "phone", json.getString("phone"));
                                 onClickListener.onComple(ret);
                             } else {
-                                BaseDialog.dialog.dismiss();
+                                BaseDialogUtils.dialog.dismiss();
                                 ToastUtlis.getInstance().showShortToast("登录失败");
                             }
 
@@ -108,7 +110,7 @@ public class ModuleMainBaseViewIpm {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        BaseDialog.dialog.dismiss();
+                        BaseDialogUtils.dialog.dismiss();
                     }
                 });
     }

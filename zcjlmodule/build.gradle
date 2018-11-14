@@ -45,4 +45,5 @@ dependencies {
 
     compile project(':baselibrary')
 
+    compile 'com.android.support.constraint:constraint-layout:1.1.3'
 }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
@@ -136,13 +137,14 @@ public class CheckdownMessageMeFragment extends Fragment {
                                         String parentName = jsonObject1.getString("parentName");
                                         mData.add(new Home_item("", "", id, "", name, orgtype, "", parentName, parentId, false));
                                     }
-                                    mAdapter.getData(mData);
                                 }
+                                mAdapter.getData(mData);
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

@@ -57,6 +57,27 @@ public class BaseUtils {
         }
         return null;
     }
+    /**
+     * 集合转string
+     */
+    public static String listToStrings(List<String> list) {
+        if (list == null) {
+            return null;
+        }
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        //第一个前面不拼接","
+        for (String string : list) {
+            if (first) {
+                first = false;
+            } else {
+                result.append(",");
+            }
+            result.append(string);
+        }
+        return result.toString();
+    }
+
 
     public static boolean isIDNumber(String IDNumber) {
         if (IDNumber == null || "".equals(IDNumber)) {

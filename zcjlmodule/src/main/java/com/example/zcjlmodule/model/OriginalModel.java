@@ -21,13 +21,14 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2018/10/15 0015.
+ * 登录
  */
 
 public class OriginalModel {
 
 
     public interface OnClicklister {
-        void onSuccess(ArrayList<OriginalZcBean> list);
+        void onSuccess(ArrayList<OriginalZcBean> list, String str);
 
         void onError();
     }
@@ -38,29 +39,28 @@ public class OriginalModel {
 
 
     public static class OriginalModelPml implements Model {
+        String totalmoney;
+
         @Override
-        public void getdata(String orgId, int page, Map<String, String> map, final OnClicklister listener) {
+        public void getdata(String orgId, final int page, Map<String, String> map, final OnClicklister listener) {
             final ArrayList<OriginalZcBean> list = new ArrayList<>();
             GetRequest getrequest = OkGo.get(Api.GETBUSRAWVALUATIONS)
                     .params("orgId", orgId)
                     .params("page", page)
                     .params("size", 20);
-
             //如果page ==1，就计算总金额
-            if (page==1){
-                getrequest.params("isCount",true);
+            if (page == 1) {
+                getrequest.params("isCount", true);
             }
             //如果map大于0，就将map传递（map的筛选类型）也坑可能没有值所以进行空异常处理
             try {
-                if (map.size()>0){
+                if (map.size() > 0) {
                     for (Map.Entry<String, String> entry : map.entrySet()) {
                         getrequest.params(entry.getKey(), entry.getValue());
                     }
                 }
-            }catch (NullPointerException e){
-
+            } catch (NullPointerException e) {
             }
-
             getrequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
@@ -69,13 +69,17 @@ public class OriginalModel {
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
                             if (s.contains("data")) {
+                                if (page == 1) {
+                                    JSONObject jsonObject1 = jsonObject.getJSONObject("extend");
+                                    totalmoney = jsonObject1.getString("totalMoney");
+                                }
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
                             }
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                         }
-                        listener.onSuccess(list);
+                        listener.onSuccess(list, totalmoney);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
@@ -89,8 +93,6 @@ public class OriginalModel {
                     listener.onError();
                 }
             });
-
-
         }
     }
 

@@ -25,7 +25,7 @@ public interface OriginalView extends BaseView {
      * @author lx
      * date: 2018/10/31 0031 下午 2:52
      */
-    void onSuccess(ArrayList<OriginalZcBean> list, BigDecimal totalPrice);
+    void onSuccess(ArrayList<OriginalZcBean> list, String totalPrice);
 
     /**
      * description: 请求失败

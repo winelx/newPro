@@ -41,4 +41,34 @@
     <dimen name="dimens_45">45dp</dimen>
     <dimen name="dimens_50">50dp</dimen>
 
+
+
+    <dimen name="text_1">1sp</dimen>
+    <dimen name="text_2">2sp</dimen>
+    <dimen name="text_3">3sp</dimen>
+    <dimen name="text_4">4sp</dimen>
+    <dimen name="text_5">5sp</dimen>
+    <dimen name="text_6">6sp</dimen>
+    <dimen name="text_7">7sp</dimen>
+    <dimen name="text_8">8sp</dimen>
+    <dimen name="text_9">9sp</dimen>
+    <dimen name="text_10">10sp</dimen>
+    <dimen name="text_11">11sp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_15">15sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_17">17sp</dimen>
+    <dimen name="text_18">18sp</dimen>
+    <dimen name="text_19">19sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_25">25sp</dimen>
+    <dimen name="text_30">30sp</dimen>
+    <dimen name="text_35">35sp</dimen>
+    <dimen name="text_40">40sp</dimen>
+    <dimen name="text_45">45sp</dimen>
+    <dimen name="text_50">50sp</dimen>
+
+
 </resources>

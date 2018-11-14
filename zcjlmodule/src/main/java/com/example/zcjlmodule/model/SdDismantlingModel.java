@@ -54,7 +54,7 @@ public class SdDismantlingModel {
                                         String number;
                                         try {
                                             //title
-                                            number = json.getString("number");
+                                            number = json.getString("name");
                                         } catch (Exception e) {
                                             number = "";
                                         }
@@ -82,7 +82,7 @@ public class SdDismantlingModel {
                                         //创建时间
                                         String createDate;
                                         try {
-                                            createDate = json.getString("createDate").substring(0, 10);
+                                            createDate = json.getString("releaseDate").substring(0, 10);
                                         } catch (Exception e) {
                                             createDate = "";
                                         }

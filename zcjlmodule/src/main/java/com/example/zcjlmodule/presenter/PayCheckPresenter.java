@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 
-/**
- * Created by Administrator on 2018/10/12 0012.
- */
 
 /**
  * description: 支付清册核查

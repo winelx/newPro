@@ -1,14 +1,11 @@
 package measure.jjxx.com.baselibrary.ui.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,16 +16,25 @@ import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
 import measure.jjxx.com.baselibrary.R;
-import measure.jjxx.com.baselibrary.utils.BaseDialog;
+import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
+import measure.jjxx.com.baselibrary.utils.FileUtils;
 import measure.jjxx.com.baselibrary.utils.PermissionUtils;
+import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
+import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
+/**
+ * description: pdf查看界面
+ *
+ * @author lx
+ *         date: 2018/11/13 0013 上午 10:46
+ */
 public class PdfActivity extends AppCompatActivity {
     private PDFView pdfView;
     private String paths;
@@ -51,8 +57,7 @@ public class PdfActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pdf);
         mContext = this;
         permissionUtils = new PermissionUtils();
-        paths = getExternalCacheDir().getPath();
-        paths = paths.replace("cache", "PDF/");
+        paths = getExternalCacheDir().getPath().replace("cache", "PDF/");
         Intent intent = getIntent();
         url = intent.getStringExtra("http");
         pathname = url.substring(url.lastIndexOf("/") + 1, url.length());
@@ -111,12 +116,22 @@ public class PdfActivity extends AppCompatActivity {
         }
     }
 
+    long currentLen = 0;// 已读取文件大小
+    double percent = 0.0; //下载进度
+    long totleLen;
+    int state = 0;
 
     private String download(String path) {
         try {
             URL url = new URL(path);
             //打开连接
-            URLConnection conn = url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            totleLen = conn.getContentLength();
+            state = conn.getResponseCode();
+            if (state != 200) {
+                TopSnackBar.make(pdfView, "pdf不存在", BaseTransientBottomBar.LENGTH_SHORT).show();
+                return null;
+            }
             //打开输入流
             is = conn.getInputStream();
             File file = new File(paths);
@@ -137,7 +152,10 @@ public class PdfActivity extends AppCompatActivity {
             //写数据
             int progress = 0;
             while ((len = is.read(bs)) != -1) {
+                currentLen += len;
                 os.write(bs, 0, len);
+//                percent = Math.ceil(currentLen * 1.0 / totleLen * 10000);
+//                Log.i("下载 进度:", percent / 100.0 + "%");
             }
             os.close();
             is.close();
@@ -151,9 +169,7 @@ public class PdfActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
         return null;
     }
 
@@ -163,6 +179,7 @@ public class PdfActivity extends AppCompatActivity {
     public boolean fileIsExists(String path) {
         try {
             f = new File(path);
+            // 总文件大小
             if (!f.exists()) {
                 //不存在
                 return false;
@@ -196,7 +213,7 @@ public class PdfActivity extends AppCompatActivity {
                 getdata();
             } else {
                 // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
-                BaseDialog.openAppDetails(mContext);
+                BaseDialogUtils.openAppDetails(mContext);
             }
         }
     }

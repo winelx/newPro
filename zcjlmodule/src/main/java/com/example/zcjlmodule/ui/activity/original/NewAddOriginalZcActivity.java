@@ -13,13 +13,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.callback.NewAddCallback;
@@ -33,7 +33,6 @@ import com.example.zcjlmodule.ui.activity.original.enclosure.StandardDecomposeZc
 import com.example.zcjlmodule.utils.activity.ExamineDismantlingUtils;
 import com.example.zcjlmodule.view.NewAddOriginalView;
 import com.zxy.tiny.Tiny;
-import com.zxy.tiny.callback.Callback;
 import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
@@ -42,8 +41,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import me.iwf.photopicker.PhotoPicker;
 import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
@@ -51,14 +48,13 @@ import measure.jjxx.com.baselibrary.adapter.PhotosAdapter;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
 import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
+import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.BaseUtils;
 import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
-import measure.jjxx.com.baselibrary.utils.FileUtils;
+import measure.jjxx.com.baselibrary.utils.WindowUtils;
 import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
-
-import static measure.jjxx.com.baselibrary.utils.BaseUtils.isIDNumber;
 
 
 /**
@@ -75,7 +71,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     //图片展示adapter
     private PhotosAdapter mPhotosAdapter;
     //返回的图片
-    private ArrayList<String> list;
+    private ArrayList<ExamineBean> pathlist;
     //图标
     private ArrayList<ImageView> imagelist;
     //输入框
@@ -117,6 +113,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     private BaseUtils utils;
     private Tiny.FileCompressOptions options;
     private ExamineDismantlingUtils dismantlingUtils;
+    private ArrayList<String> deleteList;//删除图片集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +127,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         mPresenter = new NewAddOriginalPresenter();
         //实例presenter
         mPresenter.mView = this;
-        list = new ArrayList<>();
+        pathlist = new ArrayList<>();
+        deleteList = new ArrayList<>();
         imagelist = new ArrayList<>();
         editTexlist = new ArrayList<>();
         //压缩图片
@@ -237,17 +235,19 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         newAddOriginalApplydateText = (TextView) findViewById(R.id.new_add_original_applydate_text);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("新增原始勘丈表");
         photrecycler = (RecyclerView) findViewById(R.id.newaddoriginal_recycler);
     }
 
     /**
      * 初始化数据
      */
+    @SuppressLint("SetTextI18n")
     private void init() {
-        mPhotosAdapter = new PhotosAdapter(this, list, true);
+        ArrayList<String> data = new ArrayList<>();
+        mPhotosAdapter = new PhotosAdapter(this, data, true);
         if (type.equals("old")) {
             hide();
+            title.setText("查看原始勘丈表");
             //或者传递过来的参数集合
             message = (HashMap<String, String>) intent.getSerializableExtra("message");
             //获取ID
@@ -257,9 +257,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //原始单号
             newAddOriginalOriginalnumber.setText(message.get("rawNumber"));
             //所属项目
-            newAddOriginalProjectname.setText(message.get("remarks"));
-//            //所属标段
-//            newAddOriginalBidstext.setText(message.get(""));
+            newAddOriginalProjectname.setText(message.get("projectName"));
+            //所属标段
+            newAddOriginalBidstext.setText(message.get("tenderName"));
             //户主名字
             newAddOriginalName.setText(message.get("householder"));
             //征拆类型
@@ -273,9 +273,13 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //区
             countyname.setText(message.get("countyName"));
             //乡镇
-            townname.setText(message.get("townName"));
+            if (message.get("townName") != null && !message.get("townName").equals("null")) {
+                townname.setText(message.get("townName"));
+            }
             //地址
-            detailAddress.setText(message.get("detailAddress"));
+            if (message.get("detailAddress") != null) {
+                detailAddress.setText(message.get("detailAddress"));
+            }
             //计量单位
             meterunitname.setText(message.get("meterUnitName"));
             //申请期数
@@ -311,10 +315,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             dismantlingUtils.getData(message.get("id"), new ExamineDismantlingUtils.onclick() {
                 @Override
                 public void onSuccess(ArrayList<ExamineBean> data) {
-                    for (int i = 0; i < data.size(); i++) {
-                        list.add(data.get(i).getPath());
-                    }
-                    mPhotosAdapter.getData(list);
+                    pathlist.clear();
+                    pathlist.addAll(data);
+                    getupdata();
                 }
 
                 @Override
@@ -323,15 +326,16 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                 }
             });
         } else {
+            title.setText("新增原始勘丈表");
             showview();
         }
         photrecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photrecycler.setAdapter(mPhotosAdapter);
         //点击事件--- 弹窗选择相机还是相册，相机相册返回的图片--展示
         mPhotosAdapter.setOnItemClickListener(new PhotosAdapter.OnItemClickListener() {
-            //添加图片
             @Override
             public void addlick(View view, int position) {
+                //添加图片
                 PopCameraUtils popCameraUtils = new PopCameraUtils();
                 popCameraUtils.showPopwindow(NewAddOriginalZcActivity.this, new PopCameraUtils.CameraCallback() {
                     @Override
@@ -351,10 +355,10 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                         @Override
                                         public void callback(boolean isSuccess, String outfile) {
                                             //添加进集合
-                                            list.add(outfile);
-                                            mPhotosAdapter.getData(list);
+                                            pathlist.add(new ExamineBean("", "", outfile, "jpg"));
+                                            getupdata();
                                             try {
-                                                FileUtils.delete(outFile);
+                                                WindowUtils.delete(outFile);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -383,11 +387,19 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //点击图片查看
             @Override
             public void photoClick(View view, int position) {
-                ArrayList<PhotoviewBean> pathlsit = new ArrayList<PhotoviewBean>();
-                for (int i = 0; i < list.size(); i++) {
-                    pathlsit.add(new PhotoviewBean("", list.get(i), ""));
+                PhotoPreview.builder().setPhotos(PhotoUtils.getPhoto(pathlist, false)).setCurrentItem(position).start((Activity) mContext);
+            }
+
+            //删除图片
+            @Override
+            public void deleteClick(View view, int position) {
+                String ids = pathlist.get(position).getId();
+                if (ids != null) {
+                    deleteList.add(ids);
+                    ToastUtlis.getInstance().showShortToast("1");
                 }
-                PhotoPreview.builder().setPhotos(PhotoUtils.getPhoto(list, false)).setCurrentItem(position).start((Activity) mContext);
+                pathlist.remove(position);
+                getupdata();
             }
         });
         /**
@@ -446,7 +458,23 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.toolbar_icon_back) {
-            finish();
+            if (status) {
+                BaseDialogUtils.getprompt(mContext, "数据未保存,是否进行存", new BaseDialogUtils.onclicktlister() {
+                    @Override
+                    public void onsuccess() {
+                        BaseDialogUtils.alertdialog.dismiss();
+                        //保存数据
+                        proving();
+                    }
+
+                    @Override
+                    public void onerror() {
+                        finish();
+                    }
+                });
+            } else {
+                finish();
+            }
         } else if (i == R.id.new_add_original_project) {
             //所属项目
             if (status) {
@@ -497,6 +525,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         } else if (i == R.id.new_add_original_modify) {
             //修改
             showview();  //显示布局
+            title.setText("修改原始勘丈表");
         } else if (i == R.id.toolbar_text_text) {
             //保存
             proving();
@@ -588,25 +617,27 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             numberId = data.getStringExtra("id");
         } else if (requestCode == PhotoPicker.REQUEST_CODE) {
             //相册选择图片返回
-            ArrayList<String> images =
-                    data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-            for (int i = 0; i < images.size(); i++) {
-                double mdouble = FileUtils.getDirSize(new File(images.get(i)));
-                if (mdouble != 0.0) {
-                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                    options.quality = 95;
-                    Tiny.getInstance().source(images.get(i)).asFile().withOptions(options).compress(new FileCallback() {
-                        @Override
-                        public void callback(boolean isSuccess, String outfile) {
-                            //添加进集合
-                            list.add(outfile);
-                            //填入listview，刷新界面
-                            mPhotosAdapter.getData(list);
-                        }
-                    });
-                } else {
-                    ToastUtlis.getInstance().showLongToast("请检查上传的图片是否损坏");
+            try {
+                ArrayList<String> images = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                for (int i = 0; i < images.size(); i++) {
+                    double mdouble = WindowUtils.getDirSize(new File(images.get(i)));
+                    if (mdouble != 0.0) {
+                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                        options.quality = 95;
+                        Tiny.getInstance().source(images.get(i)).asFile().withOptions(options).compress(new FileCallback() {
+                            @Override
+                            public void callback(boolean isSuccess, String outfile) {
+                                //添加进集合
+                                pathlist.add(new ExamineBean("", "", outfile, "jpg"));
+                                //填入listview，刷新界面
+                                getupdata();
+                            }
+                        });
+                    } else {
+                        ToastUtlis.getInstance().showLongToast("请检查上传的图片是否损坏");
+                    }
                 }
+            } catch (NullPointerException e) {
             }
         }
     }
@@ -616,7 +647,23 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
      */
     @Override
     public void OnSuccess() {
+        title.setText("查看原始勘丈表");
+        BaseDialogUtils.dialog.dismiss();
         hide();
+        //请求图片
+        dismantlingUtils.getData(message.get("id"), new ExamineDismantlingUtils.onclick() {
+            @Override
+            public void onSuccess(ArrayList<ExamineBean> data) {
+                pathlist.clear();
+                pathlist.addAll(data);
+                getupdata();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     /**
@@ -624,7 +671,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
      */
     @Override
     public void OnError() {
-
+        BaseDialogUtils.dialog.dismiss();
     }
 
     //征拆类型返回
@@ -678,6 +725,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
     }
 
+    //保存
     public void save() {
         Map<String, String> map = new HashMap<>();
         //必须传
@@ -691,17 +739,17 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //原始单号
         if (!newAddOriginalOriginalnumber.getText().toString().isEmpty()) {
             map.put("rawNumber", newAddOriginalOriginalnumber.getText().toString());
-            if (!newAddOriginalCommandtext.getText().toString().isEmpty()) {
+            if (!CommandId.isEmpty()) {
                 //指挥部
                 map.put("headquarter", CommandId);
-                if (!newAddOriginalProjectname.getText().toString().isEmpty()) {
+                if (ProjectId != null) {
                     //所属项目
                     map.put("project", ProjectId);
-                    if (!newAddOriginalBidstext.getText().toString().isEmpty()) {
+                    if (BidsId != null) {
                         //所属标段
                         map.put("tender", BidsId);
                         //标准分解Id
-                        if (standardDetailNumber.getText().length() > 0) {
+                        if (standardDetail != null) {
                             map.put("standardDetail", standardDetail);
                             //申报数量  Bigdecimal
                             if (declareNum.getText().length() > 0) {
@@ -739,10 +787,12 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                             //户主电话
                                             map.put("householderPhone", CommandId);
                                         }
-                                        /**
-                                         *保存
-                                         */
-                                        mPresenter.save(map, list);
+                                        if (deleteList.size() > 0) {
+                                            String delete = BaseUtils.listToStrings(deleteList);
+                                            map.put("ids", delete);
+                                        }
+                                        BaseDialogUtils.getDialog(mContext, "提交数据中", false);
+                                        mPresenter.save(map, pathlist);
                                     } else {
                                         ToastUtlis.getInstance().showShortToast("申报期数还未选择");
                                     }
@@ -770,4 +820,38 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
 
     }
 
+    //更新图片
+    private void getupdata() {
+        ArrayList list = new ArrayList();
+        for (int i = 0; i < pathlist.size(); i++) {
+            list.add(pathlist.get(i).getPath());
+        }
+        mPhotosAdapter.getData(list);
+    }
+
+    //连续两次退出App
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (status) {
+                BaseDialogUtils.getprompt(mContext, "数据未保存,是否进行存", new BaseDialogUtils.onclicktlister() {
+                    @Override
+                    public void onsuccess() {
+                        BaseDialogUtils.alertdialog.dismiss();
+                        //保存数据
+                        proving();
+                    }
+
+                    @Override
+                    public void onerror() {
+                        finish();
+                    }
+                });
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return true;
+    }
 }

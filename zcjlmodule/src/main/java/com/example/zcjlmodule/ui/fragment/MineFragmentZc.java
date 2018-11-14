@@ -107,10 +107,10 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
                 utils.logout(new FragmentmineUtils.OnClickLister() {
                     @Override
                     public void onClickLister(int status) {
-                        mContext.startActivity(new Intent(mContext, ModuleMainActivity.class));
-                        getActivity().finish();
                     }
                 });
+                mContext.startActivity(new Intent(mContext, ModuleMainActivity.class));
+                getActivity().finish();
                 break;
             default:
                 break;

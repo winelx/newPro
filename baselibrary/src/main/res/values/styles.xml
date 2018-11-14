@@ -15,7 +15,13 @@
         <!-- 指定消失的动画xml -->
     </style>
 
-
+    <!-- Base application theme. -->
+    <style name="AppThemes" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
     //提示dialog
     <style name="progress_dialog" parent="@android:style/Theme.Dialog">

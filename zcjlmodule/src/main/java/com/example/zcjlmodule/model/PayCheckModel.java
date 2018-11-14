@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
@@ -73,14 +74,14 @@ public class PayCheckModel {
                                         //检查金额
                                         String currCheckMoney;
                                         try {
-                                            currCheckMoney = json.getString("currCheckMoney");
+                                            currCheckMoney = big(json.getString("currCheckMoney"));
                                         } catch (Exception e) {
                                             currCheckMoney = "";
                                         }
                                         //应付金额
                                         String shouldPayMoney;
                                         try {
-                                            shouldPayMoney = json.getString("shouldPayMoney");
+                                            shouldPayMoney = big(json.getString("shouldPayMoney"));
                                         } catch (Exception e) {
                                             shouldPayMoney = "";
                                         }
@@ -100,6 +101,14 @@ public class PayCheckModel {
                         }
                     });
         }
+    }
 
+    public static String big(String str) {
+        if (str.contains(".")) {
+            BigDecimal bigDecimal = new BigDecimal(str + "00");
+            return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        } else {
+            return str;
+        }
     }
 }

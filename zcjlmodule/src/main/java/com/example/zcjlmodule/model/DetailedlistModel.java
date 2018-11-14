@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +55,11 @@ public class DetailedlistModel {
                                             //id
                                             String id = json.getString("id");
                                             //支付金额
-                                            String totalMoney = json.getString("totalMoney");
+                                            String totalMoney = big(json.getString("totalMoney"));
                                             //未检查
-                                            String uncheckMoney = json.getString("uncheckMoney");
+                                            String uncheckMoney = big(json.getString("uncheckMoney"));
                                             //已检查
-                                            String checkMoney = json.getString("checkMoney");
+                                            String checkMoney = big(json.getString("checkMoney"));
                                             //fileNumber编号
                                             String fileNumber = json.getString("fileNumber");
                                             //number==title
@@ -100,6 +101,15 @@ public class DetailedlistModel {
             void onComple(List<PayDetailedlistBean> list);
 
             void onError();
+        }
+    }
+
+    public static String big(String str) {
+        if (str.contains(".")) {
+            BigDecimal bigDecimal = new BigDecimal(str + "00");
+            return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        } else {
+            return str;
         }
     }
 }

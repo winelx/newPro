@@ -1,480 +1,141 @@
 package measure.jjxx.com.baselibrary.utils;
 
-import android.content.Context;
-import android.os.Environment;
-import android.util.Base64;
-import android.util.Log;
-
-import com.zxy.tiny.common.Logger;
-
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
+import java.nio.channels.FileChannel;
+import java.text.DecimalFormat;
 
 /**
  * @author lx
- * @Created by: 2018/10/16 0016.
+ * @Created by: 2018/11/14 0014.
  * @description:
  */
 
-public final class FileUtils {
-    public static final String TAG = FileUtils.class.getSimpleName();
-    public static final int BYTE = 1024;
-
+public class FileUtils {
     /**
-     * 格式化单位
-     *
-     * @param size
-     * @return
-     */
-    public static String getFormatSize(double size) {
-        double kiloByte = size / BYTE;
-        if (kiloByte < 1) {
-            return size + "B";
-        }
-
-        double megaByte = kiloByte / BYTE;
-        if (megaByte < 1) {
-            BigDecimal result1 = new BigDecimal(Double.toString(kiloByte));
-            return result1.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "KB";
-        }
-
-        double gigaByte = megaByte / BYTE;
-        if (gigaByte < 1) {
-            BigDecimal result2 = new BigDecimal(Double.toString(megaByte));
-            return result2.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "MB";
-        }
-
-        double teraBytes = gigaByte / BYTE;
-        if (teraBytes < 1) {
-            BigDecimal result3 = new BigDecimal(Double.toString(gigaByte));
-            return result3.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "GB";
-        }
-        BigDecimal result4 = new BigDecimal(teraBytes);
-        return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
-    }
-
-    /**
-     * 获取缓存文件大小
-     *
-     * @param context
-     * @return
-     */
-    public static String getTotalCacheSize(Context context) {
-        long cacheSize = getFolderSize(context.getCacheDir());
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheSize += getFolderSize(context.getExternalCacheDir());
-        }
-        return getFormatSize(cacheSize);
-    }
-
-    /**
-     * 清除应用缓存文件
-     *
-     * @param context
-     */
-    public static void clearAllCache(Context context) {
-        delete(context.getCacheDir());
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            delete(context.getExternalCacheDir());
-        }
-    }
-
-    /**
-     * 获取文件大小
-     *
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    //Context.getExternalFilesDir() --> SDCard/Android/data/你的应用的包名/files/ 目录，一般放一些长时间保存的数据
-    //Context.getExternalCacheDir() --> SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
-    public static long getFolderSize(File file) {
-        long size = 0;
-        try {
-            File[] fileList = file.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
-                // 如果下面还有文件
-                if (fileList[i].isDirectory()) {
-                    size = size + getFolderSize(fileList[i]);
-                } else {
-                    size = size + fileList[i].length();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return size;
-    }
-    //判断文件是否为空和图片是否损坏
-    public static double getDirSize(File file) {
-        //判断文件是否存在
-        if (file.exists()) {
-            //如果是目录则递归计算其内容的总大小
-            if (file.isDirectory()) {
-                File[] children = file.listFiles();
-                double size = 0;
-                for (File f : children)
-                    size += getDirSize(f);
-                return size;
-            } else {//如果是文件则直接返回其大小,以“兆”为单位
-                double size = (double) file.length() / 1024 / 1024;
-                return size;
-
-            }
-        } else {
-            return 0.0;
-        }
-    }
-
-
-    /**
-     * 读取文件内容
-     *
-     * @param file    文件
-     * @param charset 文件编码
-     * @return 文件内容
-     */
-    public static String readFile(File file, String charset) {
-        String fileContent = "";
-        try {
-            InputStreamReader read = new InputStreamReader(new FileInputStream(file), charset);
-            BufferedReader reader = new BufferedReader(read);
-            String line = "";
-            int i = 0;
-            while ((line = reader.readLine()) != null) {
-                if (i == 0) {
-                    fileContent = line;
-                } else {
-                    fileContent = fileContent + "\n" + line;
-                }
-                i++;
-            }
-            read.close();
-        } catch (Exception e) {
-            Logger.e(e+"");
-        }
-        return fileContent;
-    }
-
-    /**
-     * 读取文件内容
-     *
-     * @param file 文件
-     * @return 文件内容
-     */
-    public static String readFile(File file) {
-        return readFile(file, "UTF-8");
-    }
-
-    /**
-     * 获取文件的SHA1值
-     *
-     * @param file 目标文件
-     * @return 文件的SHA1值
-     */
-    public static String getSHA1ByFile(File file) {
-        if (file == null || !file.exists()) {
-            return "文件不存在";
-        }
-        long time = System.currentTimeMillis();
-        InputStream in = null;
-        String value = null;
-        try {
-            in = new FileInputStream(file);
-            byte[] buffer = new byte[1024];
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            int numRead = 0;
-            while (numRead != -1) {
-                numRead = in.read(buffer);
-                if (numRead > 0) {
-                    digest.update(buffer, 0, numRead);
-                }
-            }
-            byte[] sha1Bytes = digest.digest();
-            String t = new String(buffer);
-            value = convertHashToString(sha1Bytes);
-        } catch (Exception e) {
-            Logger.e(e+"");
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    Logger.e(e + "");
-                }
-            }
-        }
-        return value;
-    }
-
-    /**
-     * @param hashBytes
-     * @return
-     */
-    private static String convertHashToString(byte[] hashBytes) {
-        String returnVal = "";
-        for (int i = 0; i < hashBytes.length; i++) {
-            returnVal += Integer.toString((hashBytes[i] & 0xff) + 0x100, 16).substring(1);
-        }
-        return returnVal.toLowerCase();
-    }
-
-    /**
-     * 获取上传文件的文件名
+     * 清除指定路径下文件
      *
      * @param filePath
+     */
+    public static void clearFiles(String filePath) {
+        try {
+            File scFileDir = new File(filePath);
+            File TrxFiles[] = scFileDir.listFiles();
+            for (File curFile : TrxFiles) {
+                curFile.delete();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 获得指定文件的byte数组
+     *
+     * @param filePath 文件绝对路径
      * @return
      */
-    public static String getFileName(String filePath) {
-        String filename = new File(filePath).getName();
-        if (filename.length() > 80) {
-            filename = filename.substring(filename.length() - 80, filename.length());
-        }
-        return filename;
-    }
-
-    /**
-     * 创建文件夹
-     *
-     * @param mkdirs 文件夹
-     */
-    public static boolean createMkdirs(File mkdirs) {
-        return mkdirs.mkdirs();
-    }
-
-    /**
-     * 创建文件
-     *
-     * @param file 文件
-     */
-    public static boolean createFile(File file) {
-        if (!file.exists()) {
-            try {
-                return file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
+    public static byte[] fileByte(String filePath) {
+        ByteArrayOutputStream bos = null;
+        BufferedInputStream in = null;
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                throw new FileNotFoundException("file not exists");
             }
-        }
-        return false;
-    }
-
-    /**
-     * 获得下载文件名
-     *
-     * @param url 下载url
-     * @return 文件名
-     */
-    public static String getDownloadFileName(String url) {
-        return url.substring(url.lastIndexOf("/") + 1);
-    }
-
-    /**
-     * 获得应用的图片保存目录
-     *
-     * @return
-     */
-    public static String getPicDirectory(Context context) {
-        File picFile = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (picFile != null) {
-            return picFile.getAbsolutePath();
-        } else {
-            return context.getFilesDir().getAbsolutePath() + "/Pictures";
-        }
-    }
-
-    /**
-     * 删除文件
-     *
-     * @param filePath 文件路径
-     * @return 是否刪除成功
-     */
-    public static boolean delete(String filePath) {
-        File file = new File(filePath);
-        return delete(file);
-    }
-
-    /**
-     * 删除文件
-     *
-     * @param file 文件
-     * @return 是否刪除成功
-     */
-    public static boolean delete(File file) {
-        if (file == null || !file.exists()) {
-            return false;
-        }
-        if (file.isFile()) {
-            final File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
-            file.renameTo(to);
-            to.delete();
-        } else {
-            File[] files = file.listFiles();
-            if (files != null && files.length > 0) {
-                for (File innerFile : files) {
-                    delete(innerFile);
-                }
+            bos = new ByteArrayOutputStream((int) file.length());
+            in = new BufferedInputStream(new FileInputStream(file));
+            int buf_size = 1024;
+            byte[] buffer = new byte[buf_size];
+            int len = 0;
+            while (-1 != (len = in.read(buffer, 0, buf_size))) {
+                bos.write(buffer, 0, len);
             }
-            final File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
-            file.renameTo(to);
-            return to.delete();
-        }
-        return false;
-    }
-
-    /**
-     * 获得文件内容
-     *
-     * @param filePath 文件路径
-     * @return 文件内容
-     */
-    public static String getFileContent(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
-                String result = null;
-                String s = null;
-                while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
-                    result = result + "\n" + s;
-                }
-                br.close();
-                return result;
-            } catch (Exception e) {
-                e.printStackTrace();
-                Logger.e(e+"");
-            }
-        } else {
+            return bos.toByteArray();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
-        }
-        return null;
-    }
-
-    /**
-     * 保存文本到文件
-     *
-     * @param fileName 文件名字
-     * @param content  内容
-     * @param append   是否累加
-     * @return 是否成功
-     */
-    public static boolean saveTextValue(String fileName, String content, boolean append) {
-        try {
-            File textFile = new File(fileName);
-            if (!append && textFile.exists()) textFile.delete();
-            FileOutputStream os = new FileOutputStream(textFile);
-            os.write(content.getBytes("UTF-8"));
-            os.close();
-        } catch (Exception ee) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 删除目录下所有文件
-     *
-     * @param Path 路径
-     */
-    public static void deleteAllFile(String Path) {
-        // 删除目录下所有文件
-        File path = new File(Path);
-        File files[] = path.listFiles();
-        if (files != null) {
-            for (File tfi : files) {
-                if (tfi.isDirectory()) {
-                    System.out.println(tfi.getName());
-                } else {
-                    tfi.delete();
-                }
-            }
-        }
-    }
-
-    /**
-     * 保存文件
-     *
-     * @param in       文件输入流
-     * @param filePath 文件保存路径
-     */
-    public static File saveFile(InputStream in, String filePath) {
-        File file = new File(filePath);
-        byte[] buffer = new byte[4096];
-        int len = 0;
-        FileOutputStream fos = null;
-        try {
-            FileUtils.createFile(file);
-            fos = new FileOutputStream(file);
-            while ((len = in.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-            }
-            fos.flush();
-        } catch (IOException e) {
-            Logger.e(e+"");
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
-                if (fos != null) {
-                    fos.close();
+                if (bos != null) {
+                    bos.close();
                 }
-            } catch (IOException e) {
-                Logger.e(e+"");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
-        return file;
     }
 
     /**
-     * 文件是否存在
-     *
-     * @param path 文件路径
-     * @return 文件是否存在
+     * 计算文件大小文件大小
+     * @param filePath 文件路径例如：E:\\imgData\\afr\\9211496189393485.jpg
+     * @return    文件大小 Kb
      */
-    public static boolean isExists(String path) {
-        File file = new File(path);
-        return file.exists();
+    public static long GetFileSize(String filePath){
+        long fileSize=0l;
+        FileChannel fc= null;
+        try {
+            File f= new File(filePath);
+            if (f.exists() && f.isFile()){
+                FileInputStream fis= new FileInputStream(f);
+                fc= fis.getChannel();
+                fileSize=fc.size()/1024;
+                //logger.info(fileSize);
+            }else{
+                //logger.info("file doesn't exist or is not a file");
+            }
+        } catch (FileNotFoundException e) {
+            //logger.error(e);
+        } catch (IOException e) {
+            //logger.error(e);
+        } finally {
+            if (null!=fc){
+                try{
+                    fc.close();
+                }catch(IOException e){
+                    //logger.error(e);
+                }
+            }
+        }
+
+        return fileSize;
     }
 
+
     /**
-     * 文件Base64加密
+     * 将byte转成 KB、MB、GB的方法
      *
-     * @param path
+     * @param size
      * @return
      */
-    public static String fileToBase64String(String path) {
-        FileInputStream inputStream = null;
-        try {
-            File file = new File(path);
-            inputStream = new FileInputStream(file);
-            byte[] fileBytes = new byte[inputStream.available()];
-            inputStream.read(fileBytes);
-            String base64String = Base64.encodeToString(fileBytes, Base64.DEFAULT);
-            return base64String;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public static String getNetFileSizeDescription(long size) {
+        StringBuffer bytes = new StringBuffer();
+        DecimalFormat format = new DecimalFormat("###.0");
+        if (size >= 1024 * 1024 * 1024) {
+            double i = (size / (1024.0 * 1024.0 * 1024.0));
+            bytes.append(format.format(i)).append("GB");
+        } else if (size >= 1024 * 1024) {
+            double i = (size / (1024.0 * 1024.0));
+            bytes.append(format.format(i)).append("MB");
+        } else if (size >= 1024) {
+            double i = (size / (1024.0));
+            bytes.append(format.format(i)).append("KB");
+        } else if (size < 1024) {
+            if (size <= 0) {
+                bytes.append("0B");
+            } else {
+                bytes.append((int) size).append("B");
             }
         }
-        return null;
+        return bytes.toString();
     }
-}
 
+}

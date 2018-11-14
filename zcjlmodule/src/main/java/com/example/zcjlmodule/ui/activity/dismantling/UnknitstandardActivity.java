@@ -49,7 +49,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private int page = 1;
-
+    private String orgId;
     private boolean status = true;
 
     @Override
@@ -68,10 +68,11 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
         //刷新加载
         refresh();
         //标准编号
+        orgId=intent.getStringExtra("orgId");
         unknits_title.setText("标准编号：" + intent.getStringExtra("filenumber"));
         list = new ArrayList<>();
         //网络请求
-        mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+        mPresenter.getdata(orgId, page);
     }
 
     /**
@@ -86,7 +87,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
                 page = 1;
                 status = true;
                 //传入false表示刷新失败
-                mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+                mPresenter.getdata(orgId, page);
             }
         });
         //上拉加载
@@ -95,7 +96,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 status = false;
-                mPresenter.getdata(SPUtils.getString(mContext, "orgId", ""), page);
+                mPresenter.getdata(orgId, page);
             }
         });
 
@@ -123,7 +124,6 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
      */
     private void init() {
         unknits_title = (TextView) findViewById(R.id.unknits_title);
-
         emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待的滚动条
         gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
@@ -135,12 +135,9 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
         //返回
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
-            }
+            public void onClick(View view) {finish();}
         });
     }
-
     /**
      * 请求成功
      *

@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.R;
-import measure.jjxx.com.baselibrary.utils.FileUtils;
+import measure.jjxx.com.baselibrary.utils.WindowUtils;
 import measure.jjxx.com.baselibrary.view.SquareItemLayout;
 
 /**
@@ -79,13 +79,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        FileUtils.delete(photoPaths.get(position));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    photoPaths.remove(position);
-                    notifyDataSetChanged();
+                    // 1
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    mOnItemClickListener.deleteClick(holder.itemView, position);
                 }
             });
             //点击图片
@@ -99,7 +96,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
                 }
             });
         } else {
-            holder.img_add.setOnClickListener(new View.OnClickListener() {
+            holder.addview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (lean){
@@ -153,6 +150,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     public interface OnItemClickListener {
         void addlick(View view, int position);
         void photoClick(View view,int position);
+        void deleteClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;

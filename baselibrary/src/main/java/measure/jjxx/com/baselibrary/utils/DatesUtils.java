@@ -1,9 +1,11 @@
 package measure.jjxx.com.baselibrary.utils;
 
-/**
- * Created by Administrator on 2018/10/15 0015.
- */
 
+/** 
+ * description: 计算界面宽高
+ * @author lx
+ * date: 2018/11/13 0013 上午 11:14 
+*/
 public class DatesUtils {
 
     //根据bii返回当前分辨率下该设置宽度

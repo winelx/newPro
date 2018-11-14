@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -66,8 +67,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
 
     private Context mContext;
     private List<OriginalZcBean> list;
-    private String str = "合计金额：154512748";
-
     //页数
     private int page = 1;
     private boolean status = true;
@@ -76,12 +75,12 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     //查询类型
     private static final String TYPE_ONE = "征拆类型查询";
     private static final String TYPE_TWO = "按区域查询";
-    private static final String TYPE_THREE = "按表单查询";
+    private static final String TYPE_THREE = "按表单号查询";
     private static final String TYPE_FOUR = "按户主明细查询";
     private static final String TYPE_FIVE = "按期数查询";
-    private BigDecimal decimal;
     private String orgId, periodId;
     private int stauts = 0;
+    private ImageView AddData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +88,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         setContentView(R.layout.activity_original_zc);
         mContext = this;
         list = new ArrayList<>();
+        //请求回调（callback方法的注册）
         PayDetailCallBackUtils.setCallBack(this);
         orgId = SPUtils.getString(mContext, "orgId", "");
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -96,7 +96,13 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         mPresenter = new OriginalPresenter();
         mPresenter.mView = this;
         //调加
-        findViewById(R.id.original_add).setOnClickListener(this);
+        AddData = (ImageView) findViewById(R.id.original_add);
+        AddData.setOnClickListener(this);
+        if (SPUtils.getString(mContext, "orgType", null).contains("4")) {
+            AddData.setVisibility(View.VISIBLE);
+        } else {
+            AddData.setVisibility(View.GONE);
+        }
         //返回
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         //组织机构
@@ -181,6 +187,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                httprequest(true);
 
             }
         });
@@ -189,7 +196,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-
+                httprequest(false);
             }
         });
     }
@@ -231,10 +238,9 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                     } else if (TYPE_THREE.equals(string)) {
                         //表单
                         stauts = 3;
-                        DialogUtils.dismantling(mContext, "按征表单查询", new DialogUtils.onclick() {
+                        DialogUtils.dismantling(mContext, "按表单号查询", new DialogUtils.onclick() {
                             @Override
                             public void openonclick(String string) {
-                                ;
                                 periodId = string;
                                 //征拆类型
                                 httprequest(true);
@@ -271,16 +277,17 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
      * @param data
      */
     @Override
-    public void onSuccess(ArrayList<OriginalZcBean> data, BigDecimal price) {
+    public void onSuccess(ArrayList<OriginalZcBean> data, String price) {
         String str;
         if (page == 1) {
             list.clear();
-            decimal = price;
-        } else {
-            decimal = decimal.add(price);
+            if (price != null) {
+                str = "合计金额：" + price;
+                moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
+            } else {
+                moneynumber.setText("合计金额：");
+            }
         }
-        str = "合计金额：" + decimal;
-        moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
         list.addAll(data);
         if (list.size() > 0) {
             //list大于0，隐藏空白提示布局
@@ -324,7 +331,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     }
 
     /**
-     * 切换组织
+     * 切换组织的回调
      *
      * @param map
      */
@@ -334,6 +341,12 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         originalOrgname.setText(map.get("orgname") + "");
         //变更组织ID
         orgId = (String) map.get("orgId");
+        String type = (String) map.get("type");
+        if (type.contains("4")) {
+            AddData.setVisibility(View.VISIBLE);
+        } else {
+            AddData.setVisibility(View.GONE);
+        }
         httprequest(true);
     }
 
@@ -354,7 +367,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //指挥部
             helper.setText(R.id.original_adapter_content, item.getHeadquarterName());
             //户主名称
-            String str = "户主名称：" + item.getHeadquarterName() + "(" + item.getTotalPrice() + ")";
+            String str = "户主姓名：" + item.getHouseholder() + "(" + item.getTotalPrice() + ")";
             SpannableString string = TextUtils.setText(mContext, str, str.indexOf("("));
             helper.setText(R.id.original_adapter_namecontent, string);
             //类别

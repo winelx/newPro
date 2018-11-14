@@ -1,9 +1,5 @@
 package measure.jjxx.com.baselibrary.utils;
 
-/**
- * Created by Administrator on 2018/11/5 0005.
- */
-
 import java.util.ArrayList;
 import java.util.List;
 

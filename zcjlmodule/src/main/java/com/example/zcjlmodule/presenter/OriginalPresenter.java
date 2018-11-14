@@ -12,11 +12,7 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
- * Created by Administrator on 2018/10/15 0015.
- */
-
-/**
- * description: 原始勘丈表的
+ * description: 原始勘丈表网络请求
  *
  * @author lx
  *         date: 2018/10/29 0029 上午 11:15
@@ -27,17 +23,12 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 public class OriginalPresenter extends BasePresenters<OriginalView> {
     private OriginalModel.Model model;
 
-    public void getdata(String orgId, int page, Map<String,String>map) {
+    public void getdata(String orgId, int page, Map<String, String> map) {
         model = new OriginalModel.OriginalModelPml();
-        model.getdata(orgId, page,map, new OriginalModel.OnClicklister() {
+        model.getdata(orgId, page, map, new OriginalModel.OnClicklister() {
             @Override
-            public void onSuccess(ArrayList<OriginalZcBean> list) {
-                BigDecimal bigDecimal = new BigDecimal("0");
-                for (int i = 0; i < list.size(); i++) {
-                    BigDecimal price = new BigDecimal(list.get(i).getTotalPrice());
-                    bigDecimal = bigDecimal.add(price);
-                }
-                mView.onSuccess(list,bigDecimal);
+            public void onSuccess(ArrayList<OriginalZcBean> list, String str) {
+                mView.onSuccess(list,str);
             }
 
             @Override

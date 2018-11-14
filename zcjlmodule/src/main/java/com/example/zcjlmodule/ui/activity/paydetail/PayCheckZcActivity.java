@@ -220,8 +220,8 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
             helper.setText(R.id.activity_paycheck_name, item.getName());
             helper.setText(R.id.activity_paycheck_number, item.getNumber());
             helper.setText(R.id.activity_paycheck_payname, "支付人："+item.getPayname());
-            helper.setText(R.id.activity_paycheck_paymoney, "应支金额" + item.getPaymoney());
-            helper.setText(R.id.activity_paycheck_checkmoney, "核查金额" + item.getCheckmoney());
+            helper.setText(R.id.activity_paycheck_paymoney, "应支金额：" + item.getPaymoney());
+            helper.setText(R.id.activity_paycheck_checkmoney, "核查金额：" + item.getCheckmoney());
         }
     }
 }

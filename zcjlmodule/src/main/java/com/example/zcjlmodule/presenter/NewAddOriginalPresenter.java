@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 import measure.jjxx.com.baselibrary.base.BaseView;
+import measure.jjxx.com.baselibrary.bean.ExamineBean;
+import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -37,15 +39,17 @@ import okhttp3.Response;
 public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> {
     private NewAddOriginalModel.Model model;
     private Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,4})?$");
+
     /**
      * 保存数据
      */
-    public void save(Map<String, String> map, ArrayList<String> path) {
-
+    public void save(Map<String, String> map, ArrayList<ExamineBean> path) {
         model = new NewAddOriginalModel.NewAddOriginalModelIpm();
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < path.size(); i++) {
-            file.add(new File(path.get(i)));
+            if (path.get(i).getId() != null&& android.text.TextUtils.isEmpty(path.get(i).getId())) {
+                file.add(new File(path.get(i).getPath()));
+            }
         }
         model.getData(map, file, new NewAddOriginalModel.Model.OnClickListener() {
             @Override
@@ -151,6 +155,14 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
         } else {
             return true;
         }
+    }
+
+    public ArrayList<String> deletepath(ArrayList<ExamineBean> list, int pos) {
+        ArrayList<String> delete = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            delete.add(list.get(i).getId());
+        }
+        return delete;
     }
 
 }

@@ -95,7 +95,7 @@
                 android:textColor="@color/graytext"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:text="合计金额：12121212121" />
+              />
 
 
             <include layout="@layout/layout_emptyview_zc" />

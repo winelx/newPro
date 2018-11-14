@@ -154,7 +154,8 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
                 int i = view.getId();
                 if (i == R.id.see_standard_dismantiling) {
                     Intent intent = new Intent(mContext, UnknitstandardActivity.class);
-                    intent.putExtra("filenumber", list.get(position).getFilename());
+                    intent.putExtra("filenumber", list.get(position).getFilenumber());
+                    intent.putExtra("orgId", orgId);
                     startActivity(intent);
                 } else {
                 }

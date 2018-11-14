@@ -27,6 +27,8 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 
+import measure.jjxx.com.baselibrary.base.BaseActivity;
+
 
 /**
  * description: 征拆类型查询
@@ -38,7 +40,7 @@ import java.util.List;
  *         跳转界面 StandardDecomposeZcActivity
  *         这个是一个listview 写的tree界面
  */
-public class DismantlingtypequeryZcActivity extends AppCompatActivity {
+public class DismantlingtypequeryZcActivity extends BaseActivity {
     private ListView mListView;
     private MeasureUtils utils;
     private String ogrId;

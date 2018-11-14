@@ -48,6 +48,12 @@ public class ExamineDismantlingUtils {
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
+                                        String id;
+                                        try {
+                                            id = json.getString("id");
+                                        } catch (Exception e) {
+                                            id = "";
+                                        }
                                         String filename;
                                         try {
                                             filename = json.getString("filename");
@@ -66,7 +72,7 @@ public class ExamineDismantlingUtils {
                                         } catch (Exception e) {
                                             type = "";
                                         }
-                                        list.add(new ExamineBean(filename, filepath, type));
+                                        list.add(new ExamineBean(id,filename, filepath, type));
                                     }
                                 }
                                 onclick.onSuccess(list);

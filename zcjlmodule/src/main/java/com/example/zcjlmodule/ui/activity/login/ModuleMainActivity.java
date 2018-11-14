@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.ModuleMainPresenter;
@@ -15,8 +17,10 @@ import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
-import measure.jjxx.com.baselibrary.utils.BaseDialog;
+import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.BaseUtils;
+import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
+import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
 
 /**
@@ -62,21 +66,16 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
         switch (view.getId()){
             case R.id.btn_login:
                 baseUtils.hidekeyboard(this,edtAccount);
-                BaseDialog.getDialog(this, "登录中..", false);
+                BaseDialogUtils.getDialog(this, "登录中..", false);
                 String name = edtAccount.getText().toString();
                 String password = edtPassword.getText().toString();
                 if (!name.isEmpty() && !password.isEmpty()) {
                     //登录
                     mPresenter.register(name, password);
                 } else {
-                    BaseDialog.dialog.dismiss();
-                    Snackbar.make(view, "用户名或密码为空", Snackbar.LENGTH_LONG)
-                            .setAction("确定", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                }
-                            })
-                            .show();
+                    BaseDialogUtils.dialog.dismiss();
+                    TopSnackBar.make(btnLogin, "用户名或密码为空", BaseTransientBottomBar.LENGTH_SHORT).show();
+
                 }
                 break;
             case R.id.main_background:
@@ -90,10 +89,26 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
     //拿到数据
     @Override
     public void getdata(int ret) {
-        BaseDialog.dialog.dismiss();
+        BaseDialogUtils.dialog.dismiss();
         if (ret == 0) {
             startActivity(new Intent(this, HomeZcActivity.class));
             finish();
         }
+    }
+
+
+    //连续两次退出App
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                getSupportFragmentManager().popBackStack();
+                Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+                MyIntent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(MyIntent);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                finish();
+            return true;
+        }
+        return true;
     }
 }

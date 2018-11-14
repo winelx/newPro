@@ -254,10 +254,8 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
         map.put("levyType", dismantleId);
         //单价
         map.put("price", pricenumber.getText().toString());
-        if (type.equals("old")) {
-            //类型ID
-            map.put("standardId", orgId);
-        }
+        //类型ID
+        map.put("standardId", orgId);
         standardUtils.request(map, new StandardUtils.OnClickListener() {
             @Override
             public void onsuccess(List<StandardDecomposeBean> data) {

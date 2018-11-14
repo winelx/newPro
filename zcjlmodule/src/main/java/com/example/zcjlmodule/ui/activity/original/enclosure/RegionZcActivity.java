@@ -35,13 +35,15 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import measure.jjxx.com.baselibrary.base.BaseActivity;
+
 /**
  * description: 区域查询
  *
  * @author lx
  *         date: 2018/11/7 0007 下午 2:55
  */
-public class RegionZcActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegionZcActivity extends BaseActivity implements View.OnClickListener {
 
     private RegionTreeListViewAdapters mAdapter;
     private Context mContext;
@@ -57,7 +59,7 @@ public class RegionZcActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choice_project_zc);
+        setContentView(R.layout.activity_region_zc);
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         mContext = this;

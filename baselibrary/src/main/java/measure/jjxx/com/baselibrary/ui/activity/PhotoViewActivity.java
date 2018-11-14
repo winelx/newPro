@@ -78,8 +78,7 @@ public class PhotoViewActivity extends BaseActivity {
         //退出
         findViewById(R.id.base_photo_back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                finish();
+            public void onClick(View view) {finish();
             }
         });
         //viewpager 的滑动监听，用来出标题处的图片显示 的位置

@@ -16,10 +16,11 @@ public class PayDetailCallBackUtils {
         mCallBack = callBack;
     }
 
-    public static void CallBack(String id, String name) {
+    public static void CallBack(String id, String name,String type) {
         Map<String, Object> map = new HashMap<>();
         map.put("orgId", id);
         map.put("orgname", name);
+        map.put("type", type);
         mCallBack.callback(map);
     }
 }

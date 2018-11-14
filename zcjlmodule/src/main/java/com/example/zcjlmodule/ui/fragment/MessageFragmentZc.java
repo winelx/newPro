@@ -122,7 +122,6 @@ public class MessageFragmentZc extends BaseFragment {
                             });
                             break;
                         case 1:
-                            startActivity(new Intent(mContext, PdfActivity.class));
                             break;
                         case 2:
                             break;

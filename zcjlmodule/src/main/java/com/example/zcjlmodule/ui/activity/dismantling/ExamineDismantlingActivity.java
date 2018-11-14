@@ -30,9 +30,7 @@ import java.util.List;
 import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
-import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
 import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
-import measure.jjxx.com.baselibrary.utils.PdfUtils;
 import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
@@ -58,13 +56,12 @@ public class ExamineDismantlingActivity extends BaseActivity {
     private TextView examineProvincename, examineCityname, examineCountyname, examineTownname,
             examineReleasor, examineFilenumber, examineCreatedate, examine_number;
     private TextView examineFilename, examineRemarks;
-    private PdfUtils pdfUtils;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        pdfUtils = new PdfUtils();
         setContentView(R.layout.activity_examine_dismantling);
         init();
         intent();
@@ -105,7 +102,6 @@ public class ExamineDismantlingActivity extends BaseActivity {
                 ExamineBean examineBean = list.get(position);
                 String type = examineBean.getType();
                 if ("pdf".equals(type)) {
-//                    pdfUtils.getdata(mContext, examineBean.getPath());
                     Intent intent = new Intent(mContext, PdfActivity.class);
                     intent.putExtra("http", examineBean.getPath());
                     startActivity(intent);
@@ -114,7 +110,6 @@ public class ExamineDismantlingActivity extends BaseActivity {
                 } else if ("xlsx".equals(type) || "xls".equals(type)) {
                     ToastUtlis.getInstance().showShortToast("请到pc端查看");
                 } else {
-                    ToastUtlis.getInstance().showShortToast("图");
                     PhotoPreview.builder().setCurrentItem(position).setPhotos(PhotoUtils.getPhoto(list)).start((Activity) mContext);
                 }
             }
