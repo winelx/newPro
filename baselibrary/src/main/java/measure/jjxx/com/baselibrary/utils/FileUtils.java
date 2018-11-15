@@ -1,13 +1,22 @@
 package measure.jjxx.com.baselibrary.utils;
 
+import android.view.View;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
+
+import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
+import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
 /**
  * @author lx
@@ -76,20 +85,21 @@ public class FileUtils {
 
     /**
      * 计算文件大小文件大小
+     *
      * @param filePath 文件路径例如：E:\\imgData\\afr\\9211496189393485.jpg
-     * @return    文件大小 Kb
+     * @return 文件大小 Kb
      */
-    public static long GetFileSize(String filePath){
-        long fileSize=0l;
-        FileChannel fc= null;
+    public static long GetFileSize(String filePath) {
+        long fileSize = 0l;
+        FileChannel fc = null;
         try {
-            File f= new File(filePath);
-            if (f.exists() && f.isFile()){
-                FileInputStream fis= new FileInputStream(f);
-                fc= fis.getChannel();
-                fileSize=fc.size()/1024;
+            File f = new File(filePath);
+            if (f.exists() && f.isFile()) {
+                FileInputStream fis = new FileInputStream(f);
+                fc = fis.getChannel();
+                fileSize = fc.size() / 1024;
                 //logger.info(fileSize);
-            }else{
+            } else {
                 //logger.info("file doesn't exist or is not a file");
             }
         } catch (FileNotFoundException e) {
@@ -97,10 +107,10 @@ public class FileUtils {
         } catch (IOException e) {
             //logger.error(e);
         } finally {
-            if (null!=fc){
-                try{
+            if (null != fc) {
+                try {
                     fc.close();
-                }catch(IOException e){
+                } catch (IOException e) {
                     //logger.error(e);
                 }
             }
@@ -137,5 +147,88 @@ public class FileUtils {
         }
         return bytes.toString();
     }
+
+    /**
+     * 判断路径下指定文件是否存在
+     */
+    public static boolean fileIsExists(File file) {
+        try {
+            // 总文件大小
+            if (!file.exists()) {
+                //不存在
+                return false;
+            }
+        } catch (Exception e) {
+            //
+            return false;
+        }
+        //存在
+        return true;
+    }
+
+    /**
+     * 文件下载
+     *
+     * @param path
+     * @return
+     */
+    private String download(String path, String filepaths, String filename, View view) {
+        int currentLen = 0;
+        InputStream is = null;
+        FileOutputStream os = null;
+        try {
+            URL url = new URL(path);
+            //打开连接
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //文件大小
+            int totleLen = conn.getContentLength();
+            //网络连接状态码
+            int state = conn.getResponseCode();
+            if (state != 200) {
+                TopSnackBar.make(view, "文件不存在", BaseTransientBottomBar.LENGTH_SHORT).show();
+                return null;
+            }
+            //打开输入流
+            is = conn.getInputStream();
+            File file = new File(filepaths);
+            //不存在创建
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            //下载后的文件名
+            final String fileName = filepaths + filename;
+            File file1 = new File(fileName);
+            if (file1.exists()) {
+                file1.delete();
+            }
+            //创建字节流
+            byte[] bs = new byte[1024];
+            int len;
+            os = new FileOutputStream(fileName);
+            //写数据
+            int progress = 0;
+            while ((len = is.read(bs)) != -1) {
+                currentLen += len;
+                os.write(bs, 0, len);
+//                percent = Math.ceil(currentLen * 1.0 / totleLen * 10000);
+//                Log.i("下载 进度:", percent / 100.0 + "%");
+            }
+            os.close();
+            is.close();
+            return fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                os.close();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
 
 }

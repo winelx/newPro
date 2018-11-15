@@ -68,18 +68,17 @@
         <activity android:name=".ui.activity.original.enclosure.StandardDecomposeZcActivity" />
         <activity android:name=".ui.activity.original.enclosure.DismantlingtypequeryZcActivity" />
         <activity android:name=".ui.activity.original.enclosure.ApplyDateZcActivity" />
+        <activity android:name=".ui.activity.original.enclosure.RegionZcActivity" />
         <activity android:name=".ui.activity.dismantling.StandardDismantlingZcActivity" />
         <activity android:name=".ui.activity.dismantling.UnknitstandardActivity" />
         <activity android:name=".ui.activity.dismantling.ExamineDismantlingActivity" />
         <activity android:name=".ui.activity.mine.PasswordActivity" />
         <activity android:name=".ui.activity.mine.UserOrgZcActivity" />
         <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity" />
-        <activity android:name=".ui.activity.original.enclosure.RegionZcActivity" />
         <activity
             android:name=".ui.activity.dismantling.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme" />
-        <activity android:name=".TextActivity"></activity>
     </application>
 
 </manifest>

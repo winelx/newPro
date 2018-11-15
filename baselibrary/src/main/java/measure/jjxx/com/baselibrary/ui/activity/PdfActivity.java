@@ -1,18 +1,29 @@
 package measure.jjxx.com.baselibrary.ui.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,13 +32,19 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 import measure.jjxx.com.baselibrary.R;
+import measure.jjxx.com.baselibrary.base.BaseActivity;
+import measure.jjxx.com.baselibrary.interfaces.PermissionListener;
 import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
 import measure.jjxx.com.baselibrary.utils.PermissionUtils;
+import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
 import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * description: pdf查看界面
@@ -35,187 +52,101 @@ import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
  * @author lx
  *         date: 2018/11/13 0013 上午 10:46
  */
-public class PdfActivity extends AppCompatActivity {
+public class PdfActivity extends BaseActivity {
     private PDFView pdfView;
     private String paths;
     private Context mContext;
     private String pathname;
     private String url = "";
-    private File f;
     private OutputStream os;
     private InputStream is;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    public static final String path = "file:///android_asset/pdfjs/web/viewer.html?file=";
-    private static String[] PERMISSIONS_STORAGE = {
-            "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE"};
-    private PermissionUtils permissionUtils;
+    private SwipeRefreshLayout swiperelayout;
+    private File files;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
         mContext = this;
-        permissionUtils = new PermissionUtils();
-        paths = getExternalCacheDir().getPath().replace("cache", "PDF/");
         Intent intent = getIntent();
         url = intent.getStringExtra("http");
         pathname = url.substring(url.lastIndexOf("/") + 1, url.length());
+        paths = getExternalCacheDir().getPath().replace("cache", "PDF/");
         pdfView = (PDFView) findViewById(R.id.pdfView);
+        swiperelayout = (SwipeRefreshLayout) findViewById(R.id.swiperefreshlayout);
+        files = new File(paths + pathname);
+        permisssion();
+        //设置刷新监听器
+        swiperelayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                permisssion();
+            }
+        });
         findViewById(R.id.base_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        PermissionUtils permissionUtils = new PermissionUtils();
-        boolean isAllGranted = permissionUtils.checkPermissionAllGranted(mContext, PERMISSIONS_STORAGE);
-        // 如果这3个权限全都拥有, 则直接执行备份代码
-        if (isAllGranted) {
-            getdata();
-        } else {
-            // 一次请求多个权限, 如果其他有权限是已经授予的将会自动忽略掉
-            ActivityCompat.requestPermissions((Activity) mContext, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
-        }
     }
 
     private void getdata() {
         //判断路径下下你文件是否存在
-        boolean status = fileIsExists(paths + pathname);
+        boolean status = FileUtils.fileIsExists(files);
         if (status) {
             //存在
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                pdfView.fromFile(f)
+                pdfView.fromFile(files)
                         .defaultPage(1)
                         .enableSwipe(true)
                         .load();
             }
         } else {
-            //不存在
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //判断当前系统是否高于或等于6.0
-                    final String download = download(url);
-                    runOnUiThread(new Runnable() {
+            OkGo.get(url)
+                    .execute(new FileCallback(paths, pathname) {
                         @Override
-                        public void run() {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                boolean status = fileIsExists(paths + pathname);
-                                pdfView.fromFile(f)
-                                        .defaultPage(1)
-                                        .enableSwipe(true)
-                                        .load();
+                        public void onSuccess(File file, Call call, Response response) {
+                            swiperelayout.setRefreshing(false);//取消刷新
+                            pdfView.fromFile(file)
+                                    .defaultPage(1)
+                                    .enableSwipe(true)
+                                    .load();
+                        }
 
-                            }
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            swiperelayout.setRefreshing(false);//取消刷新
+                            TopSnackBar.make(pdfView, "pdf下载失败", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+                            super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
+                            Log.i("down", currentSize + "---" + totalSize + "---" + progress + "---" + networkSpeed);
                         }
                     });
-                }
-            }).start();
 
         }
     }
 
-    long currentLen = 0;// 已读取文件大小
-    double percent = 0.0; //下载进度
-    long totleLen;
-    int state = 0;
-
-    private String download(String path) {
-        try {
-            URL url = new URL(path);
-            //打开连接
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            totleLen = conn.getContentLength();
-            state = conn.getResponseCode();
-            if (state != 200) {
-                TopSnackBar.make(pdfView, "pdf不存在", BaseTransientBottomBar.LENGTH_SHORT).show();
-                return null;
-            }
-            //打开输入流
-            is = conn.getInputStream();
-            File file = new File(paths);
-            //不存在创建
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            //下载后的文件名
-            final String fileName = paths + pathname;
-            File file1 = new File(fileName);
-            if (file1.exists()) {
-                file1.delete();
-            }
-            //创建字节流
-            byte[] bs = new byte[1024];
-            int len;
-            os = new FileOutputStream(fileName);
-            //写数据
-            int progress = 0;
-            while ((len = is.read(bs)) != -1) {
-                currentLen += len;
-                os.write(bs, 0, len);
-//                percent = Math.ceil(currentLen * 1.0 / totleLen * 10000);
-//                Log.i("下载 进度:", percent / 100.0 + "%");
-            }
-            os.close();
-            is.close();
-            return fileName;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                os.close();
-                is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 判断路径下指定文件是否存在
-     */
-    public boolean fileIsExists(String path) {
-        try {
-            f = new File(path);
-            // 总文件大小
-            if (!f.exists()) {
-                //不存在
-                return false;
-            }
-        } catch (Exception e) {
-            //
-            return false;
-        }
-        //存在
-        return true;
-    }
-
-
-    /**
-     * 第 3 步: 申请权限结果返回处理
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
-            boolean isAllGranted = true;
-            // 判断是否所有的权限都已经授予了
-            for (int grant : grantResults) {
-                if (grant != PackageManager.PERMISSION_GRANTED) {
-                    isAllGranted = false;
-                    break;
-                }
-            }
-            if (isAllGranted) {
-                // 如果所有的权限都授予了, 则执行备份代码
+    public void permisssion() {
+        requestRunPermisssion(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
                 getdata();
-            } else {
-                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
-                BaseDialogUtils.openAppDetails(mContext);
             }
-        }
-    }
 
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" + permission, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
 }
