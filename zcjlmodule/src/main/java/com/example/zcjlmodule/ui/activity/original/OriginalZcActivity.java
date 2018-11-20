@@ -281,7 +281,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         String str;
         if (page == 0) {
             list.clear();
-            if (price != null) {
+            if (price!= null) {
                 str = "合计金额：" + price;
                 moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
             } else {
@@ -363,6 +363,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         OriginalAdapter(int layoutResId, List data) {
             super(layoutResId, data);
         }
+
         @Override
         protected void convert(BaseViewHolder helper, OriginalZcBean item) {
             //标题
@@ -380,7 +381,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //创建人
             helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
             //创建时间
-            helper.setText(R.id.original_adapter_createdate, "创建日期：" + item.getCreateDate().substring(0,10));
+            helper.setText(R.id.original_adapter_createdate, "创建日期：" + item.getCreateDate().substring(0, 10));
         }
     }
 

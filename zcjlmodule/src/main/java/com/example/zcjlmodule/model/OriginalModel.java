@@ -1,5 +1,8 @@
 package com.example.zcjlmodule.model;
 
+import android.icu.math.BigDecimal;
+
+
 import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
@@ -15,6 +18,8 @@ import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
 import measure.jjxx.com.baselibrary.utils.ListJsonUtils;
+import measure.jjxx.com.baselibrary.utils.LogUtil;
+import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -72,14 +77,14 @@ public class OriginalModel {
                                 if (page == 0) {
                                     JSONObject jsonObject1 = jsonObject.getJSONObject("extend");
                                     totalmoney = jsonObject1.getString("totalMoney");
+                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                    list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
                                 }
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
                             }
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                         }
-                        listener.onSuccess(list, totalmoney);
+                        listener.onSuccess(list, TextUtils.bigdecimal(totalmoney));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
@@ -95,5 +100,4 @@ public class OriginalModel {
             });
         }
     }
-
 }
