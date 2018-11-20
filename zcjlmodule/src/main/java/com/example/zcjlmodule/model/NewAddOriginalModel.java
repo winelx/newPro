@@ -1,9 +1,12 @@
 package com.example.zcjlmodule.model;
 
+import android.util.Log;
+
 import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONException;
@@ -38,8 +41,7 @@ public class NewAddOriginalModel {
          * 接口
          */
         interface OnClickListener {
-            void onComple();
-
+            void onComple(String str);
             void onError();
         }
     }
@@ -60,10 +62,15 @@ public class NewAddOriginalModel {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     try {
+                        Log.i("s",s);
                         JSONObject jsonObject = new JSONObject(s);
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
-                            onClickListener.onComple();
+                            //保存成功返回单据Id
+                            //将保存成功的返回的id传递传递给activity的id,（新的单据如果不返回id,请求图片时就id就为空）
+                            JSONObject data=jsonObject.getJSONObject("data");
+                            String id=data.getString("id");
+                            onClickListener.onComple(id);
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                             onClickListener.onError();
@@ -72,6 +79,7 @@ public class NewAddOriginalModel {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);

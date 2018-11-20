@@ -7,7 +7,7 @@
 
     <include layout="@layout/toolbar_title_zc" />
 
-    <android.support.v7.widget.RecyclerView
+    <measure.jjxx.com.baselibrary.view.EmptyRecyclerView
         android:id="@+id/message_fragment_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

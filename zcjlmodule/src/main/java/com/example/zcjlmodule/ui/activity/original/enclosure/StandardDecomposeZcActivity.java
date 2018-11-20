@@ -123,7 +123,6 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
          　　actionNext                下一项           EditorInfo.IME_ACTION_NEXT
          　　actionDone               完成              EditorInfo.IME_ACTION_DONE
          */
-
         /**
          * editext回车键搜索
          */
@@ -136,7 +135,9 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     String search = pricenumber.getText().toString();
                     if (search.length() != 0) {
+                        page=1;
                         httprequest();
+                        //隐藏软键盘
                         baseUtils.hidekeyboard(mContext, pricenumber);
                     } else {
                         Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
@@ -153,9 +154,7 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
                 httprequest();
             }
         });
-
         httprequest();
-
     }
 
     /**
@@ -227,7 +226,7 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
             //单位
             helper.setText(R.id.unknit_stand_unit, "单位：" + item.getMeterUnitName());
             //文件名
-            helper.setText(R.id.unknit_stand_title, item.getStandardNumber());
+            helper.setText(R.id.unknit_stand_title, item.getNumber());
             //征拆类型
             helper.setText(R.id.unknit_stand_type, item.getLevyTypeName());
             //补偿类型

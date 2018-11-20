@@ -1,17 +1,16 @@
 package com.example.zcjlmodule.presenter;
 
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.zcjlmodule.bean.PayDetailedlistBean;
 import com.example.zcjlmodule.model.NewAddOriginalModel;
 import com.example.zcjlmodule.utils.Api;
 import com.example.zcjlmodule.view.NewAddOriginalView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.GetRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,9 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
-import measure.jjxx.com.baselibrary.base.BaseView;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
-import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -47,14 +44,14 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
         model = new NewAddOriginalModel.NewAddOriginalModelIpm();
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < path.size(); i++) {
-            if (path.get(i).getId() != null&& android.text.TextUtils.isEmpty(path.get(i).getId())) {
+            if (path.get(i).getId() != null && android.text.TextUtils.isEmpty(path.get(i).getId())) {
                 file.add(new File(path.get(i).getPath()));
             }
         }
         model.getData(map, file, new NewAddOriginalModel.Model.OnClickListener() {
             @Override
-            public void onComple() {
-                mView.OnSuccess();
+            public void onComple(String str) {
+                mView.OnSuccess(str);
             }
 
             @Override
@@ -111,7 +108,14 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
         }
     }
 
-
+    /**
+     * 身份认证
+     *
+     * @param orgId
+     * @param cardId
+     * @param householder
+     * @param listener
+     */
     public void validateHouseholder(String orgId, String cardId, String householder, final OnClickListener listener) {
         OkGo.get(Api.VALIDATEHOUSEHOLDER)
                 .params("orgId", orgId)
@@ -140,13 +144,54 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
     }
 
     /**
-     * 接口
+     * 创建单据编号
+     */
+    public void createnumber(Map<String, String> map, final OnClickListener1 onClickListener1) {
+        GetRequest create = OkGo.get(Api.CREATERAWBILLNUMBER);
+        //遍历map中的值
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            create.params(entry.getKey(), entry.getValue());
+        }
+        create.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        String data = jsonObject.getString("data");
+                        onClickListener1.onsuccess(data);
+                    } else {
+                        ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+        });
+    }
+
+    /**
+     * 身份认证接口
      */
     public interface OnClickListener {
         void onsuccess(boolean lean);
     }
 
-    //金额验证
+    /**
+     * 单价编号接口
+     */
+    public interface OnClickListener1 {
+        void onsuccess(String str);
+
+    }
+
+    //金额计算
     public boolean isNumber(String str) {
         // 判断小数点后2位的数字的正则表达式
         Matcher match = pattern.matcher(str);

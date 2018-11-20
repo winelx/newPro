@@ -20,6 +20,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.callback.Callback;
+import com.example.zcjlmodule.callback.OriginalZcCallBack;
+import com.example.zcjlmodule.callback.OriginalZcCallBackUtils;
 import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.presenter.OriginalPresenter;
 import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
@@ -33,8 +35,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +46,6 @@ import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ScreenUtil;
 import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
-import release.App;
 
 /**
  * description: 原始勘丈表
@@ -56,7 +55,7 @@ import release.App;
  *         update: 2018/10/15 0015
  *         跳转界面 WorkFragment
  */
-public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> implements OriginalView, View.OnClickListener, Callback {
+public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> implements OriginalView, View.OnClickListener, OriginalZcCallBack, Callback {
     private LinearLayout toolbarIconMeun, layoutEmptyView;
     private TextView toolbarIconTitle, emptyViewText;
     private TextView moneynumber, originalOrgname;
@@ -68,7 +67,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private Context mContext;
     private List<OriginalZcBean> list;
     //页数
-    private int page = 1;
+    private int page = 0;
     private boolean status = true;
     //根据手机分辨率返回的尺寸
     private float dimension;
@@ -89,6 +88,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         mContext = this;
         list = new ArrayList<>();
         //请求回调（callback方法的注册）
+        OriginalZcCallBackUtils.setCallBack(this);
         PayDetailCallBackUtils.setCallBack(this);
         orgId = SPUtils.getString(mContext, "orgId", "");
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -279,7 +279,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     @Override
     public void onSuccess(ArrayList<OriginalZcBean> data, String price) {
         String str;
-        if (page == 1) {
+        if (page == 0) {
             list.clear();
             if (price != null) {
                 str = "合计金额：" + price;
@@ -350,6 +350,12 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         httprequest(true);
     }
 
+    //数据更新后刷新列表
+    @Override
+    public void updata() {
+        httprequest(true);
+    }
+
     /**
      * recyclerview适配器
      */
@@ -357,7 +363,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         OriginalAdapter(int layoutResId, List data) {
             super(layoutResId, data);
         }
-
         @Override
         protected void convert(BaseViewHolder helper, OriginalZcBean item) {
             //标题
@@ -375,7 +380,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             //创建人
             helper.setText(R.id.original_adapter_createname, "创建人：" + item.getCreateName());
             //创建时间
-            helper.setText(R.id.original_adapter_createdate, "创建时间：" + item.getCreateDate());
+            helper.setText(R.id.original_adapter_createdate, "创建日期：" + item.getCreateDate().substring(0,10));
         }
     }
 
@@ -386,7 +391,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
      */
     public void httprequest(boolean lean) {
         if (lean) {
-            page = 1;
+            page = 0;
             //标记刷新还是加载状态
             status = true;
         } else {

@@ -11,6 +11,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.callback.NewAddCallback;
 import com.example.zcjlmodule.callback.NewAddOriginalUtils;
+import com.example.zcjlmodule.callback.OriginalZcCallBackUtils;
 import com.example.zcjlmodule.presenter.NewAddOriginalPresenter;
 import com.example.zcjlmodule.ui.activity.original.enclosure.ApplyDateZcActivity;
 import com.example.zcjlmodule.ui.activity.original.enclosure.ChoiceBidsZcActivity;
@@ -47,14 +49,13 @@ import measure.jjxx.com.baselibrary.adapter.PhotoPreview;
 import measure.jjxx.com.baselibrary.adapter.PhotosAdapter;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
-import measure.jjxx.com.baselibrary.bean.PhotoviewBean;
 import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.BaseUtils;
-import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
-import measure.jjxx.com.baselibrary.utils.WindowUtils;
 import measure.jjxx.com.baselibrary.utils.PhotoUtils;
+import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import measure.jjxx.com.baselibrary.utils.WindowUtils;
 
 
 /**
@@ -82,6 +83,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     private TakePictureManager takePictureManager;
     //根据status 类处理当前界面点击事件或者输入框是否可点击或者编辑
     private boolean status = true;
+    //复制新增状态判断 区别是保存还是复制新增
+    private boolean copylean = false;
     /**
      * 界面控件
      */
@@ -113,8 +116,12 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     private BaseUtils utils;
     private Tiny.FileCompressOptions options;
     private ExamineDismantlingUtils dismantlingUtils;
-    private ArrayList<String> deleteList;//删除图片集合
-
+    //删除图片集合
+    private ArrayList<String> deleteList;
+    /**
+     * 保存数据
+     */
+    String Number, OriginalNam;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -294,10 +301,16 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             declareNum.setText(message.get("declareNum"));
             //标准分解
             standardDetailNumber.setText(message.get("standardDetailNumber"));
+            String remark = message.get("remarks");
             //备注
-            remarks.setText(message.get("remarks"));
+            if (!remark.isEmpty() && remark != null && !remark.equals("null")) {
+                remarks.setText(remark);
+            }
             //手机号
-            newAddOriginalPhone.setText(message.get("householderPhone") + "");
+            String phone = message.get("householderPhone");
+            if (!phone.isEmpty() && phone != null && !phone.equals("null")) {
+                newAddOriginalPhone.setText(message.get("householderPhone"));
+            }
             //征拆类
             newAddOriginalCategory.setText(message.get("levyTypeName"));
             //项目Id
@@ -311,13 +324,21 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //分解标准Id
             standardDetail = message.get("standardDetail");
             //受益人
-            newAddOriginalBeneficiary.setText(message.get("beneficiary"));
+            String beneficiary = message.get("beneficiary");
+            if (!beneficiary.isEmpty() && beneficiary != null && !beneficiary.equals("null")) {
+                newAddOriginalBeneficiary.setText(message.get("beneficiary"));
+            }
             dismantlingUtils.getData(message.get("id"), new ExamineDismantlingUtils.onclick() {
                 @Override
                 public void onSuccess(ArrayList<ExamineBean> data) {
                     pathlist.clear();
                     pathlist.addAll(data);
                     getupdata();
+                    if (data.size() > 0) {
+                        photrecycler.setVisibility(View.VISIBLE);
+                    } else {
+                        photrecycler.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -396,7 +417,6 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                 String ids = pathlist.get(position).getId();
                 if (ids != null) {
                     deleteList.add(ids);
-                    ToastUtlis.getInstance().showShortToast("1");
                 }
                 pathlist.remove(position);
                 getupdata();
@@ -418,7 +438,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                 boolean lean = mPresenter.isNumber(content);
                 // 现在创建 matcher 对象
                 if (lean) {
-                    if (!pricetext.isEmpty()) {
+                    if (!TextUtils.isEmpty(pricetext)) {
                         //存在小数
                         BigDecimal num = new BigDecimal(content);
                         BigDecimal pricenum = new BigDecimal(pricetext);
@@ -510,7 +530,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                 intent1.putExtra("type", type);
                 //判断的新增还是修改
                 intent1.putExtra("orgId", orgId);
-                startActivityForResult(intent1, 105);
+                startActivity(intent1);
             } else {
 //                ToastUtlis.getInstance().showShortToast("当前不是编辑状态");
             }
@@ -527,10 +547,12 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             showview();  //显示布局
             title.setText("修改原始勘丈表");
         } else if (i == R.id.toolbar_text_text) {
+            copylean = false;
             //保存
             proving();
         } else if (i == R.id.new_add_original_copy) {
-            ToastUtlis.getInstance().showShortToast("新增修改");
+            copylean = true;
+            proving();
         } else {
         }
     }
@@ -552,8 +574,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         status = true;
         //隐藏底部功能按钮
         newAddOriginalFunction.setVisibility(View.GONE);
+        //设置控件margin
         mPresenter.setMargins(scrollView, 0, 0, 0, 0);
-        mPhotosAdapter.status(true);
+        photrecycler.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -574,7 +597,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //显示底部功能按钮
         newAddOriginalFunction.setVisibility(View.VISIBLE);
         mPresenter.setMargins(scrollView, 0, 0, 0, 140);
-        mPhotosAdapter.status(false);
+
     }
 
     /**
@@ -608,9 +631,6 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             //指挥部
             newAddOriginalCommandtext.setText(data.getStringExtra("name"));
             CommandId = data.getStringExtra("id");
-        } else if (requestCode == 105 && resultCode == 105) {
-            //分解标准
-            Map<String, String> map = (Map<String, String>) data.getSerializableExtra("message");
         } else if (requestCode == 106 && resultCode == 106) {
             //申报期数
             newAddOriginalApplydateText.setText(data.getStringExtra("name"));
@@ -646,24 +666,41 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
      * 网络请求成功
      */
     @Override
-    public void OnSuccess() {
-        title.setText("查看原始勘丈表");
+    public void OnSuccess(String str) {
+        //关闭提示框
         BaseDialogUtils.dialog.dismiss();
+        //隐藏保存按钮，显示修改和复制新增
         hide();
-        //请求图片
-        dismantlingUtils.getData(message.get("id"), new ExamineDismantlingUtils.onclick() {
-            @Override
-            public void onSuccess(ArrayList<ExamineBean> data) {
-                pathlist.clear();
-                pathlist.addAll(data);
-                getupdata();
-            }
+        //当前界面数据发生改变，更新列表数据
+        OriginalZcCallBackUtils.updata();
+        if (copylean) {
+            ToastUtlis.getInstance().showShortToast("复制新增成");
+        } else {
+            //将保存成功的数据id赋值给id（新的单据如果不返回id,请求图片时就id就为空）
+            Id = str;
+            //修改标题栏
+            title.setText("查看原始勘丈表");
+            //重新请求图片，避免新增的图片没Id（）
+            dismantlingUtils.getData(Id, new ExamineDismantlingUtils.onclick() {
+                @Override
+                public void onSuccess(ArrayList<ExamineBean> data) {
+                    pathlist.clear();
+                    pathlist.addAll(data);
+                    getupdata();
+                    if (pathlist.size() > 0) {
+                        photrecycler.setVisibility(View.VISIBLE);
+                    } else {
+                        photrecycler.setVisibility(View.GONE);
+                    }
+                }
 
-            @Override
-            public void onError() {
+                @Override
+                public void onError() {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     /**
@@ -680,7 +717,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //征拆类型
         newAddOriginalCategory.setText(map.get("levyTypeName"));
         //标准分解
-        standardDetailNumber.setText(map.get("standardNumber"));
+        standardDetailNumber.setText(map.get("number"));
+        standardDetail = map.get("id");
         //省份
         provincename.setText(map.get("provinceName"));
         //城市
@@ -688,40 +726,47 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //区县
         countyname.setText(map.get("countyName"));
         //乡镇
-        townname.setText(map.get("townName"));
-        //计量单位
-        meterunitname.setText(map.get("meterunitname"));
+        String str = map.get("townName");
+        if (str != null && !str.isEmpty() && !"null".equals(str)) {
+            townname.setText(str);
+        }
+        String meterUnit = map.get("meterUnitName");
+        if (meterUnit != null && !meterUnit.isEmpty()) {
+            //计量单位
+            meterunitname.setText(meterUnit);
+        }
         //单价
         price.setText(map.get("price"));
     }
 
-    /**
-     * 保存数据
-     */
-
-    String Number, OriginalNam;
 
     //身份验证
     private void proving() {
+        //身份证
         Number = newAddOriginalNumber.getText().toString();
+        //户主名字
         OriginalNam = newAddOriginalName.getText().toString();
-        if (Number.length() == 18 && !OriginalNam.isEmpty()) {
-            //验证身份证
-            mPresenter.validateHouseholder(orgId, Number, OriginalNam,
-                    new NewAddOriginalPresenter.OnClickListener() {
-                        @Override
-                        public void onsuccess(boolean lean) {
-                            //户主名称和身份证号码匹配
-                            if (lean) {
-                                save();
-                            } else {
-                                //身份证验证失败
-                                ToastUtlis.getInstance().showShortToast("省份证验证失败");
+        if (Number.length() == 18) {
+            if (!OriginalNam.isEmpty()) {
+                //验证身份证
+                mPresenter.validateHouseholder(orgId, Number, OriginalNam,
+                        new NewAddOriginalPresenter.OnClickListener() {
+                            @Override
+                            public void onsuccess(boolean lean) {
+                                //户主名称和身份证号码匹配
+                                if (lean) {
+                                    save();
+                                } else {
+                                    //身份证验证失败
+                                    ToastUtlis.getInstance().showShortToast("身份证验证失败");
+                                }
                             }
-                        }
-                    });
+                        });
+            } else {
+                ToastUtlis.getInstance().showShortToast("户主姓名称不能为空");
+            }
         } else {
-            ToastUtlis.getInstance().showShortToast("省份证和户主名字不能为空");
+            ToastUtlis.getInstance().showShortToast("身份证长度不对");
         }
     }
 
@@ -739,7 +784,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         //原始单号
         if (!newAddOriginalOriginalnumber.getText().toString().isEmpty()) {
             map.put("rawNumber", newAddOriginalOriginalnumber.getText().toString());
-            if (!CommandId.isEmpty()) {
+            if (CommandId != null) {
                 //指挥部
                 map.put("headquarter", CommandId);
                 if (ProjectId != null) {
@@ -760,39 +805,40 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                     //申请期数
                                     if (!newAddOriginalApplydateText.getText().toString().isEmpty()) {
                                         map.put("period", numberId);
-                                        //id 如果是new 就不传，否则反之
-                                        if ("old".equals(type)) {
-                                            map.put("Id", Id);
-                                        }
                                         //非必传
-                                        //单据编号 没有就不传
-                                        if (!originalDonumber.getText().toString().isEmpty()) {
-                                            //单据编号
-                                            map.put("number", originalDonumber.getText().toString());
-                                        }
-                                        if (!totalPrice.getText().toString().isEmpty()) {
-                                            //申报金额
-                                            map.put("totalPrice", totalPrice.getText().toString());
-                                        }
-                                        if (!newAddOriginalBeneficiary.getText().toString().isEmpty()) {
-                                            //受益人
-                                            map.put("beneficiary", newAddOriginalBeneficiary.getText().toString());
-                                        }
-                                        if (!remarks.getText().toString().isEmpty()) {
-                                            //备注否
-                                            map.put("remarks", remarks.getText().toString());
-                                        }
-
-                                        if (!newAddOriginalPhone.getText().toString().isEmpty()) {
-                                            //户主电话
-                                            map.put("householderPhone", CommandId);
-                                        }
+                                        //申报金额
+                                        map.put("totalPrice", totalPrice.getText().toString());
+                                        //受益人
+                                        map.put("beneficiary", newAddOriginalBeneficiary.getText().toString());
+                                        //备注否
+                                        map.put("remarks", remarks.getText().toString());
+                                        //户主电话
+                                        map.put("householderPhone", newAddOriginalPhone.getText().toString());
                                         if (deleteList.size() > 0) {
                                             String delete = BaseUtils.listToStrings(deleteList);
                                             map.put("ids", delete);
                                         }
                                         BaseDialogUtils.getDialog(mContext, "提交数据中", false);
-                                        mPresenter.save(map, pathlist);
+                                        if (copylean) {
+                                            //复制新增
+                                            ArrayList<ExamineBean> list = new ArrayList<>();
+                                            mPresenter.save(map, list);
+                                        } else {
+                                            //单据编号
+                                            map.put("number", originalDonumber.getText().toString());
+                                            //*****保存*****
+                                            //判读是新增保存还是修改保存
+                                            if (Id.length()>0) {
+                                                map.put("Id", Id);
+
+                                            }
+                                            mPresenter.save(map, pathlist);
+                                            //生成单据编号
+                                            String str = originalDonumber.getText().toString();
+                                            if (str.isEmpty()) {
+                                                createNumber(map);
+                                            }
+                                        }
                                     } else {
                                         ToastUtlis.getInstance().showShortToast("申报期数还未选择");
                                     }
@@ -819,8 +865,31 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
 
     }
+    /**
+     * 创建单据编号
+     *
+     * @param map
+     */
+    private void createNumber(Map<String, String> map) {
+        Map<String, String> create = new HashMap<>();
+        //遍历map中的值
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            //组织ID，分解标准ID，项目ID，指挥部ID
+            if ("orgId".equals(entry.getKey()) || "standardDetail".equals(entry.getKey()) || "project".equals(entry.getKey()) || "headquarter".equals(entry.getKey())) {
+                create.put(entry.getKey(), entry.getValue());
+            }
+        }
+        mPresenter.createnumber(create, new NewAddOriginalPresenter.OnClickListener1() {
+            @Override
+            public void onsuccess(String str) {
+                originalDonumber.setText(str);
+            }
+        });
+    }
 
-    //更新图片
+    /**
+     * 更新图片
+     */
     private void getupdata() {
         ArrayList list = new ArrayList();
         for (int i = 0; i < pathlist.size(); i++) {
@@ -829,7 +898,13 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         mPhotosAdapter.getData(list);
     }
 
-    //连续两次退出App
+    /**
+     * 返回键重写
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -854,4 +929,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
         return true;
     }
+
+
+
 }

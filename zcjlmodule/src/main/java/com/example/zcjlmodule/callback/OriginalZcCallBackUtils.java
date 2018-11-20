@@ -10,16 +10,13 @@ import java.util.Map;
  */
 
 public class OriginalZcCallBackUtils {
-    private static Callback mCallBack;
+    private static OriginalZcCallBack mCallBack;
 
-    public static void setCallBack(Callback callBack) {
+    public static void setCallBack(OriginalZcCallBack callBack) {
         mCallBack = callBack;
     }
 
-    public static void CallBack(String id, String name) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("orgId", id);
-        map.put("orgname", name);
-        mCallBack.callback(map);
+    public static void updata() {
+        mCallBack.updata();
     }
 }

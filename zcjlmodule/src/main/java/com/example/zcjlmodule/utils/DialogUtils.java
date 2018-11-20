@@ -52,7 +52,7 @@ public class DialogUtils {
                     onclick.openonclick("按区域查询");
 
                 } else if (i == R.id.pop_form_zc) {
-                    onclick.openonclick("按表单查询");
+                    onclick.openonclick("按表单号查询");
 
                 } else if (i == R.id.pop_details_zc) {
                     onclick.openonclick("按户主明细查询");

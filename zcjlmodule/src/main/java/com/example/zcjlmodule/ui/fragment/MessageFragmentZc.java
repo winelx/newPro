@@ -32,6 +32,7 @@ import measure.jjxx.com.baselibrary.ui.activity.PdfActivity;
 import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 import release.App;
 
 /**
@@ -45,10 +46,11 @@ import release.App;
 public class MessageFragmentZc extends BaseFragment {
     private View rootView;//界面控件
     private Context mContext;//上下文
-    private RecyclerView mRecyclerview;//列表控件
+    private EmptyRecyclerView mRecyclerview;//列表控件
     private List<MessageZcItem> mData;//数据
     private MessageAdapter mAdapter;//适配器
     private TakePictureManager takePictureManager;
+    private View EmptyView;
 
     @Nullable
     @Override
@@ -57,10 +59,10 @@ public class MessageFragmentZc extends BaseFragment {
         if (rootView == null) {
             mContext = getActivity();
             mData = new ArrayList<>();
-
             //初始化数据
-            setmData();
+        setmData();
             rootView = inflater.inflate(R.layout.fragment_message_zc, null);
+            EmptyView = rootView.findViewById(R.id.layout_emptyView);
             TextView toolbarTitle = rootView.findViewById(R.id.toolbar_title);
             toolbarTitle.setText("消息");
             mRecyclerview = rootView.findViewById(R.id.message_fragment_recyclerview);
@@ -139,7 +141,6 @@ public class MessageFragmentZc extends BaseFragment {
         }
         return rootView;
     }
-
 
     //recyclerview适配器
     public class MessageAdapter extends BaseQuickAdapter<MessageZcItem, BaseViewHolder> {

@@ -38,8 +38,6 @@ public class SdDismantlingModel {
             final ArrayList<SdDismantlingBean> list = new ArrayList();
             OkGo.get(Api.GETLEVYSTANDARD)
                     .params("orgId", orgId)
-                    .params("page", page)
-                    .params("size", 20)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
@@ -54,7 +52,7 @@ public class SdDismantlingModel {
                                         String number;
                                         try {
                                             //title
-                                            number = json.getString("name");
+                                            number = json.getString("number");
                                         } catch (Exception e) {
                                             number = "";
                                         }

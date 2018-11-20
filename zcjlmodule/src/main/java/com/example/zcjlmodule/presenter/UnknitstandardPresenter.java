@@ -18,9 +18,9 @@ import measure.jjxx.com.baselibrary.base.BasePresenters;
 public class UnknitstandardPresenter extends BasePresenters<UnknitstandardView> {
     private UnknitstandardModel.Model model;
 
-    public void getdata(String orgid, int page) {
+    public void getdata(String id, int page) {
         model = new UnknitstandardModel.UnknitstandardPresenterIpm();
-        model.getdata(orgid, page, new UnknitstandardModel.OnClicklister() {
+        model.getdata(id, page, new UnknitstandardModel.OnClicklister() {
             @Override
             public void onSuccess(ArrayList<UnknitstandardBean> list) {
                 mView.onSuccess(list);

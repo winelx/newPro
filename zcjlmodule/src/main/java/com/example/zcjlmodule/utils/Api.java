@@ -12,9 +12,9 @@ package com.example.zcjlmodule.utils;
 public class Api {
     // public static final String =networks+"";
     //马
-//  public static final String networks = "http://192.168.20.36:8082";
+// public static final String networks = "http://192.168.20.36:8082/dtjl";
     //测
- public static final String networks = "http://192.168.20.120:8082/dtjl";
+public static final String networks = "http://192.168.20.120:8082/dtjl";
     //郑
  //  public static final String networks = "http://192.168.20.40/dtjl/";
     /**
@@ -34,6 +34,9 @@ public class Api {
     public static final String CHANGEUSERORG = networks + "/iface/mobile/user/changeUserOrg";
     //获取组织树
     public static final String GETORGS = networks + "/iface/sys/org/getOrgs";
+    //组织
+    public static final String GETMENU = networks +  "/iface/mobile/taskmain/getMenu";
+
 
  /**
      * 支付清册
@@ -67,5 +70,8 @@ public class Api {
    public static final String SAVERAW=networks+"/iface/levy/saveRaw";
       //获取征拆部分初始化数据
    public static final String GETLEVYINITINFO=networks+"/iface/levy/getLevyInitInfo";
+   //生成原始勘丈表单据编号
+   public static final String CREATERAWBILLNUMBER=networks+"/iface/levy/createRawBillNumber";
+
 
 }

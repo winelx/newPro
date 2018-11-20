@@ -25,10 +25,9 @@
                 android:layout_weight="2"
                 android:drawableLeft="@mipmap/textdrawable_division"
                 android:gravity="center_vertical"
-
                 android:text="HIGLDS_GEDSGFG"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/standard_dismantiling_date"

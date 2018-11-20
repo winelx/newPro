@@ -1,7 +1,5 @@
 package com.example.zcjlmodule.model;
 
-import android.util.Log;
-
 import com.example.zcjlmodule.bean.UnknitstandardBean;
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
@@ -32,17 +30,16 @@ public class UnknitstandardModel {
     }
 
     public interface Model extends BaseView {
-        void getdata(String orgid, int page, OnClicklister onClicklister);
+        void getdata( String id, int page, OnClicklister onClicklister);
     }
 
     public static class UnknitstandardPresenterIpm implements Model {
 
         @Override
-        public void getdata(String orgid, int page, final OnClicklister onClicklister) {
+        public void getdata(String id, int page, final OnClicklister onClicklister) {
             final ArrayList<UnknitstandardBean> list = new ArrayList<>();
-            Log.i("ss",page+"");
-            OkGo.get(Api.GETLEVYSTANDARDDETAILS)
-                    .params("orgId", orgid)
+            OkGo.get(Api.GETLEVYSTANDARDDETAILSBYSTANDARD)
+                    .params("standardId", id)
                     .params("page", page)
                     .params("size", 20)
                     .execute(new StringCallback() {
@@ -67,7 +64,7 @@ public class UnknitstandardModel {
                                             //title
                                             String number;
                                             try {
-                                                number = json.getString("standardNumber");
+                                                number = json.getString("number");
                                             } catch (Exception e) {
                                                 number = "";
                                             }

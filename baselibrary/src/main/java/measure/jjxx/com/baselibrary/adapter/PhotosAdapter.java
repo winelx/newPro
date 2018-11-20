@@ -37,8 +37,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     final static int TYPE_PHOTO = 2;
     final static int MAX = 100;
     private boolean status = false;
-    private boolean lean=false;
-    public PhotosAdapter(Context mContext, ArrayList<String> photoPaths,boolean status) {
+    private boolean lean = false;
+
+    public PhotosAdapter(Context mContext, ArrayList<String> photoPaths, boolean status) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         this.status = status;
@@ -99,7 +100,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.addview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (lean){
+                    if (lean) {
                         // 1
                         int position = holder.getLayoutPosition();
                         // 2
@@ -110,15 +111,19 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             });
         }
     }
+
     @Override
     public int getItemCount() {
-        int count = photoPaths.size() + 1;
-        if (count > MAX) {
-            count = MAX;
+        if (lean) {
+            int count = photoPaths.size() + 1;
+            if (count > MAX) {
+                count = MAX;
+            }
+            return count;
+        } else {
+            return photoPaths.size();
         }
-        return count;
-    }
-
+}
     @Override
     public int getItemViewType(int position) {
         return (position == photoPaths.size() && position != MAX) ? TYPE_ADD : TYPE_PHOTO;
@@ -129,6 +134,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         private ImageView vSelected;
         private ImageView img_add;
         private SquareItemLayout addview;
+
         public PhotoViewHolder(View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_photo);
@@ -149,7 +155,9 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     public interface OnItemClickListener {
         void addlick(View view, int position);
-        void photoClick(View view,int position);
+
+        void photoClick(View view, int position);
+
         void deleteClick(View view, int position);
     }
 
@@ -163,6 +171,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         this.status = lean;
         notifyDataSetChanged();
     }
+
     public void addview(boolean lean) {
         this.lean = lean;
         notifyDataSetChanged();

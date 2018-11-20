@@ -35,7 +35,6 @@ import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
-import release.App;
 
 /**
  * description: 征拆标准
@@ -104,6 +103,12 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
         //是否启用列表惯性滑动到底部时自动加载更多
         refreshLayout.setEnableAutoLoadmore(false);
+        //是否启用下拉刷新功能
+        refreshLayout.setEnableRefresh(true);
+        //是否启用上拉加载功能
+        refreshLayout.setEnableLoadmore(false);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
         //当前所在的标段
         original_orgname.setText(SPUtils.getString(mContext, "orgName", ""));
     }
@@ -154,8 +159,8 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
                 int i = view.getId();
                 if (i == R.id.see_standard_dismantiling) {
                     Intent intent = new Intent(mContext, UnknitstandardActivity.class);
-                    intent.putExtra("filenumber", list.get(position).getFilenumber());
-                    intent.putExtra("orgId", orgId);
+                    intent.putExtra("filenumber", list.get(position).getNumber());
+                    intent.putExtra("id", list.get(position).getId());
                     startActivity(intent);
                 } else {
                 }

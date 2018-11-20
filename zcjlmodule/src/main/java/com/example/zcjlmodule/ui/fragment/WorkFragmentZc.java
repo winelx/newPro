@@ -14,6 +14,7 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.WorkFragmentAdapter;
 import com.example.zcjlmodule.bean.WorkItemZcBean;
 import com.example.zcjlmodule.bean.WorkZcBean;
+import com.example.zcjlmodule.utils.fragment.FragmentworkUtils;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,9 @@ import measure.jjxx.com.baselibrary.base.BaseFragment;
 
 /**
  * description:  征拆首页的工作界面
- *  这个界面使用了recyclerview的嵌套使用，使用了两层
- *  （承载界面HomeZcActivity）
+ * 这个界面使用了recyclerview的嵌套使用，使用了两层
+ * （承载界面HomeZcActivity）
+ *
  * @author lx
  *         date: 2018/10/10 0010 下午 2:59
  *         update: 2018/10/10 0010
@@ -34,6 +36,7 @@ public class WorkFragmentZc extends BaseFragment {
     private RecyclerView mRecycler;
     private WorkFragmentAdapter adapter;
     private ArrayList<WorkZcBean> mData;
+    private FragmentworkUtils utils;
 
     @Nullable
     @Override
@@ -42,11 +45,24 @@ public class WorkFragmentZc extends BaseFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_work_zc, null);
             initdata();
+            utils = new FragmentworkUtils();
+
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);
             }
         }
+        utils.getmenu(new FragmentworkUtils.Callback() {
+            @Override
+            public void onsuccess() {
+
+            }
+
+            @Override
+            public void onerror() {
+
+            }
+        });
         return rootView;
     }
 

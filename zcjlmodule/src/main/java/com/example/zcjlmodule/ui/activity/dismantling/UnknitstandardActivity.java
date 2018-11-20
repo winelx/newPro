@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.activity.dismantling;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -29,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
-import measure.jjxx.com.baselibrary.utils.SPUtils;
 
 /**
  * description: 标准分解
@@ -48,10 +48,11 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
     private TextView prompt, unknits_title;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
-    private int page = 1;
-    private String orgId;
+    private int page = 0;
+    private String orgId,id;
     private boolean status = true;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +69,11 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
         //刷新加载
         refresh();
         //标准编号
-        orgId=intent.getStringExtra("orgId");
+        id=intent.getStringExtra("id");
         unknits_title.setText("标准编号：" + intent.getStringExtra("filenumber"));
         list = new ArrayList<>();
         //网络请求
-        mPresenter.getdata(orgId, page);
+        mPresenter.getdata(id, page);
     }
 
     /**
@@ -84,10 +85,10 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                page = 1;
+                page = 0;
                 status = true;
                 //传入false表示刷新失败
-                mPresenter.getdata(orgId, page);
+                mPresenter.getdata(id, page);
             }
         });
         //上拉加载
@@ -96,10 +97,9 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
                 status = false;
-                mPresenter.getdata(orgId, page);
+                mPresenter.getdata(id, page);
             }
         });
-
     }
 
     /**
@@ -146,7 +146,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
     @Override
     public void onSuccess(ArrayList<UnknitstandardBean> data) {
         //判断加载页，判断是否删除之前的数据
-        if (page == 1) {
+        if (page == 0) {
             list.clear();
         }
         //将网络请求的数据添加到集合

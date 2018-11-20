@@ -49,7 +49,7 @@ public class OriginalModel {
                     .params("page", page)
                     .params("size", 20);
             //如果page ==1，就计算总金额
-            if (page == 1) {
+            if (page == 0) {
                 getrequest.params("isCount", true);
             }
             //如果map大于0，就将map传递（map的筛选类型）也坑可能没有值所以进行空异常处理
@@ -69,7 +69,7 @@ public class OriginalModel {
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
                             if (s.contains("data")) {
-                                if (page == 1) {
+                                if (page == 0) {
                                     JSONObject jsonObject1 = jsonObject.getJSONObject("extend");
                                     totalmoney = jsonObject1.getString("totalMoney");
                                 }

@@ -42,6 +42,7 @@ public class StandardDecomposeBean {
     private String createDate;
     private String delFlag;
     private String id;
+    private String levyTypeNameEn;
     private String levyType;
     private String levyTypeName;
     private String meterUnit;
@@ -252,6 +253,14 @@ public class StandardDecomposeBean {
         this.townName = townName;
     }
 
+    public String getLevyTypeNameEn() {
+        return levyTypeNameEn;
+    }
+
+    public void setLevyTypeNameEn(String levyTypeNameEn) {
+        this.levyTypeNameEn = levyTypeNameEn;
+    }
+
     @Override
     public String toString() {
         return
@@ -275,6 +284,7 @@ public class StandardDecomposeBean {
                         ",provinceName=" + provinceName +
                         ",remarks=" + remarks +
                         ",standardId=" + standardId +
+                        ",levyTypeNameEn=" + levyTypeNameEn +
                         ",standardName=" + standardName +
                         ",standardNumber=" + standardNumber +
                         ",status=" + status +
