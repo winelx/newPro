@@ -1,7 +1,6 @@
 package com.example.zcjlmodule.ui.activity.mine;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,13 +50,6 @@ public class UserOrgZcActivity extends BaseActivity {
         mContext = this;
         utils = new UserOrgZcUtils();
         mData = new ArrayList<>();
-        Intent intent = getIntent();
-        try {
-            status = intent.getIntExtra("status", 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         mTree = (ListView) findViewById(R.id.userorg_zc_list);
         linearLayout = (LinearLayout) findViewById(R.id.layout_emptyView);
         progressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);

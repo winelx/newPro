@@ -1,11 +1,15 @@
 package release;
 
+import android.util.Log;
+
+import com.example.zcjlmodule.BuildConfig;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import com.zxy.tiny.Tiny;
 
 import measure.jjxx.com.baselibrary.base.BaseApplication;
+import measure.jjxx.com.baselibrary.utils.LogUtil;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
@@ -16,19 +20,27 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 public class App extends BaseApplication {
     private static App instance;
+
     public static App getInstance() {
         return instance;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        instance=this;
+        instance = this;
         //图片压缩
         Tiny.getInstance().init(this);
         //提示框
         ToastUtlis.getInstance().init(this);
         //网络加载库
         OkGo.init(this);
+        //Log配置 根据运行的环境是debug还是打包，控制是否显示日志
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtil.init(true, Log.VERBOSE);
+        } else {
+            LogUtil.init(false);
+        }
         //网络加载库配置
         OkGo.getInstance()
                 //可以全局统一设置缓存模式,默认是不使用缓存,可以不传,具体其他模式看 github 介绍 https://github.com/jeasonlzy/

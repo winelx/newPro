@@ -195,7 +195,7 @@ public class OrganiwbsActivity extends Activity {
 
     private void initEvent(ArrayList<OrganizationEntity> organizationList) {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
-            @Override
+                @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
                 if (node.isLeaf()) {
                 } else {

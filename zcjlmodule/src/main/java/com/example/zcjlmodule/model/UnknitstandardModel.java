@@ -96,8 +96,15 @@ public class UnknitstandardModel {
                                             } catch (Exception e) {
                                                 countyName = "";
                                             }
+                                            //乡镇
+                                            String town;
+                                            try {
+                                                town = json.getString("townName");
+                                            } catch (Exception e) {
+                                                town = "";
+                                            }
                                             //行政区域
-                                            String loadpath = provinceName + cityName + countyName;
+                                            String loadpath = provinceName + cityName + countyName+town;
                                             //单价
                                             String price;
                                             try {
@@ -105,6 +112,7 @@ public class UnknitstandardModel {
                                             } catch (Exception e) {
                                                 price = "";
                                             }
+
                                             //补偿类型
                                             String compensateType;
                                             try {
@@ -112,7 +120,7 @@ public class UnknitstandardModel {
                                             } catch (Exception e) {
                                                 compensateType = "";
                                             }
-                                            list.add(new UnknitstandardBean(id,number,levyTypeName,loadpath,price,meterUnitName,compensateType));
+                                            list.add(new UnknitstandardBean(id,number,levyTypeName,loadpath,price,meterUnitName,compensateType,town));
                                         }
                                     }
                                 } else {

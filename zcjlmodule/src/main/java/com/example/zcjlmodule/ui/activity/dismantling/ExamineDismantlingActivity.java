@@ -70,8 +70,8 @@ public class ExamineDismantlingActivity extends BaseActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         //添加自定义分割线
-        DividerItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(this,R.drawable.custom_divider));
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divider));
         recyclerView.addItemDecoration(divider);
         recyclerView.setAdapter(mAdapter = new ExamineDismantlingAdapter(list, mContext));
         //请求图片
@@ -147,6 +147,7 @@ public class ExamineDismantlingActivity extends BaseActivity {
         examineCreatedate = (TextView) findViewById(R.id.examine_createDate);
         //标准编号
         examine_number = (TextView) findViewById(R.id.examine_number);
+
     }
 
     /**

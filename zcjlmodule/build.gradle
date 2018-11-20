@@ -20,7 +20,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            //显示日志
+            buildConfigField("boolean", "LOG_DEBUG", "true");
+            debuggable true
+        }
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

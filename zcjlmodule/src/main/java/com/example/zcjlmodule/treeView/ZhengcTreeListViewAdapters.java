@@ -33,7 +33,7 @@ public class ZhengcTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     }
 
     Boolean lean;
-
+    private int page = 0;
     @Override
     public View getConvertView(final Nodes node, final int position, View convertView,
                                ViewGroup parent) {
@@ -66,6 +66,10 @@ public class ZhengcTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
+                if (page == 0) {
+                    expandOrCollapse(position);
+                    page = 1;
+                }
             }
         });
         holder.mText.setText(node.getName());

@@ -13,7 +13,7 @@ public interface NewAddOriginalView  extends BaseView {
     /**
      * 请求成功
      */
-    void OnSuccess(String str);
+    void OnSuccess(String str,String number);
 
     /**
      * 请求失败

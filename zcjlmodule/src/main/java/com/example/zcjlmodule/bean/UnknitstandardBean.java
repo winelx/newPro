@@ -14,8 +14,9 @@ public class UnknitstandardBean {
     String price;
     String unit;
     String compensate;
+    String town;
 
-    public UnknitstandardBean(String id, String title, String type, String region, String price, String unit, String compensate) {
+    public UnknitstandardBean(String id, String title, String type, String region, String price, String unit, String compensate,String town) {
         this.id = id;
         this.title = title;
         this.type = type;
@@ -23,6 +24,7 @@ public class UnknitstandardBean {
         this.price = price;
         this.unit = unit;
         this.compensate = compensate;
+        this.town = town;
     }
 
     public String getId() {
@@ -79,5 +81,13 @@ public class UnknitstandardBean {
 
     public void setCompensate(String compensate) {
         this.compensate = compensate;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
     }
 }

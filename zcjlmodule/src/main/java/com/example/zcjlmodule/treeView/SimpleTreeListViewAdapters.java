@@ -19,11 +19,12 @@ import java.util.List;
 
 /**
  * description:切换组织界面的listview的适配器
+ *
  * @author lx
- * date: 2018/10/25 0025 上午 10:38
- * update: 2018/10/25 0025
- * version:
-*/
+ *         date: 2018/10/25 0025 上午 10:38
+ *         update: 2018/10/25 0025
+ *         version:
+ */
 public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public SimpleTreeListViewAdapters(ListView tree, Context context,
                                       List<T> datas, int defaultExpandLevel)
@@ -32,6 +33,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     }
 
     Boolean lean;
+    private int page = 0;
 
     @Override
     public View getConvertView(final Nodes node, final int position, View convertView,
@@ -61,20 +63,15 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.id_item_lin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (position==0){
                     if (node.getChildren().size() == 0) {
                         mian.getAdd(position, node);
+                    }
+                    if (page == 0) {
+                        expandOrCollapse(position);
+                        page = 1;
                     }
                     //打开两次，不然第二级无法打开
                     expandOrCollapse(position);
-                    expandOrCollapse(position);
-                }else {
-                    if (node.getChildren().size() == 0) {
-                        mian.getAdd(position, node);
-                    }
-                    expandOrCollapse(position);
-                }
-
             }
         });
         holder.mText.setText(node.getName());
@@ -82,7 +79,7 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View v) {
                 UserOrgZcActivity activity = (UserOrgZcActivity) mContext;
-                activity.member(node.getIds(), node.getName(),node.getType());
+                activity.member(node.getIds(), node.getName(), node.getType());
             }
         });
         return convertView;
@@ -100,10 +97,10 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
      * @param position
      * @param names
      */
-    public void addExtraNode(int position, String names, String ids, String pids,String type) {
+    public void addExtraNode(int position, String names, String ids, String pids, String type) {
         Nodes node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
-        Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids,type);
+        Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids, type);
         extraNode.setParent(node);
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);

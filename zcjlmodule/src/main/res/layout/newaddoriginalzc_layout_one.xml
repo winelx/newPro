@@ -232,7 +232,7 @@
             android:layout_marginLeft="7dp"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/warning_zc"
-            android:text="分解标准"
+            android:text="标准分解"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -264,10 +264,10 @@
         android:layout_height="1dp"
         android:background="@color/back" />
 
-    <LinearLayout
+     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="17dp"
         android:paddingRight="15dp">
 
@@ -284,8 +284,8 @@
             android:id="@+id/new_add_original_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_weight="7"
-            android:gravity="end"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>

@@ -96,7 +96,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     private TextView provincename, cityname, countyname, townname;
     //所属项目名称   所属标段名称  指挥部名称   征拆类型    单据编号
     private TextView newAddOriginalProjectname, newAddOriginalBidstext, newAddOriginalCommandtext, newAddOriginalCategory, originalDonumber;
-    //  申报期数  计量单位   总金额   单价  标准分解
+    // 申报期数  计量单位   总金额   单价  标准分解
     private TextView newAddOriginalApplydateText, meterunitname, totalPrice, price, standardDetailNumber;
     //原始单号 申报数量
     private EditText newAddOriginalOriginalnumber, declareNum, remarks;
@@ -122,6 +122,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
      * 保存数据
      */
     String Number, OriginalNam;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -666,9 +667,10 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
      * 网络请求成功
      */
     @Override
-    public void OnSuccess(String str) {
+    public void OnSuccess(String str, String number) {
         //关闭提示框
         BaseDialogUtils.dialog.dismiss();
+        originalDonumber.setText(number);
         //隐藏保存按钮，显示修改和复制新增
         hide();
         //当前界面数据发生改变，更新列表数据
@@ -711,7 +713,12 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         BaseDialogUtils.dialog.dismiss();
     }
 
-    //征拆类型返回
+    /**
+     * 征拆类型返回
+     *
+     * @param map
+     */
+
     @Override
     public void callback(Map<String, String> map) {
         //征拆类型
@@ -740,7 +747,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
     }
 
 
-    //身份验证
+    /**
+     * 身份验证
+     */
     private void proving() {
         //身份证
         Number = newAddOriginalNumber.getText().toString();
@@ -749,7 +758,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         if (Number.length() == 18) {
             if (!OriginalNam.isEmpty()) {
                 //验证身份证
-                mPresenter.validateHouseholder(orgId, Number, OriginalNam,
+                mPresenter.validateHouseholder(Id, orgId, Number, OriginalNam,
                         new NewAddOriginalPresenter.OnClickListener() {
                             @Override
                             public void onsuccess(boolean lean) {
@@ -758,7 +767,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                     save();
                                 } else {
                                     //身份证验证失败
-                                    ToastUtlis.getInstance().showShortToast("身份证验证失败");
+                                    ToastUtlis.getInstance().showShortToast("身份证已被使用");
                                 }
                             }
                         });
@@ -770,7 +779,9 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
     }
 
-    //保存
+    /**
+     * 保存
+     */
     public void save() {
         Map<String, String> map = new HashMap<>();
         //必须传
@@ -828,7 +839,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                             map.put("number", originalDonumber.getText().toString());
                                             //*****保存*****
                                             //判读是新增保存还是修改保存
-                                            if (Id.length()>0) {
+                                            if (Id.length() > 0) {
                                                 map.put("Id", Id);
 
                                             }
@@ -865,6 +876,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
 
     }
+
     /**
      * 创建单据编号
      *
@@ -929,7 +941,5 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
         }
         return true;
     }
-
-
 
 }

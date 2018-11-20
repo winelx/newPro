@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseView;
+import measure.jjxx.com.baselibrary.utils.LogUtil;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -41,7 +42,8 @@ public class NewAddOriginalModel {
          * 接口
          */
         interface OnClickListener {
-            void onComple(String str);
+            void onComple(String str,String number);
+
             void onError();
         }
     }
@@ -62,15 +64,16 @@ public class NewAddOriginalModel {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
                     try {
-                        Log.i("s",s);
+                        LogUtil.i("勘丈表", s);
                         JSONObject jsonObject = new JSONObject(s);
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
                             //保存成功返回单据Id
                             //将保存成功的返回的id传递传递给activity的id,（新的单据如果不返回id,请求图片时就id就为空）
-                            JSONObject data=jsonObject.getJSONObject("data");
-                            String id=data.getString("id");
-                            onClickListener.onComple(id);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            String id = data.getString("id");
+                            String number = data.getString("number");
+                            onClickListener.onComple(id,number);
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                             onClickListener.onError();

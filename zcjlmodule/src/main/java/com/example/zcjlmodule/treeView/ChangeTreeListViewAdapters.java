@@ -21,11 +21,12 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * description:需要变更组织
+ *
  * @author lx
- * date: 2018/10/25 0025 上午 10:38
- * update: 2018/10/25 0025
- * version:
-*/
+ *         date: 2018/10/25 0025 上午 10:38
+ *         update: 2018/10/25 0025
+ *         version:
+ */
 public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     public ChangeTreeListViewAdapters(ListView tree, Context context,
                                       List<T> datas, int defaultExpandLevel)
@@ -34,6 +35,7 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
     }
 
     Boolean lean;
+    private int page = 0;
 
     @Override
     public View getConvertView(final Nodes node, final int position, View convertView,
@@ -63,14 +65,14 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         holder.id_item_lin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              boolean ex=  node.isExpand();
-
+                boolean ex = node.isExpand();
                 if (node.getChildren().size() == 0) {
                     mian.getAdd(position, node);
                 }
                 expandOrCollapse(position);
-                if (position==0){
+                if (page == 0) {
                     expandOrCollapse(position);
+                    page = 1;
                 }
             }
         });
@@ -79,7 +81,7 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             @Override
             public void onClick(View v) {
                 ChangeorganizeZcActivity activity = (ChangeorganizeZcActivity) mContext;
-                activity.member(node.getIds(), node.getName(),node.getType());
+                activity.member(node.getIds(), node.getName(), node.getType());
             }
         });
         return convertView;
@@ -97,10 +99,10 @@ public class ChangeTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
      * @param position
      * @param names
      */
-    public void addExtraNode(int position, String names, String ids, String pids,String type) {
+    public void addExtraNode(int position, String names, String ids, String pids, String type) {
         Nodes node = mVisibleNodes.get(position);
         int indexOf = mAllNodes.indexOf(node);
-        Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids,type);
+        Nodes extraNode = new Nodes(position, node.getId(), names, ids, pids, type);
         extraNode.setParent(node);
         node.getChildren().add(extraNode);
         mAllNodes.add(indexOf + 1, extraNode);

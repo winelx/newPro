@@ -230,9 +230,10 @@ public class TabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //重新加载数据，
-        i = 1;
-        okgo(ids.get(pos), i);
+            ToastUtils.showLongToast("ss");
+            //重新加载数据，
+            i = 1;
+            okgo(ids.get(pos), i);
     }
 
     @Override

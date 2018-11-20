@@ -64,7 +64,7 @@ public class ChangeorganizeZcActivity extends BaseActivity {
                 finish();
             }
         });
-        utils.getuserorg(new UserOrgZcUtils.OnClickListener() {
+        utils.getOrgs(new UserOrgZcUtils.OnClickListener() {
             @Override
             public void onClick(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();

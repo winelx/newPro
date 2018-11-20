@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.presenter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import java.util.regex.Pattern;
 
 import measure.jjxx.com.baselibrary.base.BasePresenters;
 import measure.jjxx.com.baselibrary.bean.ExamineBean;
+import measure.jjxx.com.baselibrary.utils.LogUtil;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,8 +52,8 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
         }
         model.getData(map, file, new NewAddOriginalModel.Model.OnClickListener() {
             @Override
-            public void onComple(String str) {
-                mView.OnSuccess(str);
+            public void onComple(String str, String number) {
+                mView.OnSuccess(str, number);
             }
 
             @Override
@@ -111,36 +113,46 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
     /**
      * 身份认证
      *
-     * @param orgId
-     * @param cardId
+     * @param id
+     * @param Number
      * @param householder
      * @param listener
      */
-    public void validateHouseholder(String orgId, String cardId, String householder, final OnClickListener listener) {
-        OkGo.get(Api.VALIDATEHOUSEHOLDER)
+    public void validateHouseholder(String id, String orgId, String Number, String householder, final OnClickListener listener) {
+        GetRequest reuqest = OkGo.get(Api.VALIDATEHOUSEHOLDER)
                 .params("orgId", orgId)
-                .params("idCard", cardId)
-                .params("householder", householder)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            if (jsonObject.getInt("ret") == 0) {
-                                listener.onsuccess(true);
-                            } else {
-                                listener.onsuccess(false);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                .params("idCard", Number)
+                .params("householder", householder);
+        if (id != null && !TextUtils.isEmpty(id)) {
+            reuqest.params("id", id);
+        }
+        reuqest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                LogUtil.i("ces", s);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
+                    if (jsonObject.getInt("ret") == 0) {
+                        String data = jsonObject.getString("data");
+                        if ("false".equals(data)) {
+                            listener.onsuccess(true);
+                        } else {
+                            listener.onsuccess(false);
+                        }
+                    } else {
+                        listener.onsuccess(true);
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+        });
     }
 
     /**
@@ -169,6 +181,7 @@ public class NewAddOriginalPresenter extends BasePresenters<NewAddOriginalView> 
                 }
 
             }
+
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
