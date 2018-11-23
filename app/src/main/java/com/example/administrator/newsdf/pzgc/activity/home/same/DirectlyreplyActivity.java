@@ -81,10 +81,10 @@ public class DirectlyreplyActivity extends AppCompatActivity {
     private ArrayList<File> files;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repley_address, wbs_text, title;
+    private TextView repleyAddress, wbsText, title;
     private LinearLayout com_button;
     private String Latitude, Longitude, activity;
-    private EditText reply_text, partContent;
+    private EditText replyText, partContent;
     private Context mContext;
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
@@ -152,9 +152,9 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         //图片
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
         //地址
-        repley_address = (TextView) findViewById(R.id.repley_address);
+        repleyAddress = (TextView) findViewById(R.id.repley_address);
         //输入内容
-        reply_text = (EditText) findViewById(R.id.reply_text);
+        replyText = (EditText) findViewById(R.id.reply_text);
         //提交
         com_button = (LinearLayout) findViewById(reply_button);
         //返回
@@ -171,7 +171,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 files = new ArrayList<File>();
-                String content = reply_text.getText().toString();
+                String content = replyText.getText().toString();
                 for (int i = 0; i < imagePaths.size(); i++) {
                     files.add(new File(imagePaths.get(i)));
                 }
@@ -231,7 +231,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
         OkGo.post(Requests.Uploade)
                 .isMultipart(true)
                 .params("id", id)
-                .params("uploadContent", reply_text.getText().toString())
+                .params("uploadContent", replyText.getText().toString())
                 .params("latitude", Latitude)
                 .params("longitude", Longitude)
                 .params("partContent", partContent.getText().toString())
@@ -388,7 +388,7 @@ public class DirectlyreplyActivity extends AppCompatActivity {
                 Longitude = location.getLongitude() + "";
                 // 地址信息
                 Bai_address = location.getAddrStr();
-                repley_address.setText(location.getAddrStr());
+                repleyAddress.setText(location.getAddrStr());
                 ((App) getApplication()).locationService.stop();// 定位SDK
             }
         }

@@ -23,6 +23,7 @@ import measure.jjxx.com.baselibrary.base.Bean;
  * @email a876459952@qq.com .<br>
  * @date 2018-11-7 下午4:09:55.<br>
  * @version V1.0.<br>
+ *     解析json
  */
 public class ListJsonUtils {
 

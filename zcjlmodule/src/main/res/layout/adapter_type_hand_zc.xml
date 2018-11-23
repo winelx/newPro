@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="24.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/graytext" />
+
+    <TextView
+        android:id="@+id/zc_textview4"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/recyclerview_item_hollow_radius" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/zc_textview4"
+        android:layout_alignBottom="@+id/zc_textview4"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/zc_textview4"
+        android:layout_toRightOf="@+id/zc_textview4"
+        android:text="开始"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimens_16" />
+
+</RelativeLayout>

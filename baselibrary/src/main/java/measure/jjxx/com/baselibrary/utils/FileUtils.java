@@ -21,7 +21,7 @@ import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 /**
  * @author lx
  * @Created by: 2018/11/14 0014.
- * @description:
+ * @description: 文件操作类
  */
 
 public class FileUtils {

@@ -80,18 +80,7 @@ public class ChoiceBidsZcActivity extends BaseActivity implements View.OnClickLi
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.custom_divider));
         recycler.addItemDecoration(divider);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler.setAdapter(mAdapter = new AttachProjectAdapter(R.layout.adapter_choiceproject_zc, list));
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent();
-                // 获取用户计算后的结果
-                intent.putExtra("name", list.get(position).getName());
-                intent.putExtra("id", list.get(position).getId());
-                setResult(103, intent);
-                finish(); //结束当前的activity的生命周期
-            }
-        });
+        recycler.setAdapter(mAdapter = new AttachProjectAdapter(R.layout.adapter_havedone, list));
         httprequest();
         //  下拉刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {

@@ -76,7 +76,6 @@ public class MoreTaskDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
         if (holder instanceof MoreTaskDataAdapter.HeadHolder) {
             // 头部
             MoreTaskDataAdapter.HeadHolder myHolders = (MoreTaskDataAdapter.HeadHolder) holder;

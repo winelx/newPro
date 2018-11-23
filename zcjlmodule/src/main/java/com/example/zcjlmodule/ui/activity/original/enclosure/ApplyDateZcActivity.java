@@ -78,7 +78,7 @@ public class ApplyDateZcActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("选择期数");
-     RecyclerView recycler = (RecyclerView) findViewById(R.id.attachproject_recycler);
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.attachproject_recycler);
         DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.custom_divider));
         recycler.addItemDecoration(divider);

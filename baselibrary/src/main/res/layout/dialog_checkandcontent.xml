@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/codeplay_status_true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:checked="false"
+            android:paddingLeft="10dp"
+            android:text="通过"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+
+            android:theme="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/codeplay_status_false"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="false"
+            android:paddingLeft="10dp"
+            android:text="不通过"
+
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:theme="@style/RadioButton" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/dialog_editext_content"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/editext_input_style"
+        android:gravity="start"
+        android:hint="审批通过"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/graytext"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_cancel"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/graytext2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/dialog_ascertain"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_marginLeft="55dp"
+            android:text="确定"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assembly_org_switch"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
+        android:background="@color/bg_white"
+        android:gravity="center_vertical"
+        android:padding="0dp"
+        android:paddingLeft="@dimen/dimens_20"
+        android:text="组织结构"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16" />
+
+
+    <TextView
+        android:id="@+id/assembly_orgname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dimens_15"
+        android:layout_marginRight="0dp"
+        android:layout_weight="1"
+        android:background="@color/bg_white"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxEms="10"
+        android:maxLines="1"
+        android:padding="0dp"
+        android:text="车道上的说法车道上的说法车道上的说法"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16"
+        tools:ignore="DuplicateIds" />
+
+    <ImageView
+        android:layout_width="2dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_weight="0.5"
+        android:background="@mipmap/zc_right"
+        android:paddingRight="15dp" />
+</LinearLayout>

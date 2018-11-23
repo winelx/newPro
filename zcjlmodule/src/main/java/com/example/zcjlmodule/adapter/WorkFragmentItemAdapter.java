@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.WorkItemZcBean;
+import com.example.zcjlmodule.ui.activity.approval.CapitalApprovalZcActivity;
 import com.example.zcjlmodule.ui.activity.original.OriginalZcActivity;
 import com.example.zcjlmodule.ui.activity.paydetail.PayDetailedlistZcActivity;
 import com.example.zcjlmodule.ui.activity.dismantling.StandardDismantlingZcActivity;
@@ -69,6 +70,7 @@ public class WorkFragmentItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                         break;
                     case "资金申请单":
                         ToastUtlis.getInstance().showShortToast("资金申请单");
+                        mContext.startActivity(new Intent(mContext,CapitalApprovalZcActivity.class));
                         break;
                     case "资金审批单":
                         ToastUtlis.getInstance().showShortToast("资金审批单");

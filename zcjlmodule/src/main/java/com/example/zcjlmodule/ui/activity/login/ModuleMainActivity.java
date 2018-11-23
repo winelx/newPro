@@ -3,17 +3,18 @@ package com.example.zcjlmodule.ui.activity.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.ModuleMainPresenter;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
+
 import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
@@ -51,7 +52,7 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
 
     //初始化参数
     private void initViews() {
-        mainbackground= (LinearLayout) findViewById(R.id.main_background);
+        mainbackground = (LinearLayout) findViewById(R.id.main_background);
         edtAccount = (EditText) findViewById(R.id.edt_account);
         edtPassword = (EditText) findViewById(R.id.edt_password);
         btnLogin = (Button) findViewById(R.id.btn_login);
@@ -63,7 +64,7 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_login:
                 baseUtils.hidekeyboard(this,edtAccount);
                 BaseDialogUtils.getDialog(this, "登录中..", false);
@@ -79,9 +80,10 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
                 }
                 break;
             case R.id.main_background:
-                baseUtils.hidekeyboard(this,edtAccount);
+                baseUtils.hidekeyboard(this, edtAccount);
                 break;
-            default:break;
+            default:
+                break;
         }
 
     }
@@ -101,12 +103,12 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-                getSupportFragmentManager().popBackStack();
-                Intent MyIntent = new Intent(Intent.ACTION_MAIN);
-                MyIntent.addCategory(Intent.CATEGORY_HOME);
-                startActivity(MyIntent);
-                android.os.Process.killProcess(android.os.Process.myPid());
-                finish();
+            getSupportFragmentManager().popBackStack();
+            Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+            MyIntent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(MyIntent);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            finish();
             return true;
         }
         return true;

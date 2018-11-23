@@ -38,11 +38,16 @@
         <item name="android:textColorPrimary">@android:color/primary_text_light</item>
         <item name="actionBarSize">@dimen/actionBarSize</item>
     </style>
-
+    <!--可拖动小红点（类似qq消息提示）-->
     <style name="customTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="actionBarTheme">@style/actionBarTheme</item>
         <item name="colorPrimary">#FFA500</item>
         <item name="actionBarSize">@dimen/actionBarSize</item>
         <item name="colorPrimaryDark">#CCa500</item>
+    </style>
+    <!--审核的单选-->
+    <style name="RadioButton" parent="Theme.AppCompat.Light">
+    <item name="colorControlNormal">@color/back</item>
+    <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 </resources>

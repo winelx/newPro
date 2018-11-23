@@ -79,6 +79,10 @@
             android:name=".ui.activity.dismantling.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activity.apply.HeadquartersZcActivity"/>
+        <activity android:name=".ui.activity.apply.ApplyActivityZc"/>
+        <activity android:name=".ui.activity.approval.CapitalApprovalZcActivity"/>
+        <activity android:name=".ui.activity.approval.ApprovalZcActivity"/>
     </application>
 
 </manifest>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,6 @@ import com.example.zcjlmodule.utils.fragment.FragmentworkUtils;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
-import measure.jjxx.com.baselibrary.utils.LogUtil;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 
 /**
  * description:  征拆首页的工作界面

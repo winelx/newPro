@@ -10,9 +10,13 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import measure.jjxx.com.baselibrary.R;
+import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
+import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
 
 /**
@@ -21,6 +25,7 @@ import measure.jjxx.com.baselibrary.R;
 public class BaseDialogUtils {
     public static Dialog dialog;
     public static AlertDialog alertdialog;
+    private static String status;
 
     /**
      * @param mContext 上下文
@@ -28,9 +33,13 @@ public class BaseDialogUtils {
      * @param status   是否允许点击外部消失
      */
     public static void getDialog(Context mContext, String str, boolean status) {
+        //设置样式
         dialog = new Dialog(mContext, R.style.progress_dialog);
+        //设置布局
         dialog.setContentView(R.layout.base_waiting_dialog);
+        //是否允许点击返回键或者提示框外部取消
         dialog.setCanceledOnTouchOutside(status);
+        //设置dialog弹出时背景颜色
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         TextView text = (TextView) dialog.findViewById(R.id.id_tv_loadingmsg);
         text.setText(str);
@@ -42,7 +51,6 @@ public class BaseDialogUtils {
      *
      * @param mContext
      * @param str
-     * @param status
      */
     public static void getprompt(Context mContext, String str, final onclicktlister onclicktlister) {
         alertdialog = new AlertDialog.Builder(mContext).setMessage(str).
@@ -92,9 +100,70 @@ public class BaseDialogUtils {
         builder.show();
     }
 
+    /**
+     * 接口
+     */
     public interface onclicktlister {
         void onsuccess();
 
         void onerror();
+    }
+
+
+    public static void checkandcontent(Context mContext, final dialogonclick dialogonclick) {
+        status = null;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = View.inflate(mContext, R.layout.dialog_checkandcontent, null);
+        final RadioButton codeplay_status_true = view.findViewById(R.id.codeplay_status_true);
+        final RadioButton codeplay_status_false = view.findViewById(R.id.codeplay_status_false);
+        final EditText dialog_editext_content = view.findViewById(R.id.dialog_editext_content);
+        TextView dialog_cancel = view.findViewById(R.id.dialog_cancel);
+        TextView dialog_ascertain = view.findViewById(R.id.dialog_ascertain);
+        builder.setView(view);
+        builder.setCancelable(true);
+        //取消或确定按钮监听事件处理
+        final AlertDialog alertdialog = builder.create();
+        //通过
+        codeplay_status_true.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codeplay_status_false.setChecked(false);
+                status = "true";
+            }
+        });
+        //不通过
+        codeplay_status_false.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codeplay_status_true.setChecked(false);
+                status = "false";
+            }
+        });
+        //取消
+        dialog_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertdialog.dismiss();
+            }
+        });
+        //确定
+        dialog_ascertain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (status != null) {
+                    dialogonclick.onsuccess(status, dialog_editext_content.getText().toString());
+                    alertdialog.dismiss();
+                } else {
+                    TopSnackBar.make(codeplay_status_true, "请选择是否通过", BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        alertdialog.show();
+
+    }
+
+    public interface dialogonclick {
+        void onsuccess(String status, String content);
     }
 }

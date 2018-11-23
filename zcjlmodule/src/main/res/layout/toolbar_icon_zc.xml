@@ -31,7 +31,10 @@
             android:id="@+id/toolbar_icon_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2121212"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:maxLines="1"
+            android:text="21221221111111111111111121"
             android:textColor="@color/bg_white"
             android:textSize="20sp" />
     </LinearLayout>
