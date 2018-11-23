@@ -83,7 +83,7 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
                 Intent intent = new Intent(mContext, ApplyActivityZc.class);
                 intent.putExtra("status","false");
                 intent.putExtra("orgname",assemblyOrgname.getText().toString());
-                startActivity(intent);
+                intent.putExtra("orgId",orgId);
             }
         });
     }

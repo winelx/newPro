@@ -80,7 +80,8 @@ public class CapitalApplyFFragment extends LazyloadFragment implements View.OnCl
                 ToastUtlis.getInstance().showShortToast(""+position);
                 Intent intent = new Intent(mContext, ApplyActivityZc.class);
                 intent.putExtra("status","false");
-                startActivity(intent);
+                intent.putExtra("orgname",assemblyOrgname.getText().toString());
+                intent.putExtra("orgId",orgId);
             }
         });
     }

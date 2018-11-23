@@ -82,6 +82,7 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
                 Intent intent = new Intent(mContext, ApplyActivityZc.class);
                 intent.putExtra("status","false");
                 intent.putExtra("orgname",assemblyOrgname.getText().toString());
+                intent.putExtra("orgId",orgId);
                 startActivity(intent);
             }
         });
