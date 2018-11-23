@@ -44,7 +44,7 @@ public class OriginalModel {
 
 
     public static class OriginalModelPml implements Model {
-        String totalmoney;
+        String totalmoney=null;
 
         @Override
         public void getdata(String orgId, final int page, Map<String, String> map, final OnClicklister listener) {
@@ -80,11 +80,14 @@ public class OriginalModel {
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                                     list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
                                 }
+                                listener.onSuccess(list, TextUtils.bigdecimal(totalmoney));
+                            }else {
+                                listener.onError();
                             }
                         } else {
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
+                            listener.onError();
                         }
-                        listener.onSuccess(list, TextUtils.bigdecimal(totalmoney));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {

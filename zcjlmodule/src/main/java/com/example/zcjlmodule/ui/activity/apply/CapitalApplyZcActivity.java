@@ -1,4 +1,4 @@
-package com.example.zcjlmodule.ui.activity.approval;
+package com.example.zcjlmodule.ui.activity.apply;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.FmPagerAdapter;
-import com.example.zcjlmodule.ui.fragment.approval.CapitalApprovalFFragment;
-import com.example.zcjlmodule.ui.fragment.approval.CapitalApprovalTFragment;
+import com.example.zcjlmodule.ui.fragment.apply.CapitalApplyFFragment;
+import com.example.zcjlmodule.ui.fragment.apply.CapitalApplyTFragment;
 
 import java.util.ArrayList;
 
@@ -21,11 +21,11 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
 
 /**
  * @author lx
- * @Created by: 2018/11/23 0023.
- * @description:
+ * @Created by: 2018/11/22 0022.
+ * @description:资金申请单
  */
 
-public class CapitalApprovalZcActivity extends BaseActivity implements View.OnClickListener {
+public class CapitalApplyZcActivity extends BaseActivity implements View.OnClickListener {
     private String[] titles = {"未审批", "已审批"};
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -39,16 +39,15 @@ public class CapitalApprovalZcActivity extends BaseActivity implements View.OnCl
         baseUtils = new BaseUtils();
         mContext = this;
         setContentView(R.layout.activity_capital_approval_zc);
-        TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
-        title.setText("征地拆迁资金拨付审批单");
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
+        TextView  title = (TextView) findViewById(R.id.toolbar_icon_title);
+        title.setText("征地拆迁资金拨付申请单");
         tabLayout = (TabLayout) findViewById(R.id.capital_tablayout);
         viewPager = (ViewPager) findViewById(R.id.capital_viewpager);
         //设置tablyout分割线
         baseUtils.addtabpaddingdivider(tabLayout, mContext);
-        fragments.add(new CapitalApprovalFFragment());
-        fragments.add(new CapitalApprovalTFragment());
-
+        fragments.add(new CapitalApplyFFragment());
+        fragments.add(new CapitalApplyTFragment());
         //viewpager传递数据
         viewPager.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
         //绑定viewpager和tablayout，

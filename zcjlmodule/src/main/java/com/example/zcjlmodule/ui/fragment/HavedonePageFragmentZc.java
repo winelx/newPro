@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,8 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.HavedonePageFragmentAdapter;
+import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+import com.example.zcjlmodule.ui.activity.approval.ApprovalZcActivity;
 import com.example.zcjlmodule.utils.fragment.ApprovalFragmentUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -71,7 +74,8 @@ public class HavedonePageFragmentZc extends LazyloadFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Intent intent = new Intent(context, ApprovalZcActivity.class);
+                startActivity(intent);
             }
         });
         emptyView.setVisibility(View.GONE);

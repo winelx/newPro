@@ -78,7 +78,7 @@ public class HomeZcActivity extends BaseActivity {
             mTabHost.addTab(tabSpec, tab.getFragemnt(), null);
         }
         //设置分割线
-        mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_BEGINNING);
+        mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         //设置默认打开的界面
         mTabHost.setCurrentTab(0);
     }

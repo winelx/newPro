@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.apply;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.FmPagerAdapter;
+import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcjlmodule.ui.fragment.apply.AccumulativeApplyFragment;
 import com.example.zcjlmodule.ui.fragment.apply.CurrentApplyFragment;
 import com.example.zcjlmodule.ui.fragment.apply.ProcedureApplyFragment;
@@ -29,17 +31,26 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
 public class ApplyActivityZc extends BaseActivity implements View.OnClickListener {
     private TabLayout mTabLayout;
     private BaseUtils baseUtils;
-    private Context mContext;
+
     private TextView toolbarIconTitle;
     private LinearLayout toolbarIconBack;
     private ViewPager v_selected;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] titles = {"本期", "累计", "流程"};
-
+    private String status=null;
+    private static ApplyActivityZc mContext;
+    public static ApplyActivityZc getInstance() {
+        return mContext;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
+        Intent intent = getIntent();
+        try {
+            status = intent.getStringExtra("status");
+        } catch (Exception e) {
+        }
         //帮助类
         baseUtils = new BaseUtils();
         //上下文
@@ -94,6 +105,8 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
         }
     }
 
-
+    public String getstatus() {
+        return status;
+    }
 
 }

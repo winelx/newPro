@@ -58,7 +58,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
-
+        <activity
+            android:name=".ui.activity.dismantling.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme" />
         <activity android:name=".ui.activity.original.OriginalZcActivity" />
         <activity android:name=".ui.activity.original.PeriodsQueryZcActivity" />
         <activity android:name=".ui.activity.original.NewAddOriginalZcActivity" />
@@ -75,14 +78,12 @@
         <activity android:name=".ui.activity.mine.PasswordActivity" />
         <activity android:name=".ui.activity.mine.UserOrgZcActivity" />
         <activity android:name=".ui.activity.mine.ChangeorganizeZcActivity" />
-        <activity
-            android:name=".ui.activity.dismantling.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ui.activity.apply.HeadquartersZcActivity"/>
-        <activity android:name=".ui.activity.apply.ApplyActivityZc"/>
-        <activity android:name=".ui.activity.approval.CapitalApprovalZcActivity"/>
-        <activity android:name=".ui.activity.approval.ApprovalZcActivity"/>
+        <activity android:name=".ui.activity.apply.ApplyHeadquartersZcActivity" />
+        <activity android:name=".ui.activity.apply.ApplyActivityZc" />
+        <activity android:name=".ui.activity.apply.CapitalApplyZcActivity" />
+        <activity android:name=".ui.activity.approval.ApprovalZcActivity" />
+        <activity android:name=".ui.activity.approval.CapitalApprovalZcActivity" />
+        <activity android:name=".ui.activity.approval.ApprovalHeadquartersZcActivity" />
     </application>
 
 </manifest>

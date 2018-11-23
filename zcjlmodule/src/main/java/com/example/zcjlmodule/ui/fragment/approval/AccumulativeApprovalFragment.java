@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.AccumulativePageAdapter;
-import com.example.zcjlmodule.ui.activity.apply.HeadquartersZcActivity;
+import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class AccumulativeApprovalFragment extends LazyloadFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, HeadquartersZcActivity.class);
+                Intent intent = new Intent(context, ApplyHeadquartersZcActivity.class);
                 startActivity(intent);
             }
         });

@@ -49,7 +49,7 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(false);
         //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         emptyRecyclerView.setEmptyView(emptyView);

@@ -95,7 +95,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         dimension = ScreenUtil.getDensity(mContext);
         mPresenter = new OriginalPresenter();
         mPresenter.mView = this;
-        //调加
+        //填加
         AddData = (ImageView) findViewById(R.id.original_add);
         AddData.setOnClickListener(this);
         if (SPUtils.getString(mContext, "orgType", null).contains("4")) {
@@ -211,6 +211,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             finish();
         } else if (i == R.id.original_org) {
             Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+            intent.putExtra("type","true");
             startActivity(intent);
         } else if (i == R.id.original_add) {
             Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);

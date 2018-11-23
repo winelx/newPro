@@ -84,6 +84,7 @@ public class StandardDismantlingZcActivity extends BaseMvpActivity<SdDismantling
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+                intent.putExtra("type","true");
                 startActivity(intent);
             }
         });

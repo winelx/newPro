@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.CurrentPageFragmentAdapter;
-import com.example.zcjlmodule.ui.activity.apply.HeadquartersZcActivity;
+import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
 
     @Override
     protected void init() {
-        context = getActivity();
+        context = ApplyActivityZc.getInstance();
+        ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
+        String str = applyActivityZc.getstatus();
         list = new ArrayList<>();
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
@@ -52,6 +55,9 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         //审批
         pageApplyExamine = rootView.findViewById(R.id.page_apply_examine);
         pageApplyExamine.setOnClickListener(this);
+        if (str != null) {
+            pageApplyExamine.setVisibility(View.GONE);
+        }
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
         //是否启用上拉加载功能
@@ -73,7 +79,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, HeadquartersZcActivity.class);
+                Intent intent = new Intent(context, ApplyHeadquartersZcActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,6 +90,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
      */
     @Override
     protected void lazyLoad() {
+
         for (int i = 0; i < 10; i++) {
             list.add("测试数据");
         }

@@ -25,12 +25,12 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
 /**
- * description: 资金申请单
+ * description: 资金申请单指挥部
  *
  * @author lx
  *         date: 2018/11/21 0021 下午 2:
  */
-public class HeadquartersZcActivity extends BaseActivity implements View.OnClickListener {
+public class ApplyHeadquartersZcActivity extends BaseActivity implements View.OnClickListener {
     private TextView title;
     private SmartRefreshLayout refreshLayout;
     private EmptyRecyclerView recyclerView;

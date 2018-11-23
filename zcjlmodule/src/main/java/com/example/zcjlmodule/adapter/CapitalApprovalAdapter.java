@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public class CapitalApprovalAdapter extends BaseQuickAdapter<String, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-
+    helper.setText(R.id.adapter_capital_data,item);
     }
 }

@@ -153,6 +153,7 @@ public class PayDetailedlistZcActivity extends BaseMvpActivity<DetailedlistPrese
             finish();
         } else if (i == R.id.detailedlist_project) {
             Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+            intent.putExtra("type","true");
             startActivity(intent);
         } else {
 

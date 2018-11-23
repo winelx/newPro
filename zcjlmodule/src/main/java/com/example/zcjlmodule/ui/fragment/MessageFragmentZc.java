@@ -19,6 +19,7 @@ import com.example.zcjlmodule.adapter.FmPagerAdapter;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.BaseFragment;
+import measure.jjxx.com.baselibrary.utils.LogUtil;
 
 /**
  * description: 征拆首页的消息界面
@@ -33,8 +34,8 @@ public class MessageFragmentZc extends BaseFragment implements View.OnClickListe
     private View rootView;
     //上下文
     private Context mContext;
-    private TextView toolbar_title, fragmentessageagency, fragmentmessagehavedone;
-    private RelativeLayout fragment_messag_lin;
+    private TextView toolbarTitle, fragmentessageagency, fragmentmessagehavedone;
+    private RelativeLayout fragmentMessagLin;
     private ViewPager viewpager;
     private ArrayList<Fragment> fragments = new ArrayList<>();
 
@@ -61,15 +62,15 @@ public class MessageFragmentZc extends BaseFragment implements View.OnClickListe
     @SuppressLint("WrongViewCast")
     private void init() {
         mContext = getActivity();
-        toolbar_title = rootView.findViewById(R.id.toolbar_title);
-        toolbar_title.setText("消息");
+        toolbarTitle = rootView.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText("消息");
         //viewpager
         viewpager = rootView.findViewById(R.id.viewpager);
         //缓存两个界面
         viewpager.setOffscreenPageLimit(2);
         //代办父布局
-        fragment_messag_lin = rootView.findViewById(R.id.fragment_messag_lin);
-        fragment_messag_lin.setOnClickListener(this);
+        fragmentMessagLin = rootView.findViewById(R.id.fragment_messag_lin);
+        fragmentMessagLin.setOnClickListener(this);
         //已办
         fragmentmessagehavedone = rootView.findViewById(R.id.fragment_message_havedone);
         fragmentmessagehavedone.setOnClickListener(this);
@@ -94,6 +95,7 @@ public class MessageFragmentZc extends BaseFragment implements View.OnClickListe
                     currentPosition = position;
                 } else if (position < currentPosition) {
                     //左滑
+                    LogUtil.i("viewpger", position);
                     currentPosition = position;
                 }
             }

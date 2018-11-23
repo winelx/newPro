@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.callback.CapitalBackUtils;
 import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
 import com.example.zcjlmodule.treeView.ChangeTreeListViewAdapters;
 import com.example.zcjlmodule.treeView.bean.OrgBeans;
@@ -37,7 +38,7 @@ public class ChangeorganizeZcActivity extends BaseActivity {
     private Context mContext;
     private List<OrgenBeans> mData;
     private ChangeTreeListViewAdapters mAdapter;
-    private int status = 0;
+    private String status = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class ChangeorganizeZcActivity extends BaseActivity {
         mData = new ArrayList<>();
         Intent intent = getIntent();
         try {
-            status = intent.getIntExtra("status", 0);
+            status = intent.getStringExtra("type");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +113,11 @@ public class ChangeorganizeZcActivity extends BaseActivity {
      */
     public void member(final String orgid, final String name, String type) {
         try {
-            PayDetailCallBackUtils.CallBack(orgid, name, type);
+            if ("true".equals(status)) {
+                PayDetailCallBackUtils.CallBack(orgid, name, type);
+            } else if ("false".equals(status)) {
+                CapitalBackUtils.CallBack(orgid, name, type);
+            }
             finish();
         } catch (Exception e) {
             e.printStackTrace();
