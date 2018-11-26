@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.ProcedurePageAdapter;
+import com.example.zcjlmodule.bean.FlowListBean;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -32,7 +33,7 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
     private ProcedurePageAdapter adapter;
     private View emptyView;
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<FlowListBean> list;
 
     @Override
     protected int setContentView() {
@@ -56,32 +57,6 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
         emptyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         emptyRecyclerView.setAdapter(adapter = new ProcedurePageAdapter(list, context));
         emptyView.setVisibility(View.GONE);
-
-        //下拉刷新
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                //传入false表示刷新失败
-                //空白布局
-
-                refreshLayout.finishRefresh();
-            }
-        });
-        //上拉加载
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                ArrayList<String> data = new ArrayList<>();
-                data.add("测试数据");
-                data.add("测试数据");
-                list.addAll(data);
-                refreshLayout.finishLoadmore();
-                adapter.setNewData(data, 0);
-
-            }
-        });
         adapter.setItemClickListener(new ProcedurePageAdapter.TypeItemOnClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -92,9 +67,7 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
 
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 10; i++) {
-            list.add("测试数据");
-        }
+
         adapter.setNewData(list);
     }
 }

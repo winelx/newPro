@@ -40,7 +40,7 @@ public class CapitalApplyZcActivity extends BaseActivity implements View.OnClick
         mContext = this;
         setContentView(R.layout.activity_capital_approval_zc);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
-        TextView  title = (TextView) findViewById(R.id.toolbar_icon_title);
+        TextView title = (TextView) findViewById(R.id.toolbar_icon_title);
         title.setText("征地拆迁资金拨付申请单");
         tabLayout = (TabLayout) findViewById(R.id.capital_tablayout);
         viewPager = (ViewPager) findViewById(R.id.capital_viewpager);

@@ -41,35 +41,35 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
     public static ApprovalZcActivity getInstance() {
         return mContext;
     }
-    private String status = null;
-
+    private String status = null, orgId, orgName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
-        Intent intent = getIntent();
-        try {
-            status = intent.getStringExtra("status");
-        }catch (Exception e){
-        }
         //帮助类
         baseUtils = new BaseUtils();
         //上下文
         mContext = this;
-        //viewpager
-        v_selected = (ViewPager) findViewById(R.id.v_selected);
-        //缓存3个界面
-        v_selected.setOffscreenPageLimit(3);
-        //返回键
-        toolbarIconBack = (LinearLayout) findViewById(R.id.toolbar_icon_back);
-        //标题
-        toolbarIconTitle = (TextView) findViewById(R.id.toolbar_icon_title);
-        //tablyout
-        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        //初始化控件
+        findId();
+        Intent intent = getIntent();
+        try {
+            //组织Id
+            orgId = intent.getStringExtra("orgId");
+            //组织名称
+            orgName = intent.getStringExtra("orgName");
+            //状态（false 隐藏控件；空：不隐藏）
+            status = intent.getStringExtra("status");
+
+        } catch (Exception e) {
+        }
+        toolbarIconTitle.setText(orgName);
         //设置tablyout分割线
         baseUtils.addtabpaddingdivider(mTabLayout, mContext);
         //返回点击事件
         toolbarIconBack.setOnClickListener(this);
+        //缓存3个界面
+        v_selected.setOffscreenPageLimit(3);
         /*
            将三个界面存在list中，
          */
@@ -79,6 +79,7 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         fragments.add(new AccumulativeApprovalFragment());
         //流程
         fragments.add(new ProcedureApprovalFragment());
+
         //viewpager传递数据
         v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
         //绑定viewpager和tablayout，
@@ -87,6 +88,21 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         for (int j = 0; j < titles.length; j++) {
             mTabLayout.getTabAt(j).setText(titles[j]);
         }
+
+    }
+
+    /**
+     * 初始化控件
+     */
+    private void findId() {
+        //viewpager
+        v_selected = (ViewPager) findViewById(R.id.v_selected);
+        //返回键
+        toolbarIconBack = (LinearLayout) findViewById(R.id.toolbar_icon_back);
+        //标题
+        toolbarIconTitle = (TextView) findViewById(R.id.toolbar_icon_title);
+        //tablyout
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
     }
 
     /**

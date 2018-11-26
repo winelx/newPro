@@ -2,26 +2,32 @@ package com.example.zcjlmodule.ui.fragment.apply;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.adapter.CapitalApprovalAdapter;
+import com.example.zcjlmodule.adapter.CapitalApplyAdapter;
+import com.example.zcjlmodule.bean.CapitalBean;
 import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.CapitalBackUtils;
 import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
-import com.example.zcjlmodule.utils.fragment.ApprovalFragmentUtils;
+import com.example.zcjlmodule.utils.fragment.ApplyFragmentUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.LazyloadFragment;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
@@ -32,16 +38,17 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  */
 
 public class CapitalApplyTFragment extends LazyloadFragment implements View.OnClickListener, Callback {
-    private LinearLayout assemblyOrgSwitch;
+    private RelativeLayout assemblyOrgSwitch;
     private TextView assemblyOrgname;
     private SmartRefreshLayout refreshLayout;
     private EmptyRecyclerView emptyRecyclerView;
     private View emptyView;
     private Context mContext;
     private String orgId, orgName;
-    private CapitalApprovalAdapter mAdapter;
-    private ArrayList<String> list;
-    private ApprovalFragmentUtils fragmentUtils;
+    private CapitalApplyAdapter mAdapter;
+    private ArrayList<CapitalBean> list;
+    private ApplyFragmentUtils fragmentUtils;
+    private boolean refresh = false;
 
     @Override
     protected int setContentView() {
@@ -49,20 +56,22 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
     }
 
     /**
-     * description: 初始化界面数据
-     *
+     * @description: 初始化界面数据
      * @author lx
-     * date: 2018/11/23 0023 上午 9:42
+     * @date: 2018/11/23 0023 上午 9:42
      */
     @Override
     protected void init() {
+        findId();
         mContext = getActivity();
         list = new ArrayList<>();
         CapitalBackUtils.setCallBack(this);
-        fragmentUtils = new ApprovalFragmentUtils();
-        findId();
+        orgId = SPUtils.getString(mContext, "orgId", "");
+        orgName = SPUtils.getString(mContext, "orgName", "");
+        assemblyOrgname.setText(orgName + "");
+        fragmentUtils = new ApplyFragmentUtils();
         //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableRefresh(true);
         //是否启用上拉加载功能
         refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
@@ -73,26 +82,39 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
         emptyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置分割线
         emptyRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
-        emptyRecyclerView.setAdapter(mAdapter = new CapitalApprovalAdapter(R.layout.adapter_capitalapporval, list));
+        emptyRecyclerView.setAdapter(mAdapter = new CapitalApplyAdapter(R.layout.adapter_capitalapporval, list));
         emptyView.setVisibility(View.GONE);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtlis.getInstance().showShortToast(""+position);
+                ToastUtlis.getInstance().showShortToast("" + position);
                 Intent intent = new Intent(mContext, ApplyActivityZc.class);
-                intent.putExtra("status","false");
-                intent.putExtra("orgname",assemblyOrgname.getText().toString());
-                intent.putExtra("orgId",orgId);
+                intent.putExtra("status", "false");
+                //申请单ID
+                intent.putExtra("applyId", list.get(position).getId());
+                //组织名称
+                intent.putExtra("orgName", assemblyOrgname.getText().toString());
+                //组织Id
+                intent.putExtra("orgId", orgId);
                 startActivity(intent);
             }
         });
+        //  下拉刷新
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                //标记 记录为下拉刷新，网络请求后关闭下拉
+                httprequest();
+            }
+        });
+
     }
 
     /**
-     * description: 初始化控件ID
-     *
+     * @description: 初始化控件ID
      * @author lx
-     * date: 2018/11/23 0023 上午 9:40
+     * @date: 2018/11/23 0023 上午 9:40
      */
     private void findId() {
 //        //空白数据界面
@@ -111,32 +133,44 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
     }
 
     /**
-     * description: 界面可见
-     * 界面懒加载，在这时进行网络请求，数据处理
-     *
+     * @description: 界面可见
+     * @param： 界面懒加载，在这时进行网络请求，数据处理
      * @author lx
-     * date: 2018/11/23 0023 上午 9:42
+     * @date: 2018/11/23 0023 上午 9:42
      */
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 2; i++) {
-            list.add("资金申请单已审批" + i);
-        }
-//        Map<String, String> map = new HashMap<>();
-//        fragmentUtils.agree("", "", map, new ApprovalFragmentUtils.OnClickListener() {
-//            @Override
-//            public void onsuccess(String s) {
-//                mAdapter.setNewData(list);
-//            }
-//        });
-        mAdapter.setNewData(list);
+        httprequest();
     }
 
+    /**
+     * 网络请求
+     */
+    private void httprequest() {
+        /**
+         *orgId 组织Id
+         * page 页数
+         * status 1 已审批
+         */
+        fragmentUtils.applylists(orgId, 1, new ApplyFragmentUtils.OnClickListener() {
+            @Override
+            public void onsuccess(ArrayList<CapitalBean> data) {
+                list.clear();
+                list.addAll(data);
+                mAdapter.setNewData(list);
+            }
+        });
+    }
+
+    /**
+     * @param v 控件
+     * @content: 点击时间
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.assembly_org_switch:
-                ToastUtlis.getInstance().showShortToast("22222");
+                //切换组织
                 Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
                 intent.putExtra("type", "false");
                 startActivity(intent);
@@ -147,13 +181,13 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
     }
 
     /**
-     * 切换组织
-     *
      * @param map
+     * @content:切换组织返回数据
      */
     @Override
     public void callback(Map<String, Object> map) {
         assemblyOrgname.setText(map.get("orgname") + "");
         orgId = map.get("orgId") + "";
+        httprequest();
     }
 }

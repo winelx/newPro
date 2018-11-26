@@ -61,6 +61,7 @@ public class ModuleMainBaseViewIpm {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        BaseDialogUtils.dialog.dismiss();
                         ToastUtlis.getInstance().showLongToast("网络无法连接到internet");
                     }
                 });
@@ -110,6 +111,7 @@ public class ModuleMainBaseViewIpm {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+
                         BaseDialogUtils.dialog.dismiss();
                     }
                 });

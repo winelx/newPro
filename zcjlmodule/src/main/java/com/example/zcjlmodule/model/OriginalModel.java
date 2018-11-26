@@ -44,7 +44,7 @@ public class OriginalModel {
 
 
     public static class OriginalModelPml implements Model {
-        String totalmoney=null;
+        String totalmoney = null;
 
         @Override
         public void getdata(String orgId, final int page, Map<String, String> map, final OnClicklister listener) {
@@ -73,31 +73,43 @@ public class OriginalModel {
                         JSONObject jsonObject = new JSONObject(s);
                         int ret = jsonObject.getInt("ret");
                         if (ret == 0) {
+                            //请求成功
                             if (s.contains("data")) {
+                                //是否返回数据
                                 if (page == 0) {
+                                    //如果请求第一页，获取总金额
                                     JSONObject jsonObject1 = jsonObject.getJSONObject("extend");
                                     totalmoney = jsonObject1.getString("totalMoney");
-                                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                    list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
+                                } else {
+                                    totalmoney = "";
                                 }
-                                listener.onSuccess(list, TextUtils.bigdecimal(totalmoney));
-                            }else {
-                                listener.onError();
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                list.addAll(ListJsonUtils.getListByArray(OriginalZcBean.class, jsonArray.toString()));
+                                if (page == 0) {
+                                    listener.onSuccess(list, TextUtils.bigdecimal(totalmoney));
+                                } else {
+                                    listener.onSuccess(list, "");
+                                }
+                            } else {
+                                //没有返回数据
+                                listener.onSuccess(list, "");
                             }
                         } else {
+                            //请求失败
                             ToastUtlis.getInstance().showShortToast(jsonObject.getString("msg"));
                             listener.onError();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
-
+                        e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onError(Call call, Response response, Exception e) {
                     super.onError(call, response, e);
+                    ToastUtlis.getInstance().showShortToast("请求失败");
                     listener.onError();
                 }
             });

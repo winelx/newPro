@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.bean.FlowListBean;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  */
 
 public class ProcedurePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<String> list;
+    private ArrayList<FlowListBean> list;
     private final static int HEAD_COUNT = 1;
     private static final int TYPE_HEARD = 1;
     private static final int TYPE_DATA = 2;
@@ -33,7 +34,7 @@ public class ProcedurePageAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int lastAnimatedPosition = -1;
     private TypeItemOnClickListener mItemClickListener;
 
-    public ProcedurePageAdapter(ArrayList<String> list, Context mContext) {
+    public ProcedurePageAdapter(ArrayList<FlowListBean> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -60,6 +61,10 @@ public class ProcedurePageAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else if (holder instanceof ProcedurePageAdapter.TypeEndViewHolder) {
         } else {
             ProcedurePageAdapter.TypeDataViewHolder holder1 = (TypeDataViewHolder) holder;
+            holder1.submission.setText("审核人：" + list.get(position - 1).getUserName());
+            holder1.data.setText(list.get(position - 1).getCreateTime());
+            holder1.opinion.setText("审批意见：" + list.get(position - 1).getMessage());
+            holder1.title.setText(list.get(position - 1).getName());
             ((TypeDataViewHolder) holder).RelativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,12 +85,12 @@ public class ProcedurePageAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    public void setNewData(ArrayList<String> data) {
+    public void setNewData(ArrayList<FlowListBean> data) {
         this.list = data;
         notifyDataSetChanged();
     }
 
-    public void setNewData(ArrayList<String> data, int position) {
+    public void setNewData(ArrayList<FlowListBean> data, int position) {
         int size = list.size() + 1;
         this.list.addAll(data);
         notifyItemChanged(size);

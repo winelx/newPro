@@ -2,27 +2,36 @@ package com.example.zcjlmodule.ui.fragment.approval;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.LinearLayout;
+
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.adapter.CapitalApplyAdapter;
+
 import com.example.zcjlmodule.adapter.CapitalApprovalAdapter;
+import com.example.zcjlmodule.bean.CapitalBean;
 import com.example.zcjlmodule.callback.Callback;
 import com.example.zcjlmodule.callback.CapitalBackUtils;
-import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+
 import com.example.zcjlmodule.ui.activity.approval.ApprovalZcActivity;
 import com.example.zcjlmodule.ui.activity.mine.ChangeorganizeZcActivity;
 import com.example.zcjlmodule.utils.fragment.ApprovalFragmentUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.LazyloadFragment;
+import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
@@ -33,7 +42,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  */
 
 public class CapitalApprovalTFragment extends LazyloadFragment implements View.OnClickListener, Callback {
-    private LinearLayout assemblyOrgSwitch;
+    private RelativeLayout assemblyOrgSwitch;
     private TextView assemblyOrgname;
     private SmartRefreshLayout refreshLayout;
     private EmptyRecyclerView emptyRecyclerView;
@@ -41,7 +50,7 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
     private Context mContext;
     private String orgId, orgName;
     private CapitalApprovalAdapter mAdapter;
-    private ArrayList<String> list;
+    private ArrayList<CapitalBean> list;
     private ApprovalFragmentUtils fragmentUtils;
 
     @Override
@@ -61,9 +70,12 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
         list = new ArrayList<>();
         CapitalBackUtils.setCallBack(this);
         fragmentUtils = new ApprovalFragmentUtils();
+        orgId = SPUtils.getString(mContext, "orgId", "");
+        orgName = SPUtils.getString(mContext, "orgName", "");
         findId();
+        assemblyOrgname.setText(orgName + "");
         //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableRefresh(true);
         //是否启用上拉加载功能
         refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
@@ -79,11 +91,21 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtlis.getInstance().showShortToast(""+position);
-                Intent intent = new Intent(mContext, ApplyActivityZc.class);
-                intent.putExtra("status","false");
-                intent.putExtra("orgname",assemblyOrgname.getText().toString());
-                intent.putExtra("orgId",orgId);
+                ToastUtlis.getInstance().showShortToast("" + position);
+                Intent intent = new Intent(mContext, ApprovalZcActivity.class);
+                intent.putExtra("status", "false");
+                intent.putExtra("orgname", assemblyOrgname.getText().toString());
+                intent.putExtra("orgId", orgId);
+                startActivity(intent);
+            }
+        });
+        //  下拉刷新
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                //标记 记录为下拉刷新，网络请求后关闭下拉
+                httprequest();
             }
         });
     }
@@ -119,17 +141,26 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
      */
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 2; i++) {
-            list.add("资金审批未审批" + i);
-        }
-//        Map<String, String> map = new HashMap<>();
-//        fragmentUtils.agree("", "", map, new ApprovalFragmentUtils.OnClickListener() {
-//            @Override
-//            public void onsuccess(String s) {
-//                mAdapter.setNewData(list);
-//            }
-//        });
-        mAdapter.setNewData(list);
+        httprequest();
+    }
+
+    /**
+     * 网络请求
+     */
+    private void httprequest() {
+        fragmentUtils.approvallists(orgId, 1, new ApprovalFragmentUtils.OnClickListener() {
+            @Override
+            public void onsuccess(ArrayList<CapitalBean> data) {
+                //原本展示的数据
+                list.clear();
+                //关闭刷新
+                refreshLayout.finishRefresh();
+                //添加数据
+                list.addAll(data);
+                //更新数据
+                mAdapter.setNewData(list);
+            }
+        });
     }
 
     @Override
@@ -144,7 +175,6 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
                 break;
         }
     }
-
 
     @Override
     public void callback(Map<String, Object> map) {

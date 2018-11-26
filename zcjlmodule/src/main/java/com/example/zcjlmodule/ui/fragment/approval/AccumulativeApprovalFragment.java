@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.AccumulativePageAdapter;
+import com.example.zcjlmodule.bean.PeriodListBean;
 import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -31,7 +32,7 @@ public class AccumulativeApprovalFragment extends LazyloadFragment {
     private AccumulativePageAdapter adapter;
     private View emptyView;
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<PeriodListBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
 
     @Override
@@ -81,9 +82,6 @@ public class AccumulativeApprovalFragment extends LazyloadFragment {
      */
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 10; i++) {
-            list.add("测试数据");
-        }
         adapter.setNewData(list);
     }
 }

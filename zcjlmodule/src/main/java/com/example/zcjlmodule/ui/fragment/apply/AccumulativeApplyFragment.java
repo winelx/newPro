@@ -10,12 +10,15 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.AccumulativePageAdapter;
+import com.example.zcjlmodule.bean.PeriodListBean;
+import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.LazyloadFragment;
+import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
 
@@ -31,7 +34,7 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     private AccumulativePageAdapter adapter;
     private View emptyView;
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<PeriodListBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
 
     @Override
@@ -43,6 +46,8 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     protected void init() {
         context = getActivity();
         list = new ArrayList<>();
+        ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
+        list.addAll(applyActivityZc.getperiodList());
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);
@@ -64,6 +69,7 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
         emptyRecyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         //设置适配器
         emptyRecyclerView.setAdapter(adapter = new AccumulativePageAdapter(R.layout.adapter_accumulative, list));
+        pageApplyPrice.setText(TextUtils.setText(context, "总计:12121212475", 3));
         //初始化时没有请求网络，列表无数据，会展示空数据提示，所以隐藏
         emptyView.setVisibility(View.GONE);
         //点击事件处理
@@ -81,9 +87,6 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
      */
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 10; i++) {
-            list.add("测试数据");
-        }
         adapter.setNewData(list);
     }
 }

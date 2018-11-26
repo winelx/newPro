@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zcjlmodule.R;
+import com.example.zcjlmodule.bean.CurrentApplyBean;
 
 import java.util.List;
 
@@ -15,14 +17,16 @@ import java.util.List;
  */
 
 
-public class CurrentPageFragmentAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class CurrentPageFragmentAdapter extends BaseQuickAdapter<CurrentApplyBean, BaseViewHolder> {
 
-    public CurrentPageFragmentAdapter(int layoutResId, @Nullable List<String> data) {
+    public CurrentPageFragmentAdapter(int layoutResId, @Nullable List<CurrentApplyBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
+    protected void convert(BaseViewHolder helper, CurrentApplyBean item) {
+        helper.setText(R.id.item_headquarters,item.getHeadquarterName());
+        helper.setText(R.id.item_price,item.getToThisPeriodAmount());
     }
 }
 

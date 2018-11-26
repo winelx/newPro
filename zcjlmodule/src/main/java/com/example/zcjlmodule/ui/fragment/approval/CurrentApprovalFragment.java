@@ -11,8 +11,9 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.CurrentPageFragmentAdapter;
-import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+import com.example.zcjlmodule.bean.CurrentApplyBean;
 import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
+import com.example.zcjlmodule.ui.activity.approval.ApprovalHeadquartersZcActivity;
 import com.example.zcjlmodule.ui.activity.approval.ApprovalZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -26,7 +27,8 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 /**
  * @author lx
  * @Created by: 2018/11/21 0021.
- * @description:申请单/拨款审批单(本期)
+ * @description:拨款审批单(本期)
+ * @activity: ApprovalZcActivity
  */
 
 public class CurrentApprovalFragment extends LazyloadFragment implements View.OnClickListener {
@@ -35,30 +37,47 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
     private CurrentPageFragmentAdapter adapter;
     private View emptyView;
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<CurrentApplyBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
+    private String status;
 
-
+    /**
+     * @return 展示界面
+     */
     @Override
     protected int setContentView() {
         return R.layout.fragment_current_page;
     }
 
+    /**
+     * 界面初始化
+     */
     @Override
     protected void init() {
-        context = ApplyActivityZc.getInstance();
+        //拿到承载fragment的activity的对象；
+        context = ApprovalZcActivity.getInstance();
+        //实例化activity
         ApprovalZcActivity applyActivityZc = (ApprovalZcActivity) context;
-        String str = applyActivityZc.getstatus();
+        //调用方法，获取status；用来判断是否隐藏审批按钮
+        status = applyActivityZc.getstatus();
         list = new ArrayList<>();
+        //emptyRecyclerView的空数据提示界面
         emptyView = rootView.findViewById(R.id.recycler_empty);
+        //刷新加载控件
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
+        //展示数据的列表
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);
+        //总计
         pageApplyPrice = rootView.findViewById(R.id.page_apply_price);
         //审批
         pageApplyExamine = rootView.findViewById(R.id.page_apply_examine);
+        //设置审批按钮点击事件
         pageApplyExamine.setOnClickListener(this);
-        if (str != null) {
+        //判断状态是否为null
+        if (status != null) {
             pageApplyExamine.setVisibility(View.GONE);
+        } else {
+            pageApplyExamine.setVisibility(View.VISIBLE);
         }
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
@@ -81,7 +100,8 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, ApplyHeadquartersZcActivity.class);
+                //跳转指挥部
+                Intent intent = new Intent(context, ApprovalHeadquartersZcActivity.class);
                 startActivity(intent);
             }
         });
@@ -92,17 +112,8 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
      */
     @Override
     protected void lazyLoad() {
-        for (int i = 0; i < 10; i++) {
-            list.add("测试数据");
-        }
-        new android.os.Handler(new android.os.Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                adapter.setNewData(list);
-                return false;
-            }
-            //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 1000);
+
+
     }
 
     /**
@@ -118,7 +129,7 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
                 BaseDialogUtils.checkandcontent(context, new BaseDialogUtils.dialogonclick() {
                     @Override
                     public void onsuccess(String status, String content) {
-
+                        //status 如果等true是通过，否则反之；content是审批意见
                     }
                 });
                 break;

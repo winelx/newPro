@@ -28,9 +28,8 @@
         android:layout_marginTop="@dimen/y10"
         android:background="@drawable/bg_edt_normal"
         android:hint="@string/hint_password"
-        android:text="123456"
+        android:text="admin123456"
         android:inputType="textPassword"
-
         android:paddingLeft="@dimen/x16"
         android:textSize="@dimen/text_size_16" />
 

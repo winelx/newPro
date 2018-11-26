@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/assembly_org_switch"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/assembly_org"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_weight="1"
         android:background="@color/bg_white"
@@ -22,30 +24,35 @@
 
     <TextView
         android:id="@+id/assembly_orgname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/dimens_15"
-        android:layout_marginRight="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/dimens_10"
+        android:layout_marginRight="40dp"
+        android:layout_toEndOf="@+id/assembly_org"
+        android:layout_toRightOf="@+id/assembly_org"
         android:layout_weight="1"
         android:background="@color/bg_white"
         android:ellipsize="end"
-        android:gravity="end"
+        android:gravity="end|center_vertical"
         android:maxEms="10"
         android:maxLines="1"
         android:padding="0dp"
-        android:text="车道上的说法车道上的说法车道上的说法"
+        android:text="车道上的"
         android:textColor="@color/black"
         android:textSize="@dimen/text_16"
         tools:ignore="DuplicateIds" />
 
     <ImageView
-        android:layout_width="2dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="15dp"
-        android:layout_weight="0.5"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.4"
         android:background="@mipmap/zc_right"
         android:paddingRight="15dp" />
-</LinearLayout>
+</RelativeLayout>

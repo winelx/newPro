@@ -12,10 +12,14 @@ import android.widget.TextView;
 
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.FmPagerAdapter;
+import com.example.zcjlmodule.bean.CurrentApplyBean;
+import com.example.zcjlmodule.bean.FlowListBean;
+import com.example.zcjlmodule.bean.PeriodListBean;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 import com.example.zcjlmodule.ui.fragment.apply.AccumulativeApplyFragment;
 import com.example.zcjlmodule.ui.fragment.apply.CurrentApplyFragment;
 import com.example.zcjlmodule.ui.fragment.apply.ProcedureApplyFragment;
+import com.example.zcjlmodule.utils.fragment.CurrentApplyUtils;
 
 import java.util.ArrayList;
 
@@ -37,20 +41,33 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
     private ViewPager v_selected;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] titles = {"本期", "累计", "流程"};
-    private String status=null;
+    private String status = null, orgId, orgName, applyId;
     private static ApplyActivityZc mContext;
+    private CurrentApplyUtils applyUtils;
+    ArrayList<CurrentApplyBean> countlist;
+    ArrayList<PeriodListBean> periodList;
+    ArrayList<FlowListBean> flowList;
+
     public static ApplyActivityZc getInstance() {
         return mContext;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
+        countlist = new ArrayList<>();
+        periodList = new ArrayList<>();
+        flowList = new ArrayList<>();
         Intent intent = getIntent();
         try {
             status = intent.getStringExtra("status");
+            orgId = intent.getStringExtra("orgId");
+            applyId = intent.getStringExtra("applyId");
+            orgName = intent.getStringExtra("orgName");
         } catch (Exception e) {
         }
+        applyUtils = new CurrentApplyUtils();
         //帮助类
         baseUtils = new BaseUtils();
         //上下文
@@ -63,29 +80,39 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
         toolbarIconBack = (LinearLayout) findViewById(R.id.toolbar_icon_back);
         //标题
         toolbarIconTitle = (TextView) findViewById(R.id.toolbar_icon_title);
+        toolbarIconTitle.setText(orgName);
         //tablyout
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         //设置tablyout分割线
         baseUtils.addtabpaddingdivider(mTabLayout, mContext);
         //返回点击事件
         toolbarIconBack.setOnClickListener(this);
-        /*
-           将三个界面存在list中，
-         */
-        //本期
-        fragments.add(new CurrentApplyFragment());
-        //累计
-        fragments.add(new AccumulativeApplyFragment());
-        //流程
-        fragments.add(new ProcedureApplyFragment());
-        //viewpager传递数据
-        v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
-        //绑定viewpager和tablayout，
-        mTabLayout.setupWithViewPager(v_selected);
-        //设置tablyout标题，没有使用适配器adapter，减少代码量，直接设置，更加灵活
-        for (int j = 0; j < titles.length; j++) {
-            mTabLayout.getTabAt(j).setText(titles[j]);
-        }
+        applyUtils.applyheadcounts(applyId, new CurrentApplyUtils.OnclickListener() {
+            @Override
+            public void onSuccess(ArrayList<CurrentApplyBean> List1, ArrayList<PeriodListBean> List2, ArrayList<FlowListBean> List3) {
+                //本期
+                countlist.addAll(List1);
+                //累计
+                periodList.addAll(List2);
+                //流程
+                flowList.addAll(List3);
+                //本期
+                fragments.add(new CurrentApplyFragment());
+                //累计
+                fragments.add(new AccumulativeApplyFragment());
+                //流程
+                fragments.add(new ProcedureApplyFragment());
+                //viewpager传递数据
+                v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
+                //绑定viewpager和tablayout，
+                mTabLayout.setupWithViewPager(v_selected);
+                //设置tablyout标题，没有使用适配器adapter，减少代码量，直接设置，更加灵活
+                for (int j = 0; j < titles.length; j++) {
+                    mTabLayout.getTabAt(j).setText(titles[j]);
+                }
+            }
+        });
+
     }
 
     /**
@@ -107,6 +134,18 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
 
     public String getstatus() {
         return status;
+    }
+
+    public ArrayList<CurrentApplyBean> getcountlist() {
+        return countlist;
+    }
+
+    public ArrayList<PeriodListBean> getperiodList() {
+        return periodList;
+    }
+
+    public ArrayList<FlowListBean> getflowList() {
+        return flowList;
     }
 
 }

@@ -43,6 +43,8 @@ public class App extends BaseApplication {
         }
         //网络加载库配置
         OkGo.getInstance()
+                //全局默认加载超时时间
+                .setConnectTimeout(2000)
                 //可以全局统一设置缓存模式,默认是不使用缓存,可以不传,具体其他模式看 github 介绍 https://github.com/jeasonlzy/
                 .setCacheMode(CacheMode.NO_CACHE)
                 //可以全局统一设置超时重连次数,默认为三次,那么最差的情况会请求4次(一次原始请求,三次重连请求),不需要可以设置为0

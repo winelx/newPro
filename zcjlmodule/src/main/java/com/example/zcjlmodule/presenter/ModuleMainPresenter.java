@@ -20,7 +20,6 @@ public class ModuleMainPresenter extends BasePresenters<ModuleMainView> {
 
 
     public void register(String name, String pass) {
-
         model = new ModuleMainBaseViewIpm.ModuleMainBaseViewIPml();
       model.getData(name, pass, new ModuleMainBaseViewIpm.Model.OnClickListener() {
            @Override

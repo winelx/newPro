@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.CurrentPageFragmentAdapter;
+import com.example.zcjlmodule.bean.CurrentApplyBean;
 import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
+import com.example.zcjlmodule.utils.fragment.CurrentApplyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 /**
  * @author lx
  * @Created by: 2018/11/21 0021.
- * @description:申请单/拨款审批单(本期)
+ * @description:申请单(本期)
  */
 
 public class CurrentApplyFragment extends LazyloadFragment implements View.OnClickListener {
@@ -34,9 +36,8 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
     private CurrentPageFragmentAdapter adapter;
     private View emptyView;
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<CurrentApplyBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
-
     @Override
     protected int setContentView() {
         return R.layout.fragment_current_page;
@@ -48,6 +49,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
         String str = applyActivityZc.getstatus();
         list = new ArrayList<>();
+        list.addAll(applyActivityZc.getcountlist());
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);
@@ -91,17 +93,6 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
     @Override
     protected void lazyLoad() {
 
-        for (int i = 0; i < 10; i++) {
-            list.add("测试数据");
-        }
-        new android.os.Handler(new android.os.Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                adapter.setNewData(list);
-                return false;
-            }
-            //表示延迟3秒发送任务
-        }).sendEmptyMessageDelayed(0, 1000);
     }
 
     /**
