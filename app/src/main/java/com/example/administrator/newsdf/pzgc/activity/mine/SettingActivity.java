@@ -9,6 +9,7 @@ import android.widget.Switch;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.App;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -17,7 +18,7 @@ import static com.example.administrator.newsdf.R.id.setting_new_message;
 /**
  * 系统设置
  */
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     private Switch
             //接受新消息
             settingNewMessage,

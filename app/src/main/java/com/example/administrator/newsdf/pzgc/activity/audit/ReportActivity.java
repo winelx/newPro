@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAd
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.ReportTreeListViewAdapters;
@@ -50,7 +51,7 @@ import okhttp3.Response;
  *         version:
  */
 
-public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReportActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager reportViewpager;
     private static ReportActivity mContext;
     private TextView reportDaily, reportMonth, reportQuarter;

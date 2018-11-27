@@ -61,12 +61,17 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
         flowList = new ArrayList<>();
         Intent intent = getIntent();
         try {
+            //是否需要显示审批按钮
             status = intent.getStringExtra("status");
+            //组织Id
             orgId = intent.getStringExtra("orgId");
+            //单据Id
             applyId = intent.getStringExtra("applyId");
+            //组织名称
             orgName = intent.getStringExtra("orgName");
         } catch (Exception e) {
         }
+        //帮助类
         applyUtils = new CurrentApplyUtils();
         //帮助类
         baseUtils = new BaseUtils();

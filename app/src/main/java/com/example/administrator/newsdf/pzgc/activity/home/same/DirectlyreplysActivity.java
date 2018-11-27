@@ -36,6 +36,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -68,7 +69,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * update: 2018/2/6 0006
  * version:
  */
-public class DirectlyreplysActivity extends AppCompatActivity {
+public class DirectlyreplysActivity extends BaseActivity {
     private DirectlyreplyAdapter photoAdapter;
     private ArrayList<File> files;
     private RecyclerView photoadd;

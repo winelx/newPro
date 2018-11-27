@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -29,7 +30,7 @@ import okhttp3.Response;
 /**
  * 任务下发或上传界面的选择检查点
  */
-public class ChoosecheckActivity extends AppCompatActivity {
+public class ChoosecheckActivity extends BaseActivity {
     private ListView list_item;
     private ArrayList<String> list;
     private ArrayList<Makeup> mData;

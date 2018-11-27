@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.bean.BaseTab;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
+import measure.jjxx.com.baselibrary.utils.StatusBarUtil;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 ;
 
@@ -59,6 +60,8 @@ public class HomeZcActivity extends BaseActivity {
         paths = getExternalCacheDir().getPath().replace("cache", "PDF/");
         //清除缓存图片
         FileUtils.clearFiles(tiny);
+//        File file = new File(paths);
+//        double filesiz = FileUtils.getDirSize(file);
     }
 
     //初始化界面

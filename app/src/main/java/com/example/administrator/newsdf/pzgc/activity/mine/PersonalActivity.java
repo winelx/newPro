@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -17,7 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * 个人信息
  */
-public class PersonalActivity extends AppCompatActivity {
+public class PersonalActivity extends BaseActivity {
 
     private Context mContext;
     private TextView username, checkname, userPhone;

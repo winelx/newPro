@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -34,7 +35,7 @@ import okhttp3.Response;
  *         update: 2018/2/6 0006
  *         version:
  */
-public class Checkpoint extends AppCompatActivity {
+public class Checkpoint extends BaseActivity {
     private ListView listItem;
     private String list;
     private ArrayList<Makeup> mData;

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -30,7 +31,7 @@ import okhttp3.Response;
  * update: 2018/2/6 0006
  * version:
  */
-public class PasswordActvity extends AppCompatActivity implements View.OnClickListener {
+public class PasswordActvity extends BaseActivity implements View.OnClickListener {
     private Button commint;
     private AppCompatEditText pass_old, pass_new, pass_newtoo;
 

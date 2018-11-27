@@ -14,10 +14,10 @@ public class Api {
     //马
 //public static final String networks = "http://192.168.20.36:8082/dtjl";
     //测
-//public static final String networks = "http://192.168.20.120:8082/dtjl";
+public static final String networks = "http://192.168.20.120:8082/dtjl";
     //郑
  //  public static final String networks = "http://192.168.20.40/dtjl";
-    public static final String networks = "http://192.168.20.42:8080/dtjl";
+   // public static final String networks = "http://192.168.20.42:8080/dtjl";
     /**
      * 基础接口
      */

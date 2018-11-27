@@ -81,7 +81,6 @@ public class PayCheckZcActivity extends BaseMvpActivity<PayCheckPresenter> imple
         });
     }
 
-
     /**
      * 初始化控件
      */

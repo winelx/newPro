@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyAct
 import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -52,7 +53,7 @@ import okhttp3.Response;
  *         update: 2018/4/16 0016
  *         version:
  */
-public class MoretaskActivity extends AppCompatActivity implements View.OnClickListener {
+public class MoretaskActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
     private TextView wbsNode, drawer_layout_text;
     private RecyclerView mRecyclerView;

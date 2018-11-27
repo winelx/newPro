@@ -13,7 +13,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import measure.jjxx.com.baselibrary.R;
 import measure.jjxx.com.baselibrary.interfaces.PermissionListener;
+import measure.jjxx.com.baselibrary.utils.StatusBarUtil;
 
 /**
  * @author lx

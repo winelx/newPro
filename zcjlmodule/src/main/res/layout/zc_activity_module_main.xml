@@ -17,8 +17,8 @@
         android:layout_marginTop="@dimen/y80"
         android:background="@drawable/bg_edt_normal"
         android:hint="@string/hint_account"
-        android:text="admin"
         android:paddingLeft="@dimen/x16"
+        android:text="admin"
         android:textSize="@dimen/text_size_16" />
 
     <EditText
@@ -28,9 +28,9 @@
         android:layout_marginTop="@dimen/y10"
         android:background="@drawable/bg_edt_normal"
         android:hint="@string/hint_password"
-        android:text="admin123456"
         android:inputType="textPassword"
         android:paddingLeft="@dimen/x16"
+        android:text="admin123456"
         android:textSize="@dimen/text_size_16" />
 
     <Button

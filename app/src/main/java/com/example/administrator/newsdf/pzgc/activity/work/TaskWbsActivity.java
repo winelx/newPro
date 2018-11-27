@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -43,7 +44,7 @@ import okhttp3.Response;
  *         update: 2018/3/22 0022
  *         version:
  */
-public class TaskWbsActivity extends Activity {
+public class TaskWbsActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
@@ -71,7 +72,7 @@ public class TaskWbsActivity extends Activity {
         iswbs = intent.getExtras().getBoolean("iswbs");
 
         mContext = TaskWbsActivity.this;
-        refreshLayout = findViewById(R.id.SmartRefreshLayout);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -81,7 +82,7 @@ public class TaskWbsActivity extends Activity {
             }
         });
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
-        com_title = findViewById(R.id.com_title);
+        com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择wbs");
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = TaskWbsActivity.this;

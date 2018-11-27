@@ -41,6 +41,7 @@ import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -76,7 +77,7 @@ import okhttp3.Response;
  * update: 2018/2/6 0006
  * version:
  */
-public class CollectionlistActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class CollectionlistActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
 
     private TextView Titlew, deleteSearch, drawer_layout_text;

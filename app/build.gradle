@@ -126,7 +126,7 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     testCompile 'junit:junit:4.12'
     //根据条件
-    if (!isUserModule.toBoolean()){
+    if (!isUserModule.toBoolean()) {
         compile project(':zcjlmodule')
     }
 }

@@ -14,18 +14,17 @@ import com.example.administrator.newsdf.R;
 /**
  * Created by Administrator on 2018/4/12 0012.
  * 网络请求的转动的控件
- *
+ * 滚动dialog
  */
 
 public class CircleProgress extends View {
 
     /**
-     *  小圆的个数
+     * 小圆的个数
      */
     private int numOfCircles;
     /**
-     *
-     最大圆半径
+     * 最大圆半径
      */
     private int maxRadius;
     /**
@@ -33,7 +32,7 @@ public class CircleProgress extends View {
      */
     private int minRadius;
     /**
-     *  旋转速度
+     * 旋转速度
      */
     private int rotateSpeedInMillis;
     /**
@@ -41,7 +40,7 @@ public class CircleProgress extends View {
      */
     private boolean isClockwise;
     /**
-     *  小圆的颜色
+     * 小圆的颜色
      */
     private int circleColor;
     private Paint paint;

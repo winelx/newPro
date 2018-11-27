@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.administrator.newsdf.zlaq.activity.UnifiedLoginActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -169,7 +170,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     public void gotResult(int i, String s, Set<String> set) {
                     }
                 });
-                startActivity(new Intent(mContext, LoginActivity.class));
+         startActivity(new Intent(mContext, LoginActivity.class));
                 getActivity().finish();
                 break;
             case R.id.mine_Thecache:

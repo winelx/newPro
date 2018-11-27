@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.Adapter.Adapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.List;
  * version:
  */
 
-public class NotuploadActivity extends AppCompatActivity implements TaskCallback {
+public class NotuploadActivity extends BaseActivity implements TaskCallback {
     private LinearLayout toolbar_add;
     private LinearLayout com_back, nullposion;
     private RecyclerView mRecyclerView;

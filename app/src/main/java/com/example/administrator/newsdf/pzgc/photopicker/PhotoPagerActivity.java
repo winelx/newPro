@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.photopicker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -23,6 +24,7 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.fragment.ImagePagerFragment;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
@@ -54,7 +56,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.getDate;
  *         update: 2018/3/2 0002
  *         version:
  */
-public class PhotoPagerActivity extends AppCompatActivity {
+public class PhotoPagerActivity extends BaseActivity {
     private ImagePagerFragment pagerFragment;
     private String path;
     private ActionBar actionBar;
@@ -74,6 +76,7 @@ public class PhotoPagerActivity extends AppCompatActivity {
      * 异步get,直接调用
      */
     private OkHttpClient client;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

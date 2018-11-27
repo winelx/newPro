@@ -30,6 +30,7 @@ import com.example.administrator.newsdf.pzgc.fragment.IndexFrament;
 import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -59,7 +60,7 @@ import okhttp3.Response;
  *         update: 2018/3/15 0015
  *         version:
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private FragmentTabHost mTabHost;
     private static MainActivity mContext;
     private LayoutInflater mInflater;

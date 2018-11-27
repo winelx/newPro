@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotolabelAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -29,8 +30,10 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
-//标准图纸列表界面（图册的在photoadmActivity）
-public class StandardActivity extends AppCompatActivity {
+/**
+ * 标准图纸列表界面（图册的在photoadmActivity）
+ */
+public class StandardActivity extends BaseActivity {
     private RecyclerView photo_rec;
     private PhotolabelAdapter photoAdapter;
     private ArrayList<PhotoBean> imagePaths;

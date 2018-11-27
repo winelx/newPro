@@ -47,6 +47,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -83,7 +84,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * update: 2018/2/5 0005
  * version:
  */
-public class ReplysActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReplysActivity extends BaseActivity implements View.OnClickListener {
     private PhotosAdapter photoAdapter;
 
     private ArrayList<PhotoBean> photoPopPaths, stardPaths;

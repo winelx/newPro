@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  *         update: 2018/3/8 0008
  *         version:
  */
-public class PchooseActivity extends AppCompatActivity implements View.OnClickListener {
+public class PchooseActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
     private TextView frPchooseAm, frPchooseMm;
     private ViewPager vp;

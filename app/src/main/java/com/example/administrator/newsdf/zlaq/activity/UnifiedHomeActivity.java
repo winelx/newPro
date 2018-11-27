@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Tab;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.zlaq.fragment.UnifiedCenterFragment;
 import com.example.administrator.newsdf.zlaq.fragment.UnifiedMessageFragment;
 import com.example.administrator.newsdf.zlaq.fragment.UnifiedMineFragment;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  *         update: 2018/7/2 0002
  *         version:
  */
-public class UnifiedHomeActivity extends AppCompatActivity {
+public class UnifiedHomeActivity extends BaseActivity {
     private ArrayList<Tab> mTabs = new ArrayList<>();
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;

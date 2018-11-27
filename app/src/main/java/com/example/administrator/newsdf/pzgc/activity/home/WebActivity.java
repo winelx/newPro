@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.io.File;
@@ -40,7 +41,7 @@ import java.util.List;
  *         update: 2018/3/12 0012
  *         version:
  */
-public class WebActivity extends AppCompatActivity {
+public class WebActivity extends BaseActivity {
     WebView pdfViewerWeb;
     private ProgressBar pg1;
     String Url;

@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 
 //
@@ -40,7 +41,7 @@ import com.example.administrator.newsdf.pzgc.utils.Requests;
  * @author lx
  *         date: 2018/10/9 0009 上午 10:48
  */
-public class CheckTaskWebActivity extends AppCompatActivity {
+public class CheckTaskWebActivity extends BaseActivity {
     boolean lean = true;
     private TextView text;
     private WebView mWebView;

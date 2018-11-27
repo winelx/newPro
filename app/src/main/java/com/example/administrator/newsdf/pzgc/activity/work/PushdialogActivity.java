@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.pzgc.bean.CasePointsBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -44,7 +45,7 @@ import okhttp3.Response;
  *         update: 2018/3/6 0006
  *         version:
  */
-public class PushdialogActivity extends Activity implements View.OnClickListener {
+public class PushdialogActivity extends BaseActivity implements View.OnClickListener {
 
     private IconTextView com_back;
     private PopupWindow popupWindow;
@@ -68,19 +69,19 @@ public class PushdialogActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushdialog);
-        com_back = findViewById(R.id.com_back);
+        com_back = (IconTextView) findViewById(R.id.com_back);
         //标准
-        checkstandard = findViewById(R.id.pushdialog_checkStandard);
+        checkstandard = (TextView) findViewById(R.id.pushdialog_checkStandard);
         //任务内容
-        pushDialog = findViewById(R.id.pushdialog_item_content);
+        pushDialog = (EditText) findViewById(R.id.pushdialog_item_content);
         //负责人
-        pushDuty = findViewById(R.id.push_item_duty);
+        pushDuty = (TextView) findViewById(R.id.push_item_duty);
         //前置条件
-        conditions = findViewById(R.id.push_item_conditions);
+        conditions = (TextView) findViewById(R.id.push_item_conditions);
         //推送内容
-        pushContent = findViewById(R.id.push_item_content);
+        pushContent = (EditText) findViewById(R.id.push_item_content);
         //推送次数
-        sendtimes = findViewById(R.id.pushdialog_sendnumber);
+        sendtimes = (TextView) findViewById(R.id.pushdialog_sendnumber);
 
         findViewById(R.id.push_conditions).setOnClickListener(this);
         findViewById(R.id.push_duty).setOnClickListener(this);

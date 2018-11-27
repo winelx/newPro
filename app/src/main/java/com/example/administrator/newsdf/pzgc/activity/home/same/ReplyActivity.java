@@ -48,6 +48,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -86,7 +87,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  *         update: 2018/2/6 0006
  *         version:
  */
-public class ReplyActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReplyActivity extends BaseActivity implements View.OnClickListener {
     private PhotoAdapter photoAdapter;
     private ArrayList<File> files;
     private List<Shop> list;

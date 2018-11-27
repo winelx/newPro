@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class WorkareaActivity extends AppCompatActivity {
+public class WorkareaActivity extends BaseActivity {
     private ListView uslistView;
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;

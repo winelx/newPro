@@ -42,6 +42,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -76,7 +77,7 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * update: 2018/2/6 0006
  * version:
  */
-public class DirectlyreplyActivity extends AppCompatActivity {
+public class DirectlyreplyActivity extends BaseActivity {
     private DirectlyreplyAdapter photoAdapter;
     private ArrayList<File> files;
     private RecyclerView photoadd;

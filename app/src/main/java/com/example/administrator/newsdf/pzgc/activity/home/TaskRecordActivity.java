@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -34,7 +35,7 @@ import okhttp3.Response;
  *         update: 2018/3/21 0021
  *         version:
  */
-public class TaskRecordActivity extends AppCompatActivity {
+public class TaskRecordActivity extends BaseActivity {
     private TextView com_title;
     private IconTextView com_back;
     private TaskRecordAdapter mAdapter;

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
  * description: 任务下发
@@ -18,7 +19,7 @@ import com.example.administrator.newsdf.R;
  *         update: 2018/3/26 0026
  *         version:
  */
-public class PushCheckActivity extends AppCompatActivity {
+public class PushCheckActivity extends BaseActivity {
     private RelativeLayout pchoose_atlas, pchoose_wbs;
     private Context mContext;
     TextView com_titlle;

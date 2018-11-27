@@ -34,7 +34,7 @@
             android:layout_toRightOf="@+id/zc_textview5"
             android:text="提交"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimens_16" />
+            android:textSize="16sp" />
 
 
         <TextView

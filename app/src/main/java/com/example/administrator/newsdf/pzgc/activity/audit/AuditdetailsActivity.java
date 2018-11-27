@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
  * description:审核功能的部位详情
@@ -25,7 +26,7 @@ import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbac
  *         version:
  */
 
-public class AuditdetailsActivity extends AppCompatActivity implements View.OnClickListener, AuditDetailsCallback, AuditDetailsrefreshCallback {
+public class AuditdetailsActivity extends BaseActivity implements View.OnClickListener, AuditDetailsCallback, AuditDetailsrefreshCallback {
 
     private static AuditdetailsActivity mContext;
     private RecyclerView mRecyclerView;

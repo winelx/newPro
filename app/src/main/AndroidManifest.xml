@@ -264,9 +264,6 @@
             android:name=".pzgc.fragment.homepage.CollectionlistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.ZLAQActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".zlaq.activity.UnifiedLoginActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -359,7 +356,8 @@
             android:name=".pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".pzgc.activity.check.activity.CheckRectificationWebActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity"></activity>
+        <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity" />
+        <activity android:name=".pzgc.activity.device.DeviceActivity"></activity>
     </application>
 
 </manifest>

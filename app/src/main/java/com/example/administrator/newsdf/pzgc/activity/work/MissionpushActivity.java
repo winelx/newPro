@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -51,7 +52,7 @@ import okhttp3.Response;
  *         update: 2018/3/22 0022
  *         version:
  */
-public class MissionpushActivity extends AppCompatActivity implements View.OnClickListener {
+public class MissionpushActivity extends BaseActivity implements View.OnClickListener {
     private TextView title,drawer_layout_text;
     private LinearLayout button;
     private LinearLayout com_img;

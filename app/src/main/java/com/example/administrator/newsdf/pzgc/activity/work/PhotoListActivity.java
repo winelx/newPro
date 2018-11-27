@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -41,7 +42,7 @@ import okhttp3.Response;
  *         update: 2018/3/6 0006
  *         version:
  */
-public class PhotoListActivity extends AppCompatActivity {
+public class PhotoListActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;

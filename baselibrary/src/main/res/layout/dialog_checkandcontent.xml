@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dimens_20"
+        android:layout_marginTop="@dimen/dimens_20"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
             android:checked="false"
-            android:paddingLeft="10dp"
+            android:paddingLeft="@dimen/dimens_10"
             android:text="通过"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -34,9 +34,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="false"
-            android:paddingLeft="10dp"
+            android:paddingLeft="@dimen/dimens_10"
             android:text="不通过"
-
             android:textColor="@color/black"
             android:textSize="15sp"
             android:theme="@style/RadioButton" />
@@ -48,14 +47,14 @@
         android:id="@+id/dialog_editext_content"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="@dimen/dimens_20"
+        android:layout_marginRight="@dimen/dimens_20"
+        android:layout_marginTop="@dimen/dimens_15"
         android:background="@drawable/editext_input_style"
         android:gravity="start"
         android:hint="审批通过"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
+        android:paddingLeft="@dimen/dimens_10"
+        android:paddingTop="@dimen/dimens_10"
         android:textColor="@color/black"
         android:textColorHint="@color/graytext"
         android:textSize="15sp" />
@@ -63,17 +62,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="@dimen/dimens_20"
+        android:layout_marginLeft="@dimen/dimens_25"
+        android:layout_marginRight="@dimen/dimens_40"
+        android:layout_marginTop="@dimen/dimens_20"
         android:gravity="end"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/dialog_cancel"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dimens_35"
+            android:layout_height="@dimen/dimens_30"
             android:gravity="center"
             android:text="取消"
             android:textColor="@color/graytext2"
@@ -81,8 +80,8 @@
 
         <TextView
             android:id="@+id/dialog_ascertain"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dimens_35"
+            android:layout_height="@dimen/dimens_30"
             android:gravity="center"
             android:layout_marginLeft="55dp"
             android:text="确定"

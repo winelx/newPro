@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.AuditrecordBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -50,7 +51,7 @@ import okhttp3.Response;
  *         version:
  */
 
-public class AuditrecordActivity extends AppCompatActivity implements View.OnClickListener, AuditrecordCallback {
+public class AuditrecordActivity extends BaseActivity implements View.OnClickListener, AuditrecordCallback {
     private SettingAdapter<AuditrecordBean> mAdapter;
     private ArrayList<AuditrecordBean> mData;
     private Context mContext;

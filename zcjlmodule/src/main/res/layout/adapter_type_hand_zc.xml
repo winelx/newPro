@@ -29,6 +29,6 @@
         android:layout_toRightOf="@+id/zc_textview4"
         android:text="开始"
         android:textColor="@color/black"
-        android:textSize="@dimen/dimens_16" />
+        android:textSize="@dimen/text_16" />
 
 </RelativeLayout>

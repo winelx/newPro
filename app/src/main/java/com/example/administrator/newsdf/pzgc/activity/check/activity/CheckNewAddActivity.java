@@ -31,6 +31,7 @@ import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -65,7 +66,7 @@ import static com.lzy.okgo.OkGo.post;
  *         update: 2018/8/6 0006
  *         version:
  */
-public class CheckNewAddActivity extends AppCompatActivity implements View.OnClickListener, CheckNewCallback {
+public class CheckNewAddActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
     //控件
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker, dayPicker;

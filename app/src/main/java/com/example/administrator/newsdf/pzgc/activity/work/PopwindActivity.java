@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
  * description: wbs树查看联系人信息
@@ -19,7 +20,7 @@ import com.example.administrator.newsdf.R;
  *         update: 2018/3/26 0026
  *         version:
  */
-public class PopwindActivity extends Activity implements View.OnClickListener {
+public class PopwindActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView tree_error;
     private TextView tree_names, tree_ethnic, tree_conditions, tree_number;
@@ -58,6 +59,8 @@ public class PopwindActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.tree_error:
                 this.finish();
+                break;
+            default:
                 break;
         }
     }

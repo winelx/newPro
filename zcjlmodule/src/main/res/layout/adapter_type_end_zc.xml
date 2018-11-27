@@ -29,6 +29,6 @@
         android:layout_marginStart="55dp"
         android:text="结束"
         android:textColor="@color/black"
-        android:textSize="@dimen/dimens_16" />
+        android:textSize="@dimen/text_20" />
 
 </RelativeLayout>

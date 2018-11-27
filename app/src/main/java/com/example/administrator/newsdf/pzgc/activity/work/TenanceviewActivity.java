@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -53,7 +54,7 @@ import okhttp3.Response;
  *         update: 2018/2/8 0008
  *         version:
  */
-public class TenanceviewActivity extends AppCompatActivity implements View.OnClickListener, MoreTaskCallback {
+public class TenanceviewActivity extends BaseActivity implements View.OnClickListener, MoreTaskCallback {
     private String TAG = "TenanceviewActivity";
     private Context mContext;
     private ViewPager mViewPager;

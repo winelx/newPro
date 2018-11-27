@@ -16,6 +16,7 @@ import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils3;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -39,7 +40,7 @@ import okhttp3.Response;
 /**
  * 切换组织界面
  */
-public class OrganizationaActivity extends AppCompatActivity {
+public class OrganizationaActivity extends BaseActivity {
     private ListView mTree;
     private SimpleTreeListViewAdapters<OrgBeans> mAdapter;
     private List<OrgBeans> mDatas2;

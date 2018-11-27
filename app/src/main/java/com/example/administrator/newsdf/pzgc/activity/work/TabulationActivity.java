@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * @author lx
  *         选择检查项
  */
-public class TabulationActivity extends AppCompatActivity {
+public class TabulationActivity extends BaseActivity {
     private ArrayList<String> mData = null;
     private Context mContext;
     private TextView tv, com_title;

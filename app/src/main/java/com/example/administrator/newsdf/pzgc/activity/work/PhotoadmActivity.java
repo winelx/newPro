@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoadmAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -42,7 +43,7 @@ import okhttp3.Response;
  *         date: 2017/12/13 0013.
  *         version:
  */
-public class PhotoadmActivity extends AppCompatActivity {
+public class PhotoadmActivity extends BaseActivity {
     private RecyclerView photo_rec;
     private PhotoadmAdapter photoAdapter;
     private ArrayList<PhotoBean> imagePaths;

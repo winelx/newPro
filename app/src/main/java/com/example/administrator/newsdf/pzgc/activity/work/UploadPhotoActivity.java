@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.UploadPhAdapter;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ import static com.example.administrator.newsdf.R.id.Up_ph_back;
  *         update: 2018/3/14 0014
  *         version:
  */
-public class UploadPhotoActivity extends AppCompatActivity {
+public class UploadPhotoActivity extends BaseActivity {
     private List<Shop> listPath;
     private Context mContext;
     private UploadPhAdapter mAdapter;

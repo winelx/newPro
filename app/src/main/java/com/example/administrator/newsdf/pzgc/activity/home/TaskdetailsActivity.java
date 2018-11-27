@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
@@ -66,7 +67,7 @@ import okhttp3.Response;
  * update: 2018/2/6 0006
  * version:
  */
-public class TaskdetailsActivity extends AppCompatActivity implements DetailsCallback, View.OnClickListener {
+public class TaskdetailsActivity extends BaseActivity implements DetailsCallback, View.OnClickListener {
     //界面适配器
     private AudioAdapter mAdapter;
     private String taskid;

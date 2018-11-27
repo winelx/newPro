@@ -41,6 +41,7 @@ import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -74,7 +75,7 @@ import static com.lzy.okgo.OkGo.post;
  * @author lx
  *         我的消息列表界面
  */
-public class MineListmessageActivity extends AppCompatActivity implements View.OnClickListener, TaskCallback {
+public class MineListmessageActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private Context mContext;
     private Listinter_Adfapter mAdapter = null;
     /**

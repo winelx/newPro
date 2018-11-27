@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
@@ -34,7 +35,7 @@ import okhttp3.Response;
  *         update: 2018/3/21 0021
  *         version:
  */
-public class ProjectMembersTreeActivity extends AppCompatActivity {
+public class ProjectMembersTreeActivity extends BaseActivity {
     private ListView maberTree;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;

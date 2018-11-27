@@ -19,6 +19,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -51,7 +52,7 @@ import static com.example.administrator.newsdf.R.id.drawer_layout_list;
  * update: 2018/2/6 0006
  * version:
  */
-public class NewpushActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewpushActivity extends BaseActivity implements View.OnClickListener {
     private TextView comButton, pushUsername, wbsText, replyButton,drawer_layout_text;
     private IconTextView back;
     private LinearLayout newpushWbs, newpushUser;

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -42,7 +43,7 @@ import okhttp3.Response;
  *         update: 2018/3/22 0022
  *         version:
  */
-public class OrganiwbsActivity extends Activity {
+public class OrganiwbsActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> organizationList;
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
@@ -62,13 +63,13 @@ public class OrganiwbsActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
         mContext = OrganiwbsActivity.this;
-        refreshLayout = findViewById(R.id.SmartRefreshLayout);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         refreshLayout.setEnableLoadmore(false);//禁止上拉
         refreshLayout.setEnableRefresh(false);
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
-        com_title = findViewById(R.id.com_title);
+        com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择WBS节点");
 
         mTree = (ListView) findViewById(R.id.wbs_listview);

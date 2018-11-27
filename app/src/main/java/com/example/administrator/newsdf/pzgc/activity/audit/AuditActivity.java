@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Auditbean;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -55,7 +56,7 @@ import okhttp3.Response;
  *         version:
  */
 
-public class AuditActivity extends AppCompatActivity {
+public class AuditActivity extends BaseActivity {
     private Context mContext;
     private List<Auditbean> mData;
     private ArrayList<Audittitlebean> title;

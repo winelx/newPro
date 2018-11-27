@@ -7,12 +7,13 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
  * @author lx
  *         这关于我们的界面
  */
-public class AboutmeActivity extends AppCompatActivity {
+public class AboutmeActivity extends BaseActivity {
     String version;
     private TextView versions;
 

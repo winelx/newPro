@@ -28,6 +28,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.same.WorkareaActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
@@ -63,7 +64,7 @@ import okhttp3.Response;
  *         update: 2018/3/22 0022
  *         version:
  */
-public class NodedetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class NodedetailsActivity extends BaseActivity implements View.OnClickListener {
     private TextView nodeWbsName, nodeWbsProject, nodeWbsType,
             nodeWbsStatus, nodeWbsUsername, nodeWbsProgress, node_lin_workarea_item;
     String wbsId, userID, status, wbsName, wbspath, type;

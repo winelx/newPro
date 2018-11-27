@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
 import com.example.administrator.newsdf.camera.CheckPermission;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -50,7 +51,7 @@ import static com.example.administrator.newsdf.R.id.tree_path;
  *         update: 2018/3/21 0021
  *         version:
  */
-public class ProjectmemberActivity extends AppCompatActivity {
+public class ProjectmemberActivity extends BaseActivity {
     private ListView uslistView;
     private LinearLayout comback;
     private SettingAdapter<Icon> mAdapter = null;

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.list.XListView;
 import com.lzy.okgo.OkGo;
@@ -47,7 +48,7 @@ import okhttp3.Response;
  *         update: 2018/4/19 0019
  *         version:
  */
-public class ContactPeopleActivity extends AppCompatActivity implements XListView.IXListViewListener {
+public class ContactPeopleActivity extends BaseActivity implements XListView.IXListViewListener {
     private XListView uslistView;
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData;

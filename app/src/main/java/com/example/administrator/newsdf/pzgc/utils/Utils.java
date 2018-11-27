@@ -2,12 +2,18 @@ package com.example.administrator.newsdf.pzgc.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+
+import com.example.administrator.newsdf.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -185,6 +191,47 @@ public class Utils {
             quarter = 4;
         }
         return quarter;
+    }
+    /**
+     * 给tablayout添加分割线，分割线保持上下内边距一定距离
+     *
+     * @param mTbTitle 传递TabLayout，
+     * @param context  上下文
+     */
+    public static void addtabpaddingdivider(TabLayout mTbTitle, Context context) {
+        LinearLayout linearLayout = (LinearLayout) mTbTitle.getChildAt(0);
+        /**
+         *
+         *设置在该布局中的项目之间应如何显示分隔符
+         *@ PARAM SealDe除除器：{Link Lang-SuffiSealErrE}St}中的一个或多个，
+         *{Link LySuffSeuleReMe}}，或{Link Lang-SuffySealErthEnth}
+         *显示分隔符，或{Link Lang-SuffiSealErnNOn}以显示无分隔符。
+         */
+        linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        /**
+         *在分隔符两端显示设置填充。对于垂直布局，应用填充。
+         *分隔符的左和右端。对于水平布局，填充被应用到顶部和
+         *分压器的底端。
+         *
+         * @param padding 将应用于每个端的像素填充值
+         *
+         * @see #setShowDividers(int)
+         * @see #setDividerDrawable(Drawable)
+         * @see #getDividerPadding()
+         */
+        linearLayout.setDividerPadding(35);
+        /**
+         * 设置一个可作为项目之间的分隔符的可绘制性。
+         *
+         * @param divider 可以分割每个项目的可绘制的。
+         *
+         * @see #setShowDividers(int)
+         *
+         * @attr ref android.R.styleable#LinearLayout_divider
+         */
+        linearLayout.setDividerDrawable(ContextCompat.getDrawable(context,
+                R.drawable.layout_divider_verticals));
+
     }
 
 }

@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWe
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
+import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
@@ -93,6 +94,9 @@ public class WorkFragment extends Fragment {
                         case "整改通知":
                             startActivity(new Intent(mContext, CheckdownMessageActivity.class));
                             break;
+                        case "特种设备":
+                            startActivity(new Intent(mContext, DeviceActivity.class));
+                            break;
                         default:
                     }
                 }
@@ -156,7 +160,6 @@ public class WorkFragment extends Fragment {
     }
 
 
-
     public void okgo() {
         OkGo.get(Requests.getMenu)
                 .execute(new StringCallback() {
@@ -216,6 +219,7 @@ public class WorkFragment extends Fragment {
                                     }
                                     if ("true".equals(str8)) {
                                         checklist.add(new Audio("整改通知", str8));
+                                        checklist.add(new Audio("特种设备", "true"));
                                     }
 
                                 }

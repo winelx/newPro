@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -42,7 +43,7 @@ import okhttp3.Response;
  *         update: 2018/3/9 0009
  *         version:
  */
-public class BootupActivity extends AppCompatActivity {
+public class BootupActivity extends BaseActivity {
     private Context mContext;
     private final int SDK_PERMISSION_REQUEST = 127;
 
@@ -81,7 +82,7 @@ public class BootupActivity extends AppCompatActivity {
                 //进行是否登录判断
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
-                    startActivity(new Intent(mContext, LoginActivity.class));
+           startActivity(new Intent(mContext, LoginActivity.class));
                     finish();
                 } else {
                     //如果已经存在，
