@@ -3,10 +3,9 @@ if (isUserModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
-
 android {
     compileSdkVersion 26
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '26.0.2'
     resourcePrefix "zc_"
 
     defaultConfig {

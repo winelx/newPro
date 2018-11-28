@@ -165,7 +165,6 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray data = jsonObject.getJSONArray("data");
@@ -284,6 +283,9 @@ public class WorkFragment extends Fragment {
                         break;
                     case "整改通知":
                         holder.setImageResource(R.id.item_iamge, R.mipmap.check_notice);
+                        break;
+                    case "特种设备":
+                        holder.setImageResource(R.id.item_iamge, R.mipmap.specialdevices);
                         break;
                     default:
                         break;

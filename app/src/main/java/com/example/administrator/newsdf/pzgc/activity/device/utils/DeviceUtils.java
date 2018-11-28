@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.device.utils;
 
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -24,9 +25,18 @@ public class DeviceUtils {
     }
 
     public interface MeOnclickLitener {
-        void onsuccess(ArrayList<String> list);
+        void onsuccess(ArrayList<Home_item> list);
     }
 
+    public interface MeListOnclickLitener {
+        void onsuccess(ArrayList<MyNoticeDataBean> data);
+    }
+
+    /**
+     * 特种设备全部界面网络请求
+     *
+     * @param onclickLitener
+     */
     public void deviceall(final AllOnclickLitener onclickLitener) {
         final ArrayList<String> list = new ArrayList<>();
         final Map<String, List<Home_item>> ListMap = new HashMap<>();
@@ -62,9 +72,17 @@ public class DeviceUtils {
 //                });
     }
 
-
+    /**
+     * 特种设备我的界面网络请求
+     *
+     * @param onclickLitener
+     */
     public void deviceme(final MeOnclickLitener onclickLitener) {
-        final ArrayList<String> list = new ArrayList<>();
+        final ArrayList<Home_item> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
+                    "组织", "1", "false", "1", "1212", false));
+        }
         onclickLitener.onsuccess(list);
 //        OkGo.post("")
 //                .execute(new StringCallback() {
@@ -80,4 +98,30 @@ public class DeviceUtils {
 //                    }
 //                });
     }
+
+    /**
+     * 特种设备我的整改消息列表网络请求
+     */
+    public void decicemessagelist(final MeListOnclickLitener onclickLitener) {
+        ArrayList<MyNoticeDataBean> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(new MyNoticeDataBean("测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", false));
+            list.add(new MyNoticeDataBean("测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", true));
+        }
+//        OkGo.post("")
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(String s, Call call, Response response) {
+////                        onclickLitener.onsuccess(list);
+//                    }
+//
+//                    @Override
+//                    public void onError(Call call, Response response, Exception e) {
+//                        super.onError(call, response, e);
+//                    }
+//                });
+        onclickLitener.onsuccess(list);
+    }
+
+
 }

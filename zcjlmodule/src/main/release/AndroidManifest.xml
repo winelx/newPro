@@ -58,6 +58,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
         </provider>
+
         <activity
             android:name=".ui.activity.dismantling.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
@@ -84,6 +85,7 @@
         <activity android:name=".ui.activity.approval.ApprovalZcActivity" />
         <activity android:name=".ui.activity.approval.CapitalApprovalZcActivity" />
         <activity android:name=".ui.activity.approval.ApprovalHeadquartersZcActivity" />
+        <activity android:name=".NativeActivity"></activity>
     </application>
 
 </manifest>

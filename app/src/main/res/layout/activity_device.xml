@@ -11,9 +11,9 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/device_tablayout"
+        style="@style/AppTabLayout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        style="@style/AppTabLayout"
         android:background="@color/writer" />
 
     <View
@@ -22,9 +22,29 @@
         android:layout_marginBottom="5dp"
         android:background="@color/back" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/device_viewPager"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/writer" />
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/device_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/writer" />
+
+        <ImageView
+            android:id="@+id/device_newadd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
+            android:background="@mipmap/check_newadd"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

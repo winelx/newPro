@@ -42,16 +42,16 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
 //        holder.check_me_title.setText();
         int number;
         try {
-             number = Integer.parseInt(mDatas.get(position).getUnfinish());
-        }catch (Exception e){
-            number=0;
+            number = Integer.parseInt(mDatas.get(position).getUnfinish());
+        } catch (Exception e) {
+            number = 0;
         }
-            if (number==0){
-                holder.homeItemMessage.setVisibility(View.GONE);
-            }else {
-                holder.homeItemMessage.setText(number+"");
-                holder.homeItemMessage.setVisibility(View.VISIBLE);
-            }
+        if (number == 0) {
+            holder.homeItemMessage.setVisibility(View.GONE);
+        } else {
+            holder.homeItemMessage.setText(number + "");
+            holder.homeItemMessage.setVisibility(View.VISIBLE);
+        }
 
         holder.checkMeTitle.setText(mDatas.get(position).getOrgname());
         holder.homeItemImg.setText(mDatas.get(position).getParentname());
@@ -66,9 +66,13 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
         //获取自定义View的布局（加载item布局）
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        View view = null;
+            if (view == null) {
+                view = LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false);
+            }
+            MyViewHolder holder = new MyViewHolder(view);
+            return holder;
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

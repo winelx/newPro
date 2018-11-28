@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back">
@@ -43,7 +45,9 @@
                 android:layout_height="match_parent"
                 android:divider="@color/back"
                 android:dividerHeight="0.5dp"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                tools:layoutManager=""
+                tools:listitem="@layout/fragment_checkdown_me" />
 
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
@@ -63,7 +67,7 @@
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="29dp"
         android:layout_marginRight="29dp"
-        android:visibility="gone"
-        android:background="@mipmap/check_newadd" />
+        android:background="@mipmap/check_newadd"
+        android:visibility="gone" />
 
 </RelativeLayout>

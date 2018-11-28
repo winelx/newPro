@@ -7,6 +7,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.Adapter.DeviceExpandableAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
@@ -27,11 +28,11 @@ public class DeviceAllFragment extends LazyloadFragment {
     private LinearLayout nullposion;
     private SmartRefreshLayout refreshLayout;
     private ExpandableListView expandableListView;
-    private MyExpandableListAdapter mAdapter;
+    private DeviceExpandableAdapter mAdapter;
     private DeviceUtils deviceUtils;
     private Context mContext;
     private int groupPosition = 0;
-    private View.OnClickListener ivGoToChildClickListener;
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_allmessage;
@@ -39,32 +40,22 @@ public class DeviceAllFragment extends LazyloadFragment {
 
     @Override
     protected void init() {
-        mContext=getActivity();
+        mContext = getActivity();
         //帮助类
         deviceUtils = new DeviceUtils();
         //空数据提示
         nullposion = rootView.findViewById(R.id.nullposion);
         //刷新加载
         refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
+        //是否启用下拉刷新功能
+        refreshLayout.setEnableRefresh(false);
+        //是否启用上拉加载功能
+        refreshLayout.setEnableLoadmore(false);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
         //两层结构的listview
         expandableListView = rootView.findViewById(R.id.expandable);
-        ivGoToChildClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //获取被点击图标所在的group的索引
-                Map<String, Object> map = (Map<String, Object>) v.getTag();
-                groupPosition = (int) map.get("groupPosition");
-                //判断分组是否展开
-                boolean isExpand = expandableListView.isGroupExpanded(groupPosition);
-                if (isExpand) {
-                    //收缩
-                    expandableListView.collapseGroup(groupPosition);
-                } else {
-                    //展开
-                    expandableListView.expandGroup(groupPosition);
-                }
-            }
-        };
+
     }
 
     @Override
@@ -72,8 +63,7 @@ public class DeviceAllFragment extends LazyloadFragment {
         deviceUtils.deviceall(new DeviceUtils.AllOnclickLitener() {
             @Override
             public void onsuccess(ArrayList<String> list, Map<String, List<Home_item>> map) {
-                mAdapter = new MyExpandableListAdapter(list, map, mContext,
-                        ivGoToChildClickListener);
+                mAdapter = new DeviceExpandableAdapter(list, map, mContext);
                 expandableListView.setAdapter(mAdapter);
             }
         });

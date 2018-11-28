@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -64,5 +65,12 @@ public class DeviceActivity extends BaseActivity {
         for (int j = 0; j < titles.length; j++) {
             tabLayout.getTabAt(j).setText(titles[j]);
         }
+        //新增数据
+        findViewById(R.id.device_newadd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DeviceActivity.this, NewDeviceActivity.class));
+            }
+        });
     }
 }

@@ -62,7 +62,6 @@ public class CheckdownMessageAllFragment extends Fragment {
         mContext = getActivity();
         list = new ArrayList<>();
         map = new HashMap<>();
-
         checkNewadd = view.findViewById(R.id.check_newadd);
         expandable = view.findViewById(R.id.expandable);
         SmartRefreshLayout refreshLayout = view.findViewById(R.id.SmartRefreshLayout);

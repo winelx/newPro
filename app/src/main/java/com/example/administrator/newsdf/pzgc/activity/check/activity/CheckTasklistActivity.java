@@ -113,7 +113,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         smartrefreshlayout.setDisableContentWhenLoading(true);
         //是否启用列表惯性滑动到底部时自动加载更多
         smartrefreshlayout.setEnableAutoLoadmore(false);
-//是否启用越界拖动（仿苹果效果）1.0.4
+        //是否启用越界拖动（仿苹果效果）1.0.4
         smartrefreshlayout.setEnableOverScrollDrag(true);
         ImageView checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         checklistmeunimage.setVisibility(View.VISIBLE);

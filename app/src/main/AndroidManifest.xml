@@ -119,11 +119,6 @@
             android:name=".pzgc.activity.home.MineListmessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-        </intent-filter>
-
         <activity
             android:name=".pzgc.activity.home.same.ReplyActivity"
             android:screenOrientation="portrait"
@@ -179,9 +174,7 @@
         <activity
             android:name=".pzgc.activity.work.PopwindActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/myTransparent">
-            >
-        </activity>
+            android:theme="@style/myTransparent" />
         <activity
             android:name=".pzgc.activity.home.same.Checkpoint"
             android:screenOrientation="portrait" />
@@ -357,7 +350,10 @@
             android:screenOrientation="portrait" />
         <activity android:name=".pzgc.activity.check.activity.CheckRectificationWebActivity" />
         <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceActivity"></activity>
+        <activity android:name=".pzgc.activity.device.DeviceActivity" />
+        <activity android:name=".pzgc.activity.device.NewDeviceActivity" />
+        <activity android:name=".pzgc.activity.device.DeviceMessageListActivity" />
+        <activity android:name=".pzgc.activity.device.DeviceDetailsActivity"></activity>
     </application>
 
 </manifest>
