@@ -81,11 +81,9 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 } else {
-                    //
-                    ToastUtils.showLongToast("sss");
 //                    mContext.startActivity(new Intent(mContext, MainActivity.class));
                     DeviceMessageListActivity activity = (DeviceMessageListActivity) mContext;
-                    activity.status(holder.infaceItemMessage.getText(), mDatas.get(position).getNoticeId(), position);
+                    activity.status();
 
                 }
             }
@@ -101,8 +99,8 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ChecknoticeMessagelistActivity activity = (ChecknoticeMessagelistActivity) mContext;
-                        activity.detele(position);
+                        DeviceMessageListActivity activity = (DeviceMessageListActivity) mContext;
+//                        activity.detele(position);
 
                     }
                 });

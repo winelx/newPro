@@ -353,7 +353,8 @@
         <activity android:name=".pzgc.activity.device.DeviceActivity" />
         <activity android:name=".pzgc.activity.device.NewDeviceActivity" />
         <activity android:name=".pzgc.activity.device.DeviceMessageListActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceDetailsActivity"></activity>
+        <activity android:name=".pzgc.activity.device.DeviceDetailsActivity"/>
+        <activity android:name=".pzgc.activity.device.SeeDetailsActivity"/>
     </application>
 
 </manifest>

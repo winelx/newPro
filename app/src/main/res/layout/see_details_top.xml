@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/writer"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/see_details_title"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@color/back2"
+        android:drawableLeft="@mipmap/drawable_division"
+        android:gravity="center_vertical"
+        android:text="第一个问题"
+        android:textColor="@color/colorAccent"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/see_details_standard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:text="违反标准："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/see_details_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="隐患等级："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/see_details_term"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="整改期限："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/see_details_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxEms="20"
+            android:maxLines="1"
+            android:text="整改事由："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="巡查附件："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/see_details_toprecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/writer"
+            android:maxHeight="100dp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

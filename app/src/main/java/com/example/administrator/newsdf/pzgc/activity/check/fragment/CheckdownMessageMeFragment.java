@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;

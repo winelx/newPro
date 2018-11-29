@@ -195,7 +195,6 @@ public class IssuedTaskDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         return mData.size();
     }
 
-
     private class DetailsTop extends RecyclerView.ViewHolder {
         TextView checkDetailsTitle, checkDetailsUserdata, checkDetailsBlock,
                 checkDetailsStandard, checkDetailsWhy, checkDetailsOrg;

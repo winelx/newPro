@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/writer"
+    android:layout_height="30dp"
+    android:id="@+id/term_content_linear"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/icon_blue"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/term_content"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="8"
+        android:ellipsize="end"
+        android:maxEms="18"
+        android:maxLines="1"
+        android:text="操作人员应明白超市的股份超市的股份"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/circular_ensure"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/circular_ensure_false" />
+
+</LinearLayout>

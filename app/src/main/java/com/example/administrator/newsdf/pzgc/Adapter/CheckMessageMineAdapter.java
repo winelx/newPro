@@ -66,10 +66,7 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
         //获取自定义View的布局（加载item布局）
-        View view = null;
-            if (view == null) {
-                view = LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false);
-            }
+        View view= LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false);
             MyViewHolder holder = new MyViewHolder(view);
             return holder;
 
