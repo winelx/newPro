@@ -82,6 +82,9 @@ public class DeviceMeFragment extends LazyloadFragment {
             public void onsuccess(ArrayList<Home_item> data) {
                 list.addAll(data);
                 mAdapter.getData(data);
+                if (list.size() > 0) {
+                    nullposion.setVisibility(View.GONE);
+                }
             }
         });
     }

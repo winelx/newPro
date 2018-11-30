@@ -469,7 +469,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
         //年的控件
-
         yearPicker = contentView.findViewById(R.id.years);
         //月
         monthPicker = contentView.findViewById(R.id.month);

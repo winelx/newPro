@@ -93,12 +93,12 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
             String urlpath = mData.get(position).getUrl();
-            //截取出后缀
-            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
-            //拿到截取后缀后的字段
-            urlpath = urlpath.replace(pas, "");
+//            //截取出后缀
+//            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
+//            //拿到截取后缀后的字段
+//            urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
-            urlpath = urlpath + "_min" + pas;
+//            urlpath = urlpath + "_min" + pas;
             RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()

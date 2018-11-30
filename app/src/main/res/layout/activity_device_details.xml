@@ -13,6 +13,7 @@
         android:id="@+id/device_details_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp_10"
         android:background="@color/writer" />
 
 </LinearLayout>

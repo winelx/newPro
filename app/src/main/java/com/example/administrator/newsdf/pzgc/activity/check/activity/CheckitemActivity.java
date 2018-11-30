@@ -296,8 +296,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //整改通知
         checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
         checkItemContentMassage.setOnClickListener(this);
-        //附件
-        photoadd = (RecyclerView) findViewById(R.id.recycler_view);
         //抽屉控件
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         //拖动控件
@@ -451,7 +449,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //冲相册返回图片
-        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+         if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
             if (data != null && requestCode == IMAGE_PICKER) {
                 //获取返回的图片路径集合
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);

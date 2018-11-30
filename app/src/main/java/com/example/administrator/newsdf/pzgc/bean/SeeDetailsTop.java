@@ -10,5 +10,26 @@ import java.util.ArrayList;
 
 public class SeeDetailsTop {
     String title;
-    ArrayList<String> list;
+    ArrayList<FileTypeBean> list;
+
+    public SeeDetailsTop(String title, ArrayList<FileTypeBean> list) {
+        this.title = title;
+        this.list = list;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ArrayList<FileTypeBean> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<FileTypeBean> list) {
+        this.list = list;
+    }
 }

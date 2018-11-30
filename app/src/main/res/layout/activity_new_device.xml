@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.newsdf.pzgc.activity.device.NewDeviceActivity">
-    <include layout="@layout/titlestyle" />
-</android.support.constraint.ConstraintLayout>
+    android:background="@color/back2"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tootle"
+        layout="@layout/titlestyle" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tootle">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/content"
+                layout="@layout/activity_new_device_content" />
+
+            <TextView
+                android:id="@+id/problem"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="13dp"
+                android:text="问题项"
+                android:textColor="@color/graytext"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/new_inspect_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/problem"
+                android:background="@color/writer" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/back2" />
+            <TextView
+                android:id="@+id/new_inspect_addproblem"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/new_inspect_recycler"
+                android:background="@color/writer"
+                android:gravity="center"
+                android:text="＋添加问题"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/lower_hairs"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/Orange"
+        android:gravity="center"
+        android:text="下发"
+        android:textColor="@color/writer"
+        android:textSize="15sp"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+</RelativeLayout>

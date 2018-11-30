@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -233,5 +235,23 @@ public class Utils {
                 R.drawable.layout_divider_verticals));
 
     }
+
+    /**
+     * 界面控件的margin的设置
+     *
+     * @param v 控件
+     * @param l 左
+     * @param t 上
+     * @param r 右
+     * @param b 下
+     */
+    public  void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
 
 }

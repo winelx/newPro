@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReplyA
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckValidationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmassageActivity;
+import com.example.administrator.newsdf.pzgc.activity.device.ProblemItemActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
@@ -146,7 +147,12 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             //
                             CheckValida.delete(position);
                             break;
+
                         default:
+                            // 1
+                            int position = holder.getLayoutPosition();
+                            // 2
+                            mOnItemClickListener.deleteClick(holder.itemView, position);
                             break;
                     }
                 }
@@ -216,6 +222,9 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             validation.showPopwindow();
                             break;
                         default:
+                            int position = holder.getLayoutPosition();
+                            // 2
+                            mOnItemClickListener.addlick(holder.itemView, position);
                             break;
                     }
 
@@ -257,5 +266,20 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
         notifyDataSetChanged();
     }
 
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void addlick(View view, int position);
+
+        void deleteClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 
 }

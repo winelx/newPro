@@ -259,7 +259,7 @@ public class Dates {
         }
     }
 
-    private static void deleteFile(File file) {
+    public static void deleteFile(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {

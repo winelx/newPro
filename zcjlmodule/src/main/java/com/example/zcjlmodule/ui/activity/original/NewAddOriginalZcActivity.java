@@ -620,7 +620,8 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == 102 && resultCode == 102) {
+        } else
+            if (requestCode == 102 && resultCode == 102) {
             //所属项目
             newAddOriginalProjectname.setText(data.getStringExtra("name"));
             ProjectId = data.getStringExtra("id");

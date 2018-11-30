@@ -16,7 +16,7 @@ import okhttp3.Response;
 /**
  * @author lx
  * @Created by: 2018/11/27 0027.
- * @description:
+ * @description: 特种设备网络请求帮助类
  */
 
 public class DeviceUtils {

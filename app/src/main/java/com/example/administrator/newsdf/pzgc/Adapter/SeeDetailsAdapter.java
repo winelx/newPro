@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.mine.Text;
+import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsReply;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsTop;
 
@@ -25,6 +28,7 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int TYPE_TWO = 2;
     private ArrayList<Object> mData;
     private Context mContext;
+    private int page = 0;
 
     public SeeDetailsAdapter(Context mContext, ArrayList<Object> list) {
         this.mData = list;
@@ -45,24 +49,50 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    /**
+     * @param holder
+     * @param position
+     * @绑定viewholder
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Object obj = mData.get(position);
         if (holder instanceof TopViewholder) {
-            problem();
+
+            problem((TopViewholder) holder, obj, position);
         } else if (holder instanceof ReplyViewholder) {
-            reply();
+            reply((ReplyViewholder) holder, obj, position);
         }
     }
 
-    private void reply() {
+    @SuppressLint("SetTextI18n")
+    private void problem(TopViewholder holder, Object object, int position) {
+        page++;
+        ArrayList<FileTypeBean> list = new ArrayList<>();
+        list.addAll(((SeeDetailsTop) object).getList());
+        holder.seeDetailsTitle.setText("第" + page + "个问题");
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        holder.toprecycler.setLayoutManager(linearLayoutManager);
+        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, list);
+        holder.toprecycler.setAdapter(adapter2);
+
     }
 
-    private void problem() {
+    private void reply(ReplyViewholder holder, Object object, int position) {
+        ArrayList<FileTypeBean> list = new ArrayList<>();
+        list.addAll(((SeeDetailsReply) object).getList());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        holder.seedetailsreplyrecycler.setLayoutManager(linearLayoutManager);
+        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, list);
+        holder.seedetailsreplyrecycler.setAdapter(adapter2);
     }
+
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
     @Override
@@ -96,11 +126,14 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     class ReplyViewholder extends RecyclerView.ViewHolder {
-        RecyclerView see_details_replyrecycler;
-        TextView see_details_describe;
+        RecyclerView seedetailsreplyrecycler;
+        TextView seedetailsdescribe;
 
         public ReplyViewholder(View itemView) {
             super(itemView);
+            seedetailsreplyrecycler = itemView.findViewById(R.id.see_details_replyrecycler);
+            seedetailsdescribe = itemView.findViewById(R.id.see_details_describe);
+
         }
     }
 }

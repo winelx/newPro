@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/writer"
     android:orientation="vertical">
 
@@ -9,7 +9,6 @@
         android:id="@+id/see_details_title"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_marginRight="@dimen/dp_10"
         android:background="@color/back2"
         android:drawableLeft="@mipmap/drawable_division"
         android:gravity="center_vertical"

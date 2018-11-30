@@ -4,14 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <RelativeLayout
         android:id="@+id/audio_relat"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
         android:background="#f1f6f7">
-
 
         <TextView
             android:id="@+id/audio_relat_name"
@@ -47,7 +44,6 @@
             android:textColor="@color/colorAccent"
             android:textSize="11sp" />
     </RelativeLayout>
-
 
     <ImageView
         android:id="@+id/imgage"
