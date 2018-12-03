@@ -35,7 +35,7 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
     //布局id
     private int mLayoutRes;
 
-    public SettingAdapter() {
+    public SettingAdapter(int check_standard_content, ArrayList<String> list) {
     }
 
 

@@ -87,6 +87,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //回复
     private void bindContet(DetailsReply holder, Object obj, int position) {
+
     }
 
     //验证

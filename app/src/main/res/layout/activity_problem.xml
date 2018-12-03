@@ -1,245 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/writer"
-        android:orientation="horizontal">
 
+    <LinearLayout
+        android:id="@+id/contentlin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlestyle" />
 
         <LinearLayout
-            android:id="@+id/violation_standards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:minHeight="50dp"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="5dp">
+            android:background="@color/writer"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:id="@+id/violation_standards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:minHeight="50dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="5dp"
+                tools:ignore="InefficientWeight">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/warning_red"
+                    android:paddingLeft="10dp"
+                    android:text="违反标准"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/violation_standards_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="请选择"
+                    android:minHeight="30dp"
+                    android:paddingLeft="9dp"
+                    android:text="121212121212"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text3"
+                android:layout_marginRight="10dp"
+                android:gravity="end|center_vertical"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp"
+                tools:ignore="ObsoleteLayoutParam" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back2" />
+
+        <LinearLayout
+            android:id="@+id/hidden_danger_grade"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/writer"
+            android:paddingLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:drawableLeft="@mipmap/warning_red"
-                android:paddingLeft="10dp"
-                android:text="违反标准"
+                android:gravity="center_vertical"
+                android:text="隐患等级"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/violation_standards_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="请选择"
-                android:minHeight="30dp"
-                android:paddingLeft="9dp"
-                android:text="121212121212"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/hidden_danger_grade_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:gravity="end|center_vertical"
+                android:hint="请选择"
+                android:maxEms="16"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text3"
+                android:layout_marginRight="10dp"
+                android:gravity="end|center_vertical"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp"
+                tools:ignore="ObsoleteLayoutParam" />
         </LinearLayout>
 
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="12dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
-            android:layout_marginRight="10dp"
-            android:gravity="end|center_vertical"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back2" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rectify_data_lin"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/writer"
+            android:paddingLeft="10dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/back2" />
-
-    <LinearLayout
-        android:id="@+id/hidden_danger_grade"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/writer"
-        android:paddingLeft="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/warning_red"
-            android:gravity="center_vertical"
-            android:text="隐患等级"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/warning_red"
+                android:gravity="center_vertical"
+                android:text="整改期限"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
 
-        <TextView
-            android:id="@+id/hidden_danger_grade_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:ellipsize="end"
-            android:gravity="end|center_vertical"
-            android:hint="请选择"
-            android:maxEms="16"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/rectify_data"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:gravity="end|center_vertical"
+                android:hint="请选择"
+                android:maxEms="16"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="12dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
-            android:layout_marginRight="10dp"
-            android:gravity="end|center_vertical"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
-    </LinearLayout>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text3"
+                android:layout_marginRight="10dp"
+                android:gravity="end|center_vertical"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/back2" />
-
-    <LinearLayout
-        android:id="@+id/rectify_data_lin"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/writer"
-        android:paddingLeft="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/warning_red"
-            android:gravity="center_vertical"
-            android:text="整改期限"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-
-        <TextView
-            android:id="@+id/rectify_data"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:ellipsize="end"
-            android:gravity="end|center_vertical"
-            android:hint="请选择"
-            android:maxEms="16"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="12dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
-            android:layout_marginRight="10dp"
-            android:gravity="end|center_vertical"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/back2" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/writer"
-        android:orientation="horizontal">
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back2" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:minHeight="50dp"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="5dp">
+            android:background="@color/writer"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="整改事由"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/rectify_cause"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@null"
-                android:hint="请选择"
-                android:minHeight="30dp"
-                android:paddingLeft="9dp"
-                android:text="121212121212"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:layout_weight="8"
+                android:minHeight="50dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="整改事由"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/rectify_cause"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:hint="请选择"
+                    android:minHeight="30dp"
+                    android:paddingLeft="9dp"
+                    android:text="121212121212"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back2" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/writer"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:text="巡检附件"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/item_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/writer"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp" />
+
+        <TextView
+            android:id="@+id/item_delete"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/writer"
+            android:gravity="center"
+            android:text="删除该项问题"
+            android:textColor="@color/red"
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <View
+    <LinearLayout
+        android:id="@+id/problemgrade"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/back2" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/writer"
-        android:paddingLeft="15dp"
-        android:text="巡检附件"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
+        <fragment
+            android:name="com.example.administrator.newsdf.pzgc.activity.device.fragment.ProblemgradeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/item_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:background="@color/writer"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp" />
-
-
-    <TextView
-        android:id="@+id/item_delete"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/writer"
-        android:gravity="center"
-        android:text="删除该项问题"
-        android:textColor="@color/red"
-        android:textSize="14sp" />
 </LinearLayout>

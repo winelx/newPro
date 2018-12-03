@@ -622,6 +622,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
 
         final PopupWindow popWindow = new PopupWindow(popView, width, height);
         popWindow.setAnimationStyle(R.style.AnimBottom);
+        popWindow.setClippingEnabled(false);
         popWindow.setFocusable(true);
         // 设置同意在外点击消失
         popWindow.setOutsideTouchable(false);

@@ -1,23 +1,24 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.widget.EditText;
-
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -27,10 +28,12 @@ import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-
+import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
+import com.example.administrator.newsdf.pzgc.callback.ProblemCallback;
+import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
@@ -52,7 +55,7 @@ import java.util.List;
  * @description: 新增/删除检查项
  * @date: 2018/11/30 0030 下午 5:00
  */
-public class ProblemItemActivity extends BaseActivity implements View.OnClickListener {
+public class ProblemItemActivity extends BaseActivity implements View.OnClickListener, CheckCallback3 {
     private RecyclerView item_recycler;
     private static final int IMAGE_PICKER = 1011;
     private Context mContext;
@@ -71,6 +74,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private CheckUtils checkUtils;
     private Date myDate = new Date();
+    private TextView checklistmeuntext;
+    private LinearLayout problemgrade, contentlin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         dateMonth = myDate.getMonth();
         //天
         dayDate = myDate.getDate() - 1;
+        ProblemItemCallbackUtils.setCallBack(this);
         //检查相机权限
         checkPermission = new CheckPermission(this) {
             @Override
@@ -101,6 +107,22 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 ToastUtils.showLongToast("权限申请失败！");
             }
         };
+        init();
+        showView();
+    }
+
+    /**
+     * @description: 初始化控件
+     * @author lx
+     * @date: 2018/12/3 0003 下午 3:31
+     */
+    private void init() {
+        problemgrade = (LinearLayout) findViewById(R.id.problemgrade);
+        contentlin = (LinearLayout) findViewById(R.id.contentlin);
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        checklistmeuntext.setText("确定");
+        checklistmeuntext.setOnClickListener(this);
         takePictureManager = new TakePictureManager(ProblemItemActivity.this);
         //删除Item
         findViewById(R.id.item_delete).setOnClickListener(this);
@@ -113,6 +135,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         //整改期限
         findViewById(R.id.rectify_data_lin).setOnClickListener(this);
         rectify_data = (TextView) findViewById(R.id.rectify_data);
+        rectify_data.setText(Dates.getDay());
         //整改事由
         rectify_cause = (EditText) findViewById(R.id.rectify_cause);
         //附件
@@ -177,6 +200,13 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 photoAdapter.getData(imagepath, true);
             }
         });
+        //返回
+        findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**
@@ -234,12 +264,40 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.item_delete:
                 //删除
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                        .setMessage("是否删除该项问题")
+                        //点击对话框以外的区域是否让对话框消失
+                        .setCancelable(false)
+                        //设置按钮
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                ProblemCallbackUtils.deleteProblem("str");
+                            }
+                        })
+                        //设置按钮
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                //显示对话框
+                dialog.show();
+                break;
+            case R.id.checklistmeuntext:
+                ProblemCallbackUtils.addProblem("str");
                 break;
             case R.id.violation_standards:
                 //违反标准
+                startActivity(new Intent(mContext, DeviceViolatestandardActivity.class));
                 break;
             case R.id.hidden_danger_grade:
                 //隐患等级
+                hideView();
                 break;
             case R.id.rectify_data_lin:
                 meunpop();
@@ -368,6 +426,16 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
+     * @description: 回调
+     * @author lx
+     * @date: 2018/12/3 0003 下午 3:44
+     */
+    @Override
+    public void update(String string) {
+
+    }
+
+    /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
      */
     class poponDismissListener implements PopupWindow.OnDismissListener {
@@ -375,6 +443,16 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         public void onDismiss() {
             Utils.backgroundAlpha(1f, ProblemItemActivity.this);
         }
+    }
+
+    public void showView() {
+        contentlin.setVisibility(View.VISIBLE);
+        problemgrade.setVisibility(View.GONE);
+    }
+
+    public void hideView() {
+        contentlin.setVisibility(View.GONE);
+        problemgrade.setVisibility(View.VISIBLE);
     }
 
 }

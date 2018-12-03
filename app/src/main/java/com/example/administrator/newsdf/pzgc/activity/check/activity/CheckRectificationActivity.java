@@ -293,11 +293,13 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         if (status) {
             switch (v.getId()) {
                 case R.id.check_standard:
+                    //违反标准
                     Intent intent = new Intent(mContext, CheckstandardListActivity.class);
                     intent.putExtra("title", "title");
                     startActivityForResult(intent, 1);
                     break;
                 case R.id.checklistback:
+                    //返回
                     if (Imagepath.size() > 0) {
                         for (int i = 0; i < Imagepath.size(); i++) {
                             FileUtils.deleteFile(Imagepath.get(i).getContent());
@@ -312,14 +314,14 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     meunpop();
                     break;
                 case R.id.check_org:
-                    //选择标段
+                    //选择整改部位
                     Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
                     intent12.putExtra("title", "选择标段");
                     intent12.putExtra("data", "Rectifi");
                     startActivityForResult(intent12, 3);
                     break;
                 case R.id.check_import:
-                    //选择
+                    //选择标段
                     String content = checkRectifiWbs.getText().toString();
                     if (!content.isEmpty()) {
                         Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
@@ -331,6 +333,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     }
                     break;
                 case R.id.checklistmeun:
+                    //保存
                     String str = checklistmeuntext.getText().toString();
                     if ("保存".equals(str)) {
 
@@ -383,6 +386,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     }
                     break;
                 case R.id.check_rectifi_user:
+                    //选择负责人
                     if (OrgId != null) {
                         Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                         intent1.putExtra("orgId", OrgId);
@@ -602,7 +606,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    //隐藏 8  显示8
+    //隐藏   显示
     private void Visibility(int number) {
         for (int i = 0; i < listVIew.size(); i++) {
             listVIew.get(i).setVisibility(number);
