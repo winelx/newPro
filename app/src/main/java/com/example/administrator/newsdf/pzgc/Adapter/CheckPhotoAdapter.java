@@ -144,10 +144,8 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         case "validation":
                             CheckValidationActivity CheckValida = (CheckValidationActivity) mContext;
-                            //
                             CheckValida.delete(position);
                             break;
-
                         default:
                             // 1
                             int position = holder.getLayoutPosition();

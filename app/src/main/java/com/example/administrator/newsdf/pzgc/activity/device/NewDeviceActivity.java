@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NewDeviceAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
@@ -23,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 
 import java.util.ArrayList;
 
@@ -44,12 +46,13 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<String> list;
     private int page;
     private String userId, nodeId;
-
+    private DialogUtils dialogUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_device);
         mContext = this;
+        dialogUtils=new DialogUtils();
         //新增/删除问题的接口回调实例化
         ProblemCallbackUtils.setCallBack(this);
         //帮助类
@@ -95,6 +98,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         newInspectAddress = (EditText) findViewById(R.id.new_inspect_address);
         //巡检日期
         newInspectDataLin = (LinearLayout) findViewById(R.id.new_inspect_data_lin);
+        newInspectDataLin.setOnClickListener(this);
         newInspectData = (TextView) findViewById(R.id.new_inspect_data);
         newInspectData.setText(Dates.getDay());
         //整改负责人
@@ -150,6 +154,15 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 intent12.putExtra("title", "选择标段");
                 intent12.putExtra("data", "Rectifi");
                 startActivityForResult(intent12, 3);
+                break;
+            case R.id.new_inspect_data_lin:
+                //巡检日期
+                dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
+                    @Override
+                    public void onsuccess(String str) {
+                        ToastUtils.showLongToast(str);
+                    }
+                });
                 break;
             default:
                 break;

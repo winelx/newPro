@@ -100,7 +100,6 @@ public class DialogUtils {
         void openonclick(String string);
     }
 
-
     public static void dismantling(Context mContext, String titles, final onclick click) {
         // 创建对话框构建器
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);

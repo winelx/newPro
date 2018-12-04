@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,6 +73,9 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void bindTop(DetailsTop holder, Object obj, int position) {
 //        CheckDetailsTop top = (CheckDetailsTop) obj;
         holder.detailsTopRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
+        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
+        holder.detailsTopRecyclerview.addItemDecoration(divider);
         ArrayList<DeviceTrem> list = new ArrayList<>();
         list.add(new DeviceTrem("册数数据", "false"));
         list.add(new DeviceTrem("册数数据", "true"));
@@ -102,6 +106,9 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.detailsProvingRecycler.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
+        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
+        holder.detailsProvingRecycler.addItemDecoration(divider);
         FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, list);
         holder.detailsProvingRecycler.setAdapter(adapter2);
     }

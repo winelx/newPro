@@ -2,25 +2,31 @@ package com.example.administrator.newsdf.pzgc.activity.device;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
-import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -34,70 +40,56 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author lx
- * @Created by: 2018/12/3 0003.
- * @description:整改回复（详情页编辑）
- * @Activity：
- */
-
-public class CorrectReplyActivity extends BaseActivity {
-    private CorrectReplyAdapter mAdapter;
-    private ArrayList<CorrectReplyBean> list;
+public class VerificationActivity extends AppCompatActivity implements View.OnClickListener {
+    private LinearLayout validation_status;
+    private TextView category_item, checklistmeuntext;
+    private EditText replyDescription;
+    private RecyclerView check_reply_rec;
+    private CheckPhotoAdapter mAdapter;
+    private String status = null;
     private Context mContext;
-    private TextView checklistmeuntext;
-    private RecyclerView devicedetailsRecycler;
-    private LinearLayout deviceDetailsFunction;
+    private ArrayList<Audio> imagepath;
     private PopCameraUtils PopCameraUtils;
-    private static final int IMAGE_PICKER = 1011;
     private TakePictureManager takePictureManager;
-    private int pos = 0;
+    private static final int IMAGE_PICKER = 1011;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_details);
+        setContentView(R.layout.activity_check_validation);
         mContext = this;
-        //相机相册选择弹窗帮助类
+        imagepath = new ArrayList<>();
+        //实例化弹出框
         PopCameraUtils = new PopCameraUtils();
-        //相机帮助类初始化
-        takePictureManager = new TakePictureManager(CorrectReplyActivity.this);
-        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        //初始化相机
+        takePictureManager = new TakePictureManager(VerificationActivity.this);
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        deviceDetailsFunction = (LinearLayout) findViewById(R.id.device_details_function);
-        devicedetailsRecycler = (RecyclerView) findViewById(R.id.device_details_recycler);
-        deviceDetailsFunction.setVisibility(View.GONE);
-
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("确定");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        devicedetailsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<>();
-        ArrayList<FileTypeBean> data = new ArrayList<>();
-        data.add(new FileTypeBean("测试图片.jpg", "http://attach.bbs.miui.com/forum/201807/17/154537ujxutueesyj3mzt0.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://img1.imgtn.bdimg.com/it/u=3099290229,4242430518&fm=27&gp=0.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://i2.hdslb.com/bfs/archive/102d43ce9564fb9e27f699c02abbf3081f3ba197.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://img.mp.itc.cn/upload/20170804/bb02fbb3accc4b95b857834228f3b137_th.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://imgfs.oppo.cn/uploads/thread/attachment/2017/10/02/15069522405715.jpg", "jpg"));
-        for (int i = 0; i < 2; i++) {
-            ArrayList<Audio> audios = new ArrayList<>();
-            audios.add(new Audio("http://attach.bbs.miui.com/forum/201807/17/154537ujxutueesyj3mzt0.jpg", "测试图片"));
-            audios.add(new Audio("http://img1.imgtn.bdimg.com/it/u=3099290229,4242430518&fm=27&gp=0.jpg", "测试图片"));
-            list.add(new CorrectReplyBean("测试违反标准", "B", "2018=12-01", "设备存放不合格", "按时整改", audios, data));
-        }
-        mAdapter = new CorrectReplyAdapter(list, mContext);
-        devicedetailsRecycler.setAdapter(mAdapter);
-        //设置适配器点击事件
-        mAdapter.setOnItemClickListener(new CorrectReplyAdapter.OnItemClickListener() {
-            //调用相机相册
+        checklistmeuntext.setOnClickListener(this);
+        //标题
+        TextView title = (TextView) findViewById(R.id.titleView);
+        title.setText("验证");
+        //验证状态
+        validation_status = (LinearLayout) findViewById(R.id.validation_status);
+        validation_status.setOnClickListener(this);
+        //验证状态提示
+        category_item = (TextView) findViewById(R.id.category_item);
+        //验证描述
+        replyDescription = (EditText) findViewById(R.id.replyDescription);
+        //验证附件
+        check_reply_rec = (RecyclerView) findViewById(R.id.check_reply_rec);
+        check_reply_rec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        mAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", false);
+        check_reply_rec.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
             @Override
-            public void addlick(final int position, final int adapterposition) {
-                //记录点击的item位置，在从相册返回时使用（onActivityResult）
-                pos = position;
+            public void addlick(View view, int position) {
                 //展示弹出窗
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
@@ -107,21 +99,15 @@ public class CorrectReplyActivity extends BaseActivity {
                             takePictureManager.startTakeWayByCarema();
                             takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
                                 @Override
-                                public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                public void successful(boolean isTailor, File outFile, final Uri filePath) {
                                     //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
                                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                                     options.quality = 95;
                                     Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
                                         @Override
                                         public void callback(boolean isSuccess, String outfile) {
-                                            //获取到指定位置的图片集合
-                                            ArrayList<Audio> tinglist = list.get(position).getList();
-                                            //新增数据
-                                            tinglist.add(new Audio(outfile, "测试图片"));
-//                                            //将集合中的图片更新
-                                            list.get(position).setList(tinglist);
-                                            //刷新数据，并指定刷新的位置
-                                            mAdapter.setNewData(list);
+                                            imagepath.add(new Audio(outfile, ""));
+                                            mAdapter.getData(imagepath, true);
                                         }
                                     });
                                 }
@@ -139,22 +125,47 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
-            //删除图片
+
             @Override
-            public void deleteClick(int position, int adapterposition) {
-                //删除图片
-                //获取到指定位置的图片集合
-                ArrayList<Audio> tinglist = list.get(position).getList();
-                //展出指定位置文件
-                tinglist.remove(adapterposition);
-//                //将集合中的图片更新
-//                list.get(position).setList(tinglist);
-                //刷新数据，并指定刷新的位置
-                mAdapter.setNewData(list);
+            public void deleteClick(View view, int position) {
+                imagepath.remove(position);
+                mAdapter.getData(imagepath, true);
             }
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.validation_status:
+                AlertDialog dialog = new AlertDialog.Builder(this).setTitle("是否验证通过")
+                        .setNegativeButton("打回", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                status = "2";
+                                category_item.setText("打回");
+                                category_item.setTextColor(Color.parseColor("#FE0000"));
+                            }
+                        }).setPositiveButton("通过", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //处理确认按钮的点击事件
+                                category_item.setText("通过");
+                                category_item.setTextColor(Color.parseColor("#28c26A"));
+                                status = "1";
+                            }
+                        })
+                        .create();
+                dialog.show();
+                break;
+            case R.id.checklistmeuntext:
+                ToastUtils.showLongToast("确定");
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
      * @param requestCode
@@ -188,14 +199,8 @@ public class CorrectReplyActivity extends BaseActivity {
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
-                                //获取到指定位置的图片集合
-                                ArrayList<Audio> tinglist = list.get(pos).getList();
-                                //新增数据
-                                tinglist.add(new Audio(outfile, "测试图片"));
-//                                            //将集合中的图片更新
-//                                            list.get(position).setList(tinglist);
-                                //刷新数据，并指定刷新的位置
-                                mAdapter.setNewData(list);
+                                imagepath.add(new Audio(outfile, ""));
+                                mAdapter.getData(imagepath, true);
                             }
                         });
                     } else {
@@ -205,4 +210,5 @@ public class CorrectReplyActivity extends BaseActivity {
             }
         }
     }
+
 }

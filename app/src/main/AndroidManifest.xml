@@ -358,11 +358,16 @@
         <activity android:name=".pzgc.activity.device.DeviceMessageListActivity" />
         <activity android:name=".pzgc.activity.device.DeviceDetailsActivity" />
         <activity android:name=".pzgc.activity.device.SeeDetailsActivity" />
+        <activity android:name=".pzgc.activity.device.CorrectReplyActivity" />
         <activity
             android:name=".pzgc.activity.device.ProblemItemActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.device.DeviceViolatestandardActivity"></activity>
+        <activity android:name=".pzgc.activity.device.DeviceViolatestandardActivity" />
+        <activity
+            android:name=".pzgc.activity.device.VerificationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

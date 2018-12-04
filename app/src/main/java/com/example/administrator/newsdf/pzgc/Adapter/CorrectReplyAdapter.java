@@ -1,14 +1,23 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
+import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 
 import java.util.ArrayList;
 
@@ -16,15 +25,15 @@ import java.util.ArrayList;
  * @author lx
  * @Created by: 2018/12/3 0003.
  * @description:
- * @Activity：
+ * @Activity：CorrectReplyActivity
  */
 
 public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<String> list;
+    private ArrayList<CorrectReplyBean> list;
     private Context mContext;
 
-    public CorrectReplyAdapter(ArrayList<String> list, Context mContext) {
+    public CorrectReplyAdapter(ArrayList<CorrectReplyBean> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -35,14 +44,50 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 inflate(R.layout.adapter_correctreply, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof Viewholder) {
-            ((Viewholder) holder).correct_content.setText("违反标准：测试违反标准" + "\\n"
-                    + "隐患等级：" + "B" + "\\n"
-                    + "整改期限：" + "2018-12-12" + "\\n"
-                    + "整改事由：" + "设备存放有问题" + "\\n"
-                    + "巡检附件：");
+            ((Viewholder) holder).title.setText("第" + (position + 1) + "个问题");
+            ((Viewholder) holder).correct_content.setText(
+                    "违反标准：" + list.get(position).getStandard() + "\n"
+                            + "隐患等级：" + list.get(position).getGrade() + "\n"
+                            + "整改期限：" + list.get(position).getTerm() + "\n"
+                            + "整改事由：" + list.get(position).getReason() + "\n"
+                            + "巡检附件：");
+            //整改事由
+            ((Viewholder) holder).reply_editext.setText(list.get(position).getDescribe());
+
+            //回复附件
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            ((Viewholder) holder).patrolRecyclerview.setLayoutManager(linearLayoutManager);
+            DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
+            divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
+            ((Viewholder) holder).patrolRecyclerview.addItemDecoration(divider);
+            FiletypeAdapter adapter = new FiletypeAdapter(mContext, list.get(position).getFilelist());
+            ((Viewholder) holder).patrolRecyclerview.setAdapter(adapter);
+            //巡检附件
+            ((Viewholder) holder).replyRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+            DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
+            divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
+            ((Viewholder) holder).replyRecyclerview.addItemDecoration(divider1);
+            CheckPhotoAdapter photoAdapter = new CheckPhotoAdapter(mContext,  list.get(position).getList(), "device", false);
+            ((Viewholder) holder).replyRecyclerview.setAdapter(photoAdapter);
+            photoAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
+                @Override
+                public void addlick(View view, int adapterposition) {
+                    int positions = position;
+                    // 2
+                    mOnItemClickListener.addlick(position, adapterposition);
+                }
+                @Override
+                public void deleteClick(View view, int adapterposition) {
+
+                    mOnItemClickListener.deleteClick(position, adapterposition);
+                }
+
+            });
         }
     }
 
@@ -51,12 +96,42 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return list.size();
     }
 
+    public void setNewData(ArrayList<CorrectReplyBean> lists){
+        this.list=lists;
+       notifyDataSetChanged();
+    }
     class Viewholder extends RecyclerView.ViewHolder {
-        TextView correct_content;
+        TextView correct_content, title;
+        RecyclerView replyRecyclerview, patrolRecyclerview;
+        EditText reply_editext;
 
         public Viewholder(View itemView) {
             super(itemView);
+            title = itemView.findViewById(R.id.title);
+            //整改描述
+            reply_editext = itemView.findViewById(R.id.reply_editext);
+            //回复内容
             correct_content = itemView.findViewById(R.id.correct_content);
+            //回复附件
+            replyRecyclerview = itemView.findViewById(R.id.reply_recyclerview);
+            //巡查附件
+            patrolRecyclerview = itemView.findViewById(R.id.patrol_recyclerview);
         }
+    }
+
+
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void addlick(int position, int adapterposition);
+        void deleteClick(int position, int adapterposition);
+    }
+
+    private CorrectReplyAdapter.OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(CorrectReplyAdapter.OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 }

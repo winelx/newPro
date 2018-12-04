@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -28,6 +30,7 @@ import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
@@ -39,6 +42,7 @@ import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -61,52 +65,31 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private Context mContext;
     private ArrayList<Audio> imagepath;
     private CheckPhotoAdapter photoAdapter;
-    private CheckPermission checkPermission;
     private ArrayList<String> deleteLis = new ArrayList<>();
     private TextView violation_standards_text, hidden_danger_grade_text, rectify_data;
     private PopCameraUtils PopCameraUtils;
     private EditText rectify_cause;
-    private int dateMonth, dayDate;
-    private String[] numbermonth, numberyear;
+
+
     //调用相机的manager
     private TakePictureManager takePictureManager;
-    private PopupWindow mPopupWindow;
-    private NumberPicker yearPicker, monthPicker, dayPicker;
     private CheckUtils checkUtils;
     private Date myDate = new Date();
     private TextView checklistmeuntext;
     private LinearLayout problemgrade, contentlin;
+    private DialogUtils dialogUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
         imagepath = new ArrayList<>();
+        dialogUtils = new DialogUtils();
         mContext = this;
         checkUtils = new CheckUtils();
-        //拿到月
-        numbermonth = Utils.month;
-        //拿到年
-        numberyear = Utils.year;
-        //获取当前月份
-        dateMonth = myDate.getMonth();
-        //天
-        dayDate = myDate.getDate() - 1;
         ProblemItemCallbackUtils.setCallBack(this);
-        //检查相机权限
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(ProblemItemActivity.this);
-            }
 
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
+
         init();
         showView();
     }
@@ -300,7 +283,12 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 hideView();
                 break;
             case R.id.rectify_data_lin:
-                meunpop();
+                dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
+                    @Override
+                    public void onsuccess(String str) {
+                        rectify_data.setText(str);
+                    }
+                });
                 //整改期限
                 break;
             default:
@@ -308,122 +296,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    /**
-     * 选择时间弹出框
-     */
-    private void meunpop() {
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        //设置显示隐藏动画
-        mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(rectify_data);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-        Utils.backgroundAlpha(0.5f, ProblemItemActivity.this);
-    }
-
-    /**
-     * \设置pop的点击事件
-     */
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        int layoutId = R.layout.popwind_daily;
-        final View contentView = LayoutInflater.from(mContext).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_determine:
-                        //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
-                        //获取月
-                        int month = monthPicker.getValue();
-                        String monthdata = Utils.month[month];
-                        //获取天
-                        int day = dayPicker.getValue();
-                        String daydata;
-                        if (monthdata.equals("02")) {
-                            //是二月份
-                            if (Utils.getyear().contains(yeardata)) {
-                                daydata = Utils.daytwos[day];
-                                //闰年
-                            } else {
-                                //平年
-                                daydata = Utils.daytwo[day];
-                            }
-                        } else {
-                            //不是二月份
-                            if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
-                                daydata = Utils.day[day];
-                            } else {
-                                daydata = Utils.dayth[day];
-                            }
-
-                        }
-                        rectify_data.setText(yeardata + "-" + monthdata + "-" + daydata);
-                        break;
-                    case R.id.pop_dismiss:
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-        //获取控件点击事件
-        contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
-        //年的控件
-        yearPicker = contentView.findViewById(R.id.years);
-        //月
-        monthPicker = contentView.findViewById(R.id.month);
-        //每日
-        dayPicker = contentView.findViewById(R.id.day);
-        //初始化数据---年
-        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
-        //初始化数据---月
-        Utils.setPicker(monthPicker, Utils.month, dateMonth);
-        //初始化数据---日
-        String yeardata = Utils.year[yearPicker.getValue()];
-        //如果当前月份是2月
-        if (dateMonth == 2) {
-            if (Utils.getyear().contains(yeardata)) {
-                Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
-                //闰年
-            } else {
-                //平年
-                Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
-            }
-        } else {
-            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
-                Utils.setPicker(dayPicker, Utils.day, dayDate);
-            } else {
-                Utils.setPicker(dayPicker, Utils.dayth, dayDate);
-            }
-        }
-        //年份选择器。如果当前的月份是二月，
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                checkUtils.setyear(monthPicker, dayPicker, i1, numberyear);
-            }
-        });
-        //月份选择器。如果当前的月份是二月，
-        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal,
-                                      int newVal) {
-                checkUtils.setMonth(yearPicker, monthPicker, dayPicker, newVal, numbermonth, numberyear);
-            }
-        });
-
-        return contentView;
-    }
 
     /**
      * @description: 回调

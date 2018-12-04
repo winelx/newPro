@@ -238,7 +238,7 @@ public class Utils {
 
     /**
      * 界面控件的margin的设置
-     *
+     * 这里的值全都是px，对比正常dp，需要乘2
      * @param v 控件
      * @param l 左
      * @param t 上

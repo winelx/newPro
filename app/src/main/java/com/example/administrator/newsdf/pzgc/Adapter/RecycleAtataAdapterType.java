@@ -2,6 +2,8 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -199,6 +201,9 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.audioRec.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
+        divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
+        holder.audioRec.addItemDecoration(divider1);
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
         adapter.setHasStableIds(true);
         holder.audioRec.setAdapter(adapter);

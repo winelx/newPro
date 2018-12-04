@@ -182,7 +182,6 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
                                 status = "2";
                                 category_item.setText("打回");
                                 category_item.setTextColor(Color.parseColor("#FE0000"));
-
                             }
                         }).setPositiveButton("通过", new DialogInterface.OnClickListener() {
 

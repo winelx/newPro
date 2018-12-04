@@ -14,17 +14,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tooble"
-        android:layout_marginBottom="@dimen/dp_10"
         android:background="@color/writer" />
 
 
     <LinearLayout
+        android:id="@+id/device_details_function"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:background="@color/red"
-        android:orientation="horizontal" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/device_details_down"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/Orange"
+            android:gravity="center"
+            android:text="下发"
+            android:textColor="@color/writer"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/device_details_proving"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/Orange"
+            android:gravity="center"
+            android:text="验证"
+            android:textColor="@color/writer"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/device_details_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="编辑"
+            android:textColor="@color/writer"
+            android:textSize="17sp" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
