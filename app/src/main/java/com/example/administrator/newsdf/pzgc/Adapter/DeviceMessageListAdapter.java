@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageListActivity;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -46,6 +47,12 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
     public DeviceMessageListAdapter(Context context) {
         mContext = context;
 
+    }
+
+    private ItemClickListener oClickListener;
+
+    public void setOnItemClickListener(ItemClickListener mOnItemClickListener) {
+        this.oClickListener = mOnItemClickListener;
     }
 
     @Override
@@ -81,10 +88,9 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                 if (menuIsOpen()) {
                     closeMenu();//关闭菜单
                 } else {
-//                    mContext.startActivity(new Intent(mContext, MainActivity.class));
-                    DeviceMessageListActivity activity = (DeviceMessageListActivity) mContext;
-                    activity.status();
-
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    oClickListener.Onclick(holder.itemView, position);
                 }
             }
         });
@@ -235,4 +241,6 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
     public void getnoti(int pos) {
         notifyItemChanged(pos);
     }
+
+
 }

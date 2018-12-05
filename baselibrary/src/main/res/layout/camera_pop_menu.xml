@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 style="?android:attr/borderlessButtonStyle"
-                android:background="@drawable/pop_first_selector"
+                android:background="@drawable/base_pop_last_selector"
                 android:text="拍摄"
                 android:textSize="15sp" />
 

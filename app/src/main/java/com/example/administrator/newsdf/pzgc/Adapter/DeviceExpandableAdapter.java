@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistAllActivity;
+import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageAllActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
@@ -133,10 +134,10 @@ public class DeviceExpandableAdapter extends BaseExpandableListAdapter implement
                 //隐藏消息数量
                 childHold.homeItemMessage.setVisibility(View.GONE);
                 //跳转界面
-//                Intent intent = new Intent(context, ChecknoticeMessagelistAllActivity.class);
-//                intent.putExtra("id", content.get(classes.get(groupPosition)).get(childPosition).getId());
-//                intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, DeviceMessageAllActivity.class);
+                intent.putExtra("id", content.get(classes.get(groupPosition)).get(childPosition).getId());
+                intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
+                context.startActivity(intent);
             }
         });
         return convertView;

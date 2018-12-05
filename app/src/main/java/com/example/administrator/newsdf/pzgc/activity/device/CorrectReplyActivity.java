@@ -121,7 +121,7 @@ public class CorrectReplyActivity extends BaseActivity {
 //                                            //将集合中的图片更新
                                             list.get(position).setList(tinglist);
                                             //刷新数据，并指定刷新的位置
-                                            mAdapter.setNewData(list);
+                                            mAdapter.setupdate(list, position);
                                         }
                                     });
                                 }
@@ -139,6 +139,7 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
+
             //删除图片
             @Override
             public void deleteClick(int position, int adapterposition) {
@@ -150,7 +151,7 @@ public class CorrectReplyActivity extends BaseActivity {
 //                //将集合中的图片更新
 //                list.get(position).setList(tinglist);
                 //刷新数据，并指定刷新的位置
-                mAdapter.setNewData(list);
+                mAdapter.setupdate(list, position);
             }
         });
     }
@@ -195,7 +196,7 @@ public class CorrectReplyActivity extends BaseActivity {
 //                                            //将集合中的图片更新
 //                                            list.get(position).setList(tinglist);
                                 //刷新数据，并指定刷新的位置
-                                mAdapter.setNewData(list);
+                                mAdapter.setupdate(list, pos);
                             }
                         });
                     } else {

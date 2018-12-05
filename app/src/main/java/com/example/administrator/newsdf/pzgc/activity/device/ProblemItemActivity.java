@@ -5,36 +5,26 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
-import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
-import com.example.administrator.newsdf.pzgc.callback.ProblemCallback;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -66,9 +56,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<Audio> imagepath;
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<String> deleteLis = new ArrayList<>();
-    private TextView violation_standards_text, hidden_danger_grade_text, rectify_data;
+    private TextView violationStandardsText, hiddenDangerGradeText, rectifyData;
     private PopCameraUtils PopCameraUtils;
-    private EditText rectify_cause;
+    private EditText rectifyCause;
 
 
     //调用相机的manager
@@ -88,8 +78,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         mContext = this;
         checkUtils = new CheckUtils();
         ProblemItemCallbackUtils.setCallBack(this);
-
-
         init();
         showView();
     }
@@ -111,16 +99,16 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.item_delete).setOnClickListener(this);
         //违反标准
         findViewById(R.id.violation_standards).setOnClickListener(this);
-        violation_standards_text = (TextView) findViewById(R.id.violation_standards_text);
+        violationStandardsText = (TextView) findViewById(R.id.violation_standards_text);
         //隐患等级
         findViewById(R.id.hidden_danger_grade).setOnClickListener(this);
-        hidden_danger_grade_text = (TextView) findViewById(R.id.hidden_danger_grade_text);
+        hiddenDangerGradeText = (TextView) findViewById(R.id.hidden_danger_grade_text);
         //整改期限
         findViewById(R.id.rectify_data_lin).setOnClickListener(this);
-        rectify_data = (TextView) findViewById(R.id.rectify_data);
-        rectify_data.setText(Dates.getDay());
+        rectifyData = (TextView) findViewById(R.id.rectify_data);
+        rectifyData.setText(Dates.getDay());
         //整改事由
-        rectify_cause = (EditText) findViewById(R.id.rectify_cause);
+        rectifyCause = (EditText) findViewById(R.id.rectify_cause);
         //附件
         item_recycler = (RecyclerView) findViewById(R.id.item_recycler);
         //样式
@@ -212,7 +200,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if ( requestCode==1011&&resultCode==1004){
             //获取返回的图片路径集合
             ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
             for (int i = 0; i < images.size(); i++) {
@@ -286,7 +274,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
-                        rectify_data.setText(str);
+                        rectifyData.setText(str);
                     }
                 });
                 //整改期限

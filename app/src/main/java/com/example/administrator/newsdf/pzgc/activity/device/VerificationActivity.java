@@ -39,7 +39,11 @@ import com.zxy.tiny.callback.FileCallback;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @description: 特种设备整改通知单验证界面
+ * @author lx
+ * @date: 2018/12/4 0004 下午 4:42
+*/
 public class VerificationActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout validation_status;
     private TextView category_item, checklistmeuntext;

@@ -21,14 +21,9 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckRectifyMessageAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.IssuedTaskDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -42,11 +37,13 @@ import java.util.ArrayList;
 
 /**
  * @author lx
- * @Created by: 2018/11/28 0028.
- * @description:我的特种设备整改通知（我的）
+ * @Created by: 2018/12/5 0005.
+ * @description:特种设备全部消息列表界面（全部）
+ * @Activity：
  */
 
-public class DeviceMessageListActivity extends BaseActivity implements View.OnClickListener {
+public class DeviceMessageAllActivity extends BaseActivity implements View.OnClickListener {
+
     private RecyclerView listView;
     private ArrayList<MyNoticeDataBean> mData;
     private Context mContext;
@@ -188,7 +185,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
     public View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
-        int layoutId = R.layout.pop_device_menu_me;
+        int layoutId = R.layout.pop_device_menu;
         View contentView = LayoutInflater.from(this).inflate(layoutId, null);
         View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
             @Override
@@ -201,20 +198,20 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
 
                         break;
                     case R.id.pop_submit:
-                        ToastUtils.showLongToast("未下发");
+                        ToastUtils.showLongToast("未回复");
                         //待提交
 
                         break;
                     case R.id.pop_financial:
-                        ToastUtils.showLongToast("未回复");
-
-                        break;
-                    case R.id.pop_manage:
                         ToastUtils.showLongToast("未验证");
 
                         break;
+                    case R.id.pop_manage:
+                        ToastUtils.showLongToast("打回");
+
+                        break;
                     case R.id.pop_back:
-                        ToastUtils.showLongToast("已处理");
+                        ToastUtils.showLongToast("已完成");
 
                         break;
                     default:
@@ -234,4 +231,8 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         return contentView;
     }
 
+    public void status() {
+        startActivity(new Intent(mContext, DeviceDetailsActivity.class));
+
+    }
 }

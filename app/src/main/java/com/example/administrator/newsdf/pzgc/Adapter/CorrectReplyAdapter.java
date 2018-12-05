@@ -15,9 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
-import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 
 import java.util.ArrayList;
 
@@ -49,14 +47,14 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof Viewholder) {
             ((Viewholder) holder).title.setText("第" + (position + 1) + "个问题");
-            ((Viewholder) holder).correct_content.setText(
+            ((Viewholder) holder).correctContent.setText(
                     "违反标准：" + list.get(position).getStandard() + "\n"
                             + "隐患等级：" + list.get(position).getGrade() + "\n"
                             + "整改期限：" + list.get(position).getTerm() + "\n"
                             + "整改事由：" + list.get(position).getReason() + "\n"
                             + "巡检附件：");
             //整改事由
-            ((Viewholder) holder).reply_editext.setText(list.get(position).getDescribe());
+            ((Viewholder) holder).replyEditext.setText(list.get(position).getDescribe());
 
             //回复附件
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -72,7 +70,7 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
             divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
             ((Viewholder) holder).replyRecyclerview.addItemDecoration(divider1);
-            CheckPhotoAdapter photoAdapter = new CheckPhotoAdapter(mContext,  list.get(position).getList(), "device", false);
+            CheckPhotoAdapter photoAdapter = new CheckPhotoAdapter(mContext,  list.get(position).getList(), "device", true);
             ((Viewholder) holder).replyRecyclerview.setAdapter(photoAdapter);
             photoAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
                 @Override
@@ -83,10 +81,8 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 @Override
                 public void deleteClick(View view, int adapterposition) {
-
                     mOnItemClickListener.deleteClick(position, adapterposition);
                 }
-
             });
         }
     }
@@ -100,18 +96,22 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.list=lists;
        notifyDataSetChanged();
     }
+    public void setupdate(ArrayList<CorrectReplyBean> lists,int position){
+        this.list=lists;
+        notifyItemChanged(position);
+    }
     class Viewholder extends RecyclerView.ViewHolder {
-        TextView correct_content, title;
+        TextView correctContent, title;
         RecyclerView replyRecyclerview, patrolRecyclerview;
-        EditText reply_editext;
+        EditText replyEditext;
 
         public Viewholder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             //整改描述
-            reply_editext = itemView.findViewById(R.id.reply_editext);
+            replyEditext = itemView.findViewById(R.id.reply_editext);
             //回复内容
-            correct_content = itemView.findViewById(R.id.correct_content);
+            correctContent = itemView.findViewById(R.id.correct_content);
             //回复附件
             replyRecyclerview = itemView.findViewById(R.id.reply_recyclerview);
             //巡查附件

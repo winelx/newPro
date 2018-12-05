@@ -122,7 +122,6 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     //展示类型对比
     @Override
     public int getItemViewType(int position) {
-
         if (mData.get(position) instanceof DeviceDetailsTop) {
             return TYPE_TOP;
         } else if (mData.get(position) instanceof DeviceDetailsReply) {

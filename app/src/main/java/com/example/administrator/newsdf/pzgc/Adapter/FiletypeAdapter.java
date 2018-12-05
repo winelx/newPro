@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
@@ -56,13 +55,11 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
-
         String imgUrl = mData.get(position).getName();
         //拿到.位置
         int doc = imgUrl.lastIndexOf(".");
         //截取doc+1后面的字符串，包括doc+1；
         String strs = imgUrl.substring(doc + 1);
-        ToastUtils.showLongToast(strs);
         if (strs.equals("pdf")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
