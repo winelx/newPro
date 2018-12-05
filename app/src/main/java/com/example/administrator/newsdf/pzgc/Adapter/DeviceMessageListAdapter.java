@@ -105,9 +105,7 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DeviceMessageListActivity activity = (DeviceMessageListActivity) mContext;
-//                        activity.detele(position);
-
+                        oClickListener.ondelete(position);
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {

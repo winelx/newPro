@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.utils.list;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.DatePicker;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * @author lx
  * @Created by: 2018/12/4 0004.
- * @description:
+ * @description:时间选择器
  * @Activity：
  */
 
@@ -205,4 +207,33 @@ public class DialogUtils {
         }
         return year;
     }
+
+    public static void Tipsdialog(Context mContext,String title,String[]strings,final OnClickListener selectiontime){
+        //删除
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext)
+                .setMessage(title)
+                //点击对话框以外的区域是否让对话框消失
+                .setCancelable(false)
+                //设置按钮
+                .setPositiveButton(strings[0], new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        selectiontime.onsuccess("str");
+
+                    }
+                })
+                //设置按钮
+                .setNegativeButton(strings[1], new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+        android.app.AlertDialog dialog = builder.create();
+        //显示对话框
+        dialog.show();
+    }
+
 }

@@ -36,7 +36,7 @@ public class PopCameraUtils {
         //计算屏幕宽高
         int width = activity.getResources().getDisplayMetrics().widthPixels;
         int height = activity.getResources().getDisplayMetrics().heightPixels;
-        final PopupWindow popWindow = new PopupWindow(popView, width, height);
+        final PopupWindow popWindow = new PopupWindow(popView, width, height+100);
 //        //添加显示隐藏动画
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setFocusable(true);
@@ -61,8 +61,6 @@ public class PopCameraUtils {
         btnAlbum.setOnClickListener(listener);
         btnCancel.setOnClickListener(listener);
         btn_camera_pop.setOnClickListener(listener);
-        ColorDrawable dw = new ColorDrawable(0x30000000);
-        popWindow.setBackgroundDrawable(dw);
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
     }

@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -60,6 +61,7 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     private RelativeLayout back_not_null;
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
+    private String[] meuns = {"全部", "未回复", "未验证", "打回", "已完成"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,11 +132,23 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         mAdapter.setOnItemClickListener(new ItemClickListener() {
             @Override
             public void Onclick(View view, int position) {
+                //点击
                 startActivity(new Intent(mContext, DeviceDetailsActivity.class));
+            }
+
+            @Override
+            public void ondelete(int position) {
+                //侧滑删除
+                mData.remove(position);
             }
         });
     }
 
+    /**
+     * @description: 点击事件
+     * @author lx
+     * @date: 2018/12/5 0005 下午 3:19
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -146,27 +160,11 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 这条表示加载菜单文件，第一个参数表示通过那个资源文件来创建菜单
-        // 第二个表示将菜单传入那个对象中。这里我们用Menu传入menu
-        // 这条语句一般系统帮我们创建好
-        getMenuInflater().inflate(R.menu.__picker_menu_picker, menu);
-        return true;
-    }
-    // 菜单的监听方法
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            default:
-                ToastUtils.showLongToast("sss");
-                break;
-        }
-        return true;
-
-    }
-    //网络请求
+    /**
+     * @description: 网络请求
+     * @author lx
+     * @date: 2018/12/5 0005 下午 3:19
+     */
     public void getdate() {
         deviceUtils.decicemessagelist(new DeviceUtils.MeListOnclickLitener() {
             @Override
@@ -176,85 +174,53 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         });
     }
 
-    //menu弹出窗
+    /**
+     * @description: menu弹出窗
+     * @author lx
+     * @date: 2018/12/5 0005 下午 3:18
+     */
     private void meun() {
-        //弹出框=
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                Dates.withFontSize(resolution) + 20, Dates.higtFontSize(resolution), true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        // 设置好参数之后再show
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(checklistmeun);
-        backgroundAlpha(0.5f);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        PullDownMenu pullDownMenu = new PullDownMenu();
+        pullDownMenu.showPopMeun(this, checklistmeun, meuns);
+        pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
             @Override
-            public void onDismiss() {
-                backgroundAlpha(1f);
+            public void onclick(int position, String string) {
+                ContentView(string);
             }
         });
     }
 
-    //界面亮度
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
-    }
-
-    public View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        // 布局ID
-        int layoutId = R.layout.pop_device_menu;
-        View contentView = LayoutInflater.from(this).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                page = 1;
-                mData.clear();
-                switch (v.getId()) {
-                    case R.id.pop_All:
-                        ToastUtils.showLongToast("全部");
-
-                        break;
-                    case R.id.pop_submit:
-                        ToastUtils.showLongToast("未回复");
-                        //待提交
-
-                        break;
-                    case R.id.pop_financial:
-                        ToastUtils.showLongToast("未验证");
-
-                        break;
-                    case R.id.pop_manage:
-                        ToastUtils.showLongToast("打回");
-
-                        break;
-                    case R.id.pop_back:
-                        ToastUtils.showLongToast("已完成");
-
-                        break;
-                    default:
-                        break;
-                }
-                getdate();
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-        contentView.findViewById(R.id.pop_All).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_submit).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_financial).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_manage).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_back).setOnClickListener(menuItemOnClickListener);
-        return contentView;
+    /**
+     * @description: menu弹窗点击事件
+     * @author lx
+     * @date: 2018/12/5 0005 下午 3:18
+     */
+    public void ContentView(String str) {
+//        page = 1;
+//        mData.clear();
+        switch (str) {
+            case "全部":
+                ToastUtils.showLongToast("全部");
+                break;
+            case "未回复":
+                ToastUtils.showLongToast("未回复");
+                //待提交
+                break;
+            case "未验证":
+                ToastUtils.showLongToast("未验证");
+                break;
+            case "打回":
+                ToastUtils.showLongToast("打回");
+                break;
+            case "已完成":
+                ToastUtils.showLongToast("已完成");
+                break;
+            default:
+                break;
+        }
     }
 
     public void status() {
         startActivity(new Intent(mContext, DeviceDetailsActivity.class));
-
     }
 }

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
@@ -68,6 +69,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private TextView checklistmeuntext;
     private LinearLayout problemgrade, contentlin;
     private DialogUtils dialogUtils;
+
+    String[] strings = {"确定", "取消"};
+    String title = "是否删除该项问题";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +130,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void onComple(String string) {
-                        if ("相机".equals(string)) {
+                        if (App.getInstance().creame.equals(string)) {
                             //拍照方式
                             takePictureManager.startTakeWayByCarema();
                             takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
@@ -192,15 +196,13 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101) {
-            /**
-             * 调用相机的回调
-             */
+            //调用相机的回调
             try {
                 takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if ( requestCode==1011&&resultCode==1004){
+        } else if (requestCode == 1011 && resultCode == 1004) {
             //获取返回的图片路径集合
             ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
             for (int i = 0; i < images.size(); i++) {
@@ -226,40 +228,26 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * 点击事件
-     *
-     * @param v
+     * @内容: 点击事件
+     * @author lx
+     * @date: 2018/12/5 0005 下午 3:22
      */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.item_delete:
                 //删除
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                        .setMessage("是否删除该项问题")
-                        //点击对话框以外的区域是否让对话框消失
-                        .setCancelable(false)
-                        //设置按钮
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                ProblemCallbackUtils.deleteProblem("str");
-                            }
-                        })
-                        //设置按钮
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
 
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                //显示对话框
-                dialog.show();
+                DialogUtils.Tipsdialog(mContext, title, strings, new DialogUtils.OnClickListener() {
+                    @Override
+                    public void onsuccess(String str) {
+                        ToastUtils.showLongToast("删除");
+                        ProblemCallbackUtils.deleteProblem("str");
+                    }
+                });
                 break;
             case R.id.checklistmeuntext:
+                //添加问题回调
                 ProblemCallbackUtils.addProblem("str");
                 break;
             case R.id.violation_standards:
@@ -271,6 +259,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 hideView();
                 break;
             case R.id.rectify_data_lin:
+                //筛选时间
                 dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
@@ -293,16 +282,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void update(String string) {
 
-    }
-
-    /**
-     * popWin关闭的事件，主要是为了将背景透明度改回来
-     */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-        @Override
-        public void onDismiss() {
-            Utils.backgroundAlpha(1f, ProblemItemActivity.this);
-        }
     }
 
     public void showView() {

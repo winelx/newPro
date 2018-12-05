@@ -38,6 +38,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
         mContext = this;
+        //帮助类（RecyclerView需要根据状态改变margin）
         utils = new Utils();
         list = new ArrayList<>();
         list.add(new DeviceDetailsTop("cesh"));
@@ -61,6 +62,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mAdapter = new DeviceDetailsAdapter(mContext, list));
         findViewById(R.id.checklistback).setOnClickListener(this);
+        //设置控件的margin值
         utils.setMargins(mRecyclerView, 0, 0, 0, 120);
     }
 

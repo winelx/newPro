@@ -11,4 +11,5 @@ import android.view.View;
 
 public interface ItemClickListener {
     void Onclick(View view, int position);
+    void ondelete(int position);
 }

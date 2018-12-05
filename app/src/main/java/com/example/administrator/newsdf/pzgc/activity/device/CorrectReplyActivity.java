@@ -52,7 +52,7 @@ public class CorrectReplyActivity extends BaseActivity {
     private static final int IMAGE_PICKER = 1011;
     private TakePictureManager takePictureManager;
     private int pos = 0;
-
+    public static final String camera="相机";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,12 @@ public class CorrectReplyActivity extends BaseActivity {
         PopCameraUtils = new PopCameraUtils();
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(CorrectReplyActivity.this);
+        //数据填完后保存按钮
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setText("确定");
+        //显示安按钮
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        //返回
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,10 +76,10 @@ public class CorrectReplyActivity extends BaseActivity {
         });
         deviceDetailsFunction = (LinearLayout) findViewById(R.id.device_details_function);
         devicedetailsRecycler = (RecyclerView) findViewById(R.id.device_details_recycler);
+        //隐藏控件，复用布局，这个界面不需要
         deviceDetailsFunction.setVisibility(View.GONE);
 
-        checklistmeuntext.setText("确定");
-        checklistmeuntext.setVisibility(View.VISIBLE);
+        //设置列表样式
         devicedetailsRecycler.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
         ArrayList<FileTypeBean> data = new ArrayList<>();
@@ -89,7 +94,9 @@ public class CorrectReplyActivity extends BaseActivity {
             audios.add(new Audio("http://img1.imgtn.bdimg.com/it/u=3099290229,4242430518&fm=27&gp=0.jpg", "测试图片"));
             list.add(new CorrectReplyBean("测试违反标准", "B", "2018=12-01", "设备存放不合格", "按时整改", audios, data));
         }
+        //实例化适配器
         mAdapter = new CorrectReplyAdapter(list, mContext);
+        //给recyclerview设置适配器
         devicedetailsRecycler.setAdapter(mAdapter);
         //设置适配器点击事件
         mAdapter.setOnItemClickListener(new CorrectReplyAdapter.OnItemClickListener() {
@@ -102,9 +109,10 @@ public class CorrectReplyActivity extends BaseActivity {
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void onComple(String string) {
-                        if ("相机".equals(string)) {
-                            //拍照方式
+                        if (camera.equals(string)) {
+                            // 开始拍照
                             takePictureManager.startTakeWayByCarema();
+                            //数据返回
                             takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
                                 @Override
                                 public void successful(boolean isTailor, File outFile, Uri filePath) {
@@ -125,7 +133,6 @@ public class CorrectReplyActivity extends BaseActivity {
                                         }
                                     });
                                 }
-
                                 @Override
                                 public void failed(int errorCode, List<String> deniedPermissions) {
                                     ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
@@ -160,8 +167,7 @@ public class CorrectReplyActivity extends BaseActivity {
     /**
      * @param requestCode
      * @param resultCode
-     * @param data
-     * @activity回调
+     * @param data        Activity的回调
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -170,6 +176,7 @@ public class CorrectReplyActivity extends BaseActivity {
         if (requestCode == 101) {
             //  调用相机的回调
             if (data != null) {
+                //返回的数据不为空
                 try {
                     takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
                 } catch (NullPointerException e) {
@@ -193,8 +200,6 @@ public class CorrectReplyActivity extends BaseActivity {
                                 ArrayList<Audio> tinglist = list.get(pos).getList();
                                 //新增数据
                                 tinglist.add(new Audio(outfile, "测试图片"));
-//                                            //将集合中的图片更新
-//                                            list.get(position).setList(tinglist);
                                 //刷新数据，并指定刷新的位置
                                 mAdapter.setupdate(list, pos);
                             }

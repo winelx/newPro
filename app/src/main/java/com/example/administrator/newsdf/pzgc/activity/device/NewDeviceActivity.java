@@ -47,12 +47,13 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     private int page;
     private String userId, nodeId;
     private DialogUtils dialogUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_device);
         mContext = this;
-        dialogUtils=new DialogUtils();
+        dialogUtils = new DialogUtils();
         //新增/删除问题的接口回调实例化
         ProblemCallbackUtils.setCallBack(this);
         //帮助类
@@ -144,6 +145,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 startActivity(new Intent(mContext, ProblemItemActivity.class));
                 break;
             case R.id.new_inspect_username_lin:
+                //选择联系人
                 Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                 intent1.putExtra("orgId", SPUtils.getString(mContext, "orgId", ""));
                 startActivityForResult(intent1, 5);
@@ -193,9 +195,11 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5 && resultCode == 2) {
+            //整改负责人
             userId = data.getStringExtra("id");
             newInspectUsername.setText(data.getStringExtra("name"));
         } else if (requestCode == 3 && resultCode == 2) {
+            //选择组织
             nodeId = data.getStringExtra("id");
             newInspectOrg.setText(data.getStringExtra("name"));
         }
