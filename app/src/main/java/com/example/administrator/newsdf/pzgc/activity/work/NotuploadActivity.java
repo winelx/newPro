@@ -85,9 +85,10 @@ public class NotuploadActivity extends BaseActivity implements TaskCallback {
     //更新数据
     private void queryDate() {
         list.clear();
+        //从数据库获取数据
         list = LoveDao.queryLove();
+        mAdapter.getData(list);
         if (list.size() > 0) {
-            mAdapter.getData(list);
             nullposion.setVisibility(View.GONE);
         } else {
             nullposion.setVisibility(View.VISIBLE);
@@ -112,6 +113,7 @@ public class NotuploadActivity extends BaseActivity implements TaskCallback {
     //删除记录
     public void deleteDate(int pos) {
         if (!list.isEmpty()) {
+            //从数据库中删除数据
             LoveDao.deleteLove(list.get(pos).getId());
         }
         mAdapter.closeMenu();

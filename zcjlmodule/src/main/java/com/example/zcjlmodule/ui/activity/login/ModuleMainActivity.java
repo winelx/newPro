@@ -15,7 +15,6 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.presenter.ModuleMainPresenter;
 import com.example.zcjlmodule.ui.activity.HomeZcActivity;
 
-import com.example.zcjlmodule.ui.activity.dismantling.ScrollingActivity;
 import com.example.zcjlmodule.view.ModuleMainView;
 
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
@@ -79,7 +78,7 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
                     TopSnackBar.make(btnLogin, "用户名或密码为空", BaseTransientBottomBar.LENGTH_SHORT).show();
 
                 }
-//                startActivity(new Intent(mContext,ScrollingActivity.class));
+//             startActivity(new Intent(mContext,OriginalZcActivity.class));
                 break;
             case R.id.main_background:
                 baseUtils.hidekeyboard(this, edtAccount);

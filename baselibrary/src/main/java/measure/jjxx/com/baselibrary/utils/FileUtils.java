@@ -2,6 +2,8 @@ package measure.jjxx.com.baselibrary.utils;
 
 import android.view.View;
 
+
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,6 +19,7 @@ import java.text.DecimalFormat;
 
 import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
 import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
+
 
 /**
  * @author lx

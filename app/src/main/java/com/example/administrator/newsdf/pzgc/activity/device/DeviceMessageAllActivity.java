@@ -10,6 +10,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -144,6 +146,26 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 这条表示加载菜单文件，第一个参数表示通过那个资源文件来创建菜单
+        // 第二个表示将菜单传入那个对象中。这里我们用Menu传入menu
+        // 这条语句一般系统帮我们创建好
+        getMenuInflater().inflate(R.menu.__picker_menu_picker, menu);
+        return true;
+    }
+    // 菜单的监听方法
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            default:
+                ToastUtils.showLongToast("sss");
+                break;
+        }
+        return true;
+
+    }
     //网络请求
     public void getdate() {
         deviceUtils.decicemessagelist(new DeviceUtils.MeListOnclickLitener() {

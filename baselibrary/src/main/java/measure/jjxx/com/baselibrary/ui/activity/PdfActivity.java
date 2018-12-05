@@ -1,46 +1,36 @@
 package measure.jjxx.com.baselibrary.ui.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+
+
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+
 import android.widget.Toast;
+
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 
 import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+
 import java.util.List;
 
 import measure.jjxx.com.baselibrary.R;
 import measure.jjxx.com.baselibrary.base.BaseActivity;
 import measure.jjxx.com.baselibrary.interfaces.PermissionListener;
-import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
+
 import measure.jjxx.com.baselibrary.utils.FileUtils;
-import measure.jjxx.com.baselibrary.utils.PermissionUtils;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+
 import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
 import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 import okhttp3.Call;

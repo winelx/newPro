@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.bean.OriginalZcBean;
 import com.example.zcjlmodule.callback.Callback;
@@ -45,7 +46,7 @@ import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.SPUtils;
 import measure.jjxx.com.baselibrary.utils.ScreenUtil;
 import measure.jjxx.com.baselibrary.utils.TextUtils;
-import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import measure.jjxx.com.baselibrary.view.PullDownMenu;
 
 /**
  * description: 原始勘丈表
@@ -77,6 +78,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
     private static final String TYPE_THREE = "按表单号查询";
     private static final String TYPE_FOUR = "按户主明细查询";
     private static final String TYPE_FIVE = "按期数查询";
+    String[] strings = {"征拆类型查询", "按区域查询", "按表单号查询", "按户主明细查询", "按期数查询"};
     private String orgId, periodId;
     private int stauts = 0;
     private ImageView AddData;
@@ -153,7 +155,6 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
                 String string = bean.toString();
                 List<String> strlist = stringToList(string);
                 for (int i = 0; i < strlist.size(); i++) {
-//
                     String str = strlist.get(i);
                     message.put(str.substring(0, str.indexOf("=")) + "", str.substring(str.indexOf("=") + 1, str.length()) + "");
                 }
@@ -211,7 +212,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             finish();
         } else if (i == R.id.original_org) {
             Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
-            intent.putExtra("type","true");
+            intent.putExtra("type", "true");
             startActivity(intent);
         } else if (i == R.id.original_add) {
             Intent intent = new Intent(mContext, NewAddOriginalZcActivity.class);
@@ -219,57 +220,67 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
             intent.putExtra("orgId", orgId);
             startActivity(intent);
         } else if (i == R.id.toolbar_icon_meun) {
-            //menu
-            DialogUtils.meunPop(OriginalZcActivity.this, toolbarIconMeun, dimension, new DialogUtils.onclick() {
-                @Override
-                public void openonclick(String string) {
-                    if (TYPE_ONE.equals(string)) {
-                        //按征拆类型查询
-                        stauts = 1;
-                        //征拆类型查询
-                        Intent intent = new Intent(mContext, DismantlingtypequeryZcActivity.class);
-                        intent.putExtra("orgId", orgId);
-                        startActivityForResult(intent, 103);
-                    } else if (TYPE_TWO.equals(string)) {
-                        //区域查询
-                        stauts = 2;
-                        Intent intent = new Intent(mContext, RegionZcActivity.class);
-                        intent.putExtra("orgId", orgId);
-                        startActivityForResult(intent, 102);
-                    } else if (TYPE_THREE.equals(string)) {
-                        //表单
-                        stauts = 3;
-                        DialogUtils.dismantling(mContext, "按表单号查询", new DialogUtils.onclick() {
-                            @Override
-                            public void openonclick(String string) {
-                                periodId = string;
-                                //征拆类型
-                                httprequest(true);
-                            }
-                        });
-                    } else if (TYPE_FOUR.equals(string)) {
-                        stauts = 4;
-                        DialogUtils.dismantling(mContext, "按户主明细查询", new DialogUtils.onclick() {
-                            @Override
-                            public void openonclick(String string) {
-                                periodId = string;
-                                //征拆类型
-                                httprequest(true);
-                            }
-                        });
-                    } else if (TYPE_FIVE.equals(string)) {
-                        //期数查询
-                        stauts = 5;
-                        Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
-                        intent.putExtra("orgId", orgId);
-                        startActivityForResult(intent, 101);
-
-                    } else {
-                    }
-                }
-            });
-        } else {
+            openMeun();
         }
+    }
+
+    /**
+     * @description:打开menu
+     * @author lx
+     * @date: 2018/12/5 0005 下午 2:02
+     */
+    private void openMeun() {
+        //打开
+        PullDownMenu pullDownMenu = new PullDownMenu();
+        pullDownMenu.showPopMeun(OriginalZcActivity.this, toolbarIconMeun, strings);
+        //点击事件
+        pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
+            @Override
+            public void onclick(int position, String string) {
+                if (TYPE_ONE.equals(string)) {
+                    //按征拆类型查询
+                    stauts = 1;
+                    //征拆类型查询
+                    Intent intent = new Intent(mContext, DismantlingtypequeryZcActivity.class);
+                    intent.putExtra("orgId", orgId);
+                    startActivityForResult(intent, 103);
+                } else if (TYPE_TWO.equals(string)) {
+                    //区域查询
+                    stauts = 2;
+                    Intent intent = new Intent(mContext, RegionZcActivity.class);
+                    intent.putExtra("orgId", orgId);
+                    startActivityForResult(intent, 102);
+                } else if (TYPE_THREE.equals(string)) {
+                    //表单
+                    stauts = 3;
+                    DialogUtils.dismantling(mContext, "按表单号查询", new DialogUtils.onclick() {
+                        @Override
+                        public void openonclick(String string) {
+                            periodId = string;
+                            //征拆类型
+                            httprequest(true);
+                        }
+                    });
+                } else if (TYPE_FOUR.equals(string)) {
+                    stauts = 4;
+                    DialogUtils.dismantling(mContext, "按户主明细查询", new DialogUtils.onclick() {
+                        @Override
+                        public void openonclick(String string) {
+                            periodId = string;
+                            //征拆类型
+                            httprequest(true);
+                        }
+                    });
+                } else if (TYPE_FIVE.equals(string)) {
+                    //期数查询
+                    stauts = 5;
+                    Intent intent = new Intent(mContext, PeriodsQueryZcActivity.class);
+                    intent.putExtra("orgId", orgId);
+                    startActivityForResult(intent, 101);
+
+                }
+            }
+        });
     }
 
     /**
@@ -282,7 +293,7 @@ public class OriginalZcActivity extends BaseMvpActivity<OriginalPresenter> imple
         String str;
         if (page == 0) {
             list.clear();
-            if (price!= null) {
+            if (price != null) {
                 str = "合计金额：" + price;
                 moneynumber.setText(TextUtils.setText(mContext, str, str.indexOf("：") + 1));
             } else {

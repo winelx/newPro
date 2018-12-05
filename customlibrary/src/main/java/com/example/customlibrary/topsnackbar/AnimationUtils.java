@@ -1,4 +1,4 @@
-package measure.jjxx.com.baselibrary.view.top_snackbar;
+package com.example.customlibrary.topsnackbar;
 
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -16,7 +16,7 @@ import android.view.animation.LinearInterpolator;
  * @Email : dakun611@Gmail.com
  */
 
-public class AnimationUtils {
+class AnimationUtils {
 
     static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
     static final Interpolator FAST_OUT_SLOW_IN_INTERPOLATOR = new FastOutSlowInInterpolator();
