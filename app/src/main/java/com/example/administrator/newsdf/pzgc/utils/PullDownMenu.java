@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
 import com.example.administrator.newsdf.R;
 
 /**
@@ -48,6 +49,7 @@ public class PullDownMenu {
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
+        mPopupWindow.setAnimationStyle(R.style.popmenu_animation);
         mPopupWindow.showAsDropDown(view);
         backgroundAlpha(0.5f, activity);
         //添加pop窗口关闭事件

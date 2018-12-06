@@ -13,10 +13,14 @@ import android.widget.TextView;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.FmPagerAdapter;
 
+import com.example.zcjlmodule.bean.CurrentApplyBean;
+import com.example.zcjlmodule.bean.FlowListBean;
+import com.example.zcjlmodule.bean.PeriodListBean;
 import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.fragment.approval.AccumulativeApprovalFragment;
 import com.example.zcjlmodule.ui.fragment.approval.CurrentApprovalFragment;
 import com.example.zcjlmodule.ui.fragment.approval.ProcedureApprovalFragment;
+import com.example.zcjlmodule.utils.fragment.CurrentApplyUtils;
 
 import java.util.ArrayList;
 
@@ -38,22 +42,29 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] titles = {"本期", "累计", "流程"};
     private static ApprovalZcActivity mContext;
+
     public static ApprovalZcActivity getInstance() {
         return mContext;
     }
-    private String status = null, orgId, orgName;
+
+    private String status = null, orgId, orgName, approvalId;
+    private CurrentApplyUtils applyUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
         //帮助类
         baseUtils = new BaseUtils();
+        applyUtils = new CurrentApplyUtils();
         //上下文
         mContext = this;
         //初始化控件
         findId();
         Intent intent = getIntent();
         try {
+            //单据Id
+            approvalId = intent.getStringExtra("approvalId");
             //组织Id
             orgId = intent.getStringExtra("orgId");
             //组织名称
@@ -79,7 +90,6 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         fragments.add(new AccumulativeApprovalFragment());
         //流程
         fragments.add(new ProcedureApprovalFragment());
-
         //viewpager传递数据
         v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
         //绑定viewpager和tablayout，
@@ -88,6 +98,12 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         for (int j = 0; j < titles.length; j++) {
             mTabLayout.getTabAt(j).setText(titles[j]);
         }
+        applyUtils.approvalheadcounts(approvalId, new CurrentApplyUtils.OnclickListener() {
+            @Override
+            public void onSuccess(ArrayList<CurrentApplyBean> data, ArrayList<PeriodListBean> periodList, ArrayList<FlowListBean> flowLists) {
+
+            }
+        });
 
     }
 

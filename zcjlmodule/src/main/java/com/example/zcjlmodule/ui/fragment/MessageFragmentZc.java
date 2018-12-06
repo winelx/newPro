@@ -95,7 +95,6 @@ public class MessageFragmentZc extends BaseFragment implements View.OnClickListe
                     currentPosition = position;
                 } else if (position < currentPosition) {
                     //左滑
-                    LogUtil.i("viewpger", position);
                     currentPosition = position;
                 }
             }

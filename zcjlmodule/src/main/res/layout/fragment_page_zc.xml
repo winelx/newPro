@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    tools:ignore="ResourceName">
 
     <include
         android:id="@+id/recycler_empty"
@@ -21,6 +24,7 @@
         <measure.jjxx.com.baselibrary.view.EmptyRecyclerView
             android:id="@+id/fragment_messag_empty"
             android:layout_width="match_parent"
+            android:background="@color/bg_white"
             android:layout_height="match_parent" />
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter

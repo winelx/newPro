@@ -22,7 +22,7 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
 /**
  * @author lx
  * @Created by: 2018/11/23 0023.
- * @description:
+ * @description:资金审批单
  */
 
 public class CapitalApprovalZcActivity extends BaseActivity implements View.OnClickListener {

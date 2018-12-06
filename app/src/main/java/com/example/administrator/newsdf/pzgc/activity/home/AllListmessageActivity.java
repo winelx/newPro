@@ -667,6 +667,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
+        mPopupWindow.setAnimationStyle(R.style.popmenu_animation);
         mPopupWindow.showAsDropDown(imageViewMeun);
         backgroundAlpha(0.5f);
         //添加pop窗口关闭事件

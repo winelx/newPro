@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -19,7 +20,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  * popwind类，相机相册选择弹窗
  */
 public class PopCameraUtils {
-
     /**
      * 这是图册相机时的弹出框
      */
@@ -36,10 +36,12 @@ public class PopCameraUtils {
         //计算屏幕宽高
         int width = activity.getResources().getDisplayMetrics().widthPixels;
         int height = activity.getResources().getDisplayMetrics().heightPixels;
-        final PopupWindow popWindow = new PopupWindow(popView, width, height+100);
+        final PopupWindow popWindow = new PopupWindow(popView, width, height);
 //        //添加显示隐藏动画
+        popWindow.setAnimationStyle(R.style.popmenu_animation);
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setFocusable(true);
+       backgroundAlpha((float) 0.5, activity);
         // 设置同意在外点击消失
         popWindow.setOutsideTouchable(true);
         View.OnClickListener listener = new View.OnClickListener() {
@@ -48,13 +50,14 @@ public class PopCameraUtils {
                 int i = v.getId();
                 if (i == R.id.btn_camera_pop_camera) {
                     //打开相机
-                    clickListener.onComple("相机");
+                    clickListener.oncamera();
                 } else if (i == R.id.btn_camera_pop_album) {
                     //开启相
-                    clickListener.onComple("相册");
+                    clickListener.onalbum();
                 } else {
                 }
                 popWindow.dismiss();
+                backgroundAlpha((float) 1, activity);
             }
         };
         btnCamera.setOnClickListener(listener);
@@ -71,8 +74,17 @@ public class PopCameraUtils {
          *
          * @param
          */
-        void onComple(String string);
+        void oncamera();
 
+        void onalbum();
+
+    }
+
+    //界面亮度
+    public void backgroundAlpha(float bgAlpha, Activity activity) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        activity.getWindow().setAttributes(lp);
     }
 
 }

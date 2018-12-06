@@ -137,18 +137,22 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
         }
     }
 
+    //获取状态
     public String getstatus() {
         return status;
     }
 
+    //本期
     public ArrayList<CurrentApplyBean> getcountlist() {
         return countlist;
     }
 
+    //累计
     public ArrayList<PeriodListBean> getperiodList() {
         return periodList;
     }
 
+    //流程
     public ArrayList<FlowListBean> getflowList() {
         return flowList;
     }

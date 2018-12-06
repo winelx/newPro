@@ -100,7 +100,7 @@ public class CorrectReplyActivity extends BaseActivity {
         devicedetailsRecycler.setAdapter(mAdapter);
         //设置适配器点击事件
         mAdapter.setOnItemClickListener(new CorrectReplyAdapter.OnItemClickListener() {
-            //调用相机相册
+            //调用相机、相册
             @Override
             public void addlick(final int position, final int adapterposition) {
                 //记录点击的item位置，在从相册返回时使用（onActivityResult）
@@ -108,45 +108,44 @@ public class CorrectReplyActivity extends BaseActivity {
                 //展示弹出窗
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
-                    public void onComple(String string) {
-                        if (camera.equals(string)) {
-                            // 开始拍照
-                            takePictureManager.startTakeWayByCarema();
-                            //数据返回
-                            takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
-                                @Override
-                                public void successful(boolean isTailor, File outFile, Uri filePath) {
-                                    //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
-                                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                                    options.quality = 95;
-                                    Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
-                                        @Override
-                                        public void callback(boolean isSuccess, String outfile) {
-                                            //获取到指定位置的图片集合
-                                            ArrayList<Audio> tinglist = list.get(position).getList();
-                                            //新增数据
-                                            tinglist.add(new Audio(outfile, "测试图片"));
+                    public void oncamera() {
+                        // 开始拍照
+                        takePictureManager.startTakeWayByCarema();
+                        //数据返回
+                        takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                            @Override
+                            public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
+                                Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                                options.quality = 95;
+                                Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
+                                    @Override
+                                    public void callback(boolean isSuccess, String outfile) {
+                                        //获取到指定位置的图片集合
+                                        ArrayList<Audio> tinglist = list.get(position).getList();
+                                        //新增数据
+                                        tinglist.add(new Audio(outfile, "测试图片"));
 //                                            //将集合中的图片更新
-                                            list.get(position).setList(tinglist);
-                                            //刷新数据，并指定刷新的位置
-                                            mAdapter.setupdate(list, position);
-                                        }
-                                    });
-                                }
-                                @Override
-                                public void failed(int errorCode, List<String> deniedPermissions) {
-                                    ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
-                                }
-                            });
-                        } else {
-                            //相册
-                            Intent intent = new Intent(mContext, ImageGridActivity.class);
-                            startActivityForResult(intent, IMAGE_PICKER);
-                        }
+                                        list.get(position).setList(tinglist);
+                                        //刷新数据，并指定刷新的位置
+                                        mAdapter.setupdate(list, position);
+                                    }
+                                });
+                            }
+                            @Override
+                            public void failed(int errorCode, List<String> deniedPermissions) {
+                                ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
+                            }
+                        });
+                    }
+                    @Override
+                    public void onalbum() {
+                        //相册
+                        Intent intent = new Intent(mContext, ImageGridActivity.class);
+                        startActivityForResult(intent, IMAGE_PICKER);
                     }
                 });
             }
-
             //删除图片
             @Override
             public void deleteClick(int position, int adapterposition) {

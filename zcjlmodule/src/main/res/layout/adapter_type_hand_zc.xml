@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
-
+    android:layout_height="50dp"
+    android:background="@color/bg_white"
+    tools:ignore="ResourceName">
 
     <View
         android:layout_width="1dp"
@@ -20,15 +22,14 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/zc_textview4"
-        android:layout_alignBottom="@+id/zc_textview4"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@+id/zc_textview4"
         android:layout_toRightOf="@+id/zc_textview4"
         android:text="开始"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_16" />
+        android:textSize="@dimen/text_18" />
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,10 +18,12 @@ import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.example.zcjlmodule.utils.fragment.CurrentApplyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.LazyloadFragment;
 import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
+import measure.jjxx.com.baselibrary.utils.BigDecimalUtils;
 import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
@@ -36,8 +39,10 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
     private CurrentPageFragmentAdapter adapter;
     private View emptyView;
     private Context context;
+    private BigDecimal price;
     private ArrayList<CurrentApplyBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_current_page;
@@ -50,6 +55,14 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         String str = applyActivityZc.getstatus();
         list = new ArrayList<>();
         list.addAll(applyActivityZc.getcountlist());
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                String Amount = list.get(i).getToThisPeriodAmount();
+                price = BigDecimalUtils.safeAdd(price, new BigDecimal(Amount));
+            }
+        }catch (Exception e){
+        }
+
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);
@@ -76,7 +89,11 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         emptyRecyclerView.setAdapter(adapter = new CurrentPageFragmentAdapter(R.layout.adapter_accumulative, list));
         //隐藏空白布局
         emptyView.setVisibility(View.GONE);
-        pageApplyPrice.setText(TextUtils.setText(context, "总计:12121212475", 3));
+        try {
+            pageApplyPrice.setText(TextUtils.setText(context, "总计:"+price.toString(), 3));
+        }catch (Exception e){
+            pageApplyPrice.setText(TextUtils.setText(context, "总计:", 3));
+        }
         //item点击事件处理
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -117,4 +134,6 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
 
         }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.fragment.approval;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -70,9 +71,11 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
         list = new ArrayList<>();
         orgId = SPUtils.getString(mContext, "orgId", "");
         orgName = SPUtils.getString(mContext, "orgName", "");
+        //初始化回调接口
         PayDetailCallBackUtils.setCallBack(this);
+        //初始化控件
         findId();
-        assemblyOrgname.setText(orgName +"");
+        assemblyOrgname.setText(orgName + "");
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
         //是否启用上拉加载功能
@@ -83,6 +86,7 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
         emptyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置分割线
         emptyRecyclerView.setEmptyView(emptyView);
+        //设置分割线
         emptyRecyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         emptyRecyclerView.setAdapter(mAdapter = new CapitalApprovalAdapter(R.layout.adapter_capitalapporval, list));
         emptyView.setVisibility(View.GONE);
@@ -94,6 +98,7 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
                 intent.putExtra("status", "false");
                 intent.putExtra("orgName", assemblyOrgname.getText().toString());
                 intent.putExtra("orgId", orgId);
+                intent.putExtra("approvalId", list.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -115,7 +120,6 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
      * date: 2018/11/23 0023 上午 9:40
      */
     private void findId() {
-
         //空白数据界面
         emptyView = rootView.findViewById(R.id.recycler_empty);
         //机构组织父布局
@@ -143,6 +147,11 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
         httprequest();
     }
 
+    /**
+     * @内容: 网络请求
+     * @author lx
+     * @date: 2018/12/6 0006 下午 3:02
+     */
     private void httprequest() {
         fragmentUtils.approvallists(orgId, 0, new ApprovalFragmentUtils.OnClickListener() {
             @Override
@@ -179,6 +188,13 @@ public class CapitalApprovalFFragment extends LazyloadFragment implements View.O
 
     }
 
+
+    /**
+     * @内容: 选择组织的回调接口
+     * @author lx
+     * @date: 2018/12/6 0006 下午 3:02
+     */
+    @SuppressLint("SetTextI18n")
     @Override
     public void callback(Map<String, Object> map) {
         assemblyOrgname.setText(map.get("orgname") + "");

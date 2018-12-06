@@ -222,7 +222,7 @@ public class AuditActivity extends BaseActivity {
     }
 
     public void getData(final Integer integer, final boolean lean) {
-        Dates.getDialog(AuditActivity.this,"请求数据中..");
+        Dates.getDialog(AuditActivity.this, "请求数据中..");
         OkGo.post(Requests.TASKDATELIST)
                 .params("page", integer)
                 .params("size", "10")

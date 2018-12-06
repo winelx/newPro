@@ -64,7 +64,7 @@ public class ProcedureApplyFragment extends LazyloadFragment {
         emptyRecyclerView.setEmptyView(emptyView);
         emptyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         emptyRecyclerView.setAdapter(adapter = new ProcedurePageAdapter(list, context));
-        emptyView.setVisibility(View.GONE);
+
         adapter.setItemClickListener(new ProcedurePageAdapter.TypeItemOnClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -72,9 +72,12 @@ public class ProcedureApplyFragment extends LazyloadFragment {
             }
         });
     }
-
     @Override
     protected void lazyLoad() {
-
+        if (list.size()>0){
+            emptyView.setVisibility(View.GONE);
+        }else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
     }
 }

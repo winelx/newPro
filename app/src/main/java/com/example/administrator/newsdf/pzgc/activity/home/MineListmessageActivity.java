@@ -731,6 +731,7 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 显示位置
+        mPopupWindow.setAnimationStyle(R.style.popmenu_animation);
         mPopupWindow.showAsDropDown(imageViewMeun);
         backgroundAlpha(0.5f);
         //添加pop窗口关闭事件

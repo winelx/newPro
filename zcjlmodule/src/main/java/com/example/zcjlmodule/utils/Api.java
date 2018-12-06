@@ -16,8 +16,8 @@ public class Api {
     //测
 public static final String networks = "http://192.168.20.120:8082/dtjl";
     //郑
- //  public static final String networks = "http://192.168.20.40/dtjl";
-   // public static final String networks = "http://192.168.20.42:8080/dtjl";
+ // public static final String networks = "http://192.168.20.40/dtjl";
+ //  public static final String networks = "http://192.168.20.42:8080/dtjl";
     /**
      * 基础接口
      */
@@ -79,8 +79,13 @@ public static final String networks = "http://192.168.20.120:8082/dtjl";
  */
     //征地拆迁资金拨付申请单列表
    public static final String APPLYLISTS =networks+"/iface/levy/getApplyLists";
-    //征地拆迁资金拨付审批单列表
-   public static final String APPROVALLISTS =networks+"/iface/levy/etApprovalLists";
+
     //征地拆迁资金拨付申请单按指挥部汇总数据
     public static final String APPLYHEADCOUNTS =networks+"/iface/levy/getApplyHeadCounts";
+
+    /**
+     * 审批单
+     */
+    //征地拆迁资金拨付审批单列表
+    public static final String APPROVALLISTS =networks+"/iface/levy/etApprovalLists";
 }

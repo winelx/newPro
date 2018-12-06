@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.AgencyPageFragmentAdapter;
 import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+import com.example.zcjlmodule.ui.activity.apply.DetailedlistActivity;
 import com.example.zcjlmodule.utils.fragment.ApplyFragmentUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -78,7 +79,8 @@ public class AgencyPageFragmentZc extends LazyloadFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, ApplyActivityZc.class);
+                Intent intent = new Intent(context, DetailedlistActivity.class);
+                intent.putExtra("status",true);
                 startActivity(intent);
             }
         });

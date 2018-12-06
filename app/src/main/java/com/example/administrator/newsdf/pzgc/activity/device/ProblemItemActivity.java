@@ -129,41 +129,39 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 PopCameraUtils = new PopCameraUtils();
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
-                    public void onComple(String string) {
-                        if (App.getInstance().creame.equals(string)) {
-                            //拍照方式
-                            takePictureManager.startTakeWayByCarema();
-                            takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
-                                @Override
-                                public void successful(boolean isTailor, File outFile, Uri filePath) {
-                                    //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
-                                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                                    options.quality = 95;
-                                    Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
-                                        @Override
-                                        public void callback(boolean isSuccess, String outfile) {
-                                            //添加进集合
-                                            imagepath.add(new Audio(outfile, ""));
-                                            //填入listview，刷新界面
-                                            photoAdapter.getData(imagepath, true);
-                                        }
-                                    });
-                                }
+                    public void oncamera() {
+                        //拍照方式
+                        takePictureManager.startTakeWayByCarema();
+                        takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                            @Override
+                            public void successful(boolean isTailor, File outFile, Uri filePath) {
+                                //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
+                                Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                                options.quality = 95;
+                                Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
+                                    @Override
+                                    public void callback(boolean isSuccess, String outfile) {
+                                        //添加进集合
+                                        imagepath.add(new Audio(outfile, ""));
+                                        //填入listview，刷新界面
+                                        photoAdapter.getData(imagepath, true);
+                                    }
+                                });
+                            }
+                            @Override
+                            public void failed(int errorCode, List<String> deniedPermissions) {
 
-                                @Override
-                                public void failed(int errorCode, List<String> deniedPermissions) {
-
-                                }
-                            });
-                        } else {
-                            //相册
-                            Intent intent = new Intent(mContext, ImageGridActivity.class);
-                            startActivityForResult(intent, IMAGE_PICKER);
-                        }
+                            }
+                        });
+                    }
+                    @Override
+                    public void onalbum() {
+                        //相册
+                        Intent intent = new Intent(mContext, ImageGridActivity.class);
+                        startActivityForResult(intent, IMAGE_PICKER);
                     }
                 });
             }
-
             @Override
             public void deleteClick(View view, int position) {
                 //删除图片

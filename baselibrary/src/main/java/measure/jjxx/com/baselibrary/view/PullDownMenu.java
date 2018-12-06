@@ -50,6 +50,8 @@ public class PullDownMenu {
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
         mPopupWindow.showAsDropDown(view);
+        //显示隐藏动画
+        mPopupWindow.setAnimationStyle(R.style.popmenu_animation);
         backgroundAlpha(0.5f, activity);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

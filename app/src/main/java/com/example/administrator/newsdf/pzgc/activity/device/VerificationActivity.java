@@ -97,35 +97,35 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                 //展示弹出窗
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
-                    public void onComple(String string) {
-                        if ("相机".equals(string)) {
-                            //拍照方式
-                            takePictureManager.startTakeWayByCarema();
-                            takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
-                                @Override
-                                public void successful(boolean isTailor, File outFile, final Uri filePath) {
-                                    //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
-                                    Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                                    options.quality = 95;
-                                    Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
-                                        @Override
-                                        public void callback(boolean isSuccess, String outfile) {
-                                            imagepath.add(new Audio(outfile, ""));
-                                            mAdapter.getData(imagepath, true);
-                                        }
-                                    });
-                                }
+                    public void oncamera() {
+                        //拍照方式
+                        takePictureManager.startTakeWayByCarema();
+                        takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
+                            @Override
+                            public void successful(boolean isTailor, File outFile, final Uri filePath) {
+                                //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
+                                Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                                options.quality = 95;
+                                Tiny.getInstance().source(outFile).asFile().withOptions(options).compress(new FileCallback() {
+                                    @Override
+                                    public void callback(boolean isSuccess, String outfile) {
+                                        imagepath.add(new Audio(outfile, ""));
+                                        mAdapter.getData(imagepath, true);
+                                    }
+                                });
+                            }
+                            @Override
+                            public void failed(int errorCode, List<String> deniedPermissions) {
+                                ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
+                            }
+                        });
+                    }
 
-                                @Override
-                                public void failed(int errorCode, List<String> deniedPermissions) {
-                                    ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
-                                }
-                            });
-                        } else {
-                            //相册
-                            Intent intent = new Intent(mContext, ImageGridActivity.class);
-                            startActivityForResult(intent, IMAGE_PICKER);
-                        }
+                    @Override
+                    public void onalbum() {
+                        //相册
+                        Intent intent = new Intent(mContext, ImageGridActivity.class);
+                        startActivityForResult(intent, IMAGE_PICKER);
                     }
                 });
             }

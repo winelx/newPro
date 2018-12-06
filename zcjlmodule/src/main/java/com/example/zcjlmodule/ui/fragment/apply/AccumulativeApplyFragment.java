@@ -15,9 +15,11 @@ import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.activity.apply.ApplyHeadquartersZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.base.LazyloadFragment;
+import measure.jjxx.com.baselibrary.utils.BigDecimalUtils;
 import measure.jjxx.com.baselibrary.utils.TextUtils;
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
@@ -36,7 +38,7 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     private Context context;
     private ArrayList<PeriodListBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
-
+    private BigDecimal price;
     @Override
     protected int setContentView() {
         return R.layout.fragment_current_page;
@@ -48,6 +50,15 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
         list = new ArrayList<>();
         ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
         list.addAll(applyActivityZc.getperiodList());
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                String Amount = list.get(i).getThisPeriodApplyAmount();
+                price = BigDecimalUtils.safeAdd(price, new BigDecimal(Amount));
+            }
+        }catch (Exception e){
+
+        }
+
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);
@@ -69,7 +80,12 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
         emptyRecyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         //设置适配器
         emptyRecyclerView.setAdapter(adapter = new AccumulativePageAdapter(R.layout.adapter_accumulative, list));
-        pageApplyPrice.setText(TextUtils.setText(context, "总计:12121212475", 3));
+       try {
+           pageApplyPrice.setText(TextUtils.setText(context, "总计:"+price.toString(), 3));
+       }catch (Exception e){
+           pageApplyPrice.setText(TextUtils.setText(context, "总计:", 3));
+       }
+
         //初始化时没有请求网络，列表无数据，会展示空数据提示，所以隐藏
         emptyView.setVisibility(View.GONE);
         //点击事件处理
@@ -89,4 +105,6 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     protected void lazyLoad() {
         adapter.setNewData(list);
     }
+
+
 }

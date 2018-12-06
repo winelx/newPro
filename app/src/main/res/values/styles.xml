@@ -115,14 +115,14 @@
         <item name="android:windowBackground">@mipmap/bootup1</item>
     </style>
 
-    <!--  这个是加入的代码 -->
+    <!-- 相机相册选择动画 这个是加入的代码 -->
     <style name="AnimBottom">
         <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
         <!-- 指定显示的动画xml -->
         <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
         <!-- 指定消失的动画xml -->
-    </style>
 
+    </style>
     //推送pop
 
     <style name="menu_item_text_style">
@@ -159,7 +159,6 @@
     <style name="mypopwindow_anim_style">
         <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
         <!-- 指定显示的动画xml -->
-
         <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
         <!-- 指定消失的动画xml -->
     </style>
@@ -180,5 +179,11 @@
         <item name="android:textSize">16sp</item><!--文字大小-->
         <item name="textAllCaps">true</item><!--字母大写-->
     </style>
+
+    <style name="popmenu_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/menu_show</item>
+        <item name="android:windowExitAnimation">@anim/meun_hide</item>
+    </style>
+
 
 </resources>

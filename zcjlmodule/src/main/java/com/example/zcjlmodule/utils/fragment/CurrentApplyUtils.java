@@ -21,7 +21,7 @@ import okhttp3.Response;
 /**
  * @author lx
  * @Created by: 2018/11/26 0026.
- * @description:
+ * @description:资金申请单/审批单
  */
 
 public class CurrentApplyUtils {
@@ -34,6 +34,11 @@ public class CurrentApplyUtils {
         void onSuccess(ArrayList<CurrentApplyBean> data, ArrayList<PeriodListBean> periodList, ArrayList<FlowListBean> flowLists);
     }
 
+    /**
+     * @内容: 资金申请单
+     * @author lx
+     * @date: 2018/12/6 0006 下午 2:48
+     */
     public void applyheadcounts(String applyId, final OnclickListener onclickListener) {
         OkGo.get(Api.APPLYHEADCOUNTS)
                 .params("applyId", applyId)
@@ -56,6 +61,39 @@ public class CurrentApplyUtils {
                             JSONArray flowList = jsonArray.getJSONArray("flowList");
                             flowLists.addAll(ListJsonUtils.getListByArray(FlowListBean.class, flowList.toString()));
                             onclickListener.onSuccess(countList, periodList, flowLists);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+        /**
+         * @内容: 资金审批单
+         * @author lx
+         * @date: 2018/12/6 0006 下午 2:53
+        */
+    public void approvalheadcounts(String approvalId, final OnclickListener onclickListene) {
+        OkGo.get(Api.APPLYHEADCOUNTS)
+                .params("applyId", approvalId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        ArrayList<CurrentApplyBean> countList = new ArrayList<>();
+                        ArrayList<PeriodListBean> periodList = new ArrayList<>();
+                        ArrayList<FlowListBean> flowLists = new ArrayList<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONObject jsonArray = jsonObject.getJSONObject("data");
+                            //本期
+                            JSONArray countLists = jsonArray.getJSONArray("countList");
+                            countList.addAll(ListJsonUtils.getListByArray(CurrentApplyBean.class, countLists.toString()));
+                            //累计
+                            JSONArray periodLists = jsonArray.getJSONArray("periodList");
+                            periodList.addAll(ListJsonUtils.getListByArray(PeriodListBean.class, periodLists.toString()));
+                            //流程
+                            JSONArray flowList = jsonArray.getJSONArray("flowList");
+                            flowLists.addAll(ListJsonUtils.getListByArray(FlowListBean.class, flowList.toString()));
+                            onclickListene.onSuccess(countList, periodList, flowLists);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -85,7 +85,8 @@
         <activity android:name=".ui.activity.approval.ApprovalZcActivity" />
         <activity android:name=".ui.activity.approval.CapitalApprovalZcActivity" />
         <activity android:name=".ui.activity.approval.ApprovalHeadquartersZcActivity" />
-        <activity android:name=".NativeActivity"></activity>
+        <activity android:name=".NativeActivity" />
+        <activity android:name=".ui.activity.apply.DetailedlistActivity"></activity>
     </application>
 
 </manifest>

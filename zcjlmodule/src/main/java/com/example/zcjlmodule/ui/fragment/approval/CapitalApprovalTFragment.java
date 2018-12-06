@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.fragment.approval;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -96,6 +97,7 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
                 intent.putExtra("status", "false");
                 intent.putExtra("orgname", assemblyOrgname.getText().toString());
                 intent.putExtra("orgId", orgId);
+                intent.putExtra("approvalId", list.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -176,6 +178,7 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void callback(Map<String, Object> map) {
         assemblyOrgname.setText(map.get("orgname") + "");

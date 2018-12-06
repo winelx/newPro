@@ -50,4 +50,9 @@
     <item name="colorControlNormal">@color/back</item>
     <item name="colorControlActivated">@color/colorAccent</item>
     </style>
+      <!--menu弹出窗-->
+    <style name="popmenu_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/menu_show</item>
+        <item name="android:windowExitAnimation">@anim/meun_hide</item>
+    </style>
 </resources>

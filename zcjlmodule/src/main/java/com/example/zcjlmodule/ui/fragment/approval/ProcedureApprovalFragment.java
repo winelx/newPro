@@ -1,9 +1,8 @@
 package com.example.zcjlmodule.ui.fragment.approval;
 
-import android.annotation.TargetApi;
+
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -11,9 +10,7 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.ProcedurePageAdapter;
 import com.example.zcjlmodule.bean.FlowListBean;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
 
 import java.util.ArrayList;
 
@@ -67,7 +64,6 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
 
     @Override
     protected void lazyLoad() {
-
         adapter.setNewData(list);
     }
 }
