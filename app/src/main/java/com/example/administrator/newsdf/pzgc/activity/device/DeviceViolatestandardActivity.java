@@ -83,7 +83,7 @@ public class DeviceViolatestandardActivity extends BaseActivity {
      * @description: 判断是否显示图标
      * @author lx
      * @date: 2018/12/5 0005 下午 3:19
-    */
+     */
     public boolean getmIcon(Nodes node) {
         String str = node.getIds();
         for (int i = 0; i < mData.size(); i++) {
@@ -99,7 +99,7 @@ public class DeviceViolatestandardActivity extends BaseActivity {
      * @内容: 添加数据
      * @author lx
      * @date: 2018/12/5 0005 下午 3:21
-    */
+     */
     public void getAdd(int position, Nodes node) {
         String str = node.getIds();
         for (int i = 0; i < mData.size(); i++) {
@@ -124,5 +124,13 @@ public class DeviceViolatestandardActivity extends BaseActivity {
     public void hideView() {
         listlinear.setVisibility(View.GONE);
         violation_fragment.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (deviceUtils != null) {
+            deviceUtils = null;
+        }
     }
 }

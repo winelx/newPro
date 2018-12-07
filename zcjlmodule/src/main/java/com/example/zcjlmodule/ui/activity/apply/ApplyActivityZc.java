@@ -44,9 +44,9 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
     private String status = null, orgId, orgName, applyId;
     private static ApplyActivityZc mContext;
     private CurrentApplyUtils applyUtils;
-    ArrayList<CurrentApplyBean> countlist;
-    ArrayList<PeriodListBean> periodList;
-    ArrayList<FlowListBean> flowList;
+    private ArrayList<CurrentApplyBean> countlist;
+    private ArrayList<PeriodListBean> periodList;
+    private ArrayList<FlowListBean> flowList;
 
     public static ApplyActivityZc getInstance() {
         return mContext;
@@ -157,4 +157,14 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
         return flowList;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (applyUtils != null) {
+            applyUtils = null;
+        }
+        if (baseUtils != null) {
+            baseUtils = null;
+        }
+    }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.mine.Text;
+import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
 
 import java.util.ArrayList;
 
@@ -21,9 +22,9 @@ import java.util.ArrayList;
 
 public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private ArrayList<String> list;
+    private ArrayList<NewDeviceBean> list;
 
-    public NewDeviceAdapter(Context mContext, ArrayList<String> list) {
+    public NewDeviceAdapter(Context mContext, ArrayList<NewDeviceBean> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -35,10 +36,16 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof Viewholder) {
-            ((Viewholder) holder).new_inspect_org.setText(list.get(position));
+            ((Viewholder) holder).new_inspect_org.setText(list.get(position).getTitile());
             ((Viewholder) holder).problem.setText("第" + (position + 1) + "个问题");
+            ((Viewholder) holder).new_inspect_org.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onclick(v, position);
+                }
+            });
         }
     }
 
@@ -57,8 +64,18 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void setNewDate(ArrayList<String> list) {
+    public void setNewDate(ArrayList<NewDeviceBean> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public interface OnClickListener {
+        void onclick(View view, int position);
+    }
+
+    private OnClickListener onClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }

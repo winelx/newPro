@@ -291,4 +291,12 @@ public class StandardDecomposeZcActivity extends BaseActivity implements View.On
                 , 0.0f, Animation.RELATIVE_TO_SELF, -1.0f);
         HiddenAmin.setDuration(500);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (baseUtils != null) {
+            baseUtils = null;
+        }
+    }
 }

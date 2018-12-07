@@ -40,7 +40,6 @@ import okhttp3.Response;
 
 public class CheckuserActivity extends BaseActivity implements View.OnClickListener {
     private ListView expandableListView;
-
     private TextView comtitle;
     private Context mContext;
     private ArrayList<MoretasklistBean> list;

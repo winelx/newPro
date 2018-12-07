@@ -123,4 +123,12 @@ public class ChangeorganizeZcActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (utils != null) {
+            utils = null;
+        }
+    }
 }

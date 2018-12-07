@@ -3,15 +3,12 @@ package com.example.administrator.newsdf.pzgc.activity.device;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -21,17 +18,11 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckRectifyMessageAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.IssuedTaskDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -53,13 +44,11 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
     private Context mContext;
     private TextView titleView;
     private ImageView checklistmeunimage;
-    private PopupWindow mPopupWindow;
     private SmartRefreshLayout refreshLayout;
-    private float resolution;
     private String id;
     private int page = 1;
     private DeviceMessageListAdapter mAdapter;
-    private RelativeLayout back_not_null;
+    private RelativeLayout backNotNull;
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
     private String[] meuns = {"全部", "未下发", "未回复", "未验证", "已处理"};
@@ -73,14 +62,12 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
         //获取传递的id
-        //获取系统dp尺寸密度值
-        resolution = ScreenUtil.getDensity(App.getInstance());
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
         //刷新加载控件
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //空数据
-        back_not_null = (RelativeLayout) findViewById(R.id.back_not_null);
+        backNotNull = (RelativeLayout) findViewById(R.id.back_not_null);
         //menu
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         //设置menu控件背景

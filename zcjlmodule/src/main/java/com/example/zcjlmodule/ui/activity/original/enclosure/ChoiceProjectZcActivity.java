@@ -43,9 +43,9 @@ public class ChoiceProjectZcActivity extends BaseActivity implements View.OnClic
     private AttachProjectAdapter mAdapter;
     private ArrayList<AttachProjectBean> list;
     private Context mContext;
-    private ProgressBar layout_emptyView_bar;
-    private TextView layout_emptyView_text;
-    private LinearLayout layout_emptyView;
+    private ProgressBar layoutEmptyviewBar;
+    private TextView layoutEmptyviewText;
+    private LinearLayout layoutEmptyview;
     private MeasureUtils utils;
     private SmartRefreshLayout refreshLayout;
     private String orgId;
@@ -61,11 +61,11 @@ public class ChoiceProjectZcActivity extends BaseActivity implements View.OnClic
         utils = new MeasureUtils();
         list = new ArrayList<>();
         //提示布局
-        layout_emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
+        layoutEmptyview = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待进度
-        layout_emptyView_bar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
+        layoutEmptyviewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
         //空白提示
-        layout_emptyView_text = (TextView) findViewById(R.id.layout_emptyView_text);
+        layoutEmptyviewText = (TextView) findViewById(R.id.layout_emptyView_text);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.original_refreshlayout);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
@@ -117,18 +117,18 @@ public class ChoiceProjectZcActivity extends BaseActivity implements View.OnClic
                 list.addAll(data);
                 mAdapter.setNewData(list);
                 if (list.size() <= 0) {
-                    layout_emptyView_text.setText("暂无数据");
+                    layoutEmptyviewText.setText("暂无数据");
                 } else {
-                    layout_emptyView.setVisibility(View.GONE);
+                    layoutEmptyview.setVisibility(View.GONE);
                 }
-                layout_emptyView_bar.setVisibility(View.GONE);
+                layoutEmptyviewBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onerror() {
                 refreshLayout.finishRefresh();
-                layout_emptyView_bar.setVisibility(View.GONE);
-                layout_emptyView_text.setText("请求失败");
+                layoutEmptyviewBar.setVisibility(View.GONE);
+                layoutEmptyviewText.setText("请求失败");
             }
         });
     }
@@ -149,6 +149,14 @@ public class ChoiceProjectZcActivity extends BaseActivity implements View.OnClic
         @Override
         protected void convert(BaseViewHolder helper, AttachProjectBean item) {
             helper.setText(R.id.attachproject_text, item.getName());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (utils != null) {
+            utils = null;
         }
     }
 }

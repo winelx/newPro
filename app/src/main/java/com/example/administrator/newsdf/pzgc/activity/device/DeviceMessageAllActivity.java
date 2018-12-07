@@ -223,4 +223,12 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     public void status() {
         startActivity(new Intent(mContext, DeviceDetailsActivity.class));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (deviceUtils != null) {
+            deviceUtils = null;
+        }
+    }
 }

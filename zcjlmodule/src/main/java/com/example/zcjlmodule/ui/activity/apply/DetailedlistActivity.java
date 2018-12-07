@@ -25,7 +25,9 @@ public class DetailedlistActivity extends BaseActivity {
         webView = (WebView) findViewById(R.id.detailedlist_webview);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {finish();}
+            public void onClick(View v) {
+                finish();
+            }
         });
         Intent intent = getIntent();
         baseUtils = new BaseUtils();
@@ -35,6 +37,14 @@ public class DetailedlistActivity extends BaseActivity {
         } else {
             detailedlistLin.setVisibility(View.GONE);
             baseUtils.setMargins(webView, 0, 0, 0, 0);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (baseUtils != null) {
+            baseUtils = null;
         }
     }
 }

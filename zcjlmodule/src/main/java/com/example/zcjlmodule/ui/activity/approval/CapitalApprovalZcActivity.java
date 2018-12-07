@@ -69,4 +69,12 @@ public class CapitalApprovalZcActivity extends BaseActivity implements View.OnCl
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (baseUtils != null) {
+            baseUtils = null;
+        }
+    }
 }

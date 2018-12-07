@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NewDeviceAdapter;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallback;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -26,7 +28,9 @@ import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author lx
@@ -42,11 +46,16 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     private EditText newInspectAddress, newInspectRemarks;
     private RecyclerView newInspectRecycler;
     private NewDeviceAdapter mAdapter;
-    private Context mContext;
-    private ArrayList<String> list;
-    private int page;
+    private static NewDeviceActivity mContext;
+    private ArrayList<NewDeviceBean> list;
+    private int page, pos;
     private String userId, nodeId;
     private DialogUtils dialogUtils;
+    private NewDeviceBean bean;
+
+    public static NewDeviceActivity getInstance() {
+        return mContext;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         //帮助类
         Utils = new Utils();
         list = new ArrayList<>();
+        list.add(new NewDeviceBean("测试数据", "1", "2010-12-05", "B", "存放不合理", null));
         //初始化控件
         findId();
         //设置控件的外边距
@@ -127,7 +137,20 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 });
             }
         });
-
+        //recyclerview的点击事件
+        mAdapter.setOnClickListener(new NewDeviceAdapter.OnClickListener() {
+            @Override
+            public void onclick(View view, int position) {
+                pos = position;
+                Intent intent = new Intent(NewDeviceActivity.this, ProblemItemActivity.class);
+                intent.putExtra("bean", "false");
+                intent.putExtra("pos", position);
+                startActivity(intent);
+            }
+        });
+        if (list.size() > 0) {
+            problem.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -139,10 +162,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             case R.id.new_inspect_addproblem:
                 //添加问题
 //                problem.setVisibility(View.VISIBLE);
-//                page++;
-//                list.add("测试数据" + page);
-//                mAdapter.setNewDate(list);
-                startActivity(new Intent(mContext, ProblemItemActivity.class));
+                Intent intent = new Intent(mContext, ProblemItemActivity.class);
+                intent.putExtra("bean", "true");
+                pos = -1;
+                startActivity(intent);
                 break;
             case R.id.new_inspect_username_lin:
                 //选择联系人
@@ -177,8 +200,14 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
      * @date: 2018/12/3 0003 上午 9:52
      */
     @Override
-    public void addProblem(String str) {
-
+    public void addProblem(NewDeviceBean bean) {
+        if (pos == -1) {
+            list.add(bean);
+        } else {
+            list.remove(pos);
+            list.add(pos, bean);
+        }
+        mAdapter.setNewDate(list);
     }
 
     /**
@@ -187,7 +216,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
      * @date: 2018/12/3 0003 上午 9:52
      */
     @Override
-    public void deleteProblem(String str) {
+    public void deleteProblem(int str) {
 
     }
 
@@ -202,6 +231,21 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             //选择组织
             nodeId = data.getStringExtra("id");
             newInspectOrg.setText(data.getStringExtra("name"));
+        }
+    }
+
+    public NewDeviceBean getBean() {
+        return list.get(pos);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialogUtils != null) {
+            dialogUtils = null;
+        }
+        if (Utils != null) {
+            Utils = null;
         }
     }
 }

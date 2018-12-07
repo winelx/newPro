@@ -109,21 +109,29 @@ public class UserOrgZcActivity extends BaseActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name, String type) {
-            utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
-                @Override
-                public void onClick(int ret) {
-                    if (ret == 0) {
-                        ToastUtlis.getInstance().showShortToast("切换组织成功");
-                        SPUtils.deleShare(mContext, "orgName");
-                        SPUtils.deleShare(mContext, "orgId");
-                        //所在组织ID
-                        SPUtils.putString(mContext, "orgId", orgid);
-                        //所在组织名称
-                        SPUtils.putString(mContext, "orgName", name);
-                        ChangOrgCallBackUtils.CallBack();
-                        finish();
-                    }
+        utils.changorg(orgid, name, new UserOrgZcUtils.OnChangeClickListener() {
+            @Override
+            public void onClick(int ret) {
+                if (ret == 0) {
+                    ToastUtlis.getInstance().showShortToast("切换组织成功");
+                    SPUtils.deleShare(mContext, "orgName");
+                    SPUtils.deleShare(mContext, "orgId");
+                    //所在组织ID
+                    SPUtils.putString(mContext, "orgId", orgid);
+                    //所在组织名称
+                    SPUtils.putString(mContext, "orgName", name);
+                    ChangOrgCallBackUtils.CallBack();
+                    finish();
                 }
-            });
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (utils != null) {
+            utils = null;
+        }
     }
 }

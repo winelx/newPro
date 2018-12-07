@@ -68,4 +68,12 @@ public class CapitalApplyZcActivity extends BaseActivity implements View.OnClick
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (baseUtils != null) {
+            baseUtils = null;
+        }
+    }
 }

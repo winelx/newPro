@@ -18,8 +18,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+
 import com.example.administrator.newsdf.pzgc.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.PasswordActvity;
@@ -29,7 +31,6 @@ import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.administrator.newsdf.zlaq.activity.UnifiedLoginActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -150,9 +151,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //修改密码
             case R.id.changepassword:
+      startActivity(new Intent(getActivity(), PasswordActvity.class));
 
-        startActivity(new Intent(getActivity(), PasswordActvity.class));
-//        startActivity(new Intent(getActivity(), HomeZcActivity.class));
                 break;
             //系统设置
             case R.id.mine_setting:
@@ -160,7 +160,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //关于我们
             case R.id.about_us:
-                startActivity(new Intent(getActivity(), AboutmeActivity.class));
+               startActivity(new Intent(getActivity(), AboutmeActivity.class));
+
                 break;
             case R.id.BackTo:
                 getActivity().getSupportFragmentManager().popBackStack();

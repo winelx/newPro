@@ -3,26 +3,18 @@ package com.example.zcjlmodule.ui.activity.original.enclosure;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.bean.AttachProjectBean;
-import com.example.zcjlmodule.callback.PayDetailCallBackUtils;
-import com.example.zcjlmodule.treeView.ChangeTreeListViewAdapters;
 import com.example.zcjlmodule.treeView.ZhengcTreeListViewAdapters;
 import com.example.zcjlmodule.treeView.bean.OrgBeans;
 import com.example.zcjlmodule.treeView.bean.OrgenBeans;
 import com.example.zcjlmodule.treeView.utils.Nodes;
-import com.example.zcjlmodule.treeView.utils.adapter.TreeListViewAdapters;
 import com.example.zcjlmodule.utils.activity.MeasureUtils;
-
-import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +38,9 @@ public class DismantlingtypequeryZcActivity extends BaseActivity {
     private String ogrId;
     private Context mContext;
     private List<OrgenBeans> mData;
-    private LinearLayout layout_emptyView;
-    private ProgressBar layout_emptyView_bar;
-    private TextView layout_emptyView_text;
+    private LinearLayout layoutEmptyview;
+    private ProgressBar layoutEmptyviewBar;
+    private TextView layoutEmptyviewText;
     private ZhengcTreeListViewAdapters mAdapter;
 
     @Override
@@ -60,9 +52,9 @@ public class DismantlingtypequeryZcActivity extends BaseActivity {
         Intent intent = getIntent();
         mData = new ArrayList<>();
         ogrId = intent.getStringExtra("orgId");
-        layout_emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
-        layout_emptyView_bar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
-        layout_emptyView_text = (TextView) findViewById(R.id.layout_emptyView_text);
+        layoutEmptyview = (LinearLayout) findViewById(R.id.layout_emptyView);
+        layoutEmptyviewBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);
+        layoutEmptyviewText = (TextView) findViewById(R.id.layout_emptyView_text);
         mListView = (ListView) findViewById(R.id.dis_typequery_list);
         findViewById(R.id.toolbar_icon_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,11 +73,11 @@ public class DismantlingtypequeryZcActivity extends BaseActivity {
             public void onsuccess(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();
                 if (data.size() > 0) {
-                    layout_emptyView.setVisibility(View.GONE);
+                    layoutEmptyview.setVisibility(View.GONE);
                 } else {
-                    layout_emptyView.setVisibility(View.VISIBLE);
-                    layout_emptyView_bar.setVisibility(View.GONE);
-                    layout_emptyView_text.setText("暂无数据");
+                    layoutEmptyview.setVisibility(View.VISIBLE);
+                    layoutEmptyviewBar.setVisibility(View.GONE);
+                    layoutEmptyviewText.setText("暂无数据");
                 }
                 mData.addAll(data2);
                 try {
@@ -100,11 +92,11 @@ public class DismantlingtypequeryZcActivity extends BaseActivity {
             @Override
             public void onerror() {
                 if (mData.size() > 0) {
-                    layout_emptyView.setVisibility(View.GONE);
+                    layoutEmptyview.setVisibility(View.GONE);
                 } else {
-                    layout_emptyView.setVisibility(View.VISIBLE);
-                    layout_emptyView_bar.setVisibility(View.GONE);
-                    layout_emptyView_text.setText("暂无数据");
+                    layoutEmptyview.setVisibility(View.VISIBLE);
+                    layoutEmptyviewBar.setVisibility(View.GONE);
+                    layoutEmptyviewText.setText("暂无数据");
                 }
             }
         });
@@ -159,5 +151,11 @@ public class DismantlingtypequeryZcActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (utils != null) {
+            utils = null;
+        }
+    }
 }

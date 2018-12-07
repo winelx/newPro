@@ -187,5 +187,5 @@ public class CapitalApplyFFragment extends LazyloadFragment implements View.OnCl
         httprequest();
     }
 
-
+  
 }

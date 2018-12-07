@@ -45,7 +45,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
     private Context mContext;
     private ArrayList<UnknitstandardBean> list;
     private SmartRefreshLayout refreshLayout;
-    private TextView prompt, unknits_title;
+    private TextView prompt, unknitsTitle;
     private LinearLayout emptyView;
     private ProgressBar gressBar;
     private int page = 0;
@@ -70,7 +70,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
         refresh();
         //标准编号
         id=intent.getStringExtra("id");
-        unknits_title.setText("标准编号：" + intent.getStringExtra("filenumber"));
+        unknitsTitle.setText("标准编号：" + intent.getStringExtra("filenumber"));
         list = new ArrayList<>();
         //网络请求
         mPresenter.getdata(id, page);
@@ -123,7 +123,7 @@ public class UnknitstandardActivity extends BaseMvpActivity<UnknitstandardPresen
      * 初始化界面
      */
     private void init() {
-        unknits_title = (TextView) findViewById(R.id.unknits_title);
+        unknitsTitle = (TextView) findViewById(R.id.unknits_title);
         emptyView = (LinearLayout) findViewById(R.id.layout_emptyView);
         //等待的滚动条
         gressBar = (ProgressBar) findViewById(R.id.layout_emptyView_bar);

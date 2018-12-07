@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/com_back"
+            android:id="@+id/Proble_back"
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:layout_gravity="center|start"

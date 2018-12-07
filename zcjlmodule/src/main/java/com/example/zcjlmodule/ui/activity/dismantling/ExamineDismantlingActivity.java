@@ -193,5 +193,12 @@ public class ExamineDismantlingActivity extends BaseActivity {
         examine_number.setText(number);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dismantlingUtils != null) {
+            dismantlingUtils = null;
+        }
+    }
 }
 

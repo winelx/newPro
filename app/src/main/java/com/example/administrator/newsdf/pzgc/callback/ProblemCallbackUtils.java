@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.callback;
 
+import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+
 /**
  * @author lx
  * @Created by: 2018/12/3 0003.
@@ -13,11 +15,11 @@ public class ProblemCallbackUtils {
         mCallBack = callBack;
     }
 
-    public static void deleteProblem(String str) {
+    public static void deleteProblem(int str) {
         mCallBack.deleteProblem(str);
     }
 
-    public static void addProblem(String str) {
-        mCallBack.addProblem(str);
+    public static void addProblem(NewDeviceBean bean) {
+        mCallBack.addProblem(bean);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.callback;
 
+import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+
 /**
  * @author lx
  * @Created by: 2018/12/3 0003.
@@ -8,8 +10,8 @@ package com.example.administrator.newsdf.pzgc.callback;
  */
 
 public interface ProblemCallback {
-    void addProblem(String str);
+    void addProblem( NewDeviceBean bean);
 
-    void deleteProblem(String str);
+    void deleteProblem(int str);
 
 }

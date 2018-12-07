@@ -142,4 +142,14 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         return status;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (baseUtils != null) {
+            baseUtils = null;
+        }
+        if (applyUtils != null) {
+            applyUtils = null;
+        }
+    }
 }

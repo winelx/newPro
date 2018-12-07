@@ -53,7 +53,7 @@
                     android:hint="请选择"
                     android:minHeight="30dp"
                     android:paddingLeft="9dp"
-                    android:text="121212121212"
+
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -211,7 +211,6 @@
                     android:hint="请选择"
                     android:minHeight="30dp"
                     android:paddingLeft="9dp"
-                    android:text="121212121212"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -257,15 +256,6 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/problemgrade"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <fragment
-            android:name="com.example.administrator.newsdf.pzgc.activity.device.fragment.ProblemgradeFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
 
 </LinearLayout>

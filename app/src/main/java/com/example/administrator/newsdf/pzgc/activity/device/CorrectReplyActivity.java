@@ -52,7 +52,8 @@ public class CorrectReplyActivity extends BaseActivity {
     private static final int IMAGE_PICKER = 1011;
     private TakePictureManager takePictureManager;
     private int pos = 0;
-    public static final String camera="相机";
+    public static final String camera = "相机";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,12 +133,14 @@ public class CorrectReplyActivity extends BaseActivity {
                                     }
                                 });
                             }
+
                             @Override
                             public void failed(int errorCode, List<String> deniedPermissions) {
                                 ToastUtils.showLongToast("相机权限被禁用，无法使用相机");
                             }
                         });
                     }
+
                     @Override
                     public void onalbum() {
                         //相册
@@ -146,6 +149,7 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
+
             //删除图片
             @Override
             public void deleteClick(int position, int adapterposition) {
@@ -208,6 +212,14 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (PopCameraUtils != null) {
+            PopCameraUtils = null;
         }
     }
 }

@@ -54,9 +54,7 @@ public class DeviceUtils {
         void onsuccess(ArrayList<String> data);
     }
 
-    public interface problemgradeLitenerlist {
-        void onsuccess(ArrayList<String> data);
-    }
+
 
     private boolean status = true;
 
@@ -250,31 +248,8 @@ public class DeviceUtils {
 //                        ArrayList<String> list = new ArrayList<>();
 //                        litenerlist.onsuccess(list);
 //                    }
-  //              });
+        //              });
     }
 
-    /**
-     * @description: 隐患等级
-     * @author lx
-     * @date: 2018/12/3 0003 下午 3:45
-     * @fragment ：ProblemgradeFragment
-     */
-    public void problemgrade(final problemgradeLitenerlist Litenerlist) {
-        ArrayList<String> list = new ArrayList<>();
-        Litenerlist.onsuccess(list);
-//        OkGo.get("")
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        ArrayList<String> list = new ArrayList<>();
-//                        Litenerlist.onsuccess(list);
-//                    }
-//
-//                    @Override
-//                    public void onError(Call call, Response response, Exception e) {
-//                        super.onError(call, response, e);
-//                    }
-  //              });
 
-    }
 }

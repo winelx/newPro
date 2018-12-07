@@ -1,9 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,15 +14,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
@@ -32,7 +29,6 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
-import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -58,18 +54,15 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<String> deleteLis = new ArrayList<>();
     private TextView violationStandardsText, hiddenDangerGradeText, rectifyData;
-    private PopCameraUtils PopCameraUtils;
     private EditText rectifyCause;
-
-
+    private NewDeviceBean bean = new NewDeviceBean();
     //调用相机的manager
     private TakePictureManager takePictureManager;
-    private CheckUtils checkUtils;
-    private Date myDate = new Date();
     private TextView checklistmeuntext;
-    private LinearLayout problemgrade, contentlin;
+    private LinearLayout contentlin;
+    private PopCameraUtils PopCameraUtils;
     private DialogUtils dialogUtils;
-
+    private int pos;
     String[] strings = {"确定", "取消"};
     String title = "是否删除该项问题";
 
@@ -80,10 +73,31 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         imagepath = new ArrayList<>();
         dialogUtils = new DialogUtils();
         mContext = this;
-        checkUtils = new CheckUtils();
+
         ProblemItemCallbackUtils.setCallBack(this);
         init();
-        showView();
+        Intent intent = getIntent();
+        String status = intent.getStringExtra("bean");
+        if ("false".equals(status)) {
+            try {
+                pos = intent.getIntExtra("pos", 0);
+                NewDeviceActivity activity = NewDeviceActivity.getInstance();
+                bean = activity.getBean();
+                //违反标准
+                violationStandardsText.setText(bean.getTitile());
+                //隐患等级
+                hiddenDangerGradeText.setText(bean.getGrade());
+                //整改时间
+                rectifyData.setText(bean.getData());
+                //整改原因
+                rectifyCause.setText(bean.getReason());
+                //巡检附件
+                imagepath.addAll(bean.getList());
+            } catch (Exception e) {
+
+            }
+        }
+//        showView();
     }
 
     /**
@@ -92,7 +106,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
      * @date: 2018/12/3 0003 下午 3:31
      */
     private void init() {
-        problemgrade = (LinearLayout) findViewById(R.id.problemgrade);
         contentlin = (LinearLayout) findViewById(R.id.contentlin);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -148,12 +161,14 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                                     }
                                 });
                             }
+
                             @Override
                             public void failed(int errorCode, List<String> deniedPermissions) {
 
                             }
                         });
                     }
+
                     @Override
                     public void onalbum() {
                         //相册
@@ -162,6 +177,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
             }
+
             @Override
             public void deleteClick(View view, int position) {
                 //删除图片
@@ -222,6 +238,10 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                     ToastUtils.showLongToast("请检查上传的图片是否损坏");
                 }
             }
+        } else if (requestCode == 102) {
+            String da = data.getStringExtra("grade");
+            ToastUtils.showLongToast(da);
+            hiddenDangerGradeText.setText(da);
         }
     }
 
@@ -235,26 +255,37 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.item_delete:
                 //删除
-
                 DialogUtils.Tipsdialog(mContext, title, strings, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
                         ToastUtils.showLongToast("删除");
-                        ProblemCallbackUtils.deleteProblem("str");
+                        ProblemCallbackUtils.deleteProblem(pos);
                     }
                 });
                 break;
             case R.id.checklistmeuntext:
-                //添加问题回调
-                ProblemCallbackUtils.addProblem("str");
+//                //整改时间
+                bean.setData(rectifyData.getText().toString());
+//                //隐患等级
+                bean.setGrade(hiddenDangerGradeText.getText().toString());
+//                //违反标准
+                bean.setTitile(violationStandardsText.getText().toString());
+//                //整改事由
+                bean.setReason(rectifyCause.getText().toString());
+//                //图片
+                bean.setList(imagepath);
+                ProblemCallbackUtils.addProblem(bean);
+                this.finish();
                 break;
             case R.id.violation_standards:
                 //违反标准
-                startActivity(new Intent(mContext, DeviceViolatestandardActivity.class));
+                Intent intent = new Intent(mContext, GradeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.hidden_danger_grade:
-                //隐患等级
-                hideView();
+//                //隐患等级
+                Intent intent1 = new Intent(mContext, GradeActivity.class);
+                startActivityForResult(intent1, 102);
                 break;
             case R.id.rectify_data_lin:
                 //筛选时间
@@ -271,25 +302,32 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-
     /**
-     * @description: 回调
+     * @description: 违反标准回调
      * @author lx
      * @date: 2018/12/3 0003 下午 3:44
      */
     @Override
     public void update(String string) {
-
+        if (PopCameraUtils != null) {
+            PopCameraUtils = null;
+        }
+        if (dialogUtils != null) {
+            dialogUtils = null;
+        }
     }
 
-    public void showView() {
-        contentlin.setVisibility(View.VISIBLE);
-        problemgrade.setVisibility(View.GONE);
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (PopCameraUtils != null) {
+            PopCameraUtils = null;
+        }
+        if (dialogUtils != null) {
+            dialogUtils = null;
+        }
     }
 
-    public void hideView() {
-        contentlin.setVisibility(View.GONE);
-        problemgrade.setVisibility(View.VISIBLE);
-    }
 
 }

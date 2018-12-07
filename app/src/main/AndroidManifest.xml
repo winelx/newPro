@@ -369,7 +369,8 @@
             android:name=".pzgc.activity.device.VerificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-
+        <activity android:name=".pzgc.activity.device.ProblemgradeActivity" />
+        <activity android:name=".pzgc.activity.device.GradeActivity"></activity>
     </application>
 
 </manifest>

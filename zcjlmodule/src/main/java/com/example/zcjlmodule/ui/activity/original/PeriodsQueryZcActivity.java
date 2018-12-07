@@ -109,4 +109,11 @@ public class PeriodsQueryZcActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (measureUtils != null) {
+            measureUtils = null;
+        }
+    }
 }
