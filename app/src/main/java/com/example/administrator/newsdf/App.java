@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(this) ;
         String appVersion;
         try {
             appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;

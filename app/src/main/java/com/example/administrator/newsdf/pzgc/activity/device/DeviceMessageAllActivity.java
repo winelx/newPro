@@ -3,34 +3,25 @@ package com.example.administrator.newsdf.pzgc.activity.device;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
-import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
-import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -48,20 +39,20 @@ import java.util.ArrayList;
 public class DeviceMessageAllActivity extends BaseActivity implements View.OnClickListener {
 
     private RecyclerView listView;
-    private ArrayList<MyNoticeDataBean> mData;
+    private ArrayList<DeviceMeList> mData;
     private Context mContext;
     private TextView titleView;
     private ImageView checklistmeunimage;
-    private PopupWindow mPopupWindow;
     private SmartRefreshLayout refreshLayout;
-    private float resolution;
     private String id;
     private int page = 1;
     private DeviceMessageListAdapter mAdapter;
-    private RelativeLayout back_not_null;
+    private RelativeLayout backNotNull;
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
     private String[] meuns = {"全部", "未回复", "未验证", "打回", "已完成"};
+    private int status = -1;
+    private String orgId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +62,13 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         mData = new ArrayList<>();
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
-        //获取传递的id
-        //获取系统dp尺寸密度值
-        resolution = ScreenUtil.getDensity(App.getInstance());
+
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
         //刷新加载控件
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //空数据
-        back_not_null = (RelativeLayout) findViewById(R.id.back_not_null);
+        backNotNull = (RelativeLayout) findViewById(R.id.back_not_null);
         //menu
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         //设置menu控件背景
@@ -166,10 +155,19 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
      * @date: 2018/12/5 0005 下午 3:19
      */
     public void getdate() {
-        deviceUtils.decicemessagelist(new DeviceUtils.MeListOnclickLitener() {
+        deviceUtils.decicemessagelist(true, orgId, page, status, new DeviceUtils.MeListOnclickLitener() {
             @Override
-            public void onsuccess(ArrayList<MyNoticeDataBean> data) {
-                mAdapter.getData(data);
+            public void onsuccess(ArrayList<DeviceMeList> data) {
+                if (page == 1) {
+                    mData.clear();
+                }
+                mData.addAll(data);
+                mAdapter.getData(mData);
+                if (mData.size()>0){
+                    backNotNull.setVisibility(View.GONE);
+                }else {
+                    backNotNull.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -196,28 +194,33 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
      * @date: 2018/12/5 0005 下午 3:18
      */
     public void ContentView(String str) {
-//        page = 1;
+        page = 1;
 //        mData.clear();
         switch (str) {
             case "全部":
+                status = -1;
                 ToastUtils.showLongToast("全部");
                 break;
             case "未回复":
+                status = 1;
                 ToastUtils.showLongToast("未回复");
-                //待提交
                 break;
             case "未验证":
+                status = 2;
                 ToastUtils.showLongToast("未验证");
                 break;
             case "打回":
+                status = 3;
                 ToastUtils.showLongToast("打回");
                 break;
             case "已完成":
+                status = 5;
                 ToastUtils.showLongToast("已完成");
                 break;
             default:
                 break;
         }
+        getdate();
     }
 
     public void status() {

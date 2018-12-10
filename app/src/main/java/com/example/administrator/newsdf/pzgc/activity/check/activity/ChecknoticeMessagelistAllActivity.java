@@ -21,6 +21,8 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -52,7 +54,6 @@ import okhttp3.Response;
  */
 
 public class ChecknoticeMessagelistAllActivity extends BaseActivity implements View.OnClickListener {
-
     private SettingAdapter adapter;
     private ListView listView;
     ArrayList<MyNoticeDataBean> mData;

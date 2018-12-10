@@ -11,16 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
-import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
@@ -31,6 +30,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lx
@@ -40,18 +41,18 @@ import java.util.ArrayList;
 
 public class DeviceMessageListActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView listView;
-    private ArrayList<MyNoticeDataBean> mData;
+    private ArrayList<DeviceMeList> mData;
     private Context mContext;
     private TextView titleView;
     private ImageView checklistmeunimage;
     private SmartRefreshLayout refreshLayout;
-    private String id;
-    private int page = 1;
+    private String orgId, orgName;
     private DeviceMessageListAdapter mAdapter;
     private RelativeLayout backNotNull;
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
     private String[] meuns = {"全部", "未下发", "未回复", "未验证", "已处理"};
+    private int status = -1, page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         mData = new ArrayList<>();
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
+        orgId = intent.getStringExtra("orgId");
         //获取传递的id
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
@@ -79,7 +81,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //设置标题
-//        titleView.setText(intent.getStringExtra("orgName"));
+        titleView.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,15 +127,15 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
 
             @Override
             public void ondelete(int position) {
-
             }
         });
     }
+
     /**
      * @description: 界面点击事件
      * @author lx
      * @date: 2018/12/5 0005 下午 3:17
-    */
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -149,12 +151,21 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
      * @description: 网络请求
      * @author lx
      * @date: 2018/12/5 0005 下午 3:17
-    */
+     */
     public void getdate() {
-        deviceUtils.decicemessagelist(new DeviceUtils.MeListOnclickLitener() {
+        deviceUtils.decicemessagelist(false, orgId, page, status, new DeviceUtils.MeListOnclickLitener() {
             @Override
-            public void onsuccess(ArrayList<MyNoticeDataBean> data) {
-                mAdapter.getData(data);
+            public void onsuccess(ArrayList<DeviceMeList> data) {
+                if (page == 1) {
+                    mData.clear();
+                }
+                mData.addAll(data);
+                mAdapter.getData(mData);
+                if (mData.size()>0){
+                    backNotNull.setVisibility(View.GONE);
+                }else {
+                    backNotNull.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -163,7 +174,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
      * @description: menu弹出窗
      * @author lx
      * @date: 2018/12/5 0005 下午 3:17
-    */
+     */
     private void meun() {
         PullDownMenu pullDownMenu = new PullDownMenu();
         pullDownMenu.showPopMeun(this, checklistmeun, meuns);
@@ -179,31 +190,35 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
      * @description: menu弹窗按钮点击事件处理
      * @author lx
      * @date: 2018/12/5 0005 下午 3:17
-    */
+     */
     public void ContentView(String string) {
         page = 1;
-        mData.clear();
         switch (string) {
             case "全部":
+                getdate();
+                status = -1;
                 ToastUtils.showLongToast("全部");
                 break;
             case "未下发":
+                status = 0;
                 ToastUtils.showLongToast("未下发");
-                //待提交
                 break;
             case "未回复":
+                status = 1;
                 ToastUtils.showLongToast("未回复");
                 break;
             case "未验证":
+                status = 2;
                 ToastUtils.showLongToast("未验证");
                 break;
             case "已处理":
+                status = 4;
                 ToastUtils.showLongToast("已处理");
                 break;
             default:
                 break;
         }
-
+        getdate();
     }
 
 }

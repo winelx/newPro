@@ -12,6 +12,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
@@ -38,7 +38,6 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,7 +52,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<Audio> imagepath;
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<String> deleteLis = new ArrayList<>();
-    private TextView violationStandardsText, hiddenDangerGradeText, rectifyData;
+    private TextView violationStandardsText, hiddenDangerGradeText, rectifyData, itemDelete;
     private EditText rectifyCause;
     private NewDeviceBean bean = new NewDeviceBean();
     //调用相机的manager
@@ -62,7 +61,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout contentlin;
     private PopCameraUtils PopCameraUtils;
     private DialogUtils dialogUtils;
-    private int pos;
+    private String typeId, valueId;
     String[] strings = {"确定", "取消"};
     String title = "是否删除该项问题";
 
@@ -73,14 +72,14 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         imagepath = new ArrayList<>();
         dialogUtils = new DialogUtils();
         mContext = this;
-
         ProblemItemCallbackUtils.setCallBack(this);
         init();
         Intent intent = getIntent();
         String status = intent.getStringExtra("bean");
+        typeId = intent.getStringExtra("typeId");
         if ("false".equals(status)) {
+            itemDelete.setVisibility(View.VISIBLE);
             try {
-                pos = intent.getIntExtra("pos", 0);
                 NewDeviceActivity activity = NewDeviceActivity.getInstance();
                 bean = activity.getBean();
                 //违反标准
@@ -96,8 +95,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             } catch (Exception e) {
 
             }
+        } else {
+            itemDelete.setVisibility(View.GONE);
         }
-//        showView();
     }
 
     /**
@@ -113,7 +113,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         checklistmeuntext.setOnClickListener(this);
         takePictureManager = new TakePictureManager(ProblemItemActivity.this);
         //删除Item
-        findViewById(R.id.item_delete).setOnClickListener(this);
+        itemDelete = (TextView) findViewById(R.id.item_delete);
+        itemDelete.setOnClickListener(this);
         //违反标准
         findViewById(R.id.violation_standards).setOnClickListener(this);
         violationStandardsText = (TextView) findViewById(R.id.violation_standards_text);
@@ -238,9 +239,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                     ToastUtils.showLongToast("请检查上传的图片是否损坏");
                 }
             }
-        } else if (requestCode == 102) {
-            String da = data.getStringExtra("grade");
-            ToastUtils.showLongToast(da);
+        } else if (requestCode == 102 && resultCode == RESULT_OK) {
+            String da = data.getStringExtra("label");
+            valueId = data.getStringExtra("value");
             hiddenDangerGradeText.setText(da);
         }
     }
@@ -259,11 +260,14 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onsuccess(String str) {
                         ToastUtils.showLongToast("删除");
-                        ProblemCallbackUtils.deleteProblem(pos);
+                        ProblemCallbackUtils.deleteProblem();
+                        finish();
                     }
                 });
                 break;
             case R.id.checklistmeuntext:
+                //关闭软键盘
+                hintKeyBoard();
 //                //整改时间
                 bean.setData(rectifyData.getText().toString());
 //                //隐患等级
@@ -279,7 +283,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.violation_standards:
                 //违反标准
-                Intent intent = new Intent(mContext, GradeActivity.class);
+                Intent intent = new Intent(mContext, DeviceViolatestandardActivity.class);
+                intent.putExtra("typeId", typeId);
                 startActivity(intent);
                 break;
             case R.id.hidden_danger_grade:
@@ -309,12 +314,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
      */
     @Override
     public void update(String string) {
-        if (PopCameraUtils != null) {
-            PopCameraUtils = null;
-        }
-        if (dialogUtils != null) {
-            dialogUtils = null;
-        }
+        violationStandardsText.setText(string);
     }
 
 
@@ -329,5 +329,17 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    public void hintKeyBoard() {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 
 }

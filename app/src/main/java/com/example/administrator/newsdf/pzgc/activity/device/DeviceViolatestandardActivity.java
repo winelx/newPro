@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.device;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
+import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ViolateCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.treeviews.ViolateTreeListViewAdapters;
@@ -31,13 +33,14 @@ import java.util.List;
  * @description: 特种设备违反标准
  * @date: 2018/12/3 0003 上午 11:07
  */
-public class DeviceViolatestandardActivity extends BaseActivity {
-    private LinearLayout violation_fragment, listlinear;
+public class DeviceViolatestandardActivity extends BaseActivity implements CheckCallback3 {
+    private LinearLayout listlinear;
     private ListView mTree;
     private ViolateTreeListViewAdapters<OrgBeans> mAdapter;
     private List<OrgenBeans> mData;
     private DeviceUtils deviceUtils;
     private Context mContext;
+    private String typeId;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -45,16 +48,17 @@ public class DeviceViolatestandardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_violatestandard);
         deviceUtils = new DeviceUtils();
+        Intent intent = getIntent();
+        typeId = intent.getStringExtra("typeId");
         mContext = this;
+        ViolateCallbackUtils.setCallBack(this);
         mData = new ArrayList<>();
         TextView title = (TextView) findViewById(R.id.titleView);
         title.setText("违反标准");
-        violation_fragment = (LinearLayout) findViewById(R.id.violation_fragment);
         listlinear = (LinearLayout) findViewById(R.id.listlinear);
         mTree = (ListView) findViewById(R.id.list_view);
-        showView();
         //网络请求
-        deviceUtils.violateetree(new DeviceUtils.ViolickLitener() {
+        deviceUtils.violateetree(typeId, new DeviceUtils.ViolickLitener() {
             @Override
             public void onsussess(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();
@@ -68,7 +72,6 @@ public class DeviceViolatestandardActivity extends BaseActivity {
                 }
             }
         });
-
         //返回
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +80,6 @@ public class DeviceViolatestandardActivity extends BaseActivity {
             }
         });
     }
-
 
     /**
      * @description: 判断是否显示图标
@@ -112,19 +114,16 @@ public class DeviceViolatestandardActivity extends BaseActivity {
     }
 
     public void itemonclick(String id, String name, String type) {
-        hideView();
-        ViolateCallbackUtils.CheckCallback3(name);
+        if (type.equals("qd")) {
+            Intent intent = new Intent(mContext, ViolatedetailsActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        } else {
+
+        }
+
     }
 
-    public void showView() {
-        listlinear.setVisibility(View.VISIBLE);
-        violation_fragment.setVisibility(View.GONE);
-    }
-
-    public void hideView() {
-        listlinear.setVisibility(View.GONE);
-        violation_fragment.setVisibility(View.VISIBLE);
-    }
 
     @Override
     protected void onDestroy() {
@@ -132,5 +131,11 @@ public class DeviceViolatestandardActivity extends BaseActivity {
         if (deviceUtils != null) {
             deviceUtils = null;
         }
+    }
+
+    @Override
+    public void update(String string) {
+        ProblemItemCallbackUtils.CheckCallback3(string);
+        finish();
     }
 }

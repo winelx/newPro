@@ -16,10 +16,14 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.Checknotice
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageListActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.callback.CallBack;
+import com.example.administrator.newsdf.pzgc.callback.DeviceMeCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+
+import javax.security.auth.callback.Callback;
 
 /**
  * @author lx
@@ -27,7 +31,7 @@ import java.util.ArrayList;
  * @description:特种设备我的消息
  */
 
-public class DeviceMeFragment extends LazyloadFragment {
+public class DeviceMeFragment extends LazyloadFragment implements CallBack {
     private LinearLayout nullposion;
     private SmartRefreshLayout refreshLayout;
     private RecyclerView homeList;
@@ -43,6 +47,7 @@ public class DeviceMeFragment extends LazyloadFragment {
 
     @Override
     protected void init() {
+        DeviceMeCallbackUtils.setCallBack(this);
         mContext = getActivity();
         list = new ArrayList<>();
         //帮助类
@@ -68,7 +73,8 @@ public class DeviceMeFragment extends LazyloadFragment {
             public void onItemClick(View view, int position) {
                 ToastUtils.showLongToast(position + "");
                 Intent intent = new Intent(mContext, DeviceMessageListActivity.class);
-//                intent.putExtra("status", false);
+                 intent.putExtra("orgId", list.get(position).getId());
+                 intent.putExtra("orgName", list.get(position).getOrgname());
                 mContext.startActivity(intent);
             }
         });
@@ -76,6 +82,22 @@ public class DeviceMeFragment extends LazyloadFragment {
 
     @Override
     protected void lazyLoad() {
+        //网络请求
+        deviceUtils.deviceme(new DeviceUtils.MeOnclickLitener() {
+            @Override
+            public void onsuccess(ArrayList<Home_item> data) {
+                list.addAll(data);
+                mAdapter.getData(data);
+                if (list.size() > 0) {
+                    nullposion.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    //更新数据
+    @Override
+    public void deleteTop() {
         //网络请求
         deviceUtils.deviceme(new DeviceUtils.MeOnclickLitener() {
             @Override

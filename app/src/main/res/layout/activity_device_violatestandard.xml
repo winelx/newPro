@@ -7,20 +7,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/violation_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <fragment
-                android:name="com.example.administrator.newsdf.pzgc.activity.device.fragment.ViolatedetailsFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/listlinear"
             android:layout_width="match_parent"

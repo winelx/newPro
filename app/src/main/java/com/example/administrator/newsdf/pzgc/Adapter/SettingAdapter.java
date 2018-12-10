@@ -35,10 +35,6 @@ public abstract class SettingAdapter<T> extends BaseAdapter {
     //布局id
     private int mLayoutRes;
 
-    public SettingAdapter(int check_standard_content, ArrayList<String> list) {
-    }
-
-
     public SettingAdapter(List<T> mData, int mLayoutRes) {
         this.mData = mData;
         this.mLayoutRes = mLayoutRes;

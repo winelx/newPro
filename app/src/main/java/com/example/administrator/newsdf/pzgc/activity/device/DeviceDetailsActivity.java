@@ -41,11 +41,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         //帮助类（RecyclerView需要根据状态改变margin）
         utils = new Utils();
         list = new ArrayList<>();
-        list.add(new DeviceDetailsTop("cesh"));
-        list.add(new DeviceDetailsReply("cesh"));
-        list.add(new DeviceDetailsProving("cesh"));
-        list.add(new DeviceDetailsReply("cesh"));
-        list.add(new DeviceDetailsProving("cesh"));
         //编辑
         deviceDetailsEdit = (TextView) findViewById(R.id.device_details_edit);
         deviceDetailsEdit.setOnClickListener(this);
@@ -65,7 +60,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         //设置控件的margin值
         utils.setMargins(mRecyclerView, 0, 0, 0, 120);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

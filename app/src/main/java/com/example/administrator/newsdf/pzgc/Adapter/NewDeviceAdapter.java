@@ -68,6 +68,13 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.list = list;
         notifyDataSetChanged();
     }
+    /**
+     * 移除并更新数据，同时具有动画效果
+     */
+    public void removeDataAt(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
 
     public interface OnClickListener {
         void onclick(View view, int position);

@@ -6,13 +6,13 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-// public static final String networks = "http://192.168.20.36:8080/";
+    public static final String networks = "http://192.168.20.36:8080/";
 
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
- public static final String networks = "http://192.168.1.119:8081/pzgc/";
+// public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
- // public static final String networks = "http://192.168.20.81:8080/baseframe/";
+    // public static final String networks = "http://192.168.20.81:8080/baseframe/";
     //外
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
 // public static final String networks = "http://120.79.142.15/pzgc/";
@@ -387,5 +387,33 @@ public class Requests {
      * app端权限
      */
     public static final String getMenu = networks + "/iface/mobile/taskmain/getMenu";
+    /**
+     * 特种设备全部/我的
+     */
+    public static final String GETORGINFO = networks + "iface/mobile/appcheck/getOrgInfo";
 
+    /**
+     * 特种设备整改任务列表
+     */
+    public static final String GETSECHECKLIST = networks + "iface/mobile/appcheck/getSECheckList";
+    /**
+     * 特种设备名称
+     */
+    public static final String SETASKTYPESELECTLIST = networks + "iface/mobile/appcheck/getSETaskTypeSelectList";
+    /**
+     * 特种设备违反标准树
+     */
+    public static final String STANDARDTREE = networks + "iface/mobile/appcheck/standardTree";
+    /**
+     * 特种设备违反标准
+     */
+    public static final String SECSTANDARDLIST = networks + "iface/mobile/appcheck/getSECStandardList";
+    /**
+     * 特种设备隐患等级
+     */
+    public static final String HIDDENTROUBLELEVEL = networks + "iface/mobile/appcheck/getHiddenTroubleLevel";
+    /**
+     * 特种设备保存
+     */
+    public static final String DEVICESAVESEC = networks + "iface/mobile/appcheck/saveSEC";
 }

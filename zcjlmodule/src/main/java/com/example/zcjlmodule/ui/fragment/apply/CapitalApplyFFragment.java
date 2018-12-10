@@ -1,5 +1,6 @@
 package com.example.zcjlmodule.ui.fragment.apply;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -180,6 +181,7 @@ public class CapitalApplyFFragment extends LazyloadFragment implements View.OnCl
      *
      * @param map
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void callback(Map<String, Object> map) {
         assemblyOrgname.setText(map.get("orgname") + "");
@@ -187,5 +189,5 @@ public class CapitalApplyFFragment extends LazyloadFragment implements View.OnCl
         httprequest();
     }
 
-  
+
 }

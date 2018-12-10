@@ -60,7 +60,6 @@ public class CheckdownMessageMeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_collection, container, false);
         final Context mContext = getActivity();
         mData = new ArrayList<>();
-
         ImageView checkNewadd = view.findViewById(R.id.check_newadd);
         checkNewadd.setVisibility(View.VISIBLE);
         LinearLayout nullposion = view.findViewById(R.id.nullposion);

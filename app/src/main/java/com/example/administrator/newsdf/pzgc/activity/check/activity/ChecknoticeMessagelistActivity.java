@@ -283,7 +283,7 @@ public class ChecknoticeMessagelistActivity extends BaseActivity implements View
                             } else {
                                 back_not_null.setVisibility(View.VISIBLE);
                             }
-                            mAdapter.getData(mData);
+                            mAdapter.getData((ArrayList)mData);
                             Dates.disDialog();
                         } catch (JSONException e) {
                             e.printStackTrace();

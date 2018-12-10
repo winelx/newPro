@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;

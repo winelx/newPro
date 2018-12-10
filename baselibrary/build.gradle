@@ -47,7 +47,7 @@ dependencies {
     compile 'com.githang:status-bar-compat:latest.integration'
     //圆形图标
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    //Gson
+    //fastjson
     compile 'com.alibaba:fastjson:1.2.51'
     //pdf查看
     compile 'com.github.barteksc:android-pdf-viewer:2.7.0'

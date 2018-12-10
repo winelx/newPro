@@ -360,6 +360,8 @@
         <activity android:name=".pzgc.activity.device.SeeDetailsActivity" />
         <activity android:name=".pzgc.activity.device.CorrectReplyActivity" />
         <activity android:name=".pzgc.activity.device.DeviceMessageAllActivity" />
+        <activity android:name=".pzgc.activity.device.ViolatedetailsActivity" />
+        <activity android:name=".pzgc.activity.device.FacilitynameActivity" />
         <activity
             android:name=".pzgc.activity.device.ProblemItemActivity"
             android:screenOrientation="portrait"
@@ -369,8 +371,7 @@
             android:name=".pzgc.activity.device.VerificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.device.ProblemgradeActivity" />
-        <activity android:name=".pzgc.activity.device.GradeActivity"></activity>
+        <activity android:name=".pzgc.activity.device.GradeActivity"/>
     </application>
 
 </manifest>

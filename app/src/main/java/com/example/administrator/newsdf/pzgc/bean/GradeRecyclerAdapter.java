@@ -21,9 +21,9 @@ import java.util.ArrayList;
 
 public class GradeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private ArrayList<String>list;
+    private ArrayList<SecstandardlistBean>list;
 
-    public GradeRecyclerAdapter(Context mContext, ArrayList<String> list) {
+    public GradeRecyclerAdapter(Context mContext, ArrayList<SecstandardlistBean> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -33,14 +33,13 @@ public class GradeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         //获取自定义View的布局（加载item布局）
         View view = LayoutInflater.from(mContext).inflate(R.layout.task_category_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
-
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolder  ){
-            ((ViewHolder) holder).pop_task_item.setText(list.get(position));
+            ((ViewHolder) holder).pop_task_item.setText(list.get(position).getCheck_standard());
             ((ViewHolder) holder).pop_task_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,5 +67,10 @@ public class GradeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private onClickListener onClickListener;
     public void  setOnClickListener(onClickListener onClickListener){
         this.onClickListener=onClickListener;
+    }
+
+    public  void  getData(ArrayList<SecstandardlistBean>data){
+        this.list=data;
+        notifyDataSetChanged();
     }
 }

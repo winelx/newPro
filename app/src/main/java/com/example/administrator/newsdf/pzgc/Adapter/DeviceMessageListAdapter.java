@@ -12,16 +12,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
-import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageListActivity;
-import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
@@ -40,7 +35,7 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
         implements LeftSlideView.IonSlidingButtonListener {
     private Context mContext;
 
-    private List<MyNoticeDataBean> mDatas = new ArrayList<>();
+    private List<DeviceMeList> mDatas = new ArrayList<>();
 
     private LeftSlideView mMenu = null;
 
@@ -67,16 +62,52 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
         }
         //设置内容布局的宽为屏幕宽度
         holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
-
-        Boolean isDeal = mDatas.get(position).isDeal();
-        if (isDeal) {
-            //不能删除
-            holder.tvDelete.setVisibility(View.GONE);
-            holder.tvSet.setVisibility(View.GONE);
-        } else {
+        holder.deviceMessageCreatename.setText("巡检日期：" + mDatas.get(position).getCheck_date());
+        holder.deviceMessageCreatedata.setText("巡检人：" + mDatas.get(position).getCheckUserName());
+        holder.deviceMessageHead.setText("整改负责人：" + mDatas.get(position).getCheckUserName());
+        holder.deviceMessageOrg.setText("巡检组织：" + mDatas.get(position).getCheckOrgName());
+        //编号
+        holder.deviceMessageNumber.setText(mDatas.get(position).getNumber());
+        //设备名称
+        holder.device_message_title.setText(mDatas.get(position).getTypeName());
+        int status = mDatas.get(position).getStatus();
+        if (status == 0) {
             //能删除
             holder.tvDelete.setVisibility(View.VISIBLE);
             holder.tvSet.setVisibility(View.VISIBLE);
+        } else {
+            //不能删除
+            holder.tvDelete.setVisibility(View.GONE);
+            holder.tvSet.setVisibility(View.GONE);
+        }
+        switch (status) {
+            case 0:
+                holder.infaceItemMessage.setTextString("未下发");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.gray);
+                break;
+            case 1:
+                holder.infaceItemMessage.setTextString("未回复");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                break;
+            case 2:
+                holder.infaceItemMessage.setTextString("未验证");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                break;
+            case 3:
+                holder.infaceItemMessage.setTextString("打回");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.red);
+                break;
+            case 4:
+                holder.infaceItemMessage.setTextString("已处理");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                break;
+            case 5:
+                holder.infaceItemMessage.setTextString("完成");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.green);
+                break;
+            default:
+                break;
+
 
         }
 
@@ -131,7 +162,6 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         public TextView tvSet, title, tvDelete;
         public RelativeLayout subLayoutContent;
         //编号
@@ -214,7 +244,7 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
         return mMenu != null;
     }
 
-    public void getData(List<MyNoticeDataBean> shops) {
+    public void getData(List<DeviceMeList> shops) {
         mDatas = shops;
 
         notifyDataSetChanged();

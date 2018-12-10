@@ -15,8 +15,8 @@ public class ProblemCallbackUtils {
         mCallBack = callBack;
     }
 
-    public static void deleteProblem(int str) {
-        mCallBack.deleteProblem(str);
+    public static void deleteProblem( ) {
+        mCallBack.deleteProblem();
     }
 
     public static void addProblem(NewDeviceBean bean) {

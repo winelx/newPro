@@ -12,6 +12,6 @@ import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
 public interface ProblemCallback {
     void addProblem( NewDeviceBean bean);
 
-    void deleteProblem(int str);
+    void deleteProblem();
 
 }

@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NewDeviceAdapter;
-import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
@@ -28,9 +26,7 @@ import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * @author lx
@@ -49,7 +45,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     private static NewDeviceActivity mContext;
     private ArrayList<NewDeviceBean> list;
     private int page, pos;
-    private String userId, nodeId;
+    private String userId, nodeId, facilityId;
     private DialogUtils dialogUtils;
     private NewDeviceBean bean;
 
@@ -68,7 +64,6 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         //帮助类
         Utils = new Utils();
         list = new ArrayList<>();
-        list.add(new NewDeviceBean("测试数据", "1", "2010-12-05", "B", "存放不合理", null));
         //初始化控件
         findId();
         //设置控件的外边距
@@ -100,6 +95,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         newInspectOrg = (TextView) findViewById(R.id.new_inspect_org);
         //设备名称
         newInspectFacilityLin = (LinearLayout) findViewById(R.id.new_inspect_facility_lin);
+        newInspectFacilityLin.setOnClickListener(this);
         newInspectFacility = (TextView) findViewById(R.id.new_inspect_facility);
         //设备编号
         facilitynumber = (TextView) findViewById(R.id.new_inspect_facilitynumber);
@@ -161,11 +157,15 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.new_inspect_addproblem:
                 //添加问题
-//                problem.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(mContext, ProblemItemActivity.class);
-                intent.putExtra("bean", "true");
-                pos = -1;
-                startActivity(intent);
+                if (facilityId != null) {
+                    Intent intent = new Intent(mContext, ProblemItemActivity.class);
+                    intent.putExtra("bean", "true");
+                    intent.putExtra("typeId", facilityId);
+                    pos = -1;
+                    startActivity(intent);
+                } else {
+                    ToastUtils.showLongToast("请先选择设备名称");
+                }
                 break;
             case R.id.new_inspect_username_lin:
                 //选择联系人
@@ -189,6 +189,11 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
                 break;
+            case R.id.new_inspect_facility_lin:
+                //设备名称
+                Intent intent2 = new Intent(mContext, FacilitynameActivity.class);
+                startActivityForResult(intent2, 4);
+                break;
             default:
                 break;
         }
@@ -207,6 +212,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             list.remove(pos);
             list.add(pos, bean);
         }
+        problem.setVisibility(View.VISIBLE);
         mAdapter.setNewDate(list);
     }
 
@@ -216,8 +222,14 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
      * @date: 2018/12/3 0003 上午 9:52
      */
     @Override
-    public void deleteProblem(int str) {
-
+    public void deleteProblem() {
+        list.remove(pos);
+        mAdapter.setNewDate(list);
+        if (list.size() > 0) {
+            problem.setVisibility(View.VISIBLE);
+        } else {
+            problem.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -231,6 +243,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             //选择组织
             nodeId = data.getStringExtra("id");
             newInspectOrg.setText(data.getStringExtra("name"));
+        } else if (requestCode == 4 && resultCode == RESULT_OK) {
+            //设备名称
+            newInspectFacility.setText(data.getStringExtra("name"));
+            facilityId = data.getStringExtra("id");
         }
     }
 

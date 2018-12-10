@@ -1,18 +1,19 @@
 package com.example.administrator.newsdf.pzgc.activity.device.utils;
 
-import android.view.View;
 
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
+import com.example.administrator.newsdf.pzgc.bean.HiddendangerBean;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
-import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
+import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -42,7 +44,7 @@ public class DeviceUtils {
     }
 
     public interface MeListOnclickLitener {
-        void onsuccess(ArrayList<MyNoticeDataBean> data);
+        void onsuccess(ArrayList<DeviceMeList> data);
     }
 
     public interface ViolickLitener {
@@ -51,10 +53,16 @@ public class DeviceUtils {
     }
 
     public interface ViolickLitenerlist {
-        void onsuccess(ArrayList<String> data);
+        void onsuccess(ArrayList<SecstandardlistBean> data);
     }
 
+    public interface FacilityckLitenerlist {
+        void onsuccess(ArrayList<Audio> data);
+    }
 
+    public interface hiddenLitenerList {
+        void onsuccess(ArrayList<HiddendangerBean> data);
+    }
 
     private boolean status = true;
 
@@ -65,37 +73,58 @@ public class DeviceUtils {
      */
     public void deviceall(final AllOnclickLitener onclickLitener) {
         final ArrayList<String> list = new ArrayList<>();
-        final Map<String, List<Home_item>> ListMap = new HashMap<>();
-        list.add("测试数据1");
-        list.add("测试数据2");
-        list.add("测试数据3");
-        list.add("测试数据4");
-        ArrayList<Home_item> demo1 = new ArrayList<>();
-        demo1.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
-                "组织", "1", "false", "1", "1212", false));
-        demo1.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
-                "组织", "1", "false", "1", "1212", false));
-        demo1.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
-                "组织", "1", "false", "1", "1212", false));
-        demo1.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
-                "组织", "1", "false", "1", "1212", false));
-        ListMap.put("测试数据1", demo1);
-        ListMap.put("测试数据2", demo1);
-        ListMap.put("测试数据3", demo1);
-        ListMap.put("测试数据4", demo1);
-        onclickLitener.onsuccess(list, ListMap);
-//        OkGo.post("")
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        onclickLitener.onsuccess(list, ListMap);
-//                    }
-//
-//                    @Override
-//                    public void onError(Call call, Response response, Exception e) {
-//                        super.onError(call, response, e);
-//                    }
-//                });
+        final ArrayList<Home_item> mData = new ArrayList<>();
+        final Map<String, List<Home_item>> map = new HashMap<>();
+
+        OkGo.post(Requests.GETORGINFO)
+                .params("isAll", true)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            if (jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json = jsonArray.getJSONObject(i);
+                                    String count = json.getString("count");
+                                    String id = json.getString("id");
+                                    String name = json.getString("name");
+//                                    String org_type = json.getString("org_type");
+                                    //父级
+                                    String parentId = json.getString("parentId");
+                                    String parentName = json.getString("parentName");
+                                    //将组织所属公司添加到集合
+                                    if (!list.contains(parentName)) {
+                                        list.add(parentName);
+                                    }
+                                    mData.add(new Home_item("", "", id, "", name, count, "", parentName, parentId, false));
+                                }
+                                //是否有数据
+                                if (mData.size() != 0) {
+                                    for (String str : list) {
+                                        List<Home_item> list = new ArrayList<Home_item>();
+                                        for (Home_item item : mData) {
+                                            String name = item.getParentname();
+                                            if (str.equals(name)) {
+                                                list.add(item);
+                                                map.put(str, list);
+                                            }
+                                        }
+                                    }
+                                }
+                                onclickLitener.onsuccess(list, map);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
     }
 
     /**
@@ -104,58 +133,101 @@ public class DeviceUtils {
      * @param onclickLitener
      */
     public void deviceme(final MeOnclickLitener onclickLitener) {
-        final ArrayList<Home_item> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new Home_item("册数", "2010-12-12 12:12:00", "", "",
-                    "组织", "1", "false", "1", "1212", false));
-        }
-        onclickLitener.onsuccess(list);
-//        OkGo.post("")
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        onclickLitener.onsuccess(list);
-//                    }
-//
-//                    @Override
-//                    public void onError(Call call, Response response, Exception e) {
-//                        super.onError(call, response, e);
-//
-//                    }
-//                });
+        final ArrayList<Home_item> mData = new ArrayList<>();
+        OkGo.get(Requests.GETORGINFO)
+                .params("isAll", false)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                mData.clear();
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                        String id = jsonObject1.getString("id");
+                                        String name = jsonObject1.getString("name");
+                                        String orgtype = jsonObject1.getString("count");
+                                        String parentId = jsonObject1.getString("parentId");
+                                        String parentName = jsonObject1.getString("parentName");
+                                        mData.add(new Home_item("", "", id, "", name, orgtype, "", parentName, parentId, false));
+                                    }
+                                }
+                                onclickLitener.onsuccess(mData);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
+                    }
+                });
     }
 
     /**
      * 特种设备我的整改消息列表网络请求
      */
-    public void decicemessagelist(final MeListOnclickLitener onclickLitener) {
-        ArrayList<MyNoticeDataBean> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new MyNoticeDataBean("测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", false));
-            list.add(new MyNoticeDataBean("测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", "测试数据", true));
+    public void decicemessagelist(boolean isAll, String orgId, final int page, int status, final MeListOnclickLitener onclickLitener) {
+        final ArrayList<DeviceMeList> list = new ArrayList<>();
+        PostRequest postrequest = OkGo.post(Requests.GETSECHECKLIST)
+                .params("isAll", isAll)
+                .params("orgId", orgId)
+                .params("page", page)
+                .params("size", 15);
+        //如果等于-1，就是查询全部，不传status
+        if (status != -1) {
+            postrequest.params("status", status);
         }
-//        OkGo.post("")
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-////                        onclickLitener.onsuccess(list);
-//                    }
-//
-//                    @Override
-//                    public void onError(Call call, Response response, Exception e) {
-//                        super.onError(call, response, e);
-//                    }
-//                });
-        onclickLitener.onsuccess(list);
+        postrequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    int totalPages = data.getInt("totalPages");
+                    if (ret == 0) {
+                        if (page > totalPages) {
+                            ToastUtils.showLongToast("数据展示完毕");
+                        } else {
+                            JSONArray jsonArray = data.getJSONArray("results");
+                            list.addAll(ListJsonUtils.getListByArray(DeviceMeList.class, jsonArray.toString()));
+                        }
+                    } else {
+                        if (page > totalPages) {
+                            ToastUtils.showLongToast(jsonObject.getString("数据展示完毕"));
+                        } else {
+                            ToastUtils.showLongToast(jsonObject.getString("msg"));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                onclickLitener.onsuccess(list);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+        });
     }
 
     /**
      * 违反标准tree
      */
-    public void violateetree(final ViolickLitener violickLitener) {
+    public void violateetree(String typeId, final ViolickLitener violickLitener) {
         final List<OrgBeans> mDatas2 = new ArrayList<>();
         final List<OrgenBeans> mData = new ArrayList<>();
-        OkGo.<String>post(Requests.Swatchmakeup)
+        OkGo.<String>post(Requests.STANDARDTREE)
+                .params("typeId", typeId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -166,8 +238,7 @@ public class DeviceUtils {
                             JSONArray jsonArray1 = jsonObject.getJSONArray("data");
                             if (jsonArray1.length() > 0) {
                                 for (int i = 0; i < jsonArray1.length(); i++) {
-                                    JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
-                                    JSONObject json = jsonObject1.getJSONObject("organization");
+                                    JSONObject json = jsonArray1.getJSONObject(i);
                                     String Id;
                                     try {
                                         Id = json.getString("id");
@@ -177,14 +248,14 @@ public class DeviceUtils {
                                     }
                                     String type;
                                     try {
-                                        type = json.getString("orgType");
+                                        type = json.getString("type");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         type = "";
                                     }
                                     String parentId;
                                     try {
-                                        parentId = json.getString("parentId");
+                                        parentId = json.getString("pId");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                         //如果父ID为null
@@ -238,18 +309,95 @@ public class DeviceUtils {
      * @date: 2018/12/3 0003 下午 3:07
      */
     public void violateelist(String id, final ViolickLitenerlist litenerlist) {
-        ArrayList<String> list = new ArrayList<>();
-        litenerlist.onsuccess(list);
-//        OkGo.get("")
-//                .params("", id)
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        ArrayList<String> list = new ArrayList<>();
-//                        litenerlist.onsuccess(list);
-//                    }
-        //              });
+        final ArrayList<SecstandardlistBean> list = new ArrayList<>();
+        OkGo.get(Requests.SECSTANDARDLIST)
+                .params("qdId", id)
+                .params("page", 1)
+                .params("size", 300)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+                            list.addAll(ListJsonUtils.getListByArray(SecstandardlistBean.class, jsonArray.toString()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        litenerlist.onsuccess(list);
+                    }
+                });
     }
 
+    /**
+     * @内容:特种设备名称
+     * @author lx
+     * @date: 2018/12/10 0010 下午 2:18
+     */
+    public void facilityname(final FacilityckLitenerlist facilityckLitenerlist) {
+        OkGo.get(Requests.SETASKTYPESELECTLIST)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        ArrayList<Audio> list = new ArrayList<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                String name = json.getString("name");
+                                String id = json.getString("id");
+                                list.add(new Audio(name, id));
+                            }
+                            facilityckLitenerlist.onsuccess(list);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    /**
+     * 隐患等级
+     */
+    public void hiddendangergrade(final hiddenLitenerList litenerList) {
+        OkGo.get(Requests.HIDDENTROUBLELEVEL)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        ArrayList<HiddendangerBean> list = new ArrayList<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            list.addAll(ListJsonUtils.getListByArray(HiddendangerBean.class, jsonArray.toString()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        litenerList.onsuccess(list);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+    /**
+     * 特种设备整改单保存
+     */
+    public void devicesave(){
+        OkGo.post(Requests.DEVICESAVESEC)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+
+                    }
+                });
+    }
 
 }

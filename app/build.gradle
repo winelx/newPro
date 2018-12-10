@@ -16,6 +16,7 @@ android {
         versionCode 1
         versionName "2.3"
         resConfigs "zh-rCN"
+        multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
@@ -145,7 +146,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     testCompile 'junit:junit:4.12'
-
+    //fastjson
+    compile 'com.alibaba:fastjson:1.2.51'
+    //拆分dex
+    compile 'com.android.support:multidex:1.0.1'
     //根据条件
     if (!isUserModule.toBoolean()) {
         compile project(':zcjlmodule')
