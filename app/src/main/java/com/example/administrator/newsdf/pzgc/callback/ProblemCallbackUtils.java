@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.callback;
 
-import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
+
+import java.util.ArrayList;
 
 /**
  * @author lx
@@ -15,11 +17,9 @@ public class ProblemCallbackUtils {
         mCallBack = callBack;
     }
 
-    public static void deleteProblem( ) {
-        mCallBack.deleteProblem();
+    public static void ProblemCallback(ArrayList<DetailsBean> mData) {
+        mCallBack.problemcallback(mData);
     }
 
-    public static void addProblem(NewDeviceBean bean) {
-        mCallBack.addProblem(bean);
-    }
+
 }

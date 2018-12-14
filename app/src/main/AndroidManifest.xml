@@ -362,6 +362,7 @@
         <activity android:name=".pzgc.activity.device.DeviceMessageAllActivity" />
         <activity android:name=".pzgc.activity.device.ViolatedetailsActivity" />
         <activity android:name=".pzgc.activity.device.FacilitynameActivity" />
+        <activity android:name=".pzgc.activity.device.SelectaccpectuserActivity" />
         <activity
             android:name=".pzgc.activity.device.ProblemItemActivity"
             android:screenOrientation="portrait"

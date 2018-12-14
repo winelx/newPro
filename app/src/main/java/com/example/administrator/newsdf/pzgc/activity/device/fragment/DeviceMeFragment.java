@@ -71,7 +71,6 @@ public class DeviceMeFragment extends LazyloadFragment implements CallBack {
         mAdapter.setOnItemClickListener(new CheckMessageMineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ToastUtils.showLongToast(position + "");
                 Intent intent = new Intent(mContext, DeviceMessageListActivity.class);
                  intent.putExtra("orgId", list.get(position).getId());
                  intent.putExtra("orgName", list.get(position).getOrgname());

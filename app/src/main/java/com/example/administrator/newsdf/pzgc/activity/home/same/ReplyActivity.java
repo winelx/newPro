@@ -389,7 +389,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-
         final PopupWindow popWindow = new PopupWindow(popView, width, height);
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setClippingEnabled(false);
@@ -566,7 +565,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
                 break;
-
             case R.id.reply_check:
                 Intent intent1 = new Intent(ReplyActivity.this, Checkpoint.class);
                 intent1.putExtra("wbsID", wbsID);

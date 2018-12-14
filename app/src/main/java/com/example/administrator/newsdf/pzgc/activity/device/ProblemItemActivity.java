@@ -17,17 +17,21 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+import com.example.administrator.newsdf.pzgc.bean.ProblemBean;
+import com.example.administrator.newsdf.pzgc.bean.ProblemFile;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
+import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -38,7 +42,9 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
@@ -46,7 +52,7 @@ import java.util.List;
  * @date: 2018/11/30 0030 下午 5:00
  */
 public class ProblemItemActivity extends BaseActivity implements View.OnClickListener, CheckCallback3 {
-    private RecyclerView item_recycler;
+    private RecyclerView itemRecycler;
     private static final int IMAGE_PICKER = 1011;
     private Context mContext;
     private ArrayList<Audio> imagepath;
@@ -54,16 +60,18 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<String> deleteLis = new ArrayList<>();
     private TextView violationStandardsText, hiddenDangerGradeText, rectifyData, itemDelete;
     private EditText rectifyCause;
-    private NewDeviceBean bean = new NewDeviceBean();
     //调用相机的manager
     private TakePictureManager takePictureManager;
     private TextView checklistmeuntext;
     private LinearLayout contentlin;
     private PopCameraUtils PopCameraUtils;
     private DialogUtils dialogUtils;
-    private String typeId, valueId;
-    String[] strings = {"确定", "取消"};
-    String title = "是否删除该项问题";
+    private DeviceUtils deviceUtils;
+    private String typeId, valueId, standId, checkId;
+    private String[] strings = {"确定", "取消"};
+    private String title = "是否删除该项问题";
+    private String qdgId, qdId;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,33 +79,43 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_problem);
         imagepath = new ArrayList<>();
         dialogUtils = new DialogUtils();
+        deviceUtils = new DeviceUtils();
         mContext = this;
         ProblemItemCallbackUtils.setCallBack(this);
         init();
         Intent intent = getIntent();
-        String status = intent.getStringExtra("bean");
+        status = intent.getStringExtra("bean");
         typeId = intent.getStringExtra("typeId");
+        checkId = intent.getStringExtra("checkId");
         if ("false".equals(status)) {
             itemDelete.setVisibility(View.VISIBLE);
-            try {
-                NewDeviceActivity activity = NewDeviceActivity.getInstance();
-                bean = activity.getBean();
-                //违反标准
-                violationStandardsText.setText(bean.getTitile());
-                //隐患等级
-                hiddenDangerGradeText.setText(bean.getGrade());
-                //整改时间
-                rectifyData.setText(bean.getData());
-                //整改原因
-                rectifyCause.setText(bean.getReason());
-                //巡检附件
-                imagepath.addAll(bean.getList());
-            } catch (Exception e) {
-
-            }
+            deviceUtils.secdetailsbyedit(typeId, new DeviceUtils.ProblemLitener() {
+                @Override
+                public void success(ProblemBean bean, ArrayList<ProblemFile> data) {
+                    //整改期限
+                    rectifyData.setText(bean.getTerm());
+                    //隐患等级
+                    hiddenDangerGradeText.setText(bean.getHTLName());
+                    valueId = bean.getHiddenTroubleLevel() + "";
+                    //违反标准
+                    violationStandardsText.setText(bean.getCisName());
+                    standId = bean.getCisId();
+                    qdgId = bean.getQdgId();
+                    qdId = bean.getQdId();
+                    //整改事由
+                    rectifyCause.setText(bean.getCause());
+                    if (data.size() > 0) {
+                        for (int i = 0; i < data.size(); i++) {
+                            imagepath.add(new Audio(Requests.networks + data.get(i).getFilepath(), data.get(i).getId()));
+                        }
+                        photoAdapter.getData(imagepath, true);
+                    }
+                }
+            });
         } else {
             itemDelete.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -109,7 +127,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         contentlin = (LinearLayout) findViewById(R.id.contentlin);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setVisibility(View.VISIBLE);
-        checklistmeuntext.setText("确定");
+        checklistmeuntext.setText("保存");
         checklistmeuntext.setOnClickListener(this);
         takePictureManager = new TakePictureManager(ProblemItemActivity.this);
         //删除Item
@@ -128,14 +146,14 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         //整改事由
         rectifyCause = (EditText) findViewById(R.id.rectify_cause);
         //附件
-        item_recycler = (RecyclerView) findViewById(R.id.item_recycler);
+        itemRecycler = (RecyclerView) findViewById(R.id.item_recycler);
         //样式
-        item_recycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        itemRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         //添加动画
-        item_recycler.setItemAnimator(new DefaultItemAnimator());
+        itemRecycler.setItemAnimator(new DefaultItemAnimator());
         //设置适配器
         photoAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", false);
-        item_recycler.setAdapter(photoAdapter);
+        itemRecycler.setAdapter(photoAdapter);
         photoAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
@@ -259,8 +277,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 DialogUtils.Tipsdialog(mContext, title, strings, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
+                        //删除
                         ToastUtils.showLongToast("删除");
-                        ProblemCallbackUtils.deleteProblem();
+//                        ProblemCallbackUtils.ProblemCallback();
                         finish();
                     }
                 });
@@ -268,18 +287,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             case R.id.checklistmeuntext:
                 //关闭软键盘
                 hintKeyBoard();
-//                //整改时间
-                bean.setData(rectifyData.getText().toString());
-//                //隐患等级
-                bean.setGrade(hiddenDangerGradeText.getText().toString());
-//                //违反标准
-                bean.setTitile(violationStandardsText.getText().toString());
-//                //整改事由
-                bean.setReason(rectifyCause.getText().toString());
-//                //图片
-                bean.setList(imagepath);
-                ProblemCallbackUtils.addProblem(bean);
-                this.finish();
+                problemsave();
                 break;
             case R.id.violation_standards:
                 //违反标准
@@ -308,15 +316,78 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
+     * @内容: 保存
+     * @author lx
+     * @date: 2018/12/11 0011 下午 2:48
+     */
+    private void problemsave() {
+        ArrayList<File> file = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        //整改期限
+        if (!rectifyData.getText().toString().isEmpty()) {
+            map.put("term", rectifyData.getText().toString());
+        } else {
+            ToastUtils.showLongToast("整改期限未选择");
+            return;
+        }
+
+        //隐患等级
+        if (valueId != null) {
+            map.put("hiddenTroubleLevel", valueId);
+        } else {
+            ToastUtils.showLongToast("隐患等级未选择");
+            return;
+        }
+        //违反标准Id
+        if (standId != null) {
+            map.put("cisId", standId);
+            map.put("checkId", checkId);
+            map.put("qdgId", qdgId);
+            map.put("qdId", qdId);
+        } else {
+            ToastUtils.showLongToast("违反标准未选择");
+            return;
+        }
+        if (!rectifyCause.getText().toString().isEmpty()) {
+            //整改事由
+            map.put("cause", rectifyCause.getText().toString());
+        }
+//        //图片
+        for (int i = 0; i < imagepath.size(); i++) {
+            //如果content内容为空，本地添加图片
+            if (imagepath.get(i).getContent().isEmpty()) {
+                file.add(new File(imagepath.get(i).getName()));
+            }
+        }
+        //修改传Id
+        if ("false".equals(status)) {
+            map.put("id", checkId);
+        }
+        deviceUtils.saveSECDetails(map, file, new DeviceUtils.devicesavelitener() {
+            @Override
+            public void success(String number, String id) {
+                //新增整改问题
+                ToastUtils.showLongToast("成功");
+//                ProblemCallbackUtils.addProblem(bean);
+                finish();
+            }
+        });
+
+    }
+
+    /**
      * @description: 违反标准回调
      * @author lx
      * @date: 2018/12/3 0003 下午 3:44
      */
     @Override
     public void update(String string) {
-        violationStandardsText.setText(string);
+        String[] str = string.split("\n");
+        violationStandardsText.setText(str[0]);
+        standId = str[1];
+        qdgId = str[2];
+        qdId = str[3];
     }
-
 
     @Override
     protected void onDestroy() {
@@ -329,6 +400,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    //隐藏键盘
     public void hintKeyBoard() {
         //拿到InputMethodManager
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

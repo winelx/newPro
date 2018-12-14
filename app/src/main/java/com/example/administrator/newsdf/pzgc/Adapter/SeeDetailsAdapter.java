@@ -58,7 +58,6 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Object obj = mData.get(position);
         if (holder instanceof TopViewholder) {
-
             problem((TopViewholder) holder, obj, position);
         } else if (holder instanceof ReplyViewholder) {
             reply((ReplyViewholder) holder, obj, position);
@@ -68,24 +67,31 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @SuppressLint("SetTextI18n")
     private void problem(TopViewholder holder, Object object, int position) {
         page++;
-        ArrayList<FileTypeBean> list = new ArrayList<>();
-        list.addAll(((SeeDetailsTop) object).getList());
+        SeeDetailsTop bean = (SeeDetailsTop) object;
         holder.seeDetailsTitle.setText("第" + page + "个问题");
+        //违反标准
+        holder.seeDetailsStandard.setText(bean.getCisName());
+        //隐患等级
+        holder.seeDetailsGrade.setText(bean.getHTLName());
+        //整改期限
+        holder.seeDetailsTerm.setText(bean.getTerm());
+        //整改事由
+        holder.seeDetailsReason.setText(bean.getCause());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.toprecycler.setLayoutManager(linearLayoutManager);
-        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, list);
+        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, bean.getList());
         holder.toprecycler.setAdapter(adapter2);
 
     }
 
     private void reply(ReplyViewholder holder, Object object, int position) {
-        ArrayList<FileTypeBean> list = new ArrayList<>();
-        list.addAll(((SeeDetailsReply) object).getList());
+        SeeDetailsReply beans = (SeeDetailsReply) object;
+        holder.seedetailsdescribe.setText(beans.getTitle());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.seedetailsreplyrecycler.setLayoutManager(linearLayoutManager);
-        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, list);
+        FiletypeAdapter adapter2 = new FiletypeAdapter(mContext, beans.getList());
         holder.seedetailsreplyrecycler.setAdapter(adapter2);
     }
 

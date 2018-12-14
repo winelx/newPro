@@ -1,13 +1,21 @@
 package com.example.administrator.newsdf.pzgc.activity.device.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
+import com.example.administrator.newsdf.pzgc.bean.Devicedetails;
 import com.example.administrator.newsdf.pzgc.bean.HiddendangerBean;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.bean.ProblemBean;
+import com.example.administrator.newsdf.pzgc.bean.ProblemFile;
 import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
+import com.example.administrator.newsdf.pzgc.bean.TextBean;
+import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -19,13 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -62,6 +70,18 @@ public class DeviceUtils {
 
     public interface hiddenLitenerList {
         void onsuccess(ArrayList<HiddendangerBean> data);
+    }
+
+    public interface devicesavelitener {
+        void success(String number, String id);
+    }
+
+    public interface MainInfolitener {
+        void success(Devicedetails bean, ArrayList<DetailsBean> list);
+    }
+
+    public interface ProblemLitener {
+        void success(ProblemBean bean, ArrayList<ProblemFile> list);
     }
 
     private boolean status = true;
@@ -194,18 +214,13 @@ public class DeviceUtils {
                     JSONObject data = jsonObject.getJSONObject("data");
                     int totalPages = data.getInt("totalPages");
                     if (ret == 0) {
+                        JSONArray jsonArray = data.getJSONArray("results");
+                        list.addAll(ListJsonUtils.getListByArray(DeviceMeList.class, jsonArray.toString()));
                         if (page > totalPages) {
                             ToastUtils.showLongToast("数据展示完毕");
-                        } else {
-                            JSONArray jsonArray = data.getJSONArray("results");
-                            list.addAll(ListJsonUtils.getListByArray(DeviceMeList.class, jsonArray.toString()));
                         }
                     } else {
-                        if (page > totalPages) {
-                            ToastUtils.showLongToast(jsonObject.getString("数据展示完毕"));
-                        } else {
-                            ToastUtils.showLongToast(jsonObject.getString("msg"));
-                        }
+                        ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -319,7 +334,8 @@ public class DeviceUtils {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            JSONArray jsonArray = data.getJSONArray("results");
                             list.addAll(ListJsonUtils.getListByArray(SecstandardlistBean.class, jsonArray.toString()));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -387,15 +403,233 @@ public class DeviceUtils {
                     }
                 });
     }
+
     /**
      * 特种设备整改单保存
      */
-    public void devicesave(){
-        OkGo.post(Requests.DEVICESAVESEC)
+    public void devicesave(Map<String, Object> map, final devicesavelitener litener) {
+        PostRequest postrequest = OkGo.post(Requests.DEVICESAVESEC);
+        //遍历map中的值
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            postrequest.params(entry.getKey(), entry.getValue() + "");
+        }
+        postrequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String string, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    String numbers = data.getString("numbers");
+                    String id = data.getString("id");
+                    litener.success(numbers, id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+        });
+    }
+
+    /**
+     * 特种设备检查主要数据
+     */
+    public void getSECMainInfo(String id, final MainInfolitener infolitener) {
+        OkGo.post(Requests.GETMAININFOBYEDIT)
+                .params("id", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                JSONArray details = json.getJSONArray("details");
+                                ArrayList<DetailsBean> list = new ArrayList<>();
+                                Devicedetails textBean = JSON.parseObject(json.toString(), Devicedetails.class);
+                                list.addAll(ListJsonUtils.getListByArray(DetailsBean.class, details.toString()));
+                                infolitener.success(textBean, list);
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    /**
+     * 特种设备删除单据
+     *
+     * @param id
+     * @param liter
+     */
+    public void devicedelete(String id, final devicesavelitener liter) {
+        OkGo.post(Requests.devicedelete)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                liter.success("", "");
+                            } else {
+                                ToastUtils.showLongToast("删除失败");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    /**
+     * @内容: 保存整改通知问题项
+     * @author lx
+     * @date: 2018/12/12 0012 上午 10:37
+     */
+    public void saveSECDetails(Map<String, Object> map, ArrayList<File> file, final devicesavelitener tener) {
+        PostRequest postrequest = OkGo.post(Requests.SAVESECDETAILS);
+        //遍历map中的值
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            postrequest.params(entry.getKey(), entry.getValue().toString());
+        }
+        if (file.size() > 0) {
+            postrequest.addFileParams("imagesList", file);
+            postrequest.addFileParams("images", file);
+        } else {
+            postrequest.isMultipart(true);
+        }
+        postrequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String string, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        tener.success("", "");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+            }
+
+        });
+    }
+
+    /**
+     * @内容: 下发整改通知
+     * @author lx
+     * @date: 2018/12/12 0012 上午 10:37
+     */
+    public void sendseccheck(String id, final devicesavelitener litener) {
+        OkGo.get(Requests.SENDSECCHECK)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                litener.success("", "");
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        int code = response.networkResponse().code();
+                        LogUtil.i("network", code);
+                    }
+                });
+    }
+
+    /**
+     * @内容:
+     * @author 特种设备整改项详情
+     * @date: 2018/12/12 0012 下午 1:43
+     */
+    public void secdetailsbyedit(String id, final ProblemLitener litener) {
+        OkGo.post(Requests.GETSECDETAILSBYEDIT)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        ArrayList<ProblemFile> list = new ArrayList<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            JSONArray jsonArray = data.getJSONArray("file");
+                            ProblemBean bean = JSON.parseObject(data.toString(), ProblemBean.class);
+                            if (jsonArray.length() > 0) {
+                                list.addAll(ListJsonUtils.getListByArray(ProblemFile.class, jsonArray.toString()));
+                            }
+                            litener.success(bean, list);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+    /**
+     * @内容: 特种设备提交验证
+     * @author lx
+     * @date: 2018/12/14 0014 上午 11:03
+     */
+    public void submitValide(String id, final Networkinterface networkinterface) {
+        OkGo.get(Requests.SUBMITVALIDE)
+                .params("checkId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            Map<String, Object> map = new HashMap<>();
+                            if (ret == 0) {
+                                map.put("data", "成功");
+                                networkinterface.onsuccess(map);
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msgl"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

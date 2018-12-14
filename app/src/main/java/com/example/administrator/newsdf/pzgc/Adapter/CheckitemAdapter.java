@@ -48,11 +48,9 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
-
         @Override
         public void afterTextChanged(Editable s) {
             //每次修改文字后，保存在数据集合中
-            Log.e("sss", "index=" + etFocusPos + ",save=" + s.toString());
             mData.get(etFocusPos).setResultscore(s.toString());
             try {
                 BigDecimal bigDecimal = new BigDecimal(s.toString());

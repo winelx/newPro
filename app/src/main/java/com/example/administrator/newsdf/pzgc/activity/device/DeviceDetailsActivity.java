@@ -10,14 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceDetailsAdapter;
-import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsProving;
-import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsReply;
-import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsTop;
+import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
+import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author lx
@@ -29,50 +33,126 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     private Context mContext;
     private DeviceDetailsAdapter mAdapter;
     private ArrayList<Object> list;
+    private ArrayList<Integer> permission;
     private LinearLayout deviceDetailsFunction;
-    private TextView deviceDetailsDown, deviceDetailsProving, deviceDetailsEdit;
+    private TextView deviceDetailsDown, deviceDetailsProving, deviceDetailsEdit, checklistmeuntext;
     private Utils utils;
+    private DeviceDetailsUtils detailsUtils;
+    private String id, orgId;
+    private TextView deviceDetailsAssign;
+    private TextView deviceDetailsResult, titleView;
+    private ArrayList<TextView> viewlist;
+    private String[] dialog = {"确定", "取消"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        final Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        orgId = intent.getStringExtra("orgId");
         mContext = this;
         //帮助类（RecyclerView需要根据状态改变margin）
         utils = new Utils();
+        //权限集合
+        permission = new ArrayList<>();
+        viewlist = new ArrayList<>();
+        //界面数据存储集合
         list = new ArrayList<>();
-        //编辑
-        deviceDetailsEdit = (TextView) findViewById(R.id.device_details_edit);
-        deviceDetailsEdit.setOnClickListener(this);
+        detailsUtils = new DeviceDetailsUtils();
+        titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText(intent.getStringExtra("orgname"));
+        //提交
+        deviceDetailsDown = (TextView) findViewById(R.id.device_details_up);
+        deviceDetailsDown.setOnClickListener(this);
+        //指派
+        deviceDetailsAssign = (TextView) findViewById(R.id.device_details_assign);
+        deviceDetailsAssign.setOnClickListener(this);
+        //回复
+        deviceDetailsResult = (TextView) findViewById(R.id.device_details_result);
+        deviceDetailsResult.setOnClickListener(this);
         //验证
         deviceDetailsProving = (TextView) findViewById(R.id.device_details_proving);
         deviceDetailsProving.setOnClickListener(this);
-        //下发
-        deviceDetailsDown = (TextView) findViewById(R.id.device_details_down);
-        deviceDetailsDown.setOnClickListener(this);
+        //编辑
+        deviceDetailsEdit = (TextView) findViewById(R.id.device_details_edit);
+        deviceDetailsEdit.setOnClickListener(this);
         //功能
         deviceDetailsFunction = (LinearLayout) findViewById(R.id.device_details_function);
         //recyclerview
         mRecyclerView = (RecyclerView) findViewById(R.id.device_details_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mAdapter = new DeviceDetailsAdapter(mContext, list));
+        //返回
         findViewById(R.id.checklistback).setOnClickListener(this);
         //设置控件的margin值
+        viewlist.add(deviceDetailsDown);
+        viewlist.add(deviceDetailsAssign);
+        viewlist.add(deviceDetailsResult);
+        viewlist.add(deviceDetailsProving);
+        viewlist.add(deviceDetailsEdit);
         utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+        mAdapter.setOnclickItemLitener(new DeviceDetailsAdapter.onclickitemlitener() {
+            @Override
+            public void seedetails() {
+                Intent intent1 = new Intent(mContext, SeeDetailsActivity.class);
+                intent1.putExtra("id", id);
+                intent1.putExtra("orgname", titleView.getText().toString());
+                startActivity(intent1);
+            }
+        });
+
+        network(id);
     }
+
+    /**
+     * @内容: 点击事件
+     * @author lx
+     * @date: 2018/12/14 0014 上午 10:28
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.device_details_up:
+                ToastUtils.showLongToast("提交");
+                //提交
+                break;
+            case R.id.device_details_assign:
+                //指派
+                Intent intent1 = new Intent(mContext, SelectaccpectuserActivity.class);
+                intent1.putExtra("id", id);
+                intent1.putExtra("orgId", orgId);
+                startActivityForResult(intent1, 202);
+                break;
+            case R.id.device_details_result:
+                //回复
+                Intent intent = new Intent(mContext, CorrectReplyActivity.class);
+                //单据Id
+                intent.putExtra("id", id);
+                startActivity(intent);
+                break;
             case R.id.device_details_proving:
-                startActivity(new Intent(mContext, VerificationActivity.class));
                 //验证
+                if (permission.contains(10)) {
+                    //直接提交验证提交后改为20状态
+                    //跳转验证单不可选择附件
+                    opinion();
+                } else {
+                    ToastUtils.showLongToast("保存验证单");
+                    //20保存验证单 改为21,22
+                }
                 break;
             case R.id.device_details_edit:
-                startActivity(new Intent(mContext, CorrectReplyActivity.class));
                 //编辑
-                break;
-            case R.id.device_details_down:
-                //下发
+                if (permission.contains(2)) {
+                    //修改整改问题项
+                    Intent intent2 = new Intent(mContext, CorrectReplyActivity.class);
+                    intent2.putExtra("id", id);
+                    startActivity(intent2);
+                } else {
+                    //验证21
+                    opinion();
+                }
                 break;
             case R.id.checklistback:
                 //返回
@@ -82,4 +162,129 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 break;
         }
     }
+
+    //0指派、1创建回复、2编辑回复、3提交回复、10项目经理创建验证、20下发人创建验证、21下发人编辑验证、22下发人提交验证
+    public void network(String id) {
+        hideView();
+        detailsUtils.details(id, new DeviceDetailsUtils.DeviceDetailslitener() {
+            @Override
+            public void onsuccess(ArrayList<Object> lists, ArrayList<Integer> data) {
+                permission.addAll(data);
+                list.addAll(lists);
+                mAdapter.setNewData(list);
+                if (permission.size() > 0) {
+                    deviceDetailsFunction.setVisibility(View.VISIBLE);
+                    utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+                    authority();
+                } else {
+                    utils.setMargins(mRecyclerView, 0, 0, 0, 0);
+                    deviceDetailsFunction.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    /**
+     * @内容: 根据返回的权限集合显示按钮
+     * @author lx
+     * @date: 2018/12/14 0014 上午 10:26
+     */
+    public void authority() {
+        //0指派、1创建回复、2编辑回复、3提交回复、10项目经理创建验证、20下发人创建验证、21下发人编辑验证、22下发人提交验证
+        for (int i = 0; i < permission.size(); i++) {
+            LogUtil.i("1");
+            Integer item = permission.get(i);
+            switch (item) {
+                case 0:
+                    //指派
+                    deviceDetailsAssign.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    //1创建回复
+                    deviceDetailsResult.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    //编辑
+                    deviceDetailsEdit.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    //提交
+                    deviceDetailsDown.setVisibility(View.VISIBLE);
+                    break;
+                case 10:
+                    //10项目经理创建验证
+                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    break;
+                case 20:
+                    //20下发人创建验证
+                    //验证
+                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    break;
+                case 21:
+                    //21下发人编辑验证
+                    //验证
+                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    break;
+                case 22:
+                    //验证
+                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    //22下发人提交验证
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @内容: 每次请求前隐藏按钮，请求完成后根据权限集合显示
+     * @author lx
+     * @date: 2018/12/14 0014 上午 10:27
+     */
+    public void hideView() {
+        for (int i = 0; i < viewlist.size(); i++) {
+            TextView view = viewlist.get(i);
+            view.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * @内容: activity回调
+     * @author lx
+     * @date: 2018/12/14 0014 上午 10:27
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 202 && resultCode == 202) {
+            //指派的回调，返回指派人 名字 和ID
+            String titlle = "是否指派给" + data.getStringExtra("name");
+            final String userid = data.getStringExtra("id");
+            DialogUtils.Tipsdialog(mContext, titlle, dialog, new DialogUtils.OnClickListener() {
+                @Override
+                public void onsuccess(String str) {
+                    detailsUtils.assignPersonOfSEC(id, userid, new Networkinterface() {
+                        @Override
+                        public void onsuccess(Map<String, Object> map) {
+                            ToastUtils.showLongToast("指派成功");
+                            network(id);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+     * @内容: 验证
+     * @author lx
+     * @date: 2018/12/14 0014 上午 11:56
+     */
+    public void opinion() {
+        Intent intent = new Intent(mContext, VerificationActivity.class);
+        intent.putExtra("id", "id");
+        startActivity(intent);
+    }
+
+
 }

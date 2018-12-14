@@ -413,7 +413,61 @@ public class Requests {
      */
     public static final String HIDDENTROUBLELEVEL = networks + "iface/mobile/appcheck/getHiddenTroubleLevel";
     /**
-     * 特种设备保存
+     * 特种设备主要信息保存
      */
-    public static final String DEVICESAVESEC = networks + "iface/mobile/appcheck/saveSEC";
+    public static final String DEVICESAVESEC = networks + "iface/mobile/appcheck/saveSECheck";
+    /**
+     * 特种设备详情
+     */
+    public static final String GETSECMAININFO = networks + "iface/mobile/appcheck/getMainInfoByFlow";
+    /**
+     * 特种设备检查主要数据
+     */
+    public static final String GETMAININFOBYEDIT = networks + "iface/mobile/appcheck/getMainInfoByEdit";
+    /**
+     * 特种设备删除整改通知单
+     */
+    public static final String devicedelete = networks + "iface/mobile/appcheck/deleteSEC";
+    /**
+     * 保存整改通知单问题项
+     */
+    public static final String SAVESECDETAILS = networks + "iface/mobile/appcheck/saveSECDetails";
+    /**
+     * 下发整改单
+     * /
+     */
+    public static final String SENDSECCHECK = networks + "iface/mobile/appcheck/sendSECcheck";
+    /**
+     * 特种设备整改未下发前详情界面获取数据
+     * /
+     */
+    public static final String GETSECDETAILSBYEDIT = networks + "iface/mobile/appcheck/getSECDetailsByEdit";
+    /**
+     * 查看所有问题项及其回复数据
+     */
+    public static final String GETSECDETAILSANDREPLY = networks + "iface/mobile/appcheck/getSECDetailsAndReply";
+    /**
+     * 特种设备选择指派人
+     */
+    public static final String SELECTACCPECTUSER = networks + "iface/mobile/appcheck/selectAccpectUser";
+    /**
+     * 特种设备提交验证
+     */
+    public static final String SUBMITVALIDE = networks + "iface/mobile/appcheck/submitValide";
+    /**
+     * 特种设备保存修改回复
+     */
+    public static final String SAVEREPLYOFSEC = networks + "iface/mobile/appcheck/saveReplyOfSEC";
+    /**
+     * 创建、修改验证单
+     */
+    public static final String SAVEVALIDEBYAPP = networks + "iface/mobile/appcheck/saveValideByApp";
+    /**
+     * 获取验证单
+     */
+    public static final String GETVALIDATEDATA = networks + "iface/mobile/appcheck/getValidateData";
+    /**
+     * 特种设备指派
+     */
+    public static final String assignPersonOfSEC = networks + "iface/mobile/appcheck/assignPersonOfSEC";
 }

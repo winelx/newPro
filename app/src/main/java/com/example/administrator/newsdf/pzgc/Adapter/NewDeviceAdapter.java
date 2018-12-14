@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.mine.Text;
-import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
+import com.example.administrator.newsdf.pzgc.bean.Devicedetails;
+
 
 import java.util.ArrayList;
 
@@ -22,9 +24,9 @@ import java.util.ArrayList;
 
 public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private ArrayList<NewDeviceBean> list;
+    private ArrayList<DetailsBean> list;
 
-    public NewDeviceAdapter(Context mContext, ArrayList<NewDeviceBean> list) {
+    public NewDeviceAdapter(Context mContext, ArrayList<DetailsBean> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -35,12 +37,13 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return new NewDeviceAdapter.Viewholder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         if (holder instanceof Viewholder) {
-            ((Viewholder) holder).new_inspect_org.setText(list.get(position).getTitile());
+            ((Viewholder) holder).newinspectorg.setText(list.get(position).getCisName());
             ((Viewholder) holder).problem.setText("第" + (position + 1) + "个问题");
-            ((Viewholder) holder).new_inspect_org.setOnClickListener(new View.OnClickListener() {
+            ((Viewholder) holder).newinspectorg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onClickListener.onclick(v, position);
@@ -55,28 +58,28 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class Viewholder extends RecyclerView.ViewHolder {
-        TextView new_inspect_org, problem;
+        TextView newinspectorg, problem;
 
-        public Viewholder(View itemView) {
+        Viewholder(View itemView) {
             super(itemView);
-            new_inspect_org = itemView.findViewById(R.id.new_inspect_org);
+            newinspectorg = itemView.findViewById(R.id.new_inspect_org);
             problem = itemView.findViewById(R.id.problem);
         }
     }
 
-    public void setNewDate(ArrayList<NewDeviceBean> list) {
-        this.list = list;
+    public void setNewDate(ArrayList<DetailsBean> mData) {
+        this.list = mData;
         notifyDataSetChanged();
     }
-    /**
-     * 移除并更新数据，同时具有动画效果
-     */
-    public void removeDataAt(int position) {
-        list.remove(position);
-        notifyItemRemoved(position);
-    }
+
 
     public interface OnClickListener {
+        /**
+         * 点击事件
+         *
+         * @param view
+         * @param position
+         */
         void onclick(View view, int position);
     }
 

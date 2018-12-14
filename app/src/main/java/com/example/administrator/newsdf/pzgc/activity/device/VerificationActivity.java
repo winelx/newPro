@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,11 +9,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -24,9 +23,11 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.VerificationBean;
+import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -38,34 +39,44 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
  * @description: 特种设备整改通知单验证界面
  * @date: 2018/12/4 0004 下午 4:42
  */
-public class VerificationActivity extends AppCompatActivity implements View.OnClickListener {
-    private LinearLayout validation_status;
-    private TextView category_item, checklistmeuntext;
+public class VerificationActivity extends BaseActivity implements View.OnClickListener {
+    private LinearLayout validationStatus;
+    private TextView categoryItem, checklistmeuntext;
     private EditText replyDescription;
-    private RecyclerView check_reply_rec;
+    private RecyclerView checkReplyRec;
     private CheckPhotoAdapter mAdapter;
-    private String status = null;
+    private int status;
     private Context mContext;
     private ArrayList<Audio> imagepath;
-    private PopCameraUtils PopCameraUtils;
+    private PopCameraUtils popcamerautils;
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
+    private DeviceDetailsUtils detailsUtils;
+    private int request = 101, request1 = 1011, request2 = 1004;
+    private String checkId, id;
+    //删除图片Id
+    private ArrayList<String> detelefile = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
+        Intent intent = new Intent();
+        checkId = intent.getStringExtra("id");
         mContext = this;
+        detailsUtils = new DeviceDetailsUtils();
         imagepath = new ArrayList<>();
         //实例化弹出框
-        PopCameraUtils = new PopCameraUtils();
+        popcamerautils = new PopCameraUtils();
         //初始化相机
         takePictureManager = new TakePictureManager(VerificationActivity.this);
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -75,28 +86,29 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
             }
         });
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        checklistmeuntext.setText("确定");
+        checklistmeuntext.setText("提交");
         checklistmeuntext.setOnClickListener(this);
         //标题
         TextView title = (TextView) findViewById(R.id.titleView);
         title.setText("验证");
         //验证状态
-        validation_status = (LinearLayout) findViewById(R.id.validation_status);
-        validation_status.setOnClickListener(this);
+        validationStatus = (LinearLayout) findViewById(R.id.validation_status);
+        validationStatus.setOnClickListener(this);
         //验证状态提示
-        category_item = (TextView) findViewById(R.id.category_item);
+        categoryItem = (TextView) findViewById(R.id.category_item);
         //验证描述
         replyDescription = (EditText) findViewById(R.id.replyDescription);
         //验证附件
-        check_reply_rec = (RecyclerView) findViewById(R.id.check_reply_rec);
-        check_reply_rec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        checkReplyRec = (RecyclerView) findViewById(R.id.check_reply_rec);
+        checkReplyRec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         mAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", false);
-        check_reply_rec.setAdapter(mAdapter);
+        checkReplyRec.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
+
                 //展示弹出窗
-                PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
+                popcamerautils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void oncamera() {
                         //拍照方式
@@ -134,10 +146,20 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void deleteClick(View view, int position) {
+                //获取Id
+                String content = imagepath.get(position).getContent();
+                //判断是否为空
+                if (!content.isEmpty()) {
+                    //不为空，添加到删除集合
+                    detelefile.add(content);
+                }
+                //从原有集合中删除
                 imagepath.remove(position);
+                //更新界面
                 mAdapter.getData(imagepath, true);
             }
         });
+        request();
     }
 
     @Override
@@ -148,25 +170,30 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                         .setNegativeButton("打回", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                status = "2";
-                                category_item.setText("打回");
-                                category_item.setTextColor(Color.parseColor("#FE0000"));
+                                status = 1;
+                                categoryItem.setText("打回");
+                                categoryItem.setTextColor(Color.parseColor("#FE0000"));
                             }
                         }).setPositiveButton("通过", new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //处理确认按钮的点击事件
-                                category_item.setText("通过");
-                                category_item.setTextColor(Color.parseColor("#28c26A"));
-                                status = "1";
+                                categoryItem.setText("通过");
+                                categoryItem.setTextColor(Color.parseColor("#28c26A"));
+                                status = 0;
                             }
                         })
                         .create();
                 dialog.show();
                 break;
             case R.id.checklistmeuntext:
-                ToastUtils.showLongToast("确定");
+                String status = categoryItem.getText().toString();
+                if (!status.isEmpty()) {
+                    save();
+                } else {
+                    ToastUtils.showLongToast("请确认是否验证通过");
+                }
                 break;
             default:
                 break;
@@ -177,13 +204,13 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
      * @param requestCode
      * @param resultCode
      * @param data
-     * @activity回调
+     * @ activity回调
      */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101) {
+        if (requestCode == request) {
             //  调用相机的回调
             if (data != null) {
                 try {
@@ -192,7 +219,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                     e.printStackTrace();
                 }
             }
-        } else if (requestCode == 1011 && resultCode == 1004) {
+        } else if (requestCode == request1 && resultCode == request2) {
             if (data != null) {
                 //获取返回的图片路径集合
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
@@ -220,8 +247,87 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (PopCameraUtils != null) {
-            PopCameraUtils = null;
+        if (popcamerautils != null) {
+            popcamerautils = null;
         }
     }
+
+    /**
+     * @内容: 获取当前验证数据
+     * @author lx
+     * @date: 2018/12/14 0014 上午 11:39
+     */
+    public void request() {
+        detailsUtils.getvalidatedata(checkId, new Networkinterface() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                //界面数据
+                VerificationBean bean = (VerificationBean) map.get("data");
+                //拿到图片
+                imagepath = (ArrayList<Audio>) map.get("file");
+                //更新图片
+                mAdapter.getData(imagepath, true);
+                //验证单Id
+                id = bean.getId();
+                //验证结果0打回1通过
+                int validate = bean.getValidate();
+                if (validate == 0) {
+                    categoryItem.setText("通过");
+                    categoryItem.setTextColor(R.color.finish_green);
+                } else {
+                    categoryItem.setText("打回");
+                    categoryItem.setTextColor(R.color.red);
+                }
+                //意见
+                replyDescription.setText(bean.getView());
+
+            }
+        });
+    }
+
+    /**
+     * @内容: 保存修改
+     * @author lx
+     * @date: 2018/12/14 0014 下午 1:53
+     */
+    public void save() {
+        //意见
+        String opinion = replyDescription.getText().toString();
+        Map<String, String> map = new HashMap<>();
+        map.put("checkId", checkId);
+        //是否是新增
+        if (id != null) {
+            map.put("id", id);
+        }
+        //意见是否为空
+        if (!opinion.isEmpty()) {
+            map.put("view", opinion);
+        }
+
+        //添加图片
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < imagepath.size(); i++) {
+            String str = imagepath.get(i).getContent();
+            //判断是否有Id
+            if (str == null) {
+                //没有Id，添加为新图片
+                File file1 = new File(imagepath.get(i).getName());
+                file.add(file1);
+            }
+        }
+        //判断是否有删除图片
+        if (detelefile.size() > 0) {
+            String deleteFileIds = Dates.listToStrings(detelefile);
+            map.put("deleteFileIds", deleteFileIds);
+        }
+        detailsUtils.saveValideByApp(map, file, new Networkinterface() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+
+            }
+        });
+    }
+
+
 }

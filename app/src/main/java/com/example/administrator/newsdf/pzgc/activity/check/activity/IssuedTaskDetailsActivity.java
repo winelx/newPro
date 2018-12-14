@@ -130,11 +130,11 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case check_details_submit:
+               // 整改验证
                 Intent intent1 = new Intent(mContext, CheckValidationActivity.class);
                 intent1.putExtra("repyId", repyId);
                 intent1.putExtra("noticeId", id);
                 startActivity(intent1);
-
                 break;
             case R.id.check_details_blue:
                 String str = checkDetailsBlue.getText().toString();

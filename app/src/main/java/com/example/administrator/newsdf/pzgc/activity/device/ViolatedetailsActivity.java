@@ -75,7 +75,11 @@ public class ViolatedetailsActivity extends BaseActivity {
         adapter.setOnClickListener(new GradeRecyclerAdapter.onClickListener() {
             @Override
             public void onclick(View v, int position) {
-                ViolateCallbackUtils.CheckCallback3(list.get(position).getCheck_standard());
+                ViolateCallbackUtils.CheckCallback3(
+                        list.get(position).getCheck_standard() + "\n" +
+                                list.get(position).getId() + "\n" +
+                                list.get(position).getGroup_id() + "\n" +
+                                list.get(position).getQa_detection_id());
                 finish();
             }
         });

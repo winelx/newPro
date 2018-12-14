@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.callback;
 
-import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
+
+import java.util.ArrayList;
 
 /**
  * @author lx
@@ -10,8 +12,6 @@ import com.example.administrator.newsdf.pzgc.bean.NewDeviceBean;
  */
 
 public interface ProblemCallback {
-    void addProblem( NewDeviceBean bean);
-
-    void deleteProblem();
+    void problemcallback(ArrayList<DetailsBean> mData);
 
 }

@@ -7,27 +7,37 @@ package com.example.administrator.newsdf.pzgc.bean;
  */
 
 public class DeviceTrem {
-    String title;
-    String status;
+    /**
+     * cisName : b.操作人员应熟练掌握“架桥机安全操作规程”“起重吊装十不吊”、桥机技术性能及有关参数、掌握桥机施工方案、了解桥机施工的“危险源辨识”、熟悉本项目的“应急救援预案”。
+     * id : ae06dc523970413aa94ffa6abe1e64c0
+     * replied : true
+     */
 
-    public DeviceTrem(String title, String status) {
-        this.title = title;
-        this.status = status;
+    private String cisName;
+    private String id;
+    private boolean replied;
+
+    public String getCisName() {
+        return cisName;
     }
 
-    public String getTitle() {
-        return title;
+    public void setCisName(String cisName) {
+        this.cisName = cisName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getId() {
+        return id;
     }
 
-    public String getStatus() {
-        return status;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public boolean isReplied() {
+        return replied;
+    }
+
+    public void setReplied(boolean replied) {
+        this.replied = replied;
     }
 }

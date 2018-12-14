@@ -20,8 +20,11 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -39,14 +42,14 @@ import java.util.Map;
  * @description:我的特种设备整改通知（我的）
  */
 
-public class DeviceMessageListActivity extends BaseActivity implements View.OnClickListener {
+public class DeviceMessageListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private RecyclerView listView;
     private ArrayList<DeviceMeList> mData;
     private Context mContext;
     private TextView titleView;
     private ImageView checklistmeunimage;
     private SmartRefreshLayout refreshLayout;
-    private String orgId, orgName;
+    private String orgId;
     private DeviceMessageListAdapter mAdapter;
     private RelativeLayout backNotNull;
     private DeviceUtils deviceUtils;
@@ -60,8 +63,9 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_checknoticemessage);
         mContext = this;
         mData = new ArrayList<>();
+        TaskCallbackUtils.setCallBack(this);
         deviceUtils = new DeviceUtils();
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         //获取传递的id
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
@@ -88,7 +92,39 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
                 finish();
             }
         });
+        listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //初始化适配器
+        mAdapter = new DeviceMessageListAdapter(mContext);
+        listView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void Onclick(View view, int position) {
+                int status = mData.get(position).getStatus();
+                if (status == 0) {
+                    Intent intent = new Intent(DeviceMessageListActivity.this, NewDeviceActivity.class);
+                    intent.putExtra("id", mData.get(position).getId());
+                    startActivity(intent);
+                } else {
+                    Intent intent1 = new Intent(mContext, DeviceDetailsActivity.class);
+                    intent1.putExtra("id", mData.get(position).getId());
+                    intent1.putExtra("orgname", titleView.getText().toString());
+                    intent1.putExtra("orgId", orgId);
+                    startActivity(intent1);
+                }
+            }
 
+            @Override
+            public void ondelete(final int position) {
+                //删除
+                deviceUtils.devicedelete(mData.get(position).getId(), new DeviceUtils.devicesavelitener() {
+                    @Override
+                    public void success(String number, String id) {
+                        mData.remove(position);
+                        mAdapter.getData(mData);
+                    }
+                });
+            }
+        });
         /**
          *   下拉刷新
          */
@@ -114,21 +150,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
                 refreshlayout.finishLoadmore();
             }
         });
-        listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        //初始化适配器
-        mAdapter = new DeviceMessageListAdapter(mContext);
-        listView.setAdapter(mAdapter);
         getdate();
-        mAdapter.setOnItemClickListener(new ItemClickListener() {
-            @Override
-            public void Onclick(View view, int position) {
-                startActivity(new Intent(mContext, DeviceDetailsActivity.class));
-            }
-
-            @Override
-            public void ondelete(int position) {
-            }
-        });
     }
 
     /**
@@ -161,9 +183,9 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
                 }
                 mData.addAll(data);
                 mAdapter.getData(mData);
-                if (mData.size()>0){
+                if (mData.size() > 0) {
                     backNotNull.setVisibility(View.GONE);
-                }else {
+                } else {
                     backNotNull.setVisibility(View.VISIBLE);
                 }
             }
@@ -221,4 +243,9 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         getdate();
     }
 
+    @Override
+    public void taskCallback() {
+        page = 1;
+        getdate();
+    }
 }

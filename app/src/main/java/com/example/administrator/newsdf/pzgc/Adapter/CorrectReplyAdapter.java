@@ -2,12 +2,16 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +19,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
+import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
+import com.example.administrator.newsdf.pzgc.bean.ProblemitemBean;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
@@ -30,6 +41,8 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private ArrayList<CorrectReplyBean> list;
     private Context mContext;
+    private ArrayList<String> replylist;
+    private Map<Integer, String> map = new HashMap<>();
 
     public CorrectReplyAdapter(ArrayList<CorrectReplyBean> list, Context mContext) {
         this.list = list;
@@ -46,16 +59,17 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof Viewholder) {
+            ProblemitemBean bean = list.get(position).getBean();
             ((Viewholder) holder).title.setText("第" + (position + 1) + "个问题");
             ((Viewholder) holder).correctContent.setText(
-                    "违反标准：" + list.get(position).getStandard() + "\n"
-                            + "隐患等级：" + list.get(position).getGrade() + "\n"
-                            + "整改期限：" + list.get(position).getTerm() + "\n"
-                            + "整改事由：" + list.get(position).getReason() + "\n"
+                    "违反标准：" + bean.getCisName() + "\n"
+                            + "隐患等级：" + bean.getHTLName() + "\n"
+                            + "整改期限：" + bean.getTerm() + "\n"
+                            + "整改事由：" + bean.getCause() + "\n"
                             + "巡检附件：");
-            //整改事由
-            ((Viewholder) holder).replyEditext.setText(list.get(position).getDescribe());
-
+            ((Viewholder) holder).correct_cuse.setText(bean.getCause());
+            //整改描述
+            ((Viewholder) holder).replyEditext.setText(bean.getReply());
             //回复附件
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -70,18 +84,34 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
             divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
             ((Viewholder) holder).replyRecyclerview.addItemDecoration(divider1);
-            CheckPhotoAdapter photoAdapter = new CheckPhotoAdapter(mContext,  list.get(position).getList(), "device", true);
+            CheckPhotoAdapter photoAdapter = new CheckPhotoAdapter(mContext, list.get(position).getList(), "device", true);
             ((Viewholder) holder).replyRecyclerview.setAdapter(photoAdapter);
             photoAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
                 @Override
                 public void addlick(View view, int adapterposition) {
-                    int positions = position;
-                    // 2
                     mOnItemClickListener.addlick(position, adapterposition);
                 }
+
                 @Override
                 public void deleteClick(View view, int adapterposition) {
                     mOnItemClickListener.deleteClick(position, adapterposition);
+                }
+            });
+            ((Viewholder) holder).replyEditext.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String str1 = s.toString();
+                    map.put(position, str1);
                 }
             });
         }
@@ -89,25 +119,29 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
+
         return list.size();
     }
 
-    public void setNewData(ArrayList<CorrectReplyBean> lists){
-        this.list=lists;
-       notifyDataSetChanged();
+    public void setNewData(ArrayList<CorrectReplyBean> lists) {
+        this.list = lists;
+        notifyDataSetChanged();
     }
-    public void setupdate(ArrayList<CorrectReplyBean> lists,int position){
-        this.list=lists;
+
+    public void setupdate(ArrayList<CorrectReplyBean> lists, int position) {
+        this.list = lists;
         notifyItemChanged(position);
     }
+
     class Viewholder extends RecyclerView.ViewHolder {
-        TextView correctContent, title;
+        TextView correctContent, title, correct_cuse;
         RecyclerView replyRecyclerview, patrolRecyclerview;
         EditText replyEditext;
 
         public Viewholder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
+            correct_cuse = itemView.findViewById(R.id.correct_cuse);
             //整改描述
             replyEditext = itemView.findViewById(R.id.reply_editext);
             //回复内容
@@ -119,13 +153,12 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-
     /**
      * 内部接口
      */
-
     public interface OnItemClickListener {
         void addlick(int position, int adapterposition);
+
         void deleteClick(int position, int adapterposition);
     }
 
@@ -133,5 +166,9 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setOnItemClickListener(CorrectReplyAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public Map<Integer, String> getReplylist() {
+        return map;
     }
 }

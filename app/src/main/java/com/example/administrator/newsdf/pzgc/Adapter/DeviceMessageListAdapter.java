@@ -64,7 +64,7 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
         holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         holder.deviceMessageCreatename.setText("巡检日期：" + mDatas.get(position).getCheck_date());
         holder.deviceMessageCreatedata.setText("巡检人：" + mDatas.get(position).getCheckUserName());
-        holder.deviceMessageHead.setText("整改负责人：" + mDatas.get(position).getCheckUserName());
+        holder.deviceMessageHead.setText("整改负责人：" + mDatas.get(position).getPersonLiableName());
         holder.deviceMessageOrg.setText("巡检组织：" + mDatas.get(position).getCheckOrgName());
         //编号
         holder.deviceMessageNumber.setText(mDatas.get(position).getNumber());
@@ -99,11 +99,11 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                 break;
             case 4:
                 holder.infaceItemMessage.setTextString("已处理");
-                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
                 break;
             case 5:
                 holder.infaceItemMessage.setTextString("完成");
-                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.green);
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
                 break;
             default:
                 break;
@@ -120,7 +120,6 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                     closeMenu();//关闭菜单
                 } else {
                     int position = holder.getLayoutPosition();
-                    // 2
                     oClickListener.Onclick(holder.itemView, position);
                 }
             }
@@ -147,8 +146,6 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
                     }
                 });
                 builder.show();
-
-
             }
         });
     }

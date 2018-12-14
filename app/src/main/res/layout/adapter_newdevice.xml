@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:gravity="end|center_vertical"
             android:hint="请选择"
-            android:maxEms="16"
+            android:maxEms="13"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="15sp" />

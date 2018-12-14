@@ -138,13 +138,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+
+        android:focusableInTouchMode="true"
         android:minHeight="45dp"
+        android:orientation="vertical"
         android:paddingLeft="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+
             android:drawableLeft="@mipmap/warning_red"
             android:gravity="center_vertical"
             android:text="设备编号"
@@ -153,18 +157,14 @@
 
         <EditText
             android:id="@+id/new_inspect_facilitynumber"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_marginTop="5dp"
             android:background="@null"
-            android:ellipsize="end"
-            android:gravity="end|center_vertical"
-            android:hint="请选择"
-            android:maxEms="16"
-            android:maxLines="1"
-            android:paddingRight="@dimen/dp_10"
+            android:hint="请输入"
+            android:paddingLeft="11.5dp"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
     <View
@@ -175,13 +175,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:minHeight="45dp"
+        android:orientation="vertical"
         android:paddingLeft="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@mipmap/warning_red"
             android:gravity="center_vertical"
             android:text="型号规格"
@@ -190,18 +193,14 @@
 
         <EditText
             android:id="@+id/new_inspect_facilitymodel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="@null"
-            android:ellipsize="end"
-            android:gravity="end|center_vertical"
-            android:hint="请选择"
-            android:maxEms="16"
-            android:maxLines="1"
-            android:paddingRight="@dimen/dp_10"
+            android:hint="请输入"
+            android:paddingLeft="11.5dp"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="@dimen/sp_14" />
 
     </LinearLayout>
 
@@ -231,14 +230,12 @@
             android:id="@+id/new_inspect_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:background="@null"
             android:hint="请输入"
-            android:minHeight="30dp"
             android:paddingLeft="11.5dp"
-            android:textSize="13sp" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_14" />
 
     </LinearLayout>
 
@@ -365,6 +362,7 @@
             android:hint="请输入"
             android:minHeight="30dp"
             android:paddingLeft="11.5dp"
+            android:textColor="@color/black"
             android:textSize="13sp" />
 
     </LinearLayout>

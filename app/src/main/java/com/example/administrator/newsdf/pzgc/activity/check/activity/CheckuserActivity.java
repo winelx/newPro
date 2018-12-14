@@ -68,6 +68,7 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
                         Intent newpush = new Intent();
                         newpush.putExtra("name", obj.getPartContent());
                         newpush.putExtra("id", obj.getId());
+                        newpush.putExtra("userid", obj.getUserid());
                         //回传数据到主Activity
                         setResult(2, newpush);
                         finish(); //此方法后才能返回主Activity
@@ -94,7 +95,8 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
                                         String id = json.getString("id");
                                         String name = json.getString("name");
                                         String position = json.getString("position");
-                                        list.add(new MoretasklistBean(position, name, id));
+                                        String user_id = json.getString("user_id");
+                                        list.add(new MoretasklistBean(position, name, id, user_id));
                                     }
                                 }
                             }
@@ -117,10 +119,10 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    public void getdata(String name,String id) {
+    public void getdata(String name, String id) {
         Intent intent = new Intent();
         intent.putExtra("name", name);
-        intent.putExtra("id",id);
+        intent.putExtra("id", id);
         setResult(3, intent);
         finish();
     }

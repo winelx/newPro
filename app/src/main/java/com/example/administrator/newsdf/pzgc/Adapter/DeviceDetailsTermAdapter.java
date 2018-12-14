@@ -40,9 +40,9 @@ public class DeviceDetailsTermAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof viewHolder) {
-            ((viewHolder) holder).term_content.setText(list.get(position).getTitle());
-            String status = list.get(position).getStatus();
-            if ("true".equals(status)) {
+            ((viewHolder) holder).term_content.setText(list.get(position).getCisName());
+            boolean status = list.get(position).isReplied();
+            if (status) {
                 ((viewHolder) holder).circular_ensure.setBackgroundResource(R.mipmap.circular_ensure_true);
             } else {
                 ((viewHolder) holder).circular_ensure.setBackgroundResource(R.mipmap.circular_ensure_false);
@@ -50,7 +50,7 @@ public class DeviceDetailsTermAdapter extends RecyclerView.Adapter<RecyclerView.
             ((viewHolder) holder).term_content_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, SeeDetailsActivity.class));
+                    onclickitemlitener.seedetails();
                 }
             });
         }
@@ -72,5 +72,14 @@ public class DeviceDetailsTermAdapter extends RecyclerView.Adapter<RecyclerView.
             circular_ensure = itemView.findViewById(R.id.circular_ensure);
             term_content_linear = itemView.findViewById(R.id.term_content_linear);
         }
+    }
+    public interface onclickitemlitener {
+        void seedetails();
+    }
+
+    private DeviceDetailsAdapter.onclickitemlitener onclickitemlitener;
+
+    public void setOnclickItemLitener(DeviceDetailsAdapter.onclickitemlitener litener) {
+        this.onclickitemlitener = litener;
     }
 }

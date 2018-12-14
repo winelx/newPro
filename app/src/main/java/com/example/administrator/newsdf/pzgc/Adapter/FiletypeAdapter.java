@@ -55,11 +55,8 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
-        String imgUrl = mData.get(position).getName();
-        //拿到.位置
-        int doc = imgUrl.lastIndexOf(".");
         //截取doc+1后面的字符串，包括doc+1；
-        String strs = imgUrl.substring(doc + 1);
+        String strs =mData.get(position).getType();
         if (strs.equals("pdf")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
@@ -90,12 +87,12 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
             String urlpath = mData.get(position).getUrl();
-//            //截取出后缀
-//            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
-//            //拿到截取后缀后的字段
-//            urlpath = urlpath.replace(pas, "");
-            //在字段后面添加_min后再拼接后缀
-//            urlpath = urlpath + "_min" + pas;
+            //截取出后缀
+            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
+            //拿到截取后缀后的字段
+            urlpath = urlpath.replace(pas, "");
+           // 在字段后面添加_min后再拼接后缀
+            urlpath = urlpath + "_min" + pas;
             RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()

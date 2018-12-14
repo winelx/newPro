@@ -9,10 +9,36 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/back2"
-        android:gravity="center_vertical"
         android:drawableLeft="@mipmap/drawable_division"
+        android:gravity="center_vertical"
         android:textColor="@color/colorAccent"
         android:textSize="17sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="整改描述："
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/correct_cuse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/correct_content"
@@ -47,11 +73,11 @@
         android:id="@+id/reply_editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:hint="请输入整改描述"
         android:minHeight="45dp"
         android:paddingLeft="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:paddingRight="10dp"
         android:textColor="@color/black"
         android:textSize="14sp" />
@@ -69,8 +95,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reply_recyclerview"
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />

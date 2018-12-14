@@ -12,16 +12,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
+import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
+import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.lzy.imagepicker.ImagePicker;
@@ -30,9 +33,14 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
+import org.json.JSONArray;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
@@ -53,12 +61,20 @@ public class CorrectReplyActivity extends BaseActivity {
     private TakePictureManager takePictureManager;
     private int pos = 0;
     public static final String camera = "相机";
+    private DeviceDetailsUtils detailsUtils;
+    private String checkId;
+    private ArrayList<String> deleteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
         mContext = this;
+        Intent intent = getIntent();
+        checkId = intent.getStringExtra("id");
+        detailsUtils = new DeviceDetailsUtils();
+        list = new ArrayList<>();
+        deleteList = new ArrayList<>();
         //相机相册选择弹窗帮助类
         PopCameraUtils = new PopCameraUtils();
         //相机帮助类初始化
@@ -79,22 +95,8 @@ public class CorrectReplyActivity extends BaseActivity {
         devicedetailsRecycler = (RecyclerView) findViewById(R.id.device_details_recycler);
         //隐藏控件，复用布局，这个界面不需要
         deviceDetailsFunction.setVisibility(View.GONE);
-
         //设置列表样式
         devicedetailsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<>();
-        ArrayList<FileTypeBean> data = new ArrayList<>();
-        data.add(new FileTypeBean("测试图片.jpg", "http://attach.bbs.miui.com/forum/201807/17/154537ujxutueesyj3mzt0.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://img1.imgtn.bdimg.com/it/u=3099290229,4242430518&fm=27&gp=0.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://i2.hdslb.com/bfs/archive/102d43ce9564fb9e27f699c02abbf3081f3ba197.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://img.mp.itc.cn/upload/20170804/bb02fbb3accc4b95b857834228f3b137_th.jpg", "jpg"));
-        data.add(new FileTypeBean("测试图片.jpg", "http://imgfs.oppo.cn/uploads/thread/attachment/2017/10/02/15069522405715.jpg", "jpg"));
-        for (int i = 0; i < 2; i++) {
-            ArrayList<Audio> audios = new ArrayList<>();
-            audios.add(new Audio("http://attach.bbs.miui.com/forum/201807/17/154537ujxutueesyj3mzt0.jpg", "测试图片"));
-            audios.add(new Audio("http://img1.imgtn.bdimg.com/it/u=3099290229,4242430518&fm=27&gp=0.jpg", "测试图片"));
-            list.add(new CorrectReplyBean("测试违反标准", "B", "2018=12-01", "设备存放不合格", "按时整改", audios, data));
-        }
         //实例化适配器
         mAdapter = new CorrectReplyAdapter(list, mContext);
         //给recyclerview设置适配器
@@ -125,7 +127,7 @@ public class CorrectReplyActivity extends BaseActivity {
                                         //获取到指定位置的图片集合
                                         ArrayList<Audio> tinglist = list.get(position).getList();
                                         //新增数据
-                                        tinglist.add(new Audio(outfile, "测试图片"));
+                                        tinglist.add(new Audio(outfile, ""));
 //                                            //将集合中的图片更新
                                         list.get(position).setList(tinglist);
                                         //刷新数据，并指定刷新的位置
@@ -155,13 +157,33 @@ public class CorrectReplyActivity extends BaseActivity {
             public void deleteClick(int position, int adapterposition) {
                 //删除图片
                 //获取到指定位置的图片集合
+                String itemId = list.get(position).getBean().getId();
+                //取出删除图片的集合
                 ArrayList<Audio> tinglist = list.get(position).getList();
-                //展出指定位置文件
+                //获取content（content为图片Id）
+                String content = tinglist.get(position).getContent();
+                //判断是否为null
+                if (!content.isEmpty()) {
+                    //不为null，添加到集合
+                    deleteList.add(content);
+                }
                 tinglist.remove(adapterposition);
-//                //将集合中的图片更新
-//                list.get(position).setList(tinglist);
                 //刷新数据，并指定刷新的位置
                 mAdapter.setupdate(list, position);
+            }
+        });
+        //网络请求
+        detailsUtils.problemitemlist(checkId, new Networkinterface() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.addAll((Collection<? extends CorrectReplyBean>) map.get("data"));
+                mAdapter.setNewData(list);
+            }
+        });
+        checklistmeuntext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
             }
         });
     }
@@ -202,7 +224,7 @@ public class CorrectReplyActivity extends BaseActivity {
                                 //获取到指定位置的图片集合
                                 ArrayList<Audio> tinglist = list.get(pos).getList();
                                 //新增数据
-                                tinglist.add(new Audio(outfile, "测试图片"));
+                                tinglist.add(new Audio(outfile, ""));
                                 //刷新数据，并指定刷新的位置
                                 mAdapter.setupdate(list, pos);
                             }
@@ -221,5 +243,89 @@ public class CorrectReplyActivity extends BaseActivity {
         if (PopCameraUtils != null) {
             PopCameraUtils = null;
         }
+    }
+
+    /**
+     * @内容: 保存界面数据
+     * @author lx
+     * @date: 2018/12/14 0014 下午 4:09
+     */
+    private void save() {
+//        List<Map<String, Object>> mDatafile = new ArrayList<>();
+//        List<Map<String, Object>> mDatareply = new ArrayList<>();
+//        Map<String, Object> map = new HashMap<>();
+//        //回复
+//        Map<String, Object> replymap = new HashMap<>();
+//        //从列表回复集合
+//        Map<Integer, String> replulist = mAdapter.getReplylist();
+//        for (int i = 0; i < list.size(); i++) {
+//            //获取到id,将id作为key
+//            String itemId = list.get(i).getBean().getReplyId();
+//            //整改描述    //添加到map
+//            replymap.put(itemId, replulist.get(i));
+//            //将map添加到集合
+//            mDatareply.add(replymap);
+//            //整改图片
+//            ArrayList<Audio> FileType = list.get(i).getList();
+//            if (FileType.size() > 0) {
+//                ArrayList<File> files = new ArrayList<>();
+//                for (int j = 0; j < FileType.size(); j++) {
+//                    String path = FileType.get(j).getName();
+//                    File file = new File(path);
+//                    files.add(file);
+//                }
+//                //添加到map
+//                map.put(itemId, files);
+//            }
+//            //添加到集合
+//            mDatafile.add(map);
+//        }
+
+        //回复
+        List<Map<String, Object>> mDatareply = new ArrayList<>();
+        //从列表回复集合
+        Map<Integer, String> replulist = mAdapter.getReplylist();
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> reply = new HashMap<>();
+            //检查项ID
+            String detailsId = list.get(i).getBean().getId();
+            //
+            String replyId = list.get(i).getBean().getReplyId();
+            //回复内容
+            reply.put("reply", replulist.get(i));
+            //单据传递过来来的ID（单据Id）
+            reply.put("id", replyId);
+            reply.put("checkId", checkId);
+            reply.put("detailsId", detailsId);
+            mDatareply.add(reply);
+        }
+
+        //图片
+        Map<String, List<File>> file = new HashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            //检查项ID
+            String detailsId = list.get(i).getBean().getId();
+            //取出集合中的图片
+            ArrayList<Audio> filelist = list.get(i).getList();
+            ArrayList<File> mdataFile = new ArrayList<>();
+            for (int j = 0; j < filelist.size(); j++) {
+                //取出content，判断是否为空
+                String content = filelist.get(j).getContent();
+                if (content.isEmpty()) {
+                    //为空，为新增的图片
+                    mdataFile.add(new File(filelist.get(j).getName()));
+                }
+            }
+            LogUtil.i("list", mdataFile.size());
+            file.put("file-" + detailsId, mdataFile);
+        }
+        JSONArray replys = new JSONArray(mDatareply);
+        detailsUtils.savereplyofsec(file, replys.toString(), Dates.listToString(deleteList), new Networkinterface() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                ToastUtils.showLongToast("编辑成功");
+                finish();
+            }
+        });
     }
 }

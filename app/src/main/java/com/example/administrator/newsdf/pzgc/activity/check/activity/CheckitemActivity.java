@@ -1113,21 +1113,20 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         for (int i = 0; i < chekItem.size(); i++) {
             String type = chekItem.get(i).getStype();
             if ("2".equals(type)) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", chekItem.get(i).getId());
-                map.put("pass", chekItem.get(i).getStatus());
-                map.put("stype", chekItem.get(i).getStype());
-                map.put("score", chekItem.get(i).getScore());
-                list.add(map);
-            } else {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", chekItem.get(i).getId());
-                map.put("pass", chekItem.get(i).getStatus());
-                map.put("stype", chekItem.get(i).getStype());
-                map.put("score", chekItem.get(i).getResultscore());
-                list.add(map);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", chekItem.get(i).getId());
+                    map.put("pass", chekItem.get(i).getStatus());
+                    map.put("stype", chekItem.get(i).getStype());
+                    map.put("score", chekItem.get(i).getScore());
+                    list.add(map);
+                } else {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", chekItem.get(i).getId());
+                    map.put("pass", chekItem.get(i).getStatus());
+                    map.put("stype", chekItem.get(i).getStype());
+                    map.put("score", chekItem.get(i).getResultscore());
+                    list.add(map);
             }
-
         }
         JSONArray json2 = new JSONArray(list);
         PostRequest mPostRequest = OkGo.post(Requests.SAVE_DETAILS)

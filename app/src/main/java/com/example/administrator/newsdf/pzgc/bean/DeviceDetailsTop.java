@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,112 +11,27 @@ import java.util.List;
 
 public class DeviceDetailsTop {
 
-    String checkData;
-    String checkOrgName;
-    String checkUserName;
-    String id;
-    String number;
-    String orgName;
-    String personLisableName;
-    String place;
-    String remarks;
-    int status;
-    String ts;
-    String typename;
+    DeviceDetailsBean bean;
+    ArrayList<DeviceTrem> list;
 
-    public String getCheckData() {
-        return checkData;
+    public DeviceDetailsTop(DeviceDetailsBean bean, ArrayList<DeviceTrem> list) {
+        this.bean = bean;
+        this.list = list;
     }
 
-    public void setCheckData(String checkData) {
-        this.checkData = checkData;
+    public DeviceDetailsBean getBean() {
+        return bean;
     }
 
-    public String getCheckOrgName() {
-        return checkOrgName;
+    public void setBean(DeviceDetailsBean bean) {
+        this.bean = bean;
     }
 
-    public void setCheckOrgName(String checkOrgName) {
-        this.checkOrgName = checkOrgName;
+    public ArrayList<DeviceTrem> getList() {
+        return list;
     }
 
-    public String getCheckUserName() {
-        return checkUserName;
-    }
-
-    public void setCheckUserName(String checkUserName) {
-        this.checkUserName = checkUserName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
-    public String getPersonLisableName() {
-        return personLisableName;
-    }
-
-    public void setPersonLisableName(String personLisableName) {
-        this.personLisableName = personLisableName;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getTs() {
-        return ts;
-    }
-
-    public void setTs(String ts) {
-        this.ts = ts;
-    }
-
-    public String getTypename() {
-        return typename;
-    }
-
-    public void setTypename(String typename) {
-        this.typename = typename;
+    public void setList(ArrayList<DeviceTrem> list) {
+        this.list = list;
     }
 }

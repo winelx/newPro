@@ -89,7 +89,6 @@
             android:background="@color/writer"
             android:maxHeight="100dp" />
 
-
     </LinearLayout>
 
 </LinearLayout>

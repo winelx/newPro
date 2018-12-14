@@ -3,8 +3,8 @@ package com.example.administrator.newsdf.pzgc.bean;
 /**
  * @author lx
  * @Created by: 2018/12/10 0010.
- * @description:
- * @Activity：
+ * @description: 特种设备整改单据列表的实体
+ * @Activity： DeviceMessageListActivity，DeviceMessageAllActivity
  */
 
 public class DeviceMeList {
