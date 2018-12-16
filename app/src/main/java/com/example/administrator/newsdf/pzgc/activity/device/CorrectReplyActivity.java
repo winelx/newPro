@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetails
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
+import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -151,17 +152,15 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
-
+                //position 列表的位置，， 图片的位置 adapterposition
             //删除图片
             @Override
             public void deleteClick(int position, int adapterposition) {
                 //删除图片
-                //获取到指定位置的图片集合
-                String itemId = list.get(position).getBean().getId();
                 //取出删除图片的集合
                 ArrayList<Audio> tinglist = list.get(position).getList();
                 //获取content（content为图片Id）
-                String content = tinglist.get(position).getContent();
+                String content = tinglist.get(adapterposition).getContent();
                 //判断是否为null
                 if (!content.isEmpty()) {
                     //不为null，添加到集合
@@ -169,7 +168,7 @@ public class CorrectReplyActivity extends BaseActivity {
                 }
                 tinglist.remove(adapterposition);
                 //刷新数据，并指定刷新的位置
-                mAdapter.setupdate(list, position);
+                mAdapter.setupdate(list,position);
             }
         });
         //网络请求
@@ -187,7 +186,6 @@ public class CorrectReplyActivity extends BaseActivity {
             }
         });
     }
-
 
     /**
      * @param requestCode
@@ -251,36 +249,6 @@ public class CorrectReplyActivity extends BaseActivity {
      * @date: 2018/12/14 0014 下午 4:09
      */
     private void save() {
-//        List<Map<String, Object>> mDatafile = new ArrayList<>();
-//        List<Map<String, Object>> mDatareply = new ArrayList<>();
-//        Map<String, Object> map = new HashMap<>();
-//        //回复
-//        Map<String, Object> replymap = new HashMap<>();
-//        //从列表回复集合
-//        Map<Integer, String> replulist = mAdapter.getReplylist();
-//        for (int i = 0; i < list.size(); i++) {
-//            //获取到id,将id作为key
-//            String itemId = list.get(i).getBean().getReplyId();
-//            //整改描述    //添加到map
-//            replymap.put(itemId, replulist.get(i));
-//            //将map添加到集合
-//            mDatareply.add(replymap);
-//            //整改图片
-//            ArrayList<Audio> FileType = list.get(i).getList();
-//            if (FileType.size() > 0) {
-//                ArrayList<File> files = new ArrayList<>();
-//                for (int j = 0; j < FileType.size(); j++) {
-//                    String path = FileType.get(j).getName();
-//                    File file = new File(path);
-//                    files.add(file);
-//                }
-//                //添加到map
-//                map.put(itemId, files);
-//            }
-//            //添加到集合
-//            mDatafile.add(map);
-//        }
-
         //回复
         List<Map<String, Object>> mDatareply = new ArrayList<>();
         //从列表回复集合
@@ -299,7 +267,6 @@ public class CorrectReplyActivity extends BaseActivity {
             reply.put("detailsId", detailsId);
             mDatareply.add(reply);
         }
-
         //图片
         Map<String, List<File>> file = new HashMap<>();
         for (int i = 0; i < list.size(); i++) {
@@ -320,10 +287,11 @@ public class CorrectReplyActivity extends BaseActivity {
             file.put("file-" + detailsId, mdataFile);
         }
         JSONArray replys = new JSONArray(mDatareply);
-        detailsUtils.savereplyofsec(file, replys.toString(), Dates.listToString(deleteList), new Networkinterface() {
+        Dates.getDialog(this,"提交数据中...");
+        detailsUtils.savereplyofsec(file, replys.toString(), Dates.listToStrings(deleteList), new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-                ToastUtils.showLongToast("编辑成功");
+                DeviceDetailsCallBackUtils.CallBackMethod();
                 finish();
             }
         });

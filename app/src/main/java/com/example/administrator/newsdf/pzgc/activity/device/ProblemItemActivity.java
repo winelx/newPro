@@ -23,9 +23,11 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.ProblemBean;
 import com.example.administrator.newsdf.pzgc.bean.ProblemFile;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
+import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -115,7 +117,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         } else {
             itemDelete.setVisibility(View.GONE);
         }
-
     }
 
     /**
@@ -142,7 +143,6 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         //整改期限
         findViewById(R.id.rectify_data_lin).setOnClickListener(this);
         rectifyData = (TextView) findViewById(R.id.rectify_data);
-        rectifyData.setText(Dates.getDay());
         //整改事由
         rectifyCause = (EditText) findViewById(R.id.rectify_cause);
         //附件
@@ -277,16 +277,24 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 DialogUtils.Tipsdialog(mContext, title, strings, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
-                        //删除
-                        ToastUtils.showLongToast("删除");
-//                        ProblemCallbackUtils.ProblemCallback();
-                        finish();
+                        Dates.getDialog(ProblemItemActivity.this,"删除数据中...");
+                        deviceUtils.deleteitem(typeId, new Networkinterface() {
+                            @Override
+                            public void onsuccess(Map<String, Object> map) {
+                                //删除
+                                ToastUtils.showLongToast("删除成功");
+                                ArrayList<DetailsBean> mData = new ArrayList<>();
+                                ProblemCallbackUtils.ProblemCallback(mData);
+                                finish();
+                            }
+                        });
                     }
                 });
                 break;
             case R.id.checklistmeuntext:
                 //关闭软键盘
                 hintKeyBoard();
+                //保存
                 problemsave();
                 break;
             case R.id.violation_standards:
@@ -321,6 +329,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
      * @date: 2018/12/11 0011 下午 2:48
      */
     private void problemsave() {
+        Dates.getDialog(this, "提交数据");
         ArrayList<File> file = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
         //整改期限
@@ -361,14 +370,18 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
         //修改传Id
         if ("false".equals(status)) {
-            map.put("id", checkId);
+            map.put("id", typeId);
+        }
+        if (deleteLis.size() > 0) {
+            map.put("deleteFileIds", Dates.listToStrings(deleteLis));
         }
         deviceUtils.saveSECDetails(map, file, new DeviceUtils.devicesavelitener() {
             @Override
             public void success(String number, String id) {
                 //新增整改问题
                 ToastUtils.showLongToast("成功");
-//                ProblemCallbackUtils.addProblem(bean);
+                ArrayList<DetailsBean> mData = new ArrayList<>();
+                ProblemCallbackUtils.ProblemCallback(mData);
                 finish();
             }
         });

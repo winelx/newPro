@@ -85,48 +85,58 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         if (id != null) {
             fonclick();
             checklistmeuntext.setText("编辑");
-            deviceUtils.getSECMainInfo(id, new DeviceUtils.MainInfolitener() {
-                @Override
-                public void success(Devicedetails bean, ArrayList<DetailsBean> data) {
-                    id = bean.getId();
-                    newInspectUsername.setText(bean.getPersonLiable());
-                    //整改负责人
-                    userId = bean.getPersonLiable();
-                    newInspectUsername.setText(bean.getPersonLiableName());
-                    //选择组织
-                    nodeId = bean.getOrgId();
-                    newInspectOrg.setText(bean.getOrgName());
-                    //设备名称
-                    newInspectFacility.setText(bean.getTypeName());
-                    facilityId = bean.getTypeId();
-                    //型号规格
-                    newInspectFacilitymodel.setText(bean.getTs());
-                    //设备编号
-                    facilitynumber.setText(bean.getEnumber());
-                    //巡检日期
-                    newInspectData.setText(bean.getCheckDate());
-                    //使用地点
-                    newInspectAddress.setText(bean.getPlace());
-                    //
-                    billnumber.setText(bean.getNumber());
-                    try {
-                        newInspectRemarks.setText(bean.getRemarks());
-                    } catch (Exception e) {
-                    }
-                    mData.addAll(data);
-                    mAdapter.setNewDate(mData);
-                    if (mData.size() > 0) {
-                        utils.setMargins(scrollViewl, 0, 0, 0, 110);
-                        lowerHairs.setVisibility(View.VISIBLE);
-                    } else {
-                        utils.setMargins(scrollViewl, 0, 0, 0, 0);
-                        lowerHairs.setVisibility(View.GONE);
-                    }
-                }
-            });
+            request();
         } else {
             checklistmeuntext.setText("保存");
         }
+    }
+
+    /**
+     * @内容: 请求当前界面数据
+     * @author lx
+     * @date: 2018/12/16 0016 下午 2:29
+     */
+    private void request() {
+        deviceUtils.getSECMainInfo(id, new DeviceUtils.MainInfolitener() {
+            @Override
+            public void success(Devicedetails bean, ArrayList<DetailsBean> data) {
+                id = bean.getId();
+                newInspectUsername.setText(bean.getPersonLiable());
+                //整改负责人
+                userId = bean.getPersonLiable();
+                newInspectUsername.setText(bean.getPersonLiableName());
+                //选择组织
+                nodeId = bean.getOrgId();
+                newInspectOrg.setText(bean.getOrgName());
+                //设备名称
+                newInspectFacility.setText(bean.getTypeName());
+                facilityId = bean.getTypeId();
+                //型号规格
+                newInspectFacilitymodel.setText(bean.getTs());
+                //设备编号
+                facilitynumber.setText(bean.getEnumber());
+                //巡检日期
+                newInspectData.setText(bean.getCheckDate());
+                //使用地点
+                newInspectAddress.setText(bean.getPlace());
+                //
+                billnumber.setText(bean.getNumber());
+                try {
+                    newInspectRemarks.setText(bean.getRemarks());
+                } catch (Exception e) {
+                }
+                mData.clear();
+                mData.addAll(data);
+                mAdapter.setNewDate(mData);
+                if (mData.size() > 0) {
+                    utils.setMargins(scrollViewl, 0, 0, 0, 110);
+                    lowerHairs.setVisibility(View.VISIBLE);
+                } else {
+                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    lowerHairs.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void findId() {
@@ -449,15 +459,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
      */
     @Override
     public void problemcallback(ArrayList<DetailsBean> list) {
-        mData.clear();
-        mData.addAll(list);
-        mAdapter.setNewDate(mData);
-        if (mData.size() > 0) {
-            utils.setMargins(scrollViewl, 0, 0, 0, 110);
-            lowerHairs.setVisibility(View.VISIBLE);
-        } else {
-            utils.setMargins(scrollViewl, 0, 0, 0, 0);
-            lowerHairs.setVisibility(View.GONE);
-        }
+        //刷新界面数据
+        request();
     }
 }

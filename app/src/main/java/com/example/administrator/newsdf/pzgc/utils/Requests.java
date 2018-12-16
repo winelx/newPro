@@ -451,10 +451,6 @@ public class Requests {
      */
     public static final String SELECTACCPECTUSER = networks + "iface/mobile/appcheck/selectAccpectUser";
     /**
-     * 特种设备提交验证
-     */
-    public static final String SUBMITVALIDE = networks + "iface/mobile/appcheck/submitValide";
-    /**
      * 特种设备保存修改回复
      */
     public static final String SAVEREPLYOFSEC = networks + "iface/mobile/appcheck/saveReplyOfSEC";
@@ -470,4 +466,16 @@ public class Requests {
      * 特种设备指派
      */
     public static final String assignPersonOfSEC = networks + "iface/mobile/appcheck/assignPersonOfSEC";
+    /**
+     * 特种设备提交回复
+     */
+    public static final String SUBMITREPLY = networks + "iface/mobile/appcheck/submitReply";
+    /**
+     *  特种设备删除检查项
+     */
+    public static final String DELETESECDETAILSBYID = networks + "iface/mobile/appcheck/deleteSECDetailsById";
+    /**
+     * 特种设备 提交验证
+     */
+    public static final String SUBMITVALIDE=networks+"iface/mobile/appcheck/submitValide";
 }

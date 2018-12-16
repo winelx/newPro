@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
@@ -63,6 +64,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_checknoticemessage);
         mContext = this;
         mData = new ArrayList<>();
+        Dates.getDialogs(this,"请求数据中...");
         TaskCallbackUtils.setCallBack(this);
         deviceUtils = new DeviceUtils();
         final Intent intent = getIntent();

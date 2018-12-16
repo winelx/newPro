@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -128,6 +129,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
 
 
     public void network(final boolean status, final Networkinterface networkinterface) {
+        Dates.getDialogs(this, "请求数据中...");
         OkGo.get(Requests.SELECTACCPECTUSER)
                 .params("page", page)
                 .params("size", 100)
@@ -136,6 +138,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
+                        Dates.disDialog();
                         if (status) {
                             refreshLayout.finishRefresh();
                         } else {
@@ -168,6 +171,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

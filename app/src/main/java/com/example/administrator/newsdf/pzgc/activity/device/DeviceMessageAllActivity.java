@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,7 +45,6 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     private TextView titleView;
     private ImageView checklistmeunimage;
     private SmartRefreshLayout refreshLayout;
-    private String id;
     private int page = 1;
     private DeviceMessageListAdapter mAdapter;
     private RelativeLayout backNotNull;
@@ -58,11 +58,13 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
+        final Intent intent = getIntent();
+        orgId = intent.getStringExtra("orgId");
         mContext = this;
         mData = new ArrayList<>();
         deviceUtils = new DeviceUtils();
-        Intent intent = getIntent();
 
+        Dates.getDialogs(this,"请求数据中...");
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
         //刷新加载控件
@@ -80,7 +82,7 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //设置标题
-//        titleView.setText(intent.getStringExtra("orgName"));
+      titleView.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +124,12 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
             @Override
             public void Onclick(View view, int position) {
                 //点击
-                startActivity(new Intent(mContext, DeviceDetailsActivity.class));
+                Intent intent = new Intent(mContext, DeviceDetailsActivity.class);
+                intent.putExtra("id", mData.get(position).getId());
+                intent.putExtra("status", false);
+                intent.putExtra("orgId", orgId);
+                intent.putExtra("orgname", titleView.getText().toString());
+                mContext.startActivity(intent);
             }
 
             @Override

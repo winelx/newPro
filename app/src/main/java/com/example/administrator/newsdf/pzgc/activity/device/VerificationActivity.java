@@ -25,8 +25,11 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.VerificationBean;
+import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
+import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
@@ -70,8 +73,8 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
-        Intent intent = new Intent();
-        checkId = intent.getStringExtra("id");
+        Intent intent = getIntent();
+        checkId = intent.getStringExtra("checkId");
         mContext = this;
         detailsUtils = new DeviceDetailsUtils();
         imagepath = new ArrayList<>();
@@ -87,6 +90,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         });
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("提交");
+        checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setOnClickListener(this);
         //标题
         TextView title = (TextView) findViewById(R.id.titleView);
@@ -170,7 +174,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
                         .setNegativeButton("打回", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                status = 1;
+                                status = 0;
                                 categoryItem.setText("打回");
                                 categoryItem.setTextColor(Color.parseColor("#FE0000"));
                             }
@@ -181,7 +185,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
                                 //处理确认按钮的点击事件
                                 categoryItem.setText("通过");
                                 categoryItem.setTextColor(Color.parseColor("#28c26A"));
-                                status = 0;
+                                status = 1;
                             }
                         })
                         .create();
@@ -262,26 +266,27 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             @SuppressLint("ResourceAsColor")
             @Override
             public void onsuccess(Map<String, Object> map) {
-                //界面数据
-                VerificationBean bean = (VerificationBean) map.get("data");
-                //拿到图片
-                imagepath = (ArrayList<Audio>) map.get("file");
-                //更新图片
-                mAdapter.getData(imagepath, true);
-                //验证单Id
-                id = bean.getId();
-                //验证结果0打回1通过
-                int validate = bean.getValidate();
-                if (validate == 0) {
-                    categoryItem.setText("通过");
-                    categoryItem.setTextColor(R.color.finish_green);
-                } else {
-                    categoryItem.setText("打回");
-                    categoryItem.setTextColor(R.color.red);
+                if (map.size() > 0) {
+                    //界面数据
+                    VerificationBean bean = (VerificationBean) map.get("data");
+                    //拿到图片
+                    imagepath = (ArrayList<Audio>) map.get("file");
+                    //更新图片
+                    mAdapter.getData(imagepath, true);
+                    //验证单Id
+                    id = bean.getId();
+                    //验证结果0打回1通过
+                    int validate = bean.getValidate();
+                    if (validate == 0) {
+                        categoryItem.setText("打回");
+                        categoryItem.setTextColor(Color.parseColor("#FE0000"));
+                    } else {
+                        categoryItem.setText("通过");
+                        categoryItem.setTextColor(Color.parseColor("#28c26A"));
+                    }
+                    //意见
+                    replyDescription.setText(bean.getView());
                 }
-                //意见
-                replyDescription.setText(bean.getView());
-
             }
         });
     }
@@ -296,21 +301,24 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         String opinion = replyDescription.getText().toString();
         Map<String, String> map = new HashMap<>();
         map.put("checkId", checkId);
+        map.put("validate", status + "");
         //是否是新增
         if (id != null) {
             map.put("id", id);
         }
+
         //意见是否为空
         if (!opinion.isEmpty()) {
             map.put("view", opinion);
         }
+        //是否通过
 
         //添加图片
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < imagepath.size(); i++) {
             String str = imagepath.get(i).getContent();
             //判断是否有Id
-            if (str == null) {
+            if (str.isEmpty()) {
                 //没有Id，添加为新图片
                 File file1 = new File(imagepath.get(i).getName());
                 file.add(file1);
@@ -321,10 +329,12 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             String deleteFileIds = Dates.listToStrings(detelefile);
             map.put("deleteFileIds", deleteFileIds);
         }
+        Dates.getDialogs(this,"提交数据中,,,");
         detailsUtils.saveValideByApp(map, file, new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-
+                DeviceDetailsCallBackUtils.CallBackMethod();
+                finish();
             }
         });
     }

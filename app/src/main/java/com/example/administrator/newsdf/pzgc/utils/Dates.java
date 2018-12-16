@@ -48,7 +48,7 @@ import java.util.List;
  * 说明：
  */
 public class Dates {
-    private static Dialog progressDialog;
+    private static Dialog progressDialog = null;
     private static ArrayList<String> JpMap = new ArrayList<>();
 
     public static int getScreenHeight(Context context) {
@@ -286,14 +286,15 @@ public class Dates {
         ins.close();
         out.close();
     }
-        public static  String downloadPath(){
-    // 首先保存图片
-    String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
-    File appDir = new File(strpath, "picker");
-    if (!appDir.exists()) {
-        appDir.mkdir();
-    }
-    return strpath;
+
+    public static String downloadPath() {
+        // 首先保存图片
+        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/picker";
+        File appDir = new File(strpath, "picker");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        return strpath;
     }
 
 
@@ -468,7 +469,7 @@ public class Dates {
         return null;
     }
 
-    public static List<String> stringToList(String strs,String type) {
+    public static List<String> stringToList(String strs, String type) {
         if (strs == "" && strs.isEmpty()) {
 
         } else {
@@ -477,6 +478,7 @@ public class Dates {
         }
         return null;
     }
+
     public static List<String> stringToLists(String strs) {
         if (strs == "" && strs.isEmpty()) {
         } else {
@@ -485,6 +487,7 @@ public class Dates {
         }
         return null;
     }
+
     /**
      * 判断当前软键盘是否打开
      *
@@ -510,37 +513,49 @@ public class Dates {
      * @param str
      */
     public static void getDialog(Activity activity, String str) {
-        progressDialog = new Dialog(activity, R.style.progress_dialog);
-        progressDialog.setContentView(R.layout.waiting_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
-        text.setText(str);
-        progressDialog.show();
-        new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                progressDialog.dismiss();
-                return false;
-                //表示延迟3秒发送任务
-            }
-        }).sendEmptyMessageDelayed(0, 2000);
-
+        if (progressDialog == null) {
+            progressDialog = new Dialog(activity, R.style.progress_dialog);
+            progressDialog.setContentView(R.layout.waiting_dialog);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
+            text.setText(str);
+            //点击外部不取消
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                    }
+                    return false;
+                    //表示延迟3秒发送任务
+                }
+            }).sendEmptyMessageDelayed(0, 2000);
+        }
     }
 
     /**
      * 展示dailog
      */
     public static void getDialogs(Activity activity, String str) {
-        progressDialog = new Dialog(activity, R.style.progress_dialog);
-        progressDialog.setContentView(R.layout.waiting_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
-        text.setText(str);
-        progressDialog.show();
+        if (progressDialog == null) {
+            progressDialog = new Dialog(activity, R.style.progress_dialog);
+            progressDialog.setContentView(R.layout.waiting_dialog);
+            //点击外部不取消
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
+            text.setText(str);
+            progressDialog.show();
+        }
     }
 
     public static void disDialog() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
     /**
@@ -710,6 +725,7 @@ public class Dates {
             return 610;
         }
     }
+
     //评论界面专用：根据bii返回当前分辨率下该设置高度
     public static int higtFontSizes(float screenWidth) {
         // 240X320 屏幕

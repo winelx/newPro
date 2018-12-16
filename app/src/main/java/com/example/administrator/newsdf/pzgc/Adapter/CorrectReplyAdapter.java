@@ -69,6 +69,7 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             + "巡检附件：");
             ((Viewholder) holder).correct_cuse.setText(bean.getCause());
             //整改描述
+            map.put(position, bean.getReply());
             ((Viewholder) holder).replyEditext.setText(bean.getReply());
             //回复附件
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -111,7 +112,8 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void afterTextChanged(Editable s) {
                     String str1 = s.toString();
-                    map.put(position, str1);
+//                    map.put(position, str1);
+                    list.get(position).getBean().setReply(str1);
                 }
             });
         }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,12 +14,16 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
+import com.example.administrator.newsdf.pzgc.callback.CallBack;
+import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
+
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,7 +33,7 @@ import java.util.Map;
  * @date: 2018/11/28 0028 下午 4:21
  * @description: 特种设备详情页面
  */
-public class DeviceDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class DeviceDetailsActivity extends BaseActivity implements View.OnClickListener, CallBack {
     private RecyclerView mRecyclerView;
     private Context mContext;
     private DeviceDetailsAdapter mAdapter;
@@ -43,6 +48,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     private TextView deviceDetailsResult, titleView;
     private ArrayList<TextView> viewlist;
     private String[] dialog = {"确定", "取消"};
+    private boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,9 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_device_details);
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        status = intent.getBooleanExtra("status", true);
         orgId = intent.getStringExtra("orgId");
+        DeviceDetailsCallBackUtils.setCallBack(this);
         mContext = this;
         //帮助类（RecyclerView需要根据状态改变margin）
         utils = new Utils();
@@ -101,7 +109,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 startActivity(intent1);
             }
         });
-
         network(id);
     }
 
@@ -114,8 +121,16 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.device_details_up:
-                ToastUtils.showLongToast("提交");
                 //提交
+                if (permission.contains(22)) {
+                    Dates.getDialogs(this, "提交数据中..");
+                    //验证提交
+                    submitValide();
+                } else {
+                    //回复提交
+                    Dates.getDialogs(this, "提交数据中..");
+                    submitreply();
+                }
                 break;
             case R.id.device_details_assign:
                 //指派
@@ -138,7 +153,8 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                     //跳转验证单不可选择附件
                     opinion();
                 } else {
-                    ToastUtils.showLongToast("保存验证单");
+                    opinion();
+//               ToastUtils.showLongToast("保存验证单");
                     //20保存验证单 改为21,22
                 }
                 break;
@@ -165,19 +181,26 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
 
     //0指派、1创建回复、2编辑回复、3提交回复、10项目经理创建验证、20下发人创建验证、21下发人编辑验证、22下发人提交验证
     public void network(String id) {
+        Dates.getDialogs(this, "请求数据中...");
         hideView();
         detailsUtils.details(id, new DeviceDetailsUtils.DeviceDetailslitener() {
             @Override
             public void onsuccess(ArrayList<Object> lists, ArrayList<Integer> data) {
+                permission.clear();
+                list.clear();
                 permission.addAll(data);
                 list.addAll(lists);
                 mAdapter.setNewData(list);
-                if (permission.size() > 0) {
-                    deviceDetailsFunction.setVisibility(View.VISIBLE);
-                    utils.setMargins(mRecyclerView, 0, 0, 0, 120);
-                    authority();
+                if (status) {
+                    if (permission.size() > 0) {
+                        deviceDetailsFunction.setVisibility(View.VISIBLE);
+                        utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+                        authority();
+                    } else {
+                        utils.setMargins(mRecyclerView, 0, 0, 0, 0);
+                        deviceDetailsFunction.setVisibility(View.GONE);
+                    }
                 } else {
-                    utils.setMargins(mRecyclerView, 0, 0, 0, 0);
                     deviceDetailsFunction.setVisibility(View.GONE);
                 }
             }
@@ -226,8 +249,8 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                     deviceDetailsProving.setVisibility(View.VISIBLE);
                     break;
                 case 22:
-                    //验证
-                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    //提交
+                    deviceDetailsDown.setVisibility(View.VISIBLE);
                     //22下发人提交验证
                     break;
                 default:
@@ -282,9 +305,51 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
      */
     public void opinion() {
         Intent intent = new Intent(mContext, VerificationActivity.class);
-        intent.putExtra("id", "id");
+        intent.putExtra("checkId", id);
         startActivity(intent);
     }
 
+    /**
+     * @内容: 提交回复
+     * @author lx
+     * @date: 2018/12/16 0016 下午 1:42
+     */
+    public void submitreply() {
+        detailsUtils.submitreply(id, new Networkinterface() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                //提交成功刷新界面
+                Dates.disDialog();
+                network(id);
+            }
+        });
+    }
 
+    /**
+     * @内容: 提交验证
+     * @author lx
+     * @date: 2018/12/16 0016 下午 3:24
+     */
+    public void submitValide() {
+        detailsUtils.submitValide(id, new Networkinterface() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                //提交成功刷新界面
+                Dates.disDialog();
+                network(id);
+                TaskCallbackUtils.CallBackMethod();
+            }
+        });
+    }
+
+    /**
+     * @内容: 验证完成后刷新界面
+     * @author lx
+     * @date: 2018/12/16 0016 下午 3:01
+     */
+    @Override
+    public void deleteTop() {
+        network(id);
+        TaskCallbackUtils.CallBackMethod();
+    }
 }

@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.pzgc.bean.SeeDetailsReply;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsTop;
 import com.example.administrator.newsdf.pzgc.bean.VerificationBean;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -72,6 +73,7 @@ public class DeviceDetailsUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
+                        Dates.disDialog();
                         ArrayList<Object> lists = new ArrayList<>();
                         ArrayList<Integer> permissionlist = new ArrayList<>();
                         try {
@@ -141,6 +143,7 @@ public class DeviceDetailsUtils {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }
@@ -208,6 +211,7 @@ public class DeviceDetailsUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
+                        Dates.disDialog();
                         ArrayList<Object> mData = new ArrayList<>();
                         try {
                             JSONObject jsonObject = new JSONObject(string);
@@ -251,6 +255,12 @@ public class DeviceDetailsUtils {
                         }
                         networkinterface.onsuccess(mData);
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
                 });
     }
 
@@ -275,6 +285,7 @@ public class DeviceDetailsUtils {
         getrequest.execute(new StringCallback() {
             @Override
             public void onSuccess(String string, Call call, Response response) {
+                Dates.disDialog();
                 Map<String, Object> map = new HashMap<>();
                 try {
                     JSONObject jsonObject = new JSONObject(string);
@@ -290,6 +301,7 @@ public class DeviceDetailsUtils {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
+                Dates.disDialog();
             }
         });
     }
@@ -318,8 +330,23 @@ public class DeviceDetailsUtils {
         postrequest.execute(new StringCallback() {
             @Override
             public void onSuccess(String string, Call call, Response response) {
-                Map<String, Object> map = new HashMap<>();
-                networkinface.onsuccess(map);
+                Dates.disDialog();
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        Map<String, Object> map = new HashMap<>();
+                        networkinface.onsuccess(map);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
             }
         });
     }
@@ -329,11 +356,10 @@ public class DeviceDetailsUtils {
      * @author lx
      * @date: 2018/12/14 0014 下午 2:11
      */
-    public void getvalidatedata(String id, final Networkinterface networkinterface) {
+    public void getvalidatedata(String checkId, final Networkinterface networkinterface) {
         OkGo.post(Requests.GETVALIDATEDATA)
-                .params("id", "")
                 //单据ID
-                .params("checkId", "")
+                .params("checkId", checkId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
@@ -352,6 +378,8 @@ public class DeviceDetailsUtils {
                                 }
                                 map.put("data", bean);
                                 map.put("file", file);
+                            } else {
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -395,4 +423,78 @@ public class DeviceDetailsUtils {
                     }
                 });
     }
+
+    /**
+     * @内容: 提交回复
+     * @author lx
+     * @date: 2018/12/16 0016 下午 1:42
+     */
+    public void submitreply(String checkId, final Networkinterface networkinterface) {
+        OkGo.post(Requests.SUBMITREPLY)
+                .params("checkId", checkId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        Dates.disDialog();
+                        Map<String, Object> map = new HashMap<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                map.put("data", "成功");
+                                networkinterface.onsuccess(map);
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+
+    }
+
+    /**
+     * @内容: 提交验证
+     * @author lx
+     * @date: 2018/12/16 0016 下午 3:25
+     */
+    public void submitValide(String checkId, final Networkinterface networkinterface) {
+        OkGo.post(Requests.SUBMITVALIDE)
+                .params("checkId", checkId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        Map<String, Object> map = new HashMap<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                map.put("data", "成功");
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                            networkinterface.onsuccess(map);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+    }
+
+
 }

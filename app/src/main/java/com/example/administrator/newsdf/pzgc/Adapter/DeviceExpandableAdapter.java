@@ -135,7 +135,7 @@ public class DeviceExpandableAdapter extends BaseExpandableListAdapter implement
                 childHold.homeItemMessage.setVisibility(View.GONE);
                 //跳转界面
                 Intent intent = new Intent(context, DeviceMessageAllActivity.class);
-                intent.putExtra("id", content.get(classes.get(groupPosition)).get(childPosition).getId());
+                intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getId());
                 intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 context.startActivity(intent);
             }

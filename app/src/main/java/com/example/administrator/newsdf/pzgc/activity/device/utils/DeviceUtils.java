@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.pzgc.bean.ProblemFile;
 import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
 import com.example.administrator.newsdf.pzgc.bean.TextBean;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -208,6 +209,7 @@ public class DeviceUtils {
         postrequest.execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
+                Dates.disDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     int ret = jsonObject.getInt("ret");
@@ -231,6 +233,7 @@ public class DeviceUtils {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
+                Dates.disDialog();
             }
         });
     }
@@ -514,13 +517,13 @@ public class DeviceUtils {
         }
         if (file.size() > 0) {
             postrequest.addFileParams("imagesList", file);
-            postrequest.addFileParams("images", file);
         } else {
             postrequest.isMultipart(true);
         }
         postrequest.execute(new StringCallback() {
             @Override
             public void onSuccess(String string, Call call, Response response) {
+                Dates.disDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(string);
                     int ret = jsonObject.getInt("ret");
@@ -535,6 +538,7 @@ public class DeviceUtils {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
+                Dates.disDialog();
             }
 
         });
@@ -625,7 +629,7 @@ public class DeviceUtils {
                                 map.put("data", "成功");
                                 networkinterface.onsuccess(map);
                             } else {
-                                ToastUtils.showLongToast(jsonObject.getString("msgl"));
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -634,4 +638,38 @@ public class DeviceUtils {
                 });
     }
 
+    /**
+     * @内容: 删除检查项
+     * @author lx
+     * @date: 2018/12/16 0016 下午 2:32
+     */
+    public  void deleteitem(String id,final Networkinterface networkinterface){
+        OkGo.get(Requests.DELETESECDETAILSBYID)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        Dates.disDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            Map<String, Object> map = new HashMap<>();
+                            if (ret == 0) {
+                                map.put("data", "成功");
+                                networkinterface.onsuccess(map);
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
+                    }
+                });
+    }
 }
