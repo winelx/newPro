@@ -94,7 +94,7 @@ public class DeviceDetailsUtils {
                             ArrayList<DeviceTrem> list = new ArrayList<>();
                             list.addAll(ListJsonUtils.getListByArray(DeviceTrem.class, standard.toString()));
                             lists.add(new DeviceDetailsTop(bean, list));
-                            for (int i = 0; i < result.length(); i++) {
+                            for (int i = result.length() - 1; i >= 0; i--) {
                                 JSONArray jsonArray = result.getJSONArray(i);
                                 for (int j = 0; j < jsonArray.length(); j++) {
                                     JSONObject json = jsonArray.getJSONObject(j);
@@ -223,9 +223,9 @@ public class DeviceDetailsUtils {
                                 String term = "整改期限：" + json.getString("term");
                                 String cause;
                                 try {
-                                     cause = "整改事由：" + json.getString("cause");
+                                    cause = "整改事由：" + json.getString("cause");
                                 } catch (Exception e) {
-                                     cause = "整改事由：";
+                                    cause = "整改事由：";
                                 }
                                 //附件
                                 JSONArray file = json.getJSONArray("file");

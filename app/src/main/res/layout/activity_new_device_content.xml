@@ -142,13 +142,12 @@
 
         android:focusableInTouchMode="true"
         android:minHeight="45dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-
             android:drawableLeft="@mipmap/warning_red"
             android:gravity="center_vertical"
             android:text="设备编号"
@@ -159,8 +158,10 @@
             android:id="@+id/new_inspect_facilitynumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:background="@null"
+            android:gravity="end|center_vertical"
             android:hint="请输入"
             android:paddingLeft="11.5dp"
             android:textColor="@color/black"
@@ -178,7 +179,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:minHeight="45dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="10dp">
 
         <TextView
@@ -194,9 +195,11 @@
         <EditText
             android:id="@+id/new_inspect_facilitymodel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:background="@null"
+            android:gravity="end|center_vertical"
             android:hint="请输入"
             android:paddingLeft="11.5dp"
             android:textColor="@color/black"

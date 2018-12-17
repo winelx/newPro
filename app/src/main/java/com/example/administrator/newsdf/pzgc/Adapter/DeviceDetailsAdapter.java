@@ -155,7 +155,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         //回复人
         holder.detailsReplyReplyname.setText(setText("回复人：" + bean.getRealname(), 4, R.color.blue));
         //时间
-        holder.detailsReplyData.setText(bean.getOperTime().substring(0, 10));
+        holder.detailsReplyData.setText(bean.getOperTime().substring(0, 16));
     }
 
     //验证
@@ -165,24 +165,24 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         //验证人
         holder.detailsProvingUusername.setText((setText("验证人：" + bean.getRealname(), 4, R.color.blue)));
         //时间
-        holder.detailsProvingData.setText(bean.getOperTime().substring(0, 10));
+        holder.detailsProvingData.setText(bean.getOperTime().substring(0, 16));
         //验证结果
         int type = bean.getType();
         switch (type) {
             case 11:
-                holder.detailsProvingResult.setText(setText("验证结果：项目经理验证打回", 5, R.color.red));
+                holder.detailsProvingResult.setText(setText("验证结果：打回", 5, R.color.red));
                 holder.detailsProvingName.setText("项目经理验证");
                 break;
             case 12:
-                holder.detailsProvingResult.setText(setText("验证结果：项目经理验证通过", 5, R.color.finish_green));
+                holder.detailsProvingResult.setText(setText("验证结果：通过", 5, R.color.finish_green));
                 holder.detailsProvingName.setText("项目经理验证");
                 break;
             case 22:
-                holder.detailsProvingResult.setText(setText("验证结果：下发人验证打回", 5, R.color.red));
+                holder.detailsProvingResult.setText(setText("验证结果：打回", 5, R.color.red));
                 holder.detailsProvingName.setText("验证结果");
                 break;
             case 23:
-                holder.detailsProvingResult.setText(setText("验证结果：下发人验证通过", 5, R.color.finish_green));
+                holder.detailsProvingResult.setText(setText("验证结果：通过", 5, R.color.finish_green));
                 holder.detailsProvingName.setText("验证结果");
                 break;
             default:
