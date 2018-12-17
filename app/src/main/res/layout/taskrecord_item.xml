@@ -23,8 +23,6 @@
             android:layout_marginLeft="20dp"
             android:textSize="13sp" />
 
-
-
         <TextView
             android:id="@+id/task_cord_name"
             android:layout_width="wrap_content"

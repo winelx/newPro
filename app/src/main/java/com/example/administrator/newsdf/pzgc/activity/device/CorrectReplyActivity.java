@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.device;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,6 +68,7 @@ public class CorrectReplyActivity extends BaseActivity {
     private String checkId;
     private ArrayList<String> deleteList;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +85,11 @@ public class CorrectReplyActivity extends BaseActivity {
         takePictureManager = new TakePictureManager(CorrectReplyActivity.this);
         //数据填完后保存按钮
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        checklistmeuntext.setText("确定");
+        checklistmeuntext.setText("保存");
         //显示安按钮
         checklistmeuntext.setVisibility(View.VISIBLE);
+        TextView titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText("整改回复");
         //返回
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +157,7 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
-                //position 列表的位置，， 图片的位置 adapterposition
+            //position 列表的位置，， 图片的位置 adapterposition
             //删除图片
             @Override
             public void deleteClick(int position, int adapterposition) {
@@ -168,7 +173,7 @@ public class CorrectReplyActivity extends BaseActivity {
                 }
                 tinglist.remove(adapterposition);
                 //刷新数据，并指定刷新的位置
-                mAdapter.setupdate(list,position);
+                mAdapter.setupdate(list, position);
             }
         });
         //网络请求
@@ -182,7 +187,7 @@ public class CorrectReplyActivity extends BaseActivity {
         checklistmeuntext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
+                    save();
             }
         });
     }
@@ -251,8 +256,6 @@ public class CorrectReplyActivity extends BaseActivity {
     private void save() {
         //回复
         List<Map<String, Object>> mDatareply = new ArrayList<>();
-        //从列表回复集合
-        Map<Integer, String> replulist = mAdapter.getReplylist();
         for (int i = 0; i < list.size(); i++) {
             Map<String, Object> reply = new HashMap<>();
             //检查项ID
@@ -260,7 +263,7 @@ public class CorrectReplyActivity extends BaseActivity {
             //
             String replyId = list.get(i).getBean().getReplyId();
             //回复内容
-            reply.put("reply", replulist.get(i));
+            reply.put("reply", list.get(i).getBean().getReply());
             //单据传递过来来的ID（单据Id）
             reply.put("id", replyId);
             reply.put("checkId", checkId);
@@ -287,7 +290,7 @@ public class CorrectReplyActivity extends BaseActivity {
             file.put("file-" + detailsId, mdataFile);
         }
         JSONArray replys = new JSONArray(mDatareply);
-        Dates.getDialog(this,"提交数据中...");
+        Dates.getDialog(this, "提交数据中...");
         detailsUtils.savereplyofsec(file, replys.toString(), Dates.listToStrings(deleteList), new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {

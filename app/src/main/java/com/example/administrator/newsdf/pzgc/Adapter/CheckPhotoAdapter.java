@@ -148,6 +148,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         default:
                             // 1
+
                             int position = holder.getLayoutPosition();
                             // 2
                             mOnItemClickListener.deleteClick(holder.itemView, position);
@@ -220,9 +221,14 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             validation.showPopwindow();
                             break;
                         default:
-                            int position = holder.getLayoutPosition();
-                            // 2
-                            mOnItemClickListener.addlick(holder.itemView, position);
+                            if (learn) {
+                                int position = holder.getLayoutPosition();
+                                // 2
+                                mOnItemClickListener.addlick(holder.itemView, position);
+                            } else {
+                                ToastUtils.showLongToast("当前不是编辑状态");
+                            }
+
                             break;
                     }
 

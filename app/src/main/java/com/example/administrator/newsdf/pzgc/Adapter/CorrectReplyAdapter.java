@@ -41,12 +41,12 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private ArrayList<CorrectReplyBean> list;
     private Context mContext;
-    private ArrayList<String> replylist;
-    private Map<Integer, String> map = new HashMap<>();
+
 
     public CorrectReplyAdapter(ArrayList<CorrectReplyBean> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
+
     }
 
     @Override
@@ -69,7 +69,6 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             + "巡检附件：");
             ((Viewholder) holder).correct_cuse.setText(bean.getCause());
             //整改描述
-            map.put(position, bean.getReply());
             ((Viewholder) holder).replyEditext.setText(bean.getReply());
             //回复附件
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -78,7 +77,7 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
             divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
             ((Viewholder) holder).patrolRecyclerview.addItemDecoration(divider);
-            FiletypeAdapter adapter = new FiletypeAdapter(mContext, list.get(position).getFilelist());
+            final FiletypeAdapter adapter = new FiletypeAdapter(mContext, list.get(position).getFilelist());
             ((Viewholder) holder).patrolRecyclerview.setAdapter(adapter);
             //巡检附件
             ((Viewholder) holder).replyRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
@@ -170,7 +169,5 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    public Map<Integer, String> getReplylist() {
-        return map;
-    }
+
 }

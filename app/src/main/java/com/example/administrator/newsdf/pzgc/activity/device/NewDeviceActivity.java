@@ -7,9 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-
 import android.view.View;
-
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -23,7 +21,6 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.Devicedetails;
-
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallback;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
@@ -135,6 +132,9 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                     utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
+                if (mData.size() > 0) {
+                    problem.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -215,9 +215,6 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 startActivity(intent);
             }
         });
-        if (mData.size() > 0) {
-            problem.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -230,7 +227,11 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                     public void success(String number, String id) {
                         ToastUtils.showLongToast("下发成功");
                         //刷新列表
-                        TaskCallbackUtils.CallBackMethod();
+                        try {
+                            TaskCallbackUtils.CallBackMethod();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         finish();
                     }
                 });
@@ -369,7 +370,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             return;
         }
         //备注
-        if (TextUtils.isEmpty(newInspectRemarks.getText().toString())) {
+        if (!TextUtils.isEmpty(newInspectRemarks.getText().toString())) {
             map.put("remarks", newInspectRemarks.getText().toString());
         }
         //id
@@ -396,36 +397,6 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         });
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 5 && resultCode == 2) {
-            //整改负责人
-            userId = data.getStringExtra("userid");
-            newInspectUsername.setText(data.getStringExtra("name"));
-        } else if (requestCode == 3 && resultCode == 2) {
-            //选择组织
-            nodeId = data.getStringExtra("id");
-            newInspectOrg.setText(data.getStringExtra("name"));
-        } else if (requestCode == 4 && resultCode == RESULT_OK) {
-            //设备名称
-            newInspectFacility.setText(data.getStringExtra("name"));
-            facilityId = data.getStringExtra("id");
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (dialogUtils != null) {
-            dialogUtils = null;
-        }
-        if (utils != null) {
-            utils = null;
-        }
     }
 
     /**
@@ -462,4 +433,34 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         //刷新界面数据
         request();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 5 && resultCode == 2) {
+            //整改负责人
+            userId = data.getStringExtra("userid");
+            newInspectUsername.setText(data.getStringExtra("name"));
+        } else if (requestCode == 3 && resultCode == 2) {
+            //选择组织
+            nodeId = data.getStringExtra("id");
+            newInspectOrg.setText(data.getStringExtra("name"));
+        } else if (requestCode == 4 && resultCode == RESULT_OK) {
+            //设备名称
+            newInspectFacility.setText(data.getStringExtra("name"));
+            facilityId = data.getStringExtra("id");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialogUtils != null) {
+            dialogUtils = null;
+        }
+        if (utils != null) {
+            utils = null;
+        }
+    }
+
 }

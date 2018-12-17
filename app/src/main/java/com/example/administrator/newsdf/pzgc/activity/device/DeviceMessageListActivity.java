@@ -57,6 +57,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
     private LinearLayout checklistmeun;
     private String[] meuns = {"全部", "未下发", "未回复", "未验证", "已处理"};
     private int status = -1, page = 1;
+    private boolean refresh = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_checknoticemessage);
         mContext = this;
         mData = new ArrayList<>();
-        Dates.getDialogs(this,"请求数据中...");
+        Dates.getDialogs(this, "请求数据中...");
         TaskCallbackUtils.setCallBack(this);
         deviceUtils = new DeviceUtils();
         final Intent intent = getIntent();
@@ -76,6 +77,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //空数据
         backNotNull = (RelativeLayout) findViewById(R.id.back_not_null);
+        backNotNull.setVisibility(View.GONE);
         //menu
         checklistmeunimage = (ImageView) findViewById(R.id.checklistmeunimage);
         //设置menu控件背景
@@ -136,9 +138,9 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
             public void onRefresh(RefreshLayout refreshlayout) {
                 page = 1;
                 mData.clear();
+                refresh=true;
                 getdate();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh();
+
             }
         });
         //上拉加载
@@ -147,9 +149,8 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
+                refresh=false;
                 getdate();
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore();
             }
         });
         getdate();
@@ -182,6 +183,13 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
             public void onsuccess(ArrayList<DeviceMeList> data) {
                 if (page == 1) {
                     mData.clear();
+                }
+                if (refresh) {
+                    //关闭刷新
+                    refreshLayout.finishRefresh();
+                } else {
+                    //关闭加载
+                    refreshLayout.finishLoadmore();
                 }
                 mData.addAll(data);
                 mAdapter.getData(mData);
@@ -221,23 +229,19 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
             case "全部":
                 getdate();
                 status = -1;
-                ToastUtils.showLongToast("全部");
+
                 break;
             case "未下发":
                 status = 0;
-                ToastUtils.showLongToast("未下发");
                 break;
             case "未回复":
                 status = 1;
-                ToastUtils.showLongToast("未回复");
                 break;
             case "未验证":
                 status = 2;
-                ToastUtils.showLongToast("未验证");
                 break;
             case "已处理":
                 status = 4;
-                ToastUtils.showLongToast("已处理");
                 break;
             default:
                 break;

@@ -42,7 +42,7 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         if (holder instanceof Viewholder) {
             ((Viewholder) holder).newinspectorg.setText(list.get(position).getCisName());
-            ((Viewholder) holder).problem.setText("第" + (position + 1) + "个问题");
+            ((Viewholder) holder).problem.setText("第" + (position + 1) + "项问题");
             ((Viewholder) holder).newinspectorg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

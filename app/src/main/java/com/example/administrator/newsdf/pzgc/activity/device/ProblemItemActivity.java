@@ -94,6 +94,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             deviceUtils.secdetailsbyedit(typeId, new DeviceUtils.ProblemLitener() {
                 @Override
                 public void success(ProblemBean bean, ArrayList<ProblemFile> data) {
+                    checklistmeuntext.setText("编辑");
+                    rectifyCause.setEnabled(false);
                     //整改期限
                     rectifyData.setText(bean.getTerm());
                     //隐患等级
@@ -110,7 +112,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                         for (int i = 0; i < data.size(); i++) {
                             imagepath.add(new Audio(Requests.networks + data.get(i).getFilepath(), data.get(i).getId()));
                         }
-                        photoAdapter.getData(imagepath, true);
+                        photoAdapter.getData(imagepath, false);
                     }
                 }
             });
@@ -125,6 +127,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
      * @date: 2018/12/3 0003 下午 3:31
      */
     private void init() {
+        TextView titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText("问题项");
         contentlin = (LinearLayout) findViewById(R.id.contentlin);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -277,7 +281,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 DialogUtils.Tipsdialog(mContext, title, strings, new DialogUtils.OnClickListener() {
                     @Override
                     public void onsuccess(String str) {
-                        Dates.getDialog(ProblemItemActivity.this,"删除数据中...");
+                        Dates.getDialog(ProblemItemActivity.this, "删除数据中...");
                         deviceUtils.deleteitem(typeId, new Networkinterface() {
                             @Override
                             public void onsuccess(Map<String, Object> map) {
@@ -292,31 +296,49 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 });
                 break;
             case R.id.checklistmeuntext:
-                //关闭软键盘
-                hintKeyBoard();
-                //保存
-                problemsave();
+                if ("编辑".equals(checklistmeuntext.getText().toString())) {
+                    photoAdapter.getData(imagepath, true);
+                    checklistmeuntext.setText("保存");
+                    rectifyCause.setEnabled(true);
+                } else {
+                    //关闭软键盘
+                    hintKeyBoard();
+                    //保存
+                    problemsave();
+                }
                 break;
             case R.id.violation_standards:
-                //违反标准
-                Intent intent = new Intent(mContext, DeviceViolatestandardActivity.class);
-                intent.putExtra("typeId", typeId);
-                startActivity(intent);
+                if ("编辑".equals(checklistmeuntext.getText().toString())) {
+                    ToastUtils.showLongToast("当前不是编辑状态");
+                } else {
+                    //违反标准
+                    Intent intent = new Intent(mContext, DeviceViolatestandardActivity.class);
+                    intent.putExtra("typeId", typeId);
+                    startActivity(intent);
+                }
                 break;
             case R.id.hidden_danger_grade:
 //                //隐患等级
-                Intent intent1 = new Intent(mContext, GradeActivity.class);
-                startActivityForResult(intent1, 102);
+                if ("编辑".equals(checklistmeuntext.getText().toString())) {
+                    ToastUtils.showLongToast("当前不是编辑状态");
+                } else {
+                    Intent intent1 = new Intent(mContext, GradeActivity.class);
+                    startActivityForResult(intent1, 102);
+                }
                 break;
             case R.id.rectify_data_lin:
-                //筛选时间
-                dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
-                    @Override
-                    public void onsuccess(String str) {
-                        rectifyData.setText(str);
-                    }
-                });
                 //整改期限
+                if ("编辑".equals(checklistmeuntext.getText().toString())) {
+                    ToastUtils.showLongToast("当前不是编辑状态");
+                } else {
+                    //筛选时间
+                    dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
+                        @Override
+                        public void onsuccess(String str) {
+                            rectifyData.setText(str);
+                        }
+                    });
+                }
                 break;
             default:
                 break;
@@ -379,7 +401,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void success(String number, String id) {
                 //新增整改问题
-                ToastUtils.showLongToast("成功");
+                ToastUtils.showLongToast("保存成功");
                 ArrayList<DetailsBean> mData = new ArrayList<>();
                 ProblemCallbackUtils.ProblemCallback(mData);
                 finish();

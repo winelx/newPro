@@ -218,9 +218,9 @@ public class DeviceUtils {
                     if (ret == 0) {
                         JSONArray jsonArray = data.getJSONArray("results");
                         list.addAll(ListJsonUtils.getListByArray(DeviceMeList.class, jsonArray.toString()));
-                        if (page > totalPages) {
-                            ToastUtils.showLongToast("数据展示完毕");
-                        }
+//                        if (page > totalPages) {
+//                            ToastUtils.showLongToast("所有数据展示完毕");
+//                        }
                     } else {
                         ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
@@ -643,7 +643,7 @@ public class DeviceUtils {
      * @author lx
      * @date: 2018/12/16 0016 下午 2:32
      */
-    public  void deleteitem(String id,final Networkinterface networkinterface){
+    public void deleteitem(String id, final Networkinterface networkinterface) {
         OkGo.get(Requests.DELETESECDETAILSBYID)
                 .params("id", id)
                 .execute(new StringCallback() {

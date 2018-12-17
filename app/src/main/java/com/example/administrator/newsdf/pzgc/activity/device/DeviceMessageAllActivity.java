@@ -51,7 +51,9 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
     private String[] meuns = {"全部", "未回复", "未验证", "打回", "已完成"};
+    //当前任务状态（）
     private int status = -1;
+    private boolean refresh = true;
     private String orgId;
 
     @Override
@@ -64,7 +66,7 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         mData = new ArrayList<>();
         deviceUtils = new DeviceUtils();
 
-        Dates.getDialogs(this,"请求数据中...");
+        Dates.getDialogs(this, "请求数据中...");
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
         //刷新加载控件
@@ -82,14 +84,13 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         //标题
         titleView = (TextView) findViewById(R.id.titleView);
         //设置标题
-      titleView.setText(intent.getStringExtra("orgName"));
+        titleView.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         /**
          *   下拉刷新
          */
@@ -97,11 +98,13 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                //加载第一页
                 page = 1;
-                mData.clear();
+                //标记状态为刷新
+                refresh = true;
+                //请求数据
                 getdate();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh();
+
             }
         });
         //上拉加载
@@ -110,16 +113,18 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
+                //标记状态为加载
+                refresh = false;
+                //请求数据
                 getdate();
-                //传入false表示加载失败
-                refreshlayout.finishLoadmore();
+
             }
         });
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         //初始化适配器
         mAdapter = new DeviceMessageListAdapter(mContext);
         listView.setAdapter(mAdapter);
-        getdate();
+        //点击事件
         mAdapter.setOnItemClickListener(new ItemClickListener() {
             @Override
             public void Onclick(View view, int position) {
@@ -138,6 +143,8 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
                 mData.remove(position);
             }
         });
+        //网络请求
+        getdate();
     }
 
     /**
@@ -168,13 +175,21 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
                 if (page == 1) {
                     mData.clear();
                 }
+                if (refresh) {
+                    //关闭刷新
+                    refreshLayout.finishRefresh();
+                } else {
+                    //关闭加载
+                    refreshLayout.finishLoadmore();
+                }
                 mData.addAll(data);
                 mAdapter.getData(mData);
-                if (mData.size()>0){
+                if (mData.size() > 0) {
                     backNotNull.setVisibility(View.GONE);
-                }else {
+                } else {
                     backNotNull.setVisibility(View.VISIBLE);
                 }
+
             }
         });
     }
@@ -206,23 +221,18 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         switch (str) {
             case "全部":
                 status = -1;
-                ToastUtils.showLongToast("全部");
                 break;
             case "未回复":
                 status = 1;
-                ToastUtils.showLongToast("未回复");
                 break;
             case "未验证":
                 status = 2;
-                ToastUtils.showLongToast("未验证");
                 break;
             case "打回":
                 status = 3;
-                ToastUtils.showLongToast("打回");
                 break;
             case "已完成":
                 status = 5;
-                ToastUtils.showLongToast("已完成");
                 break;
             default:
                 break;

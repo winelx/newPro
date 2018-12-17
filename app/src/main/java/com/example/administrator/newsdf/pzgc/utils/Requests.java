@@ -6,11 +6,11 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    public static final String networks = "http://192.168.20.36:8080/";
+   //public static final String networks = "http://192.168.20.36:8080/";
 
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
-// public static final String networks = "http://192.168.1.119:8081/pzgc/";
+ public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
     // public static final String networks = "http://192.168.20.81:8080/baseframe/";
     //外
@@ -471,11 +471,15 @@ public class Requests {
      */
     public static final String SUBMITREPLY = networks + "iface/mobile/appcheck/submitReply";
     /**
-     *  特种设备删除检查项
+     * 特种设备删除检查项
      */
     public static final String DELETESECDETAILSBYID = networks + "iface/mobile/appcheck/deleteSECDetailsById";
     /**
      * 特种设备 提交验证
      */
-    public static final String SUBMITVALIDE=networks+"iface/mobile/appcheck/submitValide";
+    public static final String SUBMITVALIDE = networks + "iface/mobile/appcheck/submitValide";
+    /**
+     * 特种设备操作记录
+     */
+    public static final String GETOPERHIS = networks + "iface/mobile/appcheck/getOperHis";
 }

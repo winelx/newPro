@@ -221,7 +221,12 @@ public class DeviceDetailsUtils {
                                 String cisName = "违反标准：" + json.getString("cisName");
                                 String htlname = "隐患等级：" + json.getString("HTLName");
                                 String term = "整改期限：" + json.getString("term");
-                                String cause = "整改事由：" + json.getString("cause");
+                                String cause;
+                                try {
+                                     cause = "整改事由：" + json.getString("cause");
+                                } catch (Exception e) {
+                                     cause = "整改事由：";
+                                }
                                 //附件
                                 JSONArray file = json.getJSONArray("file");
                                 ArrayList<FileTypeBean> type = new ArrayList<>();

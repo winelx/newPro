@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -743,4 +746,20 @@ public class Dates {
             return 210;
         }
     }
+    /**
+     * 设置有颜色文字
+     */
+    public static SpannableString setText(Context mContext, String text, int lenght, int color2) {
+        SpannableString sp = new SpannableString(text);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.black)), 0,
+                lenght,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(color2)), lenght,
+                text.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
+    }
+
 }

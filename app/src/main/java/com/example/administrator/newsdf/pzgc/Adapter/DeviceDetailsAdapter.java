@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.device.SeeDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsResult;
 import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsTop;
@@ -39,6 +37,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int TYPE_RESULT = 2;
     private Context mContext;
     private ArrayList<Object> mData;
+    boolean leam = false;
 
     public DeviceDetailsAdapter(Context mContext, ArrayList<Object> mData) {
         this.mContext = mContext;
@@ -85,12 +84,12 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.detailsTopNumber.setText(bean.getNumber());
         holder.detailsTopUsername.setText("巡检人：" + bean.getCheckUserName());
         holder.detailsTopData.setText("巡检日期：" + bean.getCheckDate());
-        holder.detailsTopRectifyorg.setText(setText("整改组织：" + bean.getOrgName(),5,R.color.Orange));
+        holder.detailsTopRectifyorg.setText(setText("整改组织：" + bean.getOrgName(), 5, R.color.Orange));
         holder.detailsTopBlameuser.setText(setText("整改负责人：" + bean.getPersonLiableName(), 6, R.color.finish_green));
-        holder.detailsTopAddress.setText("整改地点：" + bean.getPlace());
+        holder.detailsTopAddress.setText("使用地点：" + bean.getPlace());
         holder.detailsTopModel.setText("型号规格：" + bean.getTs());//型号规格
         holder.detailsTopRemarks.setText("备注：" + bean.getRemarks());
-        holder.details_top_inspectorg.setText("巡检组织" + bean.getCheckOrgName());
+        holder.details_top_inspectorg.setText("巡检组织：" + bean.getCheckOrgName());
         //,0未下发1未回复2未验证3打回5完成
         int status = bean.getStatus();
         switch (status) {
@@ -122,6 +121,18 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.detailsTopRecyclerview.addItemDecoration(divider);
         ArrayList<DeviceTrem> list = new ArrayList<>();
         list.addAll(((DeviceDetailsTop) obj).getList());
+        int problem = 0;
+        for (int i = 0; i < list.size(); i++) {
+            boolean replied = list.get(i).isReplied();
+            if (replied) {
+                problem++;
+            }
+        }
+        if (problem == list.size()) {
+            leam = true;
+        } else {
+            leam = false;
+        }
         DeviceDetailsTermAdapter adapter = new DeviceDetailsTermAdapter(list, mContext);
         holder.detailsTopRecyclerview.setAdapter(adapter);
         holder.detailsTopDetails.setOnClickListener(new View.OnClickListener() {
@@ -144,30 +155,35 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         //回复人
         holder.detailsReplyReplyname.setText(setText("回复人：" + bean.getRealname(), 4, R.color.blue));
         //时间
-        holder.detailsReplyData.setText(bean.getOperTime());
+        holder.detailsReplyData.setText(bean.getOperTime().substring(0, 10));
     }
 
     //验证
     private void bindContets(Detailsproving holder, Object obj, int position) {
         DeviceDetailsResult bean = (DeviceDetailsResult) obj;
+
         //验证人
         holder.detailsProvingUusername.setText((setText("验证人：" + bean.getRealname(), 4, R.color.blue)));
         //时间
-        holder.detailsProvingData.setText(bean.getOperTime());
+        holder.detailsProvingData.setText(bean.getOperTime().substring(0, 10));
         //验证结果
         int type = bean.getType();
         switch (type) {
             case 11:
                 holder.detailsProvingResult.setText(setText("验证结果：项目经理验证打回", 5, R.color.red));
+                holder.detailsProvingName.setText("项目经理验证");
                 break;
             case 12:
                 holder.detailsProvingResult.setText(setText("验证结果：项目经理验证通过", 5, R.color.finish_green));
+                holder.detailsProvingName.setText("项目经理验证");
                 break;
             case 22:
                 holder.detailsProvingResult.setText(setText("验证结果：下发人验证打回", 5, R.color.red));
+                holder.detailsProvingName.setText("验证结果");
                 break;
             case 23:
                 holder.detailsProvingResult.setText(setText("验证结果：下发人验证通过", 5, R.color.finish_green));
+                holder.detailsProvingName.setText("验证结果");
                 break;
             default:
                 break;
@@ -275,6 +291,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView detailsProvingDescribe;
         //时间
         TextView detailsProvingData;
+        TextView detailsProvingName;
         TextView detailstext;
         RecyclerView detailsProvingRecycler;
 
@@ -286,6 +303,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
             detailsProvingResult = itemView.findViewById(R.id.details_proving_result);
             detailsProvingDescribe = itemView.findViewById(R.id.details_proving_describe);
             detailsProvingRecycler = itemView.findViewById(R.id.details_proving_recycler);
+            detailsProvingName = itemView.findViewById(R.id.details_proving_name);
         }
     }
 
@@ -318,5 +336,9 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void setOnclickItemLitener(onclickitemlitener litener) {
         this.onclickitemlitener = litener;
+    }
+
+    public boolean getproblem() {
+        return leam;
     }
 }

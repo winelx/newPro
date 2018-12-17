@@ -114,7 +114,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private RecyclerView checkStandardRec, photoadd;
     private GridView checklist;
     private DKDragView dkDragView;
-    InputMethodManager inputMethodManager;
+    private  InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -76,9 +76,9 @@ public class WorkFragment extends Fragment {
             if (parent != null) {
                 parent.removeView(rootView);
             }
-
             Analysis();
             okgo();
+            //点击事件
             checkmanager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -172,55 +172,58 @@ public class WorkFragment extends Fragment {
                             if (ret == 0) {
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
-                                    String str4 = json.getString("任务统计");
-                                    String str6 = json.getString("审核报表");
-                                    String str7 = json.getString("整改统计");
-                                    String str9 = json.getString("标段排名");
-                                    if ("true".equals(str6)) {
-                                        reportlist.add(new Audio("审核报表", str6));
-                                    }
-                                    if ("true".equals(str4)) {
-                                        reportlist.add(new Audio("任务统计", str4));
-                                    }
+                                    String str1 = json.getString("审核报表");
+                                    String str2 = json.getString("任务统计");
+                                    String str3 = json.getString("整改统计");
+                                    String str4 = json.getString("标段排名");
 
-                                    if ("true".equals(str7)) {
-                                        reportlist.add(new Audio("整改统计", str7));
-                                    }
-                                    if ("true".equals(str9)) {
-                                        reportlist.add(new Audio("标段排名", str9));
-                                    }
-
-                                    String str3 = json.getString("任务管理");
-                                    String str = json.getString("主动任务");
-                                    String str2 = json.getString("任务下发");
-                                    String str5 = json.getString("图纸标准");
-                                    if ("true".equals(str3)) {
-                                        tasklist.add(new Audio("任务管理", str3));
+                                    if ("true".equals(str1)) {
+                                        reportlist.add(new Audio("审核报表", str1));
                                     }
                                     if ("true".equals(str2)) {
-                                        tasklist.add(new Audio("任务下发", str2));
-                                    }
-                                    if ("true".equals(str5)) {
-                                        tasklist.add(new Audio("图纸标准", str5));
-                                    }
-                                    if ("true".equals(str)) {
-                                        tasklist.add(new Audio("主动任务", str));
+                                        reportlist.add(new Audio("任务统计", str2));
                                     }
 
-                                    String str10 = json.getString("检查标准");
-                                    String str11 = json.getString("监管检查");
-                                    String str8 = json.getString("整改通知");
-                                    if ("true".equals(str10)) {
-                                        checklist.add(new Audio("检查标准", str10));
+                                    if ("true".equals(str3)) {
+                                        reportlist.add(new Audio("整改统计", str3));
                                     }
-                                    if ("true".equals(str11)) {
-                                        checklist.add(new Audio("监管检查", str11));
+                                    if ("true".equals(str4)) {
+                                        reportlist.add(new Audio("标段排名", str4));
+                                    }
+
+                                    String str5 = json.getString("任务管理");
+                                    String str6 = json.getString("任务下发");
+                                    String str7 = json.getString("图纸标准");
+                                    String str8 = json.getString("主动任务");
+                                    if ("true".equals(str3)) {
+                                        tasklist.add(new Audio("任务管理", str5));
+                                    }
+                                    if ("true".equals(str2)) {
+                                        tasklist.add(new Audio("任务下发", str6));
+                                    }
+                                    if ("true".equals(str7)) {
+                                        tasklist.add(new Audio("图纸标准", str7));
                                     }
                                     if ("true".equals(str8)) {
-                                        checklist.add(new Audio("整改通知", str8));
-                                        checklist.add(new Audio("特种设备", "true"));
+                                        tasklist.add(new Audio("主动任务", str8));
                                     }
 
+                                    String str9 = json.getString("检查标准");
+                                    String str10 = json.getString("监管检查");
+                                    String str11 = json.getString("整改通知");
+                                    String str12 = json.getString("特种设备");
+                                    if ("true".equals(str9)) {
+                                        checklist.add(new Audio("检查标准", str9));
+                                    }
+                                    if ("true".equals(str10)) {
+                                        checklist.add(new Audio("监管检查", str10));
+                                    }
+                                    if ("true".equals(str11)) {
+                                        checklist.add(new Audio("整改通知", str11));
+                                    }
+                                    if ("true".equals(str12)) {
+                                        checklist.add(new Audio("特种设备", str12));
+                                    }
                                 }
                                 if (tasklist.size() > 0) {
                                     taskAdapter.getData(tasklist);
@@ -267,6 +270,11 @@ public class WorkFragment extends Fragment {
                 });
     }
 
+    /**
+     * @内容: 适配器
+     * @author lx
+     * @date: 2018/12/17 0017 下午 2:02
+     */
     private void Analysis() {
         //检查
         checkAdapter = new SettingAdapter<Audio>(checklist, R.layout.fragment_work_item) {

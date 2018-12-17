@@ -53,7 +53,7 @@ import java.util.Map;
  */
 public class VerificationActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout validationStatus;
-    private TextView categoryItem, checklistmeuntext;
+    private TextView categoryItem, checklistmeuntext, checkReplyFuj;
     private EditText replyDescription;
     private RecyclerView checkReplyRec;
     private CheckPhotoAdapter mAdapter;
@@ -68,6 +68,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     private String checkId, id;
     //删除图片Id
     private ArrayList<String> detelefile = new ArrayList<>();
+    private boolean lean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_check_validation);
         Intent intent = getIntent();
         checkId = intent.getStringExtra("checkId");
+        lean = intent.getBooleanExtra("status", true);
         mContext = this;
         detailsUtils = new DeviceDetailsUtils();
         imagepath = new ArrayList<>();
@@ -92,6 +94,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         checklistmeuntext.setText("提交");
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setOnClickListener(this);
+        checkReplyFuj = (TextView) findViewById(R.id.check_reply_fuj);
         //标题
         TextView title = (TextView) findViewById(R.id.titleView);
         title.setText("验证");
@@ -164,6 +167,10 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             }
         });
         request();
+        if (!lean) {
+            checkReplyFuj.setVisibility(View.GONE);
+            checkReplyRec.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -329,7 +336,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             String deleteFileIds = Dates.listToStrings(detelefile);
             map.put("deleteFileIds", deleteFileIds);
         }
-        Dates.getDialogs(this,"提交数据中,,,");
+        Dates.getDialogs(this, "提交数据中,,,");
         detailsUtils.saveValideByApp(map, file, new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {

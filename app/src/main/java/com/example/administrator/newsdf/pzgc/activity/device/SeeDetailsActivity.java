@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -35,12 +36,14 @@ public class SeeDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-        Dates.getDialogs(this,"请求数据中...");
+        Dates.getDialogs(this, "请求数据中...");
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        LinearLayout device_details_function = (LinearLayout) findViewById(R.id.device_details_function);
+        device_details_function.setVisibility(View.GONE);
         mContext = this;
         TextView title = (TextView) findViewById(R.id.titleView);
-        title.setText(intent.getStringExtra("orgname"));
+        title.setText("整改回复");
         detailsUtils = new DeviceDetailsUtils();
         list = new ArrayList<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.device_details_recycler);

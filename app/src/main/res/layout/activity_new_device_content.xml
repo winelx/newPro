@@ -164,7 +164,7 @@
             android:hint="请输入"
             android:paddingLeft="11.5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -200,7 +200,7 @@
             android:hint="请输入"
             android:paddingLeft="11.5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -235,7 +235,7 @@
             android:hint="请输入"
             android:paddingLeft="11.5dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

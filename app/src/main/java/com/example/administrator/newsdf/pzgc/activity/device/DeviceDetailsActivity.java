@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -70,6 +69,11 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         detailsUtils = new DeviceDetailsUtils();
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgname"));
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
+        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        checklistmeuntext.setTextSize(10);
+        checklistmeuntext.setText("处理记录");
         //提交
         deviceDetailsDown = (TextView) findViewById(R.id.device_details_up);
         deviceDetailsDown.setOnClickListener(this);
@@ -128,8 +132,12 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                     submitValide();
                 } else {
                     //回复提交
+                if (mAdapter.getproblem()){
                     Dates.getDialogs(this, "提交数据中..");
                     submitreply();
+                }else {
+                    ToastUtils.showLongToast("当前还有问题未回复，请继续回复");
+                }
                 }
                 break;
             case R.id.device_details_assign:
@@ -151,10 +159,12 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 if (permission.contains(10)) {
                     //直接提交验证提交后改为20状态
                     //跳转验证单不可选择附件
-                    opinion();
+                    Intent intent2 = new Intent(mContext, VerificationActivity.class);
+                    intent2.putExtra("checkId", id);
+                    intent2.putExtra("status", false);
+                    startActivity(intent2);
                 } else {
                     opinion();
-//               ToastUtils.showLongToast("保存验证单");
                     //20保存验证单 改为21,22
                 }
                 break;
@@ -173,6 +183,11 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
             case R.id.checklistback:
                 //返回
                 finish();
+                break;
+            case R.id.checklistmeun:
+                Intent intent2 = new Intent(mContext, DeviceRecordActivity.class);
+                intent2.putExtra("id", id);
+                startActivity(intent2);
                 break;
             default:
                 break;
@@ -215,7 +230,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     public void authority() {
         //0指派、1创建回复、2编辑回复、3提交回复、10项目经理创建验证、20下发人创建验证、21下发人编辑验证、22下发人提交验证
         for (int i = 0; i < permission.size(); i++) {
-            LogUtil.i("1");
             Integer item = permission.get(i);
             switch (item) {
                 case 0:
@@ -320,7 +334,8 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
             public void onsuccess(Map<String, Object> map) {
                 //提交成功刷新界面
                 Dates.disDialog();
-                network(id);
+                TaskCallbackUtils.CallBackMethod();
+                finish();
             }
         });
     }
@@ -338,6 +353,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 Dates.disDialog();
                 network(id);
                 TaskCallbackUtils.CallBackMethod();
+
             }
         });
     }
@@ -351,5 +367,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     public void deleteTop() {
         network(id);
         TaskCallbackUtils.CallBackMethod();
+
     }
 }

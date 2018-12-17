@@ -62,8 +62,8 @@ public class DeviceMessageListAdapter extends RecyclerView.Adapter<DeviceMessage
         }
         //设置内容布局的宽为屏幕宽度
         holder.subLayoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
-        holder.deviceMessageCreatename.setText("巡检日期：" + mDatas.get(position).getCheck_date());
-        holder.deviceMessageCreatedata.setText("巡检人：" + mDatas.get(position).getCheckUserName());
+        holder.deviceMessageCreatename.setText("巡检人：" + mDatas.get(position).getCheckUserName());
+        holder.deviceMessageCreatedata.setText("巡检日期：" + mDatas.get(position).getCheck_date());
         holder.deviceMessageHead.setText("整改负责人：" + mDatas.get(position).getPersonLiableName());
         holder.deviceMessageOrg.setText("巡检组织：" + mDatas.get(position).getCheckOrgName());
         //编号
