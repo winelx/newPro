@@ -79,8 +79,7 @@ public class CorrectReplyActivity extends BaseActivity {
         detailsUtils = new DeviceDetailsUtils();
         list = new ArrayList<>();
         deleteList = new ArrayList<>();
-        //相机相册选择弹窗帮助类
-        PopCameraUtils = new PopCameraUtils();
+
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(CorrectReplyActivity.this);
         //数据填完后保存按钮
@@ -114,6 +113,8 @@ public class CorrectReplyActivity extends BaseActivity {
             public void addlick(final int position, final int adapterposition) {
                 //记录点击的item位置，在从相册返回时使用（onActivityResult）
                 pos = position;
+                //相机相册选择弹窗帮助类
+                PopCameraUtils = new PopCameraUtils();
                 //展示弹出窗
                 PopCameraUtils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
@@ -123,7 +124,7 @@ public class CorrectReplyActivity extends BaseActivity {
                         //数据返回
                         takePictureManager.setTakePictureCallBackListener(new TakePictureManager.takePictureCallBackListener() {
                             @Override
-                            public void successful(boolean isTailor, File outFile, Uri filePath) {
+                            public void successful(boolean isTailor, final File outFile, Uri filePath) {
                                 //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
                                 Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                                 options.quality = 95;
@@ -131,13 +132,13 @@ public class CorrectReplyActivity extends BaseActivity {
                                     @Override
                                     public void callback(boolean isSuccess, String outfile) {
                                         //获取到指定位置的图片集合
-                                        ArrayList<Audio> tinglist = list.get(position).getList();
+                                        ArrayList<Audio> tinglist = list.get(pos).getList();
                                         //新增数据
                                         tinglist.add(new Audio(outfile, ""));
-//                                            //将集合中的图片更新
-                                        list.get(position).setList(tinglist);
                                         //刷新数据，并指定刷新的位置
-                                        mAdapter.setupdate(list, position);
+                                        mAdapter.setupdate(list, pos);
+                                        //删除原图
+                                        Dates.deleteFile(outFile);
                                     }
                                 });
                             }
@@ -157,6 +158,7 @@ public class CorrectReplyActivity extends BaseActivity {
                     }
                 });
             }
+
             //position 列表的位置，， 图片的位置 adapterposition
             //删除图片
             @Override
@@ -187,7 +189,7 @@ public class CorrectReplyActivity extends BaseActivity {
         checklistmeuntext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    save();
+                save();
             }
         });
     }
@@ -202,15 +204,12 @@ public class CorrectReplyActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101) {
-            //  调用相机的回调
-            if (data != null) {
                 //返回的数据不为空
                 try {
                     takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-            }
         } else if (requestCode == 1011 && resultCode == 1004) {
             if (data != null) {
                 //获取返回的图片路径集合

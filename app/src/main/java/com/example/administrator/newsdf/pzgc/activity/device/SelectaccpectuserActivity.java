@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -50,6 +53,10 @@ public class SelectaccpectuserActivity extends BaseActivity {
     private ArrayList<Audio> list;
     private int page = 1;
     private String orgId, checkId;
+    private TextView delete_search;
+    private EditText search_editext;
+    private RelativeLayout list_search;
+    ArrayList<Audio> search = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +66,26 @@ public class SelectaccpectuserActivity extends BaseActivity {
         orgId = intent.getStringExtra("orgId");
         checkId = intent.getStringExtra("id");
         list = new ArrayList<>();
+        TextView title = (TextView) findViewById(R.id.com_title);
+        title.setText("选择责任人");
+        list_search = (RelativeLayout) findViewById(R.id.list_search);
+        list_search.setVisibility(View.VISIBLE);
+        //搜索按钮
+        delete_search = (TextView) findViewById(R.id.delete_search);
+        //搜索框
+        search_editext = (EditText) findViewById(R.id.search_editext);
         Listview = (ListView) findViewById(R.id.wbs_listview);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
         //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Dates.hintKeyBoard(SelectaccpectuserActivity.this);
                 finish();
             }
         });
@@ -77,8 +93,8 @@ public class SelectaccpectuserActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent1 = new Intent();
-                intent1.putExtra("id", list.get(position).getContent());
-                intent1.putExtra("name", list.get(position).getName());
+                intent1.putExtra("id", search.get(position).getContent());
+                intent1.putExtra("name", search.get(position).getName());
                 setResult(202, intent1);
                 finish();
             }
@@ -107,6 +123,25 @@ public class SelectaccpectuserActivity extends BaseActivity {
                 holder.setText(R.id.check, obj.getName());
             }
         };
+        delete_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = search_editext.getText().toString();
+                if (!content.isEmpty()) {
+                    search.clear();
+                    for (int i = 0; i < list.size(); i++) {
+                        String name = list.get(i).getName();
+                        if (name.contains(content)) {
+                            search.add(list.get(i));
+                        }
+                    }
+                    Dates.hintKeyBoard(SelectaccpectuserActivity.this);
+                    adapter.getData(search);
+                } else {
+                    ToastUtils.showLongToast("搜索内容不能为空");
+                }
+            }
+        });
         Listview.setAdapter(adapter);
         requeset(true);
     }
@@ -118,11 +153,13 @@ public class SelectaccpectuserActivity extends BaseActivity {
                 //如果请求的第一页，清除之前数据
                 if (page == 1) {
                     list.clear();
+                    search.clear();
                 }
                 //获取网络请求的参数
                 list.addAll((Collection<? extends Audio>) map.get("data"));
+                search.addAll(list);
                 //更新数据
-                adapter.getData(list);
+                adapter.getData(search);
             }
         });
     }
@@ -132,7 +169,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
         Dates.getDialogs(this, "请求数据中...");
         OkGo.get(Requests.SELECTACCPECTUSER)
                 .params("page", page)
-                .params("size", 100)
+                .params("size", 1000)
                 .params("orgId", orgId)
                 .params("checkId", checkId)
                 .execute(new StringCallback() {

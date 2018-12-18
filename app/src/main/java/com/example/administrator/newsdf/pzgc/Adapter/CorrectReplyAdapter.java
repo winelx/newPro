@@ -62,12 +62,11 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ProblemitemBean bean = list.get(position).getBean();
             ((Viewholder) holder).title.setText("第" + (position + 1) + "个问题");
             ((Viewholder) holder).correctContent.setText(
-                    "违反标准：" + bean.getCisName() + "\n"
-                            + "隐患等级：" + bean.getHTLName() + "\n"
+                    "隐患等级：" + bean.getHTLName() + "\n"
                             + "整改期限：" + bean.getTerm() + "\n"
-                            + "整改事由：" + bean.getCause() + "\n"
+                            + "整改事由：" + isnull(bean.getCause()) + "\n"
                             + "巡检附件：");
-            ((Viewholder) holder).correct_cuse.setText(bean.getCause());
+            ((Viewholder) holder).correct_cuse.setText("违反标准：" + bean.getCisName());
             //整改描述
             ((Viewholder) holder).replyEditext.setText(bean.getReply());
             //回复附件
@@ -167,6 +166,15 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setOnItemClickListener(CorrectReplyAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    private String isnull(String string) {
+        if (string != null) {
+            return string;
+        } else {
+            return "";
+        }
+
     }
 
 

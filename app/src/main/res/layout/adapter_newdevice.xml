@@ -19,21 +19,22 @@
             android:gravity="center_vertical"
             android:text="第一个问题"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
 
         <TextView
             android:id="@+id/new_inspect_org"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
             android:layout_weight="8"
             android:ellipsize="end"
             android:gravity="end|center_vertical"
-            android:hint="请选择"
             android:maxEms="13"
             android:maxLines="1"
+            android:text="是的佛山卡佛第三款佛的咳嗽发快递搜框的搜框佛山"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="12dp"

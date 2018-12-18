@@ -529,6 +529,8 @@ public class DeviceUtils {
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
                         tener.success("", "");
+                    }else {
+                        ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

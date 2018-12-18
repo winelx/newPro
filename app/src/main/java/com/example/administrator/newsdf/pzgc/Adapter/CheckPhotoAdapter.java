@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
@@ -71,15 +73,20 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
-
         if (getItemViewType(position) == TYPE_PHOTO) {
             if (learn) {
                 holder.vSelected.setVisibility(View.VISIBLE);
             } else {
                 holder.vSelected.setVisibility(View.GONE);
             }
+            final RequestOptions options = new RequestOptions();
+            options.centerCrop()
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .error(R.drawable.image_error);
             //加载图片
             Glide.with(mContext)
+                    .setDefaultRequestOptions(options)
                     .load(photoPaths.get(position).getName())
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
@@ -148,7 +155,6 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             break;
                         default:
                             // 1
-
                             int position = holder.getLayoutPosition();
                             // 2
                             mOnItemClickListener.deleteClick(holder.itemView, position);
@@ -228,7 +234,6 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             } else {
                                 ToastUtils.showLongToast("当前不是编辑状态");
                             }
-
                             break;
                     }
 

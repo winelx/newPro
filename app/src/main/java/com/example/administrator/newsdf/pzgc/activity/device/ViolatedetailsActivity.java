@@ -76,9 +76,9 @@ public class ViolatedetailsActivity extends BaseActivity {
             @Override
             public void onclick(View v, int position) {
                 ViolateCallbackUtils.CheckCallback3(
-                        list.get(position).getCheck_standard() + "\n" +
-                                list.get(position).getId() + "\n" +
-                                list.get(position).getGroup_id() + "\n" +
+                        list.get(position).getCheck_standard() + "&&&" +
+                                list.get(position).getId() + "&&&" +
+                                list.get(position).getGroup_id() + "&&&" +
                                 list.get(position).getQa_detection_id());
                 finish();
             }

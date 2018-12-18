@@ -5,13 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.activity.device.SelectaccpectuserActivity;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -43,8 +48,12 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
     private TextView comtitle;
     private Context mContext;
     private ArrayList<MoretasklistBean> list;
+    private ArrayList<MoretasklistBean> search = new ArrayList<>();
     private SettingAdapter mAdapter;
     String orgId;
+    private TextView deleteSearch;
+    private EditText searchEditext;
+    private RelativeLayout listSearch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +62,12 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
         mContext = CheckuserActivity.this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
+        listSearch = (RelativeLayout) findViewById(R.id.list_search);
+        listSearch.setVisibility(View.VISIBLE);
+        //搜索按钮
+        deleteSearch = (TextView) findViewById(R.id.delete_search);
+        //搜索框
+        searchEditext = (EditText) findViewById(R.id.search_editext);
         expandableListView = (ListView) findViewById(R.id.wbs_listview);
         comtitle = (TextView) findViewById(R.id.com_title);
         comtitle.setText("选择责任人");
@@ -100,18 +115,44 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
                                     }
                                 }
                             }
-                            mAdapter.getData(list);
+                            search.addAll(list);
+                            mAdapter.getData(search);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
+        /**
+         * @内容: 搜索
+         * @author lx
+         * @date: 2018/12/18 0018 下午 3:17
+         */
+        deleteSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = searchEditext.getText().toString();
+                if (!content.isEmpty()) {
+                    search.clear();
+                    for (int i = 0; i < list.size(); i++) {
+                        String name = list.get(i).getPartContent();
+                        if (name.contains(content)) {
+                            search.add(list.get(i));
+                        }
+                    }
+                    mAdapter.getData(search);
+                    Dates.hintKeyBoard(CheckuserActivity.this);
+                } else {
+                    ToastUtils.showLongToast("搜索内容不能为空");
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.com_back:
+                Dates.hintKeyBoard(CheckuserActivity.this);
                 finish();
                 break;
             default:

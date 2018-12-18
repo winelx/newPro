@@ -209,7 +209,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 //问题项ID
                 intent.putExtra("typeId", mData.get(position).getId());
                 //状态
-                intent.putExtra("bean", "false");
+                intent.putExtra("bean", false);
                 //单据ID
                 intent.putExtra("checkId", id);
                 startActivity(intent);
@@ -242,9 +242,9 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                     if (facilityId != null) {
                         if (id != null) {
                             Intent intent = new Intent(mContext, ProblemItemActivity.class);
-                            intent.putExtra("bean", "true");
-                            intent.putExtra("typeId", facilityId);
-                            intent.putExtra("checkId", id);
+                            intent.putExtra("bean", true);
+                            intent.putExtra("typeId", "");
+                            intent.putExtra("facility", facilityId);
                             intent.putExtra("checkId", id);
                             pos = -1;
                             startActivity(intent);
@@ -262,9 +262,13 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             case R.id.new_inspect_username_lin:
                 //选择联系人
                 if (!"编辑".equals(checklistmeuntext.getText().toString())) {
-                    Intent intent1 = new Intent(mContext, CheckuserActivity.class);
-                    intent1.putExtra("orgId", nodeId);
-                    startActivityForResult(intent1, 5);
+                    if ( nodeId != null) {
+                        Intent intent1 = new Intent(mContext, CheckuserActivity.class);
+                        intent1.putExtra("orgId", nodeId);
+                        startActivityForResult(intent1, 5);
+                    } else {
+                        ToastUtils.showLongToast("请先选择整改组织");
+                    }
                 } else {
                     ToastUtils.showLongToast("不是编辑状态");
                 }
@@ -386,7 +390,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 id = string;
                 //更改按钮
                 checklistmeuntext.setText("编辑");
-                //关闭参数
+                //关闭输入框
                 fonclick();
                 if (mData.size() > 0) {
                     utils.setMargins(scrollViewl, 0, 0, 0, 110);
@@ -395,6 +399,8 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                     utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
+                //更新界面数据
+                request();
             }
         });
     }

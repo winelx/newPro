@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/writer"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -69,6 +70,11 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/back2" />
 
     <TextView
         android:layout_width="match_parent"
@@ -85,13 +91,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:background="@null"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-
+        android:background="@null"
         android:hint="请输入具体描述"
         android:minHeight="40dp"
+        android:padding="0dp"
         android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/back2" />
 
     <TextView
         android:id="@+id/check_reply_fuj"

@@ -40,7 +40,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
     private List<OrgenBeans> mData;
     private DeviceUtils deviceUtils;
     private Context mContext;
-    private String typeId;
+    private String facility;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,7 +49,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
         setContentView(R.layout.activity_device_violatestandard);
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
-        typeId = intent.getStringExtra("typeId");
+        facility = intent.getStringExtra("facility");
         mContext = this;
         ViolateCallbackUtils.setCallBack(this);
         mData = new ArrayList<>();
@@ -58,7 +58,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
         listlinear = (LinearLayout) findViewById(R.id.listlinear);
         mTree = (ListView) findViewById(R.id.list_view);
         //网络请求
-        deviceUtils.violateetree(typeId, new DeviceUtils.ViolickLitener() {
+        deviceUtils.violateetree(facility, new DeviceUtils.ViolickLitener() {
             @Override
             public void onsussess(List<OrgBeans> data, List<OrgenBeans> data2) {
                 mData.clear();
@@ -119,7 +119,6 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
             intent.putExtra("id", id);
             startActivity(intent);
         } else {
-
         }
 
     }

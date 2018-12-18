@@ -132,12 +132,8 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                     submitValide();
                 } else {
                     //回复提交
-                if (mAdapter.getproblem()){
                     Dates.getDialogs(this, "提交数据中..");
                     submitreply();
-                }else {
-                    ToastUtils.showLongToast("当前还有问题未回复，请继续回复");
-                }
                 }
                 break;
             case R.id.device_details_assign:
@@ -175,9 +171,11 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                     Intent intent2 = new Intent(mContext, CorrectReplyActivity.class);
                     intent2.putExtra("id", id);
                     startActivity(intent2);
-                } else {
+                } else if (permission.contains(21)) {
                     //验证21
-                    opinion();
+                    Intent intent2 = new Intent(mContext, VerificationActivity.class);
+                    intent2.putExtra("checkId", id);
+                    startActivity(intent2);
                 }
                 break;
             case R.id.checklistback:
@@ -260,7 +258,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 case 21:
                     //21下发人编辑验证
                     //验证
-                    deviceDetailsProving.setVisibility(View.VISIBLE);
+                    deviceDetailsEdit.setVisibility(View.VISIBLE);
                     break;
                 case 22:
                     //提交
@@ -295,7 +293,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 202 && resultCode == 202) {
             //指派的回调，返回指派人 名字 和ID
-            String titlle = "是否指派给" + data.getStringExtra("name");
+            String titlle = "是否指派给：" + data.getStringExtra("name");
             final String userid = data.getStringExtra("id");
             DialogUtils.Tipsdialog(mContext, titlle, dialog, new DialogUtils.OnClickListener() {
                 @Override
@@ -304,6 +302,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                         @Override
                         public void onsuccess(Map<String, Object> map) {
                             ToastUtils.showLongToast("指派成功");
+                            TaskCallbackUtils.CallBackMethod();
                             network(id);
                         }
                     });

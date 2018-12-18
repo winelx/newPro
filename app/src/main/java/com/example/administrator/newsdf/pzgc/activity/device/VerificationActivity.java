@@ -76,12 +76,12 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_check_validation);
         Intent intent = getIntent();
         checkId = intent.getStringExtra("checkId");
+        //判断是项目经理还是下发人验证
         lean = intent.getBooleanExtra("status", true);
         mContext = this;
         detailsUtils = new DeviceDetailsUtils();
         imagepath = new ArrayList<>();
-        //实例化弹出框
-        popcamerautils = new PopCameraUtils();
+
         //初始化相机
         takePictureManager = new TakePictureManager(VerificationActivity.this);
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -108,13 +108,14 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         //验证附件
         checkReplyRec = (RecyclerView) findViewById(R.id.check_reply_rec);
         checkReplyRec.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        mAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", false);
+        mAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", true);
         checkReplyRec.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
-
                 //展示弹出窗
+                //实例化弹出框
+                popcamerautils = new PopCameraUtils();
                 popcamerautils.showPopwindow((Activity) mContext, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void oncamera() {
@@ -166,11 +167,18 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
                 mAdapter.getData(imagepath, true);
             }
         });
-        request();
         if (!lean) {
+            //如果是项目经理验证，不用传附件
+            checklistmeuntext.setText("提交");
             checkReplyFuj.setVisibility(View.GONE);
             checkReplyRec.setVisibility(View.GONE);
         }
+        request();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -223,13 +231,11 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == request) {
             //  调用相机的回调
-            if (data != null) {
                 try {
                     takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-            }
         } else if (requestCode == request1 && resultCode == request2) {
             if (data != null) {
                 //获取返回的图片路径集合

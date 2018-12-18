@@ -339,16 +339,6 @@ public class TakePictureManager {
     private void startOpencamera() {
         imgPath = generateImgePath(mContext);
         File imgFile = new File(imgPath);
-//
-//        if (imgFile.exists()) {
-//
-//        } else {
-//            try {
-//                imgFile.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
         Uri imgUri = null;
         //判断当前手机版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,7 +38,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int TYPE_RESULT = 2;
     private Context mContext;
     private ArrayList<Object> mData;
-    boolean leam = false;
+
 
     public DeviceDetailsAdapter(Context mContext, ArrayList<Object> mData) {
         this.mContext = mContext;
@@ -74,12 +75,13 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     //顶部
+    @SuppressLint("SetTextI18n")
     private void bindTop(DetailsTop holder, Object obj, int position) {
         DeviceDetailsTop top = (DeviceDetailsTop) obj;
         //获取主体内容
         DeviceDetailsBean bean = top.getBean();
         //特种设备名称
-        holder.detailsTopTitle.setText(bean.getTypeName());
+        holder.detailsTopTitle.setText(bean.getTypeName() + "(" + bean.getEnumber() + ")");
         //编号
         holder.detailsTopNumber.setText(bean.getNumber());
         holder.detailsTopUsername.setText("巡检人：" + bean.getCheckUserName());
@@ -88,7 +90,11 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.detailsTopBlameuser.setText(setText("整改负责人：" + bean.getPersonLiableName(), 6, R.color.finish_green));
         holder.detailsTopAddress.setText("使用地点：" + bean.getPlace());
         holder.detailsTopModel.setText("型号规格：" + bean.getTs());//型号规格
-        holder.detailsTopRemarks.setText("备注：" + bean.getRemarks());
+        if (bean.getRemarks() != null) {
+            holder.detailsTopRemarks.setText("备注：" + bean.getRemarks());
+        } else {
+            holder.detailsTopRemarks.setText("备注：");
+        }
         holder.details_top_inspectorg.setText("巡检组织：" + bean.getCheckOrgName());
         //,0未下发1未回复2未验证3打回5完成
         int status = bean.getStatus();
@@ -121,18 +127,6 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.detailsTopRecyclerview.addItemDecoration(divider);
         ArrayList<DeviceTrem> list = new ArrayList<>();
         list.addAll(((DeviceDetailsTop) obj).getList());
-        int problem = 0;
-        for (int i = 0; i < list.size(); i++) {
-            boolean replied = list.get(i).isReplied();
-            if (replied) {
-                problem++;
-            }
-        }
-        if (problem == list.size()) {
-            leam = true;
-        } else {
-            leam = false;
-        }
         DeviceDetailsTermAdapter adapter = new DeviceDetailsTermAdapter(list, mContext);
         holder.detailsTopRecyclerview.setAdapter(adapter);
         holder.detailsTopDetails.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +155,6 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
     //验证
     private void bindContets(Detailsproving holder, Object obj, int position) {
         DeviceDetailsResult bean = (DeviceDetailsResult) obj;
-
         //验证人
         holder.detailsProvingUusername.setText((setText("验证人：" + bean.getRealname(), 4, R.color.blue)));
         //时间
@@ -188,7 +181,12 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
             default:
                 break;
         }
-        holder.detailsProvingDescribe.setText(bean.getView());
+        if (!bean.getView().isEmpty() && bean.getView() != null) {
+            holder.detailsProvingDescribe.setVisibility(View.VISIBLE);
+            holder.detailsProvingDescribe.setText("验证描述：" + bean.getView());
+        } else {
+            holder.detailsProvingDescribe.setVisibility(View.GONE);
+        }
         ArrayList<FileTypeBean> list = new ArrayList<>();
         list.addAll(bean.getFile());
         if (list.size() > 0) {
@@ -338,7 +336,5 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.onclickitemlitener = litener;
     }
 
-    public boolean getproblem() {
-        return leam;
-    }
+
 }

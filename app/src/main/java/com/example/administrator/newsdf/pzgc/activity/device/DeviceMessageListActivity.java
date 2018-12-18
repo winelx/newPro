@@ -55,7 +55,7 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
     private RelativeLayout backNotNull;
     private DeviceUtils deviceUtils;
     private LinearLayout checklistmeun;
-    private String[] meuns = {"全部", "未下发", "未回复", "未验证", "已处理"};
+    private String[] meuns = {"全部", "未下发", "未回复", "未验证","打回", "已处理"};
     private int status = -1, page = 1;
     private boolean refresh = true;
 
@@ -229,7 +229,6 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
             case "全部":
                 getdate();
                 status = -1;
-
                 break;
             case "未下发":
                 status = 0;
@@ -242,6 +241,9 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
                 break;
             case "已处理":
                 status = 4;
+                break;
+            case "打回":
+                status = 3;
                 break;
             default:
                 break;

@@ -44,7 +44,7 @@ public class DeviceActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.device_viewPager);
         //标题
         TextView titleView = (TextView) findViewById(R.id.titleView);
-        titleView.setText("特种设备检查");
+        titleView.setText("特种设备整改");
         //返回键
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -94,14 +94,15 @@ public class DeviceDetailsUtils {
                             ArrayList<DeviceTrem> list = new ArrayList<>();
                             list.addAll(ListJsonUtils.getListByArray(DeviceTrem.class, standard.toString()));
                             lists.add(new DeviceDetailsTop(bean, list));
-                            for (int i = result.length() - 1; i >= 0; i--) {
+                            for (int i = 0; i < result.length(); i++) {
                                 JSONArray jsonArray = result.getJSONArray(i);
                                 for (int j = 0; j < jsonArray.length(); j++) {
                                     JSONObject json = jsonArray.getJSONObject(j);
                                     String operTime = json.getString("operTime");
                                     String realname = json.getString("realname");
                                     String times = json.getString("times");
-                                    int type = json.getInt("type");
+
+
                                     String business;
                                     try {
                                         business = json.getString("business");
@@ -111,28 +112,32 @@ public class DeviceDetailsUtils {
                                     String view;
                                     try {
                                         view = json.getString("view");
-                                        ArrayList<FileTypeBean> filselist = new ArrayList<>();
-                                        try {
-                                            JSONArray file = json.getJSONArray("file");
-                                            for (int k = 0; k < file.length(); k++) {
-                                                JSONObject josnfile = file.getJSONObject(k);
-                                                String filepath = josnfile.getString("filepath");
-                                                String fileext = josnfile.getString("fileext");
-                                                String name = josnfile.getString("filename");
-                                                filselist.add(new FileTypeBean(name, filepath, fileext));
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                        //验证界面，，有文件
-                                        lists.add(new DeviceDetailsResult(business, operTime, realname, times, type, view, filselist));
                                     } catch (Exception e) {
+                                        view = "";
+                                    }
+                                    ArrayList<FileTypeBean> filselist = new ArrayList<>();
+                                    try {
+                                        JSONArray file = json.getJSONArray("file");
+                                        for (int k = 0; k < file.length(); k++) {
+                                            JSONObject josnfile = file.getJSONObject(k);
+                                            //拼接地址
+                                            String filepath = Requests.networks + josnfile.getString("filepath");
+                                            String fileext = josnfile.getString("fileext");
+                                            String name = josnfile.getString("filename");
+                                            filselist.add(new FileTypeBean(name, filepath, fileext));
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    int type = json.getInt("type");
+                                    if (type <= 5) {
                                         //回复
                                         lists.add(new DeviceReflex(business, operTime, realname, times, type));
+                                    } else {
+                                        //验证界面，，有文件
+                                        lists.add(new DeviceDetailsResult(business, operTime, realname, times, type, view, filselist));
                                     }
-
                                 }
-
                             }
                             inface.onsuccess(lists, permissionlist);
                         } catch (JSONException e) {
@@ -297,6 +302,8 @@ public class DeviceDetailsUtils {
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
                         networkinterface.onsuccess(map);
+                    } else {
+                        ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

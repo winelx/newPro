@@ -762,4 +762,18 @@ public class Dates {
         return sp;
     }
 
+    //隐藏键盘
+    public static void hintKeyBoard(Activity activity) {
+        //拿到InputMethodManager
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果window上view获取焦点 && view不为空
+        if (imm.isActive() && activity.getCurrentFocus() != null) {
+            //拿到view的token 不为空
+            if (activity.getCurrentFocus().getWindowToken() != null) {
+                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
+                imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
 }

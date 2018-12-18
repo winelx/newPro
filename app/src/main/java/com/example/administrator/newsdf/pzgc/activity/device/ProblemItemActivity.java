@@ -32,6 +32,7 @@ import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -72,8 +73,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private String typeId, valueId, standId, checkId;
     private String[] strings = {"确定", "取消"};
     private String title = "是否删除该项问题";
-    private String qdgId, qdId;
-    private String status;
+    private String qdgId, qdId,facility;
+    private boolean status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +87,11 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         ProblemItemCallbackUtils.setCallBack(this);
         init();
         Intent intent = getIntent();
-        status = intent.getStringExtra("bean");
+        status = intent.getBooleanExtra("bean", true);
         typeId = intent.getStringExtra("typeId");
+        facility = intent.getStringExtra("facility");
         checkId = intent.getStringExtra("checkId");
-        if ("false".equals(status)) {
+        if (!status) {
             itemDelete.setVisibility(View.VISIBLE);
             deviceUtils.secdetailsbyedit(typeId, new DeviceUtils.ProblemLitener() {
                 @Override
@@ -117,6 +119,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 }
             });
         } else {
+            photoAdapter.getData(imagepath,true);
             itemDelete.setVisibility(View.GONE);
         }
     }
@@ -156,7 +159,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         //添加动画
         itemRecycler.setItemAnimator(new DefaultItemAnimator());
         //设置适配器
-        photoAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", false);
+        photoAdapter = new CheckPhotoAdapter(mContext, imagepath, "device", true);
         itemRecycler.setAdapter(photoAdapter);
         photoAdapter.setOnItemClickListener(new CheckPhotoAdapter.OnItemClickListener() {
             @Override
@@ -308,12 +311,13 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.violation_standards:
+                //违反标准
                 if ("编辑".equals(checklistmeuntext.getText().toString())) {
                     ToastUtils.showLongToast("当前不是编辑状态");
                 } else {
                     //违反标准
                     Intent intent = new Intent(mContext, DeviceViolatestandardActivity.class);
-                    intent.putExtra("typeId", typeId);
+                    intent.putExtra("facility", facility);
                     startActivity(intent);
                 }
                 break;
@@ -359,14 +363,15 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             map.put("term", rectifyData.getText().toString());
         } else {
             ToastUtils.showLongToast("整改期限未选择");
+            Dates.disDialog();
             return;
         }
-
         //隐患等级
         if (valueId != null) {
             map.put("hiddenTroubleLevel", valueId);
         } else {
             ToastUtils.showLongToast("隐患等级未选择");
+            Dates.disDialog();
             return;
         }
         //违反标准Id
@@ -377,13 +382,14 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             map.put("qdId", qdId);
         } else {
             ToastUtils.showLongToast("违反标准未选择");
+            Dates.disDialog();
             return;
         }
         if (!rectifyCause.getText().toString().isEmpty()) {
             //整改事由
             map.put("cause", rectifyCause.getText().toString());
         }
-//        //图片
+         //图片
         for (int i = 0; i < imagepath.size(); i++) {
             //如果content内容为空，本地添加图片
             if (imagepath.get(i).getContent().isEmpty()) {
@@ -391,7 +397,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             }
         }
         //修改传Id
-        if ("false".equals(status)) {
+        if (!status) {
             map.put("id", typeId);
         }
         if (deleteLis.size() > 0) {
@@ -417,7 +423,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
      */
     @Override
     public void update(String string) {
-        String[] str = string.split("\n");
+        String[] str = string.split("&&&");
         violationStandardsText.setText(str[0]);
         standId = str[1];
         qdgId = str[2];

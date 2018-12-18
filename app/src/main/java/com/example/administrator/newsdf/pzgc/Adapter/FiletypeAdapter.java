@@ -56,7 +56,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
         //截取doc+1后面的字符串，包括doc+1；
-        String strs =mData.get(position).getType();
+        String strs = mData.get(position).getType();
         if (strs.equals("pdf")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
