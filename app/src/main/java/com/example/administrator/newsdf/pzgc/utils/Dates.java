@@ -51,7 +51,7 @@ import java.util.List;
  * 说明：
  */
 public class Dates {
-    private static Dialog progressDialog = null;
+    public static Dialog progressDialog = null;
     private static ArrayList<String> JpMap = new ArrayList<>();
 
     public static int getScreenHeight(Context context) {
@@ -522,7 +522,7 @@ public class Dates {
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
             text.setText(str);
-            //点击外部不取消
+            //点击外部取消
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
             new Handler(new Handler.Callback() {
@@ -545,7 +545,7 @@ public class Dates {
         if (progressDialog == null) {
             progressDialog = new Dialog(activity, R.style.progress_dialog);
             progressDialog.setContentView(R.layout.waiting_dialog);
-            //点击外部不取消
+            //点击外部取消
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);

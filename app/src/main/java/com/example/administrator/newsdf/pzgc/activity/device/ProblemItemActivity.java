@@ -73,7 +73,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private String typeId, valueId, standId, checkId;
     private String[] strings = {"确定", "取消"};
     private String title = "是否删除该项问题";
-    private String qdgId, qdId,facility;
+    private String qdgId, qdId, facility;
     private boolean status;
 
     @Override
@@ -119,7 +119,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                 }
             });
         } else {
-            photoAdapter.getData(imagepath,true);
+            photoAdapter.getData(imagepath, true);
             itemDelete.setVisibility(View.GONE);
         }
     }
@@ -385,11 +385,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             Dates.disDialog();
             return;
         }
-        if (!rectifyCause.getText().toString().isEmpty()) {
-            //整改事由
-            map.put("cause", rectifyCause.getText().toString());
-        }
-         //图片
+        //整改事由
+        map.put("cause", rectifyCause.getText().toString());
+        //图片
         for (int i = 0; i < imagepath.size(); i++) {
             //如果content内容为空，本地添加图片
             if (imagepath.get(i).getContent().isEmpty()) {

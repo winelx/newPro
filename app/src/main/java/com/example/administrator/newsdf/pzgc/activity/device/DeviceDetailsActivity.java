@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -22,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
+import com.lzy.okgo.OkGo;
 
 
 import java.util.ArrayList;
@@ -128,6 +131,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 //提交
                 if (permission.contains(22)) {
                     Dates.getDialogs(this, "提交数据中..");
+                    deviceDetailsDown.setClickable(false);
                     //验证提交
                     submitValide();
                 } else {
@@ -328,7 +332,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
      * @date: 2018/12/16 0016 下午 1:42
      */
     public void submitreply() {
-        detailsUtils.submitreply(id, new Networkinterface() {
+        detailsUtils.submitreply(deviceDetailsDown, id, new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 //提交成功刷新界面
@@ -367,5 +371,17 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         network(id);
         TaskCallbackUtils.CallBackMethod();
 
+    }
+
+    //退出
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //取消当前界面的请求
+            OkGo.getInstance().cancelTag("details");
+            finish();
+            return true;
+        }
+        return true;
     }
 }

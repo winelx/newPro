@@ -210,6 +210,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 intent.putExtra("typeId", mData.get(position).getId());
                 //状态
                 intent.putExtra("bean", false);
+                intent.putExtra("facility", facilityId);
                 //单据ID
                 intent.putExtra("checkId", id);
                 startActivity(intent);

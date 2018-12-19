@@ -44,7 +44,7 @@ public class PullDownMenu {
         ArrayAdapter myAdapter = new ArrayAdapter(activity, R.layout.meun_list_item, R.id.text, strings);
         mListView.setAdapter(myAdapter);
         mPopupWindow = new PopupWindow(contentView,
-                withFontSize(resolution) + 20, 115 * strings.length, true);
+                withFontSize(resolution) + 20, 120 * strings.length, true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show

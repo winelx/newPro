@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
+import com.lzy.okgo.OkGo;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
@@ -231,11 +233,11 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == request) {
             //  调用相机的回调
-                try {
-                    takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            try {
+                takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         } else if (requestCode == request1 && resultCode == request2) {
             if (data != null) {
                 //获取返回的图片路径集合
@@ -346,11 +348,27 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         detailsUtils.saveValideByApp(map, file, new Networkinterface() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-                DeviceDetailsCallBackUtils.CallBackMethod();
-                finish();
+                if (map.containsKey("error")) {
+
+                } else {
+                    //不包含
+                    DeviceDetailsCallBackUtils.CallBackMethod();
+                    finish();
+                }
             }
         });
     }
 
-
+    //退出
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //取消当前界面的请求
+            Dates.disDialog();
+            OkGo.getInstance().cancelAll();
+            finish();
+            return true;
+        }
+        return true;
+    }
 }

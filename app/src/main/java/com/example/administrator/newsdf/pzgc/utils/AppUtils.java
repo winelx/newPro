@@ -1,8 +1,5 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
-/**
- * Created by Administrator on 2018/1/2 0002.
- */
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

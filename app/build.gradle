@@ -14,7 +14,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "2.3"
+        versionName "2.4"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {

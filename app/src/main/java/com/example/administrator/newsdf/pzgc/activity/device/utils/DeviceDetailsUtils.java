@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.device.utils;
 
+import android.view.View;
+
 import com.alibaba.fastjson.JSON;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
@@ -69,6 +71,7 @@ public class DeviceDetailsUtils {
      */
     public void details(String id, final DeviceDetailslitener inface) {
         OkGo.post(Requests.GETSECMAININFO)
+                .tag("details")
                 .params("id", id)
                 .execute(new StringCallback() {
                     @Override
@@ -217,6 +220,7 @@ public class DeviceDetailsUtils {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
                         Dates.disDialog();
+                        int page=0;
                         ArrayList<Object> mData = new ArrayList<>();
                         try {
                             JSONObject jsonObject = new JSONObject(string);
@@ -242,7 +246,8 @@ public class DeviceDetailsUtils {
                                     String name = jsonObject1.getString("filename");
                                     type.add(new FileTypeBean(name, url, type1));
                                 }
-                                mData.add(new SeeDetailsTop(cisName, htlname, term, cause, type));
+                                page++;
+                                mData.add(new SeeDetailsTop(cisName, htlname, term, cause, type,page));
                                 String reply;
                                 try {
                                     reply = "整改描述：" + json.getString("reply");
@@ -358,6 +363,9 @@ public class DeviceDetailsUtils {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
+                Map<String, Object> map = new HashMap<>();
+                map.put("error","error");
+                networkinface.onsuccess(map);
                 Dates.disDialog();
             }
         });
@@ -441,7 +449,7 @@ public class DeviceDetailsUtils {
      * @author lx
      * @date: 2018/12/16 0016 下午 1:42
      */
-    public void submitreply(String checkId, final Networkinterface networkinterface) {
+    public void submitreply(final View view, String checkId, final Networkinterface networkinterface) {
         OkGo.post(Requests.SUBMITREPLY)
                 .params("checkId", checkId)
                 .execute(new StringCallback() {
@@ -468,6 +476,7 @@ public class DeviceDetailsUtils {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         Dates.disDialog();
+                        view.setClickable(true);
                     }
                 });
 

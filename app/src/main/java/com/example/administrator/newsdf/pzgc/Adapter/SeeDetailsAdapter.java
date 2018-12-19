@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.pzgc.activity.mine.Text;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsReply;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsTop;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int TYPE_TWO = 2;
     private ArrayList<Object> mData;
     private Context mContext;
-    private int page = 0;
+
 
     public SeeDetailsAdapter(Context mContext, ArrayList<Object> list) {
         this.mData = list;
@@ -66,9 +67,8 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @SuppressLint("SetTextI18n")
     private void problem(TopViewholder holder, Object object, int position) {
-        page++;
         SeeDetailsTop bean = (SeeDetailsTop) object;
-        holder.seeDetailsTitle.setText("第" + page + "个问题");
+        holder.seeDetailsTitle.setText("第" + (bean.getPos()) + "个问题");
         //违反标准
         holder.seeDetailsStandard.setText(bean.getCisName());
         //隐患等级
@@ -141,5 +141,10 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             seedetailsdescribe = itemView.findViewById(R.id.see_details_describe);
 
         }
+    }
+
+    public void setNewdata(ArrayList<Object> list){
+        this.mData=list;
+        notifyDataSetChanged();
     }
 }
