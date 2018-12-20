@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,6 @@ public class TabAdapters extends BaseAdapter {
             holder.tab_time = (TextView) convertView.findViewById(R.id.tab_time);
             holder.tab_fixed_tiem = (TextView) convertView.findViewById(R.id.tab_fixed_tiem);
             holder.tab_view = (TextView) convertView.findViewById(R.id.tab_view);
-            holder.tab_statu2 = (TextView) convertView.findViewById(R.id.tab_statu2);
             //将Holder存储到convertView中
             convertView.setTag(holder);
         } else {
@@ -76,34 +76,38 @@ public class TabAdapters extends BaseAdapter {
             holder.tab_str.setText("主动上传任务");
         }
         holder.tab_content.setText(mData.get(position).getContent());
-        holder.tab_user.setText(mData.get(position).getUser());
+        holder.tab_user.setText("责任人："+mData.get(position).getUser());
         String time = null;
         try {
             time = Dates.datato(mData.get(position).getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.tab_statu2.setText(mData.get(position).getStatus1());
+        holder.tab_view.setText(mData.get(position).getStatus1());
         stsus = mData.get(position).getStatus1();
         switch (stsus) {
             case "0":
-                holder.tab_statu2.setText("未完成");
-                holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_gray);
+                holder.tab_view.setText("未完成");
+                holder.tab_view.setTextColor(Color.parseColor("#a6a6a6"));
+                holder.tab_view.setBackgroundResource(R.drawable.tab_item_gray);
                 holder.tab_time.setText("已推送： " + time);
                 break;
             case "1":
-                holder.tab_statu2.setText("已完成");
-                holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
+                holder.tab_view.setText("已完成");
+                holder.tab_view.setTextColor(Color.parseColor("#28c26A"));
+                holder.tab_view.setBackgroundResource(R.drawable.tab_item_green);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;
             case "2":
-                holder.tab_statu2.setText("已完成");
-                holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_green);
+                holder.tab_view.setText("已完成");
+                holder.tab_view.setTextColor(Color.parseColor("#28c26A"));
+                holder.tab_view.setBackgroundResource(R.drawable.tab_item_green);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;
             case "3":
-                holder.tab_statu2.setText("打回");
-                holder.tab_statu2.setBackgroundResource(R.drawable.tab_item_red);
+                holder.tab_view.setText("打回");
+                holder.tab_view.setTextColor(Color.parseColor("#FE0000"));
+                holder.tab_view.setBackgroundResource(R.drawable.tab_item_red);
                 holder.tab_time.setText(mData.get(position).getTime());
                 break;
             default:
@@ -119,7 +123,6 @@ public class TabAdapters extends BaseAdapter {
         TextView tab_time;
         TextView tab_fixed_tiem;
         TextView tab_view;
-        TextView tab_statu2;
     }
 
     public void getDate(ArrayList<Tab_fragment_item> mDate) {

@@ -26,47 +26,35 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tab_statu2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/tab_str"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="3dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_toRightOf="@+id/tab_str"
-            android:text="未完成"
-            android:textColor="@color/writer"
-            android:textSize="11sp" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/tab_content"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginRight="40dp"
         android:layout_below="@+id/title_ll"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
-        android:textColor="@color/color646464"
+        android:maxEms="15"
         android:maxLines="1"
         android:text="请及时上传安装盖板的相关请及时上传安装盖板的相关资料资料"
+        android:textColor="@color/color646464"
         android:textSize="13sp" />
 
     <LinearLayout
         android:id="@+id/image_ll"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tab_content"
         android:layout_alignStart="@+id/tab_content"
         android:layout_below="@+id/tab_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -74,7 +62,6 @@
             android:id="@+id/tab_usr_img"
             android:layout_width="15dp"
             android:layout_height="15dp"
-
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:background="@mipmap/list_tab_avther" />
@@ -127,22 +114,22 @@
         android:layout_above="@+id/tab_content"
         android:layout_alignEnd="@+id/tab_time"
         android:layout_alignRight="@+id/tab_time"
+        android:padding="3dp"
         android:text="回复"
         android:textColor="@color/Orange"
-        android:textSize="15sp"
-        android:visibility="invisible" />
+        android:textSize="10sp" />
 
 
     <TextView
         android:id="@+id/tab_time"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_ll"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tab_view"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        android:layout_toEndOf="@+id/tab_content"
+        android:layout_toRightOf="@+id/tab_content"
         android:gravity="end"
         android:text="3小时前"
         android:textColor="#999999"

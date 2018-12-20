@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="97dp"
     android:background="@color/writer">
 
     <RelativeLayout
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
+        android:layout_height="97dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tab_str"
-            android:layout_width="220dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tab_usr_img"
             android:layout_alignStart="@+id/tab_usr_img"
+            android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="0dp"
+            android:text="11212151515"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
 
         <TextView
+            android:id="@+id/tab_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tab_checkBox"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="55dp"
+            android:padding="3dp"
+            android:visibility="gone"
+            android:text="12121212"
+
+
+            android:textColor="@color/Orange"
+            android:textSize="10sp" />
+
+        <TextView
             android:id="@+id/tab_content"
-            android:layout_width="220dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tab_str"
             android:layout_alignStart="@+id/tab_str"
             android:layout_below="@+id/tab_str"
-            android:layout_marginTop="2.5dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="0dp"
             android:text="请及时上传安装盖板的相关请及时上传安装盖板的相关资料资料"
             android:textColor="@color/color646464"
-            android:textSize="13sp" />
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/tab_usr_img"
@@ -49,37 +67,19 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/tab_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:background="@mipmap/list_tab_avther" />
 
         <TextView
             android:id="@+id/tab_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tab_usr_img"
-            android:layout_alignTop="@+id/tab_fixed_tiem"
+            android:layout_alignTop="@+id/tab_usr_img"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/tab_usr_img"
             android:layout_toRightOf="@+id/tab_usr_img"
             android:text="负责人"
-            android:textColor="#999999"
-            android:textSize="13sp" />
-
-
-        <TextView
-            android:id="@+id/tab_fixed_tiem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/tab_fixed_number"
-            android:layout_alignBottom="@+id/tab_fixed_number"
-            android:layout_alignEnd="@+id/tab_content"
-            android:layout_alignRight="@+id/tab_content"
-            android:layout_marginEnd="48dp"
-            android:layout_marginRight="48dp"
-            android:drawableLeft="@mipmap/time"
-            android:drawablePadding="5dp"
-            android:text="推送次数："
             android:textColor="#999999"
             android:textSize="12sp" />
 
@@ -87,7 +87,6 @@
             android:id="@+id/tab_fixed_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignBottom="@+id/tab_usr_img"
             android:layout_alignEnd="@+id/tab_content"
             android:layout_alignRight="@+id/tab_content"
@@ -107,6 +106,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
+            android:layout_marginTop="5dp"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"

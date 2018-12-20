@@ -81,9 +81,10 @@ public class PushfragmentAdapter extends BaseAdapter {
             viewHodler.tvTitle = (TextView) convertView.findViewById(R.id.tab_str);
             viewHodler.tvContent = (TextView) convertView.findViewById(R.id.tab_content);
             viewHodler.tvUser = (TextView) convertView.findViewById(R.id.tab_user);
-            viewHodler.tab_fixed_number = (TextView) convertView.findViewById(R.id.tab_fixed_number);
-            viewHodler.ch_delete = (CheckBox) convertView.findViewById(R.id.tab_checkBox);
-            viewHodler.recycler_view = convertView.findViewById(R.id.recycler_view);
+            viewHodler.tabFixedNumber = (TextView) convertView.findViewById(R.id.tab_fixed_number);
+            viewHodler.chDelete = (CheckBox) convertView.findViewById(R.id.tab_checkBox);
+            viewHodler.recyclerView = convertView.findViewById(R.id.recycler_view);
+            viewHodler.tabView = convertView.findViewById(R.id.tab_view);
             //把缓存的布局放在converview中，避免重复获取布局，提升效率
             convertView.setTag(viewHodler);
         } else {
@@ -103,11 +104,11 @@ public class PushfragmentAdapter extends BaseAdapter {
         viewHodler.tvTitle.setText(currItem.getLabel());
         viewHodler.tvContent.setText(currItem.getContent());
 
-        viewHodler.tvUser.setText(currItem.getLeaderName());
-        viewHodler.ch_delete.setChecked(currItem.getChecked());
-        viewHodler.tab_fixed_number.setText(currItem.getSendTimes());
+        viewHodler.tvUser.setText("责任人：" + currItem.getLeaderName());
+        viewHodler.chDelete.setChecked(currItem.getChecked());
+        viewHodler.tabFixedNumber.setText("推送次数：" + currItem.getSendTimes());
         //listView单个条目事件监听
-        viewHodler.ch_delete.setOnClickListener(new View.OnClickListener() {
+        viewHodler.chDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (data.get(position).getChecked()) {
@@ -123,7 +124,6 @@ public class PushfragmentAdapter extends BaseAdapter {
                 }
             }
         });
-
 
 
         return convertView;
@@ -148,9 +148,9 @@ public class PushfragmentAdapter extends BaseAdapter {
      * 定义coverView的Recyler(缓存)，该类名自定义的
      */
     class ViewHodler {
-        TextView tvTitle, tvContent, tvUser, tab_fixed_number;
-        CheckBox ch_delete;
-        RelativeLayout recycler_view;
+        TextView tvTitle, tvContent, tvUser, tabFixedNumber, tabView;
+        CheckBox chDelete;
+        RelativeLayout recyclerView;
     }
 
 }
