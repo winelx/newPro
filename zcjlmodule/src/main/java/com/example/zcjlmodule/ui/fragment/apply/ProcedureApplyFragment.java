@@ -31,6 +31,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  * @author lx
  * @Created by: 2018/11/21 0021.
  * @description:申请单/拨款审批单(流程)
+ * @Activity ApplyActivityZc
  */
 
 public class ProcedureApplyFragment extends LazyloadFragment {
@@ -68,15 +69,16 @@ public class ProcedureApplyFragment extends LazyloadFragment {
         adapter.setItemClickListener(new ProcedurePageAdapter.TypeItemOnClickListener() {
             @Override
             public void onItemClick(int position) {
-                ToastUtlis.getInstance().showShortToast("列表第" + position + "位" + ";集合第" + (position - 1) + "位");
+//                ToastUtlis.getInstance().showShortToast("列表第" + position + "位" + ";集合第" + (position - 1) + "位");
             }
         });
     }
+
     @Override
     protected void lazyLoad() {
-        if (list.size()>0){
+        if (list.size() > 0) {
             emptyView.setVisibility(View.GONE);
-        }else {
+        } else {
             emptyView.setVisibility(View.VISIBLE);
         }
     }

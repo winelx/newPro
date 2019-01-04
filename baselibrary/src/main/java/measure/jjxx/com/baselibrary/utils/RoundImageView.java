@@ -22,12 +22,9 @@ public class RoundImageView extends android.support.v7.widget.AppCompatImageView
 
     //圆角大小，默认为10
     private int mBorderRadius = 15;
-
     private Paint mPaint;
-
     // 3x3 矩阵，主要用于缩小放大
     private Matrix mMatrix;
-
     //渲染图像，使用图像为绘制图形着色
     private BitmapShader mBitmapShader;
 

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import measure.jjxx.com.baselibrary.R;
+import measure.jjxx.com.baselibrary.utils.ScreenUtil;
 
 /**
  * @author lx
@@ -34,6 +36,11 @@ public class PullDownMenu {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
+    /**
+     * @内容: 安卓menu下拉菜单（已做屏幕适配）
+     * @author lx
+     * @date: 2018/12/25 0025 上午 11:08
+     */
     public void showPopMeun(final Activity activity, View view, final String[] strings) {
         //计算屏幕密度
         float resolution = getDisplayMetrics(activity).density;
@@ -43,8 +50,10 @@ public class PullDownMenu {
         //创建一个simpleAdapter
         ArrayAdapter myAdapter = new ArrayAdapter(activity, R.layout.meun_list_item, R.id.text, strings);
         mListView.setAdapter(myAdapter);
+        //屏幕高度
+        int hight = strings.length * 40;
         mPopupWindow = new PopupWindow(contentView,
-                withFontSize(resolution) + 20, 115 * strings.length, true);
+                withFontSize(resolution), ScreenUtil.dp2px(activity, hight) + hightFontSize(activity), true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
@@ -88,21 +97,22 @@ public class PullDownMenu {
         return metrics;
     }
 
-    //根据密度设置宽度
+    /**
+     * @内容: 根据密度设置宽度
+     * @author lx
+     * @date: 2018/12/25 0025 上午 10:38
+     */
     public static int withFontSize(float screenWidth) {
-        // 240X320 屏幕
-        if (screenWidth == 1.0) {
-            return 250;
-            // 320X480 屏幕
-        } else if (screenWidth == 2.0) {
-            return 250;
-            // 480X800 或 480X854 屏幕
-        } else if (screenWidth == 3.0) {
-            return 300;
-        } else {
-            return 300;
+        float flies = (float) 100.0;
+        int writh = (int) (screenWidth * flies);
+        return writh;
+    }
 
-        }
+    public static int hightFontSize(Activity activity) {
+        float hoghtdp = ScreenUtil.getDensity(activity);
+        float flies = (float) 10.0;
+        int hight = (int) (hoghtdp * flies);
+        return hight;
     }
 
 }

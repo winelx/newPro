@@ -60,12 +60,11 @@ public class CapitalApplyZcActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else {
         }
     }
 

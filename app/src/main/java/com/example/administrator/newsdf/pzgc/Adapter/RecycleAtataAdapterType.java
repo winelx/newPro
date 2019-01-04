@@ -91,7 +91,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
         //判断是否有图片
-        if (mDatas.get(posotion).getAttachments().size() != 0) {
+        if (mDatas.get(posotion).getAttachments().size() > 0) {
             //有图片展示布局
             holder.audioRec.setVisibility(View.VISIBLE);
             //隐藏没有图片的提示图
@@ -204,6 +204,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
         divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
         holder.audioRec.addItemDecoration(divider1);
+        int filelenght=mDatas.get(posotion).getFilename().size();
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
         adapter.setHasStableIds(true);
         holder.audioRec.setAdapter(adapter);

@@ -39,7 +39,8 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 /**
  * @author lx
  * @Created by: 2018/11/22 0022.
- * @description:资金审批未审批
+ * @description:资金审批已审批
+ * @activity CapitalApprovalZcActivity
  */
 
 public class CapitalApprovalTFragment extends LazyloadFragment implements View.OnClickListener, Callback {
@@ -167,14 +168,13 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.assembly_org_switch:
-                Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
-                intent.putExtra("type", "false");
-                startActivity(intent);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.assembly_org_switch) {
+            Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+            intent.putExtra("type", "false");
+            startActivity(intent);
+
+        } else {
         }
     }
 
@@ -183,5 +183,6 @@ public class CapitalApprovalTFragment extends LazyloadFragment implements View.O
     public void callback(Map<String, Object> map) {
         assemblyOrgname.setText(map.get("orgname") + "");
         orgId = map.get("orgId") + "";
+        httprequest();
     }
 }

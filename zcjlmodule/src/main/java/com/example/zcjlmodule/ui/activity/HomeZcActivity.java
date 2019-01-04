@@ -16,6 +16,9 @@ import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.ui.fragment.MessageFragmentZc;
 import com.example.zcjlmodule.ui.fragment.MineFragmentZc;
 import com.example.zcjlmodule.ui.fragment.WorkFragmentZc;
+import com.example.zcjlmodule.utils.Api;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import measure.jjxx.com.baselibrary.bean.BaseTab;
 import measure.jjxx.com.baselibrary.utils.FileUtils;
 import measure.jjxx.com.baselibrary.utils.StatusBarUtil;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
+import okhttp3.Call;
+import okhttp3.Response;
 ;
 
 /**
@@ -62,6 +67,7 @@ public class HomeZcActivity extends BaseActivity {
         FileUtils.clearFiles(tiny);
 //        File file = new File(paths);
 //        double filesiz = FileUtils.getDirSize(file);
+
     }
 
     //初始化界面
@@ -84,6 +90,7 @@ public class HomeZcActivity extends BaseActivity {
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         //设置默认打开的界面
         mTabHost.setCurrentTab(0);
+
     }
 
     private View buildIndicator(BaseTab tab) {

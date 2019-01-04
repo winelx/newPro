@@ -47,9 +47,14 @@ public class ModuleMainBaseViewIpm {
     }
 
     public static void okgo(final String user, final String pass, final Model.OnClickListener onClickListener) {
-        HttpUrl httpUrl = HttpUrl.parse(Api.networks);
-        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-        cookieStore.removeCookie(httpUrl);
+        try {
+            HttpUrl httpUrl = HttpUrl.parse(Api.networks);
+            CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+            cookieStore.removeCookie(httpUrl);
+        }catch (Exception e){
+
+        }
+
         OkGo.post(Api.networks)
                 .execute(new StringCallback() {
                     @Override

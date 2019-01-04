@@ -11,6 +11,7 @@ import android.view.ViewGroup;
  * @author lx
  *         #Created by: 2018/9/17 0017.
  *         #description:
+ *         基础fragment
  */
 
 public class BaseFragment extends Fragment {

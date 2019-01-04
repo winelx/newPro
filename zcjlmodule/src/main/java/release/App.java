@@ -21,20 +21,20 @@ import measure.jjxx.com.baselibrary.utils.ToastUtlis;
 public class App extends BaseApplication {
     private static App instance;
 
-    public static App getInstance() {
-        return instance;
-    }
+        public static App getInstance() {
+            return instance;
+        }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        //图片压缩
-        Tiny.getInstance().init(this);
-        //提示框
-        ToastUtlis.getInstance().init(this);
-        //网络加载库
-        OkGo.init(this);
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            instance = this;
+            //图片压缩
+            Tiny.getInstance().init(this);
+            //提示框
+            ToastUtlis.getInstance().init(this);
+            //网络加载库
+            OkGo.init(this);
         //Log配置 根据运行的环境是debug还是打包，控制是否显示日志
         if (BuildConfig.LOG_DEBUG) {
             LogUtil.init(true, Log.VERBOSE);

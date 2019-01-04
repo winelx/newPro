@@ -4,6 +4,7 @@ import com.example.zcjlmodule.bean.CapitalBean;
 import com.example.zcjlmodule.bean.CurrentApplyBean;
 import com.example.zcjlmodule.bean.FlowListBean;
 import com.example.zcjlmodule.bean.PeriodListBean;
+import com.example.zcjlmodule.callback.NewAddCallback;
 import com.example.zcjlmodule.utils.Api;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -13,6 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.utils.ListJsonUtils;
 import okhttp3.Call;
@@ -67,11 +70,12 @@ public class CurrentApplyUtils {
                     }
                 });
     }
-        /**
-         * @内容: 资金审批单
-         * @author lx
-         * @date: 2018/12/6 0006 下午 2:53
-        */
+
+    /**
+     * @内容: 资金审批单
+     * @author lx
+     * @date: 2018/12/6 0006 下午 2:53
+     */
     public void approvalheadcounts(String approvalId, final OnclickListener onclickListene) {
         OkGo.get(Api.APPLYHEADCOUNTS)
                 .params("applyId", approvalId)
@@ -100,4 +104,35 @@ public class CurrentApplyUtils {
                     }
                 });
     }
+
+    /**
+     * @内容: 征地拆迁资金拨付申请单按指挥部汇总数据
+     * @author lx
+     * @date: 2018/12/24 0024 下午 4:00
+     */
+    public void ApplyHeadCounts(String approvalId, String headquarterId, final NewAddCallback callback) {
+        OkGo.post(Api.APPROVALDETAILSHOW)
+                .params("approvalId", approvalId)
+                .params("headquarterId", headquarterId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        Map<String, String> map = new HashMap<>();
+                        callback.callback(map);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
+
 }

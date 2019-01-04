@@ -128,17 +128,16 @@ public class MessageFragmentZc extends BaseFragment implements View.OnClickListe
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fragment_messag_lin:
-                setTextcolor("#5095F9", "#030303");
-                viewpager.setCurrentItem(0);
-                break;
-            case R.id.fragment_message_havedone:
-                setTextcolor("#030303", "#5095F9");
-                viewpager.setCurrentItem(1);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.fragment_messag_lin) {
+            setTextcolor("#5095F9", "#030303");
+            viewpager.setCurrentItem(0);
+
+        } else if (i == R.id.fragment_message_havedone) {
+            setTextcolor("#030303", "#5095F9");
+            viewpager.setCurrentItem(1);
+
+        } else {
         }
     }
 

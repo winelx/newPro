@@ -21,6 +21,7 @@ import measure.jjxx.com.baselibrary.utils.StatusBarUtil;
  * @author lx
  *         #Created by: 2018/9/17 0017.
  *         #description:
+ *         基础activity
  */
 
 public class BaseActivity extends AppCompatActivity {

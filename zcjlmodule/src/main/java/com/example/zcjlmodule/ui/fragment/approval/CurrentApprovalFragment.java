@@ -61,6 +61,7 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
         //调用方法，获取status；用来判断是否隐藏审批按钮
         status = applyActivityZc.getstatus();
         list = new ArrayList<>();
+        list=applyActivityZc.getcountlist();
         //emptyRecyclerView的空数据提示界面
         emptyView = rootView.findViewById(R.id.recycler_empty);
         //刷新加载控件
@@ -123,19 +124,16 @@ public class CurrentApprovalFragment extends LazyloadFragment implements View.On
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.page_apply_examine:
-                //弹出审批框，并返回数据
-                BaseDialogUtils.checkandcontent(context, new BaseDialogUtils.dialogonclick() {
-                    @Override
-                    public void onsuccess(String status, String content) {
-                        //status 如果等true是通过，否则反之；content是审批意见
-                    }
-                });
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.page_apply_examine) {//弹出审批框，并返回数据
+            BaseDialogUtils.checkandcontent(context, new BaseDialogUtils.dialogonclick() {
+                @Override
+                public void onsuccess(String status, String content) {
+                    //status 如果等true是通过，否则反之；content是审批意见
+                }
+            });
 
+        } else {
         }
     }
 }

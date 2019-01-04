@@ -5,6 +5,7 @@ package measure.jjxx.com.baselibrary.base;
  * @author lx
  *         #Created by: 2018/9/17 0017.
  *         #description:
+ *         基础的base fragment
  */
 
 public class BaseMvpFragment<T extends BasePresenters> extends BaseFragment implements BaseView {

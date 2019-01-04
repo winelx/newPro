@@ -14,10 +14,10 @@ public class Api {
     //马
 //public static final String networks = "http://192.168.20.36:8082/dtjl";
     //测
-public static final String networks = "http://192.168.20.120:8082/dtjl";
+    public static final String networks = "http://192.168.20.120:8082/dtjl";
     //郑
- // public static final String networks = "http://192.168.20.40/dtjl";
- //  public static final String networks = "http://192.168.20.42:8080/dtjl";
+    // public static final String networks = "http://192.168.20.40/dtjl";
+    //  public static final String networks = "http://192.168.20.42:8080/dtjl";
     /**
      * 基础接口
      */
@@ -36,10 +36,10 @@ public static final String networks = "http://192.168.20.120:8082/dtjl";
     //获取组织树
     public static final String GETORGS = networks + "/iface/sys/org/getOrgs";
     //组织
-    public static final String GETMENU = networks +  "/iface/mobile/taskmain/getMenu";
+    public static final String GETMENU = networks + "/iface/mobile/taskmain/getMenu";
 
 
- /**
+    /**
      * 支付清册
      */
     //支付清册
@@ -67,25 +67,47 @@ public static final String networks = "http://192.168.20.120:8082/dtjl";
      */
     //获取原始勘丈表列表数据
     public static final String GETBUSRAWVALUATIONS = networks + "/iface/levy/getBusRawValuations";
-     //新增或者修改原始勘丈表
-   public static final String SAVERAW=networks+"/iface/levy/saveRaw";
-      //获取征拆部分初始化数据
-   public static final String GETLEVYINITINFO=networks+"/iface/levy/getLevyInitInfo";
-   //生成原始勘丈表单据编号
-   public static final String CREATERAWBILLNUMBER=networks+"/iface/levy/createRawBillNumber";
+    //新增或者修改原始勘丈表
+    public static final String SAVERAW = networks + "/iface/levy/saveRaw";
+    //获取征拆部分初始化数据
+    public static final String GETLEVYINITINFO = networks + "/iface/levy/getLevyInitInfo";
+    //生成原始勘丈表单据编号
+    public static final String CREATERAWBILLNUMBER = networks + "/iface/levy/createRawBillNumber";
 
-/**
- * 申请单 审批单
- */
+    /**
+     * 申请单 审批单
+     */
     //征地拆迁资金拨付申请单列表
-   public static final String APPLYLISTS =networks+"/iface/levy/getApplyLists";
+    public static final String APPLYLISTS = networks + "/iface/levy/getApplyLists";
 
     //征地拆迁资金拨付申请单按指挥部汇总数据
-    public static final String APPLYHEADCOUNTS =networks+"/iface/levy/getApplyHeadCounts";
+    public static final String APPLYHEADCOUNTS = networks + "/iface/levy/getApplyHeadCounts";
 
     /**
      * 审批单
      */
     //征地拆迁资金拨付审批单列表
-    public static final String APPROVALLISTS =networks+"/iface/levy/etApprovalLists";
+    public static final String APPROVALLISTS = networks + "/iface/levy/getApprovalLists";
+    //征地拆迁资金拨付审批单按指挥部汇总数据
+    public static final String APPROVALHEADCOUNT = networks + "/iface/levy/getApprovalHeadCount";
+    //征地拆迁资金拨付审批单
+    public static final String APPROVALDETAILSHOW = networks + "/iface/levy/getApprovalDetailShow";
+    //审批流程
+    public static final String complateTask = networks + "/iface/activiti/complateTask";
+
+    public static final String baidu = "https://fanyi-app.baidu.com/transapp/zhuanlan/get?" +
+            "product=transapp&appVersion=7.11.1" +
+            "&cuid=BAF7F840B41D82899496E26A81C37982%7C713005130331868" +
+            "&mnc=00" +
+            "&dvw=1080" +
+            "&channel=_360zhushou" +
+            "&sign=64df54c218cd6b1a15609ad6190b81c4" +
+            "&mcc=460&version=92" +
+            "&systemVersion=8.1.0" +
+            "&syslan=zh&zid=7" +
+            "&netterm=WIFI&vendor=xiaomi" +
+            "&sysmodel=Xiaomi_MI+6X&os_lang=zh&dvh=2030" +
+            "&imei=868133031500317" +
+            "&plat=android&req=alist" +
+            "&timestamp=1545632998";
 }

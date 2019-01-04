@@ -55,7 +55,7 @@ import measure.jjxx.com.baselibrary.utils.PhotoUtils;
 import measure.jjxx.com.baselibrary.utils.PopCameraUtils;
 import measure.jjxx.com.baselibrary.utils.TakePictureManager;
 import measure.jjxx.com.baselibrary.utils.ToastUtlis;
-import measure.jjxx.com.baselibrary.utils.WindowUtils;
+import measure.jjxx.com.baselibrary.utils.FileIoUtils;
 
 
 /**
@@ -380,7 +380,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
                                             pathlist.add(new ExamineBean("", "", outfile, "jpg"));
                                             getupdata();
                                             try {
-                                                WindowUtils.delete(outFile);
+                                                FileIoUtils.delete(outFile);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -641,7 +641,7 @@ public class NewAddOriginalZcActivity extends BaseMvpActivity<NewAddOriginalPres
             try {
                 ArrayList<String> images = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 for (int i = 0; i < images.size(); i++) {
-                    double mdouble = WindowUtils.getDirSize(new File(images.get(i)));
+                    double mdouble = FileIoUtils.getDirSize(new File(images.get(i)));
                     if (mdouble != 0.0) {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         options.quality = 95;

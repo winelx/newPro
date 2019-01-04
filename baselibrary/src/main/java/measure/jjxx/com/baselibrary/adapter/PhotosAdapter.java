@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import measure.jjxx.com.baselibrary.R;
-import measure.jjxx.com.baselibrary.utils.WindowUtils;
 import measure.jjxx.com.baselibrary.view.SquareItemLayout;
 
 /**

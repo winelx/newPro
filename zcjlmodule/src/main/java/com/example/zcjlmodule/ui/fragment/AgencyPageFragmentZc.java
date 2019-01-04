@@ -12,7 +12,6 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.AgencyPageFragmentAdapter;
-import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
 import com.example.zcjlmodule.ui.activity.apply.DetailedlistActivity;
 import com.example.zcjlmodule.utils.fragment.ApplyFragmentUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -71,9 +70,9 @@ public class AgencyPageFragmentZc extends LazyloadFragment {
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         //添加自定义分割线
-        DividerItemDecoration divider = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(context, R.drawable.custom_divider));
-        emptyRecyclerView.addItemDecoration(divider);
+//        DividerItemDecoration divider = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+//        divider.setDrawable(ContextCompat.getDrawable(context, R.drawable.custom_divider));
+//        emptyRecyclerView.addItemDecoration(divider);
         //设置适配器
         emptyRecyclerView.setAdapter(adapter = new AgencyPageFragmentAdapter(R.layout.adapter_agency_zc, list));
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -81,6 +80,7 @@ public class AgencyPageFragmentZc extends LazyloadFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(context, DetailedlistActivity.class);
                 intent.putExtra("status",true);
+                intent.putExtra("taskId","");
                 startActivity(intent);
             }
         });

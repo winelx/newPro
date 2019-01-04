@@ -21,11 +21,11 @@ import java.security.MessageDigest;
 /**
  * @author lx
  * @Created by: 2018/10/16 0016.
- * @description:
+ * @description: 文件帮助类
  */
 
-public final class WindowUtils {
-    public static final String TAG = WindowUtils.class.getSimpleName();
+public final class FileIoUtils {
+    public static final String TAG = FileIoUtils.class.getSimpleName();
     public static final int BYTE = 1024;
 
     /**
@@ -411,7 +411,7 @@ public final class WindowUtils {
         int len = 0;
         FileOutputStream fos = null;
         try {
-            WindowUtils.createFile(file);
+            FileIoUtils.createFile(file);
             fos = new FileOutputStream(file);
             while ((len = in.read(buffer)) != -1) {
                 fos.write(buffer, 0, len);

@@ -63,5 +63,26 @@ public class ApprovalFragmentUtils {
                 });
     }
 
+    /**
+     * @内容: 征地拆迁资金拨付审批单按指挥部汇总数据
+     * @author lx
+     * @date: 2018/12/24 0024 上午 10:57
+     */
+    public void approvalheadcount(String approvalId) {
+        OkGo.post(Api.APPROVALHEADCOUNT)
+                .params("approvalId", approvalId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
+
 }
 

@@ -33,7 +33,7 @@ import release.App;
  * @author lx
  *         date: 2018/10/10 0010 下午 3:01
  *         update: 2018/10/10 0010
- *         version:
+ *
  */
 public class MineFragmentZc extends BaseFragment implements View.OnClickListener,Callback {
     private View rootView;
@@ -80,40 +80,34 @@ public class MineFragmentZc extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.mine_zc_organization:
-                //切换组织
-               startActivity(new Intent(mContext, UserOrgZcActivity.class));
-                break;
-            case R.id.mine_zc_password:
-                //修改密码
-                startActivity(new Intent(mContext, PasswordActivity.class));
-                break;
-            case R.id.mine_zc_aboutme:
-                //关于我们
-                ToastUtlis.getInstance().showShortToast("关于我们");
-                break;
-            case R.id.mine_zc_update:
-                //更新
-                utils.findversion(new FragmentmineUtils.OnClickLister() {
-                    @Override
-                    public void onClickLister(int status) {
+        int i = view.getId();
+        if (i == R.id.mine_zc_organization) {//切换组织
+            startActivity(new Intent(mContext, UserOrgZcActivity.class));
 
-                    }
-                });
-                break;
-            case R.id.mine_zc_exit:
-                //退出
-                utils.logout(new FragmentmineUtils.OnClickLister() {
-                    @Override
-                    public void onClickLister(int status) {
-                    }
-                });
-                mContext.startActivity(new Intent(mContext, ModuleMainActivity.class));
-                getActivity().finish();
-                break;
-            default:
-                break;
+        } else if (i == R.id.mine_zc_password) {//修改密码
+            startActivity(new Intent(mContext, PasswordActivity.class));
+
+        } else if (i == R.id.mine_zc_aboutme) {//关于我们
+            ToastUtlis.getInstance().showShortToast("关于我们");
+
+        } else if (i == R.id.mine_zc_update) {//更新
+            utils.findversion(new FragmentmineUtils.OnClickLister() {
+                @Override
+                public void onClickLister(int status) {
+
+                }
+            });
+
+        } else if (i == R.id.mine_zc_exit) {//退出
+            utils.logout(new FragmentmineUtils.OnClickLister() {
+                @Override
+                public void onClickLister(int status) {
+                }
+            });
+            mContext.startActivity(new Intent(mContext, ModuleMainActivity.class));
+            getActivity().finish();
+
+        } else {
         }
     }
 

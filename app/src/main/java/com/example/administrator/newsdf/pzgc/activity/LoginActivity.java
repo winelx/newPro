@@ -63,7 +63,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Context mContext;
     private RelativeLayout backgroud;
     private Dialog progressDialog;
-    private List<Cookie> cookiesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +145,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
                     }
+
                     //这个错误是网络级错误，不是请求失败的错误
                     @Override
                     public void onError(Call call, Response response, Exception e) {
@@ -174,7 +174,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             SPUtils.deleAll(mContext);
                             JSONObject jsom = jsonObject.getJSONObject("data");
                             JSONObject extend = jsonObject.getJSONObject("extend");
-                            App.getInstance().jsonId=extend.getString("JSESSIONID");
+                            App.getInstance().jsonId = extend.getString("JSESSIONID");
                             String id;
                             try {
                                 id = jsom.getString("id");
@@ -272,10 +272,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         ToastUtils.showLongToast("请确认网络是否通畅");
                     }
                 });
-
     }
 
-    //重写返回键
+    /**
+     * 重写返回键
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -291,7 +292,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     List<Shop> list;
 
-    //获取数据举数据
+    /**
+     * @内容: 获取数据举数据
+     * @author lx
+     * @date: 2019/1/2 0002 下午 5:06
+     */
     private void greedao() {
         list = LoveDao.JPushCart();
         Message mes = new Message();
@@ -325,6 +330,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * @内容: 显示等待dialog
+     * @author lx
+     * @date: 2019/1/2 0002 下午 5:06
+     */
     public void loading() {
         progressDialog = new Dialog(LoginActivity.this, R.style.progress_dialog);
         progressDialog.setContentView(R.layout.waiting_dialog);
@@ -333,7 +343,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         text.setText("登录中...");
         progressDialog.show();
     }
-
 
 
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author lx
  * @Created by: 2018/12/6 0006.
  * @description:
- * @Activity：
+ * @Activity：BigDecimal帮助类
  */
 
 public class BigDecimalUtils {
@@ -79,9 +79,7 @@ public class BigDecimalUtils {
      */
 
     public static <T extends Number> BigDecimal safeDivide(T b1, T b2) {
-
         return safeDivide(b1, b2, BigDecimal.ZERO);
-
     }
 
 
@@ -100,23 +98,14 @@ public class BigDecimalUtils {
      */
 
     public static <T extends Number> BigDecimal safeDivide(T b1, T b2, BigDecimal defaultValue) {
-
         if (null == b1 || null == b2) {
-
             return defaultValue;
-
         }
-
         try {
-
             return BigDecimal.valueOf(b1.doubleValue()).divide(BigDecimal.valueOf(b2.doubleValue()), 2, BigDecimal.ROUND_HALF_UP);
-
         } catch (Exception e) {
-
             return defaultValue;
-
         }
-
     }
 
 
@@ -132,11 +121,9 @@ public class BigDecimalUtils {
      */
 
     public static <T extends Number> BigDecimal safeMultiply(T b1, T b2) {
-
         if (null == b1 || null == b2) {
             return BigDecimal.ZERO;
         }
         return BigDecimal.valueOf(b1.doubleValue()).multiply(BigDecimal.valueOf(b2.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP);
-
     }
 }

@@ -31,6 +31,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  * @author lx
  * @Created by: 2018/11/21 0021.
  * @description:申请单(本期)
+ *  @Activity ApplyActivityZc
  */
 
 public class CurrentApplyFragment extends LazyloadFragment implements View.OnClickListener {
@@ -42,6 +43,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
     private BigDecimal price;
     private ArrayList<CurrentApplyBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
+    private ApplyActivityZc applyActivityZc;
 
     @Override
     protected int setContentView() {
@@ -51,7 +53,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
     @Override
     protected void init() {
         context = ApplyActivityZc.getInstance();
-        ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
+        applyActivityZc = (ApplyActivityZc) context;
         String str = applyActivityZc.getstatus();
         list = new ArrayList<>();
         list.addAll(applyActivityZc.getcountlist());
@@ -60,7 +62,7 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
                 String Amount = list.get(i).getToThisPeriodAmount();
                 price = BigDecimalUtils.safeAdd(price, new BigDecimal(Amount));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
         emptyView = rootView.findViewById(R.id.recycler_empty);
@@ -90,8 +92,8 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
         //隐藏空白布局
         emptyView.setVisibility(View.GONE);
         try {
-            pageApplyPrice.setText(TextUtils.setText(context, "总计:"+price.toString(), 3));
-        }catch (Exception e){
+            pageApplyPrice.setText(TextUtils.setText(context, "总计:" + price.toString(), 3));
+        } catch (Exception e) {
             pageApplyPrice.setText(TextUtils.setText(context, "总计:", 3));
         }
         //item点击事件处理
@@ -99,6 +101,8 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(context, ApplyHeadquartersZcActivity.class);
+                intent.putExtra("headquarterId", list.get(position).getHeadquarterId());
+                intent.putExtra("approvalId", applyActivityZc.applyId);
                 startActivity(intent);
             }
         });
@@ -119,19 +123,16 @@ public class CurrentApplyFragment extends LazyloadFragment implements View.OnCli
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.page_apply_examine:
-                //弹出审批框，并返回数据
-                BaseDialogUtils.checkandcontent(context, new BaseDialogUtils.dialogonclick() {
-                    @Override
-                    public void onsuccess(String status, String content) {
+        int i = v.getId();
+        if (i == R.id.page_apply_examine) {//弹出审批框，并返回数据
+            BaseDialogUtils.checkandcontent(context, new BaseDialogUtils.dialogonclick() {
+                @Override
+                public void onsuccess(String status, String content) {
 
-                    }
-                });
-                break;
-            default:
-                break;
+                }
+            });
 
+        } else {
         }
     }
 

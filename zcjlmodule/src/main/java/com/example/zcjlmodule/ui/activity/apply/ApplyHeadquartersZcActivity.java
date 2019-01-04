@@ -1,6 +1,7 @@
 package com.example.zcjlmodule.ui.activity.apply;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 
 import android.os.Bundle;
@@ -12,16 +13,16 @@ import android.widget.TextView;
 
 
 import com.example.zcjlmodule.R;
-import com.example.zcjlmodule.adapter.FmPagerAdapter;
-import com.example.zcjlmodule.ui.fragment.apply.AccumulativeApplyFragment;
-import com.example.zcjlmodule.ui.fragment.apply.CurrentApplyFragment;
-import com.example.zcjlmodule.ui.fragment.apply.ProcedureApplyFragment;
+
+import com.example.zcjlmodule.callback.NewAddCallback;
+
+import com.example.zcjlmodule.utils.fragment.CurrentApplyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import measure.jjxx.com.baselibrary.base.BaseActivity;
-import measure.jjxx.com.baselibrary.utils.BaseUtils;
+
 import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
 
 /**
@@ -34,15 +35,27 @@ public class ApplyHeadquartersZcActivity extends BaseActivity implements View.On
     private TextView title;
     private SmartRefreshLayout refreshLayout;
     private EmptyRecyclerView recyclerView;
+    private String headquarterId,approvalId;
+    private CurrentApplyUtils applyUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_zc);
+        applyUtils = new CurrentApplyUtils();
+        Intent intent = getIntent();
+        headquarterId = intent.getStringExtra("headquarterId");
+        approvalId = intent.getStringExtra("approvalId");
         findViewById(R.id.toolbar_icon_back).setOnClickListener(this);
         title = (TextView) findViewById(R.id.toolbar_icon_title);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.assembly_recycler_smart);
         recyclerView = (EmptyRecyclerView) findViewById(R.id.assembly_recyclerview);
+        applyUtils.ApplyHeadCounts(approvalId,headquarterId, new NewAddCallback() {
+            @Override
+            public void callback(Map<String, String> map) {
+
+            }
+        });
     }
 
     /**
@@ -52,13 +65,11 @@ public class ApplyHeadquartersZcActivity extends BaseActivity implements View.On
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_icon_back:
-                //返回
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.toolbar_icon_back) {//返回
+            finish();
+
+        } else {
         }
     }
 

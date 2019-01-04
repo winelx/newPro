@@ -23,7 +23,7 @@ import okhttp3.Response;
  * @author lx
  * date: 2018/10/29 0029 上午 11:16 
  * update: 2018/10/29 0029
- * version: 
+ * @Fragment mineFragment
 */
 public class PasswordActivity extends BaseActivity {
     private EditText passwordOld, passwordNew, passwordNewtoo;

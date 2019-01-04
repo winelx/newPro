@@ -67,9 +67,9 @@ public class HavedonePageFragmentZc extends LazyloadFragment {
         emptyRecyclerView.setEmptyView(emptyView);
         emptyRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         //添加自定义分割线
-        DividerItemDecoration divider = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(context, R.drawable.custom_divider));
-        emptyRecyclerView.addItemDecoration(divider);
+//        DividerItemDecoration divider = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+//        divider.setDrawable(ContextCompat.getDrawable(context, R.drawable.custom_divider));
+//        emptyRecyclerView.addItemDecoration(divider);
         emptyRecyclerView.setAdapter(adapter = new HavedonePageFragmentAdapter(R.layout.adapter_havedone, list));
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

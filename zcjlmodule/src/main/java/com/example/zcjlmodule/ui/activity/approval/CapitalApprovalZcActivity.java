@@ -48,7 +48,6 @@ public class CapitalApprovalZcActivity extends BaseActivity implements View.OnCl
         baseUtils.addtabpaddingdivider(tabLayout, mContext);
         fragments.add(new CapitalApprovalFFragment());
         fragments.add(new CapitalApprovalTFragment());
-
         //viewpager传递数据
         viewPager.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
         //绑定viewpager和tablayout，
@@ -61,12 +60,11 @@ public class CapitalApprovalZcActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_icon_back:
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.toolbar_icon_back) {
+            finish();
+
+        } else {
         }
     }
 

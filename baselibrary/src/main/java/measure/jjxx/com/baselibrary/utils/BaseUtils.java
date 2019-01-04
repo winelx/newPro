@@ -18,13 +18,17 @@ import measure.jjxx.com.baselibrary.R;
 
 
 /**
- * Created by Administrator on 2018/10/26 0026.
- * 一些单独的方法
- */
-
+ * @内容: 一些单独的方法
+ * @author lx
+ * @date: 2018/10/26 0026.
+*/
 public class BaseUtils {
-    //隐藏软键盘
-    public void activity(Activity activity) {
+    /**
+     * @内容:     //隐藏软键盘
+     * @author lx
+     * @date: 2018/12/25 0025 上午 9:18
+    */
+    public static void activity(Activity activity) {
         //拿到InputMethodManager
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         //如果window上view获取焦点 && view不为空
@@ -37,8 +41,13 @@ public class BaseUtils {
         }
     }
 
-    //显示软键盘
-    public void showkeyboard(Context mContext, View view) {
+
+    /**
+     * @内容:     //显示软键盘
+     * @author lx
+     * @date: 2018/12/25 0025 上午 9:18
+    */
+    public static void showkeyboard(Context mContext, View view) {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             view.requestFocus();
@@ -46,8 +55,13 @@ public class BaseUtils {
         }
     }
 
-    //隐藏软键盘
-    public void hidekeyboard(Context mContext, View view) {
+
+    /**
+     * @内容:     //隐藏软键盘
+     * @author lx
+     * @date: 2018/12/25 0025 上午 9:18
+    */
+    public static void hidekeyboard(Context mContext, View view) {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -86,8 +100,11 @@ public class BaseUtils {
         }
         return result.toString();
     }
-
-
+        /**
+         * @内容:     //身份证格式验证
+         * @author lx
+         * @date: 2018/12/25 0025 上午 9:12
+        */
     public static boolean isIDNumber(String IDNumber) {
         if (IDNumber == null || "".equals(IDNumber)) {
             return false;

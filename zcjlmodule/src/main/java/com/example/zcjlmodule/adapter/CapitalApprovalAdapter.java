@@ -29,8 +29,13 @@ public class CapitalApprovalAdapter extends BaseQuickAdapter<CapitalBean, BaseVi
         helper.setText(R.id.adapter_capital_price, item.getTotalApplyAmount());
         //创建人
         helper.setText(R.id.adapter_capital_name, item.getCreateBy().getRealname());
-        //创建时间
-        helper.setText(R.id.adapter_capital_data, item.getUpdateDate().substring(0, 10));
+//        //创建时间
+        if (item.getUpdateDate()!=null){
+            helper.setText(R.id.adapter_capital_data, item.getUpdateDate().substring(0,10));
+        }else {
+            helper.setText(R.id.adapter_capital_data, item.getUpdateDate());
+        }
+
 
     }
 }

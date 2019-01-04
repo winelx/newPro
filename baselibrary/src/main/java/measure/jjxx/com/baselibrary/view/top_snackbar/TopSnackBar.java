@@ -29,6 +29,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
  * @version : v1.0
  * @project : TopSnackBar
  * @Email : dakun611@Gmail.com
+ * ----------------***********顶部提示框SnackBar的重新）*************---------------------
  */
 
 /**

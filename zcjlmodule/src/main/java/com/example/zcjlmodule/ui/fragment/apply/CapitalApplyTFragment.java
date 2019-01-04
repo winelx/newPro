@@ -35,6 +35,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  * @author lx
  * @Created by: 2018/11/22 0022.
  * @description:资金申请单已审批
+ * @Activity CapitalApplyZcActivity
  */
 
 public class CapitalApplyTFragment extends LazyloadFragment implements View.OnClickListener, Callback {
@@ -168,15 +169,13 @@ public class CapitalApplyTFragment extends LazyloadFragment implements View.OnCl
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.assembly_org_switch:
-                //切换组织
-                Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
-                intent.putExtra("type", "false");
-                startActivity(intent);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.assembly_org_switch) {//切换组织
+            Intent intent = new Intent(mContext, ChangeorganizeZcActivity.class);
+            intent.putExtra("type", "false");
+            startActivity(intent);
+
+        } else {
         }
     }
 

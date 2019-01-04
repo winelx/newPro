@@ -4,16 +4,14 @@ if (isUserModule.toBoolean()) {
     apply plugin: 'com.android.library'
 }
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '26.0.3'
     resourcePrefix "zc_"
-
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
-        versionName "2.1"
-        resConfigs "zh-rCN"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

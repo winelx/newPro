@@ -6,6 +6,10 @@
         android:endColor="#F0F0F0"
         android:startColor="#F0F0F0"
         android:type="linear" />
+    <padding
+        android:left="@dimen/dp_10"
+        android:right="@dimen/dp_10"
+        />
     <size android:height="10dp" />
 
 </shape>

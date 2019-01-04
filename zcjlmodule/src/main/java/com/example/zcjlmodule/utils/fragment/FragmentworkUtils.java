@@ -39,4 +39,23 @@ public class FragmentworkUtils {
                     }
                 });
     }
+
+    //流程审批
+    public void complateTask(String taskId, int policy, String opinion) {
+        OkGo.put(Api.complateTask)
+                .params("taskId", "taskId")
+                .params("policy", "policy")
+                .params("opinion", "opinion")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
 }

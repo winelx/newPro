@@ -16,7 +16,7 @@ import com.example.zcjlmodule.adapter.FmPagerAdapter;
 import com.example.zcjlmodule.bean.CurrentApplyBean;
 import com.example.zcjlmodule.bean.FlowListBean;
 import com.example.zcjlmodule.bean.PeriodListBean;
-import com.example.zcjlmodule.ui.activity.apply.ApplyActivityZc;
+
 import com.example.zcjlmodule.ui.fragment.approval.AccumulativeApprovalFragment;
 import com.example.zcjlmodule.ui.fragment.approval.CurrentApprovalFragment;
 import com.example.zcjlmodule.ui.fragment.approval.ProcedureApprovalFragment;
@@ -31,6 +31,7 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
  * @author lx
  * @Created by: 2018/11/22 0022.
  * @description:资金审批单
+ * @Fragment workFragment
  */
 
 public class ApprovalZcActivity extends BaseActivity implements View.OnClickListener {
@@ -49,6 +50,9 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
 
     private String status = null, orgId, orgName, approvalId;
     private CurrentApplyUtils applyUtils;
+    private ArrayList<CurrentApplyBean> countlist;
+    private ArrayList<PeriodListBean> periodList;
+    private ArrayList<FlowListBean> flowList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         applyUtils = new CurrentApplyUtils();
         //上下文
         mContext = this;
+        countlist = new ArrayList<>();
+        periodList = new ArrayList<>();
+        flowList = new ArrayList<>();
         //初始化控件
         findId();
         Intent intent = getIntent();
@@ -71,7 +78,6 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
             orgName = intent.getStringExtra("orgName");
             //状态（false 隐藏控件；空：不隐藏）
             status = intent.getStringExtra("status");
-
         } catch (Exception e) {
         }
         toolbarIconTitle.setText(orgName);
@@ -81,27 +87,34 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
         toolbarIconBack.setOnClickListener(this);
         //缓存3个界面
         v_selected.setOffscreenPageLimit(3);
-        /*
-           将三个界面存在list中，
-         */
-        //本期
-        fragments.add(new CurrentApprovalFragment());
-        //累计
-        fragments.add(new AccumulativeApprovalFragment());
-        //流程
-        fragments.add(new ProcedureApprovalFragment());
         //viewpager传递数据
         v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
         //绑定viewpager和tablayout，
         mTabLayout.setupWithViewPager(v_selected);
-        //设置tablyout标题，没有使用适配器adapter，减少代码量，直接设置，更加灵活
-        for (int j = 0; j < titles.length; j++) {
-            mTabLayout.getTabAt(j).setText(titles[j]);
-        }
         applyUtils.approvalheadcounts(approvalId, new CurrentApplyUtils.OnclickListener() {
             @Override
             public void onSuccess(ArrayList<CurrentApplyBean> data, ArrayList<PeriodListBean> periodList, ArrayList<FlowListBean> flowLists) {
-
+                //本期
+                countlist.addAll(data);
+                //累计
+                periodList.addAll(periodList);
+                //流程
+                flowList.addAll(flowLists);
+                //添加界面
+                //本期
+                fragments.add(new CurrentApprovalFragment());
+                //累计
+                fragments.add(new AccumulativeApprovalFragment());
+                //流程
+                fragments.add(new ProcedureApprovalFragment());
+                //viewpager传递数据
+                v_selected.setAdapter(new FmPagerAdapter(fragments, getSupportFragmentManager()));
+                //绑定viewpager和tablayout，
+                mTabLayout.setupWithViewPager(v_selected);
+                //设置tablyout标题，没有使用适配器adapter，减少代码量，直接设置，更加灵活
+                for (int j = 0; j < titles.length; j++) {
+                    mTabLayout.getTabAt(j).setText(titles[j]);
+                }
             }
         });
 
@@ -128,18 +141,31 @@ public class ApprovalZcActivity extends BaseActivity implements View.OnClickList
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_icon_back:
-                //返回
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.toolbar_icon_back) {//返回
+            finish();
+
+        } else {
         }
     }
 
     public String getstatus() {
         return status;
+    }
+
+    //本期
+    public ArrayList<CurrentApplyBean> getcountlist() {
+        return countlist;
+    }
+
+    //累计
+    public ArrayList<PeriodListBean> getperiodList() {
+        return periodList;
+    }
+
+    //流程
+    public ArrayList<FlowListBean> getflowList() {
+        return flowList;
     }
 
     @Override

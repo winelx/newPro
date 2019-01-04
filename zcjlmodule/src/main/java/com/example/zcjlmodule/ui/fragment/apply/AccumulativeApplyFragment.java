@@ -28,6 +28,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  * @author lx
  * @Created by: 2018/11/21 0021.
  * @description:申请单(累计)
+ * @Activity ApplyActivityZc
  */
 
 public class AccumulativeApplyFragment extends LazyloadFragment {
@@ -39,6 +40,8 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     private ArrayList<PeriodListBean> list;
     private TextView pageApplyExamine, pageApplyPrice;
     private BigDecimal price;
+    ApplyActivityZc applyActivityZc;
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_current_page;
@@ -48,14 +51,14 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
     protected void init() {
         context = getActivity();
         list = new ArrayList<>();
-        ApplyActivityZc applyActivityZc = (ApplyActivityZc) context;
+        applyActivityZc = (ApplyActivityZc) context;
         list.addAll(applyActivityZc.getperiodList());
         try {
             for (int i = 0; i < list.size(); i++) {
                 String Amount = list.get(i).getThisPeriodApplyAmount();
                 price = BigDecimalUtils.safeAdd(price, new BigDecimal(Amount));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -80,11 +83,11 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
         emptyRecyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         //设置适配器
         emptyRecyclerView.setAdapter(adapter = new AccumulativePageAdapter(R.layout.adapter_accumulative, list));
-       try {
-           pageApplyPrice.setText(TextUtils.setText(context, "总计:"+price.toString(), 3));
-       }catch (Exception e){
-           pageApplyPrice.setText(TextUtils.setText(context, "总计:", 3));
-       }
+        try {
+            pageApplyPrice.setText(TextUtils.setText(context, "总计:" + price.toString(), 3));
+        } catch (Exception e) {
+            pageApplyPrice.setText(TextUtils.setText(context, "总计:", 3));
+        }
 
         //初始化时没有请求网络，列表无数据，会展示空数据提示，所以隐藏
         emptyView.setVisibility(View.GONE);
@@ -93,6 +96,8 @@ public class AccumulativeApplyFragment extends LazyloadFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(context, ApplyHeadquartersZcActivity.class);
+                intent.putExtra("headquarterId", list.get(position).getHeadquarterId());
+                intent.putExtra("approvalId", applyActivityZc.applyId);
                 startActivity(intent);
             }
         });

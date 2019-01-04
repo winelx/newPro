@@ -15,14 +15,15 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 
-
 import measure.jjxx.com.baselibrary.R;
 import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
 import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
 
 /**
- * 加载时的等待dialog
+ * @author lx
+ * @内容: dialog 的各种提示框
+ * @date: 2018/12/25 0025 上午 9:14
  */
 public class BaseDialogUtils {
     public static Dialog dialog;
@@ -33,6 +34,7 @@ public class BaseDialogUtils {
      * @param mContext 上下文
      * @param str      提示内容
      * @param status   是否允许点击外部消失
+     *                 网络请求的的提示框
      */
     public static void getDialog(Context mContext, String str, boolean status) {
         //设置样式
@@ -48,11 +50,13 @@ public class BaseDialogUtils {
         dialog.show();
     }
 
+
     /**
-     * 提示
+     * 基本的保存二选一按钮
      *
-     * @param mContext
-     * @param str
+     * @param mContext       上下文
+     * @param str            显示内容
+     * @param onclicktlister 接口
      */
     public static void getprompt(Context mContext, String str, final onclicktlister onclicktlister) {
         alertdialog = new AlertDialog.Builder(mContext).setMessage(str).
@@ -80,7 +84,12 @@ public class BaseDialogUtils {
     }
 
     /**
-     * 打开 APP 的详情设置
+     *
+     */
+    /**
+     * @内容: 每天权限的提示打，开APP 的详情设置
+     * @author lx
+     * @date: 2018/12/25 0025 上午 9:16
      */
     public static void openAppDetails(final Context mContext) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -111,7 +120,11 @@ public class BaseDialogUtils {
         void onerror();
     }
 
-
+    /**
+     * @内容: 审批点弹出窗口
+     * @author lx
+     * @date: 2018/12/25 0025 上午 9:16
+     */
     public static void checkandcontent(Context mContext, final dialogonclick dialogonclick) {
         status = null;
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);

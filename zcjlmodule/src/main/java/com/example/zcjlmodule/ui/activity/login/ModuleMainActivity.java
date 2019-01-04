@@ -20,6 +20,7 @@ import com.example.zcjlmodule.view.ModuleMainView;
 import measure.jjxx.com.baselibrary.base.BaseMvpActivity;
 import measure.jjxx.com.baselibrary.utils.BaseDialogUtils;
 import measure.jjxx.com.baselibrary.utils.BaseUtils;
+
 import measure.jjxx.com.baselibrary.view.top_snackbar.BaseTransientBottomBar;
 import measure.jjxx.com.baselibrary.view.top_snackbar.TopSnackBar;
 
@@ -64,27 +65,26 @@ public class ModuleMainActivity extends BaseMvpActivity<ModuleMainPresenter> imp
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_login:
-                baseUtils.hidekeyboard(this,edtAccount);
-                BaseDialogUtils.getDialog(this, "登录中..", false);
-                String name = edtAccount.getText().toString();
-                String password = edtPassword.getText().toString();
-                if (!name.isEmpty() && !password.isEmpty()) {
-                    //登录
-                    mPresenter.register(name, password);
-                } else {
-                    BaseDialogUtils.dialog.dismiss();
-                    TopSnackBar.make(btnLogin, "用户名或密码为空", BaseTransientBottomBar.LENGTH_SHORT).show();
+        int i = view.getId();
+        if (i == R.id.btn_login) {
+            baseUtils.hidekeyboard(this, edtAccount);
+            BaseDialogUtils.getDialog(this, "登录中..", false);
+            String name = edtAccount.getText().toString();
+            String password = edtPassword.getText().toString();
+            if (!name.isEmpty() && !password.isEmpty()) {
+                //登录
+                mPresenter.register(name, password);
+            } else {
+                BaseDialogUtils.dialog.dismiss();
+                TopSnackBar.make(btnLogin, "用户名或密码为空", BaseTransientBottomBar.LENGTH_SHORT).show();
 
-                }
+            }
 //             startActivity(new Intent(mContext,OriginalZcActivity.class));
-                break;
-            case R.id.main_background:
-                baseUtils.hidekeyboard(this, edtAccount);
-                break;
-            default:
-                break;
+
+        } else if (i == R.id.main_background) {
+            baseUtils.hidekeyboard(this, edtAccount);
+
+        } else {
         }
 
     }

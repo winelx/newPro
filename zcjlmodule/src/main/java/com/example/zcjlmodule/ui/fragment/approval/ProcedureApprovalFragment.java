@@ -9,6 +9,7 @@ import android.view.View;
 import com.example.zcjlmodule.R;
 import com.example.zcjlmodule.adapter.ProcedurePageAdapter;
 import com.example.zcjlmodule.bean.FlowListBean;
+import com.example.zcjlmodule.ui.activity.approval.ApprovalZcActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 
@@ -22,6 +23,7 @@ import measure.jjxx.com.baselibrary.view.EmptyRecyclerView;
  * @author lx
  * @Created by: 2018/11/21 0021.
  * @description:申请单/拨款审批单(流程)
+ * @Activity ApprovalZcActivity
  */
 
 public class ProcedureApprovalFragment extends LazyloadFragment {
@@ -39,8 +41,12 @@ public class ProcedureApprovalFragment extends LazyloadFragment {
 
     @Override
     protected void init() {
-        context = getActivity();
+        //拿到承载fragment的activity的对象；
+        context = ApprovalZcActivity.getInstance();
+        //实例化activity
+        ApprovalZcActivity applyActivityZc = (ApprovalZcActivity) context;
         list = new ArrayList<>();
+        list=applyActivityZc.getflowList();
         emptyView = rootView.findViewById(R.id.recycler_empty);
         refreshLayout = rootView.findViewById(R.id.page_refreshlayout);
         emptyRecyclerView = rootView.findViewById(R.id.fragment_messag_empty);

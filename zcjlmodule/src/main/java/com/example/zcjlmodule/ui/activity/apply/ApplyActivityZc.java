@@ -30,18 +30,18 @@ import measure.jjxx.com.baselibrary.utils.BaseUtils;
  * @author lx
  * @Created by: 2018/11/22 0022.
  * @description:资金申请单
+ * @Fragment workFragment
  */
 
 public class ApplyActivityZc extends BaseActivity implements View.OnClickListener {
     private TabLayout mTabLayout;
     private BaseUtils baseUtils;
-
     private TextView toolbarIconTitle;
     private LinearLayout toolbarIconBack;
     private ViewPager v_selected;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] titles = {"本期", "累计", "流程"};
-    private String status = null, orgId, orgName, applyId;
+    public String status = null, orgId, orgName, applyId;
     private static ApplyActivityZc mContext;
     private CurrentApplyUtils applyUtils;
     private ArrayList<CurrentApplyBean> countlist;
@@ -127,13 +127,11 @@ public class ApplyActivityZc extends BaseActivity implements View.OnClickListene
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_icon_back:
-                //返回
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.toolbar_icon_back) {//返回
+            finish();
+
+        } else {
         }
     }
 
