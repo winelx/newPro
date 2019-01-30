@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lin_push_pop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
@@ -73,7 +72,6 @@
         android:background="@color/writer">
 
         <TextView
-            android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -109,7 +107,6 @@
         android:background="@color/writer">
 
         <TextView
-            android:id="@+id/pushdialog_send_item"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"

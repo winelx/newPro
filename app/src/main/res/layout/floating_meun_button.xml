@@ -18,7 +18,6 @@
         android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/meun_standard_img"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:background="@mipmap/strand_meun"
@@ -43,7 +42,6 @@
         android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/meun_photo_img"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:background="@mipmap/photo_meun"

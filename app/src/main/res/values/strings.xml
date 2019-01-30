@@ -1,25 +1,17 @@
 <resources>
     <string name="app_name">工程管理</string>
-    <string name="home">任务</string>
     <string name="mine">我的</string>
     <string name="message">消息</string>
-    <string name="application">应用</string>
     <string name="work">工作</string>
     <string name="check">亮点</string>
 
     <string name="about_us">工程管理系统主要是路桥公司为了能对施工过程进行严格管控，对进度、技术、质量、安全、文明施工等一系列的施工过程做到实时监控而开发的一个平台。同时更好地保障工地员工实时的进行举证证明施工过程的规范性、安全性、按时性等。整个过程充分体现了”谁负责，谁举证“这一原则。</string>
-    <string name="meun_one">选择WBS结构</string>
-    <string name="meun_two">未处理消息</string>
-    <string name="meun_three">已处理消息</string>
-    <string name="title_activity_missionadd">MissionaddActivity</string>
-    <string name="title_activity_missionpush">MissionpushActivity</string>
     <string name="sdcard_no_exist">SD卡不存在</string>
     <string name="camera_not_prepared">摄像头尚未准备好</string>
     <string name="cancel_value">取消</string>
     <string name="permission_request_error">"申请权限失败"</string>
     <string name="permission_storage">登录需要读写内存权限，被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！</string>
     <string name="permission_image">我们需要拍照和读写内存权限的被您拒绝或者系统发生错误申请失败，请您到权限设置页面手动授权，否则功能无法正常使用！</string>
-    <string name="permission_cus_item_phone">如果您想直接拨打电话，请选择同意</string>
 
 
     <string name="header_hint_refresh_normal">下拉刷新数据</string>
@@ -46,11 +38,6 @@
     <string name="__picker_done">完成</string>
     <string name="__picker_done_with_count">完成(%1$d/%2$d)</string>
     <string name="__picker_image_index">%1$d/%2$d</string>
-    <string name="__picker_undo">撤消</string>
-    <string name="__picker_deleted_a_photo">删除了一张图片</string>
-    <string name="__picker_confirm_to_delete">确认删除？</string>
-    <string name="__picker_yes">确定</string>
-    <string name="__picker_cancel">取消</string>
     <string name="__picker_all_image">所有图片</string>
     <string name="__picker_over_max_count_tips">你最多可以选择%1$d张图片</string>
     <string name="__picker_image_count">%1$d张</string>
@@ -64,17 +51,6 @@
     <string name="ProjectMembers">项目成员</string>
     <string name="switchorganization">切换组织</string>
     <string name="fa_angle_right">{fa-angle-right}</string>
-    <string name="unified_title">交建统一登录平台</string>
-    <string name="check_standard">检查标准</string>
-    <string name="check_management">监管检查</string>
-    <string name="check_notice">整改通知</string>
     <string name="check_statistical">审核报表</string>
-    <string name="fr_work_statistical">任务统计</string>
-    <string name="fr_work_rectification">整改统计</string>
-    <string name="fr_work_ranking">标段排名</string>
-    <string name="fr_work_miss">任务管理</string>
-    <string name="fr_work_push">任务下发</string>
-    <string name="fr_work_photo">图纸标准</string>
-    <string name="fr_work_upload">主动任务</string>
 
 </resources>

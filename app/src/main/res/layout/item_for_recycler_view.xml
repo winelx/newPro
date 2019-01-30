@@ -58,7 +58,6 @@
         android:background="@drawable/hollow_round_gray" />
 
     <TextView
-        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/create_time"
