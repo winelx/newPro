@@ -32,7 +32,6 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/chaged_number"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -65,7 +64,6 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/chaged_organize_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -137,7 +135,6 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/chaged_release_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -178,7 +175,6 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/chaged_head_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -207,6 +203,14 @@
             android:paddingLeft="15dp"
             android:text="问题项"
             android:textSize="15dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp" />
 
         <LinearLayout
             android:id="@+id/chaged_add_problem"

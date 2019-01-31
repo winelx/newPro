@@ -54,34 +54,8 @@
         <item name="android:windowExitAnimation">@anim/dialog_iout</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Comment" parent="android:TextAppearance">
-        <item name="android:textSize">14sp</item>
-    </style>
-
     //网络请求dialog
 
-    <style name="CustomDialogs" parent="Theme.AppCompat.Dialog">
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="MyDialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowBackground">@drawable/wbs_dialog</item>
-    </style>
-
-    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
-        <!--<item name="android:colorBackground">#000000</item> 也可以设置背景色以及menu中的其他属性-->
-        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
-    </style>
-
-    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
-        <item name="overlapAnchor">false</item>  <!--设置不覆盖锚点-->
-    </style>
     //activity透明
 
     <style name="myTransparent" parent="@android:style/Theme.Translucent.NoTitleBar">
@@ -125,14 +99,6 @@
     </style>
     //推送pop
 
-    <style name="menu_item_text_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/popupwindow_menu_item_height</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:background">@color/writer</item>
-    </style>
-
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/gray</item>
@@ -144,17 +110,7 @@
         <item name="colorControlActivated">@color/green</item>
     </style>
 
-    <style name="Unfiled" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/gray</item>
-        <item name="colorControlActivated">@color/red</item>
-    </style>
-
     //仿抽屉弹窗的弹出样式
-
-    <style name="AnimationBottomFade">
-        <item name="android:windowEnterAnimation">@anim/out_righttoleft</item>
-        <item name="android:windowExitAnimation">@anim/in_lefttoright</item>
-    </style>
 
     <style name="mypopwindow_anim_style">
         <item name="android:windowEnterAnimation">@anim/popshow_anim</item>

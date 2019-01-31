@@ -13,7 +13,6 @@
     <color name="editext_text">#999797</color>
     <color name="persomal_text">#808080</color>
     <color name="view">#c2c2c2</color>
-    <color name="inter_background">#FFDFDF</color>
     <color name="inter_text">#543434</color>
     <color name="Orange">#f88c37</color>
 
@@ -22,43 +21,26 @@
     <color name="black">#050505</color>
     <color name="blue">#167fe1</color>
     <color name="gray">#cccccc</color>
-    <color name="colorc8c8c8">#c8c8c8</color>
     <color name="transparent">#00000000</color>
     <color name="transparents">#55000000</color>
 
 
     <color name="unfinish_gray">#a6a6a6</color>
     <color name="light_blue">#ccf0fd</color>
-    <color name="colorD9E6FD">#D9E6FD</color>
     <color name="color646464">#646464</color>
 
-    <color name="background">#F7F4F0</color>
     <color name="title_color">#333333</color>
     <color name="brighr_people">#306bb8</color>
 
     <color name="__picker_pager_bg">#CA000000</color>
-    <color name="__picker_selected_bg">#44000000</color>
-    <color name="__picker_black_40">#282828</color>
     <color name="__picker_common_primary">#f3f3f3</color>
 
 
     <color name="__picker_text_40">#282828</color>
     <color name="__picker_text_80">#505050</color>
-    <color name="__picker_text_120">#787878</color>
-    <color name="__picker_item_photo_border_selected">#ff99cc00</color>
-    <color name="__picker_item_photo_border_n">#33ffffff</color>
-
-    <color name="pdfback">#f8f5f6</color>
-    <color name="pdficon">#e98c90</color>
-
-    <color name="docback">#f1f6f7</color>
-    <color name="docicon">#5e8ed3</color>
-
-    <color name="xlsback">#f5f8f7</color>
-    <color name="slxicon">#67cd95</color>
 
     <color name="tab_tv_nor">#646464</color>
-    <color name="tab_tv_sel">#f27f19</color>]
+    ]
 
 
     <color name="graytext">#888888</color>

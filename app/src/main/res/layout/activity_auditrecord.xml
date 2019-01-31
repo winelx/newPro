@@ -59,7 +59,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/writer"

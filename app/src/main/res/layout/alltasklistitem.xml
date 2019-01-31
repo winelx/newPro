@@ -114,7 +114,6 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/inface_status_true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view"

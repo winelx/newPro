@@ -156,7 +156,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView infaceUptime;
         TextView infacePcontent;
         TextView infaceLoation;
-        TextView infaceImgaeText;
         RecyclerView taskcontent;
         SlantedTextView inface_item_message;
         RelativeLayout inter_rl;
@@ -177,7 +176,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             infaceUptime = itemView.findViewById(R.id.inface_uptime);
             infacePcontent = itemView.findViewById(R.id.inface_pcontent);
             infaceLoation = itemView.findViewById(R.id.inface_loation);
-            infaceImgaeText = itemView.findViewById(R.id.inface_imgae_text);
             taskcontent = itemView.findViewById(R.id.taskcontent);
             inface_item_message = itemView.findViewById(R.id.inface_item_message);
         }

@@ -7,7 +7,6 @@
     android:background="@color/writer">
 
     <LinearLayout
-        android:id="@+id/newaddcontent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -272,7 +271,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView15"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"

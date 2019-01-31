@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
  */
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener {
     private TextView chaged_number;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,8 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.chaged_release_lin).setOnClickListener(this);
         //整改组织
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
+        //
+        recycler = (RecyclerView) findViewById(R.id.recycler);
     }
 
     @Override

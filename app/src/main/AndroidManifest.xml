@@ -48,16 +48,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data
-            android:name="com.taobao.android.hotfix.IDSECRET"
-            android:value="24946371" />
-        <meta-data
-            android:name="com.taobao.android.hotfix.APPSECRET"
-            android:value="a4b113f61447349aab46a13bddb475ef" />
-        <meta-data
-            android:name="com.taobao.android.hotfix.RSASECRET"
-            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCCM29bg6t3LOmcXFofE0oivHnhTG2jWhB9aoWjnPw35d1qybYh7YecOFrEg1Oj2Sb6FnNOJuszJr03x1k15nZ80PrjjkpPVmVB0wo8MovNmeozF8gW2H76UNhZ7JzU2cHgHQwR3IYlXG8cgoE7BtRqCmj2jP14ByHe7RgOjDPRs9n9b7O+q/SlT2f9IM0fIPVP4We5tVwmoLoM0vBr3bFshiHGgetbGUYx2f10uRlmJHhQHfrIGDDi6T9sfXz65oJS4AHcwkHRJveoB9qVTv4M84gDT05g9PN/FcUCAaYe3lJ+ad6AgOx6Mj649Z1fbmc7fCZj0R6oU65YZa7XTRJBAgMBAAECggEAB0DcTEnajIoY/Zf7gU2uzJ6ZX57FYNtMneAIT+QX/Pk2S5OvLNaxvlc5X0c9qpwXWslTZSAv7CqVUf0uEB2lrjBqObEcnKzgeTlLkazzMuIHNQ93Gya2dDV6yA+xcP4smdKkcH5LjttGaV0v29z2im3ICSwzlrM3BNdKhszyuhTpgNuemsS1MLpyU9YXw6SGeRtORo0H3DtHLlIhJJh4c6w4hHm0CybJ1/vbWXzAJi/r9cNjYwiFcwgHLOV2rStPzn7Yoy+GQpHaagtkPQim8lSRmyrODGNOWNWfCfIMqS2BaBG6fS3sSpQd/y72ksFyLbEIlmugrrk20SVMAbu0/QKBgQDFwyH8NljtyIY0lFCgEt2gzo3M5P43RmLxAdibZfNNB5QU3ldanf3GHh18gk5jAByYBg0bxbfHzGgBWiuCWqKgvZKGMylAU2YRRkOmE5YyCLoO60wZnpH9MeHEGpdhYIb2DbcCFxCsQValIqSLMhK9sZA5v/U0HNjUcWCde6rKGwKBgQCoiwAiXWPtludq7EEp6UECEo5WMhc/JtcanjQTn1xClmbIfkXf+2I/3Xx2earBaVJCwbuG+18LXy761Xu6ol6ZBltbZ/TCPQbg633JeiglNSFtVSBcJukdsqpw+4hgbJJ/4Sh6vohWn+b9IiJjvm4tj5YUpT8ONc2fVC9ogyFa0wKBgHeq6WC93jgc1CDy8oq6f8Pz2Vh35OC7xdlCnbkDCyO8hz3NgRyDZ/G/fWY/T4GWqrbPSpVYoinTpcfTsWpSv//2VrjAMqELFkMzunG/fm5OW4/1j/ocuwh0a8IHuTyidWhkyi4ImP0zGGQav2i/ZxnEXZqkbpMXNZnv9V+2WpWrAoGAS8k9BTbTQTly08xqPMtK1QC9Chs6AsaXQLvUlOI6nSJ+EzdceivScP9KAQgSdSfDuorcpQSRJ07klBu8qB5sxQhruf1TvKeuWSLrC9anCJwMbNozU9yXRChbpbQlDZ6kfWYkSpU0PydluXtI1WsCpfADv0LSyLP+wt8a9jbIn8sCgYA9RDwyc4vpEcnet1oEAITy81+/MQDyJLjIohHC+IGa7xLU3g97Awy+3nzTindKhbDf2XpUYhhwqENIS9DJck07Q3odT5q56e1XFtzRsslns7WhlqKbBRdKKHNHHrWZo/NHNwBZZ8U3qQbQa3M/9jykD2WD7oOwOD5hSwTRfaCxXQ==" />
-        <!-- 声明service组件 -->
+          <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
