@@ -48,7 +48,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan"
         tools:ignore="GoogleAppIndexingWarning">
-          <!-- 声明service组件 -->
+
+        <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -370,6 +371,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".pzgc.activity.device.GradeActivity" />
         <activity android:name=".pzgc.activity.changed.ChangedNewActivity" />
+        <activity android:name=".pzgc.activity.changed.ChagedListActivity"></activity>
     </application>
 
 </manifest>

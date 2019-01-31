@@ -194,6 +194,7 @@ public class Utils {
         }
         return quarter;
     }
+
     /**
      * 给tablayout添加分割线，分割线保持上下内边距一定距离
      *
@@ -239,13 +240,14 @@ public class Utils {
     /**
      * 界面控件的margin的设置
      * 这里的值全都是px，对比正常dp，需要乘2
+     *
      * @param v 控件
      * @param l 左
      * @param t 上
      * @param r 右
      * @param b 下
      */
-    public  void setMargins(View v, int l, int t, int r, int b) {
+    public static void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             p.setMargins(l, t, r, b);

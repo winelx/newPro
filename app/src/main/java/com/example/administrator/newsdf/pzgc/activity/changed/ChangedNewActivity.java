@@ -1,15 +1,22 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.activity.mine.Text;
+import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,11 +29,18 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener {
     private TextView chaged_number;
     private RecyclerView recycler;
+    private List<String> list;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
+        mContext = this;
+        list = new ArrayList<>();
+        list.add("测试数据测试数据测试数据");
+        list.add("测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试");
+        list.add("测试数据测试数据测试数据");
         //返回
         findViewById(R.id.com_back).setOnClickListener(this);
         //下发
@@ -41,8 +55,12 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.chaged_release_lin).setOnClickListener(this);
         //整改组织
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
-        //
+        //问题项
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.addItemDecoration(new SimpleDividerItemDecoration(mContext));
+        ChangedNewAdapter adapter = new ChangedNewAdapter(R.layout.adapter_item_chaged_new, list);
+        recycler.setAdapter(adapter);
     }
 
     @Override
@@ -54,6 +72,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             case R.id.chaged_release_problem:
                 //下发
                 ToastUtils.showShortToast("下发");
+                startActivity(new Intent(mContext, ChagedListActivity.class));
                 break;
             case R.id.chaged_import_problem:
                 ToastUtils.showShortToast("导入问题项");

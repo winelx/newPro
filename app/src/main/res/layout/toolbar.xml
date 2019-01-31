@@ -40,9 +40,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
             android:layout_marginRight="15dp"
+            android:visibility="gone"
             android:background="@mipmap/toolbar_add"
             android:textSize="18sp"
-            android:visibility="gone" />
+           />
 
         <TextView
             android:id="@+id/com_button"
