@@ -13,20 +13,22 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
+
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
+import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;
 
 
 /**
- * @author lx
  * Created by donglua on 15/5/31.
  * 添加图片
  */
-public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> {
+public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.PhotoViewHolder> {
 
-    private ArrayList<String> photoPaths;
+    private ArrayList<photoBean> photoPaths;
     private LayoutInflater inflater;
     private Context mContext;
 
@@ -34,13 +36,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     final static int TYPE_PHOTO = 2;
 
     final static int MAX = 100;
+    private boolean lean = true;
 
-    public PhotosAdapter(Context mContext, ArrayList<String> photoPaths) {
+    public BasePhotoAdapter(Context mContext, ArrayList<photoBean> photoPaths) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
-
     }
+
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,36 +63,41 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+
         if (getItemViewType(position) == TYPE_PHOTO) {
+            //控制删除按钮
+            if (lean) {
+                holder.vSelected.setVisibility(View.VISIBLE);
+            } else {
+                holder.vSelected.setVisibility(View.GONE);
+            }
+            //加载图片
             Glide.with(mContext)
-                    .load(photoPaths.get(position))
+                    .load(photoPaths.get(position).getPhotopath())
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FileUtils.deleteFile(photoPaths.get(position));
-                    photoPaths.remove(position);
-                    notifyDataSetChanged();
+                    //删除图片
+                    mOnItemClickListener.delete(position);
                 }
             });
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<String> paths = new ArrayList<String>();
-                    ArrayList<String> imagepath = new ArrayList<String>();
-                    paths.addAll(photoPaths);
-                    PhotoPreview.builder().setPhotos(paths).setCurrentItem(position).setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
-                            .start((Activity) mContext);
+                    mOnItemClickListener.seePhoto(position);
                 }
             });
+
         } else {
+            //添加照片
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ReplysActivity reply = (ReplysActivity) mContext;
-                    reply.Cream();
+                    mOnItemClickListener.addlick(v, position);
                 }
+
             });
         }
     }
@@ -109,7 +117,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
     }
 
     public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivPhoto;
+        private RoundImageView ivPhoto;
         private ImageView vSelected;
         private ImageView img_add;
 
@@ -121,9 +129,32 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
         }
     }
 
-    public void getData(ArrayList<String> photoPaths) {
+    public void getData(ArrayList<photoBean> photoPaths) {
         this.photoPaths = photoPaths;
         notifyDataSetChanged();
     }
 
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void addlick(View view, int position);
+
+        void delete(int position);
+
+        void seePhoto(int position);
+
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public void addview(boolean lean) {
+        this.lean = lean;
+        notifyDataSetChanged();
+    }
 }

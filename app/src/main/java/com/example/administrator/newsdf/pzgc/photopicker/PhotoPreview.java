@@ -120,7 +120,9 @@ public class PhotoPreview {
          * @return
          */
         public PhotoPreviewBuilder setImagePath(ArrayList<String> imagesPath) {
-            mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
+            ArrayList<String> path = new ArrayList<>();
+
+            mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, path);
             return this;
         }
 

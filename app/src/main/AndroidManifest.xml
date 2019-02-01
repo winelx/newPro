@@ -371,7 +371,10 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".pzgc.activity.device.GradeActivity" />
         <activity android:name=".pzgc.activity.changed.ChangedNewActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedListActivity"></activity>
+        <activity android:name=".pzgc.activity.changed.ChagedListActivity" />
+        <activity android:name=".pzgc.activity.changed.ChagedProblemitemActivity" />
+        <activity android:name=".pzgc.activity.changed.ImportChageditemActivity" />
+        <activity android:name=".pzgc.activity.changed.ChagedNoticeDetailsActivity" />
     </application>
 
 </manifest>

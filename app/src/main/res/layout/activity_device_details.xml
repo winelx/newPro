@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/writer"
+    android:background="@color/back"
     android:orientation="vertical">
 
     <include
-        android:id="@+id/tooble"
-        layout="@layout/titlestyle" />
+        android:id="@+id/tooble" layout="@layout/titlestyle" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/device_details_recycler"
@@ -22,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
         android:background="@color/writer"
         android:orientation="horizontal">
 

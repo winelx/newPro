@@ -16,6 +16,7 @@
         <LinearLayout
             android:id="@+id/com_back"
             android:layout_width="50dp"
+
             android:layout_height="match_parent"
             android:layout_gravity="start|left"
             android:gravity="center"
@@ -43,22 +44,30 @@
             android:textColor="@color/writer"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/com_button"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/toolbar_menu"
+            android:layout_width="45dp"
+
             android:layout_height="match_parent"
             android:layout_gravity="center|end"
-            android:layout_marginRight="10dp"
-            android:gravity="center"
-            android:textColor="@color/writer"
-            android:textSize="15sp" />
+            android:gravity="center">
 
-        <ImageView
-            android:id="@+id/com_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_marginRight="15dp" />
+            <TextView
+                android:id="@+id/com_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/writer"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/com_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp" />
+        </LinearLayout>
+
 
     </android.support.v7.widget.Toolbar>
 

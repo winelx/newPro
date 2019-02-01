@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--menu弹出窗-->
+    <style name="popmenu_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/menu_show</item>
+        <item name="android:windowExitAnimation">@anim/meun_hide</item>
+    </style>
+</resources>

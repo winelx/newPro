@@ -76,10 +76,10 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_import_problem:
                 ToastUtils.showShortToast("导入问题项");
-                //
+                startActivity(new Intent(mContext,ImportChageditemActivity.class));
                 break;
             case R.id.chaged_add_problem:
-                ToastUtils.showShortToast("添加问题项");
+                startActivity(new Intent(mContext, ChagedProblemitemActivity.class));
                 break;
             case R.id.chaged_head_lin:
                 ToastUtils.showShortToast("整改负责人");

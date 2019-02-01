@@ -66,7 +66,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
     private DeviceDetailsUtils detailsUtils;
-    private int request = 101, request1 = 1011, request2 = 1004;
+    private int request = 101, request2 = 1004;
     private String checkId, id;
     //删除图片Id
     private ArrayList<String> detelefile = new ArrayList<>();
@@ -238,7 +238,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == request1 && resultCode == request2) {
+        } else if (requestCode == IMAGE_PICKER && resultCode == request2) {
             if (data != null) {
                 //获取返回的图片路径集合
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);

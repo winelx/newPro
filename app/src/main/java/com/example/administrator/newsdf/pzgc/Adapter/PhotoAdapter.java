@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -38,12 +39,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     final static int TYPE_PHOTO = 2;
 
     final static int MAX = 100;
-    private String status;
+    private String type;
+    private boolean lean = true;
 
-    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths, String status) {
+    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths, String tag) {
         this.photoPaths = photoPaths;
         this.mContext = mContext;
-        this.status = status;
+        this.type = tag;
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -66,9 +68,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
 
     @Override
-    public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
+    public void onBindViewHolder(final PhotoViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         if (getItemViewType(position) == TYPE_PHOTO) {
+            //控制删除按钮
+            if (lean) {
+                holder.vSelected.setVisibility(View.VISIBLE);
+            } else {
+                holder.vSelected.setVisibility(View.GONE);
+            }
             //加载图片
             Glide.with(mContext)
                     .load(photoPaths.get(position))
@@ -95,12 +103,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                             .start((Activity) mContext);
                 }
             });
+
         } else {
             //添加照片
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (status) {
+                    switch (type) {
                         case "Reply":
                             ReplyActivity reply = (ReplyActivity) mContext;
                             //调用相机
@@ -131,7 +140,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                             //调用相机
                             validation.showPopwindow();
                             break;
+                        case "other":
+                            mOnItemClickListener.addlick(v, position);
+                            break;
                         default:
+
                             break;
                     }
 
@@ -169,6 +182,25 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     public void getData(ArrayList<String> photoPaths) {
         this.photoPaths = photoPaths;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 内部接口
+     */
+
+    public interface OnItemClickListener {
+        void addlick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public void addview(boolean lean) {
+        this.lean = lean;
         notifyDataSetChanged();
     }
 }

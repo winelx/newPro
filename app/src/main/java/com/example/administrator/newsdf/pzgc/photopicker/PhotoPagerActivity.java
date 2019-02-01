@@ -141,12 +141,12 @@ public class PhotoPagerActivity extends BaseActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        int leang = imagepath.size();
-        if (leang != 0) {
+        if (imagepath.size()> 0) {
             picker_horizon.setVisibility(View.VISIBLE);
         } else {
             picker_horizon.setVisibility(View.GONE);
         }
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionBarTitle();
@@ -158,6 +158,7 @@ public class PhotoPagerActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (imagepath.size() == 0) {
+
                 } else {
                     Title = imagepath.get(position);
                     picker_title.setText(imagepath.get(position));
