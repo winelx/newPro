@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class ChagedImportitemActivity extends BaseActivity implements View.OnClickListener {
     private TextView title;
     private ImportChageditemAdapter adapter;
-    private RecyclerView recycler_list;
+    private RecyclerView recyclerList;
     private ArrayList<String> list;
     private EmptyUtils emptyUtils;
     private Context mContext;
@@ -40,18 +41,18 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.com_back).setOnClickListener(this);
         title = (TextView) findViewById(R.id.com_title);
         title.setText("导入问题项");
-        recycler_list = (RecyclerView) findViewById(R.id.recycler_list);
+        recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         for (int i = 0; i < 10; i++) {
             list.add("1212");
         }
-        recycler_list.setLayoutManager(new LinearLayoutManager(this));
+        recyclerList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImportChageditemAdapter(R.layout.adapter_item_improtchageditem, list);
         adapter.setEmptyView(emptyUtils.init());
-        recycler_list.setAdapter(adapter);
+        recyclerList.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                startActivity(new Intent(mContext, CheckitemActivity.class));
             }
         });
     }

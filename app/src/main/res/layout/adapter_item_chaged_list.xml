@@ -12,7 +12,7 @@
 
 
     <com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout
-        android:id="@+id/swipmenulayout"
+        android:id="@+id/swipmenu"
         android:layout_width="match_parent"
         android:layout_height="150dp">
 

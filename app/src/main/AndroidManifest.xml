@@ -253,12 +253,6 @@
             android:name=".pzgc.fragment.homepage.CollectionlistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".zlaq.activity.UnifiedLoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".zlaq.activity.UnifiedHomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".pzgc.activity.audit.AuditActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -376,6 +370,7 @@
         <activity android:name=".pzgc.activity.changed.ChagedImportitemActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedNoticeDetailsActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedNoticeItemDetailsActivity" />
+        <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
     </application>
 
 </manifest>

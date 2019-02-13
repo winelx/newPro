@@ -88,7 +88,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public TypeContent(View itemView) {
             super(itemView);
             infaceItemMessage = itemView.findViewById(R.id.inface_item_message);
-            swipmenulayout = itemView.findViewById(R.id.swipmenulayout);
+            swipmenulayout = itemView.findViewById(R.id.swipmenu);
             chageeListContent = itemView.findViewById(R.id.chagee_list_content);
             item_delete = itemView.findViewById(R.id.item_delete);
         }
