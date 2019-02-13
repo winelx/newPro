@@ -14,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyUtils;
 import com.example.baselibrary.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -48,7 +50,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private Context mContext;
     private PullDownMenu pullDownMenu;
 
-    String[] strings = {"全部", "未处理", "已处理"};
+    String[] strings = {"全部", "保存", "未处理", "已处理"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,8 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.com_back).setOnClickListener(this);
         //设置列表参数
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
-        recyclerList.setAdapter(adapter = new ChagedListAdapter(R.layout.adapter_item_chaged_list, list));
-        adapter.setEmptyView(emptyUtils.init());
+        adapter = new ChagedListAdapter(list, mContext);
+        recyclerList.setAdapter(adapter);
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(true);
@@ -97,7 +99,21 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                 refreshlayout.finishLoadmore();
             }
         });
-        emptyUtils.noData("暂无数据，下拉刷新");
+        adapter.setOnDelListener(new ChagedListAdapter.onSwipeListener() {
+            @Override
+            public void onDel(int pos, SwipeMenuLayout layout) {
+                /*删除按钮*/
+                list.remove(pos);
+                adapter.setNewData(list);
+            }
+
+            @Override
+            public void onClick(int pos) {
+                /*点击按钮*/
+                startActivity(new Intent(mContext, ChagedNoticeDetailsActivity.class));
+            }
+
+        });
     }
 
     @Override
@@ -115,7 +131,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                         switch (string) {
                             case "全部":
                                 ToastUtils.showShortToast("全部");
-                                startActivity(new Intent(mContext,ChagedNoticeDetailsActivity.class));
                                 break;
                             case "未处理":
                                 ToastUtils.showShortToast("未处理");

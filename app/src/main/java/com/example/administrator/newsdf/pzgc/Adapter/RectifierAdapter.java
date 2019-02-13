@@ -99,7 +99,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //拿到截取后缀后的字段
             urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
-            urlpath = urlpath + "_min" + pas;
+//            urlpath = urlpath + "_min" + pas;
              RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()

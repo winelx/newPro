@@ -2,11 +2,14 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -30,10 +33,9 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private ChagedNoticeDetailsAdapter adapter;
     private Context mContext;
     private ArrayList<Object> list;
-    private LinearLayout device_details_function;
-
+    private LinearLayout deviceDetailsFunction;
     private TextView device_details_assign;
-    private TextView device_details_up;
+    private TextView device_details_up, titleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +44,30 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         mContext = this;
         list = new ArrayList<>();
         list.add(new ChagedNoticeDetails("111"));
-        list.add(new ChagedNoticeDetailslsit("111"));
-        list.add(new ChagedNoticeDetailslsit("111"));
         for (int i = 0; i < 20; i++) {
-            list.add(new ChagedNoticeDetailslsit("111"));
+            list.add(new ChagedNoticeDetailslsit("111" + i));
         }
+        titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText("三独无标");
         findViewById(R.id.checklistback).setOnClickListener(this);
         //指派
         device_details_assign = (TextView) findViewById(R.id.device_details_assign);
         //确认接收
         device_details_up = (TextView) findViewById(R.id.device_details_assign);
-        device_details_function = (LinearLayout) findViewById(R.id.device_details_function);
+        deviceDetailsFunction = (LinearLayout) findViewById(R.id.device_details_function);
         recycler = (RecyclerView) findViewById(R.id.device_details_recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChagedNoticeDetailsAdapter(mContext, list);
         recycler.setAdapter(adapter);
-        device_details_function.setVisibility(View.VISIBLE);
-        Utils.setMargins(recycler, 0, 0, 0, 90);
+        deviceDetailsFunction.setVisibility(View.GONE);
+        Utils.setMargins(recycler, 0, 0, 0, 140);
+        adapter.setOnClickListener(new ChagedNoticeDetailsAdapter.OnClickListener() {
+            @Override
+            public void setproblem(int position) {
+                startActivity(new Intent(mContext, ChagedNoticeItemDetailsActivity.class));
+            }
+        });
+
     }
 
     @Override

@@ -1,108 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/back2"
+    android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="18"
+            android:maxLines="1"
+            android:text="编号：测试数检测试数检测室数测试数检测室数测试数检测室数测室数"
+            android:textColor="#000000"
+            android:textSize="17sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxEms="18"
-                android:maxLines="1"
-                android:text="编号：测试数检测试数检测室数测试数检测室数测试数检测室数测室数"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="下发人：0000000"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="2"
-                    android:text="下发日期：2019-01-31"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
+                android:layout_weight="1"
+                android:text="下发人：0000000"
+                android:textSize="13sp" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="整改组织：三独无标"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="整改负责人：测试人员"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="下发组织：贵州路桥集团有限公司"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="下一节点处理人：测试测试人员"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="完成比例：0/4"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"
+                android:text="下发日期：2019-01-31"
+                android:textSize="13sp" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/problem_item"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:background="@color/back2"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="问题项" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="整改组织：三独无标"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="整改负责人：测试人员"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="下发组织：贵州路桥集团有限公司"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="下一节点处理人：测试测试人员"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="完成比例：0/4"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/problem_item"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
 
-</android.support.constraint.ConstraintLayout>
+        android:background="@color/back2"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="问题项" />
+
+
+</LinearLayout>

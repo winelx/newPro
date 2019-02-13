@@ -11,113 +11,129 @@
     app:cardElevation="1dp">
 
 
-    <RelativeLayout
+    <com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout
+        android:id="@+id/swipmenulayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp">
 
-        <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
-            android:id="@+id/inface_item_message"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            app:slantedBackgroundColor="@color/finish_green"
-            app:slantedLength="28dp"
-            app:slantedMode="right_triangle"
-            app:slantedTextColor="@color/writer"
-            app:slantedTextSize="10sp" />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:layout_height="match_parent">
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:enabled="true"
-                android:gravity="start"
-                android:maxEms="17"
-                android:maxLines="1"
-                android:text="编号：XXXXXX"
-                android:textColor="#000000"
-                android:textSize="17sp" />
+            <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+                android:id="@+id/inface_item_message"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                app:slantedBackgroundColor="@color/finish_green"
+                app:slantedLength="28dp"
+                app:slantedMode="right_triangle"
+                app:slantedTextColor="@color/writer"
+                app:slantedTextSize="10sp" />
 
             <LinearLayout
+                android:id="@+id/chagee_list_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:enabled="true"
                     android:gravity="start"
-                    android:text="下发人：测试人员"
-                    android:textSize="13sp" />
+                    android:maxEms="17"
+                    android:maxLines="1"
+                    android:text="编号：XXXXXX"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="下发人：测试人员"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="下发日期：2019-1-12" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="下发日期：2019-1-12" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="整改组织：测试公司项目"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="完成比例：0/2"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/back2"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="整改负责人：测试人员"
+                        android:textSize="13sp" />
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="下节点负责人：测试人员"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
             </LinearLayout>
+        </RelativeLayout>
+        <!--侧滑内容-->
+        <Button
+            android:id="@+id/item_delete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:text="删除"
+            android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="整改组织：测试公司项目"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="完成比例：0/2"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@color/back2"
-                android:paddingLeft="15dp"
-                android:paddingRight="15sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp">
-
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="整改负责人：测试人员"
-                    android:textSize="13sp" />
-
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="下节点负责人：测试人员"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </RelativeLayout>
+    </com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout>
 
 
 </android.support.v7.widget.CardView>

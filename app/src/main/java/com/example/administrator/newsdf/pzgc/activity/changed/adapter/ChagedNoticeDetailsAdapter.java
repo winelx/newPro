@@ -1,19 +1,25 @@
 package com.example.administrator.newsdf.pzgc.activity.changed.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.Adapter.IssuedTaskDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetailsActivity;
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
-import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsTop;
-import com.example.administrator.newsdf.pzgc.bean.DeviceReflex;
+import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -38,18 +44,16 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = null;
         switch (viewType) {
             case TYPE_HEARD:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_item_noticedetails, parent, false);
-                break;
+                return new ChagedNoticeDetailsAdapter.TypeContent(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.adapter_item_noticedetails, parent, false));
             case TYPE_DATA:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_item_noticedetailslist, parent, false);
-                break;
+                return new ChagedNoticeDetailsAdapter.TypeCheckItem(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.adapter_item_noticedetailslist, parent, false));
             default:
-                break;
+                return null;
         }
-        return new CheckPhotoAdapter.PhotoViewHolder(itemView);
     }
 
     @Override
@@ -58,10 +62,9 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         if (holder instanceof TypeContent) {
             bindTop((TypeContent) holder, obj, position);
         } else if (holder instanceof TypeCheckItem) {
-            bindContet((TypeCheckItem) holder, obj, position);
+            bindContet((TypeCheckItem) holder, list, position);
         }
     }
-
 
     private void bindTop(TypeContent holder, Object obj, int position) {
         if (list.size() == 1) {
@@ -72,7 +75,16 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    private void bindContet(TypeCheckItem holder, Object obj, int position) {
+    private void bindContet(TypeCheckItem holder, ArrayList<Object> list, final int position) {
+        Object obj = list.get(position);
+        ChagedNoticeDetailslsit top = (ChagedNoticeDetailslsit) obj;
+        holder.notice_list_content.setText(top.getStr().toString());
+        holder.item_problem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.setproblem(position);
+            }
+        });
     }
 
 
@@ -89,7 +101,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list == null ? 0 : list.size();
     }
 
     class TypeContent extends RecyclerView.ViewHolder {
@@ -102,8 +114,23 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     class TypeCheckItem extends RecyclerView.ViewHolder {
+        private LinearLayout item_problem;
+        private TextView notice_list_content;
+
         public TypeCheckItem(View itemView) {
             super(itemView);
+            item_problem = itemView.findViewById(R.id.item_problem);
+            notice_list_content = itemView.findViewById(R.id.notice_list_content);
         }
+    }
+
+    public interface OnClickListener {
+        void setproblem(int position);
+    }
+
+    private OnClickListener onClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }

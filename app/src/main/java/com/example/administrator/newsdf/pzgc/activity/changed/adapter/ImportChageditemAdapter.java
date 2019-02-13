@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.changed.ImportChageditemActivity;
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedImportitemActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * 版本：1.0
  * 创建日期：{2019/2/1 0001}
  * 描述：导入问题项
- * {@link ImportChageditemActivity}
+ * {@link ChagedImportitemActivity}
  */
 public class ImportChageditemAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     public ImportChageditemAdapter(int layoutResId, @Nullable List<String> data) {

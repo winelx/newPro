@@ -22,13 +22,9 @@ android {
 }
 
 dependencies {
-
     //权限
-
     //compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
-
     //工具类库
-
     //轮播图
     compile 'me.weyye.hipermission:library:1.0.7'
     //图片
@@ -43,7 +39,6 @@ dependencies {
     //noinspection GradleDependency,GradleCompatible
     compile 'com.android.support:recyclerview-v7:24.2.1'
     //字体图标库
-
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
     //noinspection GradleDependency,GradleCompatible
     compile 'com.android.support:design:25.3.1'

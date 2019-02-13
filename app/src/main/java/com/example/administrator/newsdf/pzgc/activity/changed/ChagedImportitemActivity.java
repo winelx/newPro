@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * 描述：导入整改项
  * {@link }
  */
-public class ImportChageditemActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedImportitemActivity extends BaseActivity implements View.OnClickListener {
     private TextView title;
     private ImportChageditemAdapter adapter;
     private RecyclerView recycler_list;
