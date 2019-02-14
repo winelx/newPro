@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
+import com.example.administrator.newsdf.pzgc.bean.ChagedList;
+import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
+import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
-import com.example.baselibrary.EmptyUtils;
 import com.example.baselibrary.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -27,7 +29,13 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
@@ -42,22 +50,29 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private TextView title;
     private ImageView toolbarImage;
     private ChagedListAdapter adapter;
-    private ArrayList<String> list;
-    private EmptyUtils emptyUtils;
+    private ArrayList<ChagedList> list;
     private Context mContext;
     private PullDownMenu pullDownMenu;
-
+    private ChagedUtils chagedUtils;
     String[] strings = {"全部", "保存", "未处理", "已处理"};
+    private boolean isAll;
+    private String orgId;
+    private int page = 1;
+    private int status = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
         mContext = this;
+        Intent intent = getIntent();
+        isAll = intent.getBooleanExtra("isAll", false);
+        orgId = intent.getStringExtra("orgid");
+        chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
-        emptyUtils = new EmptyUtils(mContext);
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
+        title.setText(intent.getStringExtra("orgname"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         toolbarImage = (ImageView) findViewById(R.id.com_img);
         toolbarImage.setImageResource(R.mipmap.meun);
@@ -79,9 +94,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                for (int i = 0; i < 10; i++) {
-                    list.add("ceshi");
-                }
                 adapter.setNewData(list);
                 //关闭刷新
                 refreshlayout.finishRefresh();
@@ -110,6 +122,20 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                 startActivity(new Intent(mContext, ChagedNoticeDetailsActivity.class));
             }
 
+        });
+        chagedUtils.getcnflist(isAll, status, orgId, page, new ChagedUtils.CallBack() {
+
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                ArrayList<ChagedList> data = (ArrayList<ChagedList>) map.get("list");
+                list.addAll(data);
+                adapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String str) {
+
+            }
         });
     }
 
@@ -145,4 +171,5 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
+
 }

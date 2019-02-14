@@ -64,6 +64,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/chaged_organize_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
@@ -169,6 +170,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/chaged_head_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"

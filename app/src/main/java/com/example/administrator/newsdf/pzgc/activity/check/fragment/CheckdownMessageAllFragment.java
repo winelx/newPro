@@ -100,7 +100,7 @@ public class CheckdownMessageAllFragment extends Fragment {
     }
 
     public void getdata() {
-        OkGo.get(Requests.GET_ALL_NOTICE_ORG_APP)
+        OkGo.get(Requests.GETORGINFOBYCNF)
                 .params("isAll", true)
                 .execute(new StringCallback() {
                     @Override

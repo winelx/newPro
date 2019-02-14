@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
@@ -46,9 +47,9 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
  * description: 我的检查通知
  *
  * @author lx
- *         date: 2018/8/8 0008 上午 10:09
- *         update: 2018/8/8 0008
- *         version:
+ * date: 2018/8/8 0008 上午 10:09
+ * update: 2018/8/8 0008
+ * version:
  */
 public class CheckdownMessageMeFragment extends Fragment {
     private View view;
@@ -92,10 +93,10 @@ public class CheckdownMessageMeFragment extends Fragment {
         mAdapter.setOnItemClickListener(new CheckMessageMineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(mContext, ChecknoticeMessagelistActivity.class);
-                intent.putExtra("id", mData.get(position).getId());
+                Intent intent = new Intent(mContext, ChagedListActivity.class);
+                intent.putExtra("orgid", mData.get(position).getId());
                 intent.putExtra("orgName", mData.get(position).getOrgname());
-                intent.putExtra("status", false);
+                intent.putExtra("isAll", false);
                 mContext.startActivity(intent);
             }
         });
@@ -116,7 +117,7 @@ public class CheckdownMessageMeFragment extends Fragment {
     }
 
     public void getdata() {
-        OkGo.get(Requests.GET_ALL_NOTICE_ORG_APP)
+        OkGo.get(Requests.GETORGINFOBYCNF)
                 .params("isAll", false)
                 .execute(new StringCallback() {
                     @Override

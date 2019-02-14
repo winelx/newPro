@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
+import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 
@@ -24,13 +24,13 @@ import java.util.ArrayList;
  * {@link  ChagedListActivity}
  */
 public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<String> list;
+    private ArrayList<ChagedList> list;
     private Context mContext;
 
     private static final int TYPE_HEARD = 1;
     private static final int TYPE_DATA = 2;
 
-    public ChagedListAdapter(ArrayList<String> list, Context mContext) {
+    public ChagedListAdapter(ArrayList<ChagedList> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -48,7 +48,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    private void bindcontent(final TypeContent holder, ArrayList<String> list, final int position) {
+    private void bindcontent(final TypeContent holder, ArrayList<ChagedList> list, final int position) {
         if (position == 4) {
             //setIos 添加阻尼效果，//setLeftSwipe是否开启侧滑
             holder.swipmenulayout.setIos(true).setLeftSwipe(false);
@@ -103,7 +103,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public void setNewData(ArrayList<String> data) {
+    public void setNewData(ArrayList<ChagedList> data) {
         this.list = data;
         notifyDataSetChanged();
     }

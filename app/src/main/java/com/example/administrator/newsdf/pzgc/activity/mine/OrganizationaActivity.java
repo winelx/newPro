@@ -211,7 +211,7 @@ public class OrganizationaActivity extends BaseActivity {
      * 切换组织
      */
     public void member(final String orgid, final String name, String type) {
-        if (data.equals("Rectifi")) {
+        if ("Rectifi".equals(data)) {
             if (type.contains("5")) {
                 Intent intent = new Intent();
                 //回传数据到主Activity
@@ -219,6 +219,8 @@ public class OrganizationaActivity extends BaseActivity {
                 intent.putExtra("name", name);
                 setResult(2, intent);
                 finish();
+            }else {
+                ToastUtils.showShortToast("");
             }
         } else {
             OkGo.post(Requests.Swatch)

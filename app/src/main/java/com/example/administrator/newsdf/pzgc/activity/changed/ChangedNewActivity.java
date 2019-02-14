@@ -32,7 +32,7 @@ import java.util.List;
  * {@link }
  */
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener {
-    private TextView chagedNumber, comTitle, chaged_release_people, chaged_release_org;
+    private TextView chagedNumber, comTitle, chagedReleasePeople, chagedReleaseOrg, chagedOrganizeText, chaged_head_text;
     private RecyclerView recycler;
     private List<String> list;
     private Context mContext;
@@ -41,6 +41,8 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private TextView comButton;
     public boolean STATUS = true;
     public static final String KEEP = "保存";
+    private String orgName, orgId;
+    private String userName, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +52,16 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         list = new ArrayList<>();
         problemItemLin = (LinearLayout) findViewById(R.id.problem_item_lin);
         problemItemLin.setVisibility(View.GONE);
+        //整改组织
+        chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
+        //整改负责人
+        chaged_head_text = (TextView) findViewById(R.id.chaged_head_text);
         //下发人
-        chaged_release_people = (TextView) findViewById(R.id.chaged_release_people);
-        chaged_release_people.setText(SPUtils.getString(mContext, "staffName", ""));
+        chagedReleasePeople = (TextView) findViewById(R.id.chaged_release_people);
+        chagedReleasePeople.setText(SPUtils.getString(mContext, "staffName", ""));
         //下发组织
-        chaged_release_org = (TextView) findViewById(R.id.chaged_release_org);
-        chaged_release_org.setText(SPUtils.getString(mContext, "username", ""));
+        chagedReleaseOrg = (TextView) findViewById(R.id.chaged_release_org);
+        chagedReleaseOrg.setText(SPUtils.getString(mContext, "username", ""));
         //标题
         comTitle = (TextView) findViewById(R.id.com_title);
         comTitle.setText("新增整改");
@@ -73,8 +79,6 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.chaged_add_problem).setOnClickListener(this);
         //整改负责人
         findViewById(R.id.chaged_head_lin).setOnClickListener(this);
-        //下发人
-        findViewById(R.id.chaged_release_lin).setOnClickListener(this);
         //整改组织
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
         //问题项
@@ -95,19 +99,21 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.com_back:
+                //后退
                 finish();
                 break;
             case R.id.chaged_release_problem:
+                //下发
                 if (KEEP.equals(comButton.getText().toString())) {
 
                 } else {
-                    //下发
+
                     ToastUtils.showShortToast("下发");
                 }
-
                 startActivity(new Intent(mContext, ChagedListActivity.class));
                 break;
             case R.id.chaged_import_problem:
+                //导入
                 if (STATUS) {
                     ToastUtils.showShortToast("导入问题项");
                     startActivity(new Intent(mContext, ChagedImportitemActivity.class));
@@ -116,28 +122,27 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.chaged_add_problem:
-                startActivity(new Intent(mContext, ChagedProblemitemActivity.class));
+                //添加整改问题项
+                Intent intent = new Intent(mContext, ChagedProblemitemActivity.class);
+                intent.putExtra("orgname", orgName);
+                intent.putExtra("orgid", orgId);
+                startActivity(intent);
                 break;
             case R.id.chaged_head_lin:
+                //选择联系人
                 if (STATUS) {
                     Intent intent1 = new Intent(mContext, CheckuserActivity.class);
-                    intent1.putExtra("orgId", "");
+                    intent1.putExtra("orgId", orgId);
                     startActivityForResult(intent1, 5);
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
                 break;
-            case R.id.chaged_release_lin:
-                if (STATUS) {
-                    ToastUtils.showShortToast("下发人");
-                } else {
-                    ToastUtils.showShortToast("不是编辑状态无法操作");
-                }
-                break;
             case R.id.chaged_organize_lin:
+                //整改组织
                 if (STATUS) {
                     Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
-                    intent12.putExtra("title", "选择标段");
+                    intent12.putExtra("title", "整改组织");
                     intent12.putExtra("data", "Rectifi");
                     startActivityForResult(intent12, 3);
                 } else {
@@ -145,6 +150,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.com_button:
+                /*菜单*/
                 if (KEEP.equals(comButton.getText().toString())) {
                     comButton.setText("编辑");
                     STATUS = false;
@@ -164,13 +170,13 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5 && resultCode == 2) {
             //选择负责人
-//            userId = data.getStringExtra("id");
-//            userName = data.getStringExtra("name");
-//            check_rectifi_font.setText(userName);
+            userId = data.getStringExtra("id");
+            userName = data.getStringExtra("name");
+            chaged_head_text.setText(userName);
         } else if (requestCode == 3 && resultCode == 2) {
-            /*OrgId = data.getStringExtra("id");
+            orgId = data.getStringExtra("id");
             orgName = data.getStringExtra("name");
-            checkRectifiWbs.setText(orgName);*/
+            chagedOrganizeText.setText(orgName);
         }
     }
 }

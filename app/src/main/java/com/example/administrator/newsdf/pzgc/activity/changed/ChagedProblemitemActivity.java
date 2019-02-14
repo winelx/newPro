@@ -48,8 +48,7 @@ import java.util.List;
 public class ChagedProblemitemActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView photoRecycler;
     private BasePhotoAdapter adapter;
-
-    private TextView menutext, comTitle, importPosition, chagedOrganizeText;
+    private TextView menutext, comTitle, importPosition, chagedOrganizeText, violation_standard_text;
     private EditText exitextPosition, editProblem;
     private LinearLayout chagedOrganizeLin, violationStandard;
     private Context mContext;
@@ -60,17 +59,25 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private boolean status = true;
     public static final String KEEP = "保存";
     private DialogUtils dialogUtils;
+    private String orgName, orgId;
+    //整改部位
+    private String positionid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_problemitem);
+        Intent intent = getIntent();
+        orgName = intent.getStringExtra("orgname");
+        orgId = intent.getStringExtra("orgid");
         mContext = this;
         photolist = new ArrayList<>();
         dialogUtils = new DialogUtils();
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
         popcamerautils = new PopCameraUtils();
+        /*违反标准*/
+        violation_standard_text = (TextView) findViewById(R.id.violation_standard_text);
         /*整改部位*/
         exitextPosition = (EditText) findViewById(R.id.exitext_position);
         /*存在问题*/
@@ -227,10 +234,10 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 //导入
                 if (status) {
                     //选择标段
-                        Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
-//                        intent1.putExtra("orgId", OrgId);
-//                        intent1.putExtra("name", orgName);
-                        startActivityForResult(intent1, 4);
+                    Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
+                    intent1.putExtra("orgId", orgId);
+                    intent1.putExtra("name", orgName);
+                    startActivityForResult(intent1, 4);
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
@@ -300,7 +307,14 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 }
             }
         } else if (requestCode == 1 && resultCode == 2) {
+            //违法标准
+            violation_standard_text.setText(data.getStringExtra("content"));
 
+        } else if (requestCode == 4 && resultCode == 3) {
+            //整改部位
+            positionid = data.getStringExtra("id");
+            exitextPosition.setText(data.getStringExtra("name"));
+            /*   intent.putExtra("title", node.getTitle());*/
         }
     }
 

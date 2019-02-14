@@ -6,7 +6,7 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-    //public static final String networks = "http://192.168.20.36:8080/";
+   public static final String networks = "http://192.168.20.36:8080/";
 
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
@@ -15,7 +15,7 @@ public class Requests {
     // public static final String networks = "http://192.168.20.81:8080/baseframe/";
     //外
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
- public static final String networks = "http://120.79.142.15/pzgc/";
+ //public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -481,4 +481,15 @@ public class Requests {
      * 特种设备操作记录
      */
     public static final String GETOPERHIS = networks + "iface/mobile/appcheck/getOperHis";
+
+    /*新的整改通知*/
+   /**
+    *  获取“我的”、“全部”组织树
+    */
+   public static final String GETORGINFOBYCNF = networks + "iface/mobile/newcheck/getOrgInfoBycnf";
+ /**
+  * 获取列表数据
+  */
+ public static final String GETCNFLIST = networks + "/iface/mobile/newcheck/getCNFList";
+
 }
