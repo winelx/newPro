@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="match_parent">
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,8 @@
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/back2">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,6 +53,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/import_position"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@mipmap/check_import"
@@ -62,6 +64,7 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/exitext_position"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -116,6 +119,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/violation_standard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
@@ -187,6 +191,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:id="@+id/edit_problem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -203,7 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:background="@color/white"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -221,8 +227,18 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="3dp"
                         android:paddingRight="10dp" />
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/check_item_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="删除该项问题"
+                    android:textColor="@color/red"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

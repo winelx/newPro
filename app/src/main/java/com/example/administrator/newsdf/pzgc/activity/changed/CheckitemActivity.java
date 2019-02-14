@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.CheckitemAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
+import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private CheckitemAdapter mAdapter;
     private ArrayList<Object> list;
     private Context mContext;
+    private TextView com_button;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,15 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         mContext = this;
         list = new ArrayList<>();
         findViewById(R.id.com_back).setOnClickListener(this);
+        com_button = (TextView) findViewById(R.id.com_button);
+        com_button.setOnClickListener(this);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
+        //是否启用下拉刷新功能
+        refreshLayout.setEnableRefresh(true);
+        //是否启用上拉加载功能
+        refreshLayout.setEnableLoadmore(false);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -48,15 +60,38 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         list.add(new Checkitem("测试数据", false));
         list.add(new Checkitem("测试数据", false));
         list.add("标题");
-        list.add(new Checkitem("测试数据", true));
-        list.add(new Checkitem("测试数据", true));
+        list.add(new Checkitem("测试数据", false));
+        list.add(new Checkitem("测试数据", false));
         list.add(new Checkitem("测试数据", false));
         list.add("标题");
-        list.add(new Checkitem("测试数据", true));
+        list.add(new Checkitem("测试数据", false));
         list.add(new Checkitem("测试数据", false));
         list.add(new Checkitem("测试数据", false));
         mAdapter = new CheckitemAdapter(list);
         recyclerView.setAdapter(mAdapter);
+        mAdapter.setItemOnclick(new CheckitemAdapter.ItemClickListener() {
+            @Override
+            public void Onclick(String str, int position) {
+                Checkitem item = (Checkitem) list.get(position);
+                item.setLeam(true);
+                mAdapter.setNewData(list);
+                com_button.setText("确定");
+                count++;
+                LogUtil.i("count",count);
+            }
+
+            @Override
+            public void ondelete(String str, int position) {
+                Checkitem item = (Checkitem) list.get(position);
+                item.setLeam(false);
+                mAdapter.setNewData(list);
+                count--;
+                LogUtil.i("count",count);
+                if (count == 0) {
+                    com_button.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -64,6 +99,21 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.com_back:
                 finish();
+                break;
+            case R.id.com_button:
+                ArrayList<String> data = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    Object obj = list.get(i);
+                    if (obj instanceof Checkitem) {
+                        Checkitem item = (Checkitem) obj;
+                        if (item.isLeam()) {
+                            data.add("第" + i + "个");
+                        }
+                    }
+                }
+                for (int i = 0; i < data.size(); i++) {
+                    LogUtil.i("选择数据", data.get(i));
+                }
                 break;
             default:
                 break;

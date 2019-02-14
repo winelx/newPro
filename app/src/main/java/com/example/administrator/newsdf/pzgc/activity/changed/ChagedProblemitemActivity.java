@@ -3,21 +3,23 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
-import com.example.administrator.newsdf.pzgc.activity.mine.Text;
-import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -38,18 +40,21 @@ import java.util.List;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/1 0001}
- * 描述：整改通知单问题项
+ * 描述：(添加)整改通知单问题项
  * {@link }
  */
 public class ChagedProblemitemActivity extends BaseActivity implements View.OnClickListener {
-    private RecyclerView photo_recycler;
+    private RecyclerView photoRecycler;
     private BasePhotoAdapter adapter;
-    private TextView menutext, com_title;
+    private TextView menutext, comTitle, import_position;
+    private EditText exitext_position, edit_problem;
+    private LinearLayout chaged_organize_lin, violation_standard;
     private Context mContext;
     private ArrayList<photoBean> photolist;
     private PopCameraUtils PopCameraUtils;
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
+    private boolean status = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +65,27 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
         PopCameraUtils = new PopCameraUtils();
+
+        exitext_position = (EditText) findViewById(R.id.exitext_position);
+        edit_problem = (EditText) findViewById(R.id.edit_problem);
+        findViewById(R.id.import_position).setOnClickListener(this);
+        findViewById(R.id.check_item_delete).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
+        findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
+        findViewById(R.id.violation_standard).setOnClickListener(this);
         menutext = (TextView) findViewById(R.id.com_button);
         menutext.setText("保存");
-        com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("问题项");
-        photo_recycler = (RecyclerView) findViewById(R.id.photo_recycler);
-
+        comTitle = (TextView) findViewById(R.id.com_title);
+        comTitle.setText("问题项");
+        photoRecycler = (RecyclerView) findViewById(R.id.photo_recycler);
         adapter = new BasePhotoAdapter(mContext, photolist);
-        photo_recycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
-        photo_recycler.setAdapter(adapter);
+        photoRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        photoRecycler.setAdapter(adapter);
         adapter.setOnItemClickListener(new BasePhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
                 //添加图片
-                ToastUtils.showShortToast("添加图片");
                 //相机相册选择弹窗帮助类
                 //展示弹出窗
                 PopCameraUtils.showPopwindow(ChagedProblemitemActivity.this, new PopCameraUtils.CameraCallback() {
@@ -156,6 +165,66 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.toolbar_menu:
+                String str = menutext.getText().toString();
+                if ("保存".equals(str)) {
+                    status=false;
+                    menutext.setText("编辑");
+                    adapter.addview(false);
+                    statusclose();
+                } else {
+                    status=true;
+                    menutext.setText("保存");
+                    adapter.addview(true);
+                    statusopen();
+                }
+
+                break;
+            case R.id.check_item_delete:
+                AlertDialog alertDialog2 = new AlertDialog.Builder(this)
+                        .setTitle("删除")
+                        .setMessage("是否删除该项问题")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            //添加"Yes"按钮
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ToastUtils.showShortToast("确定");
+                                dialogInterface.dismiss();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            //添加取消
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog2.show();
+                break;
+            case R.id.import_position:
+                //导入
+                if (status) {
+
+                } else {
+                    ToastUtils.showShortToast("编辑状态无法操作");
+                }
+                break;
+            case R.id.chaged_organize_lin:
+                //整改期限
+                if (status) {
+
+                } else {
+                    ToastUtils.showShortToast("编辑状态无法操作");
+                }
+                break;
+            case R.id.violation_standard:
+                //违反标准
+                if (status) {
+
+                } else {
+                    ToastUtils.showShortToast("编辑状态无法操作");
+                }
                 break;
             default:
                 break;
@@ -196,5 +265,15 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 }
             }
         }
+    }
+
+    public void statusclose() {
+        exitext_position.setEnabled(false);
+        edit_problem.setEnabled(false);
+    }
+
+    public void statusopen() {
+        exitext_position.setEnabled(true);
+        edit_problem.setEnabled(true);
     }
 }

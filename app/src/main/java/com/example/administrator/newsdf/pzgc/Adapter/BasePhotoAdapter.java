@@ -2,7 +2,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
+;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 
-import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import com.example.baselibrary.bean.photoBean;
 
@@ -95,9 +95,12 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.addlick(v, position);
+                    if (lean) {
+                        mOnItemClickListener.addlick(v, position);
+                    } else {
+                        ToastUtils.showShortToast("当前状态无法添加图片");
+                    }
                 }
-
             });
         }
     }

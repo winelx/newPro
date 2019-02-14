@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
@@ -31,6 +32,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private RecyclerView recycler;
     private List<String> list;
     private Context mContext;
+    private ChangedNewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,14 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.addItemDecoration(new SimpleDividerItemDecoration(mContext));
-        ChangedNewAdapter adapter = new ChangedNewAdapter(R.layout.adapter_item_chaged_new, list);
+        adapter = new ChangedNewAdapter(R.layout.adapter_item_chaged_new, list);
         recycler.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(mContext, ChagedProblemitemActivity.class));
+            }
+        });
     }
 
     @Override
@@ -76,7 +84,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_import_problem:
                 ToastUtils.showShortToast("导入问题项");
-                startActivity(new Intent(mContext,ChagedImportitemActivity.class));
+                startActivity(new Intent(mContext, ChagedImportitemActivity.class));
                 break;
             case R.id.chaged_add_problem:
                 startActivity(new Intent(mContext, ChagedProblemitemActivity.class));
