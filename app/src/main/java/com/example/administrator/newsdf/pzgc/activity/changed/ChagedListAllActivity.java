@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,10 +20,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
-import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-
-import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -31,13 +28,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +38,7 @@ import java.util.Map;
  * 描述：整改通知单列表
  * {@link }
  */
-public class ChagedListActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedListAllActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshlayout;
     private RecyclerView recyclerList;
     private TextView title;
@@ -57,7 +48,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private Context mContext;
     private PullDownMenu pullDownMenu;
     private ChagedUtils chagedUtils;
-    String[] strings = {"全部", "保存", "未处理", "已处理"};
+    String[] strings = {"全部", "已下发", "回复中", "已完成"};
     private String orgId;
     private int page = 1;
     private int status = -1;
@@ -115,6 +106,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         adapter.setOnDelListener(new ChagedListAdapter.onSwipeListener() {
             @Override
             public void onDel(final int pos, final SwipeMenuLayout layout) {
+                /*删除按钮*/
                 AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
                         .setTitle("删除")
                         .setMessage("是否删除该项问题")
@@ -133,11 +125,11 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
+
                             }
                         })
                         .create();
                 alertDialog2.show();
-
             }
 
             @Override
@@ -149,7 +141,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         });
         request();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -169,25 +160,21 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                                 status = -1;
                                 request();
                                 break;
-                            case "保存":
-                                status = 0;
+                            case "已下发":
+                                status = 1;
                                 request();
                                 break;
-                            case "未处理":
-
-                                status = 20;
+                            case "回复中":
+                                status = 2;
                                 request();
                                 break;
-                            case "已处理":
-
-                                status = 30;
+                            case "已完成":
+                                status = 3;
                                 request();
                                 break;
                             default:
                                 break;
                         }
-
-
                     }
                 });
                 break;

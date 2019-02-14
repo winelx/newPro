@@ -51,8 +51,7 @@ public class ChagedUtils {
                                 map.put("list", lists);
                                 callBack.onsuccess(map);
                             } else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                                callBack.onerror("请求失败");
+                                callBack.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

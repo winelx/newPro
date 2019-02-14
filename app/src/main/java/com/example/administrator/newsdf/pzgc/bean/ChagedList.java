@@ -5,85 +5,117 @@ import java.util.List;
 public class ChagedList {
 
 
+    /**
+     * auserName : 系统管理员
+     * code : ZGTZ-20190214-4
+     * id : 1d1b40e0ce1c46b782e3f94e9c9184af
+     * noticeCount : 0
+     * noticeFinishCount : 0
+     * rorgName : 三独一标
+     * ruserName : 田江
+     * sorgName : 贵州路桥集团有限公司
+     * status : 0
+     * sendUserName : 系统管理员
+     * send_date : 2019-02-14 10:32:59
+     */
 
+    private String auserName;
+    private String code;
+    private String id;
+    private int noticeCount;
+    private int noticeFinishCount;
+    private String rorgName;
+    private String ruserName;
+    private String sorgName;
+    private int status;
+    private String sendUserName;
+    private String send_date;
 
-        private int page;
-        private int rows;
-        private int total;
-        private int totalPages;
-        private List<ResultsBean> results;
+    public String getAuserName() {
+        return auserName;
+    }
 
-        public int getPage() {
-            return page;
-        }
+    public void setAuserName(String auserName) {
+        this.auserName = auserName;
+    }
 
-        public void setPage(int page) {
-            this.page = page;
-        }
+    public String getCode() {
+        return code;
+    }
 
-        public int getRows() {
-            return rows;
-        }
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-        public void setRows(int rows) {
-            this.rows = rows;
-        }
+    public String getId() {
+        return id;
+    }
 
-        public int getTotal() {
-            return total;
-        }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        public void setTotal(int total) {
-            this.total = total;
-        }
+    public int getNoticeCount() {
+        return noticeCount;
+    }
 
-        public int getTotalPages() {
-            return totalPages;
-        }
+    public void setNoticeCount(int noticeCount) {
+        this.noticeCount = noticeCount;
+    }
 
-        public void setTotalPages(int totalPages) {
-            this.totalPages = totalPages;
-        }
+    public int getNoticeFinishCount() {
+        return noticeFinishCount;
+    }
 
-        public List<ResultsBean> getResults() {
-            return results;
-        }
+    public void setNoticeFinishCount(int noticeFinishCount) {
+        this.noticeFinishCount = noticeFinishCount;
+    }
 
-        public void setResults(List<ResultsBean> results) {
-            this.results = results;
-        }
+    public String getRorgName() {
+        return rorgName;
+    }
 
-        public static class ResultsBean {
-            /**
-             * noticeFinishCount : 0
-             * code : ZGTZ-20190214-4
-             * noticeCount : 0
-             * id : 1d1b40e0ce1c46b782e3f94e9c9184af
-             * ruserName : 田江
-             * auserName : 系统管理员
-             * rorgName : 三独一标
-             * sorgName : 贵州路桥集团有限公司
-             * status : 20
-             */
+    public void setRorgName(String rorgName) {
+        this.rorgName = rorgName;
+    }
 
-            private int noticeFinishCount;
-            private String code;
+    public String getRuserName() {
+        return ruserName;
+    }
 
-            public int getNoticeFinishCount() {
-                return noticeFinishCount;
-            }
+    public void setRuserName(String ruserName) {
+        this.ruserName = ruserName;
+    }
 
-            public void setNoticeFinishCount(int noticeFinishCount) {
-                this.noticeFinishCount = noticeFinishCount;
-            }
+    public String getSorgName() {
+        return sorgName;
+    }
 
-            public String getCode() {
-                return code;
-            }
+    public void setSorgName(String sorgName) {
+        this.sorgName = sorgName;
+    }
 
-            public void setCode(String code) {
-                this.code = code;
-            }
-        }
+    public int getStatus() {
+        return status;
+    }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
+    }
+
+    public String getSend_date() {
+        return send_date;
+    }
+
+    public void setSend_date(String send_date) {
+        this.send_date = send_date;
+    }
 }

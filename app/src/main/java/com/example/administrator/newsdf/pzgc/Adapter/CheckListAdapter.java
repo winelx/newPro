@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListAllActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistAllActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
@@ -126,8 +127,8 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             @Override
             public void onClick(View v) {
                 childHold.homeItemMessage.setVisibility(View.GONE);
-                Intent intent = new Intent(context, ChecknoticeMessagelistAllActivity.class);
-                intent.putExtra("id", content.get(classes.get(groupPosition)).get(childPosition).getId());
+                Intent intent = new Intent(context, ChagedListAllActivity.class);
+                intent.putExtra("orgid", content.get(classes.get(groupPosition)).get(childPosition).getId());
                 intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                 context.startActivity(intent);
             }

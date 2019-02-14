@@ -96,7 +96,6 @@ public class CheckdownMessageMeFragment extends Fragment {
                 Intent intent = new Intent(mContext, ChagedListActivity.class);
                 intent.putExtra("orgid", mData.get(position).getId());
                 intent.putExtra("orgName", mData.get(position).getOrgname());
-                intent.putExtra("isAll", false);
                 mContext.startActivity(intent);
             }
         });
