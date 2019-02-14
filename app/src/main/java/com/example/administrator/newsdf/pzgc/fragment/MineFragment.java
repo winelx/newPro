@@ -124,9 +124,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .thumbnail(Glide.with(this)
                         .load(R.mipmap.mine_avatar))
                 .into(mine_avatar);
-        //名字
-        mine_organization.setText(SPUtils.getString(mContext, "username", ""));
+
         //组织
+        mine_organization.setText(SPUtils.getString(mContext, "username", ""));
+        //名字
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
 
     }

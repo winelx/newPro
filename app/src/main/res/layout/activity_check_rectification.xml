@@ -324,7 +324,7 @@
                     android:layout_height="1dp"
                     android:background="@color/back" />
 
-                <LinearLayout
+                 <LinearLayout
                     android:id="@+id/check_rectifi_user"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

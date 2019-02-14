@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -20,11 +19,14 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
+import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
 import com.example.baselibrary.bean.photoBean;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -46,15 +48,18 @@ import java.util.List;
 public class ChagedProblemitemActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView photoRecycler;
     private BasePhotoAdapter adapter;
-    private TextView menutext, comTitle, import_position;
-    private EditText exitext_position, edit_problem;
-    private LinearLayout chaged_organize_lin, violation_standard;
+
+    private TextView menutext, comTitle, importPosition, chagedOrganizeText;
+    private EditText exitextPosition, editProblem;
+    private LinearLayout chagedOrganizeLin, violationStandard;
     private Context mContext;
     private ArrayList<photoBean> photolist;
-    private PopCameraUtils PopCameraUtils;
+    private PopCameraUtils popcamerautils;
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
     private boolean status = true;
+    public static final String KEEP = "保存";
+    private DialogUtils dialogUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,33 +67,50 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_chaged_problemitem);
         mContext = this;
         photolist = new ArrayList<>();
+        dialogUtils = new DialogUtils();
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
-        PopCameraUtils = new PopCameraUtils();
-
-        exitext_position = (EditText) findViewById(R.id.exitext_position);
-        edit_problem = (EditText) findViewById(R.id.edit_problem);
+        popcamerautils = new PopCameraUtils();
+        /*整改部位*/
+        exitextPosition = (EditText) findViewById(R.id.exitext_position);
+        /*存在问题*/
+        editProblem = (EditText) findViewById(R.id.edit_problem);
+        /*整改期限*/
+        chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
+        chagedOrganizeText.setText(Dates.getDay());
+        chagedOrganizeText.setOnClickListener(this);
+        /*导入*/
         findViewById(R.id.import_position).setOnClickListener(this);
+        /*删除*/
         findViewById(R.id.check_item_delete).setOnClickListener(this);
+        /*返回*/
         findViewById(R.id.com_back).setOnClickListener(this);
+        /*菜单按钮*/
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
+        /*整改组织*/
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
+        /*违反标准*/
         findViewById(R.id.violation_standard).setOnClickListener(this);
+        /*菜单按钮*/
         menutext = (TextView) findViewById(R.id.com_button);
         menutext.setText("保存");
+        /*标题*/
         comTitle = (TextView) findViewById(R.id.com_title);
         comTitle.setText("问题项");
+        /*w整改问题列表*/
         photoRecycler = (RecyclerView) findViewById(R.id.photo_recycler);
         adapter = new BasePhotoAdapter(mContext, photolist);
+        /*添加图片*/
         photoRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoRecycler.setAdapter(adapter);
+        /*点击事件*/
         adapter.setOnItemClickListener(new BasePhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
                 //添加图片
                 //相机相册选择弹窗帮助类
                 //展示弹出窗
-                PopCameraUtils.showPopwindow(ChagedProblemitemActivity.this, new PopCameraUtils.CameraCallback() {
+                popcamerautils.showPopwindow(ChagedProblemitemActivity.this, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void oncamera() {
                         // 开始拍照
@@ -166,18 +188,17 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.toolbar_menu:
                 String str = menutext.getText().toString();
-                if ("保存".equals(str)) {
-                    status=false;
+                if (KEEP.equals(str)) {
+                    status = false;
                     menutext.setText("编辑");
                     adapter.addview(false);
                     statusclose();
                 } else {
-                    status=true;
+                    status = true;
                     menutext.setText("保存");
                     adapter.addview(true);
                     statusopen();
                 }
-
                 break;
             case R.id.check_item_delete:
                 AlertDialog alertDialog2 = new AlertDialog.Builder(this)
@@ -205,9 +226,13 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             case R.id.import_position:
                 //导入
                 if (status) {
-
+                    //选择标段
+                        Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
+//                        intent1.putExtra("orgId", OrgId);
+//                        intent1.putExtra("name", orgName);
+                        startActivityForResult(intent1, 4);
                 } else {
-                    ToastUtils.showShortToast("编辑状态无法操作");
+                    ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
                 break;
             case R.id.chaged_organize_lin:
@@ -215,16 +240,26 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 if (status) {
 
                 } else {
-                    ToastUtils.showShortToast("编辑状态无法操作");
+                    ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
                 break;
             case R.id.violation_standard:
                 //违反标准
                 if (status) {
-
+                    Intent intent = new Intent(mContext, CheckstandardListActivity.class);
+                    intent.putExtra("title", "title");
+                    startActivityForResult(intent, 1);
                 } else {
-                    ToastUtils.showShortToast("编辑状态无法操作");
+                    ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
+                break;
+            case R.id.chaged_organize_text:
+                dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
+                    @Override
+                    public void onsuccess(String str) {
+                        chagedOrganizeText.setText(str);
+                    }
+                });
                 break;
             default:
                 break;
@@ -264,16 +299,18 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                     }
                 }
             }
+        } else if (requestCode == 1 && resultCode == 2) {
+
         }
     }
 
     public void statusclose() {
-        exitext_position.setEnabled(false);
-        edit_problem.setEnabled(false);
+        exitextPosition.setEnabled(false);
+        editProblem.setEnabled(false);
     }
 
     public void statusopen() {
-        exitext_position.setEnabled(true);
-        edit_problem.setEnabled(true);
+        exitextPosition.setEnabled(true);
+        editProblem.setEnabled(true);
     }
 }

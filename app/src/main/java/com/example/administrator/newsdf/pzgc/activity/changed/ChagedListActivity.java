@@ -11,16 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
-import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyUtils;
 import com.example.baselibrary.PullDownMenu;
@@ -43,7 +40,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private SmartRefreshLayout refreshlayout;
     private RecyclerView recyclerList;
     private TextView title;
-    private ImageView toolbar_image;
+    private ImageView toolbarImage;
     private ChagedListAdapter adapter;
     private ArrayList<String> list;
     private EmptyUtils emptyUtils;
@@ -62,9 +59,9 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
-        toolbar_image = (ImageView) findViewById(R.id.com_img);
-        toolbar_image.setImageResource(R.mipmap.meun);
-        toolbar_image.setVisibility(View.VISIBLE);
+        toolbarImage = (ImageView) findViewById(R.id.com_img);
+        toolbarImage.setImageResource(R.mipmap.meun);
+        toolbarImage.setVisibility(View.VISIBLE);
         findViewById(R.id.com_back).setOnClickListener(this);
         //设置列表参数
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
@@ -124,7 +121,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.toolbar_menu:
                 pullDownMenu = new PullDownMenu();
-                pullDownMenu.showPopMeun((Activity) mContext, toolbar_image, strings);
+                pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, strings);
                 pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
                     @Override
                     public void onclick(int position, String string) {

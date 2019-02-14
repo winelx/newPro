@@ -1,25 +1,17 @@
 package com.example.administrator.newsdf.pzgc.activity.changed.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.IssuedTaskDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetailsActivity;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
-import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -68,9 +60,9 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void bindTop(TypeContent holder, Object obj, int position) {
         if (list.size() == 1) {
-            holder.problem_item.setVisibility(View.GONE);
+            holder.problemItem.setVisibility(View.GONE);
         } else {
-            holder.problem_item.setVisibility(View.VISIBLE);
+            holder.problemItem.setVisibility(View.VISIBLE);
         }
 
     }
@@ -78,8 +70,8 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     private void bindContet(TypeCheckItem holder, ArrayList<Object> list, final int position) {
         Object obj = list.get(position);
         ChagedNoticeDetailslsit top = (ChagedNoticeDetailslsit) obj;
-        holder.notice_list_content.setText(top.getStr().toString());
-        holder.item_problem.setOnClickListener(new View.OnClickListener() {
+        holder.noticeListContent.setText(top.getStr().toString());
+        holder.itemProblem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickListener.setproblem(position);
@@ -105,22 +97,22 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     class TypeContent extends RecyclerView.ViewHolder {
-        private TextView problem_item;
+        private TextView problemItem;
 
-        public TypeContent(View itemView) {
+        TypeContent(View itemView) {
             super(itemView);
-            problem_item = itemView.findViewById(R.id.problem_item);
+            problemItem = itemView.findViewById(R.id.problem_item);
         }
     }
 
     class TypeCheckItem extends RecyclerView.ViewHolder {
-        private LinearLayout item_problem;
-        private TextView notice_list_content;
+        private LinearLayout itemProblem;
+        private TextView noticeListContent;
 
-        public TypeCheckItem(View itemView) {
+        TypeCheckItem(View itemView) {
             super(itemView);
-            item_problem = itemView.findViewById(R.id.item_problem);
-            notice_list_content = itemView.findViewById(R.id.notice_list_content);
+            itemProblem = itemView.findViewById(R.id.item_problem);
+            noticeListContent = itemView.findViewById(R.id.notice_list_content);
         }
     }
 

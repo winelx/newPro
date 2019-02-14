@@ -2,17 +2,16 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.CheckitemAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -29,11 +28,11 @@ import java.util.ArrayList;
 public class CheckitemActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
-    private TextView inspect_content;
+
+    private TextView inspectContent, comButton;
     private CheckitemAdapter mAdapter;
     private ArrayList<Object> list;
     private Context mContext;
-    private TextView com_button;
     private int count = 0;
 
     @Override
@@ -43,8 +42,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         mContext = this;
         list = new ArrayList<>();
         findViewById(R.id.com_back).setOnClickListener(this);
-        com_button = (TextView) findViewById(R.id.com_button);
-        com_button.setOnClickListener(this);
+
+        comButton = (TextView) findViewById(R.id.com_button);
+        comButton.setOnClickListener(this);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);
@@ -71,13 +71,13 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         recyclerView.setAdapter(mAdapter);
         mAdapter.setItemOnclick(new CheckitemAdapter.ItemClickListener() {
             @Override
-            public void Onclick(String str, int position) {
+            public void onclick(String str, int position) {
                 Checkitem item = (Checkitem) list.get(position);
                 item.setLeam(true);
                 mAdapter.setNewData(list);
-                com_button.setText("确定");
+                comButton.setText("确定");
                 count++;
-                LogUtil.i("count",count);
+                LogUtil.i("count", count);
             }
 
             @Override
@@ -86,9 +86,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 item.setLeam(false);
                 mAdapter.setNewData(list);
                 count--;
-                LogUtil.i("count",count);
+                LogUtil.i("count", count);
                 if (count == 0) {
-                    com_button.setText("");
+                    comButton.setText("");
                 }
             }
         });

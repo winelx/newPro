@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.changed.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -79,6 +80,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     }
 
     //整改前
+    @SuppressLint("SetTextI18n")
     private void bindproblem(Typeproblem holder, Object obj, int position) {
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) obj;
         holder.typeproblem.setText(
@@ -104,9 +106,10 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         holder.typerecycler.setAdapter(adapter);
     }
 
+    @SuppressLint("SetTextI18n")
     private void bindchaged(Typechaged holder, Object obj, int position) {
         NoticeItemDetailsChaged chaged = (NoticeItemDetailsChaged) obj;
-        holder.item_status_record.setVisibility(View.VISIBLE);
+        holder.itemStatusRecord.setVisibility(View.VISIBLE);
         holder.typeproblem.setText(
                 "回复时间：" + "" + "\n"
                         + "整改描述：" + "\n" + ""
@@ -184,26 +187,26 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     class Typechaged extends RecyclerView.ViewHolder {
         private TextView typeproblem;
         private RecyclerView typerecycler;
-        private LinearLayout item_status_record;
+        private LinearLayout itemStatusRecord;
 
-        public Typechaged(View itemView) {
+        Typechaged(View itemView) {
             super(itemView);
             typeproblem = (TextView) itemView.findViewById(R.id.typeproblem);
             typerecycler = (RecyclerView) itemView.findViewById(R.id.typerecycler);
-            item_status_record = (LinearLayout) itemView.findViewById(R.id.item_status_record);
+            itemStatusRecord = (LinearLayout) itemView.findViewById(R.id.item_status_record);
         }
     }
 
     /*操作记录*/
     class Typerecord extends RecyclerView.ViewHolder {
-        public Typerecord(View itemView) {
+        Typerecord(View itemView) {
             super(itemView);
         }
     }
 
     /*空布局*/
     class TypeEmpty extends RecyclerView.ViewHolder {
-        public TypeEmpty(View itemView) {
+         TypeEmpty(View itemView) {
             super(itemView);
         }
     }
