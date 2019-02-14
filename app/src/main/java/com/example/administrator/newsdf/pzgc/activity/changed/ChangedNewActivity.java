@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
+import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
@@ -135,7 +136,10 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_organize_lin:
                 if (STATUS) {
-                    ToastUtils.showShortToast("整改组织");
+                    Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
+                    intent12.putExtra("title", "选择标段");
+                    intent12.putExtra("data", "Rectifi");
+                    startActivityForResult(intent12, 3);
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
@@ -152,6 +156,21 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 5 && resultCode == 2) {
+            //选择负责人
+//            userId = data.getStringExtra("id");
+//            userName = data.getStringExtra("name");
+//            check_rectifi_font.setText(userName);
+        } else if (requestCode == 3 && resultCode == 2) {
+            /*OrgId = data.getStringExtra("id");
+            orgName = data.getStringExtra("name");
+            checkRectifiWbs.setText(orgName);*/
         }
     }
 }
