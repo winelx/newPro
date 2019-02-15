@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyAllFragment;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyMeFragment;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageMeFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
@@ -15,6 +17,13 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
 
+/**
+ * @author lx
+ * 版本：1.0
+ * 创建日期：{2019/2/15 0015}
+ * 描述：整改回复主界面（承载两个fragment）
+ * {@link }
+ */
 public class ChagedreplyActivity extends BaseActivity implements View.OnClickListener {
     private TextView checkDownAll, checkDownMe, titleView;
     private ViewPager checkDownViewpager;
@@ -25,8 +34,8 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
         mFragment = new ArrayList<>();
-        mFragment.add(new CheckdownMessageAllFragment());
-        mFragment.add(new CheckdownMessageMeFragment());
+        mFragment.add(new ChagedReplyAllFragment());
+        mFragment.add(new ChagedReplyMeFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);
@@ -39,6 +48,7 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
         checkDownViewpager.setAdapter(adapter);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

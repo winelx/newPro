@@ -52,8 +52,8 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
  */
 public class CheckdownMessageMeFragment extends Fragment {
     private View view;
-    ArrayList<Home_item> mData;
-    CheckMessageMineAdapter mAdapter;
+    private  ArrayList<Home_item> mData;
+    private  CheckMessageMineAdapter mAdapter;
 
     @Nullable
     @Override

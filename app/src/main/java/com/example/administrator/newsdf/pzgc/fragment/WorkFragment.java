@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
@@ -92,11 +93,10 @@ public class WorkFragment extends Fragment {
             public void onclick(String str, int position) {
                 switch (str) {
                     case "检查标准":
-
                         startActivity(new Intent(mContext, CheckstandardListActivity.class));
                         break;
                     case "回复验证":
-                        
+                        startActivity(new Intent(mContext, ChagedreplyActivity.class));
                         break;
                     case "监管检查":
                         startActivity(new Intent(mContext, CheckmanagementActivity.class));

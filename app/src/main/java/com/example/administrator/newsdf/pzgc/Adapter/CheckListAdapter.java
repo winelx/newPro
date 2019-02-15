@@ -16,10 +16,10 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.Checknotice
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 public class CheckListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
     private List<String> classes;
@@ -34,6 +34,7 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         this.context = context;
 
     }
+
 
     @Override
     public int getGroupCount() {    //组的数量
@@ -126,11 +127,10 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String  id=content.get(classes.get(groupPosition)).get(childPosition).getId();
+                String orgname= content.get(classes.get(groupPosition)).get(childPosition).getOrgname();
                 childHold.homeItemMessage.setVisibility(View.GONE);
-                Intent intent = new Intent(context, ChagedListAllActivity.class);
-                intent.putExtra("orgid", content.get(classes.get(groupPosition)).get(childPosition).getId());
-                intent.putExtra("orgName", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
-                context.startActivity(intent);
+
             }
         });
         return convertView;
@@ -195,6 +195,13 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         TextView homeItemImg;
         LinearLayout layoutContent;
     }
+
+    public void setNewData(List<String> classes, Map<String, List<Home_item>> content) {
+        this.content = content;
+        this.classes = classes;
+        notifyDataSetChanged();
+    }
+
 
 }
 
