@@ -98,7 +98,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 intent.putExtra("id", "12");
                 intent.putExtra("str", "12");
                 setResult(0, intent);
-                fileList()
+                fileList();
                 break;
             default:
                 break;

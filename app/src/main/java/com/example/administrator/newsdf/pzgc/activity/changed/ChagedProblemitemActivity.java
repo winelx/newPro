@@ -209,7 +209,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.check_item_delete:
                 AlertDialog alertDialog2 = new AlertDialog.Builder(this)
-                        .setTitle("删除")
+                        .setTitle("提示")
                         .setMessage("是否删除该项问题")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             //添加"Yes"按钮

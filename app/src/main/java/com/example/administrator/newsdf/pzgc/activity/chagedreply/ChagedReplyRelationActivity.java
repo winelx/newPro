@@ -57,7 +57,7 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
                 intent.putExtra("id", "12");
                 intent.putExtra("str", "12");
                 setResult(1, intent);
-                fileList()
+                fileList();
             }
         });
     }

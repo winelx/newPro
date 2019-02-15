@@ -27,15 +27,16 @@ import java.util.ArrayList;
  * description:任务详情页的回复内容的图片展示适配器
  *
  * @author winelx
- *         date:2017/11/30 0030:下午 14:46
- *         update: 2018/3/1 0001
- *         version:
+ * date:2017/11/30 0030:下午 14:46
+ * update: 2018/3/1 0001
+ * version:
  */
 
 public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<String> mData;
     private ArrayList<String> Title;
+    private boolean upload = true;
 
     public RectifierAdapter(Context mContext, ArrayList<String> listA, ArrayList<String> Title) {
         this.mContext = mContext;
@@ -100,7 +101,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             urlpath = urlpath.replace(pas, "");
             //在字段后面添加_min后再拼接后缀
 //            urlpath = urlpath + "_min" + pas;
-             RequestOptions options = new RequestOptions();
+            RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -132,7 +133,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
                 PhotoPreview.builder().setPhotos(path).setCurrentItem(position).
-                        setShowDeleteButton(false).setShowUpLoadeButton(true).setImagePath(imagepath)
+                        setShowDeleteButton(false).setShowUpLoadeButton(upload).setImagePath(imagepath)
                         .start((Activity) mContext);
             }
         });
@@ -176,7 +177,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void getData(ArrayList<String> mData,ArrayList<String>title) {
+    public void getData(ArrayList<String> mData, ArrayList<String> title) {
         this.mData = mData;
         this.Title = title;
         notifyDataSetChanged();
@@ -185,5 +186,10 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public void setuploadstatus(boolean status) {
+        this.upload = status;
+        notifyDataSetChanged();
     }
 }
