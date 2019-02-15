@@ -490,6 +490,11 @@ public class Requests {
  /**
   * 获取列表数据
   */
- public static final String GETCNFLIST = networks + "/iface/mobile/newcheck/getCNFList";
+ public static final String GETCNFLIST = networks + "iface/mobile/newcheck/getCNFList";
+ /**
+  * 获取整改通知单主要信息
+  */
+ public static final String GETNOTICEFORMMAININFO = networks + "iface/mobile/newcheck/getNoticeFormMainInfo";
+
 
 }

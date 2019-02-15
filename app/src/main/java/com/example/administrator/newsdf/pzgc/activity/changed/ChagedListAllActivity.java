@@ -64,7 +64,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
         list = new ArrayList<>();
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
-        title.setText(intent.getStringExtra("orgname"));
+        title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         toolbarImage = (ImageView) findViewById(R.id.com_img);
         toolbarImage.setImageResource(R.mipmap.meun);

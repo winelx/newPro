@@ -17,13 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
-import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
+
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
-import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
+
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -31,13 +31,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,7 +67,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         list = new ArrayList<>();
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
-        title.setText(intent.getStringExtra("orgname"));
+        title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         toolbarImage = (ImageView) findViewById(R.id.com_img);
         toolbarImage.setImageResource(R.mipmap.meun);
@@ -143,7 +137,10 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(int pos) {
                 /*点击按钮*/
-                startActivity(new Intent(mContext, ChagedNoticeDetailsActivity.class));
+                Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                intent1.putExtra("id", list.get(pos).getId());
+                intent1.putExtra("orgName", title.getText().toString());
+                startActivity(intent1);
             }
 
         });
@@ -174,20 +171,16 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                                 request();
                                 break;
                             case "未处理":
-
                                 status = 20;
                                 request();
                                 break;
                             case "已处理":
-
                                 status = 30;
                                 request();
                                 break;
                             default:
                                 break;
                         }
-
-
                     }
                 });
                 break;
@@ -196,7 +189,9 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    /*网络请求*/
+    /**
+     * 网络请求
+     */
     private void request() {
         chagedUtils.getcnflist(false, status, orgId, page, new ChagedUtils.CallBack() {
             @Override

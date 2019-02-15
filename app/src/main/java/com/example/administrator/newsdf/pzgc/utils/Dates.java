@@ -746,6 +746,7 @@ public class Dates {
             return 210;
         }
     }
+
     /**
      * 设置有颜色文字
      */
@@ -758,6 +759,19 @@ public class Dates {
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
                         .getColor(color2)), lenght,
                 text.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
+    }
+
+    public static SpannableString setText(Context mContext, String text, int lenght, int lastlenght, int color2) {
+        SpannableString sp = new SpannableString(text);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.black)), 0,
+                lenght,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(color2)), lenght,
+                lastlenght,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }

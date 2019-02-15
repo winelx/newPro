@@ -16,7 +16,8 @@ import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/25 0025.
+ * @author Administrator
+ * @date 2018/5/25 0025
  */
 
 public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMineAdapter.MyViewHolder> implements LeftSlideView.IonSlidingButtonListener {
@@ -66,9 +67,7 @@ public class CheckMessageMineAdapter extends RecyclerView.Adapter<CheckMessageMi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
         //获取自定义View的布局（加载item布局）
-        View view= LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false);
-         MyViewHolder holder = new MyViewHolder(view);
-            return holder;
+        return new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.fragment_checkdown_me, arg0, false));
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

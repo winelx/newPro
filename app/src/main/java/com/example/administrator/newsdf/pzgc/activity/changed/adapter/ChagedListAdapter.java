@@ -83,7 +83,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         if (chagedList.getSorgName() != null) {
-            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getSorgName());
+            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName());
         } else {
             holder.chagedNoticeOrgname.setText("整改组织：");
         }
@@ -99,10 +99,10 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         /*通知单完成数*/
         int noticeFinishCount = chagedList.getNoticeFinishCount();
+        String leanht = noticeFinishCount + "";
         /*总下发通知单数*/
         int noticeCount = chagedList.getNoticeCount();
-        String leanht = noticeCount + "";
-        holder.noticefinishcount.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 4 + leanht.length(), R.color.finish_green));
+        holder.noticefinishcount.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
 
         int status = chagedList.getStatus();
 //        0:未下发；1：已下发;2:回复中；3：完成；20：未处理；30：已处理

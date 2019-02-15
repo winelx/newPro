@@ -372,6 +372,7 @@
         <activity android:name=".pzgc.activity.changed.ChagedNoticeItemDetailsActivity" />
         <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedListAllActivity" />
+        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyActivity" />
     </application>
 
 </manifest>

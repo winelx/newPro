@@ -27,7 +27,6 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final int TYPE_DATA = 2;
     private Context mContext;
     private ArrayList<Object> list;
-    final static int MAX = 100;
 
     public ChagedNoticeDetailsAdapter(Context mContext, ArrayList<Object> list) {
         this.mContext = mContext;
@@ -59,12 +58,15 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void bindTop(TypeContent holder, Object obj, int position) {
+        ChagedNoticeDetails item = (ChagedNoticeDetails) obj;
         if (list.size() == 1) {
             holder.problemItem.setVisibility(View.GONE);
         } else {
             holder.problemItem.setVisibility(View.VISIBLE);
         }
-
+//    /*编号*/
+//        holder.noticedNumber.setText(item.getCode());
+//        /**/
     }
 
     private void bindContet(TypeCheckItem holder, ArrayList<Object> list, final int position) {
@@ -98,22 +100,31 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     class TypeContent extends RecyclerView.ViewHolder {
         private TextView problemItem;
+        private TextView noticedNumber;
 
         TypeContent(View itemView) {
             super(itemView);
             problemItem = itemView.findViewById(R.id.problem_item);
+            //编号
+            noticedNumber = itemView.findViewById(R.id.noticed_number);
         }
     }
 
     class TypeCheckItem extends RecyclerView.ViewHolder {
         private LinearLayout itemProblem;
-        private TextView noticeListContent;
+        private TextView noticeListContent, noticedSendPeople;
 
         TypeCheckItem(View itemView) {
             super(itemView);
             itemProblem = itemView.findViewById(R.id.item_problem);
             noticeListContent = itemView.findViewById(R.id.notice_list_content);
+            noticedSendPeople = itemView.findViewById(R.id.noticed_send_people);
         }
+    }
+
+    public void setNewData(ArrayList<Object> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     public interface OnClickListener {

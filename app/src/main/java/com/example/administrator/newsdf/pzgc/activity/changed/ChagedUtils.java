@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -12,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +68,41 @@ public class ChagedUtils {
                     }
                 });
     }
+
+
+    public void getNoticeFormMainInfo(String id, final CallBack callBack) {
+        OkGo.get(Requests.GETNOTICEFORMMAININFO)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        Map<String, Object> map = new HashMap<>();
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.getInt("ret") == 0) {
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
+                                ArrayList<ChagedNoticeDetails> list = new ArrayList<>();
+                                list.add(item);
+                                map.put("notice", list);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror("请求失败");
+                    }
+                });
+    }
+
+    /*获取整改通知单主要信息*/
 
     public interface CallBack {
         void onsuccess(Map<String, Object> map);

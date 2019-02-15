@@ -21,8 +21,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
+
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
