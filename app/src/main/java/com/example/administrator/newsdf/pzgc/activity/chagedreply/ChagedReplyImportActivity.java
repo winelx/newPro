@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/15 0015}
- * 描述：MainActivity
+ * 描述：导入问题项
  * {@link }
  */
 public class ChagedReplyImportActivity extends BaseActivity implements View.OnClickListener {

@@ -379,6 +379,8 @@
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyRelationActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyImportActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyBillActivity" />
+        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyDetailsActivity" />
+        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyVerificationActivity" />
 
     </application>
 

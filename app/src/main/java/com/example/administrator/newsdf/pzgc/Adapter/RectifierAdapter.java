@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyBillActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 
@@ -30,6 +31,7 @@ import java.util.ArrayList;
  * date:2017/11/30 0030:下午 14:46
  * update: 2018/3/1 0001
  * version:
+ * {@link ChagedReplyBillActivity}
  */
 
 public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

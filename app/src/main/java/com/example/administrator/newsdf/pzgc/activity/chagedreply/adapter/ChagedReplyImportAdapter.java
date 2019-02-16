@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyImportActivity;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * 版本：1.0
  * 创建日期：{2019/2/15 0015}
  * 描述：导入问题项
- * {@link }
+ * {@link ChagedReplyImportActivity}
  */
 public class ChagedReplyImportAdapter extends BaseQuickAdapter<Checkitem, BaseViewHolder> {
     public ChagedReplyImportAdapter(int layoutResId, @Nullable List<Checkitem> data) {

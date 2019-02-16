@@ -1,25 +1,16 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
-import com.example.administrator.newsdf.camera.CropImageUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-
-import java.util.ArrayList;
 
 /**
  * @author lx
@@ -28,62 +19,49 @@ import java.util.ArrayList;
  * 描述：整改回复单验证
  * {@link }
  */
+@SuppressLint("Registered")
 public class ChagedReplyVerificationActivity extends BaseActivity implements View.OnClickListener {
-    ;
-    private RecyclerView checkReplyRec;
-    private Context mContext;
-    private CheckPermission checkPermission;
-    private static final int IMAGE_PICKER = 101;
-    private String id, noticeId, sdealId = "", repyId, repycontent;
+    private TextView categoryItem;
     private EditText replyDescription;
-    private ArrayList<String> list = new ArrayList<>();
-    private ArrayList<String> ids = new ArrayList<>();
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_reply);
-
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(ChagedReplyVerificationActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
-        TextView titleView = (TextView) findViewById(R.id.titleView);
-        titleView.setText("整改回复");
-        mContext = ChagedReplyVerificationActivity.this;
+        setContentView(R.layout.activity_check_reply_verification);
+        mContext = this;
+        findViewById(R.id.validation_status).findViewById(R.id.validation_status);
+        categoryItem = (TextView) findViewById(R.id.category_item);
         replyDescription = (EditText) findViewById(R.id.replyDescription);
-        TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        checklistmeuntext.setText("保存");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        checkReplyRec = (RecyclerView) findViewById(R.id.check_reply_rec);
-        checkReplyRec.setVisibility(View.GONE);
-        findViewById(R.id.checklistback).setOnClickListener(this);
-        findViewById(R.id.checklistmeun).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.checklistback:
-                finish();
+            case R.id.validation_status:
+                AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
+                        .setTitle("提交")
+                        .setMessage("是否验证通过")
+                        .setPositiveButton("通过", new DialogInterface.OnClickListener() {
+                            //添加"Yes"按钮
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                /*删除按钮*/
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("打回", new DialogInterface.OnClickListener() {
+                            //添加取消
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog2.show();
                 break;
             default:
                 break;
         }
     }
-
 }

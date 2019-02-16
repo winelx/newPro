@@ -77,7 +77,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         if (chagedList.getSend_date() != null) {
-            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0, 10));
+            holder.releaseData.setText("下发日期：" + chagedList.getSend_date());
         } else {
             holder.releaseData.setText("下发日期：");
         }

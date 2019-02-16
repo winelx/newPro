@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyNewActivity;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyListActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -79,10 +78,10 @@ public class ChagedReplyMeFragment extends LazyloadFragment {
         mAdapter.setOnItemClickListener(new CheckMessageMineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(mContext, ChagedListActivity.class);
-//                intent.putExtra("orgid", mData.get(position).getId());
-//                intent.putExtra("orgName", mData.get(position).getOrgname());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, ChagedreplyListActivity.class);
+                intent.putExtra("orgid", mData.get(position).getId());
+                intent.putExtra("orgName", mData.get(position).getOrgname());
+                mContext.startActivity(intent);
             }
         });
         checkNewadd.setOnClickListener(new View.OnClickListener() {

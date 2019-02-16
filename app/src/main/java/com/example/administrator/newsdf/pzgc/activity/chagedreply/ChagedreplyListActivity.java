@@ -37,7 +37,7 @@ import java.util.Map;
  * 版本：1.0
  * 创建日期：{2019/2/15 0015}
  * 描述：我的整改回复单列表
- *{@link }
+ * {@link }
  */
 public class ChagedreplyListActivity extends BaseActivity implements View.OnClickListener {
 
@@ -64,6 +64,10 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
+        list.add(new ChagedList("", "", "", 1, 1, "", "", "", 1, "", ""));
+        list.add(new ChagedList("", "", "", 1, 1, "", "", "", 1, "", ""));
+        list.add(new ChagedList("", "", "", 1, 1, "", "", "", 1, "", ""));
+        list.add(new ChagedList("", "", "", 1, 1, "", "", "", 1, "", ""));
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("orgName"));
@@ -136,14 +140,14 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
             @Override
             public void onClick(int pos) {
                 /*点击按钮*/
-                Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                Intent intent1 = new Intent(mContext, ChagedreplyDetailsActivity.class);
                 intent1.putExtra("id", list.get(pos).getId());
                 intent1.putExtra("orgName", title.getText().toString());
                 startActivity(intent1);
             }
 
         });
-        request();
+   /*     request();*/
     }
 
 

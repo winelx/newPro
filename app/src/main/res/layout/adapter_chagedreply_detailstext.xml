@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/menuname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/back2"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="处理记录"
+        android:textSize="13sp" />
+
+
+
+    <TextView
+        android:id="@+id/waitforname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="待  测试人员  处理"
+        android:textColor="#000000"
+        android:visibility="gone" />
+
+</LinearLayout>
