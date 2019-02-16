@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:background="@null"
-
+            android:text="周宇"
             android:hint="用户名"
             android:textSize="15sp" />
     </LinearLayout>
@@ -66,6 +66,7 @@
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:hint="密码"
+            android:text="123456"
             android:inputType="textPassword"></EditText>
     </LinearLayout>
 

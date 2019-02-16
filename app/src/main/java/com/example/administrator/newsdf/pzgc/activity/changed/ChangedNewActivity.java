@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,12 +44,14 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     public static final String KEEP = "保存";
     private String orgName, orgId;
     private String userName, userId;
+    private ChagedUtils chagedUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
         mContext = this;
+        chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
         problemItemLin = (LinearLayout) findViewById(R.id.problem_item_lin);
         problemItemLin.setVisibility(View.GONE);
@@ -105,7 +108,17 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             case R.id.chaged_release_problem:
                 //下发
                 if (KEEP.equals(comButton.getText().toString())) {
+                    chagedUtils.setsenddata("", "", 1, new ChagedUtils.CallBacks() {
+                        @Override
+                        public void onsuccess(String string) {
+                            Snackbar.make(comButton, string, Snackbar.LENGTH_SHORT).show();
+                        }
 
+                        @Override
+                        public void onerror(String str) {
+                            Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
 
                     ToastUtils.showShortToast("下发");
@@ -152,12 +165,16 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             case R.id.com_button:
                 /*菜单*/
                 if (KEEP.equals(comButton.getText().toString())) {
-                    comButton.setText("编辑");
+                    //保存
+
                     STATUS = false;
                     problemItemLin.setVisibility(View.VISIBLE);
+                    save();
                 } else {
+                    //编辑
                     comButton.setText(KEEP);
                     STATUS = true;
+
                 }
                 break;
             default:
@@ -178,5 +195,19 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             orgName = data.getStringExtra("name");
             chagedOrganizeText.setText(orgName);
         }
+    }
+
+    public void save() {
+        chagedUtils.setsavenoticeform("", "", "", "", new ChagedUtils.CallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                comButton.setText("编辑");
+            }
+
+            @Override
+            public void onerror(String string) {
+
+            }
+        });
     }
 }

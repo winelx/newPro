@@ -6,16 +6,16 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
-   public static final String networks = "http://192.168.20.36:8080/";
+    public static final String networks = "http://192.168.20.36:8080/";
 
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 
- //public static final String networks = "http://192.168.1.119:8081/pzgc/";
+    //public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
     // public static final String networks = "http://192.168.20.81:8080/baseframe/";
     //外
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
- //public static final String networks = "http://120.79.142.15/pzgc/";
+    //public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -483,18 +483,36 @@ public class Requests {
     public static final String GETOPERHIS = networks + "iface/mobile/appcheck/getOperHis";
 
     /*新的整改通知*/
-   /**
-    *  获取“我的”、“全部”组织树
-    */
-   public static final String GETORGINFOBYCNF = networks + "iface/mobile/newcheck/getOrgInfoBycnf";
- /**
-  * 获取列表数据
-  */
- public static final String GETCNFLIST = networks + "iface/mobile/newcheck/getCNFList";
- /**
-  * 获取整改通知单主要信息
-  */
- public static final String GETNOTICEFORMMAININFO = networks + "iface/mobile/newcheck/getNoticeFormMainInfo";
-
-
+    /**
+     * 获取“我的”、“全部”组织树
+     */
+    public static final String GETORGINFOBYCNF = networks + "iface/mobile/newcheck/getOrgInfoBycnf";
+    /**
+     * 获取列表数据
+     */
+    public static final String GETCNFLIST = networks + "iface/mobile/newcheck/getCNFList";
+    /**
+     * 获取整改通知单主要信息
+     */
+    public static final String GETNOTICEFORMMAININFO = networks + "iface/mobile/newcheck/getNoticeFormMainInfo";
+    /**
+     * 删除通知单问题项
+     */
+    public static final String DELETENOTICEDEL = networks + "iface/mobile/newcheck/deleteNoticeDel";
+    /**
+     * 指派
+     */
+    public static final String ASSIGNPAGE = networks + "iface/mobile/newcheck/assignPage";
+    /**
+     * 获取被指派人数据
+     */
+    public static final String GETPERSONDATA = networks + "iface/mobile/newcheck/getPersonData";
+    /**
+     * 下发 我回复
+     */
+    public static final String SENDDATA = networks + "iface/mobile/newcheck/sendData";
+    /**
+     * 保存、修改整改通知单
+     */
+    public static final String SAVENOTICEFORM = networks + "iface/mobile/newcheck/saveNoticeForm";
 }

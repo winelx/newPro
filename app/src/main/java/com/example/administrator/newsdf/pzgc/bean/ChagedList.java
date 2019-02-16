@@ -117,17 +117,5 @@ public class ChagedList {
         this.send_date = send_date;
     }
 
-    public ChagedList(String auserName, String code, String id, int noticeCount, int noticeFinishCount, String rorgName, String ruserName, String sorgName, int status, String sendUserName, String send_date) {
-        this.auserName = auserName;
-        this.code = code;
-        this.id = id;
-        this.noticeCount = noticeCount;
-        this.noticeFinishCount = noticeFinishCount;
-        this.rorgName = rorgName;
-        this.ruserName = ruserName;
-        this.sorgName = sorgName;
-        this.status = status;
-        this.sendUserName = sendUserName;
-        this.send_date = send_date;
-    }
+
 }

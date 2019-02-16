@@ -11,7 +11,6 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +22,8 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedList
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
+import com.example.baselibrary.EmptyRecyclerView;
+import com.example.baselibrary.EmptyUtils;
 import com.example.baselibrary.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -41,7 +42,7 @@ import java.util.Map;
  */
 public class ChagedreplyListAllActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshlayout;
-    private RecyclerView recyclerList;
+    private EmptyRecyclerView recyclerList;
     private TextView title;
     private ImageView toolbarImage;
     private ChagedListAdapter adapter;
@@ -53,6 +54,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     private String orgId;
     private int page = 1;
     private int status = -1;
+    private EmptyUtils emptyUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,9 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
+        emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
-        recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
+        recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);

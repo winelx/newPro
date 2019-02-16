@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +63,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private String orgName, orgId;
     //整改部位
     private String positionid;
+    private ChagedUtils chagedUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");
         mContext = this;
+        chagedUtils = new ChagedUtils();
         photolist = new ArrayList<>();
         dialogUtils = new DialogUtils();
         //相机帮助类初始化
@@ -208,6 +211,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.check_item_delete:
+                /*删除该项问题*/
                 AlertDialog alertDialog2 = new AlertDialog.Builder(this)
                         .setTitle("提示")
                         .setMessage("是否删除该项问题")
@@ -215,9 +219,21 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                             //添加"Yes"按钮
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ToastUtils.showShortToast("确定");
                                 dialogInterface.dismiss();
-                                finish();
+                                chagedUtils.setdelete("", new ChagedUtils.CallBacks() {
+                                    @Override
+                                    public void onsuccess(String string) {
+                                        Snackbar.make(menutext, string, Snackbar.LENGTH_LONG).show();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onerror(String str) {
+                                        Snackbar.make(menutext, str, Snackbar.LENGTH_LONG).show();
+                                    }
+                                });
+
+
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
