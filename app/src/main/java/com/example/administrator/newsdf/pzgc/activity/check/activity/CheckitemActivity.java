@@ -295,7 +295,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkItemContentCore = (TextView) findViewById(R.id.check_item_content_core);
         //整改通知
         checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
-        checkItemContentMassage.setOnClickListener(this);
         //抽屉控件
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         //拖动控件
@@ -312,7 +311,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         titleView = (TextView) findViewById(R.id.titleView);
         //整改通知
         checkItemContentMassage = (LinearLayout) findViewById(R.id.check_item_content_massage);
-        checkItemContentMassage.setOnClickListener(this);
+
         //附件
         photoadd = (RecyclerView) findViewById(R.id.recycler_view);
         //抽屉控件

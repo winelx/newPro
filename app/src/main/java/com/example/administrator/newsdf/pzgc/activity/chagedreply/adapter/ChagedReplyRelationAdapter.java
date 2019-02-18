@@ -24,6 +24,7 @@ public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, B
 
     @Override
     protected void convert(BaseViewHolder helper, RelationList item) {
+
         helper.setText(R.id.number, "编号：" + item.getCode());
         if (!item.getCode().isEmpty()) {
             helper.setText(R.id.send_people, "下发人：：" + item.getCode());
@@ -35,6 +36,15 @@ public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, B
         } else {
             helper.setText(R.id.chaged_people, "整改负责人：");
         }
-
+        if (!item.getSendOrgName().isEmpty()) {
+            helper.setText(R.id.send_orgname, "下发组织：" + item.getSendOrgName());
+        } else {
+            helper.setText(R.id.send_orgname, "下发组织：");
+        }
+        if (!item.getSendOrgName().isEmpty()) {
+            helper.setText(R.id.send_data, "下发日期：" + item.getSendOrgName());
+        } else {
+            helper.setText(R.id.send_data, "下发日期：");
+        }
     }
 }

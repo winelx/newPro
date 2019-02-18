@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils;
 
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -115,6 +116,12 @@ public class ChagedreplyUtils {
     }
 
     /*创建整改验证单时选择整改通知单*/
+
+    /**
+     * @param orgId        组织ID
+     * @param page         页数
+     * @param listCallback
+     */
     public static void getNoticeFormList(String orgId, int page, final MapCallBack listCallback) {
         OkGo.get(Requests.GETNOTICEFORMLIST)
                 .params("orgId", orgId)
@@ -126,12 +133,12 @@ public class ChagedreplyUtils {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-                            Map<String,Object> map = new HashMap<>();
+                            Map<String, Object> map = new HashMap<>();
                             if (ret == 0) {
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 JSONArray result = data.getJSONArray("results");
                                 List<RelationList> list = ListJsonUtils.getListByArray(RelationList.class, result.toString());
-                                map.put("Relation",list);
+                                map.put("Relation", list);
                                 listCallback.onsuccess(map);
                             } else {
                                 listCallback.onerror(jsonObject.getString("msg"));
@@ -150,44 +157,104 @@ public class ChagedreplyUtils {
     }
 
     /*查询导入问题列表*/
-    public static void chooseNoticeDelData() {
+
+    /**
+     * @param noticeId    整改通知单id
+     * @param mapCallBack 接口
+     */
+    public static void chooseNoticeDelData(String noticeId, final MapCallBack mapCallBack) {
         OkGo.post(Requests.CHOOSENOTICEDELDATA)
+                .params("noticeId", noticeId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("list", "");
+                                mapCallBack.onsuccess(map);
+                            } else {
+                                mapCallBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        mapCallBack.onerror("请求失败");
                     }
                 });
     }
 
     /*保存导入问题项*/
-    public static void batchSaveReplyDel() {
+
+    /**
+     * rows	是
+     * 从chooseNoticeDelData接口获取，问题项id，可以多选，传递给后台时key为rows，逗号隔开
+     * noticeIds
+     * 从chooseNoticeDelData接口获取，整改通知单id，可以多选，传递给后台时key为noticeIds，逗号隔开
+     * replyId
+     * 回复单id
+     */
+    public static void batchSaveReplyDel(final ObjectCallBacks callBack) {
         OkGo.post(Requests.BATCHSAVEREPLYDEL)
+                .params("rows", "")
+                .params("noticeIds", "")
+                .params("replyId", "")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
 
+                                callBack.onsuccess("");
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callBack.onerror("请求失败");
                     }
                 });
     }
 
+
     /*获取整改验证单数据详情*/
-    public static void getReplyDelData() {
+
+    /**
+     * @param replyId 回复验证单id
+     */
+    public static void getReplyDelData(String replyId, final MapCallBack callBack) {
         OkGo.post(Requests.GETREPLYDELDATA)
+                .params("replyId", replyId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -198,17 +265,36 @@ public class ChagedreplyUtils {
     }
 
     /*删除整改验证单详情*/
-    public static void deleteReplyDel() {
+
+    /**
+     * @param replyDelId      回复验证单详情id
+     * @param replyId         回复验证单id
+     * @param objectCallBacks
+     */
+    public static void deleteReplyDel(String replyDelId, String replyId, final ObjectCallBacks objectCallBacks) {
         OkGo.post(Requests.DELETEREPLYDEL)
+                .params("replyDelId", replyDelId)
+                .params("replyId", replyId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                objectCallBacks.onsuccess("");
+                            } else {
+                                objectCallBacks.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        objectCallBacks.onerror("请求失败");
                     }
                 });
     }
@@ -278,17 +364,39 @@ public class ChagedreplyUtils {
     }
 
     /*验证*/
-    public static void getOrgInfoBycnfvalidReply() {
+
+    /**
+     * @param id         整改验证单id
+     * @param motionNode 运动节点
+     * @param isby       否通过，1通过2打回
+     */
+    public static void getOrgInfoBycnfvalidReply(String id, String motionNode, int isby, final ObjectCallBacks callBacks) {
         OkGo.post(Requests.GETORGINFOBYCNFVALIDREPLY)
+                .params("id", id)
+                .params("motionNode", motionNode)
+                .params("verificationDate", Dates.getDate())
+                .params("isby", isby)
+                .params("verificationOpinion", "安卓")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                callBacks.onsuccess("");
+                            } else {
+                                callBacks.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callBacks.onerror("请求失败");
                     }
                 });
     }
@@ -296,13 +404,13 @@ public class ChagedreplyUtils {
     public interface MapCallBack {
         void onsuccess(Map<String, Object> map);
 
-        void onerror(String str);
+        void onerror(String string);
     }
 
     public interface ListCallback {
         void onsuccess(ArrayList<Object> list);
 
-        void onerror(String str);
+        void onerror(String string);
     }
 
     public interface ObjectCallBacks {

@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
@@ -24,12 +26,15 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
     private TextView categoryItem;
     private EditText replyDescription;
     private Context mContext;
+    private TextView titleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply_verification);
         mContext = this;
+        titleView = findViewById(R.id.titleView);
+        titleView.setText("验证");
         findViewById(R.id.validation_status).findViewById(R.id.validation_status);
         categoryItem = (TextView) findViewById(R.id.category_item);
         replyDescription = (EditText) findViewById(R.id.replyDescription);
@@ -63,5 +68,21 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
             default:
                 break;
         }
+    }
+
+    /*验证*/
+    private verification(int isby) {
+        ChagedreplyUtils.getOrgInfoBycnfvalidReply("", "", isby, new ChagedreplyUtils.ObjectCallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                finish();
+            }
+
+            @Override
+            public void onerror(String string) {
+                Snackbar.make(titleView, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

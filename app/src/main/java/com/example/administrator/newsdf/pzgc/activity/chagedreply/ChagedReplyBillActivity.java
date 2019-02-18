@@ -1,12 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -21,6 +23,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -36,6 +39,7 @@ import com.zxy.tiny.callback.FileCallback;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -57,6 +61,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,12 +95,11 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         /*添加图片*/
         photoRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoRecycler.setAdapter(adapter);
-        content.setText(
-                "整改部位：" + "测试部位测试部位" + "\n" +
-                        "整改期限：" + "测试整改期限" + "\n" +
-                        "违反标准：" + "测试违反标准" + "\n" +
-                        "存在问题：" + "测试存在问题" + "\n" +
-                        "整改前附件："
+        content.setText("整改部位：" + "测试部位测试部位" + "\n" +
+                "整改期限：" + "测试整改期限" + "\n" +
+                "违反标准：" + "测试违反标准" + "\n" +
+                "存在问题：" + "测试存在问题" + "\n" +
+                "整改前附件："
 
         );
         adapter.setOnItemClickListener(new BasePhotoAdapter.OnItemClickListener() {
@@ -190,7 +194,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ToastUtils.showShortToast("确定");
                                 dialogInterface.dismiss();
-                                finish();
+                                delete();
                             }
                         })
                         .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -248,5 +252,35 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 }
             }
         }
+    }
+
+    /*获取整改验证单数据详情*/
+    private void request() {
+        ChagedreplyUtils.getReplyDelData("", new ChagedreplyUtils.MapCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+
+            }
+
+            @Override
+            public void onerror(String str) {
+                Snackbar.make(chagedOldRecycler, str, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*删除该项单据*/
+    public void delete() {
+        ChagedreplyUtils.deleteReplyDel("", "", new ChagedreplyUtils.ObjectCallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                finish();
+            }
+
+            @Override
+            public void onerror(String string) {
+                Snackbar.make(chagedOldRecycler, string, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 }

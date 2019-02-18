@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,15 +12,15 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyImportAdapter;
-import com.example.administrator.newsdf.pzgc.activity.changed.adapter.CheckitemAdapter;
-import com.example.administrator.newsdf.pzgc.bean.Checkitem;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.lzy.okgo.OkGo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author lx
@@ -33,9 +34,10 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
     private ChagedReplyImportAdapter adapter;
     private TextView inspectContent, comButton;
     private RecyclerView recyclerView;
-    private ArrayList<Checkitem> list;
+    private ArrayList<ImprotItem> list;
     private Context mContext;
     private int page = 0;
+    private String noticeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +60,17 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         recyclerView = (RecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        list.add(new Checkitem("测试数据", false));
-        list.add(new Checkitem("测试数据", false));
-        list.add(new Checkitem("测试数据", false));
-        list.add(new Checkitem("测试数据", false));
         adapter = new ChagedReplyImportAdapter(R.layout.adapter_chagedreply_import, list);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Checkitem checkitem = list.get(position);
-                if (checkitem.isLeam()) {
-                    checkitem.setLeam(false);
+                ImprotItem improtItem = list.get(position);
+                if (improtItem.isNewX()) {
+                    improtItem.setNewX(false);
                     page++;
                 } else {
-                    checkitem.setLeam(true);
+                    improtItem.setNewX(true);
                     page--;
                 }
                 if (page == 0) {
@@ -83,7 +81,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 adapter.setNewData(list);
             }
         });
-
+        request();
     }
 
     @Override
@@ -93,7 +91,6 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.toolbar_menu:
-
                 Intent intent = new Intent();
                 intent.putExtra("id", "12");
                 intent.putExtra("str", "12");
@@ -103,5 +100,35 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
             default:
                 break;
         }
+    }
+
+    /*查询导入问题列表*/
+    public void request() {
+        ChagedreplyUtils.chooseNoticeDelData("9eb299c3c3f549219d86ac0ec75c367e", new ChagedreplyUtils.MapCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+
+            }
+
+            @Override
+            public void onerror(String str) {
+
+            }
+        });
+    }
+
+    /*保存导入问题项*/
+    private void save() {
+        ChagedreplyUtils.batchSaveReplyDel(new ChagedreplyUtils.ObjectCallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                finish();
+            }
+
+            @Override
+            public void onerror(String string) {
+                Snackbar.make(refreshLayout, string, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 }
