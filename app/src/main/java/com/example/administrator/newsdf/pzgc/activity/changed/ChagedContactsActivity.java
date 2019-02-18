@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,9 +34,10 @@ import okhttp3.Response;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/16 0016}
- * 描述：指派联系人
+ * 描述：（新）整改通知单指派联系人
  * {@link }
  */
+@SuppressLint("Registered")
 public class ChagedContactsActivity extends BaseActivity implements View.OnClickListener {
     private ListView expandableListView;
     private TextView comtitle;

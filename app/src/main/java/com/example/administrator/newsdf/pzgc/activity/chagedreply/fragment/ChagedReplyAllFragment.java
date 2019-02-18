@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyNewActivity;
-import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAllAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyExListAllAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -44,7 +44,7 @@ public class ChagedReplyAllFragment extends Fragment {
     private ImageView checkNewadd;
     private View view;
     private ExpandableListView expandable;
-    private ChagedReplyListAllAdapter mAdapter;
+    private ChagedReplyExListAllAdapter mAdapter;
 
     @Nullable
     @Override
@@ -57,7 +57,7 @@ public class ChagedReplyAllFragment extends Fragment {
         expandable = view.findViewById(R.id.expandable);
         SmartRefreshLayout refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableLoadmore(false);
-        mAdapter = new ChagedReplyListAllAdapter(list, map, mContext);
+        mAdapter = new ChagedReplyExListAllAdapter(list, map, mContext);
         expandable.setAdapter(mAdapter);
         refreshLayout.finishRefresh(true);
         /**
@@ -89,7 +89,7 @@ public class ChagedReplyAllFragment extends Fragment {
     }
 
     public void getdata() {
-        OkGo.get(Requests.GETORGINFOBYCNF)
+        OkGo.get(Requests.GETORGINFOBYCRF)
                 .params("isAll", true)
                 .execute(new StringCallback() {
                     @Override
@@ -128,7 +128,7 @@ public class ChagedReplyAllFragment extends Fragment {
                                         }
                                     }
                                 }
-                                mAdapter = new ChagedReplyListAllAdapter(list, map, mContext);
+                                mAdapter = new ChagedReplyExListAllAdapter(list, map, mContext);
                                 expandable.setAdapter(mAdapter);
                             }
 

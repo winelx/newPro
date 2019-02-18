@@ -515,4 +515,63 @@ public class Requests {
      * 保存、修改整改通知单
      */
     public static final String SAVENOTICEFORM = networks + "iface/mobile/newcheck/saveNoticeForm";
+
+
+    /*整改回复单*/
+    /**
+     * 获取“我的”、“全部”组织树
+     */
+    public static final String GETORGINFOBYCRF = networks + "iface/mobile/newcheck/getOrgInfoBycrf";
+    /**
+     * 获取列表数据
+     */
+    public static final String GETCRFLIST = networks + "iface/mobile/newcheck/getCRFList";
+    /**
+     * 获取保存状态的整改验证单
+     */
+    public static final String GETREPLYFORMOFSAVESTATUS = networks + "iface/mobile/newcheck/getReplyFormOfSaveStatus";
+    /**
+     * 创建整改验证单
+     */
+    public static final String CREATEREPLYFORM = networks + "iface/mobile/newcheck/createReplyForm";
+    /**
+     * 创建整改验证单时选择整改通知单
+     */
+    public static final String GETNOTICEFORMLIST = networks + "iface/mobile/newcheck/getNoticeFormList";
+    /**
+     * 查询导入问题列表
+     */
+    public static final String CHOOSENOTICEDELDATA = networks + "iface/mobile/newcheck/chooseNoticeDelData";
+    /**
+     * 保存导入问题项
+     */
+    public static final String BATCHSAVEREPLYDEL = networks + "iface/mobile/newcheck/batchSaveReplyDel";
+    /**
+     * 获取整改验证单数据详情
+     */
+    public static final String GETREPLYDELDATA = networks + "iface/mobile/newcheck/getReplyDelData";
+    /**
+     * 删除整改验证单详情
+     */
+    public static final String DELETEREPLYDEL = networks + "iface/mobile/newcheck/deleteReplyDel";
+    /**
+     * 获取非保存状态的回复验证单主要信息
+     */
+    public static final String GETREPLYFORMMAININFO = networks + "iface/mobile/newcheck/getReplyFormMainInfo";
+    /**
+     * 创建、编辑回复单
+     */
+    public static final String EDITREPLYFORMDEL = networks + "iface/mobile/newcheck/editReplyFormDel";
+    /**
+     * 获取回复单数据
+     */
+    public static final String GETREPLYFORMDEL = networks + "iface/mobile/newcheck/getReplyFormDel";
+    /**
+     * 提交回复
+     */
+    public static final String SUBMITREPLYDATA = networks + "iface/mobile/newcheck/submitReplyData";
+    /**
+     * 验证
+     */
+    public static final String GETORGINFOBYCNFVALIDREPLY = networks + "iface/mobile/newcheck/getOrgInfoBycnfvalidReply";
 }

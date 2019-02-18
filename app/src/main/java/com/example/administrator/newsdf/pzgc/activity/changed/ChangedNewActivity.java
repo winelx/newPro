@@ -33,14 +33,14 @@ import java.util.List;
  * {@link }
  */
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener {
-    private TextView chagedNumber, comTitle, chagedReleasePeople, chagedReleaseOrg, chagedOrganizeText, chaged_head_text;
+    private TextView chagedNumber, comTitle, chagedReleasePeople, chagedReleaseOrg, chagedOrganizeText, chagedHeadText;
     private RecyclerView recycler;
     private List<String> list;
     private Context mContext;
     private LinearLayout problemItemLin;
     private ChangedNewAdapter adapter;
     private TextView comButton;
-    public boolean STATUS = true;
+    public boolean status = true;
     public static final String KEEP = "保存";
     private String orgName, orgId;
     private String userName, userId;
@@ -58,7 +58,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         //整改组织
         chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
         //整改负责人
-        chaged_head_text = (TextView) findViewById(R.id.chaged_head_text);
+        chagedHeadText = (TextView) findViewById(R.id.chaged_head_text);
         //下发人
         chagedReleasePeople = (TextView) findViewById(R.id.chaged_release_people);
         chagedReleasePeople.setText(SPUtils.getString(mContext, "staffName", ""));
@@ -127,7 +127,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_import_problem:
                 //导入
-                if (STATUS) {
+                if (status) {
                     ToastUtils.showShortToast("导入问题项");
                     startActivity(new Intent(mContext, ChagedImportitemActivity.class));
                 } else {
@@ -143,7 +143,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_head_lin:
                 //选择联系人
-                if (STATUS) {
+                if (status) {
                     Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                     intent1.putExtra("orgId", orgId);
                     startActivityForResult(intent1, 5);
@@ -153,7 +153,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_organize_lin:
                 //整改组织
-                if (STATUS) {
+                if (status) {
                     Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
                     intent12.putExtra("title", "整改组织");
                     intent12.putExtra("data", "Rectifi");
@@ -167,13 +167,13 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 if (KEEP.equals(comButton.getText().toString())) {
                     //保存
 
-                    STATUS = false;
+                    status = false;
                     problemItemLin.setVisibility(View.VISIBLE);
                     save();
                 } else {
                     //编辑
                     comButton.setText(KEEP);
-                    STATUS = true;
+                    status = true;
 
                 }
                 break;
@@ -189,7 +189,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             //选择负责人
             userId = data.getStringExtra("id");
             userName = data.getStringExtra("name");
-            chaged_head_text.setText(userName);
+            chagedHeadText.setText(userName);
         } else if (requestCode == 3 && resultCode == 2) {
             orgId = data.getStringExtra("id");
             orgName = data.getStringExtra("name");
@@ -203,7 +203,6 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             public void onsuccess(String string) {
                 comButton.setText("编辑");
             }
-
             @Override
             public void onerror(String string) {
 

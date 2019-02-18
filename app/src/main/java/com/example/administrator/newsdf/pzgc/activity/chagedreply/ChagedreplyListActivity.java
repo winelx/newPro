@@ -16,8 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedUtils;
-import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
@@ -45,11 +46,10 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
     private EmptyRecyclerView recyclerList;
     private TextView title;
     private ImageView toolbarImage;
-    private ChagedListAdapter adapter;
-    private ArrayList<ChagedList> list;
+    private ChagedReplyListAdapter adapter;
+    private ArrayList<ChagedreplyList> list;
     private Context mContext;
     private PullDownMenu pullDownMenu;
-    private ChagedUtils chagedUtils;
     String[] strings = {"全部", "保存", "未处理", "已处理"};
     private String orgId;
     private int page = 1;
@@ -63,7 +63,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
-        chagedUtils = new ChagedUtils();
+
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
@@ -77,7 +77,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         findViewById(R.id.com_back).setOnClickListener(this);
         //设置列表参数
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ChagedListAdapter(list, mContext);
+        adapter = new ChagedReplyListAdapter(list, mContext);
         recyclerList.setAdapter(adapter);
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
@@ -108,7 +108,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 refreshlayout.finishLoadmore();
             }
         });
-        adapter.setOnDelListener(new ChagedListAdapter.onSwipeListener() {
+        adapter.setOnDelListener(new ChagedReplyListAdapter.onSwipeListener() {
             @Override
             public void onDel(final int pos, final SwipeMenuLayout layout) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
@@ -146,7 +146,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
             }
 
         });
-        /*     request();*/
+         request();
     }
 
 
@@ -195,10 +195,10 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
      * 网络请求
      */
     private void request() {
-        chagedUtils.getcnflist(false, status, orgId, page, new ChagedUtils.CallBack() {
+        ChagedreplyUtils.getCRFList(false, status, orgId, page, new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-                ArrayList<ChagedList> data = (ArrayList<ChagedList>) map.get("list");
+                ArrayList<ChagedreplyList> data = (ArrayList<ChagedreplyList>) map.get("list");
                 if (page == 1) {
                     list.clear();
                 }
@@ -216,4 +216,5 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         });
     }
 }
+
 

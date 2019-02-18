@@ -34,7 +34,9 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
         mFragment = new ArrayList<>();
+        //全部回复单
         mFragment.add(new ChagedReplyAllFragment());
+        //我的回复单
         mFragment.add(new ChagedReplyMeFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);

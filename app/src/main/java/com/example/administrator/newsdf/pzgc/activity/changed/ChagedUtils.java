@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
+import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -256,6 +257,40 @@ public class ChagedUtils {
                     }
                 });
     }
+
+    /*保存、修改问题项*/
+
+    /**
+     * @param map       参数mao
+     * @param photoList 图片集合
+     */
+    public void saveNoticeDetails(Map<String, String> map, ArrayList<PhotoBean> photoList, final  CallBacks callBacks) {
+        OkGo.get("")
+                .params("", "")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                callBacks.onsuccess("操作成功");
+                            } else {
+                                callBacks.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBacks.onerror("请求失败");
+                    }
+                });
+    }
+
 
     public interface CallBack {
         void onsuccess(Map<String, Object> map);

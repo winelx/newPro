@@ -13,9 +13,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyListActivity;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
-import com.example.administrator.newsdf.pzgc.bean.ChagedList;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 
@@ -25,15 +23,15 @@ import java.util.ArrayList;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/1 0001}
- * 描述：整改通知单列表适配器
+ * 描述：整改回复单"全部”组织树适配器
  * {@link  ChagedreplyActivity}
  * {@link  ChagedreplyListActivity}
  */
 public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<ChagedList> list;
+    private ArrayList<ChagedreplyList> list;
     private Context mContext;
 
-    public ChagedReplyListAdapter(ArrayList<ChagedList> list, Context mContext) {
+    public ChagedReplyListAdapter(ArrayList<ChagedreplyList> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -52,7 +50,7 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @SuppressLint("SetTextI18n")
-    private void bindcontent(final TypeContent holder, ArrayList<ChagedList> list, final int position) {
+    private void bindcontent(final TypeContent holder, ArrayList<ChagedreplyList> list, final int position) {
 
         holder.chageeListContent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,44 +65,44 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 mOnSwipeListener.onDel(position, holder.swipmenulayout);
             }
         });
-        ChagedList chagedList = list.get(position);
+        ChagedreplyList chagedList = list.get(position);
         if (chagedList.getCode() != null) {
             holder.itemNumber.setText("编号：" + chagedList.getCode());
         } else {
             holder.itemNumber.setText("编号：");
         }
-        if (chagedList.getSendUserName() != null) {
-            holder.releasePeople.setText("回复人：" + chagedList.getSendUserName());
+        if (chagedList.getReplyPersonName() != null) {
+            holder.releasePeople.setText("回复人：" + chagedList.getReplyPersonName());
         } else {
             holder.releasePeople.setText("回复人：");
         }
 
-        if (chagedList.getSend_date() != null) {
-            holder.releaseData.setText("回复日期：" + chagedList.getSend_date().substring(0, 10));
+        if (chagedList.getReplyDate() != null&&chagedList.getReplyDate().length()>0) {
+            holder.releaseData.setText("回复日期：" + chagedList.getReplyDate().substring(0,10));
         } else {
             holder.releaseData.setText("回复日期：");
         }
 
-        if (chagedList.getSorgName() != null) {
-            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName());
+        if (chagedList.getRectificationOrgName() != null) {
+            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRectificationOrgName());
         } else {
             holder.chagedNoticeOrgname.setText("整改组织：");
         }
-        if (chagedList.getAuserName() != null) {
-            holder.auserName.setText("待处理人：" + chagedList.getAuserName());
+        if (chagedList.getDealPersonName() != null) {
+            holder.auserName.setText("待处理人：" + chagedList.getDealPersonName());
         } else {
             holder.auserName.setText("待处理人：");
         }
-        if (chagedList.getRuserName() != null) {
-            holder.ruserName.setText("整改负责人：" + chagedList.getRuserName());
+        if (chagedList.getRectificationPersonName() != null) {
+            holder.ruserName.setText("整改负责人：" + chagedList.getRectificationPersonName());
         } else {
             holder.ruserName.setText("整改负责人：");
         }
-        int noticeCount = chagedList.getNoticeCount();
-        holder.noticefinishcount.setText("关联通知单编号：");
+
+        holder.noticefinishcount.setText("关联通知单编号：" + chagedList.getNoticeCode());
 
         int status = chagedList.getStatus();
-//        0:未下发；1：已下发;2:回复中；3：完成；20：未处理；30：已处理
+//       0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
         holder.swipmenulayout.setIos(true).setLeftSwipe(false);
         switch (status) {
             case 0:
@@ -113,16 +111,16 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.swipmenulayout.setIos(true).setLeftSwipe(true);
                 break;
             case 1:
-                holder.infaceItemMessage.setTextString("已下发");
-                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
-                break;
-            case 2:
-                holder.infaceItemMessage.setTextString("回复中");
+                holder.infaceItemMessage.setTextString("验证中");
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
                 break;
-            case 3:
+            case 2:
                 holder.infaceItemMessage.setTextString("已完成");
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
+                break;
+            case 3:
+                holder.infaceItemMessage.setTextString("打回");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.red);
                 break;
             case 20:
                 holder.infaceItemMessage.setTextString("未处理");
@@ -182,7 +180,7 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public void setNewData(ArrayList<ChagedList> data) {
+    public void setNewData(ArrayList<ChagedreplyList> data) {
         this.list = data;
         notifyDataSetChanged();
     }

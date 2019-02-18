@@ -106,6 +106,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         int status = chagedList.getStatus();
 //        0:未下发；1：已下发;2:回复中；3：完成；20：未处理；30：已处理
+
         holder.swipmenulayout.setIos(true).setLeftSwipe(false);
         switch (status) {
             case 0:

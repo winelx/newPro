@@ -19,14 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChagedReplyListAllAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
+public class ChagedReplyExListAllAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
     private List<String> classes;
     private Map<String, List<Home_item>> content;
     private Context context;
     private LeftSlideView mMenu = null;
 
 
-    public ChagedReplyListAllAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context) {
+    public ChagedReplyExListAllAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context) {
         this.classes = classes;
         this.content = content;
         this.context = context;

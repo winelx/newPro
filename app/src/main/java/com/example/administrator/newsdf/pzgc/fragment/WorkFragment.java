@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
@@ -26,7 +25,6 @@ import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.baselibrary.MessageFragmentAdapter;
@@ -146,7 +144,6 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray data = jsonObject.getJSONArray("data");

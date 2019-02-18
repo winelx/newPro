@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private ChagedUtils chagedUtils;
     private String id;
 
+    @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         //指派
         deviceDetailsAssign = (TextView) findViewById(R.id.device_details_assign);
         deviceDetailsAssign.setOnClickListener(this);
-        deviceDetailsResult = findViewById(R.id.device_details_result);
+        deviceDetailsResult = (TextView) findViewById(R.id.device_details_result);
         deviceDetailsResult.setOnClickListener(this);
         //确认接收
         deviceDetailsUp = (TextView) findViewById(R.id.device_details_assign);
@@ -108,7 +110,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 break;
             case R.id.device_details_result:
                 /*我回复*/
-                chagedUtils.setsenddata("", "", 1, new ChagedUtils.CallBacks() {
+                chagedUtils.setsenddata("", "", 2, new ChagedUtils.CallBacks() {
                     @Override
                     public void onsuccess(String string) {
                         Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
