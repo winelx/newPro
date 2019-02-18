@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/16 0016}
- * 描述：
+ * 描述： 回复单详情
  * {@link  ChagedreplyDetailsActivity}
  */
 public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -76,8 +77,14 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     /*问题项*/
-    private void bindTypeProblem(TypeProblem holder, int position) {
+    private void bindTypeProblem(final TypeProblem holder, final int position) {
         Object object = list.get(position);
+        holder.item_problem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onclicktener.onClick(position, holder.notice_list_content.getText().toString());
+            }
+        });
     }
 
     /*记录项*/
@@ -174,8 +181,13 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
     /*单据问题项*/
     class TypeProblem extends RecyclerView.ViewHolder {
+        private LinearLayout item_problem;
+        private TextView notice_list_content;
+
         TypeProblem(View itemView) {
             super(itemView);
+            item_problem = itemView.findViewById(R.id.item_problem);
+            notice_list_content = itemView.findViewById(R.id.notice_list_content);
         }
     }
 
@@ -189,5 +201,15 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     public void setNewData(ArrayList<Object> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public interface onclicktener {
+        void onClick(int position, String string);
+    }
+
+    private onclicktener onclicktener;
+
+    public void setOnclicktener(onclicktener onclicktener) {
+        this.onclicktener = onclicktener;
     }
 }

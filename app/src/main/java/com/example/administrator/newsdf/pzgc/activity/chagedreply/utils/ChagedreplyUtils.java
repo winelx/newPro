@@ -348,17 +348,31 @@ public class ChagedreplyUtils {
     }
 
     /*提交回复*/
-    public static void submitReplyData() {
+
+    public static void submitReplyData(String replyId, String motionNode, final ObjectCallBacks callBacks) {
         OkGo.post(Requests.SUBMITREPLYDATA)
+                .params("replyId", replyId)
+                .params("motionNode", motionNode)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                callBacks.onsuccess("");
+                            } else {
+                                callBacks.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callBacks.onerror("请求失败");
                     }
                 });
     }
