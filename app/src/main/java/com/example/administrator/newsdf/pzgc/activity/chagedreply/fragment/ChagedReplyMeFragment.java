@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyNewActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyListActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
@@ -86,7 +87,7 @@ public class ChagedReplyMeFragment extends LazyloadFragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, ChagedreplyListActivity.class));
+                startActivity(new Intent(mContext, ChagedReplyNewActivity.class));
             }
         });
 

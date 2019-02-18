@@ -65,7 +65,7 @@
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/warning_red"
                     android:gravity="center_vertical"
-                    android:text="整改组织"
+                    android:text="关联整改通知单"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 

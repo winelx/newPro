@@ -67,6 +67,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 finish();
                 break;
             case R.id.reply_import_problem:
+                /*导入问题项*/
                 if (com_button.getText().toString().equals("保存")) {
                     startActivityForResult(new Intent(mContext, ChagedReplyImportActivity.class), 0);
                 } else {

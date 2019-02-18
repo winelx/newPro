@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyRelationActivity;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
 
 import java.util.List;
 
@@ -16,14 +17,24 @@ import java.util.List;
  * 描述：关联整改通知单
  * {@link  ChagedReplyRelationActivity}
  */
-public class ChagedReplyRelationAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public ChagedReplyRelationAdapter(int layoutResId, @Nullable List<String> data) {
+public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, BaseViewHolder> {
+    public ChagedReplyRelationAdapter(int layoutResId, @Nullable List<RelationList> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-      /*  helper.setText(R.id.content,item);
-*/
+    protected void convert(BaseViewHolder helper, RelationList item) {
+        helper.setText(R.id.number, "编号：" + item.getCode());
+        if (!item.getCode().isEmpty()) {
+            helper.setText(R.id.send_people, "下发人：：" + item.getCode());
+        } else {
+            helper.setText(R.id.send_people, "下发人：：");
+        }
+        if (!item.getAcceptPersonName().isEmpty()) {
+            helper.setText(R.id.chaged_people, "整改负责人：" + item.getAcceptPersonName());
+        } else {
+            helper.setText(R.id.chaged_people, "整改负责人：");
+        }
+
     }
 }

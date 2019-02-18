@@ -62,7 +62,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
-        emptyUtils=new EmptyUtils(mContext);
+        emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerList.setEmptyView(emptyUtils.init());
@@ -84,6 +84,8 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         refreshlayout.setEnableLoadmore(true);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshlayout.setEnableOverScrollDrag(false);
+        //是否在列表不满一页时候开启上拉加载功能
+        refreshlayout.setEnableLoadmoreWhenContentNotFull(false);
         /* 下拉刷新*/
         refreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)

@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils;
 
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -114,11 +115,30 @@ public class ChagedreplyUtils {
     }
 
     /*创建整改验证单时选择整改通知单*/
-    public static void getNoticeFormList() {
-        OkGo.post(Requests.GETNOTICEFORMLIST)
+    public static void getNoticeFormList(String orgId, int page, final MapCallBack listCallback) {
+        OkGo.get(Requests.GETNOTICEFORMLIST)
+                .params("orgId", orgId)
+                .params("size", 20)
+                .params("page", page)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            Map<String,Object> map = new HashMap<>();
+                            if (ret == 0) {
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                JSONArray result = data.getJSONArray("results");
+                                List<RelationList> list = ListJsonUtils.getListByArray(RelationList.class, result.toString());
+                                map.put("Relation",list);
+                                listCallback.onsuccess(map);
+                            } else {
+                                listCallback.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 

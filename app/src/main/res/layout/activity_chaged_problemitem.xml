@@ -63,6 +63,16 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/chaged_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:text="测试部位u测试不额外"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
                     <EditText
                         android:id="@+id/exitext_position"
                         android:layout_width="match_parent"
@@ -204,7 +214,6 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
-
 
 
                 <LinearLayout
