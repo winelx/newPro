@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity.changed;
 import com.example.administrator.newsdf.pzgc.bean.ChagedImportitem;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -90,6 +91,9 @@ public class ChagedUtils {
                                 ArrayList<Object> list = new ArrayList<>();
                                 ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
                                 list.add(item);
+                                JSONArray details = data.getJSONArray("details");
+                                List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
+                                list.addAll(list1);
                                 callBack.onsuccess(list);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));

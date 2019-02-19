@@ -30,30 +30,24 @@
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
-
-            <TextView
-
+            <ImageView
                 android:id="@+id/notice_list_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/notice_list_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:drawableLeft="@mipmap/list_tab_time"
-                android:drawablePadding="8dp"
-                android:text="超期"
-                android:textSize="10sp" />
+                android:background="@mipmap/overtime"
+                android:drawablePadding="8dp" />
 
-            <TextView
+            <ImageView
+                android:id="@+id/complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/notice_list_status"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
-                android:drawableLeft="@mipmap/list_tab_time"
-                android:drawablePadding="8dp"
-                android:text="未完成"
-                android:textSize="10sp" />
+                android:drawablePadding="8dp" />
         </RelativeLayout>
 
         <com.joanzapata.iconify.widget.IconTextView

@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -69,31 +71,45 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         /*编号*/
         holder.noticedNumber.setText(item.getCode());
         /*下发人*/
-        holder.noticed_send_people.setText("下发人：");
-        holder.noticed_send_data.setText("下发日期：");
-        holder.noticed_chaged_org.setText("整改组织：" + item.getRorgName());
-        holder.noticed_chaged_popple.setText("整改负责人：" + item.getRuserName());
-        holder.noticed_send_org.setText("下发组织：" + item.getSorgName());
-        holder.noticed_auserName.setText("下节点负责人：" + item.getAuserName());
+        holder.noticedSendPeople.setText("下发人：");
+        holder.noticedSendData.setText("下发日期：");
+        holder.noticedChagedOrg.setText("整改组织：" + item.getRorgName());
+        holder.noticedChagedPopple.setText("整改负责人：" + item.getRuserName());
+        holder.noticedSendOrg.setText("下发组织：" + item.getSorgName());
+        holder.noticedAusername.setText("下节点负责人：" + item.getAuserName());
         /*通知单完成数*/
         int noticeFinishCount = item.getNoticeFinishCount();
         String leanht = noticeFinishCount + "";
         /*总下发通知单数*/
         int noticeCount = item.getNoticeCount();
-        holder.notice_complete_proportion.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
+        holder.noticeCompleteProportion.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
 
     }
 
     private void bindContet(TypeCheckItem holder, ArrayList<Object> list, final int position) {
-//        Object obj = list.get(position);
-//        ChagedNoticeDetailslsit top = (ChagedNoticeDetailslsit) obj;
-//        holder.noticeListContent.setText(top.getStr().toString());
-//        holder.itemProblem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onClickListener.setproblem(position);
-//            }
-//        });
+        Object obj = list.get(position);
+        ChagedNoticeDetailslsit top = (ChagedNoticeDetailslsit) obj;
+        holder.noticeListContent.setText(top.getStandardDelName());
+        String string = top.getIsOverdue();
+        //是否超时
+        if ("1".equals(string)) {
+            holder.overtime.setBackgroundResource(R.mipmap.noovertime);
+        } else {
+            holder.overtime.setBackgroundResource(R.mipmap.overtime);
+        }
+        //是否通过
+        String isVerify = top.getIsVerify();
+        if ("1".equals(isVerify)) {
+            holder.complete.setBackgroundResource(R.mipmap.chagedcomplete);
+        } else {
+            holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);
+        }
+        holder.itemProblem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.setproblem(position);
+            }
+        });
     }
 
 
@@ -110,36 +126,47 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return list.size();
-        /*    return list == null ? 0 : list.size();*/
+            if (list.size() == 0){
+                return 0;
+            }else {
+                return list.size();
+            }
     }
 
     /*单据详情*/
     class TypeContent extends RecyclerView.ViewHolder {
         private TextView problemItem;
         private TextView noticedNumber;
-        private TextView noticed_send_people, noticed_chaged_org, noticed_send_data,
-                noticed_chaged_popple, noticed_send_org, noticed_auserName, notice_complete_proportion;
+        private TextView noticedSendPeople, noticedChagedOrg, noticedSendData,
+                noticedChagedPopple, noticedSendOrg, noticedAusername, noticeCompleteProportion;
 
         public TypeContent(View itemView) {
             super(itemView);
             problemItem = itemView.findViewById(R.id.problem_item);
             //编号
             noticedNumber = itemView.findViewById(R.id.noticed_number);
-            noticed_send_people = itemView.findViewById(R.id.noticed_send_people);
-            noticed_chaged_org = itemView.findViewById(R.id.noticed_chaged_org);
-            noticed_chaged_popple = itemView.findViewById(R.id.noticed_chaged_popple);
-            noticed_send_org = itemView.findViewById(R.id.noticed_send_org);
-            noticed_auserName = itemView.findViewById(R.id.noticed_auserName);
-            notice_complete_proportion = itemView.findViewById(R.id.notice_complete_proportion);
-            noticed_send_data = itemView.findViewById(R.id.noticed_send_data);
+            noticedSendPeople = itemView.findViewById(R.id.noticed_send_people);
+            noticedChagedOrg = itemView.findViewById(R.id.noticed_chaged_org);
+            noticedChagedPopple = itemView.findViewById(R.id.noticed_chaged_popple);
+            noticedSendOrg = itemView.findViewById(R.id.noticed_send_org);
+            noticedAusername = itemView.findViewById(R.id.noticed_auserName);
+            noticeCompleteProportion = itemView.findViewById(R.id.notice_complete_proportion);
+            noticedSendData = itemView.findViewById(R.id.noticed_send_data);
         }
     }
 
     /*单据整改项*/
     class TypeCheckItem extends RecyclerView.ViewHolder {
+        private TextView noticeListContent;
+        private ImageView overtime, complete;
+        private LinearLayout itemProblem;
+
         public TypeCheckItem(View itemView) {
             super(itemView);
+            noticeListContent = itemView.findViewById(R.id.notice_list_content);
+            itemProblem = itemView.findViewById(R.id.item_problem);
+            overtime = itemView.findViewById(R.id.notice_list_status);
+            complete = itemView.findViewById(R.id.complete);
 
         }
     }

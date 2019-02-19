@@ -1,7 +1,5 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
-import java.util.List;
-
 public class ChagedNoticeDetails {
 
 
@@ -33,7 +31,7 @@ public class ChagedNoticeDetails {
     private String ruserName;
     private String sorgName;
     private int status;
-    private List<?> details;
+
 
     public String getAuserName() {
         return auserName;
@@ -131,11 +129,5 @@ public class ChagedNoticeDetails {
         this.status = status;
     }
 
-    public List<?> getDetails() {
-        return details;
-    }
 
-    public void setDetails(List<?> details) {
-        this.details = details;
-    }
 }
