@@ -64,7 +64,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     //整改部位
     private String positionid;
     private ChagedUtils chagedUtils;
-    private TextView chaged_position;
+    private TextView chagedPosition, check_item_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         Intent intent = getIntent();
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");
+        status = intent.getBooleanExtra("status", true);
         mContext = this;
         chagedUtils = new ChagedUtils();
         photolist = new ArrayList<>();
@@ -81,7 +82,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
         popcamerautils = new PopCameraUtils();
         /*整改部位*/
-        chaged_position = (TextView) findViewById(R.id.chaged_position);
+        chagedPosition = (TextView) findViewById(R.id.chaged_position);
         /*违反标准*/
         violation_standard_text = (TextView) findViewById(R.id.violation_standard_text);
         /*整改部位*/
@@ -95,7 +96,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         /*导入*/
         findViewById(R.id.import_position).setOnClickListener(this);
         /*删除*/
-        findViewById(R.id.check_item_delete).setOnClickListener(this);
+        check_item_delete = (TextView) findViewById(R.id.check_item_delete);
+        check_item_delete.setOnClickListener(this);
         /*返回*/
         findViewById(R.id.com_back).setOnClickListener(this);
         /*菜单按钮*/
@@ -191,6 +193,16 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                         .start((Activity) mContext);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (status) {
+            check_item_delete.setVisibility(View.VISIBLE);
+        } else {
+            check_item_delete.setVisibility(View.GONE);
+        }
     }
 
     @Override

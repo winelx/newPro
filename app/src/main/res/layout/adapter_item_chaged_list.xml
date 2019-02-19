@@ -16,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <RelativeLayout
+            android:id="@+id/content_re"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -108,8 +110,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
 
 
                     <TextView
@@ -132,15 +134,17 @@
 
             </LinearLayout>
         </RelativeLayout>
+
         <!--侧滑内容-->
         <Button
             android:id="@+id/item_delete"
             android:layout_width="70dp"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/content_re"
             android:background="@color/red"
             android:text="删除"
-            android:textColor="@android:color/white" />
-
+            android:textColor="@android:color/white"
+            android:layout_toEndOf="@+id/content_re" />
     </com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout>
 
 

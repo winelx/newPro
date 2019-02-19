@@ -515,7 +515,18 @@ public class Requests {
      * 保存、修改整改通知单
      */
     public static final String SAVENOTICEFORM = networks + "iface/mobile/newcheck/saveNoticeForm";
-
+    /**
+     * 导入问题项时查询监督检查列表
+     */
+    public static final String CHOOSEMANAGEDATALIST=networks+"iface/mobile/newcheck/chooseManageDataList";
+    /**
+     * 导入问题项时查询问题项
+     */
+    public static final String GETDETAILSOFIMPORT=networks+"iface/mobile/newcheck/getDetailsOfImport";
+    /**
+     *保存导入问题项
+     */
+    public static final String BATCHSAVENOTECEDEL=networks+"iface/mobile/newcheck/batchSaveNoteceDel";
 
     /*整改回复单*/
     /**

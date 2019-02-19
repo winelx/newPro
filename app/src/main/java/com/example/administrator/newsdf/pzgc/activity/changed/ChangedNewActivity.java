@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -37,7 +36,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private RecyclerView recycler;
     private List<String> list;
     private Context mContext;
-    private LinearLayout problemItemLin;
+    private LinearLayout problemItemLin, problemMenuLin;
     private ChangedNewAdapter adapter;
     private TextView comButton;
     public boolean status = true;
@@ -55,6 +54,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         list = new ArrayList<>();
         problemItemLin = (LinearLayout) findViewById(R.id.problem_item_lin);
         problemItemLin.setVisibility(View.GONE);
+        problemMenuLin = (LinearLayout) findViewById(R.id.problem_menu_lin);
         //整改组织
         chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
         //整改负责人
@@ -93,7 +93,11 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, ChagedProblemitemActivity.class));
+                Intent intent = new Intent(mContext, ChagedProblemitemActivity.class);
+                intent.putExtra("orgname", orgName);
+                intent.putExtra("orgid", orgId);
+                intent.putExtra("status", true);
+                startActivity(intent);
             }
         });
     }
@@ -107,46 +111,37 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_release_problem:
                 //下发
-                if (KEEP.equals(comButton.getText().toString())) {
-                    chagedUtils.setsenddata("", "", 1, new ChagedUtils.CallBacks() {
-                        @Override
-                        public void onsuccess(String string) {
-                            Snackbar.make(comButton, string, Snackbar.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onerror(String str) {
-                            Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-
-                    ToastUtils.showShortToast("下发");
-                }
-                startActivity(new Intent(mContext, ChagedListActivity.class));
-                break;
-            case R.id.chaged_import_problem:
-                //导入
                 if (status) {
-                    ToastUtils.showShortToast("导入问题项");
-                    startActivity(new Intent(mContext, ChagedImportitemActivity.class));
+                    send();
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
                 break;
-            case R.id.chaged_add_problem:
-                //添加整改问题项
-                Intent intent = new Intent(mContext, ChagedProblemitemActivity.class);
-                intent.putExtra("orgname", orgName);
+            case R.id.chaged_import_problem:
+                //导入
+                Intent intent = new Intent(mContext, ChagedImportitemActivity.class);
                 intent.putExtra("orgid", orgId);
                 startActivity(intent);
+                break;
+            case R.id.chaged_add_problem:
+                //添加整改问题项
+                Intent intent2 = new Intent(mContext, ChagedProblemitemActivity.class);
+                intent2.putExtra("orgname", orgName);
+                intent2.putExtra("orgid", orgId);
+                intent2.putExtra("status", false);
+                startActivity(intent2);
                 break;
             case R.id.chaged_head_lin:
                 //选择联系人
                 if (status) {
-                    Intent intent1 = new Intent(mContext, CheckuserActivity.class);
-                    intent1.putExtra("orgId", orgId);
-                    startActivityForResult(intent1, 5);
+                    if (orgId==null){
+                        ToastUtils.showShortToast("请先选择整改组织");
+                    }else {
+                        Intent intent1 = new Intent(mContext, CheckuserActivity.class);
+                        intent1.putExtra("orgId", orgId);
+                        startActivityForResult(intent1, 5);
+                    }
+
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
@@ -166,10 +161,18 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 /*菜单*/
                 if (KEEP.equals(comButton.getText().toString())) {
                     //保存
+                    if (orgId == null) {
+                        ToastUtils.showShortToast("还未选择整改组织");
+                    } else {
+                        if (userId == null) {
+                            ToastUtils.showShortToast("还未选择整改负责人");
+                        } else {
+                           /* save();*/
+                            problemItemLin.setVisibility(View.VISIBLE);
+                            comButton.setText("编辑");
+                        }
+                    }
 
-                    status = false;
-                    problemItemLin.setVisibility(View.VISIBLE);
-                    save();
                 } else {
                     //编辑
                     comButton.setText(KEEP);
@@ -198,15 +201,36 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     }
 
     public void save() {
-        chagedUtils.setsavenoticeform("", "", "", "", new ChagedUtils.CallBacks() {
+        chagedUtils.setsavenoticeform("", orgId, userId, "", new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
-                comButton.setText("编辑");
+                status = false;
+
             }
+
             @Override
             public void onerror(String string) {
 
             }
         });
+    }
+
+    /*下发*/
+    public void send() {
+        if (KEEP.equals(comButton.getText().toString())) {
+            chagedUtils.setsenddata("", "", 1, new ChagedUtils.CallBacks() {
+                @Override
+                public void onsuccess(String string) {
+                    Snackbar.make(comButton, string, Snackbar.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onerror(String str) {
+                    Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            ToastUtils.showShortToast("下发");
+        }
     }
 }

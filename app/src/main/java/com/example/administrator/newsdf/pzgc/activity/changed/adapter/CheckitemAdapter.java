@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.changed.adapter;
 
 import android.annotation.SuppressLint;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-
 
 import java.util.ArrayList;
 
@@ -59,16 +57,28 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @SuppressLint("SetTextI18n")
     private void bindContent(TypeContent holder, ArrayList<Object> list, final int position) {
         final Checkitem checkitem = (Checkitem) list.get(position);
+
         if (checkitem.isLeam()) {
             holder.checkimage.setBackgroundResource(R.mipmap.circular_ensure_true);
         } else {
             holder.checkimage.setBackgroundResource(R.mipmap.circular_ensure_false);
         }
-        holder.checkItem.setText(
-                "检测内容：" + "测试检测内容测试检测内容测试检测" + "\n"
-                        + "检测标准：" + "检测标准检测标准检测标准检测标准检测标准检测标准检测标准" + "\n"
-                        + "具体描述：" + "具体描述具体描述具体描述具"
-        );
+        holder.checkItem.setText("检测内容：" + isnull(checkitem.getContent()));
+        //检测标准
+        holder.checkStandard.setText(isnull(checkitem.getStandard()));
+        //具体描述
+        holder.describe.setText(isnull(checkitem.getDescribe()));
+        /*标准分*/
+        holder.standardScore.setText("标准分：" + checkitem.getStandardScore());
+        try {
+            int standardscore = Integer.parseInt(checkitem.getStandardScore());
+            int getStandardDelScore = Integer.parseInt(checkitem.getStandardDelScore());
+            holder.getscore.setText("得分：" + (standardscore - getStandardDelScore));
+        } catch (Exception e) {
+
+        }
+
+
         holder.checkLin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,12 +95,18 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     private void bindTitle(TypeTitle holder, ArrayList<Object> list, int position) {
-        holder.title.setText("测试标题" + position);
+        Object obj = list.get(position);
+        holder.title.setText(obj.toString());
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list.size() == 0) {
+            return 0;
+        } else {
+            return list.size();
+        }
+
     }
 
     @Override
@@ -108,12 +124,17 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private TextView checkItem;
         private ImageView checkimage;
         private LinearLayout checkLin;
+        private TextView checkStandard, describe, standardScore, getscore;
 
         TypeContent(View itemView) {
             super(itemView);
             checkItem = itemView.findViewById(R.id.check_item);
             checkimage = itemView.findViewById(R.id.check_image);
             checkLin = itemView.findViewById(R.id.check_lin);
+            checkStandard = itemView.findViewById(R.id.check_standard);
+            describe = itemView.findViewById(R.id.describe);
+            standardScore = itemView.findViewById(R.id.standardScore);
+            getscore = itemView.findViewById(R.id.getscore);
         }
     }
 
@@ -128,6 +149,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface ItemClickListener {
         void onclick(String str, int position);
+
         void ondelete(String str, int position);
     }
 
@@ -140,5 +162,13 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setNewData(ArrayList<Object> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public String isnull(String string) {
+        if (string == null) {
+            return "";
+        } else {
+            return string;
+        }
     }
 }

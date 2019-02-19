@@ -78,7 +78,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 startActivity(new Intent(mContext, ChagedNoticeItemDetailsActivity.class));
             }
         });
-
     }
 
     /*网络请求*/

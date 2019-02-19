@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
@@ -125,7 +127,10 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             public void onClick(View v) {
                 String  id=content.get(classes.get(groupPosition)).get(childPosition).getId();
                 String orgname= content.get(classes.get(groupPosition)).get(childPosition).getOrgname();
-
+                Intent intent = new Intent(context, ChagedListActivity.class);
+                intent.putExtra("orgid", id);
+                intent.putExtra("orgName",orgname);
+                context.startActivity(intent);
                 childHold.homeItemMessage.setVisibility(View.GONE);
 
             }

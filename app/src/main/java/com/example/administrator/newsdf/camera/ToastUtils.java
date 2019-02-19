@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.camera;
 
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
@@ -91,5 +93,9 @@ public class ToastUtils {
             toast.setText(message);
             toast.show();
         }
+    }
+
+    public static void showsnackbar(View view, String string) {
+        Snackbar.make(view, string, Snackbar.LENGTH_SHORT).show();
     }
 }

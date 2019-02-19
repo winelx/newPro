@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -48,7 +49,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private Context mContext;
     private PullDownMenu pullDownMenu;
     private ChagedUtils chagedUtils;
-    String[] strings = {"全部", "保存", "未处理", "已处理"};
+    private String[] strings = {"全部", "保存", "未处理", "已处理"};
     private String orgId;
     private int page = 1;
     private int status = -1;
@@ -119,8 +120,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 /*删除按钮*/
-                                list.remove(pos);
-                                adapter.setNewData(list);
+                                delete(pos);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -203,6 +203,10 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                     list.clear();
                 }
                 list.addAll(data);
+                ArrayList<ChagedList> arr = new ArrayList<>();
+
+                list.addAll(arr);
+
                 adapter.setNewData(list);
             }
 
@@ -212,6 +216,26 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                 if (1 != page) {
                     page--;
                 }
+            }
+        });
+    }
+
+    /**
+     * 删除
+     */
+    private void delete(final int pos) {
+        chagedUtils.deletebill("", new ChagedUtils.CallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                //删除item
+                list.remove(pos);
+                //刷新
+                adapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
             }
         });
     }

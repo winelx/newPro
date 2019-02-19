@@ -33,7 +33,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply_verification);
         mContext = this;
-        titleView = findViewById(R.id.titleView);
+        titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("验证");
         findViewById(R.id.validation_status).findViewById(R.id.validation_status);
         categoryItem = (TextView) findViewById(R.id.category_item);
@@ -71,7 +71,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
     }
 
     /*验证*/
-    private verification(int isby) {
+    private void verification(int isby) {
         ChagedreplyUtils.getOrgInfoBycnfvalidReply("", "", isby, new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
@@ -80,7 +80,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
 
             @Override
             public void onerror(String string) {
-                Snackbar.make(titleView, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(titleView, string,Snackbar.LENGTH_SHORT).show();
             }
         });
 

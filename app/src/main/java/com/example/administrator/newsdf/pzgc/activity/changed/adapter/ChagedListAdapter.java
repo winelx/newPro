@@ -103,16 +103,18 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         /*总下发通知单数*/
         int noticeCount = chagedList.getNoticeCount();
         holder.noticefinishcount.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
-
         int status = chagedList.getStatus();
 //        0:未下发；1：已下发;2:回复中；3：完成；20：未处理；30：已处理
-
-        holder.swipmenulayout.setIos(true).setLeftSwipe(false);
+        //setIos  设置是否开启IOS阻塞式交互
+        // setLeftSwipe   设置false 为右滑出菜单
+        //setSwipeEnable 设置侧滑功能开关
+        holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
         switch (status) {
             case 0:
                 holder.infaceItemMessage.setTextString("保存");
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
-                holder.swipmenulayout.setIos(true).setLeftSwipe(true);
+                //保存状态可以调用删除按钮
+                holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
                 break;
             case 1:
                 holder.infaceItemMessage.setTextString("已下发");
