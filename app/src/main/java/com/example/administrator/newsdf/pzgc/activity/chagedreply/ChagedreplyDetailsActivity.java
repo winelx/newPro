@@ -45,15 +45,15 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         setContentView(R.layout.activity_device_details);
         mContext = this;
         list = new ArrayList<>();
-        list.add(new ReplyDetailsContent("ss"));
-        list.add(new ReplyDetailsText("问题项"));
-        list.add(new NoticeItemDetailsRecord("ss"));
-        list.add(new NoticeItemDetailsRecord("ss"));
-        list.add(new NoticeItemDetailsRecord("ss"));
-        list.add(new ReplyDetailsText("操作记录"));
-        list.add(new ReplyDetailsRecord("sss"));
-        list.add(new ReplyDetailsRecord("sss"));
-        list.add(new ReplyDetailsRecord("sss"));
+//        list.add(new ReplyDetailsContent("ss"));
+//        list.add(new ReplyDetailsText("问题项"));
+//        list.add(new NoticeItemDetailsRecord("ss"));
+//        list.add(new NoticeItemDetailsRecord("ss"));
+//        list.add(new NoticeItemDetailsRecord("ss"));
+//        list.add(new ReplyDetailsText("操作记录"));
+//        list.add(new ReplyDetailsRecord("sss"));
+//        list.add(new ReplyDetailsRecord("sss"));
+//        list.add(new ReplyDetailsRecord("sss"));
         findViewById(R.id.checklistback).setOnClickListener(this);
         /*验证*/
         deviceDetailsProving = (TextView) findViewById(R.id.device_details_proving);

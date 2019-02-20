@@ -11,8 +11,6 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoti
  *{@link  ChagedNoticeDetailsAdapter}
  */
 public class ChagedNoticeDetailslsit {
-
-
         /**
          * id : esse non nulla
          * isOverdue : 4.284347487879789E7

@@ -4,34 +4,41 @@ public class ChagedNoticeDetails {
 
 
     /**
-     * auserName : 系统管理员
-     * code : ZGTZ-20190214-4
-     * dealId : 4d6d1cffb8b544f1ac9fbff55edfe4b6
-     * details : []
-     * id : 1d1b40e0ce1c46b782e3f94e9c9184af
-     * motionNode : 1
-     * noticeCount : 0
-     * noticeFinishCount : 0
-     * permission : 1
-     * rorgName : 三独一标
-     * ruserName : 田江
-     * sorgName : 贵州路桥集团有限公司
-     * status : 0
+     * auserName : dolor enim deserunt culpa
+     * code : sit
+     * dealId : nisi occaecat irure commodo
+     * id : in Duis dolore
+     * noticeCount : 7561644.062983498
+     * noticeFinishCount : 6.63039133822383E7
+     * permission : -5.449651643418179E7
+     * rectificationOrgid : aliquip
+     * rectificationPerson : magna esse in
+     * rorgName : ut adipisicing tempor
+     * ruserName : adipisicin
+     * sendPerson : aute
+     * sendUserName : consectetur qui eiusmod irure
+     * send_date : qui dolor dolore
+     * sorgName : laboris amet ullamco
+     * status : 5199842.329309195
      */
 
     private String auserName;
     private String code;
     private String dealId;
     private String id;
-    private int motionNode;
     private int noticeCount;
     private int noticeFinishCount;
     private int permission;
+    private String rectificationOrgid;
+    private String rectificationPerson;
     private String rorgName;
     private String ruserName;
+    private String sendPerson;
+    private String sendUserName;
+    private String send_date;
     private String sorgName;
+    private String sendOrgid;
     private int status;
-
 
     public String getAuserName() {
         return auserName;
@@ -65,14 +72,6 @@ public class ChagedNoticeDetails {
         this.id = id;
     }
 
-    public int getMotionNode() {
-        return motionNode;
-    }
-
-    public void setMotionNode(int motionNode) {
-        this.motionNode = motionNode;
-    }
-
     public int getNoticeCount() {
         return noticeCount;
     }
@@ -97,6 +96,22 @@ public class ChagedNoticeDetails {
         this.permission = permission;
     }
 
+    public String getRectificationOrgid() {
+        return rectificationOrgid;
+    }
+
+    public void setRectificationOrgid(String rectificationOrgid) {
+        this.rectificationOrgid = rectificationOrgid;
+    }
+
+    public String getRectificationPerson() {
+        return rectificationPerson;
+    }
+
+    public void setRectificationPerson(String rectificationPerson) {
+        this.rectificationPerson = rectificationPerson;
+    }
+
     public String getRorgName() {
         return rorgName;
     }
@@ -111,6 +126,30 @@ public class ChagedNoticeDetails {
 
     public void setRuserName(String ruserName) {
         this.ruserName = ruserName;
+    }
+
+    public String getSendPerson() {
+        return sendPerson;
+    }
+
+    public void setSendPerson(String sendPerson) {
+        this.sendPerson = sendPerson;
+    }
+
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
+    }
+
+    public String getSend_date() {
+        return send_date;
+    }
+
+    public void setSend_date(String send_date) {
+        this.send_date = send_date;
     }
 
     public String getSorgName() {
@@ -129,5 +168,11 @@ public class ChagedNoticeDetails {
         this.status = status;
     }
 
+    public String getSendOrgid() {
+        return sendOrgid;
+    }
 
+    public void setSendOrgid(String sendOrgid) {
+        this.sendOrgid = sendOrgid;
+    }
 }

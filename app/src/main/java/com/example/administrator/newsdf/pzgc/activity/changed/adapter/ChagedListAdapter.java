@@ -77,11 +77,10 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         if (chagedList.getSend_date() != null) {
-            holder.releaseData.setText("下发日期：" + chagedList.getSend_date());
+            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0,10));
         } else {
             holder.releaseData.setText("下发日期：");
         }
-
         if (chagedList.getSorgName() != null) {
             holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName());
         } else {
@@ -111,7 +110,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
         switch (status) {
             case 0:
-                holder.infaceItemMessage.setTextString("保存");
+                holder.infaceItemMessage.setTextString("未处理");
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
                 //保存状态可以调用删除按钮
                 holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
@@ -130,7 +129,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
             case 20:
                 holder.infaceItemMessage.setTextString("未处理");
-                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
                 break;
             case 30:
                 holder.infaceItemMessage.setTextString("已处理");
@@ -203,6 +202,5 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setOnDelListener(onSwipeListener onSwipeListener) {
         this.mOnSwipeListener = onSwipeListener;
     }
-
 
 }

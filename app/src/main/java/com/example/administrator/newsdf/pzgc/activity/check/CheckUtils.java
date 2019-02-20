@@ -7,7 +7,6 @@ import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.administrator.newsdf.pzgc.bean.standarBean;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -173,7 +172,7 @@ public class CheckUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.d("s", s);
+
                         try {
                             JSONObject jsonObject = new JSONObject(s);
 

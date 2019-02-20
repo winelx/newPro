@@ -16,12 +16,15 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,29 +35,36 @@ import java.util.List;
  * {@link }
  */
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener {
-    private TextView chagedNumber, comTitle, chagedReleasePeople, chagedReleaseOrg, chagedOrganizeText, chagedHeadText;
+    private TextView chagedNumber, comTitle, chagedReleasePeople,
+            chagedReleaseOrg, chagedOrganizeText, chagedHeadText, chagednumber;
     private RecyclerView recycler;
-    private List<String> list;
+    private List<ChagedNoticeDetailslsit> list;
     private Context mContext;
     private LinearLayout problemItemLin, problemMenuLin;
     private ChangedNewAdapter adapter;
     private TextView comButton;
+    //界面状态，用来显示是否展示导入添加问题
     public boolean status = true;
     public static final String KEEP = "保存";
-    private String orgName, orgId;
+    private String orgName, orgId, id = "";
     private String userName, userId;
     private ChagedUtils chagedUtils;
+    private String chagedReleaseid, sendOrgid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
         mContext = this;
+        Intent intent = getIntent();
+        status = intent.getBooleanExtra("status", false);
         chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
         problemItemLin = (LinearLayout) findViewById(R.id.problem_item_lin);
         problemItemLin.setVisibility(View.GONE);
         problemMenuLin = (LinearLayout) findViewById(R.id.problem_menu_lin);
+        //整改通知单编号
+        chagednumber = (TextView) findViewById(R.id.chagednumber);
         //整改组织
         chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
         //整改负责人
@@ -86,20 +96,33 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
         //问题项
         recycler = (RecyclerView) findViewById(R.id.recycler);
+        //设置展示style
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        //添加分割线
         recycler.addItemDecoration(new SimpleDividerItemDecoration(mContext));
         adapter = new ChangedNewAdapter(R.layout.adapter_item_chaged_new, list);
         recycler.setAdapter(adapter);
+        /*问题项点击事件*/
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(mContext, ChagedProblemitemActivity.class);
                 intent.putExtra("orgname", orgName);
                 intent.putExtra("orgid", orgId);
-                intent.putExtra("status", true);
+                intent.putExtra("status", false);
+                //问题项Id
+                intent.putExtra("noticeDelId", list.get(position).getId());
+                //整改单Id
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         });
+        if (status) {
+            id = intent.getStringExtra("id");
+            comButton.setText("编辑");
+            problemItemLin.setVisibility(View.VISIBLE);
+            request();
+        }
     }
 
     @Override
@@ -126,35 +149,36 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             case R.id.chaged_add_problem:
                 //添加整改问题项
                 Intent intent2 = new Intent(mContext, ChagedProblemitemActivity.class);
-                intent2.putExtra("orgname", orgName);
+                intent2.putExtra("orgname", chagedOrganizeText.getText().toString());
                 intent2.putExtra("orgid", orgId);
-                intent2.putExtra("status", false);
+                intent2.putExtra("id", id);
+                intent2.putExtra("status", true);
                 startActivity(intent2);
                 break;
             case R.id.chaged_head_lin:
                 //选择联系人
-                if (status) {
-                    if (orgId==null){
-                        ToastUtils.showShortToast("请先选择整改组织");
-                    }else {
+                if (!status) {
+                    if (orgId == null) {
+                        ToastUtils.showsnackbar(comTitle, "请先选择整改组织");
+                    } else {
                         Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                         intent1.putExtra("orgId", orgId);
                         startActivityForResult(intent1, 5);
                     }
 
                 } else {
-                    ToastUtils.showShortToast("不是编辑状态无法操作");
+                    ToastUtils.showsnackbar(comTitle, "不是编辑状态无法操作");
                 }
                 break;
             case R.id.chaged_organize_lin:
                 //整改组织
-                if (status) {
+                if (!status) {
                     Intent intent12 = new Intent(mContext, OrganizationaActivity.class);
                     intent12.putExtra("title", "整改组织");
                     intent12.putExtra("data", "Rectifi");
                     startActivityForResult(intent12, 3);
                 } else {
-                    ToastUtils.showShortToast("不是编辑状态无法操作");
+                    ToastUtils.showsnackbar(comTitle, "不是编辑状态无法操作");
                 }
                 break;
             case R.id.com_button:
@@ -162,22 +186,18 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 if (KEEP.equals(comButton.getText().toString())) {
                     //保存
                     if (orgId == null) {
-                        ToastUtils.showShortToast("还未选择整改组织");
+                        ToastUtils.showsnackbar(comTitle, "还未选择整改组织");
                     } else {
                         if (userId == null) {
-                            ToastUtils.showShortToast("还未选择整改负责人");
+                            ToastUtils.showsnackbar(comTitle, "还未选择整改负责人");
                         } else {
-                           /* save();*/
-                            problemItemLin.setVisibility(View.VISIBLE);
-                            comButton.setText("编辑");
+                            save();
                         }
                     }
-
                 } else {
                     //编辑
                     comButton.setText(KEEP);
-                    status = true;
-
+                    status = false;
                 }
                 break;
             default:
@@ -190,27 +210,31 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5 && resultCode == 2) {
             //选择负责人
-            userId = data.getStringExtra("id");
+            userId = data.getStringExtra("userid");
             userName = data.getStringExtra("name");
             chagedHeadText.setText(userName);
         } else if (requestCode == 3 && resultCode == 2) {
+            //整改组织
             orgId = data.getStringExtra("id");
             orgName = data.getStringExtra("name");
             chagedOrganizeText.setText(orgName);
         }
     }
 
+    /*保存*/
     public void save() {
-        chagedUtils.setsavenoticeform("", orgId, userId, "", new ChagedUtils.CallBacks() {
+        chagedUtils.setsavenoticeform(id, orgId, userId, SPUtils.getString(mContext, "orgId", null), new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
                 status = false;
-
+                problemItemLin.setVisibility(View.VISIBLE);
+                comButton.setText("编辑");
+                ToastUtils.showShortToast(string);
             }
 
             @Override
             public void onerror(String string) {
-
+                ToastUtils.showsnackbar(comTitle, string);
             }
         });
     }
@@ -232,5 +256,37 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         } else {
             ToastUtils.showShortToast("下发");
         }
+    }
+
+    private void request() {
+        chagedUtils.getNoticeFormMainInfo(id, new ChagedUtils.CallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                ChagedNoticeDetails item = (ChagedNoticeDetails) map.get("bean");
+                //id
+                id = item.getId();
+                //整改通知单编号
+                chagednumber.setText(item.getCode());
+                //整改组织
+                chagedOrganizeText.setText(item.getRorgName());
+                //整改组织Id
+                orgId = item.getRectificationOrgid();
+                //下发组织
+                chagedReleaseOrg.setText(item.getSorgName());
+                //下发组织Id
+                sendOrgid = item.getSendOrgid();
+                //整改负责人
+                chagedHeadText.setText(item.getRuserName());
+                //整改负责人id
+                userId = item.getRectificationPerson();
+                list.addAll((ArrayList<ChagedNoticeDetailslsit>) map.get("list"));
+                adapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String str) {
+
+            }
+        });
     }
 }

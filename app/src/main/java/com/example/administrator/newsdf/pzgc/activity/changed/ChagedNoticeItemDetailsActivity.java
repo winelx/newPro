@@ -1,23 +1,22 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeItemDetailsAdapter;
-import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
-import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
-import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
-import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 
@@ -36,23 +35,18 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
     private ArrayList<Object> list;
     private Context mContext;
     private TextView titleView;
+    private String id;
+    private ChagedUtils chagedUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
+        Intent intent = getIntent();
+        /*id = intent.getStringExtra("id");*/
+        id = "197addfbb6034df19091602f4dbc8345";
+        chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
-        list.add(new NoticeItemDetailsProblem("1212"));
-        list.add(new NoticeItemDetailsChaged("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-        list.add(new NoticeItemDetailsRecord("1212"));
-
         mContext = this;
         findViewById(R.id.checklistback).setOnClickListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.maber_tree);
@@ -69,6 +63,17 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
         refreshlayout.setEnableOverScrollDrag(true);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("查看详情");
+        /* 下拉刷新*/
+        refreshlayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                request();
+                //关闭刷新
+                refreshlayout.finishRefresh();
+            }
+        });
+        request();
     }
 
     @Override
@@ -80,5 +85,21 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
             default:
                 break;
         }
+    }
+
+    private void request() {
+        /*通知单非保存状态时查询单个问题项详情*/
+        chagedUtils.getNoticeDetailsInfo(id, new ChagedUtils.NoticeFormMainInfoCallback() {
+            @Override
+            public void onsuccess(ArrayList<Object> data) {
+                list.addAll(data);
+                mAdapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String str) {
+
+            }
+        });
     }
 }

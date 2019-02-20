@@ -88,9 +88,9 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void bindContet(TypeCheckItem holder, ArrayList<Object> list, final int position) {
         Object obj = list.get(position);
-        ChagedNoticeDetailslsit top = (ChagedNoticeDetailslsit) obj;
-        holder.noticeListContent.setText(top.getStandardDelName());
-        String string = top.getIsOverdue();
+        final ChagedNoticeDetailslsit item = (ChagedNoticeDetailslsit) obj;
+        holder.noticeListContent.setText(item.getStandardDelName());
+        String string = item.getIsOverdue();
         //是否超时
         if ("1".equals(string)) {
             holder.overtime.setBackgroundResource(R.mipmap.noovertime);
@@ -98,7 +98,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.overtime.setBackgroundResource(R.mipmap.overtime);
         }
         //是否通过
-        String isVerify = top.getIsVerify();
+        String isVerify = item.getIsVerify();
         if ("1".equals(isVerify)) {
             holder.complete.setBackgroundResource(R.mipmap.chagedcomplete);
         } else {
@@ -107,7 +107,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.itemProblem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickListener.setproblem(position);
+                onClickListener.onClick(position, item.getId());
             }
         });
     }
@@ -126,11 +126,11 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-            if (list.size() == 0){
-                return 0;
-            }else {
-                return list.size();
-            }
+        if (list.size() == 0) {
+            return 0;
+        } else {
+            return list.size();
+        }
     }
 
     /*单据详情*/
@@ -177,7 +177,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public interface OnClickListener {
-        void setproblem(int position);
+        void onClick(int position, String string);
     }
 
     private OnClickListener onClickListener;

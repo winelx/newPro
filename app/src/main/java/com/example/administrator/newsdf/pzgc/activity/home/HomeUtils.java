@@ -65,7 +65,6 @@ public class HomeUtils {
                     try {
                         //节点id
                         organization.setId(obj.getString("id"));
-                        LogUtil.i("dssw", obj.getString("id"));
                     } catch (JSONException e) {
                         organization.setId("");
                     }

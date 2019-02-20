@@ -3,6 +3,9 @@ package com.example.administrator.newsdf.pzgc.bean;
 
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeItemDetailsAdapter;
+import com.example.baselibrary.bean.photoBean;
+
+import java.util.ArrayList;
 
 /**
  * @author lx
@@ -13,17 +16,39 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoti
  * {@link  ChagedNoticeItemDetailsActivity }
  */
 public class NoticeItemDetailsChaged {
-    String str;
+    String replyDate;
+    //整改描述
+    String replyDescription ;
+    //图片集合
+    ArrayList<photoBean> beforeFileslist ;
 
-    public NoticeItemDetailsChaged(String str) {
-        this.str = str;
+    public NoticeItemDetailsChaged(String replyDate, String replyDescription, ArrayList<photoBean> beforeFileslist) {
+        this.replyDate = replyDate;
+        this.replyDescription = replyDescription;
+        this.beforeFileslist = beforeFileslist;
     }
 
-    public String getStr() {
-        return str;
+    public String getReplyDate() {
+        return replyDate;
     }
 
-    public void setStr(String str) {
-        this.str = str;
+    public void setReplyDate(String replyDate) {
+        this.replyDate = replyDate;
+    }
+
+    public String getReplyDescription() {
+        return replyDescription;
+    }
+
+    public void setReplyDescription(String replyDescription) {
+        this.replyDescription = replyDescription;
+    }
+
+    public ArrayList<photoBean> getBeforeFileslist() {
+        return beforeFileslist;
+    }
+
+    public void setBeforeFileslist(ArrayList<photoBean> beforeFileslist) {
+        this.beforeFileslist = beforeFileslist;
     }
 }

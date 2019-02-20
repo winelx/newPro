@@ -4,19 +4,25 @@ import com.example.administrator.newsdf.pzgc.bean.ChagedImportitem;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
+import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
+import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
+import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.bean.photoBean;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.GetRequest;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +31,24 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * @author lx
+ * 版本：1.0
+ * 创建日期：{\}
+ * 描述：MainActivity
+ * {@link }
+ */
 public class ChagedUtils {
 
     /*获取列表数据*/
+
+    /**
+     * @param lean     //true:全部，false：我的
+     * @param status   请求状态
+     * @param orgId    组织ID
+     * @param page     页数
+     * @param callBack
+     */
     public void getcnflist(boolean lean, int status, String orgId, int page, final CallBack callBack) {
         GetRequest str = OkGo.get(Requests.GETCNFLIST);
         //如果status==-1；
@@ -78,7 +99,7 @@ public class ChagedUtils {
      * @param id       单据Id
      * @param callBack
      */
-    public void getNoticeFormMainInfo(String id, final NoticeFormMainInfoCallback callBack) {
+    public void getNoticeFormMainInfo(String id, final CallBack callBack) {
         OkGo.get(Requests.GETNOTICEFORMMAININFO)
                 .params("id", id)
                 .execute(new StringCallback() {
@@ -86,15 +107,19 @@ public class ChagedUtils {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
+                            Map<String, Object> map = new HashMap<>();
                             if (jsonObject.getInt("ret") == 0) {
                                 JSONObject data = jsonObject.getJSONObject("data");
-                                ArrayList<Object> list = new ArrayList<>();
                                 ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
-                                list.add(item);
+                                map.put("bean", item);
                                 JSONArray details = data.getJSONArray("details");
                                 List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
-                                list.addAll(list1);
-                                callBack.onsuccess(list);
+                                for (int i = 0; i < list1.size(); i++) {
+                                    String name = list1.get(i).getStandardDelName();
+                                    list1.get(i).setStandardDelName("第" + (i + 1) + "项问题    " + name);
+                                }
+                                map.put("list", list1);
+                                callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
@@ -111,15 +136,17 @@ public class ChagedUtils {
                 });
     }
 
-    /*删除该项问题*/
+    /*删除通知单问题项*/
 
     /**
-     * @param deleteNoticeDel 单据Id
+     * @param noticeDelId 整改项Id
+     * @param noticeId    通知单Id
      * @param callBack
      */
-    public void setdelete(String deleteNoticeDel, final CallBacks callBack) {
+    public void deleteNoticeDel(String noticeDelId, String noticeId, final CallBacks callBack) {
         OkGo.get(Requests.DELETENOTICEDEL)
-                .params("deleteNoticeDel", deleteNoticeDel)
+                .params("noticeDelId", noticeDelId)
+                .params("noticeId", noticeId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -235,9 +262,11 @@ public class ChagedUtils {
      * 下发组织id
      */
     public void setsavenoticeform(String id, String rectificationOrgid, String rectificationPerson, String sendOrgid, final CallBacks callBacks) {
-        OkGo.get(Requests.SENDDATA)
-                .params("id", id)
-                .params("rectificationOrgid", rectificationOrgid)
+        PostRequest request = OkGo.post(Requests.SAVENOTICEFORM);
+
+        request.params("id", id);
+
+        request.params("rectificationOrgid", rectificationOrgid)
                 .params("rectificationPerson", rectificationPerson)
                 .params("sendOrgid", sendOrgid)
                 .execute(new StringCallback() {
@@ -265,6 +294,11 @@ public class ChagedUtils {
     }
 
     /*删除整改通知单*/
+
+    /**
+     * @param id        id
+     * @param callBacks
+     */
     public void deletebill(String id, final CallBacks callBacks) {
         OkGo.post("")
                 .params("id", id)
@@ -299,31 +333,38 @@ public class ChagedUtils {
      * @param map       参数mao
      * @param photoList 图片集合
      */
-    public void saveNoticeDetails(Map<String, String> map, ArrayList<PhotoBean> photoList, final CallBacks callBacks) {
-        OkGo.get("")
-                .params("", "")
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                callBacks.onsuccess("操作成功");
-                            } else {
-                                callBacks.onerror(jsonObject.getString("msg"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+    public void saveNoticeDetails(Map<String, String> map, ArrayList<File> photoList, final CallBacks callBacks) {
+        PostRequest request = OkGo.post(Requests.SAVENOTICEDETAILS);
+        //表单提交
+        request.isMultipart(true);
+        if (photoList.size() > 0) {
+            request.addFileParams("attachments", photoList);
+        }
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            request.params(entry.getKey(), entry.getValue());
+        }
+        request.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        callBacks.onsuccess("操作成功");
+                    } else {
+                        callBacks.onerror(jsonObject.getString("msg"));
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callBacks.onerror("请求失败");
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBacks.onerror("请求失败");
+            }
+        });
     }
 
     /*导入问题项时查询问题项*/
@@ -487,6 +528,110 @@ public class ChagedUtils {
                     }
                 });
     }
+
+    /*通知单保存状态时查询单个问题项详情*/
+
+    public void getDetailsInfoOfSaveStatus(String id, final CallBack callBack) {
+        OkGo.get(Requests.GETDETAILSINFOOFSAVESTATUS)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                //获取返回内容
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                ChagedProblembean item = com.alibaba.fastjson.JSONObject.parseObject(jsonObject1.toString(), ChagedProblembean.class);
+                                map.put("bean", item);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror("请求失败");
+                    }
+                });
+    }
+
+    /*通知单非保存状态时查询单个问题项详情*/
+
+    /**
+     * @param id       通知单详情id
+     * @param callBack {@link  ChagedNoticeItemDetailsActivity}
+     */
+    public void getNoticeDetailsInfo(String id, final NoticeFormMainInfoCallback callBack) {
+        OkGo.get(Requests.GETNOTICEDETAILSINFO)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String string, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            ArrayList<Object> list = new ArrayList<>();
+                            /*整改前*/
+                            //整改部位名称
+                            String rectificationPartName = data.getString("rectificationPartName");
+                            //整改期限
+                            String rectificationDate = data.getString("rectificationDate");
+                            //违反标准
+                            String standardDelName = data.getString("standardDelName");
+                            //存在问题
+                            String rectificationReason = data.getString("rectificationReason");
+                            //
+                            ArrayList<photoBean> afterFileslist = new ArrayList<>();
+                            JSONArray afterFiles = data.getJSONArray("afterFiles");
+                            for (int i = 0; i < afterFiles.length(); i++) {
+                                JSONObject json1 = afterFiles.getJSONObject(i);
+                                String photopath = Requests.networks + json1.getString("filepath");
+                                String photoname = json1.getString("filename");
+                                String phototype = json1.getString("fileext");
+                                afterFileslist.add(new photoBean(photopath, photoname, phototype));
+                            }
+                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
+                            /*整改后*/
+                            //回复时间
+                            String replyDate = data.getString("replyDate");
+                            //整改描述
+                            String replyDescription = data.getString("replyDescription");
+                            ArrayList<photoBean> beforeFileslist = new ArrayList<>();
+                            JSONArray beforeFiles = data.getJSONArray("beforeFiles");
+                            for (int i = 0; i < beforeFiles.length(); i++) {
+                                JSONObject json1 = beforeFiles.getJSONObject(i);
+                                String photopath = Requests.networks + json1.getString("filepath");
+                                String photoname = json1.getString("filename");
+                                String phototype = json1.getString("fileext");
+                                beforeFileslist.add(new photoBean(photopath, photoname, phototype));
+                            }
+                            list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
+                            /*操作jilu*/
+                            JSONArray hisCord = data.getJSONArray("hisCord");
+                            List<NoticeItemDetailsRecord> list1 = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
+                            list.addAll(list1);
+                            callBack.onsuccess(list);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror("请求失败");
+                    }
+                });
+    }
+
 
     public interface CallBack {
         void onsuccess(Map<String, Object> map);

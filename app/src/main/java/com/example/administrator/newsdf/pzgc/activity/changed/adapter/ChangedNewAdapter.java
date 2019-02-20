@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 
 import java.util.List;
 
@@ -18,13 +19,13 @@ import java.util.List;
  * {@link ChangedNewActivity}
  */
 
-public class ChangedNewAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public ChangedNewAdapter(int layoutResId, @Nullable List<String> data) {
+public class ChangedNewAdapter extends BaseQuickAdapter<ChagedNoticeDetailslsit, BaseViewHolder> {
+    public ChangedNewAdapter(int layoutResId, @Nullable List<ChagedNoticeDetailslsit> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-            helper.setText(R.id.content,item);
+    protected void convert(BaseViewHolder helper, ChagedNoticeDetailslsit item) {
+            helper.setText(R.id.content,item.getStandardDelName());
     }
 }

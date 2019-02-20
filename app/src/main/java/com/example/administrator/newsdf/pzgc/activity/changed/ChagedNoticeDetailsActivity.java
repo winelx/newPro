@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeDetailsAdapter;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -37,7 +38,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private TextView deviceDetailsAssign;
     private TextView deviceDetailsUp, titleView, deviceDetailsResult;
     private ChagedUtils chagedUtils;
-    private String id;
+    private String billsId;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -49,7 +50,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         chagedUtils = new ChagedUtils();
         Intent intent = getIntent();
         //通知单id
-        id = intent.getStringExtra("id");
+        billsId = intent.getStringExtra("id");
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
         /*返回*/
@@ -74,27 +75,30 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         Utils.setMargins(recycler, 0, 0, 0, 140);
         adapter.setOnClickListener(new ChagedNoticeDetailsAdapter.OnClickListener() {
             @Override
-            public void setproblem(int position) {
-                startActivity(new Intent(mContext, ChagedNoticeItemDetailsActivity.class));
+            public void onClick(int position, String string) {
+                Intent intent1 = new Intent(mContext, ChagedNoticeItemDetailsActivity.class);
+                //具体问题项的Id
+                intent1.putExtra("id", string);
+                startActivity(intent1);
             }
         });
     }
 
     /*网络请求*/
     private void request() {
-        chagedUtils.getNoticeFormMainInfo(id, new ChagedUtils.NoticeFormMainInfoCallback() {
-            @Override
-            public void onsuccess(ArrayList<Object> data) {
-                list.clear();
-                list.addAll(data);
-                adapter.setNewData(list);
-            }
-
-            @Override
-            public void onerror(String str) {
-                Snackbar.make(titleView, str, Snackbar.LENGTH_LONG).show();
-            }
-        });
+//        chagedUtils.getNoticeFormMainInfo(billsId, new ChagedUtils.NoticeFormMainInfoCallback() {
+//            @Override
+//            public void onsuccess(ArrayList<Object> data) {
+//                list.clear();
+//                list.addAll(data);
+//                adapter.setNewData(list);
+//            }
+//
+//            @Override
+//            public void onerror(String str) {
+//                Snackbar.make(titleView, str, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
     }
 
     @Override
@@ -134,14 +138,15 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         }
     }
 
-    public void saveAssignPersonApp(String userName, String userId) {
+    public void saveAssignPersonApp(String userName, final String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("")
                 .setMessage("确定将任务指派给" + userName + "吗?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        chagedUtils.setassignPage("", "", new ChagedUtils.CallBacks() {
+                        //指派
+                        chagedUtils.setassignPage(userId, billsId, new ChagedUtils.CallBacks() {
                             @Override
                             public void onsuccess(String string) {
                                 Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();

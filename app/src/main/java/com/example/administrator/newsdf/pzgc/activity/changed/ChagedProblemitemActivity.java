@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
+import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -37,7 +38,9 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lx
@@ -49,7 +52,7 @@ import java.util.List;
 public class ChagedProblemitemActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView photoRecycler;
     private BasePhotoAdapter adapter;
-    private TextView menutext, comTitle, importPosition, chagedOrganizeText, violation_standard_text;
+    private TextView menutext, comTitle, importPosition, chagedOrganizeText, violationStandardText;
     private EditText exitextPosition, editProblem;
     private LinearLayout chagedOrganizeLin, violationStandard;
     private Context mContext;
@@ -60,11 +63,13 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private boolean status = true;
     public static final String KEEP = "保存";
     private DialogUtils dialogUtils;
-    private String orgName, orgId;
+    private String orgName, orgId, noticeDelId, noticeId;
     //整改部位
     private String positionid;
     private ChagedUtils chagedUtils;
-    private TextView chagedPosition, check_item_delete;
+    private TextView chagedPosition, checkItemDelete;
+    private String score, categoryid, categoryedid, categorycontent, datastr;
+    private ArrayList<String> deleltes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,31 +78,38 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         Intent intent = getIntent();
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");
+        //整改单Id
+        noticeId = intent.getStringExtra("id");
+        //true 编辑问题项数据，  false 新增问题项
         status = intent.getBooleanExtra("status", true);
         mContext = this;
-        chagedUtils = new ChagedUtils();
+        //添加图片集合
         photolist = new ArrayList<>();
+        //接口帮助类
+        chagedUtils = new ChagedUtils();
+        //弹窗帮助类
         dialogUtils = new DialogUtils();
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
+        //相机相册选择弹窗
         popcamerautils = new PopCameraUtils();
         /*整改部位*/
         chagedPosition = (TextView) findViewById(R.id.chaged_position);
         /*违反标准*/
-        violation_standard_text = (TextView) findViewById(R.id.violation_standard_text);
+        violationStandardText = (TextView) findViewById(R.id.violation_standard_text);
         /*整改部位*/
         exitextPosition = (EditText) findViewById(R.id.exitext_position);
         /*存在问题*/
         editProblem = (EditText) findViewById(R.id.edit_problem);
         /*整改期限*/
         chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
+        //默认日期
         chagedOrganizeText.setText(Dates.getDay());
-        chagedOrganizeText.setOnClickListener(this);
         /*导入*/
         findViewById(R.id.import_position).setOnClickListener(this);
         /*删除*/
-        check_item_delete = (TextView) findViewById(R.id.check_item_delete);
-        check_item_delete.setOnClickListener(this);
+        checkItemDelete = (TextView) findViewById(R.id.check_item_delete);
+        checkItemDelete.setOnClickListener(this);
         /*返回*/
         findViewById(R.id.com_back).setOnClickListener(this);
         /*菜单按钮*/
@@ -115,6 +127,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         /*w整改问题列表*/
         photoRecycler = (RecyclerView) findViewById(R.id.photo_recycler);
         adapter = new BasePhotoAdapter(mContext, photolist);
+        adapter.addview(true);
         /*添加图片*/
         photoRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoRecycler.setAdapter(adapter);
@@ -167,14 +180,25 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             @Override
             public void delete(int position) {
                 //删除图片
-                Dates.compressPixel(photolist.get(position).getPhotopath());
+                String photoname = photolist.get(position).getPhotoname();
+                if (null != photoname) {
+                    //加入删除集合
+                    deleltes.add(photolist.get(position).getPhotoname());
+                } else {
+                    //如果是本地图片，删除本地图片
+                    Dates.deleteFile(photolist.get(position).getPhotopath());
+                }
+                //从集合中删除
                 photolist.remove(position);
+                //刷新列表
                 adapter.getData(photolist);
+
             }
 
             @Override
             public void seePhoto(int position) {
                 ArrayList<String> imagepaths = new ArrayList<>();
+                //获取图片地址集合
                 for (int i = 0; i < photolist.size(); i++) {
                     imagepaths.add(photolist.get(i).getPhotopath());
                 }
@@ -184,24 +208,36 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                         .setPhotos(imagepaths)
                         //图片位置
                         .setCurrentItem(position)
-                        //删除
+                        //删除按钮
                         .setShowDeleteButton(false)
-                        //下载
+                        //下载按钮
                         .setShowUpLoadeButton(false)
                         // 图片名称
                         .setImagePath(new ArrayList<String>())
                         .start((Activity) mContext);
             }
         });
+        if (!status) {
+            //整改项Id
+            try {
+                noticeDelId = intent.getStringExtra("noticeDelId");
+            } catch (Exception e) {
+            }
+            menutext.setText("编辑");
+            request();
+            adapter.addview(false);
+        }
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+        //根据状态控制按钮的显示隐藏
         if (status) {
-            check_item_delete.setVisibility(View.VISIBLE);
+            checkItemDelete.setVisibility(View.VISIBLE);
         } else {
-            check_item_delete.setVisibility(View.GONE);
+            checkItemDelete.setVisibility(View.GONE);
         }
     }
 
@@ -212,12 +248,18 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.toolbar_menu:
+                //菜单功能
                 String str = menutext.getText().toString();
                 if (KEEP.equals(str)) {
-                    status = false;
-                    menutext.setText("编辑");
-                    adapter.addview(false);
-                    statusclose();
+                    if (exitextPosition.getText().toString() != null || chagedPosition.getText().toString() != null) {
+                        if (score != null) {
+                            save();
+                        } else {
+                            ToastUtils.showShortToast("违反标准不能为空");
+                        }
+                    } else {
+                        ToastUtils.showShortToast("整改部位不能为空");
+                    }
                 } else {
                     status = true;
                     menutext.setText("保存");
@@ -235,18 +277,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                chagedUtils.setdelete("", new ChagedUtils.CallBacks() {
-                                    @Override
-                                    public void onsuccess(String string) {
-                                        Snackbar.make(menutext, string, Snackbar.LENGTH_LONG).show();
-                                        finish();
-                                    }
-
-                                    @Override
-                                    public void onerror(String str) {
-                                        Snackbar.make(menutext, str, Snackbar.LENGTH_LONG).show();
-                                    }
-                                });
 
 
                             }
@@ -276,7 +306,12 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             case R.id.chaged_organize_lin:
                 //整改期限
                 if (status) {
-
+                    dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
+                        @Override
+                        public void onsuccess(String str) {
+                            chagedOrganizeText.setText(str);
+                        }
+                    });
                 } else {
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
@@ -291,14 +326,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                     ToastUtils.showShortToast("不是编辑状态无法操作");
                 }
                 break;
-            case R.id.chaged_organize_text:
-                dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
-                    @Override
-                    public void onsuccess(String str) {
-                        chagedOrganizeText.setText(str);
-                    }
-                });
-                break;
+
             default:
                 break;
         }
@@ -338,24 +366,131 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 }
             }
         } else if (requestCode == 1 && resultCode == 2) {
-            //违法标准
-            violation_standard_text.setText(data.getStringExtra("content"));
-
+            //违反标准
+            violationStandardText.setText(data.getStringExtra("content"));
+            //违反类别Id
+            categoryid = data.getStringExtra("dataid");
+            //违反类别容
+            categorycontent = data.getStringExtra("content");
+            //违反标准ID
+            categoryedid = data.getStringExtra("id");
+            //违反标准内容
+            datastr = data.getStringExtra("datastr");
+            //分值
+            score = data.getStringExtra("score");
+            //标准分
+//            standardDelCode = data.getStringExtra("stancode");
         } else if (requestCode == 4 && resultCode == 3) {
             //整改部位
+            //整改部位Id
             positionid = data.getStringExtra("id");
-            exitextPosition.setText(data.getStringExtra("name"));
+            //整改部位名称
+            chagedPosition.setText(data.getStringExtra("name"));
             /*   intent.putExtra("title", node.getTitle());*/
         }
     }
 
+    //输入框不可以输入
     public void statusclose() {
         exitextPosition.setEnabled(false);
         editProblem.setEnabled(false);
     }
 
+    //输入可以输入
     public void statusopen() {
         exitextPosition.setEnabled(true);
         editProblem.setEnabled(true);
     }
+
+    /*删除*/
+    public void delete() {
+        chagedUtils.deleteNoticeDel(noticeDelId, noticeId, new ChagedUtils.CallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                Snackbar.make(menutext, string, Snackbar.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onerror(String str) {
+                Snackbar.make(menutext, str, Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /*保存、修改问题项*/
+    private void save() {
+        Map<String, String> map = new HashMap<>();
+        //问题项id，新增时为空
+        if (noticeDelId != null) {
+            map.put("id", noticeDelId);
+        }
+        //整改部位ID
+        map.put("rectificationPart", noticeDelId);
+        map.put("noticeId ", noticeId);
+        //整改部位名称
+        map.put("rectificationPartName", exitextPosition.getText().toString());
+        //部位详情
+        map.put("partDetails", chagedPosition.getText().toString());
+        //整改期限
+        map.put("rectificationDate", chagedOrganizeText.getText().toString());
+        //违反类别id
+        map.put("standardType", categoryid);
+        //违反类别名称
+        map.put("standardTypeName", categorycontent);
+        // 违反标准id
+        map.put("standardDel", categoryedid);
+        //违反标准名称
+        map.put("standardDelName", datastr);
+        //分值
+        map.put("standardDelScore", score);
+        //存在问题
+        map.put("rectificationReason", editProblem.getText().toString());
+        //删除附件Id
+        map.put("deleteFileIds", Dates.listToString(deleltes));
+        //附件
+        ArrayList<File> files = new ArrayList<>();
+        //循环图片集合
+        for (int i = 0; i < photolist.size(); i++) {
+            //拿到图片名字
+            String filename = photolist.get(i).getPhotoname();
+            //如果名字为null，是本地添加的，
+            if (null == filename) {
+                //加入上传集合
+                files.add(new File(photolist.get(i).getPhotopath()));
+            }
+        }
+        chagedUtils.saveNoticeDetails(map, files, new ChagedUtils.CallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                status = false;
+                menutext.setText("编辑");
+                adapter.addview(false);
+                statusclose();
+                ToastUtils.showsnackbar(comTitle, string);
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(comTitle, string);
+            }
+        });
+    }
+
+    /*请求参处数*/
+    private void request() {
+        chagedUtils.getDetailsInfoOfSaveStatus(noticeDelId, new ChagedUtils.CallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                ChagedProblembean item = (ChagedProblembean) map.get("bean");
+                item.
+            }
+
+            @Override
+            public void onerror(String str) {
+
+            }
+        });
+    }
+
 }

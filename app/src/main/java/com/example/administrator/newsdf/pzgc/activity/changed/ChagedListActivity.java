@@ -138,11 +138,21 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onClick(int pos) {
-                /*点击按钮*/
-                Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
-                intent1.putExtra("id", list.get(pos).getId());
-                intent1.putExtra("orgName", title.getText().toString());
-                startActivity(intent1);
+                int status = list.get(pos).getStatus();
+                if (status == 0||status==20) {
+                    /*保存状态，调整新增页面，进行修改*/
+                    Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                    intent.putExtra("status", true);
+                    intent.putExtra("id",list.get(pos).getId());
+                    startActivity(intent);
+                } else {
+                    /*点击按钮*/
+                    Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                    intent1.putExtra("id", list.get(pos).getId());
+                    intent1.putExtra("orgName", title.getText().toString());
+                    startActivity(intent1);
+                }
+
             }
 
         });

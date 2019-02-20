@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -86,7 +85,9 @@ public class CheckdownMessageAllFragment extends Fragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, ChangedNewActivity.class));
+                Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                intent.putExtra("status", false);
+                startActivity(intent);
             }
         });
 

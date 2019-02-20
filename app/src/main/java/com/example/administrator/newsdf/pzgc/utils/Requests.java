@@ -516,17 +516,31 @@ public class Requests {
      */
     public static final String SAVENOTICEFORM = networks + "iface/mobile/newcheck/saveNoticeForm";
     /**
+     * 保存、修改问题项
+     */
+    public static final String SAVENOTICEDETAILS = networks + "iface/mobile/newcheck/saveNoticeDetails";
+    /**
      * 导入问题项时查询监督检查列表
      */
-    public static final String CHOOSEMANAGEDATALIST=networks+"iface/mobile/newcheck/chooseManageDataList";
+    public static final String CHOOSEMANAGEDATALIST = networks + "iface/mobile/newcheck/chooseManageDataList";
     /**
      * 导入问题项时查询问题项
      */
-    public static final String GETDETAILSOFIMPORT=networks+"iface/mobile/newcheck/getDetailsOfImport";
+    public static final String GETDETAILSOFIMPORT = networks + "iface/mobile/newcheck/getDetailsOfImport";
     /**
-     *保存导入问题项
+     * 保存导入问题项
      */
-    public static final String BATCHSAVENOTECEDEL=networks+"iface/mobile/newcheck/batchSaveNoteceDel";
+    public static final String BATCHSAVENOTECEDEL = networks + "iface/mobile/newcheck/batchSaveNoteceDel";
+
+    /**
+     * 通知单保存状态时查询单个问题项详情
+     */
+    public static final String GETDETAILSINFOOFSAVESTATUS = networks + "iface/mobile/newcheck/getDetailsInfoOfSaveStatus";
+
+    /**
+     * 通知单非保存状态时查询单个问题项详情
+     */
+    public static final String GETNOTICEDETAILSINFO = networks + "iface/mobile/newcheck/getNoticeDetailsInfo";
 
     /*整改回复单*/
     /**

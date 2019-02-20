@@ -17,11 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
-
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -31,7 +29,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,8 +49,8 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
  */
 public class CheckdownMessageMeFragment extends Fragment {
     private View view;
-    private  ArrayList<Home_item> mData;
-    private  CheckMessageMineAdapter mAdapter;
+    private ArrayList<Home_item> mData;
+    private CheckMessageMineAdapter mAdapter;
 
     @Nullable
     @Override
@@ -101,7 +98,9 @@ public class CheckdownMessageMeFragment extends Fragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, ChangedNewActivity.class));
+                Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                intent.putExtra("status", false);
+                startActivity(intent);
             }
         });
 
