@@ -481,7 +481,10 @@ public class Requests {
      * 特种设备操作记录
      */
     public static final String GETOPERHIS = networks + "iface/mobile/appcheck/getOperHis";
-
+    /**
+     * 查询审批历史记录
+     */
+    public static final String GETPROCESSHISCORD = networks + "iface/mobile/newcheck/getProcessHisCord";
     /*新的整改通知*/
     /**
      * 获取“我的”、“全部”组织树

@@ -7,14 +7,15 @@
 
 
     <TextView
+        android:id="@+id/chagedposition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="整改部位：CCCCCCCCCCCC"
         android:textColor="#000000"
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/chagedstandard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -23,6 +24,7 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/chagedproblem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -31,6 +33,7 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/chageddata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

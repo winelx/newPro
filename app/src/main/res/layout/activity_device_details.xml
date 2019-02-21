@@ -48,6 +48,7 @@
             android:background="@drawable/btn_bule_style"
             android:gravity="center"
             android:text="指派"
+            android:visibility="gone"
             android:textColor="@color/writer"
             android:textSize="17sp"
           />

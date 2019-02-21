@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -57,7 +58,6 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             case TYEP_RECORD:
                 //操作记录
                 return new TypeRecord(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_chagedreply_detailsrecord, parent, false));
-
             default:
                 return null;
         }
@@ -78,20 +78,62 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
     /*问题项*/
     private void bindTypeProblem(final TypeProblem holder, final int position) {
-        Object object = list.get(position);
-        holder.item_problem.setOnClickListener(new View.OnClickListener() {
+        final ReplyDetailsRecord item = (ReplyDetailsRecord) list.get(position);
+        holder.noticeListContent.setText(item.getStandardDelName());
+        String string = item.getIsOverdue() + "";
+        //是否超时
+        if ("1".equals(string)) {
+            holder.overtime.setVisibility(View.GONE);
+        } else if ("2".equals(string)) {
+            holder.overtime.setBackgroundResource(R.mipmap.overtime);
+        } else if ("3".equals(string)) {
+            holder.overtime.setBackgroundResource(R.mipmap.noovertime);
+        }
+        //是否通过
+        final String isVerify = item.getIsReply() + "";
+        if ("1".equals(isVerify)) {
+            //未完成
+            holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);
+        } else {
+            holder.complete.setBackgroundResource(R.mipmap.chagedcomplete);
+        }
+        holder.itemProblem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                onclicktener.onClick(position, holder.notice_list_content.getText().toString());
+            public void onClick(View v) {
+                onclicktener.onClick(position, item.getId());
             }
         });
+
     }
 
     /*记录项*/
+    @SuppressLint("SetTextI18n")
     private void bindTypeRecord(TypeRecord holder, int position) {
-        Object object = list.get(position);
+        NoticeItemDetailsRecord record = (NoticeItemDetailsRecord) list.get(position);
+        holder.dealOpinion.setText("验证意见：" + record.getDealOpinion());
+        //操作内容
+        holder.dealContent.setText(record.getDealContent());
+        String opinion = record.getDealContent();
+        if ("已验证《验证不通过》".equals(opinion)) {
+            holder.dealContent.setTextColor(Color.parseColor("#FE0000"));
+        } else if ("已验证《验证通过》".equals(opinion)) {
+            holder.dealContent.setTextColor(Color.parseColor("#28c26A"));
+        } else {
+            holder.dealContent.setTextColor(Color.parseColor("#000000"));
+        }
+        //操作人
+        holder.dealperson.setText(record.getDealPerson());
+        //
+        holder.datatime.setText(record.getDealDate().substring(0, 10));
+
     }
 
+    /**
+     * 标题文字项
+     *
+     * @param holder
+     * @param position
+     */
     @SuppressLint("ResourceAsColor")
     private void bindText(TypeText holder, int position) {
         Object obj = list.get(position);
@@ -107,18 +149,27 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         holder.popTaskItem.setBackgroundColor(Color.parseColor("#e0e0e0"));
     }
 
+    /*单据主要内容*/
     @SuppressLint("SetTextI18n")
     private void bindContent(TypeContent holder, int position) {
+        ReplyDetailsContent content = (ReplyDetailsContent) list.get(position);
+        String reply;
+        try {
+            reply = content.getReplyDate().substring(0, 10);
+        } catch (Exception e) {
+            reply = "";
+        }
+
         holder.content.setText(
-                "下发组织：" + "" + "\n"
-                        + "下发人：" + "\n" + ""
-                        + "下发日期：" + "\n" + ""
-                        + "整改组织：" + "\n" + ""
-                        + "整改负责人：" + "\n" + ""
-                        + "回复日期："
-
-
+                "下发组织：" + content.getSorgName() + "\n"
+                        + "下发人：" + content.getSendUserName() + "\n"
+                        + "下发日期：" + content.getSendDate() + "\n"
+                        + "整改组织：" + content.getRorgName() + "\n"
+                        + "整改负责人：" + content.getRuserName() + "\n"
+                        + "回复日期：" + reply
         );
+        holder.number.setText("编号：" + content.getCode());
+        holder.noticeCode.setText("关联整改通知单：" + content.getNoticeCode());
     }
 
     @Override
@@ -139,10 +190,10 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         } else if (list.get(position) instanceof ReplyDetailsText) {
             //功能模块名称
             return TYEP_TEXT;
-        } else if (list.get(position) instanceof NoticeItemDetailsRecord) {
-            //单据检查项
-            return TYEP_ITEM;
         } else if (list.get(position) instanceof ReplyDetailsRecord) {
+            //问题项
+            return TYEP_ITEM;
+        } else if (list.get(position) instanceof NoticeItemDetailsRecord) {
             //操作记录
             return TYEP_RECORD;
         } else {
@@ -152,11 +203,13 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
     /*单据内容*/
     class TypeContent extends RecyclerView.ViewHolder {
-        TextView content;
+        TextView content, number, noticeCode;
 
         TypeContent(View itemView) {
             super(itemView);
             content = itemView.findViewById(R.id.content);
+            number = itemView.findViewById(R.id.number);
+            noticeCode = itemView.findViewById(R.id.noticeCode);
         }
     }
 
@@ -174,25 +227,34 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
     /*单据记录*/
     class TypeRecord extends RecyclerView.ViewHolder {
+        TextView datatime, dealperson, dealContent, dealOpinion;
+
         TypeRecord(View itemView) {
             super(itemView);
+            datatime = itemView.findViewById(R.id.datatime);
+            dealperson = itemView.findViewById(R.id.dealperson);
+            dealContent = itemView.findViewById(R.id.dealContent);
+            dealOpinion = itemView.findViewById(R.id.dealOpinion);
         }
     }
 
     /*单据问题项*/
     class TypeProblem extends RecyclerView.ViewHolder {
-        private LinearLayout item_problem;
-        private TextView notice_list_content;
+        private TextView noticeListContent;
+        private ImageView overtime, complete;
+        private LinearLayout itemProblem;
 
-        TypeProblem(View itemView) {
+        public TypeProblem(View itemView) {
             super(itemView);
-            item_problem = itemView.findViewById(R.id.item_problem);
-            notice_list_content = itemView.findViewById(R.id.notice_list_content);
+            noticeListContent = itemView.findViewById(R.id.notice_list_content);
+            itemProblem = itemView.findViewById(R.id.item_problem);
+            overtime = itemView.findViewById(R.id.notice_list_status);
+            complete = itemView.findViewById(R.id.complete);
+
         }
     }
 
     class Tyepawait extends RecyclerView.ViewHolder {
-
         public Tyepawait(View itemView) {
             super(itemView);
         }
@@ -212,4 +274,5 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     public void setOnclicktener(onclicktener onclicktener) {
         this.onclicktener = onclicktener;
     }
+
 }

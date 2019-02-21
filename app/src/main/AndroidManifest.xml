@@ -373,6 +373,7 @@
         <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedContactsActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedListAllActivity" />
+        <activity android:name=".pzgc.activity.changed.AssignhistoryActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListAllActivity" />

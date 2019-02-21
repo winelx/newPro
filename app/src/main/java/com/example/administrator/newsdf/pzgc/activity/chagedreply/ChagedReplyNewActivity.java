@@ -12,9 +12,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChangedReplyNewAdapter;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedProblemitemActivity;
 
+import com.example.administrator.newsdf.pzgc.activity.changed.ChagedImportitemActivity;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private Context mContext;
     private ArrayList<String> list;
     private TextView com_button;
+    private TextView send_orgname;
+    private String orgId, orgname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,12 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         list.add("1212");
         list.add("1212");
         list.add("1212");
+        orgname = SPUtils.getString(mContext, "orgname", null);
         com_button = (TextView) findViewById(R.id.com_button);
+        com_button.setText("保存");
+        send_orgname = (TextView) findViewById(R.id.send_orgname);
+        send_orgname.setText(orgname);
+        orgId = SPUtils.getString(mContext, "orgId", null);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.reply_import_problem).setOnClickListener(this);
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
@@ -55,7 +63,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, ChagedReplyBillActivity.class));
+                startActivity(new Intent(mContext, ChagedImportitemActivity.class));
             }
         });
     }

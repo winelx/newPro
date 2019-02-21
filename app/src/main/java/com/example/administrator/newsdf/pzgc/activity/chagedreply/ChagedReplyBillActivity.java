@@ -60,6 +60,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private PopCameraUtils popcamerautils;
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
+    private String replyId, replyDelId;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -67,6 +68,9 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
         mContext = this;
+        Intent intent = getIntent();
+        replyId = intent.getStringExtra("replyId");
+        replyDelId = intent.getStringExtra("replyDelId");
         photoPaths = new ArrayList<>();
         photolist = new ArrayList<>();
         popcamerautils = new PopCameraUtils();
@@ -176,6 +180,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                         .start((Activity) mContext);
             }
         });
+        request();
     }
 
     @Override
@@ -256,7 +261,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
 
     /*获取整改验证单数据详情*/
     private void request() {
-        ChagedreplyUtils.getReplyDelData("", new ChagedreplyUtils.MapCallBack() {
+        ChagedreplyUtils.getReplyFormDel(replyId, new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
 

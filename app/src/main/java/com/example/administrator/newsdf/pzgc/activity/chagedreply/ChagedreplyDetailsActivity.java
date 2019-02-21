@@ -12,12 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
-import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
-import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
-import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsRecord;
-import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsText;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
@@ -38,22 +35,17 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private Context mContext;
     private TextView deviceDetailsProving, deviceDetailsUp,
             deviceDetailsResult, deviceDetailsAssign, deviceDetailsEdit;
+    private String id, orgName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
         mContext = this;
+        final Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        orgName = intent.getStringExtra("orgName");
         list = new ArrayList<>();
-//        list.add(new ReplyDetailsContent("ss"));
-//        list.add(new ReplyDetailsText("问题项"));
-//        list.add(new NoticeItemDetailsRecord("ss"));
-//        list.add(new NoticeItemDetailsRecord("ss"));
-//        list.add(new NoticeItemDetailsRecord("ss"));
-//        list.add(new ReplyDetailsText("操作记录"));
-//        list.add(new ReplyDetailsRecord("sss"));
-//        list.add(new ReplyDetailsRecord("sss"));
-//        list.add(new ReplyDetailsRecord("sss"));
         findViewById(R.id.checklistback).setOnClickListener(this);
         /*验证*/
         deviceDetailsProving = (TextView) findViewById(R.id.device_details_proving);
@@ -69,8 +61,10 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         deviceDetailsEdit.setOnClickListener(this);
         /*标题*/
         titleView = (TextView) findViewById(R.id.titleView);
+        titleView.setText(orgName);
         /*功能按钮父布局*/
         deviceDetailsFunction = (LinearLayout) findViewById(R.id.device_details_function);
+        deviceDetailsFunction.setVisibility(View.GONE);
         /*内容展示控件*/
         recyclerView = (RecyclerView) findViewById(R.id.device_details_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,9 +73,13 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         mAdapter.setOnclicktener(new ChagedreplyDetailsAdapter.onclicktener() {
             @Override
             public void onClick(int position, String string) {
-                Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+                intent1.putExtra("replyId", string);
+                intent1.putExtra("replyDelId", id);
+                startActivity(intent1);
             }
         });
+        request();
     }
 
     @Override
@@ -125,4 +123,24 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             }
         });
     }
+
+    /*网络请求*/
+    public void request() {
+        ChagedreplyUtils.getReplyFormMainInfo(id, new ChagedreplyUtils.ListCallback() {
+            @Override
+            public void onsuccess(ArrayList<Object> data) {
+                list.clear();
+                list.addAll(data);
+                mAdapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(titleView, string);
+            }
+        });
+
+
+    }
 }
+

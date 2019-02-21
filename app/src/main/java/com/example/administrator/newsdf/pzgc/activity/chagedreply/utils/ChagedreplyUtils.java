@@ -1,7 +1,12 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils;
 
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
+import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
+import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
+import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsRecord;
+import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsText;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
@@ -163,7 +168,7 @@ public class ChagedreplyUtils {
      * @param mapCallBack 接口
      */
     public static void chooseNoticeDelData(String noticeId, final MapCallBack mapCallBack) {
-        OkGo.post(Requests.CHOOSENOTICEDELDATA)
+        OkGo.get(Requests.CHOOSENOTICEDELDATA)
                 .params("noticeId", noticeId)
                 .execute(new StringCallback() {
                     @Override
@@ -172,8 +177,11 @@ public class ChagedreplyUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                JSONArray result = data.getJSONArray("results");
+                                List<ImprotItem> list = ListJsonUtils.getListByArray(ImprotItem.class, result.toString());
                                 Map<String, Object> map = new HashMap<>();
-                                map.put("list", "");
+                                map.put("list", list);
                                 mapCallBack.onsuccess(map);
                             } else {
                                 mapCallBack.onerror(jsonObject.getString("msg"));
@@ -248,6 +256,7 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Map<String, Object> map = new HashMap<>();
+
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -300,17 +309,53 @@ public class ChagedreplyUtils {
     }
 
     /*获取非保存状态的回复验证单主要信息*/
-    public static void getReplyFormMainInfo() {
-        OkGo.post(Requests.GETREPLYFORMMAININFO)
+
+    /**
+     * @param id       整改验证单id
+     * @param callBack
+     */
+    public static void getReplyFormMainInfo(String id, final ListCallback callBack) {
+        OkGo.get(Requests.GETREPLYFORMMAININFO)
+                .params("id", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                ArrayList<Object> list = new ArrayList<>();
+                                //解析实体
+                                ReplyDetailsContent content = com.alibaba.fastjson.JSONObject.parseObject(jsonObject1.toString(), ReplyDetailsContent.class);
+                                list.add(content);
+                                JSONArray details = jsonObject1.getJSONArray("details");
+                                //问题项
+                                if (details.length() > 0) {
+                                    list.add(new ReplyDetailsText("问题项"));
+                                    List<ReplyDetailsRecord> Detailslist = ListJsonUtils.getListByArray(ReplyDetailsRecord.class, details.toString());
+                                    list.addAll(Detailslist);
+                                }
+                                //处理记录
+                                JSONArray hisCord = jsonObject1.getJSONArray("hisCord");
+                                if (hisCord.length() > 0) {
+                                    list.add(new ReplyDetailsText("处理记录"));
+                                    List<NoticeItemDetailsRecord> Detailslist = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
+                                    list.addAll(Detailslist);
+                                }
+                                callBack.onsuccess(list);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callBack.onerror("请求失败");
                     }
                 });
     }
@@ -332,12 +377,24 @@ public class ChagedreplyUtils {
     }
 
     /*获取回复单数据*/
-    public static void getReplyFormDel() {
+    public static void getReplyFormDel(String replyDelId, final MapCallBack callback) {
         OkGo.post(Requests.GETREPLYFORMDEL)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
 
+                                callback.onsuccess(map);
+                            } else {
+                                callback.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

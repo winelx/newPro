@@ -46,8 +46,8 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:textColor="@color/writer"
-            android:textSize="15sp"
-            android:visibility="gone" />
+            android:textSize="10sp"
+            />
 
         <ImageView
             android:id="@+id/checklistmeunimage"

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
+import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAllAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
@@ -45,7 +46,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
     private EmptyRecyclerView recyclerList;
     private TextView title;
     private ImageView toolbarImage;
-    private ChagedListAdapter adapter;
+    private ChagedListAllAdapter adapter;
     private ArrayList<ChagedList> list;
     private Context mContext;
     private PullDownMenu pullDownMenu;
@@ -78,7 +79,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
         findViewById(R.id.com_back).setOnClickListener(this);
         //设置列表参数
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ChagedListAdapter(list, mContext);
+        adapter = new ChagedListAllAdapter(list, mContext);
         recyclerList.setAdapter(adapter);
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
@@ -111,7 +112,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                 refreshlayout.finishLoadmore();
             }
         });
-        adapter.setOnDelListener(new ChagedListAdapter.onSwipeListener() {
+        adapter.setOnDelListener(new ChagedListAllAdapter.onSwipeListener() {
             @Override
             public void onDel(final int pos, final SwipeMenuLayout layout) {
                 /*删除按钮*/
@@ -206,7 +207,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
 
     /*网络请求*/
     private void request() {
-        chagedUtils.getcnflist(false, status, orgId, page, new ChagedUtils.CallBack() {
+        chagedUtils.getcnflist(true, status, orgId, page, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ArrayList<ChagedList> data = (ArrayList<ChagedList>) map.get("list");

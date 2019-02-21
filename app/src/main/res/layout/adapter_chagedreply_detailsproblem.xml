@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/item_problem"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -16,6 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="8"
+            android:paddingBottom="10dp"
             android:orientation="vertical">
 
 
@@ -25,37 +26,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="15dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="1515151515151515"
                 android:textColor="#000000"
                 android:textSize="15sp" />
-
-
-            <TextView
-
-                android:id="@+id/notice_list_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
                 android:layout_below="@+id/notice_list_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:drawableLeft="@mipmap/list_tab_time"
-                android:drawablePadding="8dp"
-                android:text="超期"
-                android:textSize="10sp" />
+                android:orientation="horizontal"
+                android:layout_width="match_parent" android:layout_marginTop="6dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/notice_list_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/notice_list_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/overtime" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/notice_list_status"
-                android:layout_marginStart="80dp"
-                android:layout_marginLeft="80dp"
-                android:drawableLeft="@mipmap/list_tab_time"
-                android:drawablePadding="8dp"
-                android:text="未完成"
-                android:textSize="10sp" />
+                <ImageView
+                    android:id="@+id/complete"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/chagedcomplete" />
+
+            </LinearLayout>
         </RelativeLayout>
 
         <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/icontext"
             android:layout_width="15dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
@@ -67,5 +69,9 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/back2" />
 
 </LinearLayout>

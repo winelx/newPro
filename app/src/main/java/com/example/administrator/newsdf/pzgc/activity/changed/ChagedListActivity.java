@@ -53,7 +53,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private Context mContext;
     private PullDownMenu pullDownMenu;
     private ChagedUtils chagedUtils;
-    private String[] strings = {"全部", "保存", "未处理", "已处理"};
+    private String[] strings = {"全部", "未处理", "已处理"};
     private String orgId;
     private int page = 1;
     private int status = -1;
@@ -192,10 +192,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                         switch (string) {
                             case "全部":
                                 status = -1;
-                                request();
-                                break;
-                            case "保存":
-                                status = 0;
                                 request();
                                 break;
                             case "未处理":

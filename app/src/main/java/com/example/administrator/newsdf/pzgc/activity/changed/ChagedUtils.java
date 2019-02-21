@@ -646,9 +646,9 @@ public class ChagedUtils implements Serializable {
                             ArrayList<photoBean> afterFileslist = new ArrayList<>();
                             JSONArray afterFiles;
                             try {
-                                 afterFiles = data.getJSONArray("afterFiles");
-                            }catch (Exception e){
-                                afterFiles=new JSONArray();
+                                afterFiles = data.getJSONArray("afterFiles");
+                            } catch (Exception e) {
+                                afterFiles = new JSONArray();
                             }
                             for (int i = 0; i < afterFiles.length(); i++) {
                                 JSONObject json1 = afterFiles.getJSONObject(i);
@@ -657,7 +657,7 @@ public class ChagedUtils implements Serializable {
                                 String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            if (afterFileslist.size()>0){
+                            if (afterFileslist.size() > 0) {
 
                             }
                             list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
@@ -686,7 +686,7 @@ public class ChagedUtils implements Serializable {
                                 beforeFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
                             //如果回复事件为空，没有回复
-                                list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
+                            list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
                             /*操作记录*/
                             JSONArray hisCord = data.getJSONArray("hisCord");
                             List<NoticeItemDetailsRecord> list1 = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
@@ -705,6 +705,25 @@ public class ChagedUtils implements Serializable {
                 });
     }
 
+    /*指派記錄*/
+    public void assignhistory(String noticeId, CallBack callBack) {
+        OkGo.get(Requests.GETPROCESSHISCORD)
+                .params("noticeId", noticeId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                      /*  JSONObject jsonObject try { -new JSONObject(s);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
+                });
+    }
 
     public interface CallBack {
         void onsuccess(Map<String, Object> map);

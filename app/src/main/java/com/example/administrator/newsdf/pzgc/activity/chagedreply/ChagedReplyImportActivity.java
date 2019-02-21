@@ -16,7 +16,6 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.Chaged
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.lzy.okgo.OkGo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -107,7 +106,9 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         ChagedreplyUtils.chooseNoticeDelData("9eb299c3c3f549219d86ac0ec75c367e", new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-
+                list.clear();
+                list.addAll((ArrayList<ImprotItem>) map.get("list"));
+                adapter.setNewData(list);
             }
 
             @Override

@@ -19,7 +19,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
-import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyRecyclerView;
@@ -67,7 +66,6 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
-        recyclerList.setEmptyView(emptyUtils.init());
         title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
@@ -79,6 +77,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChagedReplyListAdapter(list, mContext);
         recyclerList.setAdapter(adapter);
+        recyclerList.setEmptyView(emptyUtils.init());
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(true);
@@ -206,6 +205,9 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 }
                 list.addAll(data);
                 adapter.setNewData(list);
+                if (list.size()==0){
+                    emptyUtils.noData("暂无数据,下拉刷新!");
+                }
             }
 
             @Override

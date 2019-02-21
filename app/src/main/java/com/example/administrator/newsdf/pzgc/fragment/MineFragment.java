@@ -18,10 +18,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
-
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-
 import com.example.administrator.newsdf.pzgc.activity.mine.AboutmeActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.PasswordActvity;
@@ -37,7 +35,6 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -110,8 +107,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         if (parent != null) {
             parent.removeView(rootView);
         }
-        double totalSize = Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
-        totalSize = totalSize * 1024 * 1024 * 1024;
+//        double totalSize = Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
+//        totalSize = totalSize * 1024 * 1024 * 1024;
         return rootView;
     }
 

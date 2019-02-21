@@ -24,6 +24,7 @@ public class NoticeItemDetailsRecord {
      * noticeId : e9f6dd891751469688d2a47d27796b64
      */
 
+
     private String beDealPerson;
     private String dealContent;
     private String dealDate;
