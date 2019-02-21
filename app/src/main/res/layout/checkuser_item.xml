@@ -3,7 +3,9 @@
     android:id="@+id/check_user"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="45dp"
     android:background="@color/writer"
+    android:paddingBottom="@dimen/dp10"
     android:orientation="vertical">
 
     <TextView
@@ -20,10 +22,8 @@
         android:id="@+id/content_zhiw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:textColor="@color/graytext"
-        android:text="诗人"
         android:textSize="13sp" />
 </LinearLayout>

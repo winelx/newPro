@@ -42,7 +42,7 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
     private Context mContext;
     private ChagedUtils chagedUtils;
     private SmartRefreshLayout refreshlayout;
-    private String orgId;
+    private String orgId,noticeId;
     private int page = 1;
 
     @Override
@@ -52,6 +52,7 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
         mContext = this;
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
+        noticeId = intent.getStringExtra("noticeId");
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();
         emptyUtils = new EmptyUtils(mContext);
@@ -70,6 +71,7 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
                 //监督检查Id传递过去
                 Intent intent1 = new Intent(mContext, CheckitemActivity.class);
                 intent1.putExtra("checkManageId", list.get(position).getId());
+                intent1.putExtra("noticeId", noticeId);
                 intent1.putExtra("title", list.get(position).getTitlle());
                 intent1.putExtra("content", list.get(position).getContent());
                 startActivityForResult(intent1, 1);
@@ -147,6 +149,9 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         //如果导入成功，回调
         if (requestCode == 1 && resultCode == 1) {
+            Intent intent = new Intent();
+            //回传数据到主Activity
+            setResult(1, intent);
             finish();
         }
     }

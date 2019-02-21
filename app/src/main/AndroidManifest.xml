@@ -371,6 +371,7 @@
         <activity android:name=".pzgc.activity.changed.ChagedNoticeDetailsActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedNoticeItemDetailsActivity" />
         <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
+        <activity android:name=".pzgc.activity.changed.ChagedContactsActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedListAllActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListActivity" />
@@ -380,7 +381,7 @@
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyImportActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyBillActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyDetailsActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedContactsActivity" />
+
 
     </application>
 

@@ -8,15 +8,15 @@
     <LinearLayout
         android:id="@+id/item_problem"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal">
 
         <RelativeLayout
-
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="8"
+            android:paddingBottom="10dp"
             android:orientation="vertical">
 
 
@@ -26,31 +26,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="15dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="1515151515151515"
                 android:textColor="#000000"
                 android:textSize="15sp" />
-
+        <LinearLayout
+            android:layout_below="@+id/notice_list_content"
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_marginTop="6dp"
+            android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/notice_list_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/notice_list_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@mipmap/overtime"
-                android:drawablePadding="8dp" />
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/overtime" />
 
             <ImageView
                 android:id="@+id/complete"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/notice_list_status"
-                android:layout_marginStart="80dp"
-                android:layout_marginLeft="80dp"
-                android:drawablePadding="8dp" />
+                android:background="@mipmap/chagedcomplete" />
+
+        </LinearLayout>
         </RelativeLayout>
 
         <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/icontext"
             android:layout_width="15dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"

@@ -1,44 +1,54 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
-public class ChagedNoticeDetails {
+import java.io.Serializable;
 
+public class ChagedNoticeDetails implements Serializable {
 
     /**
-     * auserName : dolor enim deserunt culpa
-     * code : sit
-     * dealId : nisi occaecat irure commodo
-     * id : in Duis dolore
-     * noticeCount : 7561644.062983498
-     * noticeFinishCount : 6.63039133822383E7
-     * permission : -5.449651643418179E7
-     * rectificationOrgid : aliquip
-     * rectificationPerson : magna esse in
-     * rorgName : ut adipisicing tempor
-     * ruserName : adipisicin
-     * sendPerson : aute
-     * sendUserName : consectetur qui eiusmod irure
-     * send_date : qui dolor dolore
-     * sorgName : laboris amet ullamco
-     * status : 5199842.329309195
+     * acceptPerson : 2e7dbcfd86a84a1ba5919290a924995f
+     * auserName : 周宇
+     * code : ZGTZ-20190220-13
+     * dealId : f75a885d48604a768a0f06ad5d13f04f
+     * details : []
+     * id : 1b40c46db9f64c728b5a713ccb9b9421
+     * motionNode : 1
+     * noticeCount : -2
+     * noticeFinishCount : 0
+     * permission : 1
+     * rectificationOrgid : ce1d81430d874fd28728135e9ecd5865
+     * rectificationPerson : b0a235e19e0b423299da1a211037a6a5
+     * rorgName : 三独一标
+     * ruserName : 胡扬
+     * sendOrgid : ce1d81430d874fd28728135e9ecd5865
+     * sorgName : 三独一标
+     * status : 0
      */
 
+    private String acceptPerson;
     private String auserName;
     private String code;
     private String dealId;
     private String id;
+    private int motionNode;
     private int noticeCount;
     private int noticeFinishCount;
     private int permission;
+    private String send_date;
     private String rectificationOrgid;
     private String rectificationPerson;
     private String rorgName;
     private String ruserName;
-    private String sendPerson;
-    private String sendUserName;
-    private String send_date;
-    private String sorgName;
     private String sendOrgid;
+    private String sorgName;
     private int status;
+
+    public String getAcceptPerson() {
+        return acceptPerson;
+    }
+
+    public void setAcceptPerson(String acceptPerson) {
+        this.acceptPerson = acceptPerson;
+    }
 
     public String getAuserName() {
         return auserName;
@@ -70,6 +80,14 @@ public class ChagedNoticeDetails {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getMotionNode() {
+        return motionNode;
+    }
+
+    public void setMotionNode(int motionNode) {
+        this.motionNode = motionNode;
     }
 
     public int getNoticeCount() {
@@ -128,28 +146,12 @@ public class ChagedNoticeDetails {
         this.ruserName = ruserName;
     }
 
-    public String getSendPerson() {
-        return sendPerson;
+    public String getSendOrgid() {
+        return sendOrgid;
     }
 
-    public void setSendPerson(String sendPerson) {
-        this.sendPerson = sendPerson;
-    }
-
-    public String getSendUserName() {
-        return sendUserName;
-    }
-
-    public void setSendUserName(String sendUserName) {
-        this.sendUserName = sendUserName;
-    }
-
-    public String getSend_date() {
-        return send_date;
-    }
-
-    public void setSend_date(String send_date) {
-        this.send_date = send_date;
+    public void setSendOrgid(String sendOrgid) {
+        this.sendOrgid = sendOrgid;
     }
 
     public String getSorgName() {
@@ -168,11 +170,12 @@ public class ChagedNoticeDetails {
         this.status = status;
     }
 
-    public String getSendOrgid() {
-        return sendOrgid;
+
+    public String getSend_date() {
+        return send_date;
     }
 
-    public void setSendOrgid(String sendOrgid) {
-        this.sendOrgid = sendOrgid;
+    public void setSend_date(String send_date) {
+        this.send_date = send_date;
     }
 }

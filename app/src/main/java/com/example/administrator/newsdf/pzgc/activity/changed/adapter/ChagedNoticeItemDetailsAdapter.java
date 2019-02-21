@@ -114,8 +114,14 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     private void bindchaged(Typechaged holder, int position) {
         NoticeItemDetailsChaged chaged = (NoticeItemDetailsChaged) list.get(position);
         holder.itemStatusRecord.setVisibility(View.VISIBLE);
+        String replydate;
+        try {
+            replydate = chaged.getReplyDate().substring(0, 10);
+        }catch (Exception e){
+            replydate="";
+        }
         holder.typeproblem.setText(
-                "回复时间：" + isnull(chaged.getReplyDate().substring(0, 10)) + "\n"
+                "回复时间：" + isnull(replydate) + "\n"
                         + "整改描述：" + isnull(chaged.getReplyDescription()) + "\n"
                         + "整改前附件："
         );

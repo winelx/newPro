@@ -50,7 +50,7 @@
             android:text="指派"
             android:textColor="@color/writer"
             android:textSize="17sp"
-            android:visibility="gone" />
+          />
 
 
         <TextView

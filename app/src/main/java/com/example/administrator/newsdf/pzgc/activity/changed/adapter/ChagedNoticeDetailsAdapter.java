@@ -71,8 +71,8 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         /*编号*/
         holder.noticedNumber.setText(item.getCode());
         /*下发人*/
-        holder.noticedSendPeople.setText("下发人：");
-        holder.noticedSendData.setText("下发日期：");
+        holder.noticedSendPeople.setText("下发人：" + item.getAuserName());
+        holder.noticedSendData.setText("下发日期：" + item.getSend_date().substring(0, 10));
         holder.noticedChagedOrg.setText("整改组织：" + item.getRorgName());
         holder.noticedChagedPopple.setText("整改负责人：" + item.getRuserName());
         holder.noticedSendOrg.setText("下发组织：" + item.getSorgName());
@@ -93,16 +93,19 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         String string = item.getIsOverdue();
         //是否超时
         if ("1".equals(string)) {
-            holder.overtime.setBackgroundResource(R.mipmap.noovertime);
-        } else {
+            holder.overtime.setVisibility(View.GONE);
+        } else if ("2".equals(string)) {
             holder.overtime.setBackgroundResource(R.mipmap.overtime);
+        } else if ("3".equals(string)) {
+            holder.overtime.setBackgroundResource(R.mipmap.noovertime);
         }
         //是否通过
-        String isVerify = item.getIsVerify();
+       final String isVerify = item.getIsVerify();
         if ("1".equals(isVerify)) {
-            holder.complete.setBackgroundResource(R.mipmap.chagedcomplete);
-        } else {
+            //未完成
             holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);
+        } else {
+            holder.complete.setBackgroundResource(R.mipmap.chagedcomplete);
         }
         holder.itemProblem.setOnClickListener(new View.OnClickListener() {
             @Override

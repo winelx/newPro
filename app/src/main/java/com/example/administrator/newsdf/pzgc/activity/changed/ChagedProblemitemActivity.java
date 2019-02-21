@@ -23,6 +23,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;
+import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -63,12 +64,14 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private boolean status = true;
     public static final String KEEP = "保存";
     private DialogUtils dialogUtils;
-    private String orgName, orgId, noticeDelId, noticeId;
+    //整改组织名称 ，整改组织Id  ，整改项ID ，整改单Id，整改部位Id
+    private String orgName, orgId, noticeDelId, noticeId, chagedpositionId;
     //整改部位
     private String positionid;
     private ChagedUtils chagedUtils;
     private TextView chagedPosition, checkItemDelete;
-    private String score, categoryid, categoryedid, categorycontent, datastr;
+    //分值   /违反类别Id  违反标准ID    违反类别容
+    private String score, categoryid, categoryedid, categorycontent;
     private ArrayList<String> deleltes = new ArrayList<>();
 
     @Override
@@ -183,7 +186,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 String photoname = photolist.get(position).getPhotoname();
                 if (null != photoname) {
                     //加入删除集合
-                    deleltes.add(photolist.get(position).getPhotoname());
+                    deleltes.add(photolist.get(position).getPhototype());
                 } else {
                     //如果是本地图片，删除本地图片
                     Dates.deleteFile(photolist.get(position).getPhotopath());
@@ -224,17 +227,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             } catch (Exception e) {
             }
             menutext.setText("编辑");
-            request();
             adapter.addview(false);
-        }
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //根据状态控制按钮的显示隐藏
-        if (status) {
+            statusclose();
+            request();
             checkItemDelete.setVisibility(View.VISIBLE);
         } else {
             checkItemDelete.setVisibility(View.GONE);
@@ -277,8 +272,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-
-
+                                delete();
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -366,24 +360,21 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 }
             }
         } else if (requestCode == 1 && resultCode == 2) {
-            //违反标准
+            //违反标准内容
             violationStandardText.setText(data.getStringExtra("content"));
+            //违反标准ID
+            categoryedid = data.getStringExtra("id");
             //违反类别Id
             categoryid = data.getStringExtra("dataid");
             //违反类别容
             categorycontent = data.getStringExtra("content");
-            //违反标准ID
-            categoryedid = data.getStringExtra("id");
-            //违反标准内容
-            datastr = data.getStringExtra("datastr");
             //分值
             score = data.getStringExtra("score");
             //标准分
 //            standardDelCode = data.getStringExtra("stancode");
         } else if (requestCode == 4 && resultCode == 3) {
-            //整改部位
             //整改部位Id
-            positionid = data.getStringExtra("id");
+            chagedpositionId = data.getStringExtra("id");
             //整改部位名称
             chagedPosition.setText(data.getStringExtra("name"));
             /*   intent.putExtra("title", node.getTitle());*/
@@ -407,7 +398,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         chagedUtils.deleteNoticeDel(noticeDelId, noticeId, new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
-                Snackbar.make(menutext, string, Snackbar.LENGTH_LONG).show();
+               ToastUtils.showShortToastCenter("删除成功");
+                NetworkinterfaceCallbackUtils.Refresh("problem");
                 finish();
             }
 
@@ -426,12 +418,13 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             map.put("id", noticeDelId);
         }
         //整改部位ID
-        map.put("rectificationPart", noticeDelId);
+        map.put("rectificationPart", chagedpositionId);
+        //整改通知单Id
         map.put("noticeId ", noticeId);
         //整改部位名称
-        map.put("rectificationPartName", exitextPosition.getText().toString());
-        //部位详情
-        map.put("partDetails", chagedPosition.getText().toString());
+        map.put("rectificationPartName", chagedPosition.getText().toString());
+        //临时部位
+        map.put("partDetails", exitextPosition.getText().toString());
         //整改期限
         map.put("rectificationDate", chagedOrganizeText.getText().toString());
         //违反类别id
@@ -441,7 +434,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         // 违反标准id
         map.put("standardDel", categoryedid);
         //违反标准名称
-        map.put("standardDelName", datastr);
+        map.put("standardDelName", violationStandardText.getText().toString());
         //分值
         map.put("standardDelScore", score);
         //存在问题
@@ -454,20 +447,26 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         for (int i = 0; i < photolist.size(); i++) {
             //拿到图片名字
             String filename = photolist.get(i).getPhotoname();
-            //如果名字为null，是本地添加的，
-            if (null == filename) {
+            //如果名字为空，为空是本地添加的，
+            if (filename.isEmpty()) {
                 //加入上传集合
                 files.add(new File(photolist.get(i).getPhotopath()));
             }
         }
-        chagedUtils.saveNoticeDetails(map, files, new ChagedUtils.CallBacks() {
+        chagedUtils.saveNoticeDetails(map, files, new ChagedUtils.CallBack() {
             @Override
-            public void onsuccess(String string) {
-                status = false;
+            public void onsuccess(Map<String, Object> map) {
                 menutext.setText("编辑");
                 adapter.addview(false);
+                //问题项Id
+                noticeDelId = (String) map.get("id");
+                photolist.clear();
+                photolist.addAll((ArrayList<photoBean>) map.get("list"));
+                adapter.getData(photolist);
                 statusclose();
-                ToastUtils.showsnackbar(comTitle, string);
+                ToastUtils.showShortToastCenter("保存成功");
+                NetworkinterfaceCallbackUtils.Refresh("problem");
+                checkItemDelete.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -483,12 +482,36 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ChagedProblembean item = (ChagedProblembean) map.get("bean");
-                item.
+                //整改期限
+                chagedOrganizeText.setText(item.getRectificationDate().substring(0, 10));
+                //存在问题
+                editProblem.setText(item.getRectificationReason());
+                //违反标准
+                violationStandardText.setText(item.getStandardDelName());
+                //违反标准id
+                categoryedid = item.getStandardDel();
+                //违反类别
+                categorycontent = item.getStandardTypeName();
+                //违反类别Id
+                categoryid = item.getStandardType();
+                //整改部位名称
+                chagedPosition.setText(item.getRectificationPartName());
+                //临时部位
+                exitextPosition.setText(item.getPartDetails());
+                //整改通知单id
+                noticeId = item.getNoticeId();
+                //整改部位ID
+                chagedpositionId = item.getRectificationPart();
+                //分值
+                score = item.getStandardDelScore();
+                photolist.clear();
+                photolist.addAll((ArrayList<photoBean>) map.get("list"));
+                adapter.getData(photolist);
             }
 
             @Override
             public void onerror(String str) {
-
+                ToastUtils.showsnackbar(comTitle, str);
             }
         });
     }

@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ import okhttp3.Response;
  * 描述：MainActivity
  * {@link }
  */
-public class ChagedUtils {
+public class ChagedUtils implements Serializable {
 
     /*获取列表数据*/
 
@@ -111,14 +112,18 @@ public class ChagedUtils {
                             if (jsonObject.getInt("ret") == 0) {
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
+                                int permission = item.getPermission();
                                 map.put("bean", item);
                                 JSONArray details = data.getJSONArray("details");
                                 List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
+                                List<ChagedNoticeDetailslsit> list2 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
                                 for (int i = 0; i < list1.size(); i++) {
                                     String name = list1.get(i).getStandardDelName();
                                     list1.get(i).setStandardDelName("第" + (i + 1) + "项问题    " + name);
+                                    list2.get(i).setStandardDelName((i + 1) + "、" + name);
                                 }
                                 map.put("list", list1);
+                                map.put("list2", list2);
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -139,12 +144,12 @@ public class ChagedUtils {
     /*删除通知单问题项*/
 
     /**
-     * @param noticeDelId 整改项Id
+     * @param noticeDelId 问题项Id
      * @param noticeId    通知单Id
      * @param callBack
      */
     public void deleteNoticeDel(String noticeDelId, String noticeId, final CallBacks callBack) {
-        OkGo.get(Requests.DELETENOTICEDEL)
+        OkGo.post(Requests.DELETENOTICEDEL)
                 .params("noticeDelId", noticeDelId)
                 .params("noticeId", noticeId)
                 .execute(new StringCallback() {
@@ -221,11 +226,11 @@ public class ChagedUtils {
      * @param callBacks
      * @ motionNode //运动节点，在getNoticeFormMainInfo这个接口中有返回
      */
-    public void setsenddata(String noticeId, String dealId, int optionType, final CallBacks callBacks) {
-        OkGo.get(Requests.SENDDATA)
+    public void setsenddata(String noticeId, String dealId, String motionNode, int optionType, final CallBacks callBacks) {
+        OkGo.post(Requests.SENDDATA)
                 .params("noticeId", noticeId)
                 .params("dealId", dealId)
-                .params("motionNode", "motionNode")
+                .params("motionNode", motionNode)
                 .params("optionType", optionType)
                 .execute(new StringCallback() {
                     @Override
@@ -333,12 +338,14 @@ public class ChagedUtils {
      * @param map       参数mao
      * @param photoList 图片集合
      */
-    public void saveNoticeDetails(Map<String, String> map, ArrayList<File> photoList, final CallBacks callBacks) {
+    public void saveNoticeDetails(Map<String, String> map, ArrayList<File> photoList, final CallBack callBacks) {
         PostRequest request = OkGo.post(Requests.SAVENOTICEDETAILS);
-        //表单提交
-        request.isMultipart(true);
+
         if (photoList.size() > 0) {
             request.addFileParams("attachments", photoList);
+        } else {
+            //表单提交
+            request.isMultipart(true);
         }
         for (Map.Entry<String, String> entry : map.entrySet()) {
             request.params(entry.getKey(), entry.getValue());
@@ -350,7 +357,21 @@ public class ChagedUtils {
                     JSONObject jsonObject = new JSONObject(s);
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
-                        callBacks.onsuccess("操作成功");
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        String id = data.getString("id");
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("id", id);
+                        ArrayList<photoBean> photoBeanArrayList = new ArrayList<>();
+                        JSONArray file = data.getJSONArray("files");
+                        for (int i = 0; i < file.length(); i++) {
+                            JSONObject jsonObject1 = file.getJSONObject(i);
+                            String path = Requests.networks + jsonObject1.getString("filepath");
+                            String type = jsonObject1.getString("id");
+                            String name = jsonObject1.getString("filename");
+                            photoBeanArrayList.add(new photoBean(path, name, type));
+                        }
+                        map.put("list", photoBeanArrayList);
+                        callBacks.onsuccess(map);
                     } else {
                         callBacks.onerror(jsonObject.getString("msg"));
                     }
@@ -501,9 +522,10 @@ public class ChagedUtils {
      * @param manageDelIds 数组，逗号隔开。从getDetailsOfImport接口的detailsIds获取
      * @param callBack
      */
-    public void batchSaveNoteceDel(String noticeId, String manageDelIds, final CallBacks callBack) {
+    public void batchSaveNoteceDel(String checkManageId, String noticeId, String manageDelIds, final CallBacks callBack) {
         OkGo.post(Requests.BATCHSAVENOTECEDEL)
                 .params("noticeId", noticeId)
+                .params("checkManageId", checkManageId)
                 .params("manageDelIds", manageDelIds)
                 .execute(new StringCallback() {
                     @Override
@@ -546,6 +568,16 @@ public class ChagedUtils {
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 ChagedProblembean item = com.alibaba.fastjson.JSONObject.parseObject(jsonObject1.toString(), ChagedProblembean.class);
                                 map.put("bean", item);
+                                JSONArray file = jsonObject1.getJSONArray("files");
+                                ArrayList<photoBean> afterFileslist = new ArrayList<>();
+                                for (int i = 0; i < file.length(); i++) {
+                                    JSONObject json = file.getJSONObject(i);
+                                    String path = Requests.networks + json.getString("filepath");
+                                    String type = json.getString("id");
+                                    String name = json.getString("filename");
+                                    afterFileslist.add(new photoBean(path, name, type));
+                                }
+                                map.put("list", afterFileslist);
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -581,29 +613,69 @@ public class ChagedUtils {
                             ArrayList<Object> list = new ArrayList<>();
                             /*整改前*/
                             //整改部位名称
-                            String rectificationPartName = data.getString("rectificationPartName");
+
+                            String rectificationPartName;
+                            try {
+                                rectificationPartName = data.getString("rectificationPartName");
+                            } catch (Exception e) {
+                                rectificationPartName = "";
+                            }
                             //整改期限
-                            String rectificationDate = data.getString("rectificationDate");
+                            String rectificationDate;
+                            try {
+                                rectificationDate = data.getString("rectificationDate");
+                            } catch (Exception e) {
+                                rectificationDate = "";
+                            }
+
                             //违反标准
-                            String standardDelName = data.getString("standardDelName");
+                            String standardDelName;
+                            try {
+                                standardDelName = data.getString("standardDelName");
+                            } catch (Exception e) {
+                                standardDelName = "";
+                            }
+
                             //存在问题
-                            String rectificationReason = data.getString("rectificationReason");
-                            //
+                            String rectificationReason;
+                            try {
+                                rectificationReason = data.getString("rectificationReason");
+                            } catch (Exception e) {
+                                rectificationReason = "";
+                            }
                             ArrayList<photoBean> afterFileslist = new ArrayList<>();
-                            JSONArray afterFiles = data.getJSONArray("afterFiles");
+                            JSONArray afterFiles;
+                            try {
+                                 afterFiles = data.getJSONArray("afterFiles");
+                            }catch (Exception e){
+                                afterFiles=new JSONArray();
+                            }
                             for (int i = 0; i < afterFiles.length(); i++) {
                                 JSONObject json1 = afterFiles.getJSONObject(i);
                                 String photopath = Requests.networks + json1.getString("filepath");
                                 String photoname = json1.getString("filename");
-                                String phototype = json1.getString("fileext");
+                                String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
+                            }
+                            if (afterFileslist.size()>0){
+
                             }
                             list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
                             /*整改后*/
                             //回复时间
-                            String replyDate = data.getString("replyDate");
+                            String replyDate;
+                            try {
+                                replyDate = data.getString("replyDate");
+                            } catch (Exception e) {
+                                replyDate = "";
+                            }
                             //整改描述
-                            String replyDescription = data.getString("replyDescription");
+                            String replyDescription;
+                            try {
+                                replyDescription = data.getString("replyDescription");
+                            } catch (Exception e) {
+                                replyDescription = "";
+                            }
                             ArrayList<photoBean> beforeFileslist = new ArrayList<>();
                             JSONArray beforeFiles = data.getJSONArray("beforeFiles");
                             for (int i = 0; i < beforeFiles.length(); i++) {
@@ -613,8 +685,9 @@ public class ChagedUtils {
                                 String phototype = json1.getString("fileext");
                                 beforeFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
-                            /*操作jilu*/
+                            //如果回复事件为空，没有回复
+                                list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
+                            /*操作记录*/
                             JSONArray hisCord = data.getJSONArray("hisCord");
                             List<NoticeItemDetailsRecord> list1 = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
                             list.addAll(list1);

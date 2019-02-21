@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyRecyclerView;
@@ -38,7 +40,7 @@ import java.util.Map;
  * 描述：整改通知单列表
  * {@link }
  */
-public class ChagedListAllActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedListAllActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -63,6 +65,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
         emptyUtils = new EmptyUtils(mContext);
+        TaskCallbackUtils.setCallBack(this);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerList.setEmptyView(emptyUtils.init());
@@ -143,8 +146,9 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                 if (status == 0) {
                     /*保存状态，调整新增页面，进行修改*/
                     Intent intent = new Intent(mContext, ChangedNewActivity.class);
-                    intent.putExtra("id",list.get(pos).getId());
+                    intent.putExtra("id", list.get(pos).getId());
                     intent.putExtra("status", true);
+                    intent.putExtra("orgName", title.getText().toString());
                     startActivity(intent);
                 } else {
                     /*点击按钮*/
@@ -221,5 +225,16 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                 }
             }
         });
+    }
+    //回調刷新
+    @Override
+    public void taskCallback() {
+        page = 1;
+        request();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

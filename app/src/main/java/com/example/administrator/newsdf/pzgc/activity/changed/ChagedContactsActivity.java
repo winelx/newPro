@@ -71,7 +71,7 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final MoretasklistBean obj) {
                 holder.setText(R.id.content_name, obj.getPartContent());
-                holder.setText(R.id.content_zhiw, obj.getUploadTime());
+                holder.setVisibility(R.id.content_zhiw, 8);
                 holder.setOnClickListener(R.id.check_user, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -89,10 +89,10 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
         expandableListView.setAdapter(mAdapter);
         expandableListView.setEmptyView(findViewById(R.id.nullposion));
         /*网络请求*/
-        OkGo.post(Requests.GETPERSONDATA)
+        OkGo.get(Requests.GETPERSONDATA)
                 .params("orgId", orgId)
-                .params("size", 1000)
-                .params("page", 1)
+                .params("page.size", 1000)
+                .params("page.en", 1)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -101,15 +101,16 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 list = new ArrayList<MoretasklistBean>();
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                JSONArray jsonArray = data.getJSONArray("results");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
                                         String id = json.getString("id");
                                         String name = json.getString("name");
-                                        String position = json.getString("position");
-                                        String user_id = json.getString("user_id");
-                                        list.add(new MoretasklistBean(position, name, id, user_id));
+                   /*                     String position = json.getString("position");*/
+                                        String user_id = json.getString("userId");
+                                        list.add(new MoretasklistBean("", name, id, user_id));
                                     }
                                 }
                             }
@@ -118,6 +119,11 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
                     }
                 });
         /**

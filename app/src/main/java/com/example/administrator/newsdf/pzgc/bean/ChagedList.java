@@ -15,6 +15,7 @@ public class ChagedList {
      * status : 0
      * sendUserName : 系统管理员
      * send_date : 2019-02-14 10:32:59
+     *
      */
 
     private String auserName;
@@ -26,6 +27,7 @@ public class ChagedList {
     private String ruserName;
     private String sorgName;
     private int status;
+    private int permission;
     private String sendUserName;
     private String send_date;
 
@@ -117,5 +119,11 @@ public class ChagedList {
         this.send_date = send_date;
     }
 
+    public int getPermission() {
+        return permission;
+    }
 
+    public void setPermission(int permission) {
+        this.permission = permission;
+    }
 }

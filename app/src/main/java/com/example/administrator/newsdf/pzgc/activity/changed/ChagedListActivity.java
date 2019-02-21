@@ -19,6 +19,10 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
+import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyRecyclerView;
@@ -39,7 +43,7 @@ import java.util.Map;
  * 描述：整改通知单列表
  * {@link }
  */
-public class ChagedListActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -64,6 +68,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
         emptyUtils = new EmptyUtils(mContext);
+        TaskCallbackUtils.setCallBack(this);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerList.setEmptyView(emptyUtils.init());
@@ -139,20 +144,31 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(int pos) {
                 int status = list.get(pos).getStatus();
-                if (status == 0||status==20) {
-                    /*保存状态，调整新增页面，进行修改*/
-                    Intent intent = new Intent(mContext, ChangedNewActivity.class);
-                    intent.putExtra("status", true);
-                    intent.putExtra("id",list.get(pos).getId());
-                    startActivity(intent);
+                if (status == 0 || status == 20) {
+                    int permission = list.get(pos).getPermission();
+                    if (permission == 1) {
+                        /*保存状态，调整新增页面，进行修改*/
+                        Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        intent.putExtra("status", true);
+                        intent.putExtra("id", list.get(pos).getId());
+                        intent.putExtra("orgName", title.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        /*跳转详情*/
+                        Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                        intent1.putExtra("id", list.get(pos).getId());
+                        intent1.putExtra("orgName", title.getText().toString());
+                        intent1.putExtra("orgId", orgId);
+                        startActivity(intent1);
+                    }
                 } else {
-                    /*点击按钮*/
+                    /*跳转详情*/
                     Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
                     intent1.putExtra("id", list.get(pos).getId());
                     intent1.putExtra("orgName", title.getText().toString());
+                    intent1.putExtra("orgId", orgId);
                     startActivity(intent1);
                 }
-
             }
 
         });
@@ -249,4 +265,17 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
+
+    //回調刷新
+    @Override
+    public void taskCallback() {
+        page = 1;
+        request();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
 }

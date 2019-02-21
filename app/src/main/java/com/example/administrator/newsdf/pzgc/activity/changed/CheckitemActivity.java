@@ -36,7 +36,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<Object> list;
     private Context mContext;
     private ChagedUtils chagedUtils;
-    private String checkManageId;
+    private String checkManageId, noticeId;
     private EmptyUtils emptyUtils;
     ArrayList<String> itemes = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         emptyUtils = new EmptyUtils(mContext);
         Intent intent = getIntent();
         checkManageId = intent.getStringExtra("checkManageId");
+        noticeId = intent.getStringExtra("noticeId");
         findViewById(R.id.com_back).setOnClickListener(this);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText(intent.getStringExtra("title"));
@@ -85,7 +86,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 Checkitem item = (Checkitem) list.get(position);
                 item.setLeam(false);
                 mAdapter.setNewData(list);
-                itemes.remove(item.getDetailsIds());
+                for (int i = 0; i < itemes.size(); i++) {
+                    String strs = itemes.get(i);
+                    if (strs.equals(item.getDetailsIds())) {
+                        itemes.remove(i);
+                    }
+                }
                 if (itemes.size() == 0) {
                     comButton.setText("");
                 }
@@ -109,7 +115,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void request() {
-
         chagedUtils.getdetailsofimport(checkManageId, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
@@ -128,7 +133,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
 
     private void save() {
         /*保存导入问题项*/
-        chagedUtils.batchSaveNoteceDel(checkManageId, Dates.listToString(itemes), new ChagedUtils.CallBacks() {
+        chagedUtils.batchSaveNoteceDel(checkManageId, noticeId, Dates.listToStrings(itemes), new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
                 ToastUtils.showShortToast(string);
