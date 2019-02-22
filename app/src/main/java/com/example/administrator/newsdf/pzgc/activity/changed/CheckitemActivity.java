@@ -80,7 +80,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 comButton.setText("确定");
                 itemes.add(item.getDetailsIds());
             }
-
             @Override
             public void ondelete(String str, int position) {
                 Checkitem item = (Checkitem) list.get(position);

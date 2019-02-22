@@ -15,6 +15,8 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
  * 描述：整改回复单详情界面
  * {@link }
  */
-public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnClickListener, OgranCallback {
     private RecyclerView recyclerView;
     private LinearLayout deviceDetailsFunction;
     private TextView titleView;
@@ -46,6 +48,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         id = intent.getStringExtra("id");
         orgName = intent.getStringExtra("orgName");
         list = new ArrayList<>();
+        OgranCallbackUtils1.setCallBack(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         /*验证*/
         deviceDetailsProving = (TextView) findViewById(R.id.device_details_proving);
@@ -74,8 +77,9 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             @Override
             public void onClick(int position, String string) {
                 Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
-                intent1.putExtra("replyId", string);
-                intent1.putExtra("replyDelId", id);
+                intent1.putExtra("replyDelId", string);
+                intent1.putExtra("replyId" , id);
+                intent1.putExtra("status" , true);
                 startActivity(intent1);
             }
         });
@@ -139,8 +143,12 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 ToastUtils.showsnackbar(titleView, string);
             }
         });
+    }
 
-
+    //删除问题项回调
+    @Override
+    public void taskCallback() {
+        request();
     }
 }
 

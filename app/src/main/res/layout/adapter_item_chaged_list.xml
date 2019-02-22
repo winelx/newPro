@@ -97,6 +97,14 @@
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -140,11 +148,11 @@
             android:id="@+id/item_delete"
             android:layout_width="70dp"
             android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/content_re"
             android:layout_toRightOf="@+id/content_re"
             android:background="@color/red"
             android:text="删除"
-            android:textColor="@android:color/white"
-            android:layout_toEndOf="@+id/content_re" />
+            android:textColor="@android:color/white" />
     </com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout>
 
 

@@ -64,6 +64,9 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 mOnSwipeListener.onDel(position, holder.swipmenulayout);
             }
         });
+        holder.score.setVisibility(View.VISIBLE);
+        String str = "扣分：" + "3.0";
+        holder.score.setText(Dates.setText(mContext, str, 3, R.color.red));
         ChagedList chagedList = list.get(position);
         if (chagedList.getCode() != null) {
             holder.itemNumber.setText("编号：" + chagedList.getCode());
@@ -77,7 +80,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         if (chagedList.getSend_date() != null) {
-            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0,10));
+            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0, 10));
         } else {
             holder.releaseData.setText("下发日期：");
         }
@@ -128,11 +131,11 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
                 break;
             case 20:
-                int permission =chagedList.getPermission();
-                if (permission==1){
+                int permission = chagedList.getPermission();
+                if (permission == 1) {
                     holder.infaceItemMessage.setTextString("未下发");
                     holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
-                }else {
+                } else {
                     holder.infaceItemMessage.setTextString("未处理");
                     holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
                 }
@@ -163,7 +166,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private Button item_delete;
         private SwipeMenuLayout swipmenulayout;
         private TextView itemNumber, releasePeople, releaseData;
-        private TextView chagedNoticeOrgname;
+        private TextView chagedNoticeOrgname, score;
         private TextView auserName, ruserName, noticefinishcount;
 
         public TypeContent(View itemView) {
@@ -179,6 +182,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             auserName = itemView.findViewById(R.id.auserName);
             ruserName = itemView.findViewById(R.id.ruserName);
             noticefinishcount = itemView.findViewById(R.id.noticefinishcount);
+            score = itemView.findViewById(R.id.score);
         }
     }
 

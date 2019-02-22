@@ -485,7 +485,17 @@ public class Requests {
      * 查询审批历史记录
      */
     public static final String GETPROCESSHISCORD = networks + "iface/mobile/newcheck/getProcessHisCord";
+
+    /*删除回复验证单*/
+    public static final String DELETEREPLYFORM = networks + "iface/mobile/newcheck/deleteReplyForm";
+
+
+
+
+
     /*新的整改通知*/
+
+
     /**
      * 获取“我的”、“全部”组织树
      */

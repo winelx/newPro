@@ -87,7 +87,9 @@ public class ChagedReplyMeFragment extends LazyloadFragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, ChagedReplyNewActivity.class));
+                Intent intent = new Intent(mContext, ChagedReplyNewActivity.class);
+                intent.putExtra("lean", false);
+                startActivity(intent);
             }
         });
 

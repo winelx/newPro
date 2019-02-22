@@ -3,7 +3,7 @@ package com.example.baselibrary.bean;
 public class photoBean {
     String photopath;
     String photoname;
-    String phototype;
+    String phototype;//(id)
 
     public photoBean(String photopath, String photoname, String phototype) {
         this.photopath = photopath;

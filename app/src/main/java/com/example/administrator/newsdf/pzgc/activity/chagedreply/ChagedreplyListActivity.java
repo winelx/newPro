@@ -16,9 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyRecyclerView;
@@ -39,8 +42,7 @@ import java.util.Map;
  * 描述：我的整改回复单列表
  * {@link }
  */
-public class ChagedreplyListActivity extends BaseActivity implements View.OnClickListener {
-
+public class ChagedreplyListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -49,7 +51,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
     private ArrayList<ChagedreplyList> list;
     private Context mContext;
     private PullDownMenu pullDownMenu;
-    String[] strings = {"全部", "保存", "未处理", "已处理"};
+    private String[] strings = {"全部", "未处理", "已处理"};
     private String orgId;
     private int page = 1;
     private int status = -1;
@@ -62,7 +64,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
-
+        TaskCallbackUtils.setCallBack(this);
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
@@ -120,9 +122,8 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 /*删除按钮*/
-                                list.remove(pos);
-                                adapter.setNewData(list);
                                 dialogInterface.dismiss();
+                                delete(pos, list.get(pos).getId());
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -139,15 +140,23 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onClick(int pos) {
-                /*点击按钮*/
-                Intent intent1 = new Intent(mContext, ChagedreplyDetailsActivity.class);
-                intent1.putExtra("id", list.get(pos).getId());
-                intent1.putExtra("orgName", title.getText().toString());
-                startActivity(intent1);
+                int savestatus = list.get(pos).getSavestatus();
+                //1是保存状态，2不是
+                if (savestatus == 1) {
+                    Intent intent1 = new Intent(mContext, ChagedReplyNewActivity.class);
+                    intent1.putExtra("id", list.get(pos).getId());
+                    intent1.putExtra("status", true);
+                    startActivity(intent1);
+                } else {
+                    /*点击按钮*/
+                    Intent intent1 = new Intent(mContext, ChagedreplyDetailsActivity.class);
+                    intent1.putExtra("id", list.get(pos).getId());
+                    intent1.putExtra("orgName", title.getText().toString());
+                    startActivity(intent1);
+                }
             }
-
         });
-         request();
+        request();
     }
 
 
@@ -205,7 +214,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 }
                 list.addAll(data);
                 adapter.setNewData(list);
-                if (list.size()==0){
+                if (list.size() == 0) {
                     emptyUtils.noData("暂无数据,下拉刷新!");
                 }
             }
@@ -216,6 +225,26 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 if (1 != page) {
                     page--;
                 }
+            }
+        });
+    }
+
+    @Override
+    public void taskCallback() {
+        request();
+    }
+
+    private void delete(final int pos, String id) {
+        ChagedreplyUtils.deleteReplyForm(id, new ChagedreplyUtils.ObjectCallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                list.remove(pos);
+                adapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
             }
         });
     }

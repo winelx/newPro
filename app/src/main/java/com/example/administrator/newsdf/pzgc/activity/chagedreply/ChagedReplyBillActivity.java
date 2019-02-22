@@ -17,6 +17,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -24,6 +25,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -38,6 +41,7 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,11 +60,14 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private BasePhotoAdapter adapter;
     private ArrayList<photoBean> photoPaths;
     private ArrayList<String> photolist;
-    private TextView content;
+    private EditText replydescription;
+    private TextView content, rectificationreason, standarddel, delete;
     private PopCameraUtils popcamerautils;
     private TakePictureManager takePictureManager;
     private static final int IMAGE_PICKER = 1011;
-    private String replyId, replyDelId;
+    private String replyId, replyDelId, optionType;
+    private ArrayList<String> deletelist = new ArrayList<>();
+    private boolean lean;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -69,7 +76,10 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.activity_chagedreply_bill);
         mContext = this;
         Intent intent = getIntent();
+        //回复单id
         replyId = intent.getStringExtra("replyId");
+        lean = intent.getBooleanExtra("status",true);
+        //问题项Id
         replyDelId = intent.getStringExtra("replyDelId");
         photoPaths = new ArrayList<>();
         photolist = new ArrayList<>();
@@ -77,10 +87,18 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         takePictureManager = new TakePictureManager(ChagedReplyBillActivity.this);
         inti();
         content = (TextView) findViewById(R.id.content);
-        findViewById(R.id.delete).setOnClickListener(this);
+        delete = (TextView) findViewById(R.id.delete);
+        delete.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
+        findViewById(R.id.checklistmeun).setOnClickListener(this);
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("整改回复");
+        TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setText("保存");
+        checklistmeuntext.setTextSize(15f);
+        rectificationreason = (TextView) findViewById(R.id.rectificationreason);
+        standarddel = (TextView) findViewById(R.id.standarddel);
+        replydescription = (EditText) findViewById(R.id.replydescription);
         chagedOldRecycler = (RecyclerView) findViewById(R.id.chaged_old_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         // 设置 recyclerview 布局方式为横向布局
@@ -99,13 +117,6 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         /*添加图片*/
         photoRecycler.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
         photoRecycler.setAdapter(adapter);
-        content.setText("整改部位：" + "测试部位测试部位" + "\n" +
-                "整改期限：" + "测试整改期限" + "\n" +
-                "违反标准：" + "测试违反标准" + "\n" +
-                "存在问题：" + "测试存在问题" + "\n" +
-                "整改前附件："
-
-        );
         adapter.setOnItemClickListener(new BasePhotoAdapter.OnItemClickListener() {
             @Override
             public void addlick(View view, int position) {
@@ -153,6 +164,8 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void delete(int position) {
+                //删除图片Id集合
+                deletelist.add(photoPaths.get(position).getPhototype());
                 //删除图片
                 Dates.compressPixel(photoPaths.get(position).getPhotopath());
                 photoPaths.remove(position);
@@ -180,6 +193,9 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                         .start((Activity) mContext);
             }
         });
+        if (lean) {
+            delete.setVisibility(View.GONE);
+        }
         request();
     }
 
@@ -211,6 +227,9 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                         })
                         .create();
                 alertDialog2.show();
+                break;
+            case R.id.checklistmeun:
+                chaged();
                 break;
             default:
                 break;
@@ -261,10 +280,23 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
 
     /*获取整改验证单数据详情*/
     private void request() {
-        ChagedreplyUtils.getReplyFormDel(replyId, new ChagedreplyUtils.MapCallBack() {
+        ChagedreplyUtils.getReplyFormDel(replyDelId, new ChagedreplyUtils.MapCallBack() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onsuccess(Map<String, Object> map) {
-
+                ReplyBillBean billBean = (ReplyBillBean) map.get("bean");
+                optionType = billBean.getIsReply();
+                content.setText("整改部位：" + billBean.getRectificationPartName() + "\n" +
+                        "整改期限：" + billBean.getRectificationDate());
+                standarddel.setText(billBean.getStandardDelName());
+                rectificationreason.setText("存在问题：" + billBean.getRectificationReason() + "\n" + "整改前附件：");
+                replydescription.setText(billBean.getReplyDescription());
+                photolist.clear();
+                photolist.addAll((ArrayList<String>) map.get("beforeFiles"));
+                mAdapter.getData(photolist, new ArrayList<String>());
+                photoPaths.clear();
+                photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
+                adapter.getData(photoPaths);
             }
 
             @Override
@@ -274,11 +306,49 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         });
     }
 
+    /*创建、编辑回复单*/
+    public void chaged() {
+        String editext = replydescription.getText().toString();
+        if (!editext.isEmpty()) {
+            ArrayList<File> fileList = new ArrayList<>();
+            for (int i = 0; i < photoPaths.size(); i++) {
+                String name = photoPaths.get(i).getPhotoname();
+                if (name.isEmpty()) {
+                    fileList.add(new File(photoPaths.get(i).getPhotopath()));
+                }
+            }
+            Map<String, String> map = new HashMap<>();
+            map.put("id", replyDelId);
+            map.put("replyId", replyId);
+            map.put("deleteFileIds", Dates.listToStrings(deletelist));
+            map.put("replyDescription", editext);
+            map.put("optionType", optionType);
+            ChagedreplyUtils.editReplyFormDel(map, fileList, new ChagedreplyUtils.ObjectCallBacks() {
+                @Override
+                public void onsuccess(String string) {
+                    request();
+                }
+
+                @Override
+                public void onerror(String string) {
+                    ToastUtils.showsnackbar(rectificationreason, string);
+                }
+            });
+        } else {
+            ToastUtils.showShortToastCenter("整改描述不能为空");
+        }
+    }
+
     /*删除该项单据*/
     public void delete() {
-        ChagedreplyUtils.deleteReplyDel("", "", new ChagedreplyUtils.ObjectCallBacks() {
+        ChagedreplyUtils.deleteReplyDel(replyDelId, replyId, new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
+                try {
+                    //删除单据回调
+                    OgranCallbackUtils1.removeCallBackMethod();
+                } catch (Exception e) {
+                }
                 finish();
             }
 

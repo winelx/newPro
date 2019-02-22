@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -22,9 +23,52 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:lineSpacingMultiplier="1.3"
-                android:padding="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.3"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:text="违反标准"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/standarddel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.3"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rectificationreason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:lineSpacingMultiplier="1.3"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingTop="3dp"
+
+                android:paddingRight="@dimen/dp10"
+                android:paddingBottom="3dp"
+                android:text="存在问题："
+                android:textColor="#000000"
+                android:textSize="15sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/chaged_old_recycler"
@@ -40,10 +84,11 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/back2" />
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -53,9 +98,11 @@
                 android:paddingTop="5dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="5dp"
-                android:text="整改该请求描述" />
+                android:text="整改该请求描述"
+                android:textColor="#000000" />
 
             <EditText
+                android:id="@+id/replydescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -70,7 +117,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/back2" />
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -95,7 +144,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/back2" />
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
 
             <TextView
                 android:id="@+id/delete"

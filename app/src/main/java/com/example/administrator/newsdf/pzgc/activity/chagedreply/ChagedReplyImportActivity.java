@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyImportAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
+import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.EmptyRecyclerView;
+import com.example.baselibrary.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -32,18 +36,25 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
     private SmartRefreshLayout refreshLayout;
     private ChagedReplyImportAdapter adapter;
     private TextView inspectContent, comButton;
-    private RecyclerView recyclerView;
+    private EmptyRecyclerView recyclerView;
     private ArrayList<ImprotItem> list;
     private Context mContext;
     private int page = 0;
-    private String noticeId;
+    private String noticeId, id;
+    private EmptyUtils emptyUtils;
+    private ArrayList<String> rowslist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
+        Intent intent = getIntent();
+        noticeId = intent.getStringExtra("noticeId");
+        id = intent.getStringExtra("id");
         mContext = this;
         list = new ArrayList<>();
+        rowslist = new ArrayList<>();
+        emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         comButton = (TextView) findViewById(R.id.com_button);
@@ -56,8 +67,9 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_list);
+        recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setEmptyView(emptyUtils.init());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new ChagedReplyImportAdapter(R.layout.adapter_chagedreply_import, list);
         recyclerView.setAdapter(adapter);
@@ -65,14 +77,19 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ImprotItem improtItem = list.get(position);
+                String itemid = improtItem.getId();
                 if (improtItem.isNewX()) {
                     improtItem.setNewX(false);
-                    page++;
+                    for (int i = 0; i < rowslist.size(); i++) {
+                        if (itemid.equals(rowslist.get(i))) {
+                            rowslist.remove(i);
+                        }
+                    }
                 } else {
                     improtItem.setNewX(true);
-                    page--;
+                    rowslist.add(itemid);
                 }
-                if (page == 0) {
+                if (rowslist.size()== 0) {
                     comButton.setText("");
                 } else {
                     comButton.setText("确定");
@@ -90,11 +107,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.toolbar_menu:
-                Intent intent = new Intent();
-                intent.putExtra("id", "12");
-                intent.putExtra("str", "12");
-                setResult(0, intent);
-                fileList();
+                save();
                 break;
             default:
                 break;
@@ -103,26 +116,34 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
 
     /*查询导入问题列表*/
     public void request() {
-        ChagedreplyUtils.chooseNoticeDelData("9eb299c3c3f549219d86ac0ec75c367e", new ChagedreplyUtils.MapCallBack() {
+        ChagedreplyUtils.chooseNoticeDelData(noticeId, new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 list.clear();
                 list.addAll((ArrayList<ImprotItem>) map.get("list"));
                 adapter.setNewData(list);
+                if (list.size()>0){
+                    emptyUtils.noData("暂无数据,下拉刷新！");
+                }
             }
 
             @Override
             public void onerror(String str) {
 
+                ToastUtils.showsnackbar(comButton,str);
             }
         });
     }
 
     /*保存导入问题项*/
     private void save() {
-        ChagedreplyUtils.batchSaveReplyDel(new ChagedreplyUtils.ObjectCallBacks() {
+        ChagedreplyUtils.batchSaveReplyDel(noticeId, id, Dates.listToStrings(rowslist), new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
+                try {
+                    NetworkinterfaceCallbackUtils.Refresh("reply");
+                } catch (Exception e) {
+                }
                 finish();
             }
 

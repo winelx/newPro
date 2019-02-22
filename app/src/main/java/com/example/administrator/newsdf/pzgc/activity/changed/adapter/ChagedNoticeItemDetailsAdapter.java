@@ -86,10 +86,12 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     @SuppressLint("SetTextI18n")
     private void bindproblem(Typeproblem holder, int position) {
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) list.get(position);
+        String str = "扣分:" + "3.0";
         holder.typeproblem.setText(
                 "整改部位：" + isnull(problem.getRectificationPartName()) + "\n"
                         + "整改期限：" + isnull(problem.getRectificationDate().substring(0, 10)) + "\n"
                         + "违反标准：" + isnull(problem.getStandardDelName()) + "\n"
+//                        + "扣分：" + Dates.setText(mContext, str, 3, str.length()) + "\n"
                         + "存在问题：" + isnull(problem.getRectificationReason()) + "\n"
                         + "整改前附件:"
 
@@ -117,8 +119,8 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         String replydate;
         try {
             replydate = chaged.getReplyDate().substring(0, 10);
-        }catch (Exception e){
-            replydate="";
+        } catch (Exception e) {
+            replydate = "";
         }
         holder.typeproblem.setText(
                 "回复时间：" + isnull(replydate) + "\n"

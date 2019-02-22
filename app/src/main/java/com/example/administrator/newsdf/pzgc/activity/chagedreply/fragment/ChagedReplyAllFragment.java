@@ -76,7 +76,9 @@ public class ChagedReplyAllFragment extends Fragment {
         checkNewadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, ChagedReplyNewActivity.class));
+                Intent intent = new Intent(mContext, ChagedReplyNewActivity.class);
+                intent.putExtra("lean", false);
+                startActivity(intent);
             }
         });
         return view;

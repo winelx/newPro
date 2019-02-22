@@ -27,11 +27,11 @@ import java.util.ArrayList;
  * {@link  ChagedreplyActivity}
  * {@link  ChagedreplyListActivity}
  */
-public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChagedReplyListAllAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ChagedreplyList> list;
     private Context mContext;
 
-    public ChagedReplyListAdapter(ArrayList<ChagedreplyList> list, Context mContext) {
+    public ChagedReplyListAllAdapter(ArrayList<ChagedreplyList> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -103,7 +103,7 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         int status = chagedList.getStatus();
 //       0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
-        holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
+        holder.swipmenulayout.setIos(true).setLeftSwipe(true);
         switch (status) {
             case 0:
                 holder.infaceItemMessage.setTextString("未提交");
@@ -123,15 +123,8 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.red);
                 break;
             case 20:
-                int permission = chagedList.getSavestatus();
-                if (permission == 1) {
-                    holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
-                    holder.infaceItemMessage.setTextString("未提交");
-                    holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
-                } else {
-                    holder.infaceItemMessage.setTextString("未处理");
-                    holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
-                }
+                holder.infaceItemMessage.setTextString("未处理");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
                 break;
             case 30:
                 holder.infaceItemMessage.setTextString("已处理");

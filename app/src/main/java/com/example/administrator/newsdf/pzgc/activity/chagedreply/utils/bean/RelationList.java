@@ -2,6 +2,8 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean;
 
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyRelationActivity;
 
+import java.io.Serializable;
+
 /**
  * @author lx
  * 版本：1.0
@@ -9,21 +11,24 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyRel
  * 描述：关联整改通知单
  * {@link ChagedReplyRelationActivity}
  */
-public class RelationList {
+public class RelationList implements Serializable {
+
 
 
     /**
-     * rectificationPersonName : fugiat eu exercitation incididunt in
-     * code : dolore
-     * send_orgid : officia cillum
-     * rectificationOrgName : ex
-     * rectification_orgid : cons
-     * acceptPersonName : proident labore ad
-     * id : ipsum reprehenderit laboris con
-     * rectification_person : dolore occaecat amet
-     * acceptPerson : in nulla exer
-     * motionNode : -1116761.4935599715
-     * sendOrgName : ut in do
+     * rectificationPersonName : do commodo exercitation magna tempor
+     * code : cupidatat tempor
+     * send_orgid : sed adipisicing ea
+     * rectificationOrgName : incididunt Duis
+     * rectification_orgid : cillum dolor
+     * acceptPersonName : nulla
+     * id : cillum dolore nostrud
+     * rectification_person : sunt eiusmod
+     * acceptPerson : sed mollit aute
+     * motionNode : -5.234254251592869E7
+     * sendOrgName : commod
+     * sendUserName : sint esse exercitation aliqua
+     * sendDate : magna ut consequat occaecat
      */
 
     private String rectificationPersonName;
@@ -35,8 +40,10 @@ public class RelationList {
     private String id;
     private String rectification_person;
     private String acceptPerson;
-    private double motionNode;
+    private int motionNode;
     private String sendOrgName;
+    private String sendUserName;
+    private String sendDate;
 
     public String getRectificationPersonName() {
         return rectificationPersonName;
@@ -110,11 +117,11 @@ public class RelationList {
         this.acceptPerson = acceptPerson;
     }
 
-    public double getMotionNode() {
+    public int  getMotionNode() {
         return motionNode;
     }
 
-    public void setMotionNode(double motionNode) {
+    public void setMotionNode(int motionNode) {
         this.motionNode = motionNode;
     }
 
@@ -126,4 +133,19 @@ public class RelationList {
         this.sendOrgName = sendOrgName;
     }
 
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
+    }
+
+    public String getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(String sendDate) {
+        this.sendDate = sendDate;
+    }
 }

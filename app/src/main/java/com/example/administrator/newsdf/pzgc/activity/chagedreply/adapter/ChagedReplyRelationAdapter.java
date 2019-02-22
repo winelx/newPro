@@ -27,9 +27,9 @@ public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, B
 
         helper.setText(R.id.number, "编号：" + item.getCode());
         if (!item.getCode().isEmpty()) {
-            helper.setText(R.id.send_people, "下发人：：" + item.getCode());
+            helper.setText(R.id.send_people, "下发人：" + item.getSendUserName());
         } else {
-            helper.setText(R.id.send_people, "下发人：：");
+            helper.setText(R.id.send_people, "下发人：");
         }
         if (!item.getAcceptPersonName().isEmpty()) {
             helper.setText(R.id.chaged_people, "整改负责人：" + item.getAcceptPersonName());
@@ -42,7 +42,7 @@ public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, B
             helper.setText(R.id.send_orgname, "下发组织：");
         }
         if (!item.getSendOrgName().isEmpty()) {
-            helper.setText(R.id.send_data, "下发日期：" + item.getSendOrgName());
+            helper.setText(R.id.send_data, "下发日期：" + item.getSendDate().substring(0, 10));
         } else {
             helper.setText(R.id.send_data, "下发日期：");
         }

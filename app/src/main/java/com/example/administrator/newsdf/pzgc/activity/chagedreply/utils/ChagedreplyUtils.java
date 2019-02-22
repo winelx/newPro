@@ -1,8 +1,11 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils;
 
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedReply;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.Chagereplydetails;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsRecord;
@@ -10,6 +13,7 @@ import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsText;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.bean.photoBean;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -18,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +81,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
 
                     }
@@ -89,35 +95,80 @@ public class ChagedreplyUtils {
     }
 
     /*获取保存状态的整改验证单*/
-    public static void getReplyFormOfSaveStatus() {
-        OkGo.post(Requests.GETREPLYFORMOFSAVESTATUS)
+    public static void getReplyFormOfSaveStatus(String id, final MapCallBack callBack) {
+        OkGo.get(Requests.GETREPLYFORMOFSAVESTATUS)
+                .params("id", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> content = new HashMap<>();
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                ChagedReply chagedReply = (ChagedReply) com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedReply.class);
+                                content.put("bean", chagedReply);
 
+                                JSONArray details;
+                                try {
+                                    details = data.getJSONArray("details");
+                                } catch (Exception e) {
+                                    details = new JSONArray();
+                                }
+                                List<Chagereplydetails> list = ListJsonUtils.getListByArray(Chagereplydetails.class, details.toString());
+                                content.put("list", list);
+                                callBack.onsuccess(content);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callBack.onerror("数据解析失败");
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callBack.onerror("请求失败");
                     }
                 });
     }
 
     /*创建整改验证单*/
-    public static void createReplyForm() {
-        OkGo.post(Requests.CREATEREPLYFORM)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-
+    public static void createReplyForm(final Map<String, String> map, final MapCallBack callBack) {
+        PostRequest request = OkGo.post(Requests.CREATEREPLYFORM);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            request.params(entry.getKey(), entry.getValue());
+        }
+        request.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        Map<String, Object> content = new HashMap<>();
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        content.put("id", data.getString("id"));
+                        content.put("code", data.getString("code"));
+                        callBack.onsuccess(content);
+                    } else {
+                        callBack.onerror(jsonObject.getString("msg"));
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callBack.onerror("数据解析失败");
+                }
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onerror("请求失败");
+            }
+        });
     }
 
     /*创建整改验证单时选择整改通知单*/
@@ -209,11 +260,11 @@ public class ChagedreplyUtils {
      * replyId
      * 回复单id
      */
-    public static void batchSaveReplyDel(final ObjectCallBacks callBack) {
+    public static void batchSaveReplyDel(String noticeIds, String id, String rows, final ObjectCallBacks callBack) {
         OkGo.post(Requests.BATCHSAVEREPLYDEL)
-                .params("rows", "")
-                .params("noticeIds", "")
-                .params("replyId", "")
+                .params("rows", rows)
+                .params("noticeIds", noticeIds)
+                .params("replyId", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -221,13 +272,13 @@ public class ChagedreplyUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-
                                 callBack.onsuccess("");
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -263,6 +314,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -297,6 +349,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            objectCallBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -349,6 +402,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -361,24 +415,52 @@ public class ChagedreplyUtils {
     }
 
     /*创建、编辑回复单*/
-    public static void editReplyFormDel() {
-        OkGo.post(Requests.EDITREPLYFORMDEL)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
 
+    /**
+     * 整改验证单详情id
+     * replyDescription整改描述
+     * attachments要上传的附件，和以前那些有上传附件的接口一样
+     * deleteFileIds需要删除的附件id，逗号隔开
+     */
+    public static void editReplyFormDel(Map<String, String> map, ArrayList<File> attachments, final ObjectCallBacks callBacks) {
+        PostRequest request = OkGo.post(Requests.EDITREPLYFORMDEL);
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            request.params(entry.getKey(), entry.getValue());
+        }
+        if (attachments.size() > 0) {
+            request.addFileParams("attachments", attachments);
+        } else {
+            request.isMultipart(true);
+        }
+        request.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        callBacks.onsuccess("成功");
+                    } else {
+                        callBacks.onerror(jsonObject.getString("msg"));
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callBacks.onerror("数据解析失败");
+                }
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBacks.onerror("请求失败");
+            }
+        });
     }
 
     /*获取回复单数据*/
     public static void getReplyFormDel(String replyDelId, final MapCallBack callback) {
-        OkGo.post(Requests.GETREPLYFORMDEL)
+        OkGo.get(Requests.GETREPLYFORMDEL)
+                .params("replyDelId", replyDelId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -387,13 +469,48 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Map<String, Object> map = new HashMap<>();
-
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                ReplyBillBean bean = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ReplyBillBean.class);
+                                map.put("bean", bean);
+                                ArrayList<photoBean> afterFileslist = new ArrayList<>();
+                                JSONArray afterFiles;
+                                try {
+                                    afterFiles = data.getJSONArray("afterFiles");
+                                } catch (Exception e) {
+                                    afterFiles = new JSONArray();
+                                }
+                                if (afterFiles.length() > 0) {
+                                    for (int i = 0; i < afterFiles.length(); i++) {
+                                        JSONObject object = afterFiles.getJSONObject(i);
+                                        String path = Requests.networks + object.getString("filepath");
+                                        String name = object.getString("filename");
+                                        String type = object.getString("id");
+                                        afterFileslist.add(new photoBean(path, name, type));
+                                    }
+                                }
+                                map.put("afterFiles", afterFileslist);
+                                JSONArray beforeFiles;
+                                try {
+                                    beforeFiles = data.getJSONArray("beforeFiles");
+                                } catch (Exception e) {
+                                    beforeFiles = new JSONArray();
+                                }
+                                ArrayList<String> beforeFileslist = new ArrayList<>();
+                                if (beforeFiles.length() > 0) {
+                                    for (int i = 0; i < beforeFiles.length(); i++) {
+                                        JSONObject object = beforeFiles.getJSONObject(i);
+                                        String path = Requests.networks + object.getString("filepath");
+                                        beforeFileslist.add(path);
+                                    }
+                                }
+                                map.put("beforeFiles", beforeFileslist);
                                 callback.onsuccess(map);
                             } else {
                                 callback.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callback.onerror("数据解析失败");
                         }
                     }
 
@@ -405,7 +522,6 @@ public class ChagedreplyUtils {
     }
 
     /*提交回复*/
-
     public static void submitReplyData(String replyId, String motionNode, final ObjectCallBacks callBacks) {
         OkGo.post(Requests.SUBMITREPLYDATA)
                 .params("replyId", replyId)
@@ -423,6 +539,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -461,6 +578,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -471,6 +589,37 @@ public class ChagedreplyUtils {
                     }
                 });
     }
+
+    /*删除回复验证单*/
+    public static void deleteReplyForm(String id, final ObjectCallBacks callback) {
+        OkGo.get(Requests.DELETEREPLYFORM)
+                .params("id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                callback.onsuccess("");
+                            } else {
+                                callback.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callback.onerror("数据解析失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callback.onerror("请求失败");
+                    }
+                });
+
+    }
+
 
     public interface MapCallBack {
         void onsuccess(Map<String, Object> map);

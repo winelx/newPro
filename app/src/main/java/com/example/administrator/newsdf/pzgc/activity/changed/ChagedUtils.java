@@ -82,6 +82,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
 
                     }
@@ -130,6 +131,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -165,6 +167,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -206,6 +209,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -245,6 +249,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -287,6 +292,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -320,6 +326,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBacks.onerror("数据解析失败");
                         }
                     }
 
@@ -377,6 +384,7 @@ public class ChagedUtils implements Serializable {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    callBacks.onerror("数据解析失败");
                 }
             }
 
@@ -442,6 +450,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -503,8 +512,8 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
-                        callBack.onsuccess(map);
                     }
 
                     @Override
@@ -540,6 +549,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -584,6 +594,7 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 
@@ -694,6 +705,7 @@ public class ChagedUtils implements Serializable {
                             callBack.onsuccess(list);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            callBack.onerror("数据解析失败");
                         }
                     }
 

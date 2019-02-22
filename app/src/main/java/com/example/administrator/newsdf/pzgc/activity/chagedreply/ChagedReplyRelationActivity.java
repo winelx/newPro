@@ -73,10 +73,9 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
-                intent.putExtra("id", "12");
-                intent.putExtra("str", "12");
+                intent.putExtra("content", list.get(position));
                 setResult(1, intent);
-                fileList();
+                finish();
             }
         });
         /* 下拉刷新*/

@@ -72,6 +72,7 @@ public class ChagedreplyList {
     private String sendOrgName;
     private String sortDate;
     private int status;
+    private int savestatus;
     private String updateBy;
     private String updateDate;
     private String verificationDate;
@@ -309,5 +310,11 @@ public class ChagedreplyList {
         this.verificationOpinion = verificationOpinion;
     }
 
+    public int getSavestatus() {
+        return savestatus;
+    }
 
+    public void setSavestatus(int savestatus) {
+        this.savestatus = savestatus;
+    }
 }

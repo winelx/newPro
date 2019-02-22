@@ -16,11 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAdapter;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAllAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetailsActivity;
-import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.EmptyRecyclerView;
@@ -46,7 +45,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     private EmptyRecyclerView recyclerList;
     private TextView title;
     private ImageView toolbarImage;
-    private ChagedReplyListAdapter adapter;
+    private ChagedReplyListAllAdapter adapter;
     private ArrayList<ChagedreplyList> list;
     private Context mContext;
     private PullDownMenu pullDownMenu;
@@ -75,7 +74,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         findViewById(R.id.com_back).setOnClickListener(this);
         //设置列表参数
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ChagedReplyListAdapter(list, mContext);
+        adapter = new ChagedReplyListAllAdapter(list, mContext);
         recyclerList.setAdapter(adapter);
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
@@ -108,7 +107,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
                 refreshlayout.finishLoadmore();
             }
         });
-        adapter.setOnDelListener(new ChagedReplyListAdapter.onSwipeListener() {
+        adapter.setOnDelListener(new ChagedReplyListAllAdapter.onSwipeListener() {
             @Override
             public void onDel(final int pos, final SwipeMenuLayout layout) {
                 /*删除按钮*/
