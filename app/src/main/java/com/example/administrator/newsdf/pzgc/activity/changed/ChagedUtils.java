@@ -189,13 +189,13 @@ public class ChagedUtils implements Serializable {
      * @ remarks  备注
      * @ motionNode 运动节点
      */
-    public void setassignPage(String userId, String billsId, final CallBacks callBacks) {
-        OkGo.get(Requests.ASSIGNPAGE)
+    public void setassignPage(String userId, String billsId, String motionNode, final CallBacks callBacks) {
+        OkGo.post(Requests.ASSIGNPAGE)
                 .params("id", billsId)
                 .params("assignPerson", userId)
                 .params("assignDate", Dates.getDate())
                 .params("remarks", "安卓")
-                .params("motionNode", "安卓")
+                .params("motionNode", motionNode)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -271,11 +271,9 @@ public class ChagedUtils implements Serializable {
      * 整改负责人id sendOrgid
      * 下发组织id
      */
-    public void setsavenoticeform(String id, String rectificationOrgid, String rectificationPerson, String sendOrgid, final CallBacks callBacks) {
+    public void setsavenoticeform(final String id, String rectificationOrgid, String rectificationPerson, String sendOrgid, final CallBack callBacks) {
         PostRequest request = OkGo.post(Requests.SAVENOTICEFORM);
-
         request.params("id", id);
-
         request.params("rectificationOrgid", rectificationOrgid)
                 .params("rectificationPerson", rectificationPerson)
                 .params("sendOrgid", sendOrgid)
@@ -286,7 +284,13 @@ public class ChagedUtils implements Serializable {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                callBacks.onsuccess("操作成功");
+                                Map<String, Object> map = new HashMap<>();
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                String str = data.getString("id");
+                                String code = data.getString("code");
+                                map.put("id", str);
+                                map.put("code", code);
+                                callBacks.onsuccess(map);
                             } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
@@ -311,7 +315,7 @@ public class ChagedUtils implements Serializable {
      * @param callBacks
      */
     public void deletebill(String id, final CallBacks callBacks) {
-        OkGo.post("")
+        OkGo.post(Requests.DELETENOTICE)
                 .params("id", id)
                 .execute(new StringCallback() {
                     @Override
@@ -347,7 +351,6 @@ public class ChagedUtils implements Serializable {
      */
     public void saveNoticeDetails(Map<String, String> map, ArrayList<File> photoList, final CallBack callBacks) {
         PostRequest request = OkGo.post(Requests.SAVENOTICEDETAILS);
-
         if (photoList.size() > 0) {
             request.addFileParams("attachments", photoList);
         } else {
@@ -624,7 +627,6 @@ public class ChagedUtils implements Serializable {
                             ArrayList<Object> list = new ArrayList<>();
                             /*整改前*/
                             //整改部位名称
-
                             String rectificationPartName;
                             try {
                                 rectificationPartName = data.getString("rectificationPartName");
@@ -657,7 +659,7 @@ public class ChagedUtils implements Serializable {
                             ArrayList<photoBean> afterFileslist = new ArrayList<>();
                             JSONArray afterFiles;
                             try {
-                                afterFiles = data.getJSONArray("afterFiles");
+                                afterFiles = data.getJSONArray("beforeFiles");
                             } catch (Exception e) {
                                 afterFiles = new JSONArray();
                             }
@@ -672,7 +674,10 @@ public class ChagedUtils implements Serializable {
 
                             }
                             list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
+
+
                             /*整改后*/
+
                             //回复时间
                             String replyDate;
                             try {
@@ -688,7 +693,12 @@ public class ChagedUtils implements Serializable {
                                 replyDescription = "";
                             }
                             ArrayList<photoBean> beforeFileslist = new ArrayList<>();
-                            JSONArray beforeFiles = data.getJSONArray("beforeFiles");
+                            JSONArray beforeFiles;
+                            try {
+                                beforeFiles = data.getJSONArray("afterFiles");
+                            } catch (Exception e) {
+                                beforeFiles = new JSONArray();
+                            }
                             for (int i = 0; i < beforeFiles.length(); i++) {
                                 JSONObject json1 = beforeFiles.getJSONObject(i);
                                 String photopath = Requests.networks + json1.getString("filepath");
@@ -697,7 +707,7 @@ public class ChagedUtils implements Serializable {
                                 beforeFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
                             //如果回复事件为空，没有回复
-                            list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, afterFileslist));
+                            list.add(new NoticeItemDetailsChaged(replyDate, replyDescription, beforeFileslist));
                             /*操作记录*/
                             JSONArray hisCord = data.getJSONArray("hisCord");
                             List<NoticeItemDetailsRecord> list1 = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());

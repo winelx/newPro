@@ -25,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 
@@ -56,7 +57,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private String userName, userId;
     private ChagedUtils chagedUtils;
     private String chagedReleaseid, sendOrgid, dealId, motionNode;
-    private TextView chaged_release_problem;
+    private TextView chagedReleaseProblem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,8 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         //返回
         findViewById(R.id.com_back).setOnClickListener(this);
         //下发
-        chaged_release_problem = (TextView) findViewById(R.id.chaged_release_problem);
-        chaged_release_problem.setOnClickListener(this);
+        chagedReleaseProblem = (TextView) findViewById(R.id.chaged_release_problem);
+        chagedReleaseProblem.setOnClickListener(this);
         //导入问题项
         findViewById(R.id.chaged_import_problem).setOnClickListener(this);
         //添加问题项
@@ -221,6 +222,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                         if (userId == null) {
                             ToastUtils.showsnackbar(comTitle, "还未选择整改负责人");
                         } else {
+                            Dates.getDialog(this,"提交数据中....");
                             save();
                         }
                     }
@@ -228,7 +230,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                     //编辑
                     comButton.setText(KEEP);
                     status = false;
-                    chaged_release_problem.setBackgroundColor(Color.parseColor("#888888"));
+                    chagedReleaseProblem.setBackgroundColor(Color.parseColor("#888888"));
                 }
                 break;
             default:
@@ -256,24 +258,27 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
 
     /*保存*/
     public void save() {
-        chagedUtils.setsavenoticeform(id, orgId, userId, SPUtils.getString(mContext, "orgId", null), new ChagedUtils.CallBacks() {
+        chagedUtils.setsavenoticeform(id, orgId, userId, SPUtils.getString(mContext, "orgId", null), new ChagedUtils.CallBack() {
             @Override
-            public void onsuccess(String string) {
+            public void onsuccess(Map<String, Object> map) {
+                Dates.disDialog();
                 status = true;
                 problemItemLin.setVisibility(View.VISIBLE);
                 comButton.setText("编辑");
                 if (chagednumber.getText().toString() != null) {
-                    chaged_release_problem.setBackgroundColor(Color.parseColor("#f88c37"));
+                    chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
                 }
                 try {
                     TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {
                 }
-                ToastUtils.showShortToast(string);
+                id = (String) map.get("id");
+                chagednumber.setText(map.get("code").toString());
             }
 
             @Override
             public void onerror(String string) {
+                Dates.disDialog();
                 ToastUtils.showsnackbar(comTitle, string);
             }
         });
@@ -288,11 +293,12 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                     ToastUtils.showShortToastCenter(string);
                     try {
                         TaskCallbackUtils.CallBackMethod();
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                     finish();
                 }
+
                 @Override
                 public void onerror(String str) {
                     Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
@@ -330,8 +336,8 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 list.addAll((ArrayList<ChagedNoticeDetailslsit>) map.get("list"));
                 adapter.setNewData(list);
                 if (chagednumber.getText().toString() != null) {
-                    if (status){
-                        chaged_release_problem.setBackgroundColor(Color.parseColor("#f88c37"));
+                    if (status) {
+                        chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
                     }
                 }
             }

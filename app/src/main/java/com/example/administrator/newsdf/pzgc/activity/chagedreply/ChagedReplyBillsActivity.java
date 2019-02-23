@@ -54,7 +54,7 @@ import java.util.Map;
  * 描述：整改通知单回复
  * {@link }
  */
-public class ChagedReplyBillActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedReplyBillsActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
     private RecyclerView chagedOldRecycler, photoRecycler;
     private RectifierAdapter mAdapter;
@@ -88,7 +88,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         photoPaths = new ArrayList<>();
         photolist = new ArrayList<>();
         popcamerautils = new PopCameraUtils();
-        takePictureManager = new TakePictureManager(ChagedReplyBillActivity.this);
+        takePictureManager = new TakePictureManager(ChagedReplyBillsActivity.this);
         content = (TextView) findViewById(R.id.content);
         delete = (TextView) findViewById(R.id.delete);
         delete.setOnClickListener(this);
@@ -97,8 +97,8 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("整改回复");
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        checklistmeuntext.setText("保存");
         checklistmeuntext.setTextSize(15f);
+        checklistmeuntext.setVisibility(View.GONE);
         rectificationreason = (TextView) findViewById(R.id.rectificationreason);
         standarddel = (TextView) findViewById(R.id.standarddel);
         replydescription = (EditText) findViewById(R.id.replydescription);
@@ -126,7 +126,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 //添加图片
                 //相机相册选择弹窗帮助类
                 //展示弹出窗
-                popcamerautils.showPopwindow(ChagedReplyBillActivity.this, new PopCameraUtils.CameraCallback() {
+                popcamerautils.showPopwindow(ChagedReplyBillsActivity.this, new PopCameraUtils.CameraCallback() {
                     @Override
                     public void oncamera() {
                         // 开始拍照
@@ -232,12 +232,13 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 alertDialog2.show();
                 break;
             case R.id.checklistmeun:
-                chaged();
+//                chaged();
                 break;
             default:
                 break;
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -294,6 +295,8 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 photoPaths.clear();
                 photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
                 adapter.getData(photoPaths);
+                adapter.addview(false);
+                replydescription.setEnabled(false);
             }
 
             @Override

@@ -122,14 +122,13 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 list.clear();
                 list.addAll((ArrayList<ImprotItem>) map.get("list"));
                 adapter.setNewData(list);
-                if (list.size()>0){
+                if (list.size()==0){
                     emptyUtils.noData("暂无数据,下拉刷新！");
                 }
             }
 
             @Override
             public void onerror(String str) {
-
                 ToastUtils.showsnackbar(comButton,str);
             }
         });

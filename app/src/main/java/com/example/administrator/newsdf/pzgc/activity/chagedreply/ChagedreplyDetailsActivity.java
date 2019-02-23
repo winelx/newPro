@@ -15,9 +15,13 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
+import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -38,6 +42,8 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private TextView deviceDetailsProving, deviceDetailsUp,
             deviceDetailsResult, deviceDetailsAssign, deviceDetailsEdit;
     private String id, orgName;
+    int status, p;
+    private ReplyDetailsContent bean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +81,38 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         recyclerView.setAdapter(mAdapter = new ChagedreplyDetailsAdapter(list, mContext));
         mAdapter.setOnclicktener(new ChagedreplyDetailsAdapter.onclicktener() {
             @Override
-            public void onClick(int position, String string) {
-                Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
-                intent1.putExtra("replyDelId", string);
-                intent1.putExtra("replyId" , id);
-                intent1.putExtra("status" , true);
-                startActivity(intent1);
+            public void onClick(int position, int isreply, String string) {
+                //l  0：保存；1：验证中;2:已完成；3：打回
+                if (status == 3) {
+                    //跳转过去修改
+                    Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+                    intent1.putExtra("replyDelId", string);
+                    intent1.putExtra("replyId", id);
+                    intent1.putExtra("isReply", isreply);
+                    intent1.putExtra("status", true);
+                    startActivity(intent1);
+                } else {
+                    //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
+                    int permission = bean.getPermission();
+                    if (permission == 1 || permission == 2 || permission == 3||permission==0) {
+                        //跳转过去查看
+                        Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
+                        intent1.putExtra("replyDelId", string);
+                        intent1.putExtra("replyId", id);
+                        intent1.putExtra("isReply", isreply);
+                        intent1.putExtra("status", true);
+                        startActivity(intent1);
+                    } else {
+                        //跳转过去修改
+                        Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+                        intent1.putExtra("replyDelId", string);
+                        intent1.putExtra("replyId", id);
+                        intent1.putExtra("isReply", isreply);
+                        intent1.putExtra("status", true);
+                        startActivity(intent1);
+                    }
+                }
+
             }
         });
         request();
@@ -93,7 +125,10 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 finish();
                 break;
             case R.id.device_details_proving:
-                startActivity(new Intent(this, ChagedReplyVerificationActivity.class));
+                Intent intent = new Intent(this, ChagedReplyVerificationActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("motionnode", bean.getMotionNode());
+                startActivity(intent);
                 /*验证*/
                 break;
             case R.id.device_details_result:
@@ -115,10 +150,15 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
     /*提交回复*/
     public void submit() {
-        ChagedreplyUtils.submitReplyData("", "", new ChagedreplyUtils.ObjectCallBacks() {
+        ChagedreplyUtils.submitReplyData(id, bean.getMotionNode() + "", new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
-                finish();
+                request();
+                try {
+                    TaskCallbackUtils.CallBackMethod();
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
@@ -133,9 +173,37 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         ChagedreplyUtils.getReplyFormMainInfo(id, new ChagedreplyUtils.ListCallback() {
             @Override
             public void onsuccess(ArrayList<Object> data) {
+                bean = (ReplyDetailsContent) data.get(0);
+                status = bean.getStatus();
                 list.clear();
                 list.addAll(data);
                 mAdapter.setNewData(list);
+                //l  0：保存；1：验证中;2:已完成；3：打回
+                switch (status) {
+                    case 1:
+                        //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
+                        int permission = bean.getPermission();
+                        if (permission == 0 || permission == 4) {
+                            deviceDetailsFunction.setVisibility(View.GONE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                        } else {
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            deviceDetailsProving.setVisibility(View.VISIBLE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 70);
+                        }
+                        break;
+                    case 3:
+                        deviceDetailsUp.setText("提交回复");
+                        deviceDetailsUp.setVisibility(View.VISIBLE);
+                        deviceDetailsFunction.setVisibility(View.VISIBLE);
+                        Utils.setMargins(recyclerView, 0, 0, 0, 70);
+                        break;
+                    default:
+                        deviceDetailsFunction.setVisibility(View.GONE);
+                        Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                        break;
+                }
+
             }
 
             @Override

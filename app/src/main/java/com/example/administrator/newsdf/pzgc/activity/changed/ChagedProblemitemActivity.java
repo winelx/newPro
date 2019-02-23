@@ -243,7 +243,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.toolbar_menu:
-                //菜单功能
+                //菜单功能 (保存)
                 String str = menutext.getText().toString();
                 if (KEEP.equals(str)) {
                     if (exitextPosition.getText().toString() != null || chagedPosition.getText().toString() != null) {
@@ -287,7 +287,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.import_position:
                 //导入
-                if (status) {
+                if ("保存".equals(menutext.getText().toString())) {
                     //选择标段
                     Intent intent1 = new Intent(mContext, CheckTreeActivity.class);
                     intent1.putExtra("orgId", orgId);
@@ -299,7 +299,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.chaged_organize_lin:
                 //整改期限
-                if (status) {
+                if ("保存".equals(menutext.getText().toString())) {
                     dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
                         @Override
                         public void onsuccess(String str) {
@@ -312,7 +312,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.violation_standard:
                 //违反标准
-                if (status) {
+                if ("保存".equals(menutext.getText().toString())) {
                     Intent intent = new Intent(mContext, CheckstandardListActivity.class);
                     intent.putExtra("title", "title");
                     startActivityForResult(intent, 1);
@@ -458,6 +458,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             public void onsuccess(Map<String, Object> map) {
                 menutext.setText("编辑");
                 adapter.addview(false);
+                status=false;
                 //问题项Id
                 noticeDelId = (String) map.get("id");
                 photolist.clear();
@@ -467,6 +468,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 ToastUtils.showShortToastCenter("保存成功");
                 NetworkinterfaceCallbackUtils.Refresh("problem");
                 checkItemDelete.setVisibility(View.VISIBLE);
+                finish();
             }
 
             @Override

@@ -158,10 +158,11 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //指派
-                        chagedUtils.setassignPage(userId, billsId, new ChagedUtils.CallBacks() {
+                        chagedUtils.setassignPage(userId, billsId, motionNode, new ChagedUtils.CallBacks() {
                             @Override
                             public void onsuccess(String string) {
                                 Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                                request();
                             }
 
                             @Override
@@ -227,7 +228,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                         deviceDetailsAssign.setVisibility(View.VISIBLE);
                         break;
                     case 3:
-                        //指派
+                        //指派、我回复
                         Utils.setMargins(recycler, 0, 0, 0, 140);
                         deviceDetailsAssign.setVisibility(View.VISIBLE);
                         deviceDetailsFunction.setVisibility(View.VISIBLE);

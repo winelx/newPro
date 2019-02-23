@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 
 import android.annotation.SuppressLint;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,16 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-
-
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;
+
+;
 
 
 /**
@@ -37,6 +36,7 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
 
     final static int MAX = 100;
     private boolean lean = true;
+    private boolean addstatus = true;
 
     public BasePhotoAdapter(Context mContext, ArrayList<photoBean> photoPaths) {
         this.photoPaths = photoPaths;
@@ -63,7 +63,6 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-
         if (getItemViewType(position) == TYPE_PHOTO) {
             //控制删除按钮
             if (lean) {
@@ -72,8 +71,13 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
                 holder.vSelected.setVisibility(View.GONE);
             }
             //加载图片
+            RequestOptions options = new RequestOptions()
+                    .placeholder(R.mipmap.image_loading)//图片加载出来前，显示的图片
+                    .fallback(R.mipmap.image_error) //url为空的时候,显示的图片
+                    .error(R.mipmap.image_error);//图片加载失败后，显示的图片
             Glide.with(mContext)
                     .load(photoPaths.get(position).getPhotopath())
+                    .apply(options)
                     .thumbnail(0.1f)
                     .into(holder.ivPhoto);
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +93,12 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
                     mOnItemClickListener.seePhoto(position);
                 }
             });
-
         } else {
+            if (lean) {
+                holder.img_add.setVisibility(View.VISIBLE);
+            } else {
+                holder.img_add.setVisibility(View.GONE);
+            }
             //添加照片
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,6 +110,7 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
                     }
                 }
             });
+
         }
     }
 

@@ -100,7 +100,7 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         holder.itemProblem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onclicktener.onClick(position, item.getId());
+                onclicktener.onClick(position, item.getIsReply(), item.getId());
             }
         });
 
@@ -266,7 +266,7 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public interface onclicktener {
-        void onClick(int position, String string);
+        void onClick(int position, int isreply, String string);
     }
 
     private onclicktener onclicktener;

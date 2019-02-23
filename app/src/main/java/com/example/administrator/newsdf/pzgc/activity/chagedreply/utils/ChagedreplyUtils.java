@@ -109,7 +109,6 @@ public class ChagedreplyUtils {
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 ChagedReply chagedReply = (ChagedReply) com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedReply.class);
                                 content.put("bean", chagedReply);
-
                                 JSONArray details;
                                 try {
                                     details = data.getJSONArray("details");
@@ -117,7 +116,15 @@ public class ChagedreplyUtils {
                                     details = new JSONArray();
                                 }
                                 List<Chagereplydetails> list = ListJsonUtils.getListByArray(Chagereplydetails.class, details.toString());
+                                int count = 0;
+                                for (int i = 0; i < list.size(); i++) {
+                                    int isreply = list.get(i).getIsReply();
+                                    if (isreply == 1) {
+                                        count++;
+                                    }
+                                }
                                 content.put("list", list);
+                                content.put("count", count);
                                 callBack.onsuccess(content);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -150,9 +157,12 @@ public class ChagedreplyUtils {
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
                         Map<String, Object> content = new HashMap<>();
-                        JSONObject data = jsonObject.getJSONObject("data");
-                        content.put("id", data.getString("id"));
-                        content.put("code", data.getString("code"));
+                        try {
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            content.put("id", data.getString("id"));
+                            content.put("code", data.getString("code"));
+                        } catch (Exception e) {
+                        }
                         callBack.onsuccess(content);
                     } else {
                         callBack.onerror(jsonObject.getString("msg"));
@@ -239,6 +249,7 @@ public class ChagedreplyUtils {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            mapCallBack.onerror("数据解析失败");
                         }
                     }
 
@@ -558,13 +569,13 @@ public class ChagedreplyUtils {
      * @param motionNode 运动节点
      * @param isby       否通过，1通过2打回
      */
-    public static void getOrgInfoBycnfvalidReply(String id, String motionNode, int isby, final ObjectCallBacks callBacks) {
+    public static void getOrgInfoBycnfvalidReply(String id, String motionNode, String verificationOpinion, int isby, final ObjectCallBacks callBacks) {
         OkGo.post(Requests.GETORGINFOBYCNFVALIDREPLY)
                 .params("id", id)
                 .params("motionNode", motionNode)
                 .params("verificationDate", Dates.getDate())
                 .params("isby", isby)
-                .params("verificationOpinion", "安卓")
+                .params("verificationOpinion", verificationOpinion)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

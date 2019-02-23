@@ -491,11 +491,7 @@ public class Requests {
 
 
 
-
-
     /*新的整改通知*/
-
-
     /**
      * 获取“我的”、“全部”组织树
      */
@@ -555,6 +551,11 @@ public class Requests {
      */
     public static final String GETNOTICEDETAILSINFO = networks + "iface/mobile/newcheck/getNoticeDetailsInfo";
 
+    /***
+     * 删除整改通知单
+     */
+    public static final String DELETENOTICE=networks + "iface/mobile/newcheck/deleteNotice";
+
     /*整改回复单*/
     /**
      * 获取“我的”、“全部”组织树
@@ -611,5 +612,5 @@ public class Requests {
     /**
      * 验证
      */
-    public static final String GETORGINFOBYCNFVALIDREPLY = networks + "iface/mobile/newcheck/getOrgInfoBycnfvalidReply";
+    public static final String GETORGINFOBYCNFVALIDREPLY = networks + "iface/mobile/newcheck/validReply";
 }

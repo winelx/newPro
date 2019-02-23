@@ -19,8 +19,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
-import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
-import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -225,10 +223,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                     list.clear();
                 }
                 list.addAll(data);
-                ArrayList<ChagedList> arr = new ArrayList<>();
-
-                list.addAll(arr);
-
                 adapter.setNewData(list);
             }
 
@@ -246,13 +240,14 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
      * 删除
      */
     private void delete(final int pos) {
-        chagedUtils.deletebill("", new ChagedUtils.CallBacks() {
+        chagedUtils.deletebill(list.get(pos).getId(), new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
                 //删除item
                 list.remove(pos);
                 //刷新
                 adapter.setNewData(list);
+                ToastUtils.showShortToastCenter("删除成功");
             }
 
             @Override

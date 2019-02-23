@@ -135,6 +135,7 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (permission == 1) {
                     holder.infaceItemMessage.setTextString("未下发");
                     holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
+                    holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
                 } else {
                     holder.infaceItemMessage.setTextString("未处理");
                     holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);

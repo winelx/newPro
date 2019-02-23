@@ -140,6 +140,8 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
             photolist.add(beforeFileslist.get(i).getPhotopath());
         }
         adapter = new RectifierAdapter(mContext, photolist, new ArrayList<String>());
+        //是否使用缩略图
+        adapter.iscompress(false);
         holder.typerecycler.setAdapter(adapter);
     }
 

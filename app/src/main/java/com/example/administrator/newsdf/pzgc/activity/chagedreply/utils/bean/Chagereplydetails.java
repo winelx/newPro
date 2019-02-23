@@ -1,98 +1,49 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean;
 
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyNewActivity;
+
+/**
+ * @author lx
+ * 版本：1.0
+ * 创建日期：{2019/2/23 0023}
+ * 描述：MainActivity
+ * {@link  ChagedReplyNewActivity}
+ */
 public class Chagereplydetails {
 
+
     /**
-     * attachment : reprehenderit anim laboris
-     * createBy : o
-     * createDate : de
-     * delFlag : commodo sint mollit nostrud
-     * id : et elit laboris ut
-     * isReply : 9787059.071219012
-     * new : false
-     * noticeDelId : sed Lorem eiusmod
-     * noticeId : esse
-     * remarks : ea dolor
-     * replyDate : quis
-     * replyDescription : ut est Lorem irure tempor
-     * replyId : ipsum labore
-     * replyPerson : in et nostrud dolor
-     * updateBy : est cillum consequat
-     * updateDate : laboris dolor
+     * standardDelName : 仰拱最小厚度低于设计厚度90%必须返工处理
+     * isOverdue : 1
+     * noticeDelId : 3da336b770cc4894ab2fdaf9a56c8dce
+     * replyId : 40fe8d3e6b824a698cefcae556fbcc6c
+     * id : 983472db3bbb437ea85b3cff2b4c58bd
+     * noticeId : df297808770745738590418b0cb75ea0
+     * isReply : 1
      */
 
-    private String attachment;
-    private String createBy;
-    private String createDate;
-    private String delFlag;
+    private String standardDelName;
+    private int isOverdue;
+    private String noticeDelId;
+    private String replyId;
     private String id;
+    private String noticeId;
     private int isReply;
 
-    private int newX;
-    private String noticeDelId;
-    private String noticeId;
-    private String remarks;
-    private String replyDate;
-    private String replyDescription;
-    private String replyId;
-    private String replyPerson;
-    private String updateBy;
-    private String updateDate;
-
-    public String getAttachment() {
-        return attachment;
+    public String getStandardDelName() {
+        return standardDelName;
     }
 
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setStandardDelName(String standardDelName) {
+        this.standardDelName = standardDelName;
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public int getIsOverdue() {
+        return isOverdue;
     }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getIsReply() {
-        return isReply;
-    }
-
-    public void setIsReply(int isReply) {
-        this.isReply = isReply;
-    }
-
-    public int getNewX() {
-        return newX;
-    }
-
-    public void setNewX(int newX) {
-        this.newX = newX;
+    public void setIsOverdue(int isOverdue) {
+        this.isOverdue = isOverdue;
     }
 
     public String getNoticeDelId() {
@@ -103,38 +54,6 @@ public class Chagereplydetails {
         this.noticeDelId = noticeDelId;
     }
 
-    public String getNoticeId() {
-        return noticeId;
-    }
-
-    public void setNoticeId(String noticeId) {
-        this.noticeId = noticeId;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getReplyDate() {
-        return replyDate;
-    }
-
-    public void setReplyDate(String replyDate) {
-        this.replyDate = replyDate;
-    }
-
-    public String getReplyDescription() {
-        return replyDescription;
-    }
-
-    public void setReplyDescription(String replyDescription) {
-        this.replyDescription = replyDescription;
-    }
-
     public String getReplyId() {
         return replyId;
     }
@@ -143,27 +62,27 @@ public class Chagereplydetails {
         this.replyId = replyId;
     }
 
-    public String getReplyPerson() {
-        return replyPerson;
+    public String getId() {
+        return id;
     }
 
-    public void setReplyPerson(String replyPerson) {
-        this.replyPerson = replyPerson;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
+    public String getNoticeId() {
+        return noticeId;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
+    public void setNoticeId(String noticeId) {
+        this.noticeId = noticeId;
     }
 
-    public String getUpdateDate() {
-        return updateDate;
+    public int getIsReply() {
+        return isReply;
     }
 
-    public void setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
+    public void setIsReply(int isReply) {
+        this.isReply = isReply;
     }
 }

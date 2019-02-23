@@ -39,6 +39,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ArrayList<String> mData;
     private ArrayList<String> Title;
     private boolean upload = true;
+    private boolean compress = true;
 
     public RectifierAdapter(Context mContext, ArrayList<String> listA, ArrayList<String> Title) {
         this.mContext = mContext;
@@ -97,12 +98,15 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
             String urlpath = mData.get(position);
-            //截取出后缀
-            String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
-            //拿到截取后缀后的字段
-            urlpath = urlpath.replace(pas, "");
-            //在字段后面添加_min后再拼接后缀
-//            urlpath = urlpath + "_min" + pas;
+            //是否显示显示为缩略图
+            if (compress) {
+                //截取出后缀
+                String pas = urlpath.substring(urlpath.length() - 4, urlpath.length());
+                //拿到截取后缀后的字段
+                urlpath = urlpath.replace(pas, "");
+                //在字段后面添加_min后再拼接后缀
+                urlpath = urlpath + "_min" + pas;
+            }
             RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()
@@ -192,6 +196,11 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setuploadstatus(boolean status) {
         this.upload = status;
+        notifyDataSetChanged();
+    }
+
+    public void iscompress(boolean lean) {
+        compress=lean;
         notifyDataSetChanged();
     }
 }

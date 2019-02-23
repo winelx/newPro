@@ -14,69 +14,35 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyLis
  */
 public class ChagedreplyList {
 
-
     /**
-     * code : ZGTZ-20190215-2-R-2
-     * createBy :
-     * createDate :
-     * dealPerson :
-     * dealPersonName :
-     * delFlag :
-     * id : 7ffb0cb8597e49ca93bf452d79df385e
-     * isby :
-     * motionCount :
-     * motionNode :
-     * new : false
-     * noticeCode : ZGTZ-20190215-2
-     * noticeId : 9eb299c3c3f549219d86ac0ec75c367e
-     * permission :
+     * code : ZGTZ-20190222-44-R-2
+     * dealPersonName : 周宇
+     * id : f062997f59e743fa888cd200d154c1c6
+     * noticeCode : ZGTZ-20190222-44
+     * notice_id : 255ddac7fcc64170b230c773a8985bbc
+     * permission : 4
+     * rebut : 1
      * rectificationOrgName : 三独一标
-     * rectificationOrgid :
      * rectificationPersonName : 江洁
-     * remarks :
-     * replyDate : 2019-02-16 00:00:00
-     * replyPerson :
+     * replyDate : 2019-02-22
      * replyPersonName : 周宇
-     * sendDate :
-     * sendOrgName :
-     * sortDate :
+     * savestatus : 1
      * status : 30
-     * updateBy :
-     * updateDate :
-     * verificationDate :
-     * verificationOpinion :
      */
 
     private String code;
-    private String createBy;
-    private String createDate;
-    private String dealPerson;
     private String dealPersonName;
-    private String delFlag;
     private String id;
-    private String isby;
-    private String motionCount;
-    private String motionNode;
-    private boolean newX;
     private String noticeCode;
-    private String noticeId;
-    private String permission;
+    private String notice_id;
+    private int permission;
+    private int rebut;
     private String rectificationOrgName;
-    private String rectificationOrgid;
     private String rectificationPersonName;
-    private String remarks;
     private String replyDate;
-    private String replyPerson;
     private String replyPersonName;
-    private String sendDate;
-    private String sendOrgName;
-    private String sortDate;
-    private int status;
     private int savestatus;
-    private String updateBy;
-    private String updateDate;
-    private String verificationDate;
-    private String verificationOpinion;
+    private String status;
 
     public String getCode() {
         return code;
@@ -84,30 +50,6 @@ public class ChagedreplyList {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getDealPerson() {
-        return dealPerson;
-    }
-
-    public void setDealPerson(String dealPerson) {
-        this.dealPerson = dealPerson;
     }
 
     public String getDealPersonName() {
@@ -118,52 +60,12 @@ public class ChagedreplyList {
         this.dealPersonName = dealPersonName;
     }
 
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getIsby() {
-        return isby;
-    }
-
-    public void setIsby(String isby) {
-        this.isby = isby;
-    }
-
-    public String getMotionCount() {
-        return motionCount;
-    }
-
-    public void setMotionCount(String motionCount) {
-        this.motionCount = motionCount;
-    }
-
-    public String getMotionNode() {
-        return motionNode;
-    }
-
-    public void setMotionNode(String motionNode) {
-        this.motionNode = motionNode;
-    }
-
-    public boolean isNewX() {
-        return newX;
-    }
-
-    public void setNewX(boolean newX) {
-        this.newX = newX;
     }
 
     public String getNoticeCode() {
@@ -174,20 +76,28 @@ public class ChagedreplyList {
         this.noticeCode = noticeCode;
     }
 
-    public String getNoticeId() {
-        return noticeId;
+    public String getNotice_id() {
+        return notice_id;
     }
 
-    public void setNoticeId(String noticeId) {
-        this.noticeId = noticeId;
+    public void setNotice_id(String notice_id) {
+        this.notice_id = notice_id;
     }
 
-    public String getPermission() {
+    public int getPermission() {
         return permission;
     }
 
-    public void setPermission(String permission) {
+    public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+    public int getRebut() {
+        return rebut;
+    }
+
+    public void setRebut(int rebut) {
+        this.rebut = rebut;
     }
 
     public String getRectificationOrgName() {
@@ -198,28 +108,12 @@ public class ChagedreplyList {
         this.rectificationOrgName = rectificationOrgName;
     }
 
-    public String getRectificationOrgid() {
-        return rectificationOrgid;
-    }
-
-    public void setRectificationOrgid(String rectificationOrgid) {
-        this.rectificationOrgid = rectificationOrgid;
-    }
-
     public String getRectificationPersonName() {
         return rectificationPersonName;
     }
 
     public void setRectificationPersonName(String rectificationPersonName) {
         this.rectificationPersonName = rectificationPersonName;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
     }
 
     public String getReplyDate() {
@@ -230,84 +124,12 @@ public class ChagedreplyList {
         this.replyDate = replyDate;
     }
 
-    public String getReplyPerson() {
-        return replyPerson;
-    }
-
-    public void setReplyPerson(String replyPerson) {
-        this.replyPerson = replyPerson;
-    }
-
     public String getReplyPersonName() {
         return replyPersonName;
     }
 
     public void setReplyPersonName(String replyPersonName) {
         this.replyPersonName = replyPersonName;
-    }
-
-    public String getSendDate() {
-        return sendDate;
-    }
-
-    public void setSendDate(String sendDate) {
-        this.sendDate = sendDate;
-    }
-
-    public String getSendOrgName() {
-        return sendOrgName;
-    }
-
-    public void setSendOrgName(String sendOrgName) {
-        this.sendOrgName = sendOrgName;
-    }
-
-    public String getSortDate() {
-        return sortDate;
-    }
-
-    public void setSortDate(String sortDate) {
-        this.sortDate = sortDate;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public String getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getVerificationDate() {
-        return verificationDate;
-    }
-
-    public void setVerificationDate(String verificationDate) {
-        this.verificationDate = verificationDate;
-    }
-
-    public String getVerificationOpinion() {
-        return verificationOpinion;
-    }
-
-    public void setVerificationOpinion(String verificationOpinion) {
-        this.verificationOpinion = verificationOpinion;
     }
 
     public int getSavestatus() {
@@ -317,4 +139,13 @@ public class ChagedreplyList {
     public void setSavestatus(int savestatus) {
         this.savestatus = savestatus;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

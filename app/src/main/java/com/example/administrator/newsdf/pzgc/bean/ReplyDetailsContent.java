@@ -15,18 +15,19 @@ public class ReplyDetailsContent {
 
 
     /**
-     * code : ZGTZ-20190221-23-R-2
-     * id : de1cff21ba8f4e8ca1797ce3bc85f508
-     * motionNode : 1
-     * noticeCode : ZGTZ-20190221-23
-     * noticeId : 45e603749bb1452da66b88a91a7bc782
-     * replyDate : 2019-02-21
-     * rorgName : 德务二标
-     * ruserName : 张猛
-     * sendDate : 2019-02-21
-     * sendUserName : 刘波
+     * code : ZGTZ-20190222-44-R-2
+     * id : f062997f59e743fa888cd200d154c1c6
+     * motionNode : 2
+     * noticeCode : ZGTZ-20190222-44
+     * noticeId : 255ddac7fcc64170b230c773a8985bbc
+     * permission : 2
+     * replyDate : 2019-02-22
+     * rorgName : 三独一标
+     * ruserName : 江洁
+     * sendDate : 2019-02-22
+     * sendUserName : 系统管理员
      * sorgName : 贵州路桥集团有限公司
-     * status : 2
+     * status : 1
      */
 
     private String code;
@@ -34,6 +35,7 @@ public class ReplyDetailsContent {
     private int motionNode;
     private String noticeCode;
     private String noticeId;
+    private int permission=0;
     private String replyDate;
     private String rorgName;
     private String ruserName;
@@ -80,6 +82,14 @@ public class ReplyDetailsContent {
 
     public void setNoticeId(String noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public int getPermission() {
+        return permission;
+    }
+
+    public void setPermission(int permission) {
+        this.permission = permission;
     }
 
     public String getReplyDate() {

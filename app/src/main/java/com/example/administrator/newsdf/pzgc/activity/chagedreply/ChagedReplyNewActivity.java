@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +16,8 @@ import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChangedReplyNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedReply;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.Chagereplydetails;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedImportitemActivity;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
@@ -40,15 +41,16 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private RecyclerView recycler;
     private ChangedReplyNewAdapter adapter;
     private Context mContext;
-    private ArrayList<String> list;
+    private ArrayList<Chagereplydetails> list;
     private TextView comButton, number, chageditem, replycommit;
-    private LinearLayout reply_import_problem;
+    private LinearLayout replyImportProblem;
     private TextView chagedOrgname, chagedOrganizeText, sendorgname,
             sendusername, senddate, rectificationpersonname;
     private String orgId, orgname, id, motionNode, noticeId, replyPerson;
     private RelationList relation;
     private boolean lean = true;
     private boolean status = false;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_chagedreply_new);
         mContext = this;
         list = new ArrayList<>();
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         try {
             id = intent.getStringExtra("id");
             lean = intent.getBooleanExtra("status", false);
@@ -65,7 +67,6 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         NetworkinterfaceCallbackUtils.setCallBack(this);
         orgname = SPUtils.getString(mContext, "username", null);
         comButton = (TextView) findViewById(R.id.com_button);
-
         chagedOrgname = (TextView) findViewById(R.id.chaged_orgname);
         chagedOrgname.setText(orgname);
         chagedOrganizeText = (TextView) findViewById(R.id.chaged_organize_text);
@@ -79,8 +80,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         rectificationpersonname = (TextView) findViewById(R.id.rectificationpersonname);
         orgId = SPUtils.getString(mContext, "orgId", null);
         findViewById(R.id.com_back).setOnClickListener(this);
-        reply_import_problem = (LinearLayout) findViewById(R.id.reply_import_problem);
-        reply_import_problem.setOnClickListener(this);
+        replyImportProblem = (LinearLayout) findViewById(R.id.reply_import_problem);
+        replyImportProblem.setOnClickListener(this);
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         recycler = (RecyclerView) findViewById(R.id.recycler);
@@ -91,18 +92,26 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, ChagedImportitemActivity.class));
+                Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+                intent1.putExtra("status", false);
+                //是否回复
+                intent1.putExtra("isReply", list.get(position).getIsReply());
+                //问题项Id
+                intent1.putExtra("replyDelId", list.get(position).getId());
+                //回复单id
+                intent1.putExtra("replyId", list.get(position).getReplyId());
+                startActivity(intent1);
             }
         });
         if (lean) {
             comButton.setText("编辑");
-            reply_import_problem.setVisibility(View.VISIBLE);
+            replyImportProblem.setVisibility(View.VISIBLE);
             chageditem.setVisibility(View.VISIBLE);
             request();
         } else {
             comButton.setText("保存");
             chageditem.setVisibility(View.GONE);
-            reply_import_problem.setVisibility(View.GONE);
+            replyImportProblem.setVisibility(View.GONE);
         }
     }
 
@@ -113,10 +122,18 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 finish();
                 break;
             case R.id.replycommit:
-                if ("保存".equals(comButton.getText().toString())) {
-
+                if ("编辑".equals(comButton.getText().toString())) {
+                    if(list.size() > 0) {
+                        if (count == 0) {
+                            commit();
+                        } else {
+                            ToastUtils.showsnackbar(number, "还有问题项未回复");
+                        }
+                    } else {
+                        ToastUtils.showShortToastCenter("并未导入通知单问题项");
+                    }
                 } else {
-                    ToastUtils.showShortToast("当前状态不可点击");
+                    ToastUtils.showsnackbar(number, "请先保存回复单数据");
                 }
                 break;
             case R.id.reply_import_problem:
@@ -198,9 +215,10 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 id = (String) map.get("id");
                 number.setText((String) map.get("code"));
                 comButton.setText("编辑");
-                reply_import_problem.setVisibility(View.VISIBLE);
+                replyImportProblem.setVisibility(View.VISIBLE);
                 chageditem.setVisibility(View.VISIBLE);
                 Dates.disDialog();
+
             }
 
             @Override
@@ -233,6 +251,18 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 id = relation.getId();
                 motionNode = relation.getMotionNode() + "";
                 noticeId = relation.getNotice_id();
+                list.clear();
+                list.addAll((ArrayList<Chagereplydetails>) map.get("list"));
+                adapter.setNewData(list);
+                count = (int) map.get("count");
+                //判断是否导入问题项
+                if (list.size() > 0) {
+                    if (count == 0) {
+                        replycommit.setBackgroundColor(Color.parseColor("#f88c37"));
+                    }else {
+                        replycommit.setBackgroundColor(Color.parseColor("#888888"));
+                    }                }
+
             }
 
             @Override
@@ -243,7 +273,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     }
 
     private void commit() {
-        ChagedreplyUtils.submitReplyData(noticeId, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
+        ChagedreplyUtils.submitReplyData(id, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
                 //刷新列表
@@ -264,7 +294,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     //刷新
     @Override
     public void onsuccess(Map<String, Object> map) {
-        String str = (String) map.get("");
+        String str = (String) map.get("reply");
         if ("reply".equals(str)) {
             request();
         }

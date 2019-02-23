@@ -137,12 +137,11 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 alertDialog2.show();
 
             }
-
             @Override
             public void onClick(int pos) {
                 int savestatus = list.get(pos).getSavestatus();
-                //1是保存状态，2不是
-                if (savestatus == 1) {
+                //0：保存；1：验证中;2:已完成；3：打回
+                if (savestatus == 0) {
                     Intent intent1 = new Intent(mContext, ChagedReplyNewActivity.class);
                     intent1.putExtra("id", list.get(pos).getId());
                     intent1.putExtra("status", true);
@@ -240,6 +239,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
             public void onsuccess(String string) {
                 list.remove(pos);
                 adapter.setNewData(list);
+                ToastUtils.showShortToastCenter("删除成功");
             }
 
             @Override
