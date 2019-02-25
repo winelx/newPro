@@ -146,11 +146,11 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3 && resultCode == 2) {
-            saveAssignPersonApp(data.getStringExtra("name"), data.getStringExtra("id"));
+            saveAssignPersonApp(data.getStringExtra("name"), data.getStringExtra("id"), data.getStringExtra("orgid"));
         }
     }
 
-    public void saveAssignPersonApp(String userName, final String userId) {
+    public void saveAssignPersonApp(String userName, final String userId, final String orgId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("")
                 .setMessage("确定将任务指派给:" + userName + " 吗?")
@@ -158,11 +158,17 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //指派
-                        chagedUtils.setassignPage(userId, billsId, motionNode, new ChagedUtils.CallBacks() {
+                        chagedUtils.setassignPage(userId, billsId, motionNode, orgId, new ChagedUtils.CallBacks() {
                             @Override
                             public void onsuccess(String string) {
-                                Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
-                                request();
+                                ToastUtils.showShortToastCenter("指派成功");
+                                try {
+                                    TaskCallbackUtils.CallBackMethod();
+                                } catch (Exception e) {
+
+                                }
+                                finish();
+                                /*   request();*/
                             }
 
                             @Override

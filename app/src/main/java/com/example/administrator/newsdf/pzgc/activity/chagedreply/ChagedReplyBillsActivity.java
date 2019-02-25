@@ -290,9 +290,19 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
                 rectificationreason.setText("存在问题：" + billBean.getRectificationReason() + "\n" + "整改前附件：");
                 replydescription.setText(billBean.getReplyDescription());
                 photolist.clear();
-                photolist.addAll((ArrayList<String>) map.get("beforeFiles"));
-                mAdapter.getData(photolist, new ArrayList<String>());
+                //整改前图片集合
+                ArrayList<photoBean> beforeFiles = new ArrayList<>();
+                beforeFiles.addAll((ArrayList<photoBean>) map.get("beforeFiles"));
+                //图片名称
+                ArrayList<String> imagename = new ArrayList<>();
+                for (int i = 0; i < beforeFiles.size(); i++) {
+                    photolist.add(beforeFiles.get(i).getPhotopath());
+                    imagename.add(beforeFiles.get(i).getPhotoname());
+                }
+                //图片适配器
+                mAdapter.getData(photolist, imagename);
                 photoPaths.clear();
+                //整改后图片集合
                 photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
                 adapter.getData(photoPaths);
                 adapter.addview(false);

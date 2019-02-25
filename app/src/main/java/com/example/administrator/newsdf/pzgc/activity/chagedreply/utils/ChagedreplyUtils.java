@@ -506,12 +506,14 @@ public class ChagedreplyUtils {
                                 } catch (Exception e) {
                                     beforeFiles = new JSONArray();
                                 }
-                                ArrayList<String> beforeFileslist = new ArrayList<>();
+                                ArrayList<photoBean> beforeFileslist = new ArrayList<>();
                                 if (beforeFiles.length() > 0) {
                                     for (int i = 0; i < beforeFiles.length(); i++) {
                                         JSONObject object = beforeFiles.getJSONObject(i);
                                         String path = Requests.networks + object.getString("filepath");
-                                        beforeFileslist.add(path);
+                                        String name = object.getString("filename");
+                                        String type = object.getString("id");
+                                        beforeFileslist.add(new photoBean(path, name, type));
                                     }
                                 }
                                 map.put("beforeFiles", beforeFileslist);

@@ -89,9 +89,9 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         } else if ("3".equals(string)) {
             holder.overtime.setBackgroundResource(R.mipmap.noovertime);
         }
-        //是否通过
-        final String isVerify = item.getIsReply() + "";
-        if ("1".equals(isVerify)) {
+        //是否完成
+        int isVerify = item.getIsVerify();
+        if (isVerify == 1) {
             //未完成
             holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);
         } else {
@@ -110,21 +110,25 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     @SuppressLint("SetTextI18n")
     private void bindTypeRecord(TypeRecord holder, int position) {
         NoticeItemDetailsRecord record = (NoticeItemDetailsRecord) list.get(position);
-        holder.dealOpinion.setText("验证意见：" + record.getDealOpinion());
+        if (record.getDealOpinion().isEmpty()) {
+            holder.dealOpinion.setText("意见：");
+        } else {
+            holder.dealOpinion.setText(record.getDealOpinion());
+        }
         //操作内容
         holder.dealContent.setText(record.getDealContent());
         String opinion = record.getDealContent();
-        if ("已验证《验证不通过》".equals(opinion)) {
-            holder.dealContent.setTextColor(Color.parseColor("#FE0000"));
-        } else if ("已验证《验证通过》".equals(opinion)) {
-            holder.dealContent.setTextColor(Color.parseColor("#28c26A"));
-        } else {
-            holder.dealContent.setTextColor(Color.parseColor("#000000"));
-        }
+//        if ("已验证《验证不通过》".equals(opinion)) {
+//            holder.dealContent.setTextColor(Color.parseColor("#FE0000"));
+//        } else if ("已验证《验证通过》".equals(opinion)) {
+//            holder.dealContent.setTextColor(Color.parseColor("#28c26A"));
+//        } else {
+//            holder.dealContent.setTextColor(Color.parseColor("#000000"));
+//        }
         //操作人
-        holder.dealperson.setText(record.getDealPerson());
+        /*   holder.dealperson.setText(record.getDealPerson());*/
         //
-        holder.datatime.setText(record.getDealDate().substring(0, 10));
+        holder.datatime.setText(record.getDealDate().substring(0, 10) + "   " + record.getDealPerson() + "   " + record.getDealContent());
 
     }
 

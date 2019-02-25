@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:paddingLeft="20dp"
             android:text="1212121212"
+            android:visibility="gone"
             android:textColor="@color/blue"
             android:textSize="13sp" />
 
@@ -37,6 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:paddingLeft="20dp"
             android:text="2018-02-20"
             android:textSize="13sp" />

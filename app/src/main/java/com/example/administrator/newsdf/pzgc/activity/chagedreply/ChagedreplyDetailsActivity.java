@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -18,9 +19,9 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.Chagedre
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
@@ -83,18 +84,29 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             @Override
             public void onClick(int position, int isreply, String string) {
                 //l  0：保存；1：验证中;2:已完成；3：打回
+                int permission = bean.getPermission();
                 if (status == 3) {
-                    //跳转过去修改
-                    Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
-                    intent1.putExtra("replyDelId", string);
-                    intent1.putExtra("replyId", id);
-                    intent1.putExtra("isReply", isreply);
-                    intent1.putExtra("status", true);
-                    startActivity(intent1);
+                    if (permission == 0){
+                        //跳转过去查看
+                        Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
+                        intent1.putExtra("replyDelId", string);
+                        intent1.putExtra("replyId", id);
+                        intent1.putExtra("isReply", isreply);
+                        intent1.putExtra("status", true);
+                        startActivity(intent1);
+                    }else {
+                        //跳转过去修改
+                        Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+                        intent1.putExtra("replyDelId", string);
+                        intent1.putExtra("replyId", id);
+                        intent1.putExtra("isReply", isreply);
+                        intent1.putExtra("status", true);
+                        startActivity(intent1);
+                    }
+
                 } else {
                     //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
-                    int permission = bean.getPermission();
-                    if (permission == 1 || permission == 2 || permission == 3||permission==0) {
+                    if (permission == 1 || permission == 2 || permission == 3 || permission == 0) {
                         //跳转过去查看
                         Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
                         intent1.putExtra("replyDelId", string);
@@ -137,7 +149,26 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 break;
             case R.id.device_details_up:
                 /*提交*/
-                submit();
+                android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
+                        .setMessage(Dates.setText(mContext, "整改问题项是否确认完成并提交？\n注：提交后将无法撤回", 18, 26, R.color.red))
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            //添加"Yes"按钮
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                submit();
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            //添加取消
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                alertDialog2.show();
+
                 break;
             case R.id.device_details_edit:
                 /*编辑*/
@@ -179,24 +210,29 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 list.addAll(data);
                 mAdapter.setNewData(list);
                 //l  0：保存；1：验证中;2:已完成；3：打回
+                int permission = bean.getPermission();
                 switch (status) {
                     case 1:
                         //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
-                        int permission = bean.getPermission();
                         if (permission == 0 || permission == 4) {
                             deviceDetailsFunction.setVisibility(View.GONE);
                             Utils.setMargins(recyclerView, 0, 0, 0, 0);
                         } else {
                             deviceDetailsFunction.setVisibility(View.VISIBLE);
                             deviceDetailsProving.setVisibility(View.VISIBLE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 70);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
                         }
                         break;
                     case 3:
-                        deviceDetailsUp.setText("提交回复");
-                        deviceDetailsUp.setVisibility(View.VISIBLE);
-                        deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        Utils.setMargins(recyclerView, 0, 0, 0, 70);
+                        if (permission == 0) {
+                            deviceDetailsFunction.setVisibility(View.GONE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                        } else {
+                            deviceDetailsUp.setText("提交回复");
+                            deviceDetailsUp.setVisibility(View.VISIBLE);
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                        }
                         break;
                     default:
                         deviceDetailsFunction.setVisibility(View.GONE);

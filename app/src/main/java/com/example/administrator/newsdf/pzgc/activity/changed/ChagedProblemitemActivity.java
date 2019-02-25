@@ -248,6 +248,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 if (KEEP.equals(str)) {
                     if (exitextPosition.getText().toString() != null || chagedPosition.getText().toString() != null) {
                         if (score != null) {
+                            Dates.getDialog(this,"保存数据中...");
                             save();
                         } else {
                             ToastUtils.showShortToast("违反标准不能为空");
@@ -456,6 +457,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         chagedUtils.saveNoticeDetails(map, files, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
+
                 menutext.setText("编辑");
                 adapter.addview(false);
                 status=false;
@@ -464,6 +466,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 photolist.clear();
                 photolist.addAll((ArrayList<photoBean>) map.get("list"));
                 adapter.getData(photolist);
+                Dates.disDialog();
                 statusclose();
                 ToastUtils.showShortToastCenter("保存成功");
                 NetworkinterfaceCallbackUtils.Refresh("problem");
@@ -473,6 +476,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
 
             @Override
             public void onerror(String string) {
+                Dates.disDialog();
                 ToastUtils.showsnackbar(comTitle, string);
             }
         });

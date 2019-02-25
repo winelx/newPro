@@ -79,6 +79,7 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                         newpush.putExtra("name", obj.getPartContent());
                         newpush.putExtra("id", obj.getId());
                         newpush.putExtra("userid", obj.getUserid());
+                        newpush.putExtra("orgid", obj.getUploadTime());
                         //回传数据到主Activity
                         setResult(2, newpush);
                         finish(); //此方法后才能返回主Activity
@@ -108,9 +109,10 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                                         JSONObject json = jsonArray.getJSONObject(i);
                                         String id = json.getString("id");
                                         String name = json.getString("name");
-                   /*                     String position = json.getString("position");*/
+                                        String orgId = json.getString("orgId");
+                                        /*                     String position = json.getString("position");*/
                                         String user_id = json.getString("userId");
-                                        list.add(new MoretasklistBean("", name, id, user_id));
+                                        list.add(new MoretasklistBean(orgId, name, id, user_id));
                                     }
                                 }
                             }
@@ -167,6 +169,7 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
     public void getdata(String name, String id) {
         Intent intent = new Intent();
         intent.putExtra("name", name);
+        intent.putExtra("id", id);
         intent.putExtra("id", id);
         setResult(3, intent);
         finish();

@@ -145,29 +145,33 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             case R.id.chaged_release_problem:
                 //下发
                 if (status) {
-                    AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
-                            .setTitle("")
-                            .setMessage("是否下发通知单")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                //添加"Yes"按钮
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    /*删除按钮*/
-                                    send();
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                //添加取消
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                    alertDialog2.show();
+                    if (list.size() > 0) {
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
+                                .setTitle("")
+                                .setMessage("是否下发通知单")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    //添加"Yes"按钮
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        /*删除按钮*/
+                                        send();
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    //添加取消
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .create();
+                        alertDialog2.show();
+                    } else {
+                        ToastUtils.showsnackbar(comButton, "还未添加问题项");
+                    }
                 } else {
-                    ToastUtils.showShortToast("不是保存状态无法操作");
+                    ToastUtils.showsnackbar(comButton, "不是保存状态无法操作");
                 }
                 break;
             case R.id.chaged_import_problem:
@@ -222,7 +226,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                         if (userId == null) {
                             ToastUtils.showsnackbar(comTitle, "还未选择整改负责人");
                         } else {
-                            Dates.getDialog(this,"提交数据中....");
+                            Dates.getDialog(this, "提交数据中....");
                             save();
                         }
                     }
@@ -294,11 +298,9 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                     try {
                         TaskCallbackUtils.CallBackMethod();
                     } catch (Exception e) {
-
                     }
                     finish();
                 }
-
                 @Override
                 public void onerror(String str) {
                     Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
@@ -335,9 +337,11 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 list.clear();
                 list.addAll((ArrayList<ChagedNoticeDetailslsit>) map.get("list"));
                 adapter.setNewData(list);
-                if (chagednumber.getText().toString() != null) {
-                    if (status) {
+                if ("编辑".equals(comButton.getText().toString())) {
+                    if (list.size() > 0) {
                         chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
+                    } else {
+                        chagedReleaseProblem.setBackgroundColor(Color.parseColor("#888888"));
                     }
                 }
             }

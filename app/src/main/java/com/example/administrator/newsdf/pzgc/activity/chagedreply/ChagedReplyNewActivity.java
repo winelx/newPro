@@ -197,7 +197,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             //导入问题项
         }
     }
-
+/*保存*/
     private void save() {
         Map<String, String> map = new HashMap<>();
         if (id != null) {
@@ -228,7 +228,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             }
         });
     }
-
+    /*网络请求*/
     private void request() {
         ChagedreplyUtils.getReplyFormOfSaveStatus(id, new ChagedreplyUtils.MapCallBack() {
             @Override
@@ -271,7 +271,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             }
         });
     }
-
+    /*提交*/
     private void commit() {
         ChagedreplyUtils.submitReplyData(id, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
             @Override
@@ -291,7 +291,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         });
     }
 
-    //刷新
+    //接口回调刷新
     @Override
     public void onsuccess(Map<String, Object> map) {
         String str = (String) map.get("reply");
@@ -299,7 +299,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             request();
         }
     }
-
+/*接口方法*/
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 

@@ -25,6 +25,7 @@ public class ReplyDetailsRecord {
     private String id;
     private int isOverdue;
     private int isReply;
+    private int isVerify;
     private String noticeDelId;
     private String noticeId;
     private String replyId;
@@ -84,5 +85,13 @@ public class ReplyDetailsRecord {
 
     public void setStandardDelName(String standardDelName) {
         this.standardDelName = standardDelName;
+    }
+
+    public int getIsVerify() {
+        return isVerify;
+    }
+
+    public void setIsVerify(int isVerify) {
+        this.isVerify = isVerify;
     }
 }

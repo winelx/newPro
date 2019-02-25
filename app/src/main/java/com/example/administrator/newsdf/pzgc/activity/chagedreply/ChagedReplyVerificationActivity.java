@@ -15,7 +15,8 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
-import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 /**
@@ -40,7 +41,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
         setContentView(R.layout.activity_check_reply_verification);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        motionnode = intent.getStringExtra("motionnode");
+        motionnode = intent.getIntExtra("motionnode", 01) + " ";
         mContext = this;
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("验证");
@@ -115,7 +116,10 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
             @Override
             public void onsuccess(String string) {
                 try {
-                    OgranCallbackUtils.removeCallBackMethod();
+                    //刷新单据详情
+                    OgranCallbackUtils1.removeCallBackMethod();
+                    //刷新列表
+                    TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {
                 }
                 finish();

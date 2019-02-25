@@ -69,13 +69,17 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         //具体描述
         holder.describe.setText(isnull(checkitem.getDescribe()));
         /*标准分*/
-        holder.standardScore.setText("标准分：" + checkitem.getStandardScore());
+        if (checkitem.getStandardScore()!=null) {
+            holder.standardScore.setText("标准分：" + checkitem.getStandardScore());
+        } else {
+            holder.standardScore.setText("标准分：");
+        }
         try {
             int standardscore = Integer.parseInt(checkitem.getStandardScore());
             int getStandardDelScore = Integer.parseInt(checkitem.getStandardDelScore());
             holder.getscore.setText("得分：" + (standardscore - getStandardDelScore));
         } catch (Exception e) {
-
+            holder.getscore.setText("得分：");
         }
 
 
