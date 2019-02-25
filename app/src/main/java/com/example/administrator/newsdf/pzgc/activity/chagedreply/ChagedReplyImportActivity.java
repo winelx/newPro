@@ -59,7 +59,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         comButton = (TextView) findViewById(R.id.com_button);
         TextView title = (TextView) findViewById(R.id.com_title);
-        title.setText("导入问题项");
+        title.setText("导入整改项");
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);

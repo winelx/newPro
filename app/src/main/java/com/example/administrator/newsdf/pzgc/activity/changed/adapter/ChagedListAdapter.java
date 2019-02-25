@@ -65,9 +65,9 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         });
         holder.score.setVisibility(View.VISIBLE);
-        String str = "扣分：" + "3.0";
-        holder.score.setText(Dates.setText(mContext, str, 3, R.color.red));
         ChagedList chagedList = list.get(position);
+        String str = "扣分：" +chagedList.getScorse() ;
+        holder.score.setText(Dates.setText(mContext, str, 3, R.color.red));
         if (chagedList.getCode() != null) {
             holder.itemNumber.setText("编号：" + chagedList.getCode());
         } else {
@@ -85,14 +85,16 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.releaseData.setText("下发日期：");
         }
         if (chagedList.getSorgName() != null) {
-            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName());
+            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName() + "\n"+
+                    "下发组织：" + chagedList.getSorgName()
+            );
         } else {
             holder.chagedNoticeOrgname.setText("整改组织：");
         }
         if (chagedList.getAuserName() != null) {
-            holder.auserName.setText("下节点负责人：" + chagedList.getAuserName());
+            holder.auserName.setText("待处理人：" + chagedList.getAuserName());
         } else {
-            holder.auserName.setText("下节点负责人：");
+            holder.auserName.setText("待处理人：");
         }
         if (chagedList.getRuserName() != null) {
             holder.ruserName.setText("整改负责人：" + chagedList.getRuserName());
@@ -104,7 +106,8 @@ public class ChagedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         String leanht = noticeFinishCount + "";
         /*总下发通知单数*/
         int noticeCount = chagedList.getNoticeCount();
-        holder.noticefinishcount.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/" + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
+        holder.noticefinishcount.setText(Dates.setText(mContext, "完成比例：" + noticeFinishCount + "/"
+                + noticeCount, 5, 5 + leanht.length(), R.color.finish_green));
         int status = chagedList.getStatus();
 //        0:未下发；1：已下发;2:回复中；3：完成；20：未处理；30：已处理
         //setIos  设置是否开启IOS阻塞式交互

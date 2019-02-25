@@ -65,6 +65,9 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
         });
         ChagedList chagedList = list.get(position);
+        holder.score.setVisibility(View.VISIBLE);
+        String str = "扣分：" +chagedList.getScorse() ;
+        holder.score.setText(Dates.setText(mContext, str, 3, R.color.red));
         if (chagedList.getCode() != null) {
             holder.itemNumber.setText("编号：" + chagedList.getCode());
         } else {
@@ -77,19 +80,21 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         if (chagedList.getSend_date() != null) {
-            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0,10));
+            holder.releaseData.setText("下发日期：" + chagedList.getSend_date().substring(0, 10));
         } else {
             holder.releaseData.setText("下发日期：");
         }
         if (chagedList.getSorgName() != null) {
-            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName());
+            holder.chagedNoticeOrgname.setText("整改组织：" + chagedList.getRorgName() + "\n"+
+                    "下发组织：" + chagedList.getSorgName()
+            );
         } else {
             holder.chagedNoticeOrgname.setText("整改组织：");
         }
         if (chagedList.getAuserName() != null) {
-            holder.auserName.setText("下节点负责人：" + chagedList.getAuserName());
+            holder.auserName.setText("待处理人：" + chagedList.getAuserName());
         } else {
-            holder.auserName.setText("下节点负责人：");
+            holder.auserName.setText("待处理人：");
         }
         if (chagedList.getRuserName() != null) {
             holder.ruserName.setText("整改负责人：" + chagedList.getRuserName());
@@ -129,8 +134,8 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
                 break;
             case 20:
-                    holder.infaceItemMessage.setTextString("未处理");
-                    holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                holder.infaceItemMessage.setTextString("未处理");
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
                 break;
             case 30:
                 holder.infaceItemMessage.setTextString("已处理");
@@ -158,7 +163,7 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
         private Button item_delete;
         private SwipeMenuLayout swipmenulayout;
         private TextView itemNumber, releasePeople, releaseData;
-        private TextView chagedNoticeOrgname;
+        private TextView chagedNoticeOrgname,score;
         private TextView auserName, ruserName, noticefinishcount;
 
         public TypeContent(View itemView) {
@@ -174,6 +179,7 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
             auserName = itemView.findViewById(R.id.auserName);
             ruserName = itemView.findViewById(R.id.ruserName);
             noticefinishcount = itemView.findViewById(R.id.noticefinishcount);
+            score = itemView.findViewById(R.id.score);
         }
     }
 

@@ -217,7 +217,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                         item.setResultscore(item.getScore() + "");
                     }
                     generate = false;
-
                     checkitemcontentStatus.setChecked(false);
                     checkItemContentCore.setText(checkItemContentStandarcore.getText().toString());
 //                    setScore(0);
@@ -244,16 +243,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     ToastUtils.showLongToast("已选择无此项");
                     generate = false;
                     checkitemcontentStatus.setChecked(false);
-                } else {
-                    if (b) {
-                        generate = true;
-                        checkitemcontentStatus.setChecked(true);
-                    } else {
-                        generate = false;
-                        checkitemcontentStatus.setChecked(false);
-                    }
                 }
-
             }
         });
     }
@@ -774,7 +764,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void taskCallback() {
         getcheckitemList();
-        generate = false;
         checkManageId = "";
         checkitemcontentStatus.setClickable(false);
     }
@@ -1138,7 +1127,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 .params("checkManageId", taskId)
                 .params("noSuch", switch1.isChecked())
                 //是否生成整改通知单
-                .params("generate", generate)
+                .params("generate", checkitemcontentStatus.isChecked())
                 //Id
                 .params("id", mData.get(pos - 1).getId())
                 //得分

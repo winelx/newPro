@@ -184,13 +184,13 @@ public class ChagedUtils implements Serializable {
     /**
      * @param userId    指派人Id
      * @param billsId   单据Id
-     * @param orgId     指派人Id
+     * @param orgId  指派人Id
      * @param callBacks
      * @ assignDate 指派时间
      * @ remarks  备注
      * @ motionNode 运动节点
      */
-    public void setassignPage(String userId, String billsId, String motionNode, String orgId, final CallBacks callBacks) {
+    public void setassignPage(String userId, String billsId, String motionNode, String orgId,final CallBacks callBacks) {
         OkGo.post(Requests.ASSIGNPAGE)
                 .params("id", billsId)
                 .params("assignPerson", userId)
@@ -298,7 +298,6 @@ public class ChagedUtils implements Serializable {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            callBacks.onerror("数据解析失败");
                         }
                     }
 

@@ -271,13 +271,19 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 comButton.setText("编辑");
                 if (chagednumber.getText().toString() != null) {
                     chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
+                }else {
+
                 }
                 try {
                     TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {
                 }
-                id = (String) map.get("id");
-                chagednumber.setText(map.get("code").toString());
+                if((String) map.get("id")!=null){
+                    id = (String) map.get("id");
+                }
+                if (map.get("code").toString()!=null){
+                    chagednumber.setText(map.get("code").toString());
+                }
             }
 
             @Override

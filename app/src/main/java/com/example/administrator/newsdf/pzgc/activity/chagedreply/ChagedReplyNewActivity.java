@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUt
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 
@@ -43,7 +45,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private ChangedReplyNewAdapter adapter;
     private Context mContext;
     private ArrayList<Chagereplydetails> list;
-    private TextView comButton, number, chageditem, replycommit;
+    private TextView comButton, number, chageditem, replycommit, com_title;
     private LinearLayout replyImportProblem;
     private TextView chagedOrgname, chagedOrganizeText, sendorgname,
             sendusername, senddate, rectificationpersonname;
@@ -67,6 +69,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         }
         NetworkinterfaceCallbackUtils.setCallBack(this);
         orgname = SPUtils.getString(mContext, "username", null);
+        com_title = (TextView) findViewById(R.id.com_title);
+        com_title.setText("新增整改回复");
         comButton = (TextView) findViewById(R.id.com_button);
         chagedOrgname = (TextView) findViewById(R.id.chaged_orgname);
         chagedOrgname.setText(orgname);
@@ -161,6 +165,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 if ("保存".equals(comButton.getText().toString())) {
                     if (!chagedOrganizeText.getText().toString().isEmpty()) {
                         Dates.getDialogs(this, "提交数据中...");
+                        Dates.backgroundAlpha(0.5f, this);
                         save();
                     } else {
                         ToastUtils.showShortToastCenter("请先选择关联整改通知单");
@@ -204,6 +209,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         Map<String, String> map = new HashMap<>();
         if (id != null) {
             map.put("id", id);
+            LogUtil.i("有回复Id", id);
         }
         if (replyPerson != null) {
             map.put("replyPerson", replyPerson);
@@ -214,19 +220,25 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         ChagedreplyUtils.createReplyForm(map, new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-                id = (String) map.get("id");
-                number.setText((String) map.get("code"));
+                if ((String) map.get("id") != null) {
+                    id = (String) map.get("id");
+                }
+                String code = (String) map.get("code");
+                if (code != null) {
+                    number.setText((String) map.get("code"));
+                }
                 comButton.setText("编辑");
                 replyImportProblem.setVisibility(View.VISIBLE);
                 chageditem.setVisibility(View.VISIBLE);
                 Dates.disDialog();
-
+                Dates.backgroundAlpha(1.0f, ChagedReplyNewActivity.this);
             }
 
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(comButton, string);
                 Dates.disDialog();
+                Dates.backgroundAlpha(1.0f, ChagedReplyNewActivity.this);
             }
         });
     }
@@ -278,12 +290,13 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
 
     /*提交*/
     private void commit() {
-        android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
-                .setMessage(Dates.setText(mContext, "确定提交回复单？", 18, 26, R.color.red))
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+                .setMessage("确定提交回复单？")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     //添加"Yes"按钮
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         ChagedreplyUtils.submitReplyData(id, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
                             @Override
                             public void onsuccess(String string) {
@@ -300,7 +313,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                                 ToastUtils.showsnackbar(comButton, string);
                             }
                         });
-                        dialogInterface.dismiss();
+
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -311,7 +324,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     }
                 })
                 .create();
-        alertDialog2.show();
+        alertDialog.show();
     }
 
     //接口回调刷新

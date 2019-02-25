@@ -47,7 +47,6 @@
                 android:paddingTop="2dp"
                 android:paddingRight="3dp"
                 android:paddingBottom="2dp"
-                android:text="内业"
                 android:textColor="@color/Orange"
                 android:textSize="7sp" />
 

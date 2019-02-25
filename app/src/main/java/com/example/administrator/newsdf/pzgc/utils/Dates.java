@@ -689,7 +689,7 @@ public class Dates {
      *
      * @param bgAlpha
      */
-    public void backgroundAlpha(float bgAlpha, Activity activity) {
+    public static void backgroundAlpha(float bgAlpha, Activity activity) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         //0.0-1.0
         lp.alpha = bgAlpha;

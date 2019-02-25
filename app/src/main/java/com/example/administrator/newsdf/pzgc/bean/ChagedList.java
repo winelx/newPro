@@ -28,6 +28,7 @@ public class ChagedList {
     private String sorgName;
     private int status;
     private int permission;
+    private int scorse;
     private String sendUserName;
     private String send_date;
 
@@ -125,5 +126,13 @@ public class ChagedList {
 
     public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+    public int getScorse() {
+        return scorse;
+    }
+
+    public void setScorse(int scorse) {
+        this.scorse = scorse;
     }
 }

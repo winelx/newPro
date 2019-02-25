@@ -32,7 +32,7 @@ public class ChagedReplyRelationAdapter extends BaseQuickAdapter<RelationList, B
             helper.setText(R.id.send_people, "下发人：");
         }
         if (!item.getAcceptPersonName().isEmpty()) {
-            helper.setText(R.id.chaged_people, "整改负责人：" + item.getAcceptPersonName());
+            helper.setText(R.id.chaged_people, "整改负责人：" + item.getRectificationPersonName());
         } else {
             helper.setText(R.id.chaged_people, "整改负责人：");
         }

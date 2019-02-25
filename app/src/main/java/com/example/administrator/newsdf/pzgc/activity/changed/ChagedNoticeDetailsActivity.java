@@ -61,11 +61,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         orgId = intent.getStringExtra("orgId");
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
-        //*指派记录*/
-        checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        checklistmeuntext.setText("指派记录");
-        checklistmeuntext.setOnClickListener(this);
         /*返回*/
         findViewById(R.id.checklistback).setOnClickListener(this);
         //指派
@@ -130,11 +125,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                         })
                         .create();
                 alertDialog2.show();
-                break;
-            case R.id.checklistmeuntext:
-                Intent intent1 = new Intent(mContext, AssignhistoryActivity.class);
-                intent1.putExtra("noticeId", billsId);
-                startActivity(intent1);
                 break;
             default:
                 break;

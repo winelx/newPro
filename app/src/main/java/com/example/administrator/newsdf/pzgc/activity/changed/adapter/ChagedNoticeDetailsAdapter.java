@@ -69,7 +69,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.problemItem.setVisibility(View.VISIBLE);
         }
         /*编号*/
-        holder.noticedNumber.setText(item.getCode());
+        holder.noticedNumber.setText("编号："+item.getCode());
         /*下发人*/
         holder.noticedSendPeople.setText("下发人：" + item.getAuserName());
         if (item.getSend_date() != null) {
@@ -81,7 +81,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.noticedChagedOrg.setText("整改组织：" + item.getRorgName());
         holder.noticedChagedPopple.setText("整改负责人：" + item.getRuserName());
         holder.noticedSendOrg.setText("下发组织：" + item.getSorgName());
-        holder.noticedAusername.setText("下节点负责人：" + item.getAuserName());
+        holder.noticedAusername.setText("待处理人：" + item.getAuserName());
         /*通知单完成数*/
         int noticeFinishCount = item.getNoticeFinishCount();
         String leanht = noticeFinishCount + "";
