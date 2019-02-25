@@ -118,7 +118,7 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
             case 1:
                 holder.infaceItemMessage.setTextString("已下发");
-                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.Orange);
+                holder.infaceItemMessage.setSlantedBackgroundColor(R.color.finish_green);
                 break;
             case 2:
                 holder.infaceItemMessage.setTextString("回复中");

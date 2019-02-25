@@ -144,22 +144,41 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onClick(int pos) {
                 /*点击按钮*/
-                if (status == 0) {
-                    /*保存状态，调整新增页面，进行修改*/
-                    Intent intent = new Intent(mContext, ChangedNewActivity.class);
-                    intent.putExtra("id", list.get(pos).getId());
-                    intent.putExtra("status", true);
-                    intent.putExtra("orgName", title.getText().toString());
-                    startActivity(intent);
+                int permission = list.get(pos).getPermission();
+                if (status == 0 || status == 20) {
+                    if (permission == 1) {
+                        /*保存状态，调整新增页面，进行修改*/
+                        Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        intent.putExtra("status", true);
+                        intent.putExtra("id", list.get(pos).getId());
+                        intent.putExtra("orgName", title.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        /*跳转详情*/
+                        Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                        intent1.putExtra("id", list.get(pos).getId());
+                        intent1.putExtra("orgName", title.getText().toString());
+                        intent1.putExtra("orgId", orgId);
+                        startActivity(intent1);
+                    }
                 } else {
-                    /*点击按钮*/
-                    Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
-                    intent1.putExtra("id", list.get(pos).getId());
-                    intent1.putExtra("orgName", title.getText().toString());
-                    startActivity(intent1);
+                    if (permission == 1) {
+                        /*保存状态，调整新增页面，进行修改*/
+                        Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        intent.putExtra("status", true);
+                        intent.putExtra("id", list.get(pos).getId());
+                        intent.putExtra("orgName", title.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        /*跳转详情*/
+                        Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+                        intent1.putExtra("id", list.get(pos).getId());
+                        intent1.putExtra("orgName", title.getText().toString());
+                        intent1.putExtra("orgId", orgId);
+                        startActivity(intent1);
+                    }
                 }
             }
-
         });
         request();
     }

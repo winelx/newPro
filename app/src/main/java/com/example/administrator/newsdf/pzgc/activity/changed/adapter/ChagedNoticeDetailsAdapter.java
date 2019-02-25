@@ -72,7 +72,12 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.noticedNumber.setText(item.getCode());
         /*下发人*/
         holder.noticedSendPeople.setText("下发人：" + item.getAuserName());
-        holder.noticedSendData.setText("下发日期：" + item.getSend_date().substring(0, 10));
+        if (item.getSend_date() != null) {
+            holder.noticedSendData.setText("下发日期：" + item.getSend_date().substring(0, 10));
+        } else {
+            holder.noticedSendData.setText("下发日期：");
+        }
+
         holder.noticedChagedOrg.setText("整改组织：" + item.getRorgName());
         holder.noticedChagedPopple.setText("整改负责人：" + item.getRuserName());
         holder.noticedSendOrg.setText("下发组织：" + item.getSorgName());
@@ -100,7 +105,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.overtime.setBackgroundResource(R.mipmap.noovertime);
         }
         //是否通过
-       final String isVerify = item.getIsVerify();
+        final String isVerify = item.getIsVerify();
         if ("1".equals(isVerify)) {
             //未完成
             holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);
