@@ -86,7 +86,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
                 if (status == 3) {
-                    if (permission == 0){
+                    if (permission == 0) {
                         //跳转过去查看
                         Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
                         intent1.putExtra("replyDelId", string);
@@ -94,7 +94,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                         intent1.putExtra("isReply", isreply);
                         intent1.putExtra("status", true);
                         startActivity(intent1);
-                    }else {
+                    } else {
                         //跳转过去修改
                         Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
                         intent1.putExtra("replyDelId", string);
@@ -211,28 +211,19 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 mAdapter.setNewData(list);
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
-                switch (status) {
+                switch (permission) {
                     case 1:
-                        //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
-                        if (permission == 0 || permission == 4) {
-                            deviceDetailsFunction.setVisibility(View.GONE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
-                        } else {
-                            deviceDetailsFunction.setVisibility(View.VISIBLE);
-                            deviceDetailsProving.setVisibility(View.VISIBLE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
-                        }
-                        break;
+                    case 2:
                     case 3:
-                        if (permission == 0) {
-                            deviceDetailsFunction.setVisibility(View.GONE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
-                        } else {
-                            deviceDetailsUp.setText("提交回复");
-                            deviceDetailsUp.setVisibility(View.VISIBLE);
-                            deviceDetailsFunction.setVisibility(View.VISIBLE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
-                        }
+                        deviceDetailsFunction.setVisibility(View.VISIBLE);
+                        deviceDetailsProving.setVisibility(View.VISIBLE);
+                        Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                        break;
+                    case 4:
+                        deviceDetailsUp.setText("提交回复");
+                        deviceDetailsUp.setVisibility(View.VISIBLE);
+                        deviceDetailsFunction.setVisibility(View.VISIBLE);
+                        Utils.setMargins(recyclerView, 0, 0, 0, 100);
                         break;
                     default:
                         deviceDetailsFunction.setVisibility(View.GONE);

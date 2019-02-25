@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mContext = this;
         workbtight = false;
-
         //找到控件
         home_img_red = (TextView) findViewById(R.id.home_img_red);
         home_img_red.setVisibility(View.GONE);
@@ -116,7 +115,7 @@ public class MainActivity extends BaseActivity {
         width = Utils.getScreenWidth(mContext) / 3;
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
-        //权限请求
+        //权限请求(定位，相机，内存)
         HiPermission.create(mContext)
                 .checkMutiPermission(new PermissionCallback() {
                     @Override

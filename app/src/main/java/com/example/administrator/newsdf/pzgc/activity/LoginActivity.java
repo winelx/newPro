@@ -164,7 +164,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
-                        progressDialog.dismiss();
+                        try {
+                            progressDialog.dismiss();
+                        }catch (Exception e){
+                        }
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             int ret = jsonObject.getInt("ret");

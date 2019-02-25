@@ -100,7 +100,6 @@ public class NodedetailsActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_nodedetails);
         mContext = NodedetailsActivity.this;
         floatMeunAnims = new FloatMeunAnims();
-
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         //节点ID

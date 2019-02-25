@@ -92,7 +92,6 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
                     ToastUtils.showShortToastCenter("请确认是否验证通过！");
                 } else {
                     verification();
-
                 }
                 break;
             case R.id.checklistback:

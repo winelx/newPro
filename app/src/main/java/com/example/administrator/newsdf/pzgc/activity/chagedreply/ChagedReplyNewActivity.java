@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -123,7 +124,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.replycommit:
                 if ("编辑".equals(comButton.getText().toString())) {
-                    if(list.size() > 0) {
+                    if (list.size() > 0) {
                         if (count == 0) {
                             commit();
                         } else {
@@ -197,7 +198,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             //导入问题项
         }
     }
-/*保存*/
+
+    /*保存*/
     private void save() {
         Map<String, String> map = new HashMap<>();
         if (id != null) {
@@ -228,6 +230,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             }
         });
     }
+
     /*网络请求*/
     private void request() {
         ChagedreplyUtils.getReplyFormOfSaveStatus(id, new ChagedreplyUtils.MapCallBack() {
@@ -259,9 +262,10 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 if (list.size() > 0) {
                     if (count == 0) {
                         replycommit.setBackgroundColor(Color.parseColor("#f88c37"));
-                    }else {
+                    } else {
                         replycommit.setBackgroundColor(Color.parseColor("#888888"));
-                    }                }
+                    }
+                }
 
             }
 
@@ -271,24 +275,43 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             }
         });
     }
+
     /*提交*/
     private void commit() {
-        ChagedreplyUtils.submitReplyData(id, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
-            @Override
-            public void onsuccess(String string) {
-                //刷新列表
-                try {
-                    TaskCallbackUtils.CallBackMethod();
-                } catch (Exception e) {
-                }
-                finish();
-            }
+        android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
+                .setMessage(Dates.setText(mContext, "确定提交回复单？", 18, 26, R.color.red))
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //添加"Yes"按钮
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ChagedreplyUtils.submitReplyData(id, motionNode, new ChagedreplyUtils.ObjectCallBacks() {
+                            @Override
+                            public void onsuccess(String string) {
+                                //刷新列表
+                                try {
+                                    TaskCallbackUtils.CallBackMethod();
+                                } catch (Exception e) {
+                                }
+                                finish();
+                            }
 
-            @Override
-            public void onerror(String string) {
-                ToastUtils.showsnackbar(comButton, string);
-            }
-        });
+                            @Override
+                            public void onerror(String string) {
+                                ToastUtils.showsnackbar(comButton, string);
+                            }
+                        });
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    //添加取消
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        alertDialog2.show();
     }
 
     //接口回调刷新
@@ -299,7 +322,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             request();
         }
     }
-/*接口方法*/
+
+    /*接口方法*/
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 

@@ -112,7 +112,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 break;
             case R.id.device_details_result:
                 android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
-                        .setTitle("")
                         .setMessage("是否确认我来回复？")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             //添加"Yes"按钮
@@ -193,7 +192,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         chagedUtils.setsenddata(billsId, dealId, motionNode, 2, new ChagedUtils.CallBacks() {
             @Override
             public void onsuccess(String string) {
-                ToastUtils.showLongToastCenter("在整改回复单中查看");
                 ToastUtils.showShortToastCenter(string);
                 try {
                     TaskCallbackUtils.CallBackMethod();

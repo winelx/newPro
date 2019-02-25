@@ -139,7 +139,10 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
             @Override
             public void onClick(int pos) {
                 /*点击按钮*/
-                startActivity(new Intent(mContext, ChagedNoticeDetailsActivity.class));
+                Intent intent1 = new Intent(mContext, ChagedreplyDetailsActivity.class);
+                intent1.putExtra("id", list.get(pos).getId());
+                intent1.putExtra("orgName", title.getText().toString());
+                startActivity(intent1);
             }
 
         });
