@@ -173,7 +173,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 checkItemTadownText.setTextColor(Color.parseColor("#646464"));
                 checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
                 checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
-
                 checkItemTabup.setClickable(false);
                 checkItemTadown.setClickable(false);
                 if ("编辑".equals(text)) {

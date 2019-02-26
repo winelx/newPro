@@ -496,7 +496,7 @@ public class ChagedUtils implements Serializable {
                                     //title
                                     String title = isexpty(json.getString("name"));
                                     //wbsTaskTypeName
-                                    String wbsTaskTypeName = isexpty(json.getString("wbsTaskTypeName"));
+                                    String wbsTaskTypeName = isexpty(json.getString("wbsTaskTypeName")+">>"+json.getString("partDetails"));
                                     //orgName 检查
                                     String checkOrgName = isexpty(json.getString("checkOrgName"));
                                     //checkDate 检查日期
