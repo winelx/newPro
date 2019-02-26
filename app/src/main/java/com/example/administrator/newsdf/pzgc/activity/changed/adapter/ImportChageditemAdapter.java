@@ -33,11 +33,12 @@ public class ImportChageditemAdapter extends BaseQuickAdapter<ChagedImportitem, 
         helper.setText(R.id.import_checkorg, "检查组织：" + item.getCheckOrgName());
         helper.setText(R.id.import_checkscore, Dates.setText(mContext, "总分:" + item.getScord(), 3, R.color.red));
         int iwork = item.getIwork();
-        //是否内业检查，1是2不是
+        //是否内业检查，1不是2是
         if (iwork == 1) {
-            helper.setText(R.id.import_status, "内业");
-        }else {
             helper.setVisible(R.id.import_status, false);
+        }else {
+            helper.setText(R.id.import_status, "内业");
+
         }
     }
 }

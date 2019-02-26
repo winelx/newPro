@@ -216,7 +216,6 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                             //添加"Yes"按钮
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ToastUtils.showShortToast("确定");
                                 dialogInterface.dismiss();
                                 delete();
                             }

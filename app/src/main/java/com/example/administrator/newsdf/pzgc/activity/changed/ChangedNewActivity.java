@@ -269,10 +269,10 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 status = true;
                 problemItemLin.setVisibility(View.VISIBLE);
                 comButton.setText("编辑");
-                if (chagednumber.getText().toString() != null) {
+                if (list.size() > 0) {
                     chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
                 }else {
-
+                    chagedReleaseProblem.setBackgroundColor(Color.parseColor("#888888"));
                 }
                 try {
                     TaskCallbackUtils.CallBackMethod();

@@ -60,7 +60,7 @@
     <ImageView
         android:id="@+id/audio_notimage"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_alignLeft="@+id/audio_acathor"
         android:layout_alignStart="@+id/audio_acathor"
         android:layout_below="@+id/audio_content"

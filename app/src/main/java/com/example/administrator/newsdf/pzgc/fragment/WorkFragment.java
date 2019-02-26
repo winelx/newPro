@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,8 @@ import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.baselibrary.EmptyRecyclerView;
+import com.example.baselibrary.EmptyUtils;
 import com.example.baselibrary.MessageFragmentAdapter;
 import com.example.baselibrary.MessageFragmentItemAdapter;
 import com.example.baselibrary.bean.ItemBean;
@@ -55,9 +56,10 @@ public class WorkFragment extends Fragment {
     private ArrayList<bean> tasklist;
     private ArrayList<bean> checklist;
     private ArrayList<bean> reportlist;
-    private RecyclerView workRecycler;
+    private EmptyRecyclerView workRecycler;
     private ArrayList<ItemBean> list;
     private MessageFragmentAdapter adapter;
+    private EmptyUtils emptyUtils;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class WorkFragment extends Fragment {
             tasklist = new ArrayList<>();
             checklist = new ArrayList<>();
             list = new ArrayList<>();
+            emptyUtils = new EmptyUtils(mContext);
             //初始化控件Id
             findId();
             // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
@@ -77,6 +80,12 @@ public class WorkFragment extends Fragment {
                 parent.removeView(rootView);
             }
             okgo();
+            emptyUtils.setError(new EmptyUtils.Callback() {
+                @Override
+                public void callback() {
+                    okgo();
+                }
+            });
         }
         return rootView;
     }
@@ -84,6 +93,7 @@ public class WorkFragment extends Fragment {
     private void findId() {
         workRecycler = rootView.findViewById(R.id.work_recycler);
         workRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        workRecycler.setEmptyView(emptyUtils.init());
         adapter = new MessageFragmentAdapter(mContext, list);
         workRecycler.setAdapter(adapter);
         adapter.setOnclickitemlitener(new MessageFragmentItemAdapter.onclickitemlitener() {

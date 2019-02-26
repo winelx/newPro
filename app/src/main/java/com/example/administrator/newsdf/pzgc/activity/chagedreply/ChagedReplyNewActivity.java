@@ -38,7 +38,6 @@ import java.util.Map;
  * 版本：1.0
  * 创建日期：{2019/2/15 0015}
  * 描述：新增整改回复单
- * {@link }
  */
 public class ChagedReplyNewActivity extends BaseActivity implements View.OnClickListener, Networkinterface {
     private RecyclerView recycler;
@@ -46,7 +45,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private Context mContext;
     private ArrayList<Chagereplydetails> list;
     private TextView comButton, number, chageditem, replycommit, com_title;
-    private LinearLayout replyImportProblem;
+    private LinearLayout replyImportProblem, toolbarMenu;
     private TextView chagedOrgname, chagedOrganizeText, sendorgname,
             sendusername, senddate, rectificationpersonname;
     private String orgId, orgname, id, motionNode, noticeId, replyPerson;
@@ -88,7 +87,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         replyImportProblem = (LinearLayout) findViewById(R.id.reply_import_problem);
         replyImportProblem.setOnClickListener(this);
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
-        findViewById(R.id.toolbar_menu).setOnClickListener(this);
+        toolbarMenu = (LinearLayout) findViewById(R.id.toolbar_menu);
+        toolbarMenu.setOnClickListener(this);
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.addItemDecoration(new SimpleDividerItemDecoration(mContext));
@@ -167,11 +167,13 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                         Dates.getDialogs(this, "提交数据中...");
                         Dates.backgroundAlpha(0.5f, this);
                         save();
+                        toolbarMenu.setClickable(false);
                     } else {
                         ToastUtils.showShortToastCenter("请先选择关联整改通知单");
                     }
                 } else {
                     comButton.setText("保存");
+                    replycommit.setBackgroundColor(Color.parseColor("#888888"));
                 }
                 break;
             default:
@@ -185,7 +187,6 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         if (requestCode == 1 && resultCode == 1) {
             //关联整改通知单
             relation = (RelationList) data.getSerializableExtra("content");
-            ToastUtils.showShortToast("回调");
             //整改通知单编号
             chagedOrganizeText.setText(relation.getCode());
             //下发组织
@@ -214,8 +215,11 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         if (replyPerson != null) {
             map.put("replyPerson", replyPerson);
         }
+        //组织id
         map.put("rectificationOrgid", orgId);
+        //运动节点
         map.put("motionNode", motionNode);
+        //回复单Id
         map.put("noticeId", noticeId);
         ChagedreplyUtils.createReplyForm(map, new ChagedreplyUtils.MapCallBack() {
             @Override
@@ -231,12 +235,14 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 replyImportProblem.setVisibility(View.VISIBLE);
                 chageditem.setVisibility(View.VISIBLE);
                 Dates.disDialog();
+                toolbarMenu.setClickable(true);
                 Dates.backgroundAlpha(1.0f, ChagedReplyNewActivity.this);
             }
 
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(comButton, string);
+                toolbarMenu.setClickable(true);
                 Dates.disDialog();
                 Dates.backgroundAlpha(1.0f, ChagedReplyNewActivity.this);
             }

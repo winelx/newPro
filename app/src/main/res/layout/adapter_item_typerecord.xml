@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
+            android:visibility="gone"
             android:text="1212121212"
             android:textColor="@color/blue"
             android:textSize="13sp" />
@@ -35,6 +36,7 @@
         <TextView
             android:id="@+id/dealContent"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"

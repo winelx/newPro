@@ -89,7 +89,7 @@ import static com.lzy.okgo.OkGo.post;
  */
 public class CheckitemActivity extends BaseActivity implements View.OnClickListener, MapCallback, TaskCallback {
     private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
-    private TextView checkItemTabupText, checkItemTadownText, titleView, checklistmeuntext;
+    private TextView checkItemTabupText, checkItemTadownText, titleView, checklistmeuntext, describeImage;
     private DrawerLayout drawerLayout;
     private CheckNewAdapter adapter;
     private CheckPhotoAdapter photoAdapter;
@@ -140,7 +140,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             //给功能按钮设置点击事件
             findViewById(checklistmeun).setOnClickListener(this);
         }
-
         setScore(0);
         //下一项点击事件
         checkItemTadown.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +156,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up);
                 checkItemTabup.setClickable(false);
                 checkItemTadown.setClickable(false);
-                checkItemContentDescribe.setText("");
                 if ("编辑".equals(text)) {
                     getdate(taskId, pos + 1);
                 } else {
@@ -175,7 +173,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 checkItemTadownText.setTextColor(Color.parseColor("#646464"));
                 checkItemTabup.setBackgroundResource(R.drawable.tab_choose_up_gray);
                 checkItemTadown.setBackgroundResource(R.drawable.tab_choose_down);
-                checkItemContentDescribe.setText("");
+
                 checkItemTabup.setClickable(false);
                 checkItemTadown.setClickable(false);
                 if ("编辑".equals(text)) {
@@ -243,6 +241,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     ToastUtils.showLongToast("已选择无此项");
                     generate = false;
                     checkitemcontentStatus.setChecked(false);
+                } else {
+                    if (b) {
+                        describeImage.setVisibility(View.VISIBLE);
+                    } else {
+                        describeImage.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -286,6 +290,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 获取控件id及其初始化数据
      */
     private void findId() {
+        describeImage = (TextView) findViewById(R.id.describe_image);
         //检查标准
         checkStandardRec = (RecyclerView) findViewById(R.id.check_standard_rec);
         //操作键（保存/编辑）
@@ -601,7 +606,17 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             if (size > 0) {
                 Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
-                Save(isdata, tabup);
+                boolean lean = checkitemcontentStatus.isChecked();
+                if (lean){
+                    String string=checkItemContentDescribe.getText().toString();
+                    if (!string.isEmpty()){
+                        Save(isdata, tabup);
+                    }else {
+                        ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
+                    }
+                }else {
+                    Save(isdata, tabup);
+                }
             }
 
         }
@@ -677,7 +692,17 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 checkItemTadown.setClickable(true);
                 Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
-                Save(isdata, tabup);
+                boolean lean = checkitemcontentStatus.isChecked();
+                if (lean){
+                    String string=checkItemContentDescribe.getText().toString();
+                    if (!string.isEmpty()){
+                        Save(isdata, tabup);
+                    }else {
+                        ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
+                    }
+                }else {
+                    Save(isdata, tabup);
+                }
             }
         } else if (count == chekItem.size()) {
             //没有操作过
@@ -867,6 +892,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * @param page
      */
     public void getdate(String id, final Integer page) {
+        checkItemContentDescribe.setText("");
         Dates.getDialogs(CheckitemActivity.this, "请求数据中...");
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
                 .params("id", id)
@@ -1006,8 +1032,10 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                 try {
                                     generate = jsonObject.getBoolean("generate");
                                     if (generate) {
+                                        describeImage.setVisibility(View.VISIBLE);
                                         checkitemcontentStatus.setChecked(true);
                                     } else {
+                                        describeImage.setVisibility(View.GONE);
                                         checkitemcontentStatus.setChecked(false);
                                     }
                                 } catch (JSONException e) {

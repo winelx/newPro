@@ -85,7 +85,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MyViewHolder) holder).managementNumber.setText(setText("总分：" + success.getScore()));
             }
 
-            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   " + success.getCreateDate());
+            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   检查日期" + success.getCreateDate());
             iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);

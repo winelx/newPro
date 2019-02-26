@@ -21,24 +21,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:minHeight="50dp"
                 android:layout_marginRight="10dp"
+                android:minHeight="50dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:gravity="center_vertical"
                     android:text="*"
-                    android:layout_gravity="center"
                     android:textColor="@color/red"
                     android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="检查项名称"
                     android:textColor="@color/black"
@@ -48,9 +48,9 @@
                     android:id="@+id/check_item_content_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="2"
                     android:gravity="end"
-                    android:layout_gravity="center"
                     android:text="查项项查项名称"
                     android:textColor="@color/black" />
 
@@ -64,16 +64,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="65dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:minHeight="65dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_gravity="start"
+                    android:layout_marginTop="10dp"
                     android:text="检测内容"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
@@ -165,28 +165,31 @@
                 android:layout_height="wrap_content"
                 android:background="@color/back"
                 android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/check_standard"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textColor="@color/red"
-                    android:textSize="15sp"
-                    android:text="*"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="检测标准"
-                    android:textColor="@color/graytext"
-                    android:textSize="15sp" />
 
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/check_standard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="检测标准"
+                        android:textColor="@color/graytext"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/check_item_content_bz"
@@ -201,9 +204,9 @@
                     android:id="@+id/check_standard_rec"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/writer"
                     android:layout_below="@+id/check_standard"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:background="@color/writer" />
 
             </RelativeLayout>
 
@@ -252,8 +255,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="标准分保存后计算"
                     android:gravity="end|center"
+                    android:hint="标准分保存后计算"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -273,13 +276,28 @@
                 android:orientation="vertical">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="具体描述"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/describe_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="*"
+                        android:textColor="@color/red"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="具体描述"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
 
                 <EditText
