@@ -17,7 +17,7 @@
         android:paddingLeft="10dp"
         android:text="检查部位"
         android:textSize="14sp"
-        android:visibility="gone" />
+        />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshlayout"

@@ -37,8 +37,7 @@ public class ImportChageditemAdapter extends BaseQuickAdapter<ChagedImportitem, 
         if (iwork == 1) {
             helper.setVisible(R.id.import_status, false);
         }else {
-            helper.setText(R.id.import_status, "内业");
-
+            helper.setVisible(R.id.import_status, true);
         }
     }
 }

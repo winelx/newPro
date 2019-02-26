@@ -184,13 +184,13 @@ public class ChagedUtils implements Serializable {
     /**
      * @param userId    指派人Id
      * @param billsId   单据Id
-     * @param orgId  指派人Id
+     * @param orgId     指派人Id
      * @param callBacks
      * @ assignDate 指派时间
      * @ remarks  备注
      * @ motionNode 运动节点
      */
-    public void setassignPage(String userId, String billsId, String motionNode, String orgId,final CallBacks callBacks) {
+    public void setassignPage(String userId, String billsId, String motionNode, String orgId, final CallBacks callBacks) {
         OkGo.post(Requests.ASSIGNPAGE)
                 .params("id", billsId)
                 .params("assignPerson", userId)
@@ -496,7 +496,16 @@ public class ChagedUtils implements Serializable {
                                     //title
                                     String title = isexpty(json.getString("name"));
                                     //wbsTaskTypeName
-                                    String wbsTaskTypeName = isexpty(json.getString("wbsTaskTypeName")+">>"+json.getString("partDetails"));
+                                    String partDetail;
+                                    try {
+                                        partDetail = json.getString("partDetails");
+                                        if (!partDetail.isEmpty()) {
+                                            partDetail = ">>" + partDetail;
+                                        }
+                                    } catch (Exception e) {
+                                        partDetail = "";
+                                    }
+                                    String wbsTaskTypeName = isexpty(json.getString("wbsTaskTypeName") + partDetail);
                                     //orgName 检查
                                     String checkOrgName = isexpty(json.getString("checkOrgName"));
                                     //checkDate 检查日期
@@ -514,7 +523,10 @@ public class ChagedUtils implements Serializable {
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
-                        } catch (JSONException e) {
+                        } catch (
+                                JSONException e)
+
+                        {
                             e.printStackTrace();
                             callBack.onerror("数据解析失败");
                         }
@@ -764,6 +776,7 @@ public class ChagedUtils implements Serializable {
         void onsuccess(String string);
 
         void onerror(String string);
+
     }
 
     public String isexpty(String string) {

@@ -95,7 +95,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         Object obj = list.get(position);
         final ChagedNoticeDetailslsit item = (ChagedNoticeDetailslsit) obj;
         holder.noticeListContent.setText(item.getStandardDelName());
-        String string = item.getIsOverdue();
+        String string = item.getIsOverdue()+"";
         //是否超时
         if ("1".equals(string)) {
             holder.overtime.setVisibility(View.GONE);
@@ -105,7 +105,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.overtime.setBackgroundResource(R.mipmap.noovertime);
         }
         //是否通过
-        final String isVerify = item.getIsVerify();
+        final String isVerify = item.getIsVerify()+"";
         if ("1".equals(isVerify)) {
             //未完成
             holder.complete.setBackgroundResource(R.mipmap.chagednocomplete);

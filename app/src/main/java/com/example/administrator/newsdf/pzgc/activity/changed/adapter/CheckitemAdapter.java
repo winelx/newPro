@@ -13,7 +13,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -75,15 +74,10 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             holder.standardScore.setText("标准分：");
         }
-        try {
-            int standardscore = Integer.parseInt(checkitem.getStandardScore());
-            int getStandardDelScore = Integer.parseInt(checkitem.getStandardDelScore());
-            holder.getscore.setText("得分：" + (standardscore - getStandardDelScore));
-        } catch (Exception e) {
-            BigDecimal bignum1 = new BigDecimal("0");
-            BigDecimal bignum2 = new BigDecimal(checkitem.getStandardDelScore());
-            BigDecimal standardscore = bignum1.subtract(bignum2);
-            holder.getscore.setText("得分：" + standardscore);
+        if (checkitem.getStandardScore() != null) {
+            holder.getscore.setText("扣分：" + checkitem.getStandardDelScore());
+        } else {
+            holder.getscore.setText("扣分：");
         }
         holder.checkLin.setOnClickListener(new View.OnClickListener() {
             @Override
