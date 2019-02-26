@@ -199,6 +199,7 @@ public class WorkFragment extends Fragment {
                                     String str11 = json.getString("监管检查");
                                     String str8 = json.getString("整改通知");
                                     String device;
+                                    String reply = json.getString("回复验证");
                                     try {
                                         device = json.getString("特种设备");
                                     } catch (Exception e) {
@@ -212,6 +213,8 @@ public class WorkFragment extends Fragment {
                                     }
                                     if ("true".equals(str8)) {
                                         checklist.add(new bean("整改通知", R.mipmap.check_notice));
+                                    }
+                                    if ("true".equals(reply)) {
                                         checklist.add(new bean("回复验证", R.mipmap.reply_verification));
                                     }
                                     if ("true".equals(device)) {

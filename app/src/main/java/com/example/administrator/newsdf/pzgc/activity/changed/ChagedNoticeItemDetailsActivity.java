@@ -44,7 +44,6 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
         setContentView(R.layout.activity_checknoticemessage);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        /*id = "197addfbb6034df19091602f4dbc8345";*/
         chagedUtils = new ChagedUtils();
         list = new ArrayList<>();
         mContext = this;

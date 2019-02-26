@@ -683,12 +683,7 @@ public class ChagedUtils implements Serializable {
                                 String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            if (afterFileslist.size() > 0) {
-
-                            }
                             list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
-
-
                             /*整改后*/
 
                             //回复时间

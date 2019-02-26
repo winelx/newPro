@@ -40,6 +40,7 @@ public class ChagedNoticeDetails implements Serializable {
     private String ruserName;
     private String sendOrgid;
     private String sorgName;
+    private String sendUserName;
     private int status;
 
     public String getAcceptPerson() {
@@ -177,5 +178,13 @@ public class ChagedNoticeDetails implements Serializable {
 
     public void setSend_date(String send_date) {
         this.send_date = send_date;
+    }
+
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
     }
 }

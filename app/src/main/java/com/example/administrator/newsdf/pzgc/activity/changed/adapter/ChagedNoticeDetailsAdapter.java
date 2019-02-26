@@ -69,7 +69,7 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.problemItem.setVisibility(View.VISIBLE);
         }
         /*编号*/
-        holder.noticedNumber.setText("编号："+item.getCode());
+        holder.noticedNumber.setText("编号："+item.getSendUserName());
         /*下发人*/
         holder.noticedSendPeople.setText("下发人：" + item.getAuserName());
         if (item.getSend_date() != null) {
