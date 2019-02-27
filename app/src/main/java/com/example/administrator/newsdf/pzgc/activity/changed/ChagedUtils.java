@@ -198,7 +198,7 @@ public class ChagedUtils implements Serializable {
                 .params("assignPerson", userId)
                 .params("rectificationOrgid", orgId)
                 .params("assignDate", Dates.getDate())
-                .params("remarks", "安卓")
+                .params("remarks", "")
                 .params("motionNode", motionNode)
                 .execute(new StringCallback() {
                     @Override
