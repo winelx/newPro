@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
+import android.text.TextUtils;
+
 import com.example.administrator.newsdf.pzgc.bean.ChagedImportitem;
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
@@ -505,7 +507,7 @@ public class ChagedUtils implements Serializable {
                                     } catch (Exception e) {
                                         partDetail = "";
                                     }
-                                    String wbsTaskTypeName = isexpty(json.getString("wbsTaskTypeName") + partDetail);
+                                    String wbsTaskTypeName = isexpty(json.getString("wbsMainName"));
                                     //orgName 检查
                                     String checkOrgName = isexpty(json.getString("checkOrgName"));
                                     //checkDate 检查日期
@@ -645,6 +647,21 @@ public class ChagedUtils implements Serializable {
                                 rectificationPartName = data.getString("rectificationPartName");
                             } catch (Exception e) {
                                 rectificationPartName = "";
+                            }
+                            String partDetails;
+                            try {
+                                partDetails = data.getString("partDetails");
+                            } catch (Exception e) {
+                                partDetails = "";
+                            }
+                            if (!TextUtils.isEmpty(rectificationPartName)) {
+                                if (!TextUtils.isEmpty(partDetails)) {
+                                    //都不为空
+                                    rectificationPartName = rectificationPartName + ">>" + partDetails;
+                                }
+                            } else {
+                                //rectificationPartName为空
+                                rectificationPartName = rectificationPartName + partDetails;
                             }
                             //整改期限
                             String rectificationDate;

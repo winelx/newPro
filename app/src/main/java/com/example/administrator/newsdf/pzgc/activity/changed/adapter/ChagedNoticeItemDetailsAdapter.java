@@ -91,11 +91,11 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) list.get(position);
         String str = "扣分:" + "3.0";
         holder.typeproblem.setText(
-                "整改部位：" + isnull(problem.getRectificationPartName()) + "\n"
-                        + "整改期限：" + isnull(problem.getRectificationDate().substring(0, 10)) + "\n"
-                        + "违反标准：" + isnull(problem.getStandardDelName()) + "\n"
+                "整改部位：" + problem.getRectificationPartName() + "\n"
+                        + "整改期限：" + problem.getRectificationDate().substring(0, 10) + "\n"
+                        + "违反标准：" + problem.getStandardDelName() + "\n"
 //                        + "扣分：" + Dates.setText(mContext, str, 3, str.length()) + "\n"
-                        + "存在问题：" + isnull(problem.getRectificationReason()) + "\n"
+                        + "存在问题：" + problem.getRectificationReason() + "\n"
                         + "整改前附件:"
 
         );
@@ -166,8 +166,8 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         holder.dealperson.setText(record.getDealPerson());
         //
         try {
-            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10)+"  ",record.getDealPerson()+"  ",record.getDealContent()+"   "+record.getBeDealPerson()));
-        }catch (Exception e){
+            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10) + "  ", record.getDealPerson() + "  ", record.getDealContent() + "   " + record.getBeDealPerson()));
+        } catch (Exception e) {
         }
 
 
@@ -266,6 +266,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
             return string;
         }
     }
+
     private SpannableString setTextColor(String str1, String str2, String str3) {
         String text = str1 + str2 + str3;
         int length1 = str1.length();

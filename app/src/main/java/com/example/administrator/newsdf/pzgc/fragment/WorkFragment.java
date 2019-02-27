@@ -83,11 +83,17 @@ public class WorkFragment extends Fragment {
             emptyUtils.setError(new EmptyUtils.Callback() {
                 @Override
                 public void callback() {
+
                     okgo();
                 }
             });
         }
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void findId() {
@@ -154,11 +160,13 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray data = jsonObject.getJSONArray("data");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
+                                list.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
                                     String str4 = json.getString("任务统计");

@@ -28,7 +28,7 @@
                 android:paddingLeft="15dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="1515151515151515"
+
                 android:textColor="#000000"
                 android:textSize="15sp" />
         <LinearLayout

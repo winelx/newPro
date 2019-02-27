@@ -6,7 +6,7 @@ package com.example.administrator.newsdf.pzgc.utils;
  * 说明：网络请求端口
  */
 public class Requests {
- // public static final String networks = "http://192.168.20.36:8080/";
+//public static final String networks = "http://192.168.20.36:8080/";
 
     //public static final String networks = "http://192.168.20.81:8080/baseframe/";
 

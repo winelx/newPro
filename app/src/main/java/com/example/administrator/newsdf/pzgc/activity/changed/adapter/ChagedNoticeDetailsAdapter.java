@@ -81,7 +81,11 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.noticedChagedOrg.setText("整改组织：" + item.getRorgName());
         holder.noticedChagedPopple.setText("整改负责人：" + item.getRuserName());
         holder.noticedSendOrg.setText("下发组织：" + item.getSorgName());
-        holder.noticedAusername.setText("待处理人：" + item.getAuserName());
+        if (item.getAuserName()!=null){
+            holder.noticedAusername.setText("待处理人：" + item.getAuserName());
+        }else {
+            holder.noticedAusername.setText("待处理人：" );
+        }
         /*通知单完成数*/
         int noticeFinishCount = item.getNoticeFinishCount();
         String leanht = noticeFinishCount + "";

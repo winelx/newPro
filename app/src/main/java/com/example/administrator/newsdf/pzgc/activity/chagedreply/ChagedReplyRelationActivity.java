@@ -44,7 +44,7 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
     private EmptyUtils emptyUtils;
     private Context mContext;
     private int page = 1;
-
+    private String string;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

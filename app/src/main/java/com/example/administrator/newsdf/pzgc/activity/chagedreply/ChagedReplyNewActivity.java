@@ -147,6 +147,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     Intent intent = new Intent(mContext, ChagedReplyImportActivity.class);
                     intent.putExtra("noticeId", noticeId);
                     intent.putExtra("id", id);
+                    intent.putExtra("string",chagedOrganizeText.getText().toString());
                     startActivityForResult(intent, 0);
                 } else {
                     ToastUtils.showShortToast("当前不是编辑状态");
@@ -257,7 +258,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
             public void onsuccess(Map<String, Object> map) {
                 ChagedReply relation = (ChagedReply) map.get("bean");
                 //整改通知单编号
-                chagedOrganizeText.setText(relation.getCode());
+                chagedOrganizeText.setText(relation.getNoticeCode());
                 //整改回复单编号
                 number.setText(relation.getCode());
                 //下发组织

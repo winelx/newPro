@@ -74,7 +74,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             holder.standardScore.setText("标准分：");
         }
-        if (checkitem.getStandardScore() != null) {
+        if (checkitem.getStandardDelScore() != null) {
             holder.getscore.setText("扣分：" + checkitem.getStandardDelScore());
         } else {
             holder.getscore.setText("扣分：");

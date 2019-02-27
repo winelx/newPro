@@ -35,7 +35,7 @@ import java.util.Map;
 public class ChagedReplyImportActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshLayout;
     private ChagedReplyImportAdapter adapter;
-    private TextView inspectContent, comButton;
+    private TextView inspectContent, comButton, inspect_content;
     private EmptyRecyclerView recyclerView;
     private ArrayList<ImprotItem> list;
     private Context mContext;
@@ -67,6 +67,8 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
+        inspect_content = (TextView) findViewById(R.id.inspect_content);
+        inspect_content.setText("关联整改通知单：" + intent.getStringExtra("string"));
         recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyView(emptyUtils.init());
@@ -89,7 +91,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                     improtItem.setNewX(true);
                     rowslist.add(itemid);
                 }
-                if (rowslist.size()== 0) {
+                if (rowslist.size() == 0) {
                     comButton.setText("");
                 } else {
                     comButton.setText("确定");
@@ -122,14 +124,14 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
                 list.clear();
                 list.addAll((ArrayList<ImprotItem>) map.get("list"));
                 adapter.setNewData(list);
-                if (list.size()==0){
+                if (list.size() == 0) {
                     emptyUtils.noData("暂无数据,下拉刷新！");
                 }
             }
 
             @Override
             public void onerror(String str) {
-                ToastUtils.showsnackbar(comButton,str);
+                ToastUtils.showsnackbar(comButton, str);
             }
         });
     }
