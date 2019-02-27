@@ -480,7 +480,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         //初始化数据---日
         String yeardata = Utils.year[yearPicker.getValue()];
         //如果当前月份是2月
-        if (dateMonth == 2) {
+        if ((dateMonth+1) == 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年

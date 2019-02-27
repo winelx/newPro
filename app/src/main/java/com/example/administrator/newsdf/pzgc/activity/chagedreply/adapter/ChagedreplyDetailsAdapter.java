@@ -131,7 +131,7 @@ public class ChagedreplyDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         /*   holder.dealperson.setText(record.getDealPerson());*/
         //
         try {
-            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10) + "  ", record.getDealPerson() + "   ", record.getDealContent()));
+            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10) + "  ", record.getDealPerson() + "   ", record.getDealContent()+"   "+record.getBeDealPerson()));
         } catch (Exception e) {
 
         }

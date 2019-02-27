@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,6 +68,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Object obj = mDatas.get(position);
@@ -85,7 +87,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MyViewHolder) holder).managementNumber.setText(setText("总分：" + success.getScore()));
             }
 
-            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   检查日期" + success.getCreateDate());
+            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   检查日期：" + success.getCreateDate());
             iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);
@@ -96,7 +98,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
-                    intent.putExtra("type", success.getIwork()+"");
+                    intent.putExtra("type", success.getIwork() + "");
                     intent.putExtra("id", success.getId());
                     mContext.startActivity(intent);
                 }
@@ -114,7 +116,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 //            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
-            ((SubViewHolder) holder).managementUser.setText("检查人：" + Sub.getCheckUser() + "    " + Sub.getCreateDate());
+            ((SubViewHolder) holder).managementUser.setText("检查人：" + Sub.getCheckUser() + "    检查日期：" + Sub.getCreateDate());
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
             ((SubViewHolder) holder).subManagementOrg.setText("检查组织：" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");

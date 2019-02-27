@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
-import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,12 +44,12 @@ public class DialogUtils {
         //初始化数据---月
         Date myDate = new Date();
         int dateMonth = myDate.getMonth();
-        int dayDate = myDate.getDate() - 1;
+        int dayDate = myDate.getDate()-1 ;
         setPicker(monthPicker, month, dateMonth);
         //初始化数据---日
         String yeardata = year[yearPicker.getValue()];
         //如果当前月份是2月
-        if (dateMonth == 2) {
+        if ((dateMonth+1) == 2) {
             if (getyear().contains(yeardata)) {
                 setPicker(dayPicker, daytwos, dayDate);
                 //闰年

@@ -165,7 +165,10 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         //操作人
         holder.dealperson.setText(record.getDealPerson());
         //
-        holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10)+"  ",record.getDealPerson()+"  ",record.getBeDealPerson()));
+        try {
+            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10)+"  ",record.getDealPerson()+"  ",record.getDealContent()+"   "+record.getBeDealPerson()));
+        }catch (Exception e){
+        }
 
 
     }

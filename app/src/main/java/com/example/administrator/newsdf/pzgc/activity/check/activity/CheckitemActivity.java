@@ -682,7 +682,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }
-
         }
         if (count == 0 && size == 0) {
             //全部操作过
@@ -697,6 +696,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     if (!string.isEmpty()){
                         Save(isdata, tabup);
                     }else {
+                        checkItemTabup.setClickable(true);
+                        checkItemTadown.setClickable(true);
                         ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
                     }
                 }else {

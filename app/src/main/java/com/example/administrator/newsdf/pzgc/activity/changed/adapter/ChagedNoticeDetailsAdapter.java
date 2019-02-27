@@ -69,9 +69,9 @@ public class ChagedNoticeDetailsAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.problemItem.setVisibility(View.VISIBLE);
         }
         /*编号*/
-        holder.noticedNumber.setText("编号："+item.getSendUserName());
+        holder.noticedNumber.setText("编号："+item.getCode());
         /*下发人*/
-        holder.noticedSendPeople.setText("下发人：" + item.getAuserName());
+        holder.noticedSendPeople.setText("下发人：" + item.getSendUserName());
         if (item.getSend_date() != null) {
             holder.noticedSendData.setText("下发日期：" + item.getSend_date().substring(0, 10));
         } else {

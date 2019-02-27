@@ -191,8 +191,8 @@ public class ChagedreplyUtils {
     public static void getNoticeFormList(String orgId, int page, final MapCallBack listCallback) {
         OkGo.get(Requests.GETNOTICEFORMLIST)
                 .params("orgId", orgId)
-                .params("size", 20)
-                .params("page", page)
+                .params("page.size", 20)
+                .params("page.pn", page)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

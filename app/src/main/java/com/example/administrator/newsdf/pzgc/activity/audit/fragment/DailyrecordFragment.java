@@ -172,7 +172,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         Utils.setPicker(monthPicker, Utils.month, dateMonth);
         dayPicker = contentView.findViewById(R.id.day);
         String yeardata = Utils.year[yearPicker.getValue()];
-        if (dateMonth== 2) {
+        if ((dateMonth+1)== 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年
