@@ -119,7 +119,6 @@ public class ChagedListAllAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holder.infaceItemMessage.setTextString("未下发");
                 holder.infaceItemMessage.setSlantedBackgroundColor(R.color.unfinish_gray);
                 //保存状态可以调用删除按钮
-                holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
                 break;
             case 1:
                 holder.infaceItemMessage.setTextString("已下发");

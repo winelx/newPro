@@ -150,7 +150,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                     if (list.size() > 0) {
                         AlertDialog alertDialog2 = new AlertDialog.Builder(mContext)
                                 .setTitle("")
-                                .setMessage("是否下发通知单")
+                                .setMessage("是否下发整改通知单")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     //添加"Yes"按钮
                                     @Override

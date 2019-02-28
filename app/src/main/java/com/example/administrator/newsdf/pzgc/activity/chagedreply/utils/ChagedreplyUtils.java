@@ -160,7 +160,14 @@ public class ChagedreplyUtils {
                         try {
                             JSONObject data = jsonObject.getJSONObject("data");
                             content.put("id", data.getString("id"));
-                            content.put("code", data.getString("code"));
+                            String code;
+                            try {
+                                code =data.getString("code");
+                            }catch (Exception e){
+                                code="";
+                            }
+
+                            content.put("code", code);
                         } catch (Exception e) {
                         }
                         callBack.onsuccess(content);

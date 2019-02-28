@@ -58,7 +58,7 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         title = (TextView) findViewById(R.id.com_title);
-        title.setText("导入问题项");
+        title.setText("导入整改项");
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImportChageditemAdapter(R.layout.adapter_item_improtchageditem, list);

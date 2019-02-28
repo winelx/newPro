@@ -99,7 +99,7 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.ruserName.setText("整改负责人：");
         }
 
-        holder.noticefinishcount.setText("关联通知单编号：" + chagedList.getNoticeCode());
+        holder.noticefinishcount.setText("关联整改通知单编号：" + chagedList.getNoticeCode());
 
         int status = Integer.parseInt(chagedList.getStatus());
 //       0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理

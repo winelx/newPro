@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +39,7 @@ import com.lzy.okgo.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -56,9 +56,9 @@ import okhttp3.Response;
  * description: 承载fragemnt的界面
  *
  * @author lx
- *         date: 2018/3/15 0015 上午 9:14
- *         update: 2018/3/15 0015
- *         version:
+ * date: 2018/3/15 0015 上午 9:14
+ * update: 2018/3/15 0015
+ * version:
  */
 public class MainActivity extends BaseActivity {
     private FragmentTabHost mTabHost;
@@ -68,7 +68,8 @@ public class MainActivity extends BaseActivity {
     private String version;
     private TextView home_img_red;
     private List<Shop> list;
-    private boolean workbtight=false;
+    private boolean workbtight = false;
+
     public static MainActivity getInstance() {
         return mContext;
     }
@@ -139,6 +140,12 @@ public class MainActivity extends BaseActivity {
                 });
         //新本版检测
         Uplogding();
+        //删除tiny压缩的图片
+        if (LoveDao.queryLove().size() == 0) {
+            //如果这个文件目录下没有图片保存在数据库，就将图片全部删除，（别的地方的图片是不需要保存的）
+            String path = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny";
+            delFolder(path);
+        }
         //数据处理
         initTab();
     }
@@ -201,6 +208,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
     public void initTab() {
         //添加tab信息，存入集合进行展示
         Tab tab_home = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_home_style, 0);
@@ -301,4 +309,46 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); //删除完里面所有内容
+            String filePath = folderPath;
+            filePath = filePath.toString();
+            java.io.File myFilePath = new java.io.File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //删除指定文件夹下所有文件
+//param path 文件夹完整绝对路径
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
+    }
 }
+

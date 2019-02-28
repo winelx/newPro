@@ -22,9 +22,9 @@ import static com.example.administrator.newsdf.R.id.task_cord;
 
 public class CheckHistoryActivity extends BaseActivity {
     private SettingAdapter adapter;
-    ArrayList<String> data = new ArrayList<>();
-    ArrayList<String> msg = new ArrayList<>();
-    ArrayList<Audio> mdata = new ArrayList<>();
+    private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<String> msg = new ArrayList<>();
+    private   ArrayList<Audio> mdata = new ArrayList<>();
     private ListView wbs_listview;
 
     @Override

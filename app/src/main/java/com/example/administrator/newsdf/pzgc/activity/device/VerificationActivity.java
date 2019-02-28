@@ -83,7 +83,6 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         mContext = this;
         detailsUtils = new DeviceDetailsUtils();
         imagepath = new ArrayList<>();
-
         //初始化相机
         takePictureManager = new TakePictureManager(VerificationActivity.this);
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
@@ -173,7 +172,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
             //如果是项目经理验证，不用传附件
             checklistmeuntext.setText("提交");
             checkReplyFuj.setVisibility(View.GONE);
-            checkReplyRec.setVisibility(View.GONE);
+            checkReplyRec.setVisibility(View.GONE);;
         }
         request();
     }

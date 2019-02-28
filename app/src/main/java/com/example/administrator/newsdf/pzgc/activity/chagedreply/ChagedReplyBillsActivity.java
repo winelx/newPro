@@ -95,7 +95,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.checklistback).setOnClickListener(this);
         findViewById(R.id.checklistmeun).setOnClickListener(this);
         TextView titleView = (TextView) findViewById(R.id.titleView);
-        titleView.setText("整改回复");
+        titleView.setText("查看详情");
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setTextSize(15f);
         checklistmeuntext.setVisibility(View.GONE);
@@ -284,10 +284,29 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
             public void onsuccess(Map<String, Object> map) {
                 ReplyBillBean billBean = (ReplyBillBean) map.get("bean");
                 optionType = billBean.getIsReply();
-                content.setText("整改部位：" + billBean.getRectificationPartName() + "\n" +
+                //整改部位
+                String PartName = billBean.getRectificationPartName();
+                String reason = billBean.getPartDetails();
+                if (PartName == null) {
+                    if (reason == null) {
+                        PartName = "无";
+                    }else {
+                        PartName =reason;
+                    }
+                } else {
+                    if (reason != null) {
+                        PartName = PartName + ">>" + reason;
+                    }
+                }
+                //存在问题
+                String Reason = billBean.getRectificationReason();
+                if (Reason == null) {
+                    Reason = "";
+                }
+                content.setText("整改部位：" + PartName + "\n" +
                         "整改期限：" + billBean.getRectificationDate());
                 standarddel.setText(billBean.getStandardDelName());
-                rectificationreason.setText("存在问题：" + billBean.getRectificationReason() + "\n" + "整改前附件：");
+                rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
                 replydescription.setText(billBean.getReplyDescription());
                 photolist.clear();
                 //整改前图片集合

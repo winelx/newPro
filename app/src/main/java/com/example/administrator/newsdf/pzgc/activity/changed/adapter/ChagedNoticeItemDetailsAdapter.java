@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,9 +152,18 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     @SuppressLint("SetTextI18n")
     private void bindrecord(Typerecord holder, int position) {
         NoticeItemDetailsRecord record = (NoticeItemDetailsRecord) list.get(position);
-        holder.dealOpinion.setText(isnull(record.getDealOpinion()));
+        if (!record.getDealOpinion().isEmpty()) {
+            holder.dealOpinion.setText(record.getDealOpinion());
+            holder.dealOpinion.setVisibility(View.VISIBLE);
+        }else {
+            holder.dealOpinion.setVisibility(View.GONE);
+        }
         //操作内容
-        holder.dealContent.setText(isnull(record.getDealContent()));
+        if (record.getBeDealPerson()!=null&&!TextUtils.isEmpty(record.getBeDealPerson())){
+            holder.dealContent.setText(record.getDealContent()+"："+record.getBeDealPerson());
+        }else {
+            holder.dealContent.setText(record.getDealContent());
+        }
         String opinion = record.getDealContent();
         if ("已验证《验证不通过》".equals(opinion)) {
             holder.dealContent.setTextColor(Color.parseColor("#FE0000"));
@@ -162,15 +172,11 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         } else {
             holder.dealContent.setTextColor(Color.parseColor("#000000"));
         }
-        //操作人
-        holder.dealperson.setText(record.getDealPerson());
-        //
         try {
-            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 10) + "  ", record.getDealPerson() + "  ", record.getDealContent() + "   " + record.getBeDealPerson()));
+            holder.datatime.setText(setTextColor(record.getDealDate().substring(0, 16) + "  ", record.getDealPerson()));
         } catch (Exception e) {
+
         }
-
-
     }
 
     @Override
@@ -236,13 +242,12 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     /*操作记录*/
     class Typerecord extends RecyclerView.ViewHolder {
         private TextView dealOpinion, dealContent;
-        private TextView dealperson, datatime;
+        private TextView datatime;
 
         Typerecord(View itemView) {
             super(itemView);
             dealOpinion = itemView.findViewById(R.id.dealOpinion);
             dealContent = itemView.findViewById(R.id.dealContent);
-            dealperson = itemView.findViewById(R.id.dealperson);
             datatime = itemView.findViewById(R.id.datatime);
         }
     }
@@ -267,11 +272,10 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    private SpannableString setTextColor(String str1, String str2, String str3) {
-        String text = str1 + str2 + str3;
+    private SpannableString setTextColor(String str1, String str2 ) {
+        String text = str1 + str2 ;
         int length1 = str1.length();
         int length2 = str2.length();
-        int length3 = str3.length();
         SpannableString sp = new SpannableString(text);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
                         .getColor(R.color.black)), 0, length1,
@@ -280,25 +284,6 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
                         .getColor(R.color.colorAccent)), length1,
                 length1 + length2,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if ("已验证《验证不通过》".equals(str3)) {
-            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                            .getColor(R.color.red)),
-                    length1 + length2,
-                    length1 + length2 + length3,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else if ("已验证《验证通过》".equals(str3)) {
-            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                            .getColor(R.color.finish_green)),
-                    length1 + length2,
-                    length1 + length2 + length3,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            sp.setSpan(new ForegroundColorSpan(mContext.getResources()
-                            .getColor(R.color.black)),
-                    length1 + length2,
-                    length1 + length2 + length3,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
         return sp;
     }
 }

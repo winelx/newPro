@@ -48,9 +48,9 @@ import okhttp3.Response;
  * description: 个人界面
  *
  * @author lx
- *         date: 2018/3/22 0022 下午 4:18
- *         update: 2018/3/22 0022
- *         version:
+ * date: 2018/3/22 0022 下午 4:18
+ * update: 2018/3/22 0022
+ * version:
  */
 public class MineFragment extends Fragment implements View.OnClickListener {
     private View rootView;
@@ -149,7 +149,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //修改密码
             case R.id.changepassword:
-      startActivity(new Intent(getActivity(), PasswordActvity.class));
+                startActivity(new Intent(getActivity(), PasswordActvity.class));
 
                 break;
             //系统设置
@@ -158,7 +158,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //关于我们
             case R.id.about_us:
-               startActivity(new Intent(getActivity(), AboutmeActivity.class));
+                startActivity(new Intent(getActivity(), AboutmeActivity.class));
 
                 break;
             case R.id.BackTo:
@@ -169,7 +169,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     public void gotResult(int i, String s, Set<String> set) {
                     }
                 });
-         startActivity(new Intent(mContext, LoginActivity.class));
+                startActivity(new Intent(mContext, LoginActivity.class));
                 getActivity().finish();
                 break;
             case R.id.mine_Thecache:

@@ -42,7 +42,7 @@
                     android:lineSpacingMultiplier="1.3"
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
-                    android:text="违反标准"
+                    android:text="违反标准："
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -98,7 +98,7 @@
                 android:paddingTop="5dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="5dp"
-                android:text="整改该请求描述"
+                android:text="整改描述"
                 android:textColor="#000000" />
 
             <EditText

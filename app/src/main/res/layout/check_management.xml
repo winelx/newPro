@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:ellipsize="end"
-                        android:maxEms="14"
+                        android:paddingRight="15dp"
                         android:singleLine="true"
                         android:text="测试公司测试公司测试公司"
                         android:textColor="@color/black"
@@ -83,7 +83,7 @@
                     android:layout_below="@+id/title"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:maxEms="16"
+                    android:paddingRight="25dp"
                     android:singleLine="true"
                     android:textColor="@color/graytext" />
 
@@ -95,7 +95,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:maxEms="17"
+                    android:paddingRight="15dp"
                     android:singleLine="true"
                     android:textColor="@color/black" />
 
@@ -107,7 +107,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:maxEms="17"
+                    android:paddingRight="15dp"
                     android:singleLine="true"
                     android:text="检查组织:XXXXXXXXXXXX"
                     android:textColor="@color/black" />

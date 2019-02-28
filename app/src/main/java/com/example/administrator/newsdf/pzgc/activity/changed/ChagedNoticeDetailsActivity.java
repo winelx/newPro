@@ -141,7 +141,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
 
     public void saveAssignPersonApp(String userName, final String userId, final String orgId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("确定将任务指派给:" + userName + " 吗?")
+        builder.setMessage("确定将任务指派给" + userName + " 吗?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {

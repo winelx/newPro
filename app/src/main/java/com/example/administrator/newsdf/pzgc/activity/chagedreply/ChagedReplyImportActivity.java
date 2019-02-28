@@ -68,7 +68,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         inspect_content = (TextView) findViewById(R.id.inspect_content);
-        inspect_content.setText("关联整改通知单：" + intent.getStringExtra("string"));
+        inspect_content.setText("整改通知单编号：" + intent.getStringExtra("string"));
         recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyView(emptyUtils.init());

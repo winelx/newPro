@@ -245,7 +245,7 @@
                             android:layout_height="45dp"
                             android:layout_marginLeft="5dp"
                             android:gravity="center"
-                            android:text="添加问题项"
+                            android:text="添加问题"
                             android:textColor="@color/blue"
                             android:textSize="16sp" />
 
@@ -270,7 +270,7 @@
                             android:layout_height="45dp"
                             android:layout_marginLeft="5dp"
                             android:gravity="center"
-                            android:text="导入问题项"
+                            android:text="导入问题"
                             android:textColor="@color/blue"
                             android:textSize="16sp" />
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -147,7 +148,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     Intent intent = new Intent(mContext, ChagedReplyImportActivity.class);
                     intent.putExtra("noticeId", noticeId);
                     intent.putExtra("id", id);
-                    intent.putExtra("string",chagedOrganizeText.getText().toString());
+                    intent.putExtra("string", chagedOrganizeText.getText().toString());
                     startActivityForResult(intent, 0);
                 } else {
                     ToastUtils.showShortToast("当前不是编辑状态");
@@ -229,8 +230,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     id = (String) map.get("id");
                 }
                 String code = (String) map.get("code");
-                if (code != null) {
-                    number.setText((String) map.get("code"));
+                if (code != null && !TextUtils.isEmpty(code)) {
+                    number.setText(code);
                 }
                 comButton.setText("编辑");
                 replyImportProblem.setVisibility(View.VISIBLE);
@@ -239,6 +240,13 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 toolbarMenu.setClickable(true);
                 Dates.backgroundAlpha(1.0f, ChagedReplyNewActivity.this);
                 ToastUtils.showsnackbar(comButton, "保存成功");
+                if (list.size() > 0) {
+                    if (count == 0) {
+                        replycommit.setBackgroundColor(Color.parseColor("#f88c37"));
+                    } else {
+                        replycommit.setBackgroundColor(Color.parseColor("#888888"));
+                    }
+                }
             }
 
             @Override
@@ -285,8 +293,9 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     } else {
                         replycommit.setBackgroundColor(Color.parseColor("#888888"));
                     }
+                }else {
+                    replycommit.setBackgroundColor(Color.parseColor("#888888"));
                 }
-
             }
 
             @Override
