@@ -79,7 +79,6 @@ public class Listinter_Adfapter extends BaseAdapter {
         holder.inter_title.setText(mData.get(position).getPointName());
         //创建时间
         holder.inter_data.setText(mData.get(position).getWbsPath());
-
         //内容
         holder.inter_content.setText(mData.get(position).getContent());
         switch (mData.get(position).getIsFinish() + "") {

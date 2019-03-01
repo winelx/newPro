@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeItemDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
@@ -91,13 +92,14 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
         chagedUtils.getNoticeDetailsInfo(id, new ChagedUtils.NoticeFormMainInfoCallback() {
             @Override
             public void onsuccess(ArrayList<Object> data) {
+                list.clear();
                 list.addAll(data);
                 mAdapter.setNewData(list);
             }
 
             @Override
             public void onerror(String str) {
-
+                ToastUtils.showsnackbar(titleView, str);
             }
         });
     }

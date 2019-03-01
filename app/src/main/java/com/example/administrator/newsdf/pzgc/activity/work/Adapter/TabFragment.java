@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Tab_fragment_item;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -230,7 +228,7 @@ public class TabFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-            ToastUtils.showLongToast("ss");
+
             //重新加载数据，
             i = 1;
             okgo(ids.get(pos), i);

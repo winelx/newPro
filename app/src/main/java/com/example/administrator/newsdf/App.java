@@ -4,12 +4,9 @@ package com.example.administrator.newsdf;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
-import android.support.multidex.MultiDex;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
@@ -64,7 +61,6 @@ public class App extends Application {
         OkGo.init(this);
         //图片压缩
         Tiny.getInstance().init(this);
-
         //字体图标
         Iconify.with(new FontAwesomeModule());
         //网络加载库配置

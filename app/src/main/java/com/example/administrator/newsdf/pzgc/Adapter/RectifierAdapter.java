@@ -64,6 +64,12 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void bindView(final TypeHolder holder, final int position) {
 
         String imgUrl = mData.get(position);
+        String title;
+        try {
+             title=Title.get(position);
+        }catch (Exception e){
+            title="";
+        }
         //拿到.位置
         int doc = imgUrl.lastIndexOf(".");
         //截取doc+1后面的字符串，包括doc+1；
@@ -73,7 +79,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f8f5f6"));
-            holder.audio_relat_name.setText(Title.get(position) + ".pdf");
+            holder.audio_relat_name.setText(title+ ".pdf");
             holder.audio_relat_icon.setText("P");
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
@@ -81,7 +87,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if ("doc".equals(strs) || "docx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
-            holder.audio_relat_name.setText(Title.get(position) + ".doc");
+            holder.audio_relat_name.setText(title + ".doc");
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f1f6f7"));
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
@@ -89,7 +95,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
-            holder.audio_relat_name.setText(Title.get(position) + ".xsl");
+            holder.audio_relat_name.setText(title + ".xsl");
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f5f8f7"));
             holder.audio_relat_icon.setText("X");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));

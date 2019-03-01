@@ -197,7 +197,6 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
         mContext = getApplicationContext();
-
         floatMeunAnims = new FloatMeunAnims();
         //拿到上一个界面传递的数据，
         Intent intent = getIntent();
@@ -323,7 +322,6 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
                 return false;
             }
         });
-
         delete_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -346,7 +344,6 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
                     //传入false表示加载失败
                 }
                 refreshlayout.finishLoadmore(1000);
-
             }
         });
         /**

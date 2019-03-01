@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -287,21 +288,28 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
                 //整改部位
                 String PartName = billBean.getRectificationPartName();
                 String reason = billBean.getPartDetails();
-                if (PartName == null) {
+                if (PartName == null || TextUtils.isEmpty(PartName)) {
                     if (reason == null) {
                         PartName = "无";
-                    }else {
-                        PartName =reason;
+                    } else {
+                        PartName = reason;
                     }
                 } else {
-                    if (reason != null) {
+                    if (reason != null && !TextUtils.isEmpty(reason)) {
                         PartName = PartName + ">>" + reason;
                     }
                 }
+
                 //存在问题
                 String Reason = billBean.getRectificationReason();
                 if (Reason == null) {
                     Reason = "";
+                }
+                if (TextUtils.isEmpty(PartName) || PartName == null) {
+                    PartName = "无";
+                }
+                if (TextUtils.isEmpty(Reason) || Reason == null) {
+                    Reason = "无";
                 }
                 content.setText("整改部位：" + PartName + "\n" +
                         "整改期限：" + billBean.getRectificationDate());

@@ -95,6 +95,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     }
 
     private void initdata() {
+        //实现
         new AllmessagePer(this).getMode();
         //推送的接口回调（）
         CallBackUtils.setCallBack(this);

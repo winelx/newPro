@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/back2"
             android:orientation="vertical">
 
@@ -141,19 +141,13 @@
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/back2"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp" />
-
             <TextView
                 android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@color/white"
                 android:gravity="center"
+                android:layout_marginTop="15dp"
                 android:text="删除该项问题"
                 android:textColor="@color/red"
                 android:textSize="16sp" />

@@ -537,6 +537,7 @@ public class ChagedreplyUtils {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        callback.onerror("请求失败");
                     }
                 });
     }

@@ -108,11 +108,13 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         holder.typerecycler.setLayoutManager(layoutManager);
         holder.typerecycler.addItemDecoration(divider1);
         ArrayList<String> photolist = new ArrayList<>();
+        ArrayList<String> photonames = new ArrayList<>();
         ArrayList<photoBean> AfterFileslist = problem.getAfterFileslist();
         for (int i = 0; i < AfterFileslist.size(); i++) {
             photolist.add(AfterFileslist.get(i).getPhotopath());
+            photonames.add(AfterFileslist.get(i).getPhotoname());
         }
-        adapter = new RectifierAdapter(mContext, photolist, new ArrayList<String>());
+        adapter = new RectifierAdapter(mContext, photolist, photonames);
         holder.typerecycler.setAdapter(adapter);
     }
 

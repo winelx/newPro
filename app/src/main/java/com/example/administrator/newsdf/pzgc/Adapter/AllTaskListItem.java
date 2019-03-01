@@ -92,6 +92,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 break;
         }
+        holder.interTime.setText(list.get(position).getUpdateDate().substring(0,10));
         holder.comments.setText("(" + list.get(position).getComments() + ")");
         holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
         if (list.get(position).getUpload().size() > 0) {
