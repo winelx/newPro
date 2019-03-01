@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 android {
-
     compileSdkVersion 26
     buildToolsVersion '26.0.3'
     aaptOptions {
@@ -15,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 23
         versionCode 1
         versionName "2.5"
         resConfigs "zh-rCN"

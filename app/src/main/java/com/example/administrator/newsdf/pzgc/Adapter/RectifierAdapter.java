@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,14 +38,14 @@ import java.util.ArrayList;
 public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<String> mData;
-    private ArrayList<String> Title;
+    private ArrayList<String> title;
     private boolean upload = true;
     private boolean compress = true;
 
-    public RectifierAdapter(Context mContext, ArrayList<String> listA, ArrayList<String> Title) {
+    public RectifierAdapter(Context mContext, ArrayList<String> list, ArrayList<String> title) {
         this.mContext = mContext;
-        this.mData = listA;
-        this.Title = Title;
+        this.mData = list;
+        this.title = title;
     }
 
     //初始化布局
@@ -61,14 +62,14 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void bindView(final TypeHolder holder, final int position) {
-
         String imgUrl = mData.get(position);
-        String title;
+        String filename;
         try {
-             title=Title.get(position);
+            filename=title.get(position);
         }catch (Exception e){
-            title="";
+            filename="";
         }
         //拿到.位置
         int doc = imgUrl.lastIndexOf(".");
@@ -79,7 +80,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f8f5f6"));
-            holder.audio_relat_name.setText(title+ ".pdf");
+            holder.audio_relat_name.setText(filename+ ".pdf");
             holder.audio_relat_icon.setText("P");
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
@@ -87,7 +88,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if ("doc".equals(strs) || "docx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
-            holder.audio_relat_name.setText(title + ".doc");
+            holder.audio_relat_name.setText(filename + ".doc");
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f1f6f7"));
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
@@ -95,7 +96,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
-            holder.audio_relat_name.setText(title + ".xsl");
+            holder.audio_relat_name.setText(filename + ".xsl");
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f5f8f7"));
             holder.audio_relat_icon.setText("X");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
@@ -191,7 +192,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void getData(ArrayList<String> mData, ArrayList<String> title) {
         this.mData = mData;
-        this.Title = title;
+        this.title = title;
         notifyDataSetChanged();
     }
 

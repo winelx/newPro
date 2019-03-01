@@ -38,6 +38,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     private ArrayList<Object> list;
     private Context mContext;
     private RectifierAdapter adapter;
+    private RectifierAdapter mAdapter;
     private static final int TYPE_PROBLEM = 1;
     private static final int TYPE_CHAGED = 2;
     private static final int TYPE_RECORD = 3;
@@ -141,14 +142,16 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         holder.typerecycler.setLayoutManager(layoutManager);
         holder.typerecycler.addItemDecoration(divider1);
         ArrayList<String> photolist = new ArrayList<>();
+        ArrayList<String> photonames = new ArrayList<>();
         ArrayList<photoBean> beforeFileslist = chaged.getBeforeFileslist();
         for (int i = 0; i < beforeFileslist.size(); i++) {
             photolist.add(beforeFileslist.get(i).getPhotopath());
+            photonames.add(beforeFileslist.get(i).getPhotoname());
         }
-        adapter = new RectifierAdapter(mContext, photolist, new ArrayList<String>());
+        mAdapter = new RectifierAdapter(mContext, photolist,photonames);
         //是否使用缩略图
-        adapter.iscompress(false);
-        holder.typerecycler.setAdapter(adapter);
+        mAdapter.iscompress(false);
+        holder.typerecycler.setAdapter(mAdapter);
     }
 
     @SuppressLint("SetTextI18n")
