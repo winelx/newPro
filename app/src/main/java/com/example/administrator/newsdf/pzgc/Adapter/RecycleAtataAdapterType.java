@@ -43,9 +43,9 @@ import okhttp3.Response;
  * description:任务详情回复内容适配器
  *
  * @author lx
- *         date:2017/12/13 0013.
- *         update: 2018/2/6 0006
- *         version:
+ * date:2017/12/13 0013.
+ * update: 2018/2/6 0006
+ * version:
  */
 
 public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -204,7 +204,13 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
         divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
         holder.audioRec.addItemDecoration(divider1);
-        int filelenght=mDatas.get(posotion).getFilename().size();
+        int filelenght = mDatas.get(posotion).getFilename().size();
+
+        if (mDatas.get(posotion).getAttachments().size() > 0) {
+            holder.audioNotimage.setVisibility(View.GONE);
+        } else {
+            holder.audioNotimage.setVisibility(View.VISIBLE);
+        }
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
         adapter.setHasStableIds(true);
         holder.audioRec.setAdapter(adapter);
@@ -270,7 +276,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                             });
                     try {
                         Dates.disDialog();
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                     }
                 }
             }
