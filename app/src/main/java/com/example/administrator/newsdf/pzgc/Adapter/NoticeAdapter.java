@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 
 import java.util.ArrayList;
 
@@ -23,13 +24,13 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_ONE:
-                return new NoticedBean(LayoutInflater.from(parent.getContext())
+                return new NoticedViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapter_item_notice, parent, false));
             case TYPE_TWO:
-                return new AgencyBean(LayoutInflater.from(parent.getContext())
+                return new AgencyViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapter_item_agency, parent, false));
             case TYPE_THREE:
-                return new CompleteBean(LayoutInflater.from(parent.getContext())
+                return new CompleteViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapter_item_complete, parent, false));
             default:
                 return null;
@@ -38,26 +39,26 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof NoticedBean && list.size() != 0) {
-            bindNotice((NoticedBean) holder, position);
-        } else if (holder instanceof AgencyBean && list.size() != 0) {
-            bindAgency((AgencyBean) holder, position);
-        } else if (holder instanceof CompleteBean && list.size() != 0) {
-            bindComplete((CompleteBean) holder, position);
+        if (holder instanceof NoticedViewHolder && list.size() != 0) {
+            bindNotice((NoticedViewHolder) holder, position);
+        } else if (holder instanceof AgencyViewHolder && list.size() != 0) {
+            bindAgency((AgencyViewHolder) holder, position);
+        } else if (holder instanceof CompleteViewHolder && list.size() != 0) {
+            bindComplete((CompleteViewHolder) holder, position);
         }
     }
 
 
     /*消息通知*/
-    private void bindNotice(NoticedBean holder, int position) {
+    private void bindNotice(NoticedViewHolder holder, int position) {
     }
 
     /*代办事项*/
-    private void bindAgency(AgencyBean holder, int position) {
+    private void bindAgency(AgencyViewHolder holder, int position) {
     }
 
     /*已办事项*/
-    private void bindComplete(CompleteBean holder, int position) {
+    private void bindComplete(CompleteViewHolder holder, int position) {
     }
 
     @Override
@@ -79,23 +80,23 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     /*消息通知*/
-    class NoticedBean extends RecyclerView.ViewHolder {
+    class NoticedViewHolder extends RecyclerView.ViewHolder {
 
-        public NoticedBean(View itemView) {
+        public NoticedViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    class AgencyBean extends RecyclerView.ViewHolder {
+    class AgencyViewHolder extends RecyclerView.ViewHolder {
 
-        public AgencyBean(View itemView) {
+        public AgencyViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    class CompleteBean extends RecyclerView.ViewHolder {
+    class CompleteViewHolder extends RecyclerView.ViewHolder {
 
-        public CompleteBean(View itemView) {
+        public CompleteViewHolder(View itemView) {
             super(itemView);
         }
     }
