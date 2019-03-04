@@ -1,22 +1,15 @@
 package com.example.administrator.newsdf.pzgc.fragment;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.LinearLayoutManager;
 
+import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.HomemessageAdapter;
-import com.example.administrator.newsdf.pzgc.bean.Homenotice;
-import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
+import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
-import com.example.baselibrary.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import java.util.ArrayList;
 
 
 /**
@@ -27,13 +20,10 @@ import java.util.ArrayList;
  * {@link }
  */
 
-public class HomeFragment extends LazyloadFragment {
+public class HomeFragment extends LazyloadFragment implements View.OnClickListener {
     private SmartRefreshLayout refreshLayout;
-
     private Context mContext;
-    private HomemessageAdapter adapter;
-    private ArrayList<Tenanceview> list;
-    private ArrayList<Homenotice> noticeslist;
+    private SwipeRefreshLayout mRefreshLayout;
 
     @Override
     protected int setContentView() {
@@ -43,27 +33,33 @@ public class HomeFragment extends LazyloadFragment {
     @Override
     protected void init() {
         mContext = getActivity();
-        noticeslist = new ArrayList<>();
-        //刷新加载控件
-        refreshLayout = rootView.findViewById(R.id.smartrefresh);
-        //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(false);
-        //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(false);
-        //是否启用越界拖动（仿苹果效果）1.0.4
-        refreshLayout.setEnableOverScrollDrag(false);
-        //是否在列表不满一页时候开启上拉加载功能
-        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
-        /* 下拉刷新*/
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        rootView.findViewById(R.id.noticed_lin).setOnClickListener(this);
+        rootView.findViewById(R.id.agency_lin).setOnClickListener(this);
+        rootView.findViewById(R.id.complete_lin).setOnClickListener(this);
+        mRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mRefreshLayout);
+// 下拉刷新颜色控制
+        mRefreshLayout.setColorSchemeResources(R.color.colorAccent,
+                R.color.finish_green, R.color.Orange,
+                R.color.yellow);
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
+            public void onRefresh() {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(3000);
+                        } catch (Exception e) {
 
-                //关闭刷新
-                refreshlayout.finishRefresh();
+                        }
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                }.start();
             }
         });
+//停止刷新
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -72,4 +68,30 @@ public class HomeFragment extends LazyloadFragment {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.noticed_lin:
+                //消息通知
+                Intent noticed = new Intent(mContext, NoticeActivity.class);
+                noticed.putExtra("title", "消息通知");
+                startActivity(noticed);
+
+                break;
+            case R.id.agency_lin:
+                //代办事项
+                Intent agency = new Intent(mContext, NoticeActivity.class);
+                agency.putExtra("title", "代办事项");
+                startActivity(agency);
+                break;
+            case R.id.complete_lin:
+                //已办事项
+                Intent complete = new Intent(mContext, NoticeActivity.class);
+                complete.putExtra("title", "已办事项");
+                startActivity(complete);
+                break;
+            default:
+                break;
+        }
+    }
 }

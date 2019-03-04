@@ -17,25 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
 }
 
 dependencies {
 
-    //权限
-
-    //compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
-
-    //工具类库
-
     //轮播图
     compile 'me.weyye.hipermission:library:1.0.7'
-
-    //图片
 
     //noinspection GradleDependency
     compile 'com.github.bumptech.glide:glide:4.1.1'
@@ -66,12 +53,10 @@ dependencies {
     compile 'com.github.jokermonn:permissions4m:2.1.2-lib'
 
     //网络框架
-
     //noinspection GradleDependency
     compile 'com.lzy.net:okgo:2.1.4'
 
     //数据库
-
     //noinspection GradleDependency
     compile 'org.greenrobot:greendao:3.2.0'
 
@@ -93,8 +78,10 @@ dependencies {
     //极光推送
     compile 'cn.jiguang.sdk:jpush:3.0.1'
     compile 'cn.jiguang.sdk:jcore:1.1.0'
+    //rxjava
     compile 'io.reactivex.rxjava2:rxjava:2.0.6'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //
     compile 'com.blankj:utilcode:1.15.0'
 
     //noinspection GradleDependency

@@ -3,14 +3,6 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.3'
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
-    }
-    dexOptions {
-        preDexLibraries = false
-    }
-
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
