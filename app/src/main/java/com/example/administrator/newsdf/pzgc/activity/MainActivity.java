@@ -222,7 +222,6 @@ public class MainActivity extends BaseActivity {
         mTabs.add(tab_work);
         mTabs.add(tab_check);
         mTabs.add(tab_hot);
-
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
         for (Tab tab : mTabs) {
             //获取都文字
