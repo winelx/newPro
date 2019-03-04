@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/organizationa"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/writer">
+
+
+    <ImageView
+        android:id="@+id/mine_img"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:background="@mipmap/warning_red" />
+
+    <TextView
+        android:id="@+id/mine_text"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/mine_img"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/mine_img"
+        android:layout_toRightOf="@+id/mine_img"
+        android:text="爆等排行"
+        android:textColor="#323232" />
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/mine_text"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:text="{fa-angle-right}"
+        android:textColor="@color/inconfy"
+        android:textSize="25sp" />
+
+
+</RelativeLayout>

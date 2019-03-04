@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,7 +17,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.MoretaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
+import com.example.administrator.newsdf.pzgc.bean.AduioContent;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
@@ -58,7 +57,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     private TextView wbsNode, drawer_layout_text;
     private RecyclerView mRecyclerView;
     private MoretaskAdapter mAdapter;
-    private ArrayList<Aduio_content> contents;
+    private ArrayList<AduioContent> contents;
     private ArrayList<MoretasklistBean> Dats;
     public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
@@ -439,7 +438,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                contents.add(new Aduio_content(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
+                contents.add(new AduioContent(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
                 mAdapter.getContent(contents, Dats);
                 wbsNode.setText(jsonArray.getString("WbsName"));
                 try {

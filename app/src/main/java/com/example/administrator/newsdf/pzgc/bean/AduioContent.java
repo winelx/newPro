@@ -13,7 +13,7 @@ package com.example.administrator.newsdf.pzgc.bean;
  *         version:
  */
 
-public class Aduio_content {
+public class AduioContent {
     //唯一标识
     String id;
     ///检查点
@@ -43,10 +43,10 @@ public class Aduio_content {
     //标准
     String partContent;
 
-    public Aduio_content(String id, String name, String status, String content, String leaderName,
-                         String leaderId, String isread, String createByUserID,
-                         String checkStandard, String createDate,
-                         String wbsName, String changeId, String backdata, String partContent) {
+    public AduioContent(String id, String name, String status, String content, String leaderName,
+                        String leaderId, String isread, String createByUserID,
+                        String checkStandard, String createDate,
+                        String wbsName, String changeId, String backdata, String partContent) {
         this.id = id;
         this.name = name;
         this.status = status;

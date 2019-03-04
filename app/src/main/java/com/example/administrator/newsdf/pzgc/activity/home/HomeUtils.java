@@ -8,8 +8,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_comm;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.bean.AduioContent;
+import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
@@ -540,8 +540,8 @@ public class HomeUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                ArrayList<Aduio_content> contents = new ArrayList<>();
-                                ArrayList<Aduio_data> aduioDatas = new ArrayList<>();
+                                ArrayList<AduioContent> contents = new ArrayList<>();
+                                ArrayList<AduioData> aduioDatas = new ArrayList<>();
                                 ArrayList<Aduio_comm> aduioComms = new ArrayList<>();
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 JSONObject wtMain = data.getJSONObject("wtMain");
@@ -679,7 +679,7 @@ public class HomeUtils {
                                     //打回说明
                                     backdata = ("");
                                 }
-                                contents.add(new Aduio_content(wtMainid, name, status, content,
+                                contents.add(new AduioContent(wtMainid, name, status, content,
                                         leaderName, leaderId, isread,
                                         createByUserID, checkStandard, createDate, wbsName, changeId,
                                         backdata, partContent));
@@ -786,7 +786,7 @@ public class HomeUtils {
                                         }
                                     }
                                     if (!uploadContent.isEmpty()) {
-                                        aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                        aduioDatas.add(new AduioData(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                                 subWbsname, uploadContent, updateDate, uploadAddr, false, false, false,
                                                 false, false, false, attachments, comments.length() + "",
                                                 userimage, filename, isSmartProject, isFavorite, smartProjectType));
@@ -895,7 +895,7 @@ public class HomeUtils {
                                         }
 
                                         if (!uploadContent.isEmpty()) {
-                                            aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                            aduioDatas.add(new AduioData(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                                     subWbsname, uploadContent, updateDate, uploadAddr, false, false, false,
                                                     false, false, false, attachments, comments.length() + "",
                                                     userimage, filename, isSmartProject, isFavorite, smartProjectType));

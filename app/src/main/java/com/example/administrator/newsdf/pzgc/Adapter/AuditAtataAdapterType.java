@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.CameDialogs;
@@ -43,7 +43,7 @@ import okhttp3.Response;
 public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Aduio_data> mDatas;
+    private ArrayList<AduioData> mDatas;
     String str = null;
     int bright;
     CameDialogs cameDialog;
@@ -177,7 +177,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public void getdata(ArrayList<Aduio_data> mDatas) {
+    public void getdata(ArrayList<AduioData> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }

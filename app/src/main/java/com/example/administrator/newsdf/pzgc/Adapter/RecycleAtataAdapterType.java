@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils2;
@@ -52,7 +52,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
 
     private Context mContext;
     private boolean status;
-    private ArrayList<Aduio_data> mDatas;
+    private ArrayList<AduioData> mDatas;
     String str = null;
     int isSmartProject = -1, bright;
     String taskId;
@@ -427,7 +427,7 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    public void getdata(ArrayList<Aduio_data> mDatas) {
+    public void getdata(ArrayList<AduioData> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }

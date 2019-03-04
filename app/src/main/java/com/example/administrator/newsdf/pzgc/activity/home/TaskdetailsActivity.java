@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -24,8 +23,8 @@ import com.example.administrator.newsdf.pzgc.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplysActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_comm;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.bean.AduioContent;
+import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
@@ -71,8 +70,8 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
     //界面适配器
     private AudioAdapter mAdapter;
     private String taskid;
-    private ArrayList<Aduio_content> contents;
-    private ArrayList<Aduio_data> aduioDatas;
+    private ArrayList<AduioContent> contents;
+    private ArrayList<AduioData> aduioDatas;
     private ArrayList<Aduio_comm> aduioComms;
     private static TaskdetailsActivity mContext;
     private TextView wbspath, drawerLayoutText;
@@ -575,7 +574,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
                                 //打回说明
                                 backdata = ("");
                             }
-                            contents.add(new Aduio_content(wtMainid, name, status, content,
+                            contents.add(new AduioContent(wtMainid, name, status, content,
                                     leaderName, leaderId, isread,
                                     createByUserID, checkStandard, createDate, wbsName, changeId,
                                     backdata, partContent));
@@ -682,7 +681,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
                                     }
                                 }
                                 if (!uploadContent.isEmpty()) {
-                                    aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                    aduioDatas.add(new AduioData(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                             wbsName, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
                                             smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
                                             userimage, filename, isSmartProject, isFavorite, smartProjectType));
@@ -790,7 +789,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
                                             attachments.add(Requests.networks + path);
                                         }
                                     }
-                                    aduioDatas.add(new Aduio_data(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
+                                    aduioDatas.add(new AduioData(replyID, uploadId, replyUserName, replyUserHeaderURL, subName,
                                             subWbsname, uploadContent, updateDate, uploadAddr, smartType1Down, smartType1Up, smartType2Down,
                                             smartType2Up, smartType3Down, smartType3Up, attachments, comments.length() + "",
                                             userimage, filename, isSmartProject, isFavorite, smartProjectType));

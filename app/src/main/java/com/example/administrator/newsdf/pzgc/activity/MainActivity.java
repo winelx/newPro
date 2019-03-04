@@ -25,6 +25,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.BrightspotFragment;
 import com.example.administrator.newsdf.pzgc.bean.Tab;
 import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
+import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.fragment.IndexFrament;
 import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
@@ -211,11 +212,13 @@ public class MainActivity extends BaseActivity {
 
     public void initTab() {
         //添加tab信息，存入集合进行展示
-        Tab tab_home = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_home_style, 0);
+        Tab tab_message = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+        Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
         Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
         Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
-        mTabs.add(tab_home);
+        mTabs.add(tab_message);
+        mTabs.add(tab_index);
         mTabs.add(tab_work);
         mTabs.add(tab_check);
         mTabs.add(tab_hot);
@@ -320,6 +323,7 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     //删除指定文件夹下所有文件
 //param path 文件夹完整绝对路径
     public static boolean delAllFile(String path) {

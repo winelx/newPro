@@ -3,7 +3,9 @@ package com.example.administrator.newsdf.pzgc.bean;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2017/12/13 0013.
+ *
+ * @author Administrator
+ * @date 2017/12/13 0013
  * 详情回复
  */
 

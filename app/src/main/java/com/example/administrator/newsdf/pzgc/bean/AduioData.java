@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/12/13 0013.
  */
 
-public class Aduio_data {
+public class AduioData {
     String replyID;//唯一标识
     String uploadId;//上传人ID
     String replyUserName;// 上传人姓名 （路径：subWbsTaskMains  -> uploadUser -> realname）
@@ -38,11 +38,11 @@ public class Aduio_data {
     boolean isFavorite;
     int smartProjectType;
 
-    public Aduio_data(String replyID, String uploadId, String replyUserName,
-                      String replyUserHeaderURL, String name, String wbsName, String uploadContent,
-                      String updateDate, String uploadAddr, boolean smartprojectMain1Down, boolean smartprojectMain1Up,
-                      boolean smartprojectMain2Down, boolean smartprojectMain2Up, boolean smartprojectMain3Down,
-                      boolean smartprojectMain3Up, ArrayList<String> attachments, String commentCount, String userpath, ArrayList<String> filename, int isSmartProject
+    public AduioData(String replyID, String uploadId, String replyUserName,
+                     String replyUserHeaderURL, String name, String wbsName, String uploadContent,
+                     String updateDate, String uploadAddr, boolean smartprojectMain1Down, boolean smartprojectMain1Up,
+                     boolean smartprojectMain2Down, boolean smartprojectMain2Up, boolean smartprojectMain3Down,
+                     boolean smartprojectMain3Up, ArrayList<String> attachments, String commentCount, String userpath, ArrayList<String> filename, int isSmartProject
             , boolean isFavorite, int smartProjectType
     ) {
         this.replyID = replyID;

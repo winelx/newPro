@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_comm;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_data;
+import com.example.administrator.newsdf.pzgc.bean.AduioContent;
+import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.text.ParseException;
@@ -30,8 +30,8 @@ public class AuditdetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int TYPE_GRID = 0xff02;
     public static final int TYPE_LIST = 0xff03;
 
-    private ArrayList<Aduio_content> content;
-    private ArrayList<Aduio_data> datas;
+    private ArrayList<AduioContent> content;
+    private ArrayList<AduioData> datas;
     private ArrayList<Aduio_comm> comms;
 
     private RecycleAtataAdapterType dataTypeAdapter;
@@ -232,7 +232,7 @@ public class AuditdetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     /**
      * 数据源
      */
-    public void setmBanner(ArrayList<Aduio_content> content, ArrayList<Aduio_data> datas, ArrayList<Aduio_comm> comms) {
+    public void setmBanner(ArrayList<AduioContent> content, ArrayList<AduioData> datas, ArrayList<Aduio_comm> comms) {
         this.content = content;
         this.datas = datas;
         this.comms = comms;

@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "2.5"
         resConfigs "zh-rCN"

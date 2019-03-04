@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.bean.Aduio_content;
+import com.example.administrator.newsdf.pzgc.bean.AduioContent;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_CONTENT = 0xff01;
     public static final int TYPE_DATA = 0xff02;
-    private ArrayList<Aduio_content> content;
+    private ArrayList<AduioContent> content;
     private MoreTaskDataAdapter mAdapter;
     private ArrayList<MoretasklistBean> data;
     private Context mContext;
@@ -197,7 +197,7 @@ public class MoretaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * @param content 节点基本信息
      * @param data    节点数据
      */
-    public void getContent(ArrayList<Aduio_content> content, ArrayList<MoretasklistBean> data) {
+    public void getContent(ArrayList<AduioContent> content, ArrayList<MoretasklistBean> data) {
         this.content = content;
         this.data = data;
         notifyDataSetChanged();
