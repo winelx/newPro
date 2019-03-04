@@ -28,10 +28,7 @@
                 android:layout_height="wrap_content" />
 
 
-            <com.example.baselibrary.EmptyRecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <include layout="@layout/fragment_homemaeeage_item" />
 
 
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter

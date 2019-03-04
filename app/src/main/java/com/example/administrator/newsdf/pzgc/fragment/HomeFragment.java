@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 
+
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.HomemessageAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Homenotice;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends LazyloadFragment {
     private SmartRefreshLayout refreshLayout;
-    private EmptyRecyclerView recycler;
+
     private Context mContext;
     private HomemessageAdapter adapter;
     private ArrayList<Tenanceview> list;
@@ -43,18 +44,6 @@ public class HomeFragment extends LazyloadFragment {
     protected void init() {
         mContext = getActivity();
         noticeslist = new ArrayList<>();
-        noticeslist.add(new Homenotice(R.mipmap.fr_work_miss, "", "", "", "", ""));
-        noticeslist.add(new Homenotice(R.mipmap.fr_work_rectification, "", "", "", "", ""));
-        noticeslist.add(new Homenotice(R.mipmap.fr_work_miss, "", "", "", "", ""));
-        list = new ArrayList<>();
-        list.add(new Tenanceview("#5096F8", "累计完成任务数", "100,000"));
-        list.add(new Tenanceview("#f88c37", "今日完成任务数", "500"));
-        list.add(new Tenanceview("#28c26A", "上月检查单数", "10"));
-        list.add(new Tenanceview("#ffaa09", "上月通知单数", "100"));
-
-        //列表控件
-        recycler = rootView.findViewById(R.id.recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(mContext));
         //刷新加载控件
         refreshLayout = rootView.findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
