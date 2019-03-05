@@ -9,7 +9,7 @@
         android:layout_height="50dp"
         android:background="@color/colorAccent"
         android:orientation="horizontal">
-        ` `
+
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/aduit_back"
@@ -21,7 +21,8 @@
             android:paddingLeft="15dp"
             android:text="{fa-angle-left}"
             android:textColor="@color/writer"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:paddingStart="15dp" />
 
         <TextView
             android:id="@+id/title"
@@ -51,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@mipmap/meun"
-                android:gravity="center" />
+                android:gravity="center"
+                android:contentDescription="TODO" />
         </LinearLayout>
 
 
@@ -59,7 +61,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:padding="0dp">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/SmartRefreshLayout"
@@ -84,9 +88,9 @@
             android:id="@+id/nulllauout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"

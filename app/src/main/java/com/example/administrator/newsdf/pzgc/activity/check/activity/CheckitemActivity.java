@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -358,6 +359,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         LinearLayoutManager layoutmanager = new LinearLayoutManager(this);
         //设置RecyclerView 布局
         checkStandardRec.setLayoutManager(layoutmanager);
+        checkStandardRec.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckitemAdapter(mContext, chekItem, inputMethodManager);
         checkStandardRec.setAdapter(mAdapter);
     }
@@ -1219,7 +1221,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         //获取相机权限，定位权限，内存权限
         requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionListener() {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
             @Override
             public void onGranted() {
                 CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
