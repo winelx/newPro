@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -24,6 +24,8 @@ import com.example.administrator.newsdf.pzgc.activity.device.ProblemItemActivity
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 
 import java.util.ArrayList;
@@ -102,7 +104,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                             } else {
                                 Checkitem.delete(photoPaths.get(position).getContent());
                                 //删除本地图片
-                                FileUtils.deleteFile(photoPaths.get(position).getName());
+                                Dates.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
                                 photoPaths.remove(position);
                                 //刷新界面
@@ -120,7 +122,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                                     message.deleteid(photoPaths.get(position).getContent());
                                 }
                                 //删除本地图片
-                                FileUtils.deleteFile(photoPaths.get(position).getName());
+                                Dates.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
                                 photoPaths.remove(position);
                                 //刷新界面
@@ -138,7 +140,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                                     Rectifi.delete(photoPaths.get(position).getContent());
                                 }
                                 //删除本地图片
-                                FileUtils.deleteFile(photoPaths.get(position).getName());
+                                Dates.deleteFile(photoPaths.get(position).getName());
                                 //删除集合数据
                                 photoPaths.remove(position);
                                 //刷新界面

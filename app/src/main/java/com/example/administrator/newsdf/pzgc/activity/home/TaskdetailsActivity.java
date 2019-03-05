@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.AudioAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
@@ -28,6 +28,7 @@ import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -904,7 +905,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
         super.onDestroy();
         if (CameDialog.path.size() != 0) {
             for (int i = 0; i < CameDialog.path.size(); i++) {
-                FileUtils.deleteFile(CameDialog.path.get(i));
+                Dates.deleteFile(CameDialog.path.get(i));
             }
         }
         CameDialog.path.clear();

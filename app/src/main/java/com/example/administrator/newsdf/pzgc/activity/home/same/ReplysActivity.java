@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.home.same;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,19 +38,23 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotosAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -100,7 +105,6 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
     private Context mContext;
     private ProgressBar mProgressBar;
     private ArrayList<String> pathimg;
-    private CheckPermission checkPermission;
     private String content = "", wbspath = "", wbsID = "", id = "", wbstitle = "";
     boolean status = false;
     int position;
@@ -133,24 +137,9 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_reply);
         mContext = ReplysActivity.this;
         floatMeunAnims = new FloatMeunAnims();
+
         //初始化集合
         initArray();
-        //动态请求权限
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(ReplysActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                /**
-                 *   如果不重写，默认是finishddsfaasf
-                 //super.negativeButton();
-                 */
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         findID();   //发现ID
         //有可能没有传递数据过来。所以如果没有传递，那就消费掉
         try {
@@ -633,7 +622,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(ReplysActivity.this);
                         }
@@ -746,5 +735,28 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
                         tvNetSpeed.setText("已上传" + currentSize / 1024 / 1024 + "MB, 共" + totalSize / 1024 / 1024 + "MB;");
                     }
                 });
+    }
+
+    public void getauthority() {
+        //获取相机权限，定位权限，内存权限
+        requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
+                //表示所有权限都授权了
+                CropImageUtils.getInstance().takePhoto(ReplysActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 }

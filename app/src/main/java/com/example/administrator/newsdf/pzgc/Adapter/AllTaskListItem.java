@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
@@ -160,7 +160,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView taskcontent;
         SlantedTextView inface_item_message;
         RelativeLayout inter_rl;
-        NetworkImageView inface_no_image;
+        ImageView inface_no_image;
         LinearLayout inface_image;
 
         public TypeViewholder(View itemView) {

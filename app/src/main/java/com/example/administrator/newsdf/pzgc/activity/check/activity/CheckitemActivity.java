@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,9 +33,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
@@ -48,9 +48,12 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -94,7 +97,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private CheckNewAdapter adapter;
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<chekitemList> mData;
-    private CheckPermission checkPermission;
     private Context mContext;
     private ArrayList<Audio> imagepath;
     private static final int IMAGE_PICKER = 101;
@@ -269,20 +271,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         imagepath = new ArrayList<>();
         chekItem = new ArrayList<>();
         mContext = this;
-        //检查相机权限
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
     }
 
     /**
@@ -402,7 +390,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            //请求权限
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
                         }
@@ -519,7 +508,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 }
                 //删除从相册相机生成的图片，避免占用内存
                 for (int i = 0; i < imagepath.size(); i++) {
-                    FileUtils.deleteFile(imagepath.get(i).getName());
+                    Dates.deleteFile(imagepath.get(i).getName());
                 }
                 finish();
                 break;
@@ -606,14 +595,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
                 boolean lean = checkitemcontentStatus.isChecked();
-                if (lean){
-                    String string=checkItemContentDescribe.getText().toString();
-                    if (!string.isEmpty()){
+                if (lean) {
+                    String string = checkItemContentDescribe.getText().toString();
+                    if (!string.isEmpty()) {
                         Save(isdata, tabup);
-                    }else {
+                    } else {
                         ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
                     }
-                }else {
+                } else {
                     Save(isdata, tabup);
                 }
             }
@@ -640,7 +629,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             }
             //删除从相册相机生成的图片，避免占用内存
             for (int i = 0; i < imagepath.size(); i++) {
-                FileUtils.deleteFile(imagepath.get(i).getName());
+                Dates.deleteFile(imagepath.get(i).getName());
             }
             finish();
             return true;
@@ -691,16 +680,16 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
                 boolean lean = checkitemcontentStatus.isChecked();
-                if (lean){
-                    String string=checkItemContentDescribe.getText().toString();
-                    if (!string.isEmpty()){
+                if (lean) {
+                    String string = checkItemContentDescribe.getText().toString();
+                    if (!string.isEmpty()) {
                         Save(isdata, tabup);
-                    }else {
+                    } else {
                         checkItemTabup.setClickable(true);
                         checkItemTadown.setClickable(true);
                         ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
                     }
-                }else {
+                } else {
                     Save(isdata, tabup);
                 }
             }
@@ -1224,6 +1213,27 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
+    }
+
+    public void getauthority() {
+        //获取相机权限，定位权限，内存权限
+        requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 }
 

@@ -243,11 +243,14 @@ public class Dates {
      */
     public static boolean deleteFile(String sPath) {
         boolean flag = false;
-        File file = new File(sPath);
-        // 路径为文件且不为空则进行删除
-        if (file.isFile() && file.exists()) {
-            file.delete();
-            flag = true;
+        try {
+            File file = new File(sPath);
+            // 路径为文件且不为空则进行删除
+            if (file.isFile() && file.exists()) {
+                file.delete();
+                flag = true;
+            }
+        }catch (Exception e){
         }
         return flag;
     }
@@ -263,32 +266,21 @@ public class Dates {
     }
 
     public static void deleteFile(File file) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                deleteFile(files[i]);
+        try {
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
             }
+            file.delete();
+        }catch (Exception e){
+
         }
-        file.delete();
+
     }
 
-    /**
-     * 复制文件
-     *
-     * @param fromFile
-     * @param toFile   <br/>
-     */
-    public void copyFile(File fromFile, File toFile) throws IOException {
-        FileInputStream ins = new FileInputStream(fromFile);
-        FileOutputStream out = new FileOutputStream(toFile);
-        byte[] b = new byte[1024];
-        int n = 0;
-        while ((n = ins.read(b)) != -1) {
-            out.write(b, 0, n);
-        }
-        ins.close();
-        out.close();
-    }
+
 
     public static String downloadPath() {
         // 首先保存图片

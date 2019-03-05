@@ -45,7 +45,7 @@ import okhttp3.Response;
  */
 public class BootupActivity extends BaseActivity {
     private Context mContext;
-    private final int SDK_PERMISSION_REQUEST = 127;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +71,6 @@ public class BootupActivity extends BaseActivity {
         cookieStore.removeCookie(httpUrl);
         //判断百度地图的key是否正确
         Dates.getSHA1(getApplicationContext());
-        //权限获取
-        getPersimmions();
         //获取保存的用户名和密码
         final String user = SPUtils.getString(BootupActivity.this, "user", "");
         final String password = SPUtils.getString(BootupActivity.this, "password", "");
@@ -197,24 +195,6 @@ public class BootupActivity extends BaseActivity {
                     }
                 });
     }
-
-    @TargetApi(23)
-    private void getPersimmions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permissions = new ArrayList<String>();
-            // 定位精确位置
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-            if (permissions.size() > 0) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
-            }
-        }
-    }
-
 
     /**
      * 退出登录

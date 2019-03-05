@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -68,7 +70,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
             holder.vSelected.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FileUtils.deleteFile(photoPaths.get(position));
+
+                    Dates.deleteFile(photoPaths.get(position));
                     photoPaths.remove(position);
                     notifyDataSetChanged();
                 }

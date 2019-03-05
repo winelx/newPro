@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,16 +24,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -47,6 +52,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -57,16 +63,15 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * description: 整改回复
  *
  * @author lx
- *         date: 2018/8/9 0009 上午 10:12
- *         update: 2018/8/9 0009
- *         version:
+ * date: 2018/8/9 0009 上午 10:12
+ * update: 2018/8/9 0009
+ * version:
  */
 public class CheckReplyActivity extends BaseActivity implements View.OnClickListener {
     private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
     private ArrayList<Audio> imagepath;
     private Context mContext;
-    private CheckPermission checkPermission;
     private static final int IMAGE_PICKER = 101;
     private String id, noticeId, sdealId = "", repyId, repycontent;
     private EditText replyDescription;
@@ -78,19 +83,6 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply);
         imagepath = new ArrayList<>();
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(CheckReplyActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("整改回复");
         mContext = CheckReplyActivity.this;
@@ -136,7 +128,7 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
             case R.id.checklistback:
                 for (int i = 0; i < imagepath.size(); i++) {
                     if (imagepath.get(i).getContent().length() > 0) {
-                        FileUtils.deleteFile(imagepath.get(i).getName());
+                        Dates.deleteFile(imagepath.get(i).getName());
                     }
                 }
                 finish();
@@ -154,7 +146,7 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         //初始化控件
-        RelativeLayout btn_pop_add=popView.findViewById(R.id.btn_pop_add);
+        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
@@ -174,7 +166,7 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(CheckReplyActivity.this);
                         }
@@ -274,7 +266,7 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
             //删除无用图片
             for (int i = 0; i < imagepath.size(); i++) {
                 if (imagepath.get(i).getContent().length() > 0) {
-                    FileUtils.deleteFile(imagepath.get(i).getName());
+                    Dates.deleteFile(imagepath.get(i).getName());
                 }
             }
             finish();
@@ -356,6 +348,25 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
         } else {
             ToastUtils.showLongToast("具体描述不能为空");
         }
+    }
+
+    public void getauthority() {
+        CameraUtils.requestRunPermisssion(this, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
+                CropImageUtils.getInstance().takePhoto(CheckReplyActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
 }

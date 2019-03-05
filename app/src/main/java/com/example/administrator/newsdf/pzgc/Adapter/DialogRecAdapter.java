@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -50,7 +52,7 @@ public class DialogRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileUtils.deleteFile(mData.get(position));
+                Dates.deleteFile(mData.get(position));
                 mData.remove(position);
                 notifyDataSetChanged();
             }

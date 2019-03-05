@@ -34,17 +34,21 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.imagepicker.ImagePicker;
@@ -61,6 +65,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -89,7 +94,7 @@ public class DirectlyreplyActivity extends BaseActivity {
     private Context mContext;
     private Bitmap textBitmap = null;
     private ArrayList<String> imagePaths;
-    private CheckPermission checkPermission;
+
     String id = null, status, wbsId;
     private static final int IMAGE_PICKER = 101;
     private RadioGroup mRadioGroup;
@@ -105,20 +110,6 @@ public class DirectlyreplyActivity extends BaseActivity {
         status = intent.getExtras().getString("status");
         wbsId = intent.getExtras().getString("wbsId");
         activity = intent.getExtras().getString("activity");
-        //动态权限
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(DirectlyreplyActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         findID();   //发现ID
         title.setText("任务回复");
         loaction();//定位
@@ -421,7 +412,7 @@ public class DirectlyreplyActivity extends BaseActivity {
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(DirectlyreplyActivity.this);
                         }
@@ -485,4 +476,25 @@ public class DirectlyreplyActivity extends BaseActivity {
         }
         return false;
     }
+
+    public void getauthority() {
+        CameraUtils.requestRunPermisssion(this, new PermissionListener() {
+            @Override
+            public void onGranted() {
+
+                //表示所有权限都授权了
+                CropImageUtils.getInstance().takePhoto(DirectlyreplyActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
 }

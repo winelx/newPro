@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class CommentsRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onClick(View v) {
                 mData.remove(position);
-                FileUtils.deleteFile(mData.get(position));
+                Dates.deleteFile(mData.get(position));
                 notifyDataSetChanged();
             }
         });

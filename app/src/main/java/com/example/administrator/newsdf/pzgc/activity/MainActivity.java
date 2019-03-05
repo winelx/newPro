@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -47,8 +49,7 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionCallback;
+
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity {
     private LayoutInflater mInflater;
     private ArrayList<Tab> mTabs = new ArrayList<>();
     private String version;
-    private TextView home_img_red;
+    private TextView homeImgRed;
     private List<Shop> list;
     private boolean workbtight = false;
 
@@ -84,10 +85,10 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    home_img_red.setVisibility(View.VISIBLE);
+                    homeImgRed.setVisibility(View.VISIBLE);
                     break;
                 case 2:
-                    home_img_red.setVisibility(View.GONE);
+                    homeImgRed.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -100,11 +101,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getauthority();
         mContext = this;
         workbtight = false;
         //找到控件
-        home_img_red = (TextView) findViewById(R.id.home_img_red);
-        home_img_red.setVisibility(View.GONE);
+        homeImgRed = (TextView) findViewById(R.id.home_img_red);
+        homeImgRed.setVisibility(View.GONE);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
         //设置极光推送别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
@@ -117,28 +119,6 @@ public class MainActivity extends BaseActivity {
         width = Utils.getScreenWidth(mContext) / 3;
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
-        //权限请求(定位，相机，内存)
-        HiPermission.create(mContext)
-                .checkMutiPermission(new PermissionCallback() {
-                    @Override
-                    public void onClose() {
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-
-                    @Override
-                    public void onDeny(String permission, int position) {
-
-                    }
-
-                    @Override
-                    public void onGuarantee(String permission, int position) {
-
-                    }
-                });
         //新本版检测
         Uplogding();
         //删除tiny压缩的图片
@@ -212,16 +192,16 @@ public class MainActivity extends BaseActivity {
 
     public void initTab() {
         //添加tab信息，存入集合进行展示
-        Tab tab_message = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
-        Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
-        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
-        Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
-        Tab tab_hot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
-        mTabs.add(tab_message);
-        mTabs.add(tab_index);
-        mTabs.add(tab_work);
-        mTabs.add(tab_check);
-        mTabs.add(tab_hot);
+        Tab tabMessage = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+        Tab tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
+        Tab tabWork = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tabCheck = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
+        Tab tabHot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
+        mTabs.add(tabMessage);
+        mTabs.add(tabIndex);
+        mTabs.add(tabWork);
+        mTabs.add(tabCheck);
+        mTabs.add(tabHot);
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
         for (Tab tab : mTabs) {
             //获取都文字
@@ -286,8 +266,8 @@ public class MainActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse(path);
-                intent.setData(content_url);
+                Uri contentUrl = Uri.parse(path);
+                intent.setData(contentUrl);
                 startActivity(intent);
                 finish();
 
@@ -300,7 +280,7 @@ public class MainActivity extends BaseActivity {
      *
      */
     public void getRedPoint() {
-        home_img_red.setVisibility(View.VISIBLE);
+        homeImgRed.setVisibility(View.VISIBLE);
         //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
     }
@@ -352,6 +332,26 @@ public class MainActivity extends BaseActivity {
             }
         }
         return flag;
+    }
+
+    public void getauthority() {
+        //获取相机权限，定位权限，内存权限
+        requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 }
 

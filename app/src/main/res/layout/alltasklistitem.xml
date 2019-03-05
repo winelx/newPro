@@ -168,7 +168,7 @@
                     android:singleLine="true"
                     android:textSize="15sp" />
 
-                <com.android.volley.toolbox.NetworkImageView
+                <ImageView
                     android:id="@+id/inface_no_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -219,8 +219,6 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="3dp"
-                        android:layout_toEndOf="@+id/imageView"
-                        android:layout_toRightOf="@+id/imageView"
                         android:drawableLeft="@mipmap/view_positioning"
                         android:drawablePadding="5dp"
 

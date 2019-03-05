@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.home.same;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -42,7 +42,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.camera.ToastUtils;
@@ -51,6 +51,7 @@ import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;
@@ -83,9 +84,9 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * description: 主动上传任务界面
  *
  * @author lx
- *         date: 2018/2/6 0006 上午 11:14
- *         update: 2018/2/6 0006
- *         version:
+ * date: 2018/2/6 0006 上午 11:14
+ * update: 2018/2/6 0006
+ * version:
  */
 public class ReplyActivity extends BaseActivity implements View.OnClickListener {
     private PhotoAdapter photoAdapter;
@@ -93,18 +94,15 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     private List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem, drawer_layout_text;
+    private TextView repleyAddress, wbsText, comButton, title, tvNetSpeed, replyCheckItem, drawerLayoutText;
     private ImageView Save;
     private String latitude, longitude;
     private EditText replyText;
     private Context mContext;
-
     private ArrayList<String> pathimg;
-    private CheckPermission checkPermission;
     private String content = "", wbsname = "", wbsID = "", id = "";
     boolean status = false;
     int position;
-
     private String Title = "", checkId = "", checkname = "";
     private WbsDialog selfDialog;
     private static final int IMAGE_PICKER = 101;
@@ -122,7 +120,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
 
     //弹出框
     private CircleImageView fab;
-    private LinearLayout meun_standard, meun_photo;
+    private LinearLayout meunStandard, meunPhoto;
 
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
@@ -138,19 +136,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         stardPaths = new ArrayList<>();
         photoPopPaths = new ArrayList<>();
         list = LoveDao.queryLove();
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
 
         //发现ID
         findID();
@@ -223,13 +208,13 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
      * 发现ID
      */
     private void findID() {
-        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
-        meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
-        meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
-        meun_photo.setVisibility(View.GONE);
-        meun_standard.setVisibility(View.GONE);
-        meun_photo.setOnClickListener(this);
-        meun_standard.setOnClickListener(this);
+        drawerLayoutText = (TextView) findViewById(R.id.drawer_layout_text);
+        meunStandard = (LinearLayout) findViewById(R.id.meun_standard);
+        meunPhoto = (LinearLayout) findViewById(R.id.meun_photo);
+        meunPhoto.setVisibility(View.GONE);
+        meunStandard.setVisibility(View.GONE);
+        meunPhoto.setOnClickListener(this);
+        meunStandard.setOnClickListener(this);
         //侧拉界面listview
         drawerLayoutList = (ListView) findViewById(R.id.drawer_layout_list);
         //侧拉界面
@@ -402,7 +387,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
                         }
@@ -526,10 +511,10 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
             case R.id.fab:
                 //打开meun选项
                 if (anim) {
-                    floatMeunAnims.doclickt(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclickt(meunPhoto, meunStandard, fab);
                     anim = false;
                 } else {
-                    floatMeunAnims.doclicktclose(meun_photo, meun_standard, fab);
+                    floatMeunAnims.doclicktclose(meunPhoto, meunStandard, fab);
                     anim = true;
                 }
                 break;
@@ -543,7 +528,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                 //网络请求
                 photoPopPaths.clear();
                 mAdapter.getData(photoPopPaths, "");
-                drawer_layout_text.setText("图纸");
+                drawerLayoutText.setText("图纸");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsText.getText().toString());
                 //上拉加载的状态判断
@@ -560,7 +545,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                 liststatus = false;
                 photoPopPaths.clear();
                 mAdapter.getData(photoPopPaths, "");
-                drawer_layout_text.setText("标准");
+                drawerLayoutText.setText("标准");
                 Dates.getDialog(ReplyActivity.this, "请求数据中...");
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsText.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
@@ -614,7 +599,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                     if (mdouble != 0.0) {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         options.quality = 95;
-
                         Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
@@ -641,11 +625,10 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
                     Bitmap bitmap = CropImageUtils.rotaingImageView(CropImageUtils.readPictureDegree(path), compressPixel(path));
                     //给压缩的图片添加时间水印(1)
                     textBitmap = ImageUtil.drawTextToRightBottom(mContext,
-                            bitmap, Dates.getDate() + Bai_address, 15, Color.WHITE, 0, 0);
+                            bitmap, Dates.getDate() + "\n" + Bai_address, 15, Color.WHITE, 0, 0);
                     //保存添加水印的时间的图片
                     Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                     options.quality = 95;
-
                     Tiny.getInstance().source(textBitmap).asFile().withOptions(options).compress(new FileCallback() {
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
@@ -724,5 +707,27 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         return false;
+    }
+
+    public void getauthority() {
+        //获取相机权限，定位权限，内存权限
+        requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
+                CropImageUtils.getInstance().takePhoto(ReplyActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 }

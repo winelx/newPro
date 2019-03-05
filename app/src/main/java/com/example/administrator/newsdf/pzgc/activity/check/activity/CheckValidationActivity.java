@@ -27,16 +27,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -52,6 +56,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -62,16 +67,16 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.compressPixel;
  * description: 整改验证
  *
  * @author lx
- *         date: 2018/8/9 0009 上午 10:27
- *         update: 2018/8/9 0009
- *         version:
+ * date: 2018/8/9 0009 上午 10:27
+ * update: 2018/8/9 0009
+ * version:
  */
 public class CheckValidationActivity extends BaseActivity implements View.OnClickListener {
     private CheckPhotoAdapter mAdapter;
     private RecyclerView checkReplyRec;
     private ArrayList<Audio> imagepath;
     private Context mContext;
-    private CheckPermission checkPermission;
+
     private static final int IMAGE_PICKER = 101;
     private String repyId, noticeId, sdealId, repycontent;
     private ArrayList<String> ids = new ArrayList<>();
@@ -88,19 +93,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.activity_check_validation);
         Intent intent = getIntent();
         imagepath = new ArrayList<>();
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(CheckValidationActivity.this);
-            }
 
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         TextView titleview = (TextView) findViewById(R.id.titleView);
         titleview.setText("验证");
         category_item = (TextView) findViewById(R.id.category_item);
@@ -168,7 +161,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
                 //删除无用图片
                 for (int i = 0; i < imagepath.size(); i++) {
                     if (!imagepath.isEmpty()) {
-                        FileUtils.deleteFile(imagepath.get(i).getName());
+                        Dates.deleteFile(imagepath.get(i).getName());
                     }
                 }
                 finish();
@@ -209,7 +202,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         //初始化控件
-        RelativeLayout btn_pop_add=popView.findViewById(R.id.btn_pop_add);
+        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
@@ -229,7 +222,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(CheckValidationActivity.this);
                         }
@@ -327,7 +320,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
             //删除无用图片
             for (int i = 0; i < imagepath.size(); i++) {
                 if (!imagepath.isEmpty()) {
-                    FileUtils.deleteFile(imagepath.get(i).getName());
+                    Dates.deleteFile(imagepath.get(i).getName());
                 }
             }
             finish();
@@ -378,7 +371,7 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
                     .params("noticeId", noticeId)
                     .params("replyId", repyId)
                     .params("isby", status)
-                    .params("deleteFileId",Dates.listToStrings(deleteLis))
+                    .params("deleteFileId", Dates.listToStrings(deleteLis))
                     .params("verificationOpinion", replyDescription.getText().toString());
             if (files.size() > 0) {
                 str.addFileParams("attachment", files);
@@ -413,5 +406,25 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
         } else {
             ToastUtils.showShortToast("请输入验证描述不能为空");
         }
+    }
+
+
+    public void getauthority() {
+        CameraUtils.requestRunPermisssion(this, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
+                CropImageUtils.getInstance().takePhoto(CheckValidationActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 }

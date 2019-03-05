@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplysActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;
 
@@ -67,7 +69,8 @@ public class DirectlyreplyAdapter extends RecyclerView.Adapter<DirectlyreplyAdap
                 @Override
                 public void onClick(View v) {
                     //删除本地图片
-                    FileUtils.deleteFile(photoPaths.get(position));
+
+                    Dates.deleteFile(photoPaths.get(position));
                     //删除集合数据
                     photoPaths.remove(position);
                     //刷新界面

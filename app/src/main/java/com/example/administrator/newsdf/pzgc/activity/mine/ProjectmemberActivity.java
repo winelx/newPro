@@ -15,16 +15,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.ProjectmemberAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
-import com.example.administrator.newsdf.camera.CheckPermission;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -57,7 +61,7 @@ public class ProjectmemberActivity extends BaseActivity {
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData, searchData;
     private Context mContext;
-    private CheckPermission checkPermission;
+
     private LinearLayout homeBackgroud;
     private TextView homeBackgroudText, mb_title;
     private String orgid, treepath, treetitle, treeids;
@@ -293,6 +297,5 @@ public class ProjectmemberActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
     }
-
 
 }

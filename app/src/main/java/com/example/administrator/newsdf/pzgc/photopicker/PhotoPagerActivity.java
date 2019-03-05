@@ -18,13 +18,15 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.fragment.ImagePagerFragment;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
@@ -280,7 +282,8 @@ public class PhotoPagerActivity extends BaseActivity {
                                     shop.setTimme(getDate());
                                     LoveDao.insertLove(shop);
                                     ToastUtils.showShortToast("已保存");
-                                    FileUtils.deleteFile(file);
+
+                                    Dates.deleteFile(file);
                                 } else {
                                     ToastUtils.showShortToast("下载失败");
                                 }

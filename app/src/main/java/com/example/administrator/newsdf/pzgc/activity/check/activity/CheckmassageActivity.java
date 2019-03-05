@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,17 +29,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -59,6 +62,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -74,9 +78,9 @@ import static com.lzy.okgo.OkGo.post;
  * description: 下发整改通知
  *
  * @author lx
- *         date: 2018/8/9 0009 下午 3:09
- *         update: 2018/8/9 0009
- *         version:
+ * date: 2018/8/9 0009 下午 3:09
+ * update: 2018/8/9 0009
+ * version:
  */
 public class CheckmassageActivity extends BaseActivity implements View.OnClickListener {
 
@@ -86,7 +90,6 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
     private CheckPhotoAdapter photoAdapter;
     private Context mContext;
     private String[] numbermonth, numberyear;
-    private CheckPermission checkPermission;
     //当前界面新增的图片（如果未返回，删除图片）
     private ArrayList<Audio> Imagepath;
     private PopupWindow mPopupWindow;
@@ -114,19 +117,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmassage);
         mContext = CheckmassageActivity.this;
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(CheckmassageActivity.this);
-            }
 
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         findID();
         initData();
 
@@ -291,7 +282,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(CheckmassageActivity.this);
                         }
@@ -471,7 +462,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         //初始化数据---日
         String yeardata = Utils.year[yearPicker.getValue()];
         //如果当前月份是2月
-        if ((dateMonth+1) == 2) {
+        if ((dateMonth + 1) == 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年
@@ -590,7 +581,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
             case R.id.checklistback:
                 //删除当前界面新增的图片
                 for (int i = 0; i < Imagepath.size(); i++) {
-                    FileUtils.deleteFile(Imagepath.get(i).getName());
+                    Dates.deleteFile(Imagepath.get(i).getName());
                 }
                 finish();
                 break;
@@ -630,7 +621,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
             for (int i = 0; i < Imagepath.size(); i++) {
-                FileUtils.deleteFile(Imagepath.get(i).getName());
+                Dates.deleteFile(Imagepath.get(i).getName());
             }
             finish();
             return true;
@@ -834,5 +825,22 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         check_message_username.setClickable(false);
         checklistmeuntext.setText("编辑");
         photoAdapter.getData(Imagepath, false);
+    }
+
+    public void getauthority() {
+        CameraUtils.requestRunPermisssion(CheckmassageActivity.this, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                CropImageUtils.getInstance().takePhoto(CheckmassageActivity.this);
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

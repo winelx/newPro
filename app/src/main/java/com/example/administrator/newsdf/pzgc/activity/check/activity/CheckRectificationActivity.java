@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,9 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.FileUtils;
+
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CheckPermission;
+
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
@@ -37,8 +38,10 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -58,6 +61,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -86,7 +90,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
     private CheckUtils checkUtils;
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<Audio> Imagepath;
-    private CheckPermission checkPermission;
+
     private static final int IMAGE_PICKER = 101;
     private TextView checkNewDataTx;
     private String categoryid, categoryedid, OrgId = null, orgName, nodeId, nodeName, userId, userName, standardDelScore, standardDelCode, id = "";
@@ -102,19 +106,6 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_rectification);
         Intent intent = getIntent();
-        checkPermission = new CheckPermission(this) {
-            @Override
-            public void permissionSuccess() {
-                CropImageUtils.getInstance().takePhoto(CheckRectificationActivity.this);
-            }
-
-            @Override
-            public void negativeButton() {
-                //如果不重写，默认是finishddsfaasf
-                //super.negativeButton();
-                ToastUtils.showLongToast("权限申请失败！");
-            }
-        };
         mContext = CheckRectificationActivity.this;
         checkUtils = new CheckUtils();
         Imagepath = new ArrayList<>();
@@ -302,7 +293,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     //返回
                     if (Imagepath.size() > 0) {
                         for (int i = 0; i < Imagepath.size(); i++) {
-                            FileUtils.deleteFile(Imagepath.get(i).getContent());
+                            Dates.deleteFile(Imagepath.get(i).getContent());
                         }
                     }
                     finish();
@@ -406,7 +397,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
             for (int i = 0; i < Imagepath.size(); i++) {
-                FileUtils.deleteFile(Imagepath.get(i).getContent());
+                Dates.deleteFile(Imagepath.get(i).getContent());
             }
             finish();
             return true;
@@ -573,7 +564,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     //调用相机
                     case R.id.btn_camera_pop_camera:
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            checkPermission.permission(CheckPermission.REQUEST_CODE_PERMISSION_CAMERA);
+                            getauthority();
                         } else {
                             CropImageUtils.getInstance().takePhoto(CheckRectificationActivity.this);
                         }
@@ -799,6 +790,27 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     }
                 });
 
+    }
+
+    public  void getauthority(){
+        requestRunPermisssion(new String[]{Manifest.permission.CAMERA},
+                new PermissionListener() {
+                    @Override
+                    public void onGranted() {
+                        //表示所有权限都授权了
+                        CropImageUtils.getInstance().takePhoto(CheckRectificationActivity.this);
+                        ToastUtils.showShortToast("权限请求成功");
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermission) {
+                        for (String permission : deniedPermission) {
+                            Toast.makeText(mContext, "被拒绝的权限：" +
+                                    permission, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
     }
 
     public String getstatus() {
