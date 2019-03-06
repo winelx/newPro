@@ -45,8 +45,6 @@ import okhttp3.Response;
  */
 public class BootupActivity extends BaseActivity {
     private Context mContext;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

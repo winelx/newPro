@@ -91,12 +91,12 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 MeunPop();
             }
         });
-        dataTime.setText(Dates.getMonth());
+        dataTime.setText(Dates.getYearMonth());
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
 //        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
-        mqnum = Dates.stringToList(Dates.getMonth(), "-").get(1);
+        mqnum = Dates.stringToList(Dates.getYearMonth(), "-").get(1);
         getdate();
         mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
             @Override

@@ -1,18 +1,17 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
-import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 
 /**
  * @author lx
- * 版本：1.0
- * 创建日期：{2019/3/4 0004}
- * 描述：代办事项
- *{@link NoticeActivity}
+ * @data :2019/3/6 0006
+ * @描述 累计任务总数:
+ * @see HometaskActivity }
  */
-public class AgencyBean {
+public class TotalBean {
     String string;
 
-    public AgencyBean(String string) {
+    public TotalBean(String string) {
         this.string = string;
     }
 

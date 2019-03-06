@@ -73,8 +73,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     //分值   /违反类别Id  违反标准ID    违反类别容
     private String score, categoryid, categoryedid, categorycontent;
     private ArrayList<String> deleltes = new ArrayList<>();
-    private int iwork=1;
+    private int iwork = 1;
     private TextView importWarning;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +84,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");
         try {
-            iwork=intent.getIntExtra("iwork",1);
-        }catch (Exception e){
+            iwork = intent.getIntExtra("iwork", 1);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //整改单Id
@@ -242,9 +243,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         } else {
             checkItemDelete.setVisibility(View.GONE);
         }
-        if (iwork==1){
+        if (iwork == 1) {
             importWarning.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             importWarning.setVisibility(View.GONE);
         }
     }
@@ -260,14 +261,14 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 String str = menutext.getText().toString();
                 if (KEEP.equals(str)) {
                     if (score != null) {
-                        if (iwork==1){
+                        if (iwork == 1) {
                             if (exitextPosition.getText().toString() != null || chagedPosition.getText().toString() != null) {
                                 Dates.getDialog(this, "保存数据中...");
                                 save();
                             } else {
                                 Snackbar.make(comTitle, "整改部位不能为空", Snackbar.LENGTH_LONG).show();
                             }
-                        }else {
+                        } else {
                             Dates.getDialog(this, "保存数据中...");
                             save();
                         }

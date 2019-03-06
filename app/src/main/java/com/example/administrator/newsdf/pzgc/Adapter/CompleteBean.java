@@ -10,6 +10,17 @@ import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
  * {@link NoticeActivity}
  */
 public class CompleteBean {
-    public CompleteBean() {
+    String string;
+
+    public CompleteBean(String string) {
+        this.string = string;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
     }
 }

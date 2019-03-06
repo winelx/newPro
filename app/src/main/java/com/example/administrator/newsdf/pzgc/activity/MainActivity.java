@@ -32,8 +32,10 @@ import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.EventMsg;
 import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -50,6 +52,8 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -96,6 +100,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

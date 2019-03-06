@@ -39,8 +39,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -781,5 +783,20 @@ public class Dates {
             }
         }
     }
+
+    // 获得上个月月份年份
+    public static String getYearMonth() {
+        Calendar now = Calendar.getInstance();
+        int month = now.get(Calendar.MONTH);
+        String m;
+        if (month < 10) {
+            m = "0" + month;
+        } else {
+            m = month + "";
+        }
+        return now.get(Calendar.YEAR) + "-" + m;
+    }
+
+
 
 }

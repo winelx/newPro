@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticeAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
+import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
+import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.EmptyRecyclerView;
 import com.example.baselibrary.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -41,15 +46,27 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         mContext = this;
         Intent intent = getIntent();
         list = new ArrayList<>();
-        list.add(new NoticedBean("4545"));
-        list.add(new NoticedBean("4545"));
+        String content = intent.getStringExtra("title");
+        if (Enums.NOTICE.equals(content)) {
+            list.add(new NoticedBean("4545"));
+            list.add(new NoticedBean("4545"));
+            list.add(new NoticedBean("4545"));
+            list.add(new NoticedBean("4545"));
+        } else if (Enums.AGENCY.equals(content)) {
+            list.add(new AgencyBean("4545"));
+            list.add(new AgencyBean("4545"));
+            list.add(new AgencyBean("4545"));
+        } else if (Enums.COMPLETE.equals(content)) {
+            list.add(new CompleteBean("4545"));
+            list.add(new CompleteBean("4545"));
+            list.add(new CompleteBean("4545"));
+        }
         emptyUtils = new EmptyUtils(this);
         comTitle = (TextView) findViewById(R.id.com_title);
         comTitle.setText(intent.getStringExtra("title"));
         findViewById(R.id.com_back).setOnClickListener(this);
         recycler = (EmptyRecyclerView) findViewById(R.id.recycler);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        recycler.setLayoutManager(layoutManager);
+        recycler.setLayoutManager( new LinearLayoutManager(mContext));
         recycler.setEmptyView(emptyUtils.init());
         mAdapter = new NoticeAdapter(list);
         recycler.setAdapter(mAdapter);
@@ -62,6 +79,18 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         refreshLayout.setEnableOverScrollDrag(false);
         //是否在列表不满一页时候开启上拉加载功能
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        mAdapter.setOnclicktener(new Onclicktener() {
+            @Override
+            public void onClick(String content, int position) {
+                if (Enums.NOTICE.equals(content)) {
+                    ToastUtils.showShortToastCenter("1");
+                } else if (Enums.AGENCY.equals(content)) {
+                    ToastUtils.showShortToastCenter("2");
+                } else if (Enums.COMPLETE.equals(content)) {
+                    ToastUtils.showShortToastCenter("3");
+                }
+            }
+        });
     }
 
     @Override

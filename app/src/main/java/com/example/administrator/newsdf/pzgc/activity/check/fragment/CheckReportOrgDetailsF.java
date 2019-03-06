@@ -87,7 +87,7 @@ public class CheckReportOrgDetailsF extends Fragment {
                 recycler_att.finishLoadmore(3000);
             }
         });
-        mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
+       /* mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Object obj = list.get(position);
@@ -98,7 +98,7 @@ public class CheckReportOrgDetailsF extends Fragment {
                 intent.putExtra("isDeal", true);
                 startActivity(intent);
             }
-        });
+        });*/
         return view;
     }
 

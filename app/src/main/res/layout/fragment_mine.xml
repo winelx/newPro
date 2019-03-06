@@ -110,15 +110,15 @@
                 android:textColor="#323232" />
 
             <com.joanzapata.iconify.widget.IconTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text"
-                android:layout_marginRight="15dp"
-                android:text="{fa-angle-right}"
-                android:textColor="@color/inconfy"
-                android:textSize="25sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/mine_text"
+            android:layout_marginRight="15dp"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
         </RelativeLayout>
 
         <View

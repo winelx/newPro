@@ -65,7 +65,6 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         mDatas2 = new ArrayList<>();
         //初始化控件
         mContext = this;
-
         Reportdrawer = (DrawerLayout) findViewById(R.id.Reportdrawer);
         textView = (TextView) findViewById(R.id.com_title);
         checkReport = (ListView) findViewById(R.id.check_report);

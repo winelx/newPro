@@ -12,13 +12,14 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp10"
         android:paddingTop="5dp"
+        android:background="@color/white"
         android:paddingBottom="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/check_notice" />
+            android:src="@mipmap/messagenotice" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,6 +104,7 @@
         android:layout_height="70dp"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp10"
+        android:background="@color/white"
         android:paddingTop="5dp"
         android:paddingBottom="5dp">
 
@@ -110,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/reply_verification" />
+            android:src="@mipmap/agencyitem" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -194,15 +196,15 @@
         android:layout_height="70dp"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp10"
+        android:background="@color/white"
         android:paddingTop="5dp"
         android:paddingBottom="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/check_notice" />
+            android:src="@mipmap/alreadyitem" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -266,7 +268,8 @@
                     android:gravity="center"
                     android:text="99"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -280,214 +283,7 @@
         android:layout_height="10dp"
         android:background="@color/back" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/dp10">
+    <include layout="@layout/fragment_homemessage_task" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/home_card_blue"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100,000"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:text="累计完成任务数"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/home_card_orgin"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:text="今日完成任务数"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/home_card_green"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="上月检查单"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/home_card_yellow"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="50"
-                    android:textColor="@color/white"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:text="上月通知单"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/back" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <ImageView
-            android:id="@+id/mine_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:background="@mipmap/warning_red" />
-
-        <TextView
-            android:id="@+id/mine_text"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignBottom="@+id/mine_img"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/mine_img"
-            android:layout_toRightOf="@+id/mine_img"
-            android:text="爆等排行"
-            android:textColor="#323232" />
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/mine_text"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="45dp"
-        android:background="@color/back" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:background="@mipmap/warning_red" />
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignBottom="@+id/image"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/image"
-            android:layout_toRightOf="@+id/image"
-            android:text="活跃排行"
-            android:textColor="#323232" />
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/text"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
-
-    </RelativeLayout>
 </LinearLayout>

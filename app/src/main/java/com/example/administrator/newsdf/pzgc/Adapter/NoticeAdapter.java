@@ -1,12 +1,16 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
+import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 
 import java.util.ArrayList;
 
@@ -15,6 +19,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public static final int TYPE_ONE = 01;
     public static final int TYPE_TWO = 02;
     public static final int TYPE_THREE = 03;
+    private Onclicktener onclicktener;
 
     public NoticeAdapter(ArrayList<Object> list) {
         this.list = list;
@@ -48,17 +53,34 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-
     /*消息通知*/
-    private void bindNotice(NoticedViewHolder holder, int position) {
+    private void bindNotice(NoticedViewHolder holder, final int position) {
+        holder.Noticedcardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onclicktener.onClick(Enums.NOTICE, position);
+            }
+        });
     }
 
     /*代办事项*/
-    private void bindAgency(AgencyViewHolder holder, int position) {
+    private void bindAgency(AgencyViewHolder holder, final int position) {
+        holder.Agencycardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onclicktener.onClick(Enums.AGENCY, position);
+            }
+        });
     }
-
     /*已办事项*/
-    private void bindComplete(CompleteViewHolder holder, int position) {
+    private void bindComplete(CompleteViewHolder holder, final int position) {
+
+        holder.Completecardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onclicktener.onClick(Enums.COMPLETE, position);
+            }
+        });
     }
 
     @Override
@@ -81,23 +103,34 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     /*消息通知*/
     class NoticedViewHolder extends RecyclerView.ViewHolder {
+        private CardView Noticedcardview;
 
         public NoticedViewHolder(View itemView) {
             super(itemView);
+            Noticedcardview = itemView.findViewById(R.id.cardview);
         }
     }
 
     class AgencyViewHolder extends RecyclerView.ViewHolder {
+        private CardView Agencycardview;
 
         public AgencyViewHolder(View itemView) {
             super(itemView);
+            Agencycardview = itemView.findViewById(R.id.cardview);
         }
     }
 
     class CompleteViewHolder extends RecyclerView.ViewHolder {
+        private CardView Completecardview;
 
         public CompleteViewHolder(View itemView) {
             super(itemView);
+            Completecardview = itemView.findViewById(R.id.cardview);
         }
+    }
+
+
+    public void setOnclicktener(Onclicktener onclicktener) {
+        this.onclicktener = onclicktener;
     }
 }

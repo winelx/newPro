@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -24,6 +27,7 @@ public class HomeFragment extends LazyloadFragment implements View.OnClickListen
     private SmartRefreshLayout refreshLayout;
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
+    private LinearLayout layoutRanking;
 
     @Override
     protected int setContentView() {
@@ -33,6 +37,14 @@ public class HomeFragment extends LazyloadFragment implements View.OnClickListen
     @Override
     protected void init() {
         mContext = getActivity();
+        //排名
+        rootView.findViewById(R.id.layout_ranking).setOnClickListener(this);
+        //任务总数
+        rootView.findViewById(R.id.tasktotal).setOnClickListener(this);
+        //今日任务
+        rootView.findViewById(R.id.todaytotal).setOnClickListener(this);
+        //本月
+        rootView.findViewById(R.id.lastmonthtotal).setOnClickListener(this);
         rootView.findViewById(R.id.noticed_lin).setOnClickListener(this);
         rootView.findViewById(R.id.agency_lin).setOnClickListener(this);
         rootView.findViewById(R.id.complete_lin).setOnClickListener(this);
@@ -76,7 +88,6 @@ public class HomeFragment extends LazyloadFragment implements View.OnClickListen
                 Intent noticed = new Intent(mContext, NoticeActivity.class);
                 noticed.putExtra("title", "消息通知");
                 startActivity(noticed);
-
                 break;
             case R.id.agency_lin:
                 //代办事项
@@ -89,6 +100,27 @@ public class HomeFragment extends LazyloadFragment implements View.OnClickListen
                 Intent complete = new Intent(mContext, NoticeActivity.class);
                 complete.putExtra("title", "已办事项");
                 startActivity(complete);
+                break;
+            case R.id.layout_ranking:
+                ToastUtils.showShortToastCenter("排名");
+                break;
+            case R.id.tasktotal:
+                //累计完成任务
+                Intent tasktotal = new Intent(mContext, HometaskActivity.class);
+                tasktotal.putExtra("title", "累计完成任务");
+                startActivity(tasktotal);
+                break;
+            case R.id.todaytotal:
+                //今日完成任务
+                Intent todaytotal = new Intent(mContext, HometaskActivity.class);
+                todaytotal.putExtra("title", "今日完成任务");
+                startActivity(todaytotal);
+                break;
+            case R.id.lastmonthtotal:
+                //上月整改统计
+                Intent lastmonthtotal = new Intent(mContext, HometaskActivity.class);
+                lastmonthtotal.putExtra("title", "上月整改统计");
+                startActivity(lastmonthtotal);
                 break;
             default:
                 break;

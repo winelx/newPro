@@ -132,6 +132,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             JSONObject jsonObject = new JSONObject(s);
                             int code = jsonObject.getInt("ret");
                             if (code != 1) {
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
