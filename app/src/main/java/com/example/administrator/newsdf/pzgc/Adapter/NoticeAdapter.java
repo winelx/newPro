@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
@@ -55,12 +55,26 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     /*消息通知*/
     private void bindNotice(NoticedViewHolder holder, final int position) {
+        NoticedBean bean = (NoticedBean) list.get(position);
         holder.Noticedcardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onclicktener.onClick(Enums.NOTICE, position);
             }
         });
+        //时间
+        if (bean.getNoticeDate() != null) {
+            holder.noticedData.setText(bean.getNoticeDate());
+        }
+        //标题
+        if (bean.getModelName() != null) {
+            holder.noticedTitle.setText(bean.getModelName());
+        }
+        //内容
+        if (bean.getShowContent() != null) {
+            holder.noticedContent.setText(bean.getShowContent());
+        }
+
     }
 
     /*代办事项*/
@@ -71,10 +85,14 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 onclicktener.onClick(Enums.AGENCY, position);
             }
         });
+        AgencyBean bean = (AgencyBean) list.get(position);
+        holder.agencyContent.setText("你有一条" + bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
+        holder.agencyData.setText(bean.getSendDate());
+        holder.agencyTitle.setText(bean.getModelName());
     }
+
     /*已办事项*/
     private void bindComplete(CompleteViewHolder holder, final int position) {
-
         holder.Completecardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,19 +122,27 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     /*消息通知*/
     class NoticedViewHolder extends RecyclerView.ViewHolder {
         private CardView Noticedcardview;
+        private TextView noticedData, noticedTitle, noticedContent;
 
         public NoticedViewHolder(View itemView) {
             super(itemView);
             Noticedcardview = itemView.findViewById(R.id.cardview);
+            noticedData = itemView.findViewById(R.id.noticed_data);
+            noticedTitle = itemView.findViewById(R.id.noticed_title);
+            noticedContent = itemView.findViewById(R.id.noticed_content);
         }
     }
 
     class AgencyViewHolder extends RecyclerView.ViewHolder {
         private CardView Agencycardview;
+        private TextView agencyData, agencyTitle, agencyContent;
 
         public AgencyViewHolder(View itemView) {
             super(itemView);
             Agencycardview = itemView.findViewById(R.id.cardview);
+            agencyData = itemView.findViewById(R.id.agency_data);
+            agencyTitle = itemView.findViewById(R.id.agency_title);
+            agencyContent = itemView.findViewById(R.id.agency_content);
         }
     }
 
@@ -129,8 +155,12 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-
     public void setOnclicktener(Onclicktener onclicktener) {
         this.onclicktener = onclicktener;
+    }
+
+    public void setNewData(ArrayList<Object> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 }

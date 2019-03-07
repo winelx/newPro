@@ -18,6 +18,8 @@ import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
 import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
+import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
+import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.EmptyRecyclerView;
 import com.example.baselibrary.EmptyUtils;
@@ -28,10 +30,11 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @data:2019/3/6 0006
- * @Notes:
+ * @Notes: 消息界面任务模块展示界面
+ * @see HomeFragment
  */
 @SuppressLint("Registered")
-public class HometaskActivity extends AppCompatActivity implements View.OnClickListener {
+public class HometaskActivity extends BaseActivity implements View.OnClickListener {
     private EmptyRecyclerView recyclerView;
     private SmartRefreshLayout refreshLayout;
     private TextView title;

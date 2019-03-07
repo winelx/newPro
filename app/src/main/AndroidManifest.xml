@@ -33,8 +33,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- &lt;!&ndash; 拨号权限 &ndash;&gt; -->
-    <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -54,7 +52,7 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-        <!-- //百度 -->
+        <!-- //百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ieMDqdQxs6ktFU9d8exOmUF9A25Bc70N" />
@@ -219,12 +217,11 @@
             android:name=".pzgc.activity.home.TaskRecordActivity"
             android:screenOrientation="portrait" />
 
-        <!-- User defined. 用户自定义的广播接收器 -->
+        <!-- User defined.极光代码 用户自定义的广播接收器 -->
         <receiver
             android:name=".pzgc.service.PushReceiver"
             android:enabled="true">
             <intent-filter>
-
                 <!-- Required 用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
                 <!-- Required 用户接收SDK消息的intent -->

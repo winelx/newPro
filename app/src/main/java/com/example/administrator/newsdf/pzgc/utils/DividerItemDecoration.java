@@ -14,6 +14,7 @@ import android.view.View;
  * 作者：winelx
  * 时间：2017/12/1 0001:上午 10:30
  * 说明：Recycler分割线
+ * action_connection_change
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

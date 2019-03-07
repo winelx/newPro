@@ -38,7 +38,6 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
@@ -78,24 +77,24 @@ import static com.lzy.okgo.OkGo.post;
  *         version:
  */
 public class CheckRectificationActivity extends BaseActivity implements View.OnClickListener {
-    private TextView titleView, checklistmeuntext, checkRectifiData, check_wbspath, checkRectifiSubmit,
-            checkRectifiWbs, check_rectifi_font, category_item, check_new_tasktitle;
-    private LinearLayout checkRectifi, check_import, checklistmeun, check_rectifi_user, check_new_data, check_standard;
+    private TextView titleView, checklistmeuntext, checkRectifiData, checkWbspath, checkRectifiSubmit,
+            checkRectifiWbs, checkRectifiFont, categoryItem, checkNewTasktitle;
+    private LinearLayout checkRectifi, checkImport, checklistmeun, checkRectifiUser, checkNewData, checkStandard;
     private Context mContext;
     private NumberPicker yearPicker, monthPicker, dayPicker;
-    private RecyclerView recycler_view;
+    private RecyclerView recyclerView;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private String[] numbermonth, numberyear;
     private CheckUtils checkUtils;
     private CheckPhotoAdapter photoAdapter;
-    private ArrayList<Audio> Imagepath;
+    private ArrayList<Audio> imagepath;
 
     private static final int IMAGE_PICKER = 101;
     private TextView checkNewDataTx;
     private String categoryid, categoryedid, OrgId = null, orgName, nodeId, nodeName, userId, userName, standardDelScore, standardDelCode, id = "";
-    private EditText check_rectifi_result, check_new_temporarysite;
-    private LinearLayout check_org;
+    private EditText checkRectifiResult, checkNewTemporarysite;
+    private LinearLayout checkOrg;
     private IconTextView oneIcon, twoIcon, threeIcon, fourIcon, fiveIcon;
     private ArrayList<View> listVIew = new ArrayList<>();
     private ArrayList<View> listEn = new ArrayList<>();
@@ -108,7 +107,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         Intent intent = getIntent();
         mContext = CheckRectificationActivity.this;
         checkUtils = new CheckUtils();
-        Imagepath = new ArrayList<>();
+        imagepath = new ArrayList<>();
         oneIcon = (IconTextView) findViewById(R.id.oneIcon);
         twoIcon = (IconTextView) findViewById(R.id.twoIcon);
         threeIcon = (IconTextView) findViewById(R.id.threeIcon);
@@ -120,31 +119,31 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         listVIew.add(fourIcon);
         listVIew.add(fiveIcon);
 
-        check_org = (LinearLayout) findViewById(R.id.check_org);
-        listEn.add(check_org);
-        check_org.setOnClickListener(this);
-        check_new_tasktitle = (TextView) findViewById(R.id.check_new_tasktitle);
-        check_rectifi_result = (EditText) findViewById(R.id.check_rectifi_result);
-        check_new_temporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
-        listEn.add(check_new_tasktitle);
-        listEn.add(check_rectifi_result);
-        listEn.add(check_new_temporarysite);
-        category_item = (TextView) findViewById(R.id.category_item);
+        checkOrg = (LinearLayout) findViewById(R.id.check_org);
+        listEn.add(checkOrg);
+        checkOrg.setOnClickListener(this);
+        checkNewTasktitle = (TextView) findViewById(R.id.check_new_tasktitle);
+        checkRectifiResult = (EditText) findViewById(R.id.check_rectifi_result);
+        checkNewTemporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
+        listEn.add(checkNewTasktitle);
+        listEn.add(checkRectifiResult);
+        listEn.add(checkNewTemporarysite);
+        categoryItem = (TextView) findViewById(R.id.category_item);
         checkNewDataTx = (TextView) findViewById(R.id.check_new_data_tx);
-        check_standard = (LinearLayout) findViewById(R.id.check_standard);
-        listEn.add(check_standard);
-        check_new_data = (LinearLayout) findViewById(R.id.check_new_data);
-        listEn.add(check_new_data);
-        check_rectifi_font = (TextView) findViewById(R.id.check_rectifi_font);
-        check_rectifi_user = (LinearLayout) findViewById(R.id.check_rectifi_user);
-        listEn.add(check_rectifi_user);
+        checkStandard = (LinearLayout) findViewById(R.id.check_standard);
+        listEn.add(checkStandard);
+        checkNewData = (LinearLayout) findViewById(R.id.check_new_data);
+        listEn.add(checkNewData);
+        checkRectifiFont = (TextView) findViewById(R.id.check_rectifi_font);
+        checkRectifiUser = (LinearLayout) findViewById(R.id.check_rectifi_user);
+        listEn.add(checkRectifiUser);
         checkRectifiWbs = (TextView) findViewById(R.id.check_rectifi_wbs);
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checkRectifiSubmit = (TextView) findViewById(R.id.check_rectifi_submit);
-        check_wbspath = (TextView) findViewById(R.id.check_wbspath);
-        check_import = (LinearLayout) findViewById(R.id.check_import);
-        listVIew.add(check_import);
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        checkWbspath = (TextView) findViewById(R.id.check_wbspath);
+        checkImport = (LinearLayout) findViewById(R.id.check_import);
+        listVIew.add(checkImport);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         titleView = (TextView) findViewById(R.id.titleView);
         checkRectifi = (LinearLayout) findViewById(R.id.check_rectifi);
         listEn.add(checkRectifi);
@@ -155,11 +154,11 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         checklistmeuntext.setText("保存");
         titleView.setText("新增整改");
         checkRectifi.setOnClickListener(this);
-        check_import.setOnClickListener(this);
+        checkImport.setOnClickListener(this);
         checklistmeun.setOnClickListener(this);
-        check_new_data.setOnClickListener(this);
-        check_standard.setOnClickListener(this);
-        check_rectifi_user.setOnClickListener(this);
+        checkNewData.setOnClickListener(this);
+        checkStandard.setOnClickListener(this);
+        checkRectifiUser.setOnClickListener(this);
         checkRectifiSubmit.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         //获取当前月份
@@ -170,10 +169,10 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         numberyear = Utils.year;
         //天
         dayDate = myDate.getDate() - 1;
-        recycler_view.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
-        recycler_view.setItemAnimator(new DefaultItemAnimator());
-        photoAdapter = new CheckPhotoAdapter(mContext, Imagepath, "Rectifi", false);
-        recycler_view.setAdapter(photoAdapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, OrientationHelper.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        photoAdapter = new CheckPhotoAdapter(mContext, imagepath, "Rectifi", false);
+        recyclerView.setAdapter(photoAdapter);
         checkNewDataTx.setText(Dates.getDay());
         try {
             id = intent.getStringExtra("id");
@@ -208,9 +207,9 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                             @Override
                             public void callback(boolean isSuccess, String outfile) {
                                 //添加进集合
-                                Imagepath.add(new Audio(outfile, ""));
+                                imagepath.add(new Audio(outfile, ""));
                                 //填入listview，刷新界面
-                                photoAdapter.getData(Imagepath, true);
+                                photoAdapter.getData(imagepath, true);
                             }
                         });
                     } else {
@@ -221,15 +220,15 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == 1 && resultCode == 3) {
-            check_wbspath.setText(data.getStringExtra("title"));
-            check_wbspath.setVisibility(View.VISIBLE);
+            checkWbspath.setText(data.getStringExtra("title"));
+            checkWbspath.setVisibility(View.VISIBLE);
         } else if (requestCode == 2 && resultCode == 3) {
-            check_rectifi_font.setText(data.getStringExtra("name"));
+            checkRectifiFont.setText(data.getStringExtra("name"));
         } else if (requestCode == 1 && resultCode == 2) {
             categoryid = data.getStringExtra("dataid");
             categoryedid = data.getStringExtra("id");
-            check_new_tasktitle.setText(data.getStringExtra("datastr"));
-            category_item.setText(data.getStringExtra("content"));
+            checkNewTasktitle.setText(data.getStringExtra("datastr"));
+            categoryItem.setText(data.getStringExtra("content"));
             standardDelScore = data.getStringExtra("score");
             standardDelCode = data.getStringExtra("stancode");
         } else if (requestCode == 3 && resultCode == 2) {
@@ -239,12 +238,12 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         } else if (requestCode == 4 && resultCode == 3) {
             nodeId = data.getStringExtra("id");
             nodeName = data.getStringExtra("name");
-            check_wbspath.setText(nodeName);
-            check_wbspath.setVisibility(View.VISIBLE);
+            checkWbspath.setText(nodeName);
+            checkWbspath.setVisibility(View.VISIBLE);
         } else if (requestCode == 5 && resultCode == 2) {
             userId = data.getStringExtra("id");
             userName = data.getStringExtra("name");
-            check_rectifi_font.setText(userName);
+            checkRectifiFont.setText(userName);
         } else {
             //从相机返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
@@ -260,9 +259,9 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                         @Override
                         public void callback(boolean isSuccess, String outfile) {
                             //添加进集合
-                            Imagepath.add(new Audio(outfile, ""));
+                            imagepath.add(new Audio(outfile, ""));
                             //填入listview，刷新界面
-                            photoAdapter.getData(Imagepath, true);
+                            photoAdapter.getData(imagepath, true);
                             //删除原图
                             Dates.deleteFile(path);
                         }
@@ -291,9 +290,9 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     break;
                 case R.id.checklistback:
                     //返回
-                    if (Imagepath.size() > 0) {
-                        for (int i = 0; i < Imagepath.size(); i++) {
-                            Dates.deleteFile(Imagepath.get(i).getContent());
+                    if (imagepath.size() > 0) {
+                        for (int i = 0; i < imagepath.size(); i++) {
+                            Dates.deleteFile(imagepath.get(i).getContent());
                         }
                     }
                     finish();
@@ -328,12 +327,12 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                     String str = checklistmeuntext.getText().toString();
                     if ("保存".equals(str)) {
 
-                        String user = check_rectifi_font.getText().toString();
+                        String user = checkRectifiFont.getText().toString();
                         if (user.length() > 0) {
-                            String tasktitle = check_new_tasktitle.getText().toString();
+                            String tasktitle = checkNewTasktitle.getText().toString();
                             if (tasktitle.length() > 0) {
-                                String temporarysite = check_new_temporarysite.getText().toString();
-                                String wsbpath = check_wbspath.getText().toString();
+                                String temporarysite = checkNewTemporarysite.getText().toString();
+                                String wsbpath = checkWbspath.getText().toString();
                                 if (temporarysite.length() > 0 || wsbpath.length() > 0) {
                                     save();
                                 } else {
@@ -350,7 +349,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                         Enabled(true);
                         checklistmeuntext.setText("保存");
                         checkRectifiSubmit.setBackgroundResource(R.color.gray);
-                        photoAdapter.getData(Imagepath, true);
+                        photoAdapter.getData(imagepath, true);
                     }
                     break;
                 case R.id.check_rectifi_submit:
@@ -396,8 +395,8 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //删除无用图片
-            for (int i = 0; i < Imagepath.size(); i++) {
-                Dates.deleteFile(Imagepath.get(i).getContent());
+            for (int i = 0; i < imagepath.size(); i++) {
+                Dates.deleteFile(imagepath.get(i).getContent());
             }
             finish();
             return true;
@@ -419,7 +418,7 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
         //设置显示隐藏动画
         mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(check_org);
+        mPopupWindow.showAsDropDown(checkOrg);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
         Utils.backgroundAlpha(0.5f, CheckRectificationActivity.this);
@@ -623,11 +622,11 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
     public void save() {
         Dates.getDialog(CheckRectificationActivity.this, "保存数据中...");
         files = new ArrayList<>();
-        if (Imagepath.size() > 0) {
-            for (int i = 0; i < Imagepath.size(); i++) {
-                String content = Imagepath.get(i).getContent();
+        if (imagepath.size() > 0) {
+            for (int i = 0; i < imagepath.size(); i++) {
+                String content = imagepath.get(i).getContent();
                 if (content.isEmpty()) {
-                    files.add(new File(Imagepath.get(i).getName()));
+                    files.add(new File(imagepath.get(i).getName()));
                 }
             }
         }
@@ -638,16 +637,16 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                 .params("standardDel", categoryedid)
                 .params("standardDelCode", standardDelCode)
                 .params("standardDelScore", standardDelScore)
-                .params("standardDelName", category_item.getText().toString())
+                .params("standardDelName", categoryItem.getText().toString())
                 .params("standardType", categoryid)
-                .params("standardTypeName", check_new_tasktitle.getText().toString())
+                .params("standardTypeName", checkNewTasktitle.getText().toString())
                 .params("checkDate", checkNewDataTx.getText().toString())
                 .params("rectificationPerson", userId)
                 .params("rectificationPersonName", userName)
                 .params("rectificationDate", checkRectifiData.getText().toString())
-                .params("rectificationReason", check_rectifi_result.getText().toString())
+                .params("rectificationReason", checkRectifiResult.getText().toString())
                 .params("rectificationPartName", nodeName)
-                .params("partDetails", check_new_temporarysite.getText().toString())
+                .params("partDetails", checkNewTemporarysite.getText().toString())
                 .params("id", id)
                 .params("deleteFileId", Dates.listToStrings(deleteList));
         if (files.size() > 0) {
@@ -667,14 +666,14 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                         checklistmeuntext.setText("编辑");
                         checkRectifiSubmit.setBackgroundResource(R.color.Orange);
                         JSONArray jsonArray = data.getJSONArray("attachmentList");
-                        Imagepath.clear();
+                        imagepath.clear();
                         if (jsonArray.length() > 0) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
-                                Imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
+                                imagepath.add(new Audio(Requests.networks + json.getString("filepath"), json.getString("id")));
                             }
                         }
-                        photoAdapter.getData(Imagepath, false);
+                        photoAdapter.getData(imagepath, false);
                         Visibility(8);
                         Enabled(false);
                     } else {
@@ -707,40 +706,40 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                Imagepath.clear();
+                                imagepath.clear();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 JSONObject json = jsonObject1.getJSONObject("notice");
                                 nodeId = json.getString("rectificationPart");
                                 nodeName = json.getString("rectificationPartName");
-                                check_wbspath.setText(nodeName);
-                                check_wbspath.setVisibility(View.VISIBLE);
+                                checkWbspath.setText(nodeName);
+                                checkWbspath.setVisibility(View.VISIBLE);
                                 id = json.getString("id");
                                 OrgId = json.getString("rectificationOrgid");
-                                category_item.setText(json.getString("standardDelName"));
+                                categoryItem.setText(json.getString("standardDelName"));
                                 orgName = json.getString("rectificationOrgName");
                                 checkRectifiWbs.setText(orgName);
-                                check_new_temporarysite.setText(json.getString("partDetails"));
+                                checkNewTemporarysite.setText(json.getString("partDetails"));
                                 userName = json.getString("rectificationPersonName");
-                                check_rectifi_font.setText(userName);
+                                checkRectifiFont.setText(userName);
                                 userId = json.getString("rectificationPerson");
                                 String rectificationDate = json.getString("rectificationDate");
                                 checkRectifiData.setText(rectificationDate.substring(0, 10));
                                 categoryedid = json.getString("standardDel");
                                 String checkDate = json.getString("checkDate");
                                 checkNewDataTx.setText(checkDate.substring(0, 10));
-                                check_rectifi_result.setText(json.getString("rectificationReason"));
+                                checkRectifiResult.setText(json.getString("rectificationReason"));
                                 categoryid = json.getString("standardType");
-                                check_new_tasktitle.setText(json.getString("standardTypeName"));
+                                checkNewTasktitle.setText(json.getString("standardTypeName"));
                                 standardDelCode = json.getString("standardDelCode");
                                 standardDelScore = json.getString("standardDelScore");
                                 JSONArray attachment = json.getJSONArray("attachmentList");
                                 if (attachment.length() > 0) {
                                     for (int i = 0; i < attachment.length(); i++) {
                                         JSONObject att = attachment.getJSONObject(i);
-                                        Imagepath.add(new Audio(Requests.networks + att.getString("filepath"), att.getString("id")));
+                                        imagepath.add(new Audio(Requests.networks + att.getString("filepath"), att.getString("id")));
                                     }
                                 }
-                                photoAdapter.getData(Imagepath, false);
+                                photoAdapter.getData(imagepath, false);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }

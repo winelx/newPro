@@ -9,4 +9,8 @@ public class Enums {
     public static final String ADDUPTask="累计完成任务";
     public static final String TODAYTASK="今日完成任务";
     public static final String LASTMONTHTASK="上月整改统计";
+
+    public static final String REQUEST_ERROR="请求失败";
+    public static final String ANALYSIS_ERROR="数据解析失败";
+
 }

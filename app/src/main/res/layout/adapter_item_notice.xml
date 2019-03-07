@@ -8,11 +8,12 @@
     android:paddingTop="5dp">
 
     <TextView
+        android:id="@+id/noticed_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:text="12121212112"
-        android:textColor="@color/graytext"
+        android:textColor="#a6a6a6"
         android:textSize="15sp" />
 
 
@@ -34,22 +35,24 @@
             android:paddingTop="@dimen/dp10">
 
             <TextView
+                android:id="@+id/noticed_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp10"
                 android:paddingTop="@dimen/dp10"
                 android:text="整改通知"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
 
             <TextView
+                android:id="@+id/noticed_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="@dimen/dp10"
-                android:text="测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字"
-                android:textColor="@color/black"
+                android:text="测试文字测试文字字测试文字"
+                android:textColor="#757575"
                 android:textSize="15sp" />
 
             <View
@@ -61,7 +64,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="39dp"
                 android:gravity="center"
                 android:paddingTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp10"

@@ -91,6 +91,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         findbyid();
         initData();
         getCategory();
+        //内业检查不需要检查部位
         if ("1".equals(type)){
             checkNewDialog.setVisibility(View.VISIBLE);
         }else {
@@ -173,7 +174,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void initData() {
-
         mData = new ArrayList<>();
         checkUtils = new CheckUtils();
         //拿到月

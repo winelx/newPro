@@ -1,15 +1,25 @@
 package com.example.administrator.newsdf.pzgc.service;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
+import com.example.administrator.newsdf.R;
+
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,17 +34,18 @@ import cn.jpush.android.api.JPushInterface;
  * description: 极光推送数据接收
  *
  * @author lx
- *         date: 2018/3/26 0026 下午 1:30
- *         update: 2018/3/26 0026
- *         version:
+ * date: 2018/3/26 0026 下午 1:30
+ * update: 2018/3/26 0026
+ * version:
  */
 public class PushReceiver extends BroadcastReceiver {
-
+    String TAG = "PushReceiver";
     Dates dates = new Dates();
+    private static final String CHANNEL_ID = "channel_id";   //通道渠道id
+    public static final String CHANEL_NAME = "chanel_name"; //通道渠道名称
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         final Bundle bundle = intent.getExtras();
         final Set<String> keys = bundle.keySet();
         final JSONObject json = new JSONObject();
@@ -46,9 +57,17 @@ public class PushReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
-
-        final String pushAction = intent.getAction();
-        if (pushAction.equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {
+        if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+            LogUtil.d(TAG, "[MyReceiver] 接收 Registration Id : ");
+        } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+            // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
+            String brand = android.os.Build.BRAND;
+            if ("xiaomi".equals(brand)) {
+                show(context, bundle.getString(JPushInterface.EXTRA_MESSAGE), bundle.getString(JPushInterface.EXTRA_MESSAGE));
+            }
+        } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
+            LogUtil.d(TAG, "收到了通知");
+            // 在这里可以做些统计，或者做些其他工作
             //处理接收到的信息
             dates.addPut();
             context = MainActivity.getInstance();
@@ -68,22 +87,14 @@ public class PushReceiver extends BroadcastReceiver {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            onReceivedMessage(bundle);
-        } else if (pushAction.equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
-            //打开相应的Notification
+        } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             onOpenNotification(context, bundle);
+        } else {
+            LogUtil.d(TAG, "Unhandled intent - " + intent.getAction());
         }
+
     }
 
-
-    private void onReceivedMessage(Bundle bundle) {
-        final String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
-        final String msgId = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-        final int notificationId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-        final String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-        final String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        final String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
-    }
 
     private void onOpenNotification(Context context, Bundle bundle) {
         final String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
@@ -93,4 +104,47 @@ public class PushReceiver extends BroadcastReceiver {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         ContextCompat.startActivity(context, intent, null);
     }
+
+    /**/
+
+    @TargetApi(Build.VERSION_CODES.O)
+    public void show(Context context, String content, String title) {
+        NotificationChannel channel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //创建 通知通道  channelid和channelname是必须的（自己命名就好）
+            channel = new NotificationChannel(CHANNEL_ID, CHANEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.enableLights(true);//是否在桌面icon右上角展示小红点
+            channel.setLightColor(Color.GREEN);//小红点颜色
+            channel.setShowBadge(false); //是否在久按桌面图标时显示此渠道的通知
+        }
+        Notification notification;
+        //获取Notification实例   获取Notification实例有很多方法处理    在此我只展示通用的方法（虽然这种方式是属于api16以上，但是已经可以了，毕竟16以下的Android机很少了，如果非要全面兼容可以用）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //向上兼容 用Notification.Builder构造notification对象
+            notification = new Notification.Builder(context, CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.mipmap.launcher)
+                    .build();
+        } else {
+            //向下兼容 用NotificationCompat.Builder构造notification对象
+            notification = new NotificationCompat.Builder(context)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.mipmap.launcher)
+                    .build();
+        }
+        //发送通知
+        int notifiId = 1;
+        //创建一个通知管理器
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(notifiId, notification);
+
+    }
+
 }
