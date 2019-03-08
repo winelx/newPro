@@ -23,18 +23,13 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetail
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
-import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
-import com.example.administrator.newsdf.pzgc.utils.EventMsg;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.baselibrary.EmptyRecyclerView;
-import com.example.baselibrary.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -44,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 
 /**
@@ -79,6 +73,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
         mContext = this;
+        emptyUtils = new EmptyUtils(mContext);
         RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
             @Override
             public void accept(String path) {
@@ -88,17 +83,6 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         Intent intent = getIntent();
         list = new ArrayList<>();
         content = intent.getStringExtra("title");
-
-        //根据标题选择网络请求
-        if (Enums.NOTICE.equals(content)) {
-            request();
-        } else if (Enums.AGENCY.equals(content)) {
-
-            mynotast();
-        } else if (Enums.COMPLETE.equals(content)) {
-            myyestast();
-        }
-        emptyUtils = new EmptyUtils(mContext);
         comTitle = (TextView) findViewById(R.id.com_title);
         //标题
         comTitle.setText(intent.getStringExtra("title"));
@@ -157,6 +141,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 refreshlayout.finishLoadmore();
             }
         });
+        //根据标题选择网络请求
+        if (Enums.NOTICE.equals(content)) {
+            request();
+        } else if (Enums.AGENCY.equals(content)) {
+            mynotast();
+        } else if (Enums.COMPLETE.equals(content)) {
+            myyestast();
+        }
     }
 
     /*点击事件*/

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.fragment;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,9 +19,6 @@ import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
-import com.example.administrator.newsdf.pzgc.utils.LazyFragment;
-import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.Map;
@@ -166,7 +162,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 //已办消息
                 analysisComplete((CompleteBean) map.get("complete"));
             }
-
             @Override
             public void onerror(String string) {
 

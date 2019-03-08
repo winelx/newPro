@@ -7,8 +7,8 @@ import android.view.View;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.EmptyRecyclerView;
-import com.example.baselibrary.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 /**
@@ -30,7 +30,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         mContext = this;
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
-
         refreshLayout = findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(true);

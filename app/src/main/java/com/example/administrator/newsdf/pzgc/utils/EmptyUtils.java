@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.administrator.newsdf.pzgc.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.administrator.newsdf.R;
 
 
 /**
@@ -28,6 +30,7 @@ public class EmptyUtils {
     private Context mContext;
     private ImageView nodata;
 
+
     public EmptyUtils(Context mContext) {
         this.mContext = mContext;
     }
@@ -38,12 +41,13 @@ public class EmptyUtils {
      * @date: 2019/1/17 0017 下午 2:17
      */
     public View init() {
-        emptyView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.base_layout_emptyview, null);
+        emptyView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.layout_emptyview, null);
         progressBar = emptyView.findViewById(R.id.emptyview_bar);
         content = emptyView.findViewById(R.id.emptyview_text);
         nodata = emptyView.findViewById(R.id.nodata);
         return emptyView;
     }
+
 
     /**
      * @内容: 简单设置提示
@@ -105,4 +109,7 @@ public class EmptyUtils {
         void callback();
     }
 
+    public void setGone() {
+        emptyView.setVisibility(View.GONE);
+    }
 }
