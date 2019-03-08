@@ -45,9 +45,9 @@ import okhttp3.Response;
  * description:t检查单详情
  *
  * @author lx
- *         date: 2018/8/15 0015 上午 11:38
- *         update: 2018/8/15 0015
- *         version:
+ * date: 2018/8/15 0015 上午 11:38
+ * update: 2018/8/15 0015
+ * version:
  */
 public class CheckListDetailsActivity extends BaseActivity implements View.OnClickListener {
     //控件
@@ -63,7 +63,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String type,name, Id, categoryId = "", taskId;
+    private String type, name, Id, categoryId = "", taskId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -75,11 +75,10 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     public static CheckListDetailsActivity getInstance() {
         return mContext;
     }
+
     private CheckUtils checkUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +91,9 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         initData();
         getCategory();
         //内业检查不需要检查部位
-        if ("1".equals(type)){
+        if ("1".equals(type)) {
             checkNewDialog.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             checkNewDialog.setVisibility(View.GONE);
         }
     }
@@ -353,7 +352,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //初始化数据---日
         String yeardata = Utils.year[yearPicker.getValue()];
         //如果当前月份是2月
-        if ((dateMonth+1) == 2) {
+        if ((dateMonth + 1) == 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年
@@ -406,7 +405,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
-                            if (ret==0){
+                            if (ret == 0) {
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 //具体时间
                                 datatime.setText(json.getString("checkDate"));
@@ -420,6 +419,13 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                     wbsName.setText(wbspath);
                                     wbsName.setVisibility(View.VISIBLE);
                                 }
+                                int iwork = json.getInt("iwork");
+                                //判断内业还是外业
+                                if (iwork == 1) {
+                                    checkNewDialog.setVisibility(View.VISIBLE);
+                                } else {
+                                    checkNewDialog.setVisibility(View.GONE);
+                                }
                                 checkNewTemporarysite.setText(json.getString("wbsMainName"));
                                 //检查人
                                 checkUsername.setText(json.getString("realname"));
@@ -429,7 +435,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                     checkNewTasktitle.setText(json.getString("name"));
                                 } else {
                                     checkNewTasktitle.setHint("未输入");
-
                                 }
                                 //所属标段
                                 checkNewWebtext.setText(json.getString("orgName"));
@@ -447,7 +452,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                     score = json.getString("score");
                                     if (score.equals("0.0")) {
                                         checkNewNumber.setText("0");
-                                    }else {
+                                    } else {
                                         checkNewNumber.setText(score);
                                     }
                                 } catch (JSONException e) {
@@ -455,7 +460,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                 }
                                 taskId = json.getString("id");
                                 checkItem();
-                            }else {
+                            } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
 
@@ -470,6 +475,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                     }
                 });
     }
+
     /**
      * 生成检查后的检查项列表
      */
@@ -508,7 +514,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                             generate = false;
                                         }
                                         int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate,gray));
+                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate, gray));
                                     }
                                 }
 

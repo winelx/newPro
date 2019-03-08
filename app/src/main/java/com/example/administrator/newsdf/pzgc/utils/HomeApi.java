@@ -15,4 +15,12 @@ public class HomeApi {
      * 我的待办
      */
     public static final String MYNOTAST = Requests.networks + "iface/mobile/systemnotice/myNoTast";
+    /**
+     * 已办事项
+     */
+    public static final String MYYESTAST = Requests.networks + "iface/mobile/systemnotice/myYesTast";
+    /**
+     * 首页消息
+     **/
+    public static final String GETMSGNOTICEPAGEDATA=Requests.networks+"/iface/mobile/systemnotice/getMsgNoticePageData";
 }

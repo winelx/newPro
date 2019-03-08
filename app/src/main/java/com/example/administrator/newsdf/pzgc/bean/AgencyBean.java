@@ -40,7 +40,7 @@ public class AgencyBean {
     private String sendOrgId;
     private String sendOrgName;
     private String sendPerson;
-
+    private int totalCount;//任务数量
     public String getId() {
         return id;
     }
@@ -143,5 +143,13 @@ public class AgencyBean {
 
     public void setSendPerson(String sendPerson) {
         this.sendPerson = sendPerson;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

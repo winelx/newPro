@@ -1,10 +1,13 @@
 package com.example.administrator.newsdf.pzgc.activity.home;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -22,9 +25,14 @@ import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUti
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
+import com.example.administrator.newsdf.pzgc.utils.EventMsg;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.baselibrary.EmptyRecyclerView;
 import com.example.baselibrary.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -34,6 +42,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 
 /**
@@ -53,31 +64,51 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
     private Context mContext;
     private int page = 1;
     String content;
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            page = 1;
+            onrefreshs();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
         mContext = this;
+        RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                handler.sendMessage(new Message());
+            }
+        });
         Intent intent = getIntent();
         list = new ArrayList<>();
         content = intent.getStringExtra("title");
+
+        //根据标题选择网络请求
         if (Enums.NOTICE.equals(content)) {
             request();
         } else if (Enums.AGENCY.equals(content)) {
+
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
+            myyestast();
         }
-        emptyUtils = new EmptyUtils(this);
+        emptyUtils = new EmptyUtils(mContext);
         comTitle = (TextView) findViewById(R.id.com_title);
+        //标题
         comTitle.setText(intent.getStringExtra("title"));
         findViewById(R.id.com_back).setOnClickListener(this);
-        recycler = (EmptyRecyclerView) findViewById(R.id.recycler);
+        recycler = (EmptyRecyclerView) findViewById(R.id.noticerecycler);
+        //设置展示style
         recycler.setLayoutManager(new LinearLayoutManager(mContext));
+        //设置空白提示
         recycler.setEmptyView(emptyUtils.init());
+        //设置adapter
         mAdapter = new NoticeAdapter(list);
         recycler.setAdapter(mAdapter);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.smartrefresh);
@@ -94,15 +125,13 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             public void onClick(String content, int position) {
                 if (Enums.NOTICE.equals(content)) {
                     //消息通知的点击事件
-                    onclicknotice(position);
+                    onotiCenclick(position);
                 } else if (Enums.AGENCY.equals(content)) {
-                    ToastUtils.showShortToastCenter("2");
+                    agencyonclick(position);
                 } else if (Enums.COMPLETE.equals(content)) {
-                    ToastUtils.showShortToastCenter("3");
+
                 }
             }
-
-
         });
         /**
          *   下拉刷新
@@ -116,7 +145,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 refreshlayout.finishRefresh();
             }
         });
-        //上拉加载
+        /**
+         * 上拉加载
+         */
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
@@ -168,6 +199,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                         page--;
                     }
                 }
+                if (list.size() == 0) {
+                    //如果列表无数据，展示空白提示
+                    emptyUtils.noData("暂无数据，下拉刷新");
+                }
                 //弹出提示
                 ToastUtils.showsnackbar(comTitle, string);
             }
@@ -201,6 +236,47 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                         page--;
                     }
                 }
+                if (list.size() == 0) {
+                    //如果列表无数据，展示空白提示
+                    emptyUtils.noData("暂无数据，下拉刷新");
+                }
+                //弹出提示
+                ToastUtils.showsnackbar(comTitle, string);
+            }
+        });
+    }
+
+    /*已办事项*/
+    public void myyestast() {
+        HomeFragmentUtils.myyestast(page, new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                //如果page=1，清空集合的数据
+                if (page == 1) {
+                    list.clear();
+                }
+                //获取返回数据
+                list.addAll((ArrayList<CompleteBean>) map.get("complete"));
+                if (list.size() == 0) {
+                    //如果列表无数据，展示空白提示
+                    emptyUtils.noData("暂无数据，下拉刷新");
+                }
+                //更新数据
+                mAdapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String string) {
+                if (Enums.REQUEST_ERROR.equals(string)) {
+                    //如果page==1，就不减，
+                    if (page != 1) {
+                        page--;
+                    }
+                }
+                if (list.size() == 0) {
+                    //如果列表无数据，展示空白提示
+                    emptyUtils.noData("暂无数据，下拉刷新");
+                }
                 //弹出提示
                 ToastUtils.showsnackbar(comTitle, string);
             }
@@ -214,9 +290,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if (Enums.AGENCY.equals(content)) {
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
+            mynotast();
         }
     }
 
@@ -227,14 +301,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if (Enums.AGENCY.equals(content)) {
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
-            list.add(new CompleteBean("4545"));
+            mynotast();
         }
     }
 
     /*通知消息点击事件*/
-    private void onclicknotice(int position) {
+    private void onotiCenclick(int position) {
         NoticedBean bean = (NoticedBean) list.get(position);
         int modelname = bean.getModelType();
         if (modelname == 1) {
@@ -254,9 +326,36 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
-            intent.putExtra("type", bean.getBeNoticeOrgName());
             startActivity(intent);
         }
     }
+
+    /*待办事项*/
+    private void agencyonclick(int position) {
+        //
+        AgencyBean bean = (AgencyBean) list.get(position);
+        int modelType = bean.getModelType();
+        if (modelType == 1) {
+            //整改通知单
+            Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+            notice.putExtra("id", bean.getModelId());
+            notice.putExtra("orgId", bean.getSendOrgId());
+            notice.putExtra("orgName", bean.getSendOrgName());
+            startActivity(notice);
+        } else if (modelType == 2) {
+            //回复验证单
+            Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
+            reply.putExtra("id", bean.getModelId());
+            reply.putExtra("orgId", bean.getSendOrgId());
+            startActivity(reply);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unSubcribe();
+    }
+
 
 }

@@ -41,7 +41,7 @@ public class NoticedBean {
     private String optionContent;
     private String sendPerson;
     private String showContent;
-
+    private int totalCount;//任务数量
     public String getBeNoticeOrgId() {
         return beNoticeOrgId;
     }
@@ -144,5 +144,13 @@ public class NoticedBean {
 
     public void setShowContent(String showContent) {
         this.showContent = showContent;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

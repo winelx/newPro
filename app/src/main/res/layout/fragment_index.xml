@@ -22,10 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="消息"
+                android:text="任务"
                 android:textColor="@color/writer"
                 android:textSize="18sp" />
-
 
         </LinearLayout>
 
@@ -49,8 +48,8 @@
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="#d4d4d4" />
 
         <RelativeLayout
@@ -80,8 +79,8 @@
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="#d4d4d4" />
 
         <TextView
@@ -96,8 +95,8 @@
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:background="#d4d4d4" />
 
         <TextView

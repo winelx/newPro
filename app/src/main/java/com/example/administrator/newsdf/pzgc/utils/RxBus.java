@@ -1,38 +1,72 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+/*基于rxjava2.0实现的事件总线，用于回调刷新界面，传递参数*/
 public class RxBus {
-    private final Subject<Object> mBus;
+    private static volatile RxBus mInstance;
+    private
+    final Subject<Object> subject = PublishSubject.create()
+            .toSerialized();
+    private Disposable dispoable;
+
 
     private RxBus() {
-        // toSerialized method made bus thread safe
-        mBus = PublishSubject.create().toSerialized();
     }
 
-    public static RxBus get() {
-        return Holder.BUS;
+    public static RxBus getInstance() {
+        if (mInstance == null) {
+            synchronized (RxBus.class) {
+                if (mInstance == null) {
+                    mInstance = new RxBus();
+                }
+            }
+        }
+        return mInstance;
     }
 
-    public void post(Object obj) {
-        mBus.onNext(obj);
+
+    /**
+     * 发送事件
+     *
+     * @param object
+     */
+    public void send(Object object) {
+        subject.onNext(object);
     }
 
-    public <T> Observable<T> toObservable(Class<T> tClass) {
-        return mBus.ofType(tClass);
+    /**
+     * @param classType
+     * @param <T>
+     * @return
+     */
+    public <T> Observable<T> toObservale(Class<T> classType) {
+        return subject.ofType(classType);
     }
 
-    public Observable<Object> toObservable() {
-        return mBus;
+
+    /**
+     * 订阅
+     *
+     * @param bean
+     * @param consumer
+     */
+    public void subscribe(Class bean, Consumer consumer) {
+        dispoable = toObservale(bean).subscribe(consumer);
     }
 
-    public boolean hasObservers() {
-        return mBus.hasObservers();
-    }
+    /**
+     * 取消订阅
+     */
+    public void unSubcribe() {
+        if (dispoable != null && dispoable.isDisposed()) {
+            dispoable.dispose();
+        }
 
-    private static class Holder {
-        private static final RxBus BUS = new RxBus();
     }
 }

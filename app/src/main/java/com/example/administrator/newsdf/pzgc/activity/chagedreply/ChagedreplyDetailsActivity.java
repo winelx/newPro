@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
@@ -187,6 +188,10 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 request();
                 try {
                     TaskCallbackUtils.CallBackMethod();
+                    /**
+                     * 关联界面 NoticeActivity
+                     */
+                    RxBus.getInstance().send("刷新数据");
                 } catch (Exception e) {
 
                 }

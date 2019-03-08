@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @data:2019/3/6 0006
- * @Notes: 消息界面任务模块展示界面
+ * @Notes: 消息界面任务数量统计模块展示界面
  * @see HomeFragment
  */
 @SuppressLint("Registered")
@@ -51,7 +51,6 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_hometask);
         mContext = this;
         list = new ArrayList<>();
-
         Intent intent = getIntent();
         final String str = intent.getStringExtra("title");
         emptyUtils = new EmptyUtils(mContext);

@@ -22,6 +22,8 @@ import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.EventMsg;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
@@ -150,8 +152,13 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                             @Override
                             public void onsuccess(String string) {
                                 ToastUtils.showShortToastCenter("指派成功");
+                                RxBus.getInstance().send("刷新数据");
                                 try {
                                     TaskCallbackUtils.CallBackMethod();
+                                    /**
+                                     * 关联界面 NoticeActivity
+                                     */
+
                                 } catch (Exception e) {
                                 }
                                 finish();
@@ -182,7 +189,16 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
             public void onsuccess(String string) {
                 ToastUtils.showShortToastCenter(string);
                 try {
+                    /**
+                     * @author lx
+                     * @data :2019/3/8 0008
+                     * @描述 : 回调界面刷新数据
+                     */
                     TaskCallbackUtils.CallBackMethod();
+                    /**
+                     * 关联界面 NoticeActivity
+                     */
+                    RxBus.getInstance().send("刷新数据");
                 } catch (Exception e) {
 
                 }

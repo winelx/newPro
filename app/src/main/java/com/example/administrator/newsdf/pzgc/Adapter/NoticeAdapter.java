@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,7 +57,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     /*消息通知*/
     private void bindNotice(NoticedViewHolder holder, final int position) {
         NoticedBean bean = (NoticedBean) list.get(position);
-        holder.Noticedcardview.setOnClickListener(new View.OnClickListener() {
+        holder.noticedcardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onclicktener.onClick(Enums.NOTICE, position);
@@ -92,6 +93,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     /*已办事项*/
+    @SuppressLint("SetTextI18n")
     private void bindComplete(CompleteViewHolder holder, final int position) {
         holder.Completecardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +101,11 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 onclicktener.onClick(Enums.COMPLETE, position);
             }
         });
+        CompleteBean bean = (CompleteBean) list.get(position);
+        holder.modelname.setText(bean.getModelName()  + "(" + bean.getModelCode() + ")" + "已处理");
+        holder.title.setText(bean.getModelName());
+        holder.complete_result.setText("处理结果：" + bean.getDealResult());
+        holder.complete_data.setText("处理时间：" + bean.getSendDate());
     }
 
     @Override
@@ -121,18 +128,19 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     /*消息通知*/
     class NoticedViewHolder extends RecyclerView.ViewHolder {
-        private CardView Noticedcardview;
+        private CardView noticedcardview;
         private TextView noticedData, noticedTitle, noticedContent;
 
         public NoticedViewHolder(View itemView) {
             super(itemView);
-            Noticedcardview = itemView.findViewById(R.id.cardview);
+            noticedcardview = itemView.findViewById(R.id.cardview);
             noticedData = itemView.findViewById(R.id.noticed_data);
             noticedTitle = itemView.findViewById(R.id.noticed_title);
             noticedContent = itemView.findViewById(R.id.noticed_content);
         }
     }
 
+    /*待办事项*/
     class AgencyViewHolder extends RecyclerView.ViewHolder {
         private CardView Agencycardview;
         private TextView agencyData, agencyTitle, agencyContent;
@@ -146,12 +154,18 @@ public class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    /*已办事项*/
     class CompleteViewHolder extends RecyclerView.ViewHolder {
         private CardView Completecardview;
+        private TextView modelname, title, complete_result, complete_data;
 
         public CompleteViewHolder(View itemView) {
             super(itemView);
             Completecardview = itemView.findViewById(R.id.cardview);
+            modelname = itemView.findViewById(R.id.complete_modelname);
+            title = itemView.findViewById(R.id.complete_title);
+            complete_result = itemView.findViewById(R.id.complete_result);
+            complete_data = itemView.findViewById(R.id.complete_data);
         }
     }
 

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">工程管理</string>
     <string name="mine">我的</string>
-    <string name="message">消息</string>
+    <string name="message">任务</string>
     <string name="work">工作</string>
     <string name="home">首页</string>
     <string name="check">亮点</string>
