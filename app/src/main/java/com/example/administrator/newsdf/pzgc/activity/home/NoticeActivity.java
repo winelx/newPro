@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
@@ -29,7 +30,7 @@ import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;
-import com.example.baselibrary.EmptyRecyclerView;
+import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -90,10 +91,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         recycler = (EmptyRecyclerView) findViewById(R.id.noticerecycler);
         //设置展示style
         recycler.setLayoutManager(new LinearLayoutManager(mContext));
-        //设置空白提示
-        recycler.setEmptyView(emptyUtils.init());
         //设置adapter
         mAdapter = new NoticeAdapter(list);
+        //设置空白提示
+        mAdapter.setEmptyView(emptyUtils.init());
         recycler.setAdapter(mAdapter);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
@@ -104,19 +105,6 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         refreshLayout.setEnableOverScrollDrag(false);
         //是否在列表不满一页时候开启上拉加载功能
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
-        mAdapter.setOnclicktener(new Onclicktener() {
-            @Override
-            public void onClick(String content, int position) {
-                if (Enums.NOTICE.equals(content)) {
-                    //消息通知的点击事件
-                    onotiCenclick(position);
-                } else if (Enums.AGENCY.equals(content)) {
-                    agencyonclick(position);
-                } else if (Enums.COMPLETE.equals(content)) {
-
-                }
-            }
-        });
         /**
          *   下拉刷新
          */
@@ -139,6 +127,19 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 page++;
                 onLoadmores();
                 refreshlayout.finishLoadmore();
+            }
+        });
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Object object=list.get(position);
+                if (object instanceof NoticedBean) {
+                    onotiCenclick(position);
+                } else if (object instanceof AgencyBean) {
+                    agencyonclick(position);
+                } else if (object instanceof CompleteBean) {
+
+                }
             }
         });
         //根据标题选择网络请求

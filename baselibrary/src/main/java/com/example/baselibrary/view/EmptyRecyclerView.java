@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 /**
  * @author lx

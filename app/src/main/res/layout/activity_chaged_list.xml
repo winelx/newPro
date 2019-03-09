@@ -17,7 +17,7 @@
             android:layout_height="wrap_content" />
 
 
-        <com.example.baselibrary.EmptyRecyclerView
+        <com.example.baselibrary.view.EmptyRecyclerView
             android:id="@+id/recycler_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

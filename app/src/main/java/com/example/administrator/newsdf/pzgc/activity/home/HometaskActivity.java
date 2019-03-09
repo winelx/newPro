@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
-import com.example.baselibrary.EmptyRecyclerView;
+import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;

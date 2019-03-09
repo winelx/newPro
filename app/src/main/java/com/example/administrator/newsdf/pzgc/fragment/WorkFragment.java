@@ -27,9 +27,9 @@ import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivi
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.baselibrary.EmptyRecyclerView;
-import com.example.baselibrary.MessageFragmentAdapter;
-import com.example.baselibrary.MessageFragmentItemAdapter;
+import com.example.baselibrary.view.EmptyRecyclerView;
+import com.example.baselibrary.adapter.MessageFragmentAdapter;
+import com.example.baselibrary.adapter.MessageFragmentItemAdapter;
 import com.example.baselibrary.bean.ItemBean;
 import com.example.baselibrary.bean.bean;
 import com.lzy.okgo.OkGo;

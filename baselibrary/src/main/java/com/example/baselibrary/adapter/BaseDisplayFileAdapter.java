@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,11 +14,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.baselibrary.R;
 import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;
 
-
+/**
+ * @author lx
+ * 创建日期：2019/3/9 0009
+ * 描述：基本的文件展示类，使用实体收数据
+ * {@link }
+ */
 public class BaseDisplayFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<photoBean> list;
     private Context mContext;

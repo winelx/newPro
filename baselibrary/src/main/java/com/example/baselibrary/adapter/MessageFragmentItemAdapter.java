@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.baselibrary.R;
 import com.example.baselibrary.bean.bean;
 
 import java.util.List;

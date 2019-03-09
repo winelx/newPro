@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.baselibrary.R;
 import com.example.baselibrary.bean.ItemBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

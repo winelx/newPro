@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
+import com.example.baselibrary.R;
+import com.example.baselibrary.utils.ScreenUtil;
 
 /**
  * @author lx
