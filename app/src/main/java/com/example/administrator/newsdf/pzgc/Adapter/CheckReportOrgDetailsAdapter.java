@@ -88,9 +88,12 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
                 @Override
                 public void onClick(View v) {
                     // 1
-                    int position =   (holder).getLayoutPosition();
-                    // 2
-                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                    try {
+                        int position =   (holder).getLayoutPosition();
+                        // 2
+                        mOnItemClickListener.onItemClick(holder.itemView, position);
+                    }catch (Exception e){
+                    }
                 }
             });
             int iwork=Tbean.getIwork();

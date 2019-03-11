@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
@@ -33,10 +35,9 @@ import java.util.Map;
  */
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
-    private SmartRefreshLayout refreshLayout;
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
-    private LinearLayout layoutRanking;
+    private LinearLayout noticedLin, agencyLin, completeLin;
     private TextView noticedData, agencyData, completeData;
     private TextView noticedContent, agencyContent, completeContent;
     private TextView noticedNumber, agencyNumber;
@@ -91,16 +92,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void findId() {
+        //消息通知是
+        /*消息通知事件*/
         noticedData = rootView.findViewById(R.id.noticed_data);
-        agencyData = rootView.findViewById(R.id.agency_data);
-        completeData = rootView.findViewById(R.id.complete_data);
-
+        /*消息控件*/
+        noticedLin = rootView.findViewById(R.id.noticed_lin);
+        /*最新消息内容 */
         noticedContent = rootView.findViewById(R.id.noticed_content);
+        /* 消息数量*/
+        noticedNumber = rootView.findViewById(R.id.noticed_number);
+        //待办消息
+        agencyData = rootView.findViewById(R.id.agency_data);
+        agencyLin = rootView.findViewById(R.id.agency_lin);
         agencyContent = rootView.findViewById(R.id.agency_content);
+        agencyNumber = rootView.findViewById(R.id.agency_number);
+        //已办消息
+        completeData = rootView.findViewById(R.id.complete_data);
+        completeLin = rootView.findViewById(R.id.complete_lin);
         completeContent = rootView.findViewById(R.id.complete_content);
 
-        noticedNumber = rootView.findViewById(R.id.noticed_number);
-        agencyNumber = rootView.findViewById(R.id.agency_number);
+
     }
 
 
@@ -126,7 +137,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(complete);
                 break;
             case R.id.layout_ranking:
-
+                startActivity(new Intent(mContext, CheckReportActivity.class));
                 break;
             case R.id.tasktotal:
                 //累计完成任务
@@ -156,19 +167,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 //消息通知
-                analysisNoticed((NoticedBean) map.get("noticed"));
+                if (map.containsKey("noticed")) {
+                    noticedNumber.setVisibility(View.VISIBLE);
+                    analysisNoticed((NoticedBean) map.get("noticed"));
+                } else {
+                    noticedData.setText("");
+                    noticedContent.setText("暂无消息");
+                    noticedNumber.setVisibility(View.INVISIBLE);
+                }
                 //待办消息
-                analysisAgency((AgencyBean) map.get("agency"));
+                if (map.containsKey("agency")) {
+                    agencyNumber.setVisibility(View.VISIBLE);
+                    analysisAgency((AgencyBean) map.get("agency"));
+                } else {
+                    agencyNumber.setVisibility(View.INVISIBLE);
+                    agencyContent.setText("暂无消息");
+                    agencyData.setText("");
+                }
                 //已办消息
-                analysisComplete((CompleteBean) map.get("complete"));
+                if (map.containsKey("complete")) {
+                    analysisComplete((CompleteBean) map.get("complete"));
+                } else {
+                    completeData.setText("");
+                    completeContent.setText("暂无消息");
+                }
             }
+
             @Override
             public void onerror(String string) {
-
+                ToastUtils.showShortToastCenter(string);
             }
         });
     }
 
+    /*消息通知*/
     private void analysisNoticed(NoticedBean bean) {
         if (bean.getNoticeDate() != null) {
             noticedData.setText(bean.getNoticeDate());
@@ -188,6 +220,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /*待办事项*/
     private void analysisAgency(AgencyBean bean) {
         agencyData.setText(bean.getSendDate());
         if (bean.getReceiveOrgName() != null) {
@@ -203,6 +236,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /*已办事项*/
     private void analysisComplete(CompleteBean bean) {
         completeData.setText(bean.getSendDate());
         if (bean.getModelName() != null) {

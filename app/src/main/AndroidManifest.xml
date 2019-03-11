@@ -383,6 +383,7 @@
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyVerificationActivity" />
         <activity android:name=".pzgc.activity.home.NoticeActivity" />
         <activity android:name=".pzgc.activity.home.HometaskActivity" />
+        <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
 
 
     </application>

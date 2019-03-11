@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoticeAdapter extends MultipleItemRvAdapter<Object, BaseViewHolder> {
-    private ArrayList<Object> list;
     public static final int TYPE_ONE = 01;
     public static final int TYPE_TWO = 02;
     public static final int TYPE_THREE = 03;

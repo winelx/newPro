@@ -38,7 +38,6 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
     private SmartRefreshLayout refreshLayout;
     private TextView title;
     private Context mContext;
-
     private HometaskAdapter adapter;
     private EmptyUtils emptyUtils;
 
@@ -94,15 +93,21 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
                 switch (string) {
                     case Enums.ADDUPTask:
                         //累计完成任务
-                        ToastUtils.showShortToastCenter(Enums.ADDUPTask);
+                        Intent intent1 = new Intent(mContext, HomeTaskDetailsActivity.class);
+                        intent1.putExtra("type", Enums.ADDUPTask);
+                        startActivity(intent1);
                         break;
                     case Enums.TODAYTASK:
                         //今日完成任务
-                        ToastUtils.showShortToastCenter(Enums.ADDUPTask);
+                        Intent intent = new Intent(mContext, HomeTaskDetailsActivity.class);
+                        intent.putExtra("type", Enums.TODAYTASK);
+                        startActivity(intent);
                         break;
                     case Enums.LASTMONTHTASK:
                         //上月整改单统计
-                        ToastUtils.showShortToastCenter(Enums.ADDUPTask);
+                        Intent intent2 = new Intent(mContext, HomeTaskDetailsActivity.class);
+                        intent2.putExtra("type", Enums.LASTMONTHTASK);
+                        startActivity(intent2);
                         break;
                     default:
                         break;

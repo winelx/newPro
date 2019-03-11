@@ -58,7 +58,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
     private ArrayList<Object> list;
     private Context mContext;
     private int page = 1;
-    String content;
+    private String content;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -132,13 +132,13 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Object object=list.get(position);
+                Object object = list.get(position);
                 if (object instanceof NoticedBean) {
-                    onotiCenclick(position);
+                    noticedOnclick(position);
                 } else if (object instanceof AgencyBean) {
-                    agencyonclick(position);
+                    agencyOnclick(position);
                 } else if (object instanceof CompleteBean) {
-
+                    completeOnclick(position);
                 }
             }
         });
@@ -152,7 +152,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /*点击事件*/
+    /**
+     * 点击事件
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -165,7 +167,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /*消息通知网络请求*/
+    /**
+     * 消息通知网络请求
+     */
     public void request() {
         HomeFragmentUtils.mysystemnotice(page, new HomeFragmentUtils.requestCallBack() {
             @Override
@@ -202,7 +206,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    /*待办事项*/
+    /**
+     * 待办事项
+     */
     public void mynotast() {
         HomeFragmentUtils.mynotast(page, new HomeFragmentUtils.requestCallBack() {
             @Override
@@ -239,7 +245,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    /*已办事项*/
+    /**
+     * 已办事项
+     */
     public void myyestast() {
         HomeFragmentUtils.myyestast(page, new HomeFragmentUtils.requestCallBack() {
             @Override
@@ -276,7 +284,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    /*下拉刷新*/
+    /**
+     * 下拉刷新
+     */
     private void onrefreshs() {
         if (Enums.NOTICE.equals(content)) {
             request();
@@ -287,7 +297,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /*上拉加载*/
+    /**
+     * 上拉加载
+     */
     private void onLoadmores() {
         if (Enums.NOTICE.equals(content)) {
             request();
@@ -298,8 +310,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /*通知消息点击事件*/
-    private void onotiCenclick(int position) {
+    /**
+     * 通知消息点击事件
+     */
+    private void noticedOnclick(int position) {
         NoticedBean bean = (NoticedBean) list.get(position);
         int modelname = bean.getModelType();
         if (modelname == 1) {
@@ -323,9 +337,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /*待办事项*/
-    private void agencyonclick(int position) {
-        //
+    /**
+     * 待办事项
+     */
+    private void agencyOnclick(int position) {
         AgencyBean bean = (AgencyBean) list.get(position);
         int modelType = bean.getModelType();
         if (modelType == 1) {
@@ -339,8 +354,32 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //回复验证单
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
-            reply.putExtra("orgId", bean.getSendOrgId());
+            reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
+        }
+    }
+
+    private void completeOnclick(int position) {
+        CompleteBean bean = (CompleteBean) list.get(position);
+        int modelType = bean.getModelType();
+        if (modelType == 1) {
+            //整改通知单
+            Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
+            notice.putExtra("id", bean.getModelId());
+            notice.putExtra("orgId", bean.getSendOrgId());
+            notice.putExtra("orgName", bean.getSendOrgName());
+            startActivity(notice);
+        } else if (modelType == 2) {
+            //回复验证单
+            Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
+            reply.putExtra("id", bean.getModelId());
+            reply.putExtra("orgName", bean.getReceiveOrgName());
+            startActivity(reply);
+        } else {
+            //监督检查
+            Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            startActivity(intent);
         }
     }
 

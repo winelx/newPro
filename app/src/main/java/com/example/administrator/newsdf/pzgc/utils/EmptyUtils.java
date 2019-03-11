@@ -43,6 +43,7 @@ public class EmptyUtils {
     public View init() {
         emptyView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.layout_emptyview, null);
         progressBar = emptyView.findViewById(R.id.emptyview_bar);
+        progressBar.setVisibility(View.VISIBLE);
         content = emptyView.findViewById(R.id.emptyview_text);
         nodata = emptyView.findViewById(R.id.nodata);
         return emptyView;
