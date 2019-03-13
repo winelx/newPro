@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticeAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
@@ -24,7 +24,6 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetail
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
-import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
@@ -320,6 +319,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //整改通知单
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
+            notice.putExtra("status", false);
             notice.putExtra("orgId", bean.getBeNoticeOrgId());
             notice.putExtra("orgName", bean.getBeNoticeOrgName());
             startActivity(notice);
@@ -327,6 +327,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //回复验证单
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
+            reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getBeNoticeOrgName());
             startActivity(reply);
         } else {
@@ -359,6 +360,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    /*已办事件*/
     private void completeOnclick(int position) {
         CompleteBean bean = (CompleteBean) list.get(position);
         int modelType = bean.getModelType();
@@ -366,6 +368,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //整改通知单
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
+            notice.putExtra("status", false);
             notice.putExtra("orgId", bean.getSendOrgId());
             notice.putExtra("orgName", bean.getSendOrgName());
             startActivity(notice);
@@ -373,6 +376,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //回复验证单
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
+            reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
         } else {

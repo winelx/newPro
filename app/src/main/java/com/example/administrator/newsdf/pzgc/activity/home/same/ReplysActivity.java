@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -41,12 +40,11 @@ import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotosAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 
-import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.service.LocationService;

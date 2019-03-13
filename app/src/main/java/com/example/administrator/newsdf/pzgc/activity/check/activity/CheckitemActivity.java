@@ -37,7 +37,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckitemAdapter;
@@ -49,7 +49,6 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;

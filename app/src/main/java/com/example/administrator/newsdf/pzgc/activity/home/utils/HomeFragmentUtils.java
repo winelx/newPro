@@ -1,15 +1,20 @@
 package com.example.administrator.newsdf.pzgc.activity.home.utils;
 
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
+import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
+import com.example.administrator.newsdf.pzgc.bean.TotalBean;
+import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.HomeApi;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.GetRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +28,12 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * @author lx
+ * @data :2019/3/12 0012
+ * @描述 : 消息首页及关联的界面接口
+ * @see
+ */
 public class HomeFragmentUtils {
     /*消息通知*/
     public static void mysystemnotice(int page, final requestCallBack callBack) {
@@ -142,6 +153,20 @@ public class HomeFragmentUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 JSONObject data = jsonObject.getJSONObject("data");
+                                map.put("lastMonthNoticeCount", data.getString("lastMonthNoticeCount"));
+                                map.put("grandTaskFinishCount", data.getString("grandTaskFinishCount"));
+                                map.put("todayTaskFinishCount", data.getString("todayTaskFinishCount"));
+                                ArrayList<Audio> list = new ArrayList<>();
+                                JSONArray orgRanke;
+                                try {
+                                        orgRanke = data.getJSONArray("orgRanke");
+                                        for (int i = 0; i < orgRanke.length(); i++) {
+                                            JSONObject json = orgRanke.getJSONObject(i);
+                                            list.add(new Audio(json.getString("name"), json.getString("score")));
+                                }
+                                        map.put("orgRanke", list);
+                                } catch (Exception e) {
+                                }
                                 /*我的待办*/
                                 JSONObject myNewNoTask;
                                 try {
@@ -149,6 +174,7 @@ public class HomeFragmentUtils {
                                     AgencyBean agencyBean = com.alibaba.fastjson.JSONObject.parseObject(myNewNoTask.toString(), AgencyBean.class);
                                     map.put("agency", agencyBean);
                                 } catch (Exception e) {
+                                    myNewNoTask = new JSONObject();
                                 }
                                 /*我的已办*/
                                 JSONObject myNewYesTask;
@@ -157,6 +183,7 @@ public class HomeFragmentUtils {
                                     CompleteBean completeBean = com.alibaba.fastjson.JSONObject.parseObject(myNewYesTask.toString(), CompleteBean.class);
                                     map.put("complete", completeBean);
                                 } catch (Exception e) {
+                                    myNewYesTask = new JSONObject();
                                 }
                                 /*最新消息*/
                                 JSONObject myNewNotice;
@@ -165,12 +192,12 @@ public class HomeFragmentUtils {
                                     NoticedBean noticedBean = com.alibaba.fastjson.JSONObject.parseObject(myNewNotice.toString(), NoticedBean.class);
                                     map.put("noticed", noticedBean);
                                 } catch (Exception e) {
+                                    myNewNotice = new JSONObject();
                                 }
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
-
                         } catch (Exception e) {
                             callBack.onerror(Enums.ANALYSIS_ERROR);
                         }
@@ -184,6 +211,178 @@ public class HomeFragmentUtils {
                 });
     }
 
+    /*通知单获取 分公司统计 及 标段统计 数据接口*/
+    public static void getNoticeCountData(String id, final requestCallBack callBack) {
+        GetRequest request = OkGo.get(HomeApi.GETNOTICECOUNTDATA);
+        if (id != null) {
+            request.params("fOrgId1", id);
+        }
+        request.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        Map<String, Object> map = new HashMap<>();
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        JSONArray result = data.getJSONArray("results");
+                        List<LastmonthBean> list = ListJsonUtils.getListByArray(LastmonthBean.class, result.toString());
+                        map.put("lastmonth", list);
+                        callBack.onsuccess(map);
+
+                    } else {
+                        callBack.onerror(jsonObject.getString("msg"));
+                    }
+                } catch (Exception e) {
+                    callBack.onerror(Enums.ANALYSIS_ERROR);
+                }
+
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onerror(Enums.REQUEST_ERROR);
+            }
+        });
+    }
+
+    /*累计任务列表*/
+    public static void cumulativeRequest(final requestCallBack callBack) {
+        OkGo.get(HomeApi.GETGRANDTASKFINISHBYF)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONArray data = jsonObject.getJSONArray("data");
+                                List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
+                                map.put("total", list);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callBack.onerror(Enums.ANALYSIS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
+    }
+
+    /*今日任务列表*/
+    public static void todayRequest(final requestCallBack callBack) {
+        OkGo.get(HomeApi.GETTODAYTASKFINISHBYF)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONArray data = jsonObject.getJSONArray("data");
+                                List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
+                                map.put("today", list);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callBack.onerror(Enums.ANALYSIS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
+    }
+
+    /*累计任务标段列表*/
+    public static void grandTaskFinish(String id, final requestCallBack callBack) {
+        OkGo.get(HomeApi.GETGRANDTASKFINISHBYB)
+                .params("fOrgId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONArray data = jsonObject.getJSONArray("data");
+                                List<TotalDetailsBean> list = ListJsonUtils.getListByArray(TotalDetailsBean.class, data.toString());
+                                map.put("list", list);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callBack.onerror(Enums.ANALYSIS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
+    }
+
+    /*今日任务标段列表*/
+    public static void todayDetailsRequest(String id, final requestCallBack callBack) {
+        OkGo.get(HomeApi.GETGRANDTASKFINISHBYB)
+                .params("fOrgId", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONArray data = jsonObject.getJSONArray("data");
+                                List<TodayDetailsBean> list = ListJsonUtils.getListByArray(TodayDetailsBean.class, data.toString());
+                                map.put("list", list);
+                                callBack.onsuccess(map);
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callBack.onerror(Enums.ANALYSIS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
+    }
+    /**
+    * @author lx
+    * @data :2019/3/13 0013
+    * @描述 :
+    *@see
+    */
     public interface requestCallBack {
         void onsuccess(Map<String, Object> map);
 

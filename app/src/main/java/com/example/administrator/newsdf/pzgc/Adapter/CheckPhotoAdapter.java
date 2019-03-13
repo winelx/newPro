@@ -14,17 +14,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckValidationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmassageActivity;
-import com.example.administrator.newsdf.pzgc.activity.device.ProblemItemActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 

@@ -5,27 +5,21 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.baselibrary.adapter.multiitem.BaseItemProvider;
-import com.example.baselibrary.bean.bean;
 
-/**
- * @author lx
- * @data :2019/3/11 0011
- * @描述 : 上月整改单标段详情
- * @see HomeTaskDetailsAdapter
- */
-public class LastmonthDetailsAdapter extends BaseItemProvider<LastmonthBean, BaseViewHolder> {
+public class HometasklastAdapter extends BaseItemProvider<LastmonthBean, BaseViewHolder> {
     @Override
     public int viewType() {
-        return HomeTaskDetailsAdapter.TYPE_THREE;
+        return HometasksAdapter.TYPE_THREE;
     }
 
     @Override
     public int layout() {
-        return R.layout.adapter_chaged_org_details;
+        return R.layout.adapter_hometask_last;
     }
 
     @Override
@@ -43,6 +37,7 @@ public class LastmonthDetailsAdapter extends BaseItemProvider<LastmonthBean, Bas
         holder.setText(R.id.problem_chaged, "未完成整改：" + bean.getNotFinish());
         //未整改
         holder.setText(R.id.problem_nochaged, "未整改：" + bean.getNoFinish());
+
     }
 
     public static SpannableString setText(Context mContext, String text, int lenght) {

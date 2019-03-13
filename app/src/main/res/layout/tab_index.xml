@@ -3,6 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/home_img_red"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="177dp"
+        android:layout_marginLeft="177dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/home_item_red"
+        android:paddingRight="@dimen/dp35" />
 
     <!--fragment的tab-->
     <LinearLayout
@@ -28,6 +40,8 @@
             android:text="sssss"
             android:textColor="@drawable/textview_style"
             android:textSize="12sp" />
+
+
     </LinearLayout>
 
 </RelativeLayout>

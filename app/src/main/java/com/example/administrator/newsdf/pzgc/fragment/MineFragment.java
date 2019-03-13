@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.AboutmeActivity;

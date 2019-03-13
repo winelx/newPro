@@ -15,14 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedUtils.CallBack;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.EventMsg;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -48,6 +47,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private String billsId, dealId, motionNode, orgId;
     // (1：下发、添加问题项、导入问题项；2:指派；3：指派、我回复；)
     private int permission;
+    private boolean status = true;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -61,6 +61,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         //通知单id
         billsId = intent.getStringExtra("id");
         orgId = intent.getStringExtra("orgId");
+        status = intent.getBooleanExtra("status", true);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
         /*返回*/
@@ -152,13 +153,12 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                             @Override
                             public void onsuccess(String string) {
                                 ToastUtils.showShortToastCenter("指派成功");
-                                RxBus.getInstance().send("刷新数据");
+                                RxBus.getInstance().send("home");
                                 try {
                                     TaskCallbackUtils.CallBackMethod();
                                     /**
                                      * 关联界面 NoticeActivity
                                      */
-
                                 } catch (Exception e) {
                                 }
                                 finish();
@@ -228,25 +228,32 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 list.add(map.get("bean"));
                 list.addAll((ArrayList<ChagedNoticeDetailslsit>) map.get("list2"));
                 adapter.setNewData(list);
-                switch (permission) {
-                    case 2:
-                        //指派
-                        Utils.setMargins(recycler, 0, 0, 0, 140);
-                        deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        deviceDetailsAssign.setVisibility(View.VISIBLE);
-                        break;
-                    case 3:
-                        //指派、我回复
-                        Utils.setMargins(recycler, 0, 0, 0, 140);
-                        deviceDetailsAssign.setVisibility(View.VISIBLE);
-                        deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        deviceDetailsResult.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        Utils.setMargins(recycler, 0, 0, 0, 0);
-                        deviceDetailsFunction.setVisibility(View.GONE);
-                        break;
+                //根据状态判断是否显示底部功能布局（从首页消息通知和全部界面进入，无法操作）
+                if (status) {
+                    switch (permission) {
+                        case 2:
+                            //指派
+                            Utils.setMargins(recycler, 0, 0, 0, 140);
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            deviceDetailsAssign.setVisibility(View.VISIBLE);
+                            break;
+                        case 3:
+                            //指派、我回复
+                            Utils.setMargins(recycler, 0, 0, 0, 140);
+                            deviceDetailsAssign.setVisibility(View.VISIBLE);
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            deviceDetailsResult.setVisibility(View.VISIBLE);
+                            break;
+                        default:
+                            Utils.setMargins(recycler, 0, 0, 0, 0);
+                            deviceDetailsFunction.setVisibility(View.GONE);
+                            break;
+                    }
+                } else {
+                    deviceDetailsFunction.setVisibility(View.GONE);
+                    Utils.setMargins(recycler, 0, 0, 0, 0);
                 }
+
             }
 
             @Override

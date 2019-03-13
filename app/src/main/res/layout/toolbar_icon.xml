@@ -40,7 +40,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="组织管理"
             android:textColor="@color/writer"
             android:textSize="18sp" />
 

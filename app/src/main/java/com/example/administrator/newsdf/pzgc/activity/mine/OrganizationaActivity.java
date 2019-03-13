@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.pzgc.activity.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;

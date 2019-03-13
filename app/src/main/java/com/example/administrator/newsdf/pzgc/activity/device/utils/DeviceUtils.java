@@ -2,7 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.device.utils;
 
 
 import com.alibaba.fastjson.JSON;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.DetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
@@ -12,7 +12,6 @@ import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.bean.ProblemBean;
 import com.example.administrator.newsdf.pzgc.bean.ProblemFile;
 import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
-import com.example.administrator.newsdf.pzgc.bean.TextBean;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;

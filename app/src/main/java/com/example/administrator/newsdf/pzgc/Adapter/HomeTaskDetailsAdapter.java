@@ -3,7 +3,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.administrator.newsdf.pzgc.bean.LastmonthDetailsBean;
+import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
 import com.example.baselibrary.adapter.multiitem.MultipleItemRvAdapter;
@@ -32,7 +32,7 @@ public class HomeTaskDetailsAdapter extends MultipleItemRvAdapter<Object, BaseVi
             return TYPE_ONE;
         } else if (object instanceof TodayDetailsBean) {
             return TYPE_TWO;
-        } else if (object instanceof LastmonthDetailsBean) {
+        } else if (object instanceof LastmonthBean) {
             return TYPE_THREE;
         }
         return 0;

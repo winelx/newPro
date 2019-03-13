@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_ranking"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/layout_ranking"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -53,13 +53,17 @@
                 android:src="@mipmap/rankingfrist" />
 
             <TextView
+                android:id="@+id/frist_ranking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="三独一标"
+                android:maxEms="5"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/frist_ranking_socrd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="综合评分"
@@ -81,13 +85,17 @@
                 android:src="@mipmap/rankingsecond" />
 
             <TextView
+                android:id="@+id/second_ranking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="三独一标"
+                android:maxEms="5"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/second_ranking_socrd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="综合评分"
@@ -109,13 +117,17 @@
                 android:src="@mipmap/rankingthird" />
 
             <TextView
+                android:id="@+id/third_ranking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="三独一标"
+                android:maxEms="5"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/third_ranking_socrd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="综合评分"

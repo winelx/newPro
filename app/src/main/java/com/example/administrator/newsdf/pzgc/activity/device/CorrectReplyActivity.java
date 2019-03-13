@@ -10,19 +10,17 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
-import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;

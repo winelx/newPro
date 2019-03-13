@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
@@ -32,7 +32,6 @@ import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 /**

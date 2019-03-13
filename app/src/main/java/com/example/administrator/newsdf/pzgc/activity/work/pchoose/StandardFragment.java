@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PhotoListActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.UploadPhotoActivity;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;

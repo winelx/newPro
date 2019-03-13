@@ -1,19 +1,23 @@
 package com.example.administrator.newsdf.pzgc.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
@@ -21,9 +25,12 @@ import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 
+import java.util.ArrayList;
 import java.util.Map;
+
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -37,12 +44,20 @@ import java.util.Map;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
-    private LinearLayout noticedLin, agencyLin, completeLin;
+
     private TextView noticedData, agencyData, completeData;
     private TextView noticedContent, agencyContent, completeContent;
-    private TextView noticedNumber, agencyNumber;
-
+    private TextView noticedNumber, agencyNumber, taskfinishcount, todaytotalnumber, lastmonthtotalnumber;
+    private TextView thirdRanking, fristRanking, secondRanking, thirdRankingSocrd, secondRankingSocrd, fristRankingSocrd;
     private View rootView;
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            request();
+        }
+    };
 
     @Nullable
     @Override
@@ -63,6 +78,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     protected void init() {
         mContext = getActivity();
+        //注册事件总线
+        RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                if ("home".equals(path)) {
+                    handler.sendMessage(new Message());
+                }
+            }
+        });
         findId();
         //排名
         rootView.findViewById(R.id.layout_ranking).setOnClickListener(this);
@@ -93,27 +117,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void findId() {
         //消息通知是
-        /*消息通知事件*/
         noticedData = rootView.findViewById(R.id.noticed_data);
-        /*消息控件*/
-        noticedLin = rootView.findViewById(R.id.noticed_lin);
         /*最新消息内容 */
         noticedContent = rootView.findViewById(R.id.noticed_content);
         /* 消息数量*/
         noticedNumber = rootView.findViewById(R.id.noticed_number);
         //待办消息
         agencyData = rootView.findViewById(R.id.agency_data);
-        agencyLin = rootView.findViewById(R.id.agency_lin);
         agencyContent = rootView.findViewById(R.id.agency_content);
         agencyNumber = rootView.findViewById(R.id.agency_number);
         //已办消息
         completeData = rootView.findViewById(R.id.complete_data);
-        completeLin = rootView.findViewById(R.id.complete_lin);
         completeContent = rootView.findViewById(R.id.complete_content);
-
-
+        taskfinishcount = rootView.findViewById(R.id.taskfinishcount);
+        todaytotalnumber = rootView.findViewById(R.id.todaytotalnumber);
+        lastmonthtotalnumber = rootView.findViewById(R.id.lastmonthtotalnumber);
+        /*标段排名*/
+        thirdRanking = rootView.findViewById(R.id.third_ranking);
+        thirdRankingSocrd = rootView.findViewById(R.id.third_ranking_socrd);
+        fristRanking = rootView.findViewById(R.id.frist_ranking);
+        fristRankingSocrd = rootView.findViewById(R.id.frist_ranking_socrd);
+        secondRankingSocrd = rootView.findViewById(R.id.second_ranking_socrd);
+        secondRanking = rootView.findViewById(R.id.second_ranking);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -122,6 +148,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 //消息通知
                 Intent noticed = new Intent(mContext, NoticeActivity.class);
                 noticed.putExtra("title", "消息通知");
+                noticedNumber.setVisibility(View.GONE);
                 startActivity(noticed);
                 break;
             case R.id.agency_lin:
@@ -164,8 +191,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void request() {
         HomeFragmentUtils.getmsgnoticepagedata(new HomeFragmentUtils.requestCallBack() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onsuccess(Map<String, Object> map) {
+                //累计完成任务数
+                taskfinishcount.setText(map.get("lastMonthNoticeCount") + "");
+                //今日完任务数
+                todaytotalnumber.setText(map.get("todayTaskFinishCount") + "");
+                //上月整改单统计
+                lastmonthtotalnumber.setText(map.get("lastMonthNoticeCount") + "");
+                if (map.containsKey("orgRanke")) {
+                    ArrayList<Audio> list = (ArrayList<Audio>) map.get("orgRanke");
+                    for (int i = 0; i < list.size(); i++) {
+                        if (i == 0) {
+                            fristRanking.setText(list.get(i).getName());
+                            fristRankingSocrd.setText(Dates.setText(mContext, 5, "综合评分：" + list.get(i).getContent(), R.color.red));
+                        } else if (i == 1) {
+                            secondRanking.setText(list.get(i).getName());
+                            secondRankingSocrd.setText(Dates.setText(mContext, 5, "综合评分：" + list.get(i).getContent(), R.color.red));
+                        } else if (i == 2) {
+                            thirdRanking.setText(list.get(i).getName());
+                            thirdRankingSocrd.setText(Dates.setText(mContext, 5, "综合评分：" + list.get(i).getContent(), R.color.red));
+                        }
+                    }
+                }
+
                 //消息通知
                 if (map.containsKey("noticed")) {
                     noticedNumber.setVisibility(View.VISIBLE);
@@ -246,4 +296,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unSubcribe();
+    }
 }

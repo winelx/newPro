@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.work;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.pzgc.bean.CasePointsBean;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;

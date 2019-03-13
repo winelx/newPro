@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;

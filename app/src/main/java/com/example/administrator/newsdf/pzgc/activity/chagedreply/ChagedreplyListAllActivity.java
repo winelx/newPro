@@ -140,6 +140,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
                 /*点击按钮*/
                 Intent intent1 = new Intent(mContext, ChagedreplyDetailsActivity.class);
                 intent1.putExtra("id", list.get(pos).getId());
+                intent1.putExtra("status", true);
                 intent1.putExtra("orgName", title.getText().toString());
                 startActivity(intent1);
             }

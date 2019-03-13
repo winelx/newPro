@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
@@ -25,17 +24,13 @@ import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
-import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lx

@@ -139,7 +139,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         list = new ArrayList<>();
         list = LoveDao.JPushCart();
         if (list.size() > 0) {
@@ -151,39 +150,9 @@ public class MainActivity extends BaseActivity {
             msg.what = 2;
             handler.sendMessage(msg);
         }
+
     }
 
-    //新本版检测
-    private void Uplogding() {
-        OkGo.<String>post(Requests.UpLoading)
-                .params("type", 1)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                if (ret == 0) {
-                                    JSONObject json = jsonObject.getJSONObject("data");
-                                    //版本号
-                                    String versions = json.getString("version");
-                                    String description = json.getString("description");
-                                    //更新地址
-                                    String filePath = json.getString("downloadUrl");
-                                    int lenght = version.compareTo(versions);
-                                    if (lenght < 0) {
-                                        //提示框
-                                        show(filePath, description);
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-    }
 
     @Override
     protected void onStop() {
@@ -196,9 +165,15 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initTab() {
+        mTabs.clear();
         //添加tab信息，存入集合进行展示
         Tab tabMessage = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
-        Tab tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
+        Tab tabIndex;
+        if (LoveDao.JPushCart().size() > 0) {
+            tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 1);
+        } else {
+            tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
+        }
         Tab tabWork = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
         Tab tabCheck = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tabHot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
@@ -208,6 +183,7 @@ public class MainActivity extends BaseActivity {
         mTabs.add(tabCheck);
         mTabs.add(tabHot);
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
+        mTabHost.removeAllViews();
         for (Tab tab : mTabs) {
             //获取都文字
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(getString(tab.getTitle()));
@@ -230,6 +206,12 @@ public class MainActivity extends BaseActivity {
         //获取控件ID
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textview = (TextView) view.findViewById(R.id.text);
+        TextView home_img_red = view.findViewById(R.id.home_img_red);
+        if (tab.getNumber() == 1) {
+            home_img_red.setVisibility(View.VISIBLE);
+        } else {
+            home_img_red.setVisibility(View.GONE);
+        }
         //d动态添加图片文字，类似listview 的adapter的getItem，
         imageView.setBackgroundResource(tab.getIcon());
         textview.setText(tab.getTitle());
@@ -281,13 +263,12 @@ public class MainActivity extends BaseActivity {
         builder.show();
     }
 
-    /**
-     *
-     */
     public void getRedPoint() {
         homeImgRed.setVisibility(View.VISIBLE);
         //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
+        mTabs.clear();
+        initTab();
     }
 
 
@@ -339,6 +320,9 @@ public class MainActivity extends BaseActivity {
         return flag;
     }
 
+    /**
+     * 获取权限
+     */
     public void getauthority() {
         //获取相机权限，定位权限，内存权限
         requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
@@ -357,6 +341,38 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+    }
+
+    //新本版检测
+    private void Uplogding() {
+        OkGo.<String>post(Requests.UpLoading)
+                .params("type", 1)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.contains("data")) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    JSONObject json = jsonObject.getJSONObject("data");
+                                    //版本号
+                                    String versions = json.getString("version");
+                                    String description = json.getString("description");
+                                    //更新地址
+                                    String filePath = json.getString("downloadUrl");
+                                    int lenght = version.compareTo(versions);
+                                    if (lenght < 0) {
+                                        //提示框
+                                        show(filePath, description);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
     }
 }
 

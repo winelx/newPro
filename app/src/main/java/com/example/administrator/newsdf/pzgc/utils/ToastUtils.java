@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.camera;
+package com.example.administrator.newsdf.pzgc.utils;
 
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;

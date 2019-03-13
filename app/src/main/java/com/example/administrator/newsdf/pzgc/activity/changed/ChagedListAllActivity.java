@@ -156,6 +156,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                         /*跳转详情*/
                         Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
                         intent1.putExtra("id", list.get(pos).getId());
+                        intent1.putExtra("status", false);
                         intent1.putExtra("orgName", title.getText().toString());
                         intent1.putExtra("orgId", orgId);
                         startActivity(intent1);
@@ -172,6 +173,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                         /*跳转详情*/
                         Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
                         intent1.putExtra("id", list.get(pos).getId());
+                        intent1.putExtra("status", false);
                         intent1.putExtra("orgName", title.getText().toString());
                         intent1.putExtra("orgId", orgId);
                         startActivity(intent1);

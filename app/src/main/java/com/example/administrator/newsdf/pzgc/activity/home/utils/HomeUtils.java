@@ -1,9 +1,9 @@
-package com.example.administrator.newsdf.pzgc.activity.home;
+package com.example.administrator.newsdf.pzgc.activity.home.utils;
 
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
@@ -32,7 +32,7 @@ import okhttp3.Response;
 import static com.lzy.okgo.OkGo.post;
 
 /**
- * description: 解析json和封装了查询图册的
+ * description: 解析json和封装了查询图册
  *
  * @author lx
  *         date: 2018/5/4 0004 下午 4:06

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/lasttotal"
+    android:layout_width="match_parent"
     android:layout_height="60dp">
 
 
@@ -21,6 +21,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/problem_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -39,8 +40,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="end"
                 android:layout_margin="0dp"
-                android:textColor="@color/black"
                 android:gravity="end"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
         </RelativeLayout>
@@ -52,39 +53,43 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/problem_complete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="已完成：10"
+                android:text="已完成："
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/problem_overtime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="超期完成：10"
+                android:text="超期完成："
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/problem_chaged"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="未完成整改：10"
+                android:text="未完成整改："
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/problem_nochaged"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="未整改：10"
+                android:text="未整改："
                 android:textSize="12sp" />
 
         </LinearLayout>

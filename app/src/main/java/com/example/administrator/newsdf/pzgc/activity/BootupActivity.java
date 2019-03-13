@@ -1,25 +1,19 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.okgo.OkGo;
@@ -28,8 +22,6 @@ import com.lzy.okgo.cookie.store.CookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.HttpUrl;
@@ -106,7 +98,6 @@ public class BootupActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        //这个错误是网络级错误，不是请求失败的错误,
                         //如果走这里，可能是当前网络无法连接该地址
                         startActivity(new Intent(BootupActivity.this, LoginActivity.class));
                         finish();

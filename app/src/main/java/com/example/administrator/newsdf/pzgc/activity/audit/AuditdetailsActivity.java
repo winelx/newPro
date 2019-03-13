@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.audit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
-import com.example.administrator.newsdf.pzgc.activity.home.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallback;

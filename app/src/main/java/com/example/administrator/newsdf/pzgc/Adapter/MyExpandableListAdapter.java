@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.AllListmessageActivit
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.frehomeCallBackUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
 
 import com.example.administrator.newsdf.pzgc.utils.Requests;

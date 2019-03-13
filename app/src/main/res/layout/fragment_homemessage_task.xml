@@ -24,9 +24,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/taskfinishcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100,000"
+
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -34,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:text="累计完成任务数"
+                android:text="累计完成任务"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -51,9 +52,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/todaytotalnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
+
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -78,9 +80,9 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/lastmonthtotalnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -88,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
-                android:text="上月通知单"
+                android:text="上月整改统计"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 

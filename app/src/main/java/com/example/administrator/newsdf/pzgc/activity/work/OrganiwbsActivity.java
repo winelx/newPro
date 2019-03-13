@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.work;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;

@@ -2,7 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.check;
 
 import android.widget.NumberPicker;
 
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;

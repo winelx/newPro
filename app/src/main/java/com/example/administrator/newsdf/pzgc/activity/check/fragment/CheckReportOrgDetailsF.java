@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,10 +15,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckReportOrgDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.IssuedTaskDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrgDetailsFBean;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;

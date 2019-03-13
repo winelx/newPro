@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckReportOrgDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;

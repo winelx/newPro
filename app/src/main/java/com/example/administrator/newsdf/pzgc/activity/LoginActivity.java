@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,7 +21,7 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -36,7 +35,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 
@@ -61,7 +59,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     //用户名密码1
     private EditText username, password;
     private Context mContext;
-    private RelativeLayout backgroud;
     private Dialog progressDialog;
 
     @Override

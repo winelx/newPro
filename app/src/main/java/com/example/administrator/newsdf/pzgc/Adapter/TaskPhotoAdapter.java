@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 

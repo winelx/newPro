@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.HomeTaskDetailsAdapter;
-import com.example.administrator.newsdf.pzgc.bean.LastmonthDetailsBean;
-import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
-import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
+import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
@@ -21,6 +20,7 @@ import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
@@ -33,10 +33,12 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshLayout;
     private EmptyRecyclerView recyclerView;
+    private TextView title;
     private EmptyUtils emptyUtils;
     private Context mContext;
     private HomeTaskDetailsAdapter adapter;
     private ArrayList<Object> list;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,13 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         list = new ArrayList<>();
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
+        title = findViewById(R.id.com_title);
+
         refreshLayout = findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(true);
+        refreshLayout.setEnableRefresh(false);
         //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(false);
         //是否在列表不满一页时候开启上拉加载功能
@@ -62,33 +66,21 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         adapter = new HomeTaskDetailsAdapter(list);
         adapter.setEmptyView(emptyUtils.init());
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showShortToast("点击");
-            }
-        });
         Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         final String type = intent.getStringExtra("type");
-        ToastUtils.showShortToastCenter(type);
         if (type.equals(Enums.ADDUPTask)) {
+            title.setText(Enums.ADDUPTask);
             //累计完成任务
-            for (int i = 0; i < 10; i++) {
-                list.add(new TotalDetailsBean("测试数据" + i));
-            }
-            adapter.setNewData(list);
+            GrandTaskRequest();
         } else if (type.equals(Enums.TODAYTASK)) {
+            title.setText(Enums.TODAYTASK);
             //今日完成任务i
-            for (int i = 0; i < 10; i++) {
-                list.add(new TodayDetailsBean("测试数据" + i));
-            }
+            todayRequest();
             adapter.setNewData(list);
         } else if (type.equals(Enums.LASTMONTHTASK)) {
-            //上月整改统计
-            for (int i = 0; i < 10; i++) {
-                list.add(new LastmonthDetailsBean("测试数据" + i));
-            }
-            adapter.setNewData(list);
+            title.setText(Enums.LASTMONTHTASK);
+            LasetRequest();
         }
     }
 
@@ -102,4 +94,61 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                 break;
         }
     }
+
+    private void LasetRequest() {
+        HomeFragmentUtils.getNoticeCountData(id, new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("lastmonth")) {
+                    list.addAll((ArrayList<LastmonthBean>) map.get("lastmonth"));
+                    adapter.setNewData(list);
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
+    }
+
+    /*累计任务*/
+    private void GrandTaskRequest() {
+        HomeFragmentUtils.grandTaskFinish(id, new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("list")) {
+                    list.addAll((ArrayList<LastmonthBean>) map.get("list"));
+                    adapter.setNewData(list);
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
+    }
+
+    /*今日任务*/
+    private void todayRequest() {
+        HomeFragmentUtils.todayDetailsRequest(id, new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("list")) {
+                    list.addAll((ArrayList<LastmonthBean>) map.get("list"));
+                    adapter.setNewData(list);
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
+    }
+
 }

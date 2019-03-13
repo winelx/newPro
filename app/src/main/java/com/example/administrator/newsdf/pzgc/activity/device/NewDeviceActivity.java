@@ -14,7 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NewDeviceAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;

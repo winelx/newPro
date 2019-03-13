@@ -10,13 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.HometaskAdapter;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.Adapter.HometasksAdapter;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
-import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
-import com.example.administrator.newsdf.pzgc.callback.Onclicktener;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
@@ -25,6 +25,7 @@ import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author lx
@@ -38,9 +39,8 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
     private SmartRefreshLayout refreshLayout;
     private TextView title;
     private Context mContext;
-    private HometaskAdapter adapter;
+    private HometasksAdapter adapter;
     private EmptyUtils emptyUtils;
-
     private ArrayList<Object> list;
 
     @Override
@@ -55,62 +55,54 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
         title = findViewById(R.id.com_title);
         title.setText(str);
         recyclerView = findViewById(R.id.recycler);
-        //设置空白提示界面
-        recyclerView.setEmptyView(emptyUtils.init());
         //设置展示style
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //设置适配器
-        recyclerView.setAdapter(adapter = new HometaskAdapter(mContext, list));
+        recyclerView.setAdapter(adapter = new HometasksAdapter(list));
+        //设置空白提示界面
+        adapter.setEmptyView(emptyUtils.init());
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(true);
+        refreshLayout.setEnableRefresh(false);
         //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setEnableLoadmore(false);
         //是否启用越界拖动（仿苹果效果）1.0.4
-        refreshLayout.setEnableOverScrollDrag(false);
+        refreshLayout.setEnableOverScrollDrag(true);
         //是否在列表不满一页时候开启上拉加载功能
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         findViewById(R.id.com_back).setOnClickListener(this);
         if (Enums.ADDUPTask.equals(str)) {
-            for (int i = 0; i < 10; i++) {
-                list.add(new TotalBean("累计完成任务"));
-            }
+            cumulativeRequest();
         } else if (Enums.TODAYTASK.equals(str)) {
-            for (int i = 0; i < 10; i++) {
-                list.add(new TodayBean("今日完成任务"));
-            }
+            todayRequest();
         } else if (Enums.LASTMONTHTASK.equals(str)) {
-            for (int i = 0; i < 10; i++) {
-                list.add(new LastmonthBean("上月整改统计"));
-            }
+            lastmontRequest();
         }
         adapter.setNewData(list);
-        adapter.setOnclicktener(new Onclicktener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onClick(String string, int position) {
-                switch (string) {
-                    case Enums.ADDUPTask:
-                        //累计完成任务
-                        Intent intent1 = new Intent(mContext, HomeTaskDetailsActivity.class);
-                        intent1.putExtra("type", Enums.ADDUPTask);
-                        startActivity(intent1);
-                        break;
-                    case Enums.TODAYTASK:
-                        //今日完成任务
-                        Intent intent = new Intent(mContext, HomeTaskDetailsActivity.class);
-                        intent.putExtra("type", Enums.TODAYTASK);
-                        startActivity(intent);
-                        break;
-                    case Enums.LASTMONTHTASK:
-                        //上月整改单统计
-                        Intent intent2 = new Intent(mContext, HomeTaskDetailsActivity.class);
-                        intent2.putExtra("type", Enums.LASTMONTHTASK);
-                        startActivity(intent2);
-                        break;
-                    default:
-                        break;
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (title.getText().toString().equals(Enums.ADDUPTask)) {
+                    //累计完成任务
+                    TotalBean totalBean = (TotalBean) list.get(position);
+                    Intent intent1 = new Intent(mContext, HomeTaskDetailsActivity.class);
+                    intent1.putExtra("type", Enums.ADDUPTask);
+                    intent1.putExtra("id", totalBean.getfOrgId());
+                    startActivity(intent1);
+                } else if (title.getText().toString().equals(Enums.TODAYTASK)) {
+                    //今日完成任务
+                    Intent intent = new Intent(mContext, HomeTaskDetailsActivity.class);
+                    intent.putExtra("type", Enums.TODAYTASK);
+                    startActivity(intent);
+                } else if (title.getText().toString().equals(Enums.LASTMONTHTASK)) {
+                    //上月整改单统计
+                    LastmonthBean bean = (LastmonthBean) list.get(position);
+                    Intent intent2 = new Intent(mContext, HomeTaskDetailsActivity.class);
+                    intent2.putExtra("type", Enums.LASTMONTHTASK);
+                    intent2.putExtra("id", bean.getId());
+                    startActivity(intent2);
                 }
             }
         });
@@ -125,6 +117,70 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+    /**上月整改单统计*/
+    private void lastmontRequest() {
+        HomeFragmentUtils.getNoticeCountData(null, new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("lastmonth")) {
+                    list.addAll((ArrayList<LastmonthBean>) map.get("lastmonth"));
+                    adapter.setNewData(list);
+                }
+                if (list.size() == 0) {
+                    emptyUtils.noData("暂无数据");
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
+    }
+    /**累计完成任务*/
+    private void cumulativeRequest() {
+        HomeFragmentUtils.cumulativeRequest(new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("total")) {
+                    list.addAll((ArrayList<LastmonthBean>) map.get("total"));
+                    adapter.setNewData(list);
+                }
+                if (list.size() == 0) {
+                    emptyUtils.noData("暂无数据");
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
+
+    }
+    /**今日完成*/
+    private void todayRequest() {
+        HomeFragmentUtils.todayRequest(new HomeFragmentUtils.requestCallBack() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                list.clear();
+                if (map.containsKey("today")) {
+                    list.addAll((ArrayList<TotalBean>) map.get("today"));
+                    adapter.setNewData(list);
+                }
+                if (list.size() == 0) {
+                    emptyUtils.noData("暂无数据");
+                }
+            }
+
+            @Override
+            public void onerror(String string) {
+                ToastUtils.showsnackbar(title, string);
+            }
+        });
     }
 }
 

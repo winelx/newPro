@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
@@ -32,7 +32,6 @@ import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;

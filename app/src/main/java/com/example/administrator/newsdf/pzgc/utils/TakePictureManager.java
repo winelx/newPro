@@ -22,9 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.widget.Toast;
-
-import com.example.administrator.newsdf.camera.ToastUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

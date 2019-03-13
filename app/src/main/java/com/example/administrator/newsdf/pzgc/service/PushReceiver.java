@@ -62,13 +62,8 @@ public class PushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             String brand = android.os.Build.BRAND;
-            if ("xiaomi".equals(brand)) {
-                show(context, bundle.getString(JPushInterface.EXTRA_MESSAGE), bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            }
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            LogUtil.d(TAG, "收到了通知");
             // 在这里可以做些统计，或者做些其他工作
-            //处理接收到的信息
             dates.addPut();
             context = MainActivity.getInstance();
             //保存推送消息，

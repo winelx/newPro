@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.device.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,21 +9,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.ChecknoticeMessagelistActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageListActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.DeviceMeCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
-
-import javax.security.auth.callback.Callback;
 
 /**
  * @author lx

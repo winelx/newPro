@@ -31,12 +31,10 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
-import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.photopicker.utils.FileUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;

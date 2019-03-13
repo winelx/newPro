@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -33,7 +32,7 @@ import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;

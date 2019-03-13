@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
@@ -45,6 +45,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             deviceDetailsResult, deviceDetailsAssign, deviceDetailsEdit;
     private String id, orgName;
     int status, p;
+    private boolean taskstatus = true;
     private ReplyDetailsContent bean;
 
     @Override
@@ -55,6 +56,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         orgName = intent.getStringExtra("orgName");
+        taskstatus = intent.getBooleanExtra("status", true);
         list = new ArrayList<>();
         OgranCallbackUtils1.setCallBack(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
@@ -216,25 +218,31 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 mAdapter.setNewData(list);
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
-                switch (permission) {
-                    case 1:
-                    case 2:
-                    case 3:
-                        deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        deviceDetailsProving.setVisibility(View.VISIBLE);
-                        Utils.setMargins(recyclerView, 0, 0, 0, 100);
-                        break;
-                    case 4:
-                        deviceDetailsUp.setText("提交回复");
-                        deviceDetailsUp.setVisibility(View.VISIBLE);
-                        deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        Utils.setMargins(recyclerView, 0, 0, 0, 100);
-                        break;
-                    default:
-                        deviceDetailsFunction.setVisibility(View.GONE);
-                        Utils.setMargins(recyclerView, 0, 0, 0, 0);
-                        break;
+                if (taskstatus){
+                    switch (permission) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            deviceDetailsProving.setVisibility(View.VISIBLE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                            break;
+                        case 4:
+                            deviceDetailsUp.setText("提交回复");
+                            deviceDetailsUp.setVisibility(View.VISIBLE);
+                            deviceDetailsFunction.setVisibility(View.VISIBLE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                            break;
+                        default:
+                            deviceDetailsFunction.setVisibility(View.GONE);
+                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                            break;
+                    }
+                }else {
+                    deviceDetailsFunction.setVisibility(View.GONE);
+                    Utils.setMargins(recyclerView, 0, 0, 0, 0);
                 }
+
 
             }
 

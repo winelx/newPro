@@ -19,10 +19,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.example.baselibrary.view.EmptyRecyclerView
-                android:id="@+id/recycler"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+                <com.example.baselibrary.view.EmptyRecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+
 
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"

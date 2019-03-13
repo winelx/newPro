@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;

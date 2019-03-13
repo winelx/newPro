@@ -3,7 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity.device.utils;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
 import com.example.administrator.newsdf.pzgc.bean.DeviceDetailsBean;
@@ -22,7 +22,6 @@ import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;

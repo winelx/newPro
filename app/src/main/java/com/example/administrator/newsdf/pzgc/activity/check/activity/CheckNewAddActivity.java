@@ -23,7 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
