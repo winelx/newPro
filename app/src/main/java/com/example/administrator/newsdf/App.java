@@ -103,9 +103,8 @@ public class App extends Application {
         //保存文件的高度。单位像素
         imagePicker.setOutPutY(1000);
         //开启极光推送
-        JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-
+        JPushInterface.setDebugMode(true);
         //Log配置 根据运行的环境是debug还是打包，控制是否显示日志
         if (BuildConfig.LOG_DEBUG) {
             LogUtil.init(true, Log.VERBOSE);

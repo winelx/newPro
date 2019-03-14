@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,8 +42,8 @@ import cn.jpush.android.api.JPushInterface;
 public class PushReceiver extends BroadcastReceiver {
     String TAG = "PushReceiver";
     Dates dates = new Dates();
-    private static final String CHANNEL_ID = "channel_id";   //通道渠道id
-    public static final String CHANEL_NAME = "chanel_name"; //通道渠道名称
+    private static String CHANNEL_ID = "channel_id";   //通道渠道id
+    public String CHANEL_NAME = "chanel_name"; //通道渠道名称
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -61,7 +62,8 @@ public class PushReceiver extends BroadcastReceiver {
             LogUtil.d(TAG, "[MyReceiver] 接收 Registration Id : ");
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
-            String brand = android.os.Build.BRAND;
+            CHANNEL_ID = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+          //  show(context, JPushInterface.EXTRA_TITLE, JPushInterface.EXTRA_MESSAGE);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             // 在这里可以做些统计，或者做些其他工作
             dates.addPut();
@@ -87,20 +89,15 @@ public class PushReceiver extends BroadcastReceiver {
         } else {
             LogUtil.d(TAG, "Unhandled intent - " + intent.getAction());
         }
-
     }
 
-
     private void onOpenNotification(Context context, Bundle bundle) {
-        final String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        final Bundle openActivityBundle = new Bundle();
-        final Intent intent = new Intent(context, MainActivity.class);
+        Bundle openActivityBundle = new Bundle();
+        Intent intent = new Intent(context, MainActivity.class);
         intent.putExtras(openActivityBundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         ContextCompat.startActivity(context, intent, null);
     }
-
-    /**/
 
     @TargetApi(Build.VERSION_CODES.O)
     public void show(Context context, String content, String title) {
@@ -139,7 +136,5 @@ public class PushReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(notifiId, notification);
-
     }
-
 }
