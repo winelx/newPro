@@ -153,8 +153,8 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                             @Override
                             public void onsuccess(String string) {
                                 ToastUtils.showShortToastCenter("指派成功");
-                                RxBus.getInstance().send("home");
                                 try {
+                                    RxBus.getInstance().send("home");
                                     TaskCallbackUtils.CallBackMethod();
                                     /**
                                      * 关联界面 NoticeActivity

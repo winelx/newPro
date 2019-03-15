@@ -32,10 +32,8 @@ import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.EventMsg;
 import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.lzy.okgo.OkGo;
@@ -52,8 +50,6 @@ import java.util.Set;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -72,7 +68,7 @@ public class MainActivity extends BaseActivity {
     private LayoutInflater mInflater;
     private ArrayList<Tab> mTabs = new ArrayList<>();
     private String version;
-    private TextView homeImgRed;
+    private TextView home_img_red;
     private List<Shop> list;
     private boolean workbtight = false;
 
@@ -89,10 +85,10 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    homeImgRed.setVisibility(View.VISIBLE);
+                    home_img_red.setVisibility(View.VISIBLE);
                     break;
                 case 2:
-                    homeImgRed.setVisibility(View.GONE);
+                    home_img_red.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -100,18 +96,16 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getauthority();
         mContext = this;
         workbtight = false;
-        //找到控件
-        homeImgRed = (TextView) findViewById(R.id.home_img_red);
-        homeImgRed.setVisibility(View.GONE);
+        //红点控件
+        home_img_red = (TextView) findViewById(R.id.home_img_red);
+        home_img_red.setVisibility(View.GONE);
         final String staffId = SPUtils.getString(MainActivity.this, "id", "");
         //设置极光推送别名Alia
         JPushInterface.setAlias(this, staffId, new TagAliasCallback() {
@@ -124,14 +118,14 @@ public class MainActivity extends BaseActivity {
         width = Utils.getScreenWidth(mContext) / 3;
         //获取当前版本
         version = AppUtils.getVersionName(mContext);
-        //新本版检测
-        Uplogding();
         //删除tiny压缩的图片
         if (LoveDao.queryLove().size() == 0) {
             //如果这个文件目录下没有图片保存在数据库，就将图片全部删除，（别的地方的图片是不需要保存的）
             String path = "/storage/emulated/0/Android/data/com.example.administrator.newsdf/tiny";
             delFolder(path);
         }
+        //新本版检测
+        uplogding();
         //数据处理
         initTab();
     }
@@ -150,9 +144,39 @@ public class MainActivity extends BaseActivity {
             msg.what = 2;
             handler.sendMessage(msg);
         }
-
     }
 
+    //新本版检测
+    private void uplogding() {
+        OkGo.<String>post(Requests.UpLoading)
+                .params("type", 1)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        if (s.contains("data")) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int ret = jsonObject.getInt("ret");
+                                if (ret == 0) {
+                                    JSONObject json = jsonObject.getJSONObject("data");
+                                    //版本号
+                                    String versions = json.getString("version");
+                                    String description = json.getString("description");
+                                    //更新地址
+                                    String filePath = json.getString("downloadUrl");
+                                    int lenght = version.compareTo(versions);
+                                    if (lenght < 0) {
+                                        //提示框
+                                        show(filePath, description);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onStop() {
@@ -165,25 +189,19 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initTab() {
-        mTabs.clear();
         //添加tab信息，存入集合进行展示
-        Tab tabMessage = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
-        Tab tabIndex;
-        if (LoveDao.JPushCart().size() > 0) {
-            tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 1);
-        } else {
-            tabIndex = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
-        }
-        Tab tabWork = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
-        Tab tabCheck = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
-        Tab tabHot = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
-        mTabs.add(tabMessage);
-        mTabs.add(tabIndex);
-        mTabs.add(tabWork);
-        mTabs.add(tabCheck);
-        mTabs.add(tabHot);
+        Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
+        Tab tab_home = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
+        Tab tab_mine = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
+        mTabs.add(tab_home);
+        mTabs.add(tab_index);
+        mTabs.add(tab_work);
+        mTabs.add(tab_check);
+        mTabs.add(tab_mine);
+
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
-        mTabHost.removeAllViews();
         for (Tab tab : mTabs) {
             //获取都文字
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(getString(tab.getTitle()));
@@ -206,12 +224,6 @@ public class MainActivity extends BaseActivity {
         //获取控件ID
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         TextView textview = (TextView) view.findViewById(R.id.text);
-        TextView home_img_red = view.findViewById(R.id.home_img_red);
-        if (tab.getNumber() == 1) {
-            home_img_red.setVisibility(View.VISIBLE);
-        } else {
-            home_img_red.setVisibility(View.GONE);
-        }
         //d动态添加图片文字，类似listview 的adapter的getItem，
         imageView.setBackgroundResource(tab.getIcon());
         textview.setText(tab.getTitle());
@@ -253,8 +265,8 @@ public class MainActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri contentUrl = Uri.parse(path);
-                intent.setData(contentUrl);
+                Uri content_url = Uri.parse(path);
+                intent.setData(content_url);
                 startActivity(intent);
                 finish();
 
@@ -263,12 +275,13 @@ public class MainActivity extends BaseActivity {
         builder.show();
     }
 
+    /**
+     *刷新
+     */
     public void getRedPoint() {
-        homeImgRed.setVisibility(View.VISIBLE);
+        home_img_red.setVisibility(View.VISIBLE);
         //向indexfragemnt 发送消息，显示推送小红点
         JPushCallUtils.removeCallBackMethod();
-        mTabs.clear();
-        initTab();
     }
 
 
@@ -276,10 +289,10 @@ public class MainActivity extends BaseActivity {
         return workbtight;
     }
 
-
     public static void delFolder(String folderPath) {
         try {
-            delAllFile(folderPath); //删除完里面所有内容
+            //删除完里面所有内容
+            delAllFile(folderPath);
             String filePath = folderPath;
             filePath = filePath.toString();
             java.io.File myFilePath = new java.io.File(filePath);
@@ -290,7 +303,10 @@ public class MainActivity extends BaseActivity {
     }
 
     //删除指定文件夹下所有文件
-//param path 文件夹完整绝对路径
+
+    /**
+     * param path 文件夹完整绝对路径
+     */
     public static boolean delAllFile(String path) {
         boolean flag = false;
         File file = new File(path);
@@ -343,36 +359,5 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    //新本版检测
-    private void Uplogding() {
-        OkGo.<String>post(Requests.UpLoading)
-                .params("type", 1)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        if (s.contains("data")) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                int ret = jsonObject.getInt("ret");
-                                if (ret == 0) {
-                                    JSONObject json = jsonObject.getJSONObject("data");
-                                    //版本号
-                                    String versions = json.getString("version");
-                                    String description = json.getString("description");
-                                    //更新地址
-                                    String filePath = json.getString("downloadUrl");
-                                    int lenght = version.compareTo(versions);
-                                    if (lenght < 0) {
-                                        //提示框
-                                        show(filePath, description);
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-    }
 }
 

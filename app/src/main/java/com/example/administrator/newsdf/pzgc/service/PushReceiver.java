@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,41 +49,46 @@ public class PushReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final Bundle bundle = intent.getExtras();
-        final Set<String> keys = bundle.keySet();
-        final JSONObject json = new JSONObject();
-        for (String key : keys) {
-            final Object val = bundle.get(key);
-            try {
-                json.put(key, val);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             LogUtil.d(TAG, "[MyReceiver] 接收 Registration Id : ");
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             CHANNEL_ID = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-          //  show(context, JPushInterface.EXTRA_TITLE, JPushInterface.EXTRA_MESSAGE);
+            //  show(context, JPushInterface.EXTRA_TITLE, JPushInterface.EXTRA_MESSAGE);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             // 在这里可以做些统计，或者做些其他工作
-            dates.addPut();
-            context = MainActivity.getInstance();
-            //保存推送消息，
+            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            String noticeType = null;
             try {
-                List<Shop> list = LoveDao.JPushCart();
-                //如果还有未读消息，就不往数据库加数据
-                if (list.size() == 0) {
-                    Shop shop = new Shop();
-                    shop.setType(Shop.TYPE_JPUSH);
-                    shop.setName("消息");
-                    LoveDao.insertLove(shop);
-                }
-                //调用方法，让Mainactivityu 显示小红点
-                MainActivity activity = (MainActivity) context;
-                activity.getRedPoint();
-            } catch (NullPointerException e) {
+                JSONObject jsonObject = new JSONObject(extras);
+                noticeType = jsonObject.getString("noticeType");
+            } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            //1刷新消息首页，2刷新我的任务
+            if ("2".equals(noticeType)) {
+                //刷新消息页面
+                RxBus.getInstance().send("home");
+            } else {
+                dates.addPut();
+                context = MainActivity.getInstance();
+                //保存推送消息，
+                try {
+                    List<Shop> list = LoveDao.JPushCart();
+                    //如果还有未读消息，就不往数据库加数据
+                    if (list.size() == 0) {
+                        Shop shop = new Shop();
+                        shop.setType(Shop.TYPE_JPUSH);
+                        shop.setName("消息");
+                        LoveDao.insertLove(shop);
+                    }
+                    //调用方法，让Mainactivityu 显示小红点
+                    MainActivity activity = (MainActivity) context;
+                    activity.getRedPoint();
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             onOpenNotification(context, bundle);
@@ -110,7 +116,8 @@ public class PushReceiver extends BroadcastReceiver {
             channel.setShowBadge(false); //是否在久按桌面图标时显示此渠道的通知
         }
         Notification notification;
-        //获取Notification实例   获取Notification实例有很多方法处理    在此我只展示通用的方法（虽然这种方式是属于api16以上，但是已经可以了，毕竟16以下的Android机很少了，如果非要全面兼容可以用）
+        //获取Notification实例   获取Notification实例有很多方法处理
+        // 在此我只展示通用的方法（虽然这种方式是属于api16以上，但是已经可以了，毕竟16以下的Android机很少了，如果非要全面兼容可以用）
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //向上兼容 用Notification.Builder构造notification对象
             notification = new Notification.Builder(context, CHANNEL_ID)
