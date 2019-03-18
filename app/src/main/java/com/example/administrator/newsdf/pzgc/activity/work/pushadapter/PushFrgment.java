@@ -56,10 +56,10 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
     private ArrayList<Push_item> data = null;
     View view;
     private ListView mContentRlv;
-    private RelativeLayout push_img;
+    private RelativeLayout pushImg;
     //定义控件
-    private TextView push_img_text;
-    private ImageView push_img_nonew;
+    private TextView pushImgText;
+    private ImageView pushImgNonew;
     /**
      * 定义自定义适配器
      */
@@ -89,10 +89,8 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
     preconditions,
     //标准
     checkStandard;
-    private View mEmptyView;
-    private TextView push_jing;
-    private Button head_modify;
-    private CheckBox che_all;
+    private Button headModify;
+    private CheckBox cheAll;
     private WbsDialog selfDialog;
     private String strids;
 
@@ -114,12 +112,12 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
         data = new ArrayList<>();
         mContext = getActivity();
 
-        push_img_nonew = view.findViewById(R.id.push_img_nonew);
-        push_img = view.findViewById(R.id.push_img);
-        push_img_text = view.findViewById(R.id.push_img_text);
+        pushImgNonew = view.findViewById(R.id.push_img_nonew);
+        pushImg = view.findViewById(R.id.push_img);
+        pushImgText = view.findViewById(R.id.push_img_text);
         mContentRlv = (ListView) view.findViewById(R.id.lv_data);
-        head_modify = view.findViewById(R.id.head_modify);
-        che_all = view.findViewById(R.id.che_all);
+        headModify = view.findViewById(R.id.head_modify);
+        cheAll = view.findViewById(R.id.che_all);
         myAdapter = new PushfragmentAdapter(mContext);
         mContentRlv.setAdapter(myAdapter);
         refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
@@ -127,7 +125,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //checkbox修改状态
-                che_all.setChecked(false);
+                cheAll.setChecked(false);
                 //清除推送集合数据
                 ArrayList<String> list = new ArrayList<String>();
                 MissionpushActivity missionpush = (MissionpushActivity) mContext;
@@ -137,7 +135,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
 
             }
         });
-        head_modify.setOnClickListener(new View.OnClickListener() {
+        headModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //获取责任人ID
@@ -167,19 +165,19 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
             }
         });
 
-        push_img.setOnClickListener(new View.OnClickListener() {
+        pushImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dates.getDialog(getActivity(), "请求数据中");
                 okgo();
-                che_all.setChecked(false);
+                cheAll.setChecked(false);
 
             }
         });
-        che_all.setOnClickListener(new View.OnClickListener() {
+        cheAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (che_all.isChecked()) {
+                if (cheAll.isChecked()) {
                     ArrayList<String> list = new ArrayList<String>();
                     MissionpushActivity missionpush = (MissionpushActivity) mContext;
                     for (int i = 0; i < data.size(); i++) {
@@ -233,7 +231,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
         /**
          * 全选复选框设置事件监听
          */
-        che_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cheAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //判断列表中是否有数据
@@ -348,11 +346,11 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
                                     }
                                     if (data.size() != 0) {
                                         myAdapter.getData(data);
-                                        push_img.setVisibility(View.GONE);
+                                        pushImg.setVisibility(View.GONE);
                                         Dates.disDialog();
                                     } else {
-                                        push_img.setVisibility(View.VISIBLE);
-                                        push_img_text.setText("数据为空，点击刷新");
+                                        pushImg.setVisibility(View.VISIBLE);
+                                        pushImgText.setText("数据为空，点击刷新");
                                     }
                                 }
                             } catch (JSONException e) {
@@ -364,9 +362,9 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        push_img.setVisibility(View.VISIBLE);
-                        push_img_nonew.setBackgroundResource(R.mipmap.nonetwork);
-                        push_img_text.setText("网络请求失败，点击刷新");
+                        pushImg.setVisibility(View.VISIBLE);
+                        pushImgNonew.setBackgroundResource(R.mipmap.nonetwork);
+                        pushImgText.setText("网络请求失败，点击刷新");
                     }
                 });
     }
@@ -396,7 +394,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
             MissionpushActivity missionpush = (MissionpushActivity) mContext;
             missionpush.getAllPush(list, false);
             //checkbox修改状态
-            che_all.setChecked(false);
+            cheAll.setChecked(false);
         }
     }
 
@@ -421,7 +419,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
                                         MissionpushActivity activity = (MissionpushActivity) mContext;
                                         ArrayList<String> list = new ArrayList<String>();
                                         activity.getAllPush(list, false);
-                                        che_all.setChecked(false);
+                                        cheAll.setChecked(false);
                                         okgo();
                                     }
                                 } catch (JSONException e) {
@@ -454,7 +452,7 @@ public class PushFrgment extends Fragment implements BaseFragmentPagerAdapter.Up
 
     @Override
     public void update() {
-        che_all.setChecked(false);
+        cheAll.setChecked(false);
         //清除推送集合数据
         ArrayList<String> list = new ArrayList<String>();
         MissionpushActivity missionpush = (MissionpushActivity) mContext;

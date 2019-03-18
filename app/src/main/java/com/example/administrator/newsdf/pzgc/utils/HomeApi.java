@@ -40,4 +40,10 @@ public class HomeApi {
      * 累计完成任务（打开标段页面或 二级页面）数据请求接口
      */
     public static final String GETGRANDTASKFINISHBYB = Requests.networks + "iface/mobile/systemnotice/getGrandTaskFinishByB";
+
+    /**
+     * 今日累计完成页面（打开标段页面或二级页面）
+     */
+    public static final String GETTODAYTASKFINISHBYB = Requests.networks + "iface/mobile/systemnotice/getTodayTaskFinishByB";
+
 }

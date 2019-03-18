@@ -31,6 +31,7 @@ import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.cookie.store.CookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,7 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
+import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 
@@ -166,6 +168,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     public void gotResult(int i, String s, Set<String> set) {
                     }
                 });
+                //清除cooking
+                HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+                CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+                cookieStore.removeCookie(httpUrl);
                 startActivity(new Intent(mContext, LoginActivity.class));
                 getActivity().finish();
                 break;

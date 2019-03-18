@@ -377,7 +377,7 @@ public class HomeFragmentUtils {
 
     /*今日任务标段列表*/
     public static void todayDetailsRequest(String id, final requestCallBack callBack) {
-        OkGo.get(HomeApi.GETGRANDTASKFINISHBYB)
+        OkGo.get(HomeApi.GETTODAYTASKFINISHBYB)
                 .params("fOrgId", id)
                 .execute(new StringCallback() {
                     @Override

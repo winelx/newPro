@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
@@ -57,9 +58,9 @@ import okhttp3.Response;
  * description: 检查管理_标准的检查任务
  *
  * @author lx
- *         date: 2018/8/2 0002 下午 2:41
- *         update: 2018/8/2 0002
- *         version:
+ * date: 2018/8/2 0002 下午 2:41
+ * update: 2018/8/2 0002
+ * version:
  */
 public class CheckTasklistActivity extends BaseActivity implements View.OnClickListener, CheckTaskCallback {
     private static final String TAG = "CheckTasklistActivity";
@@ -255,47 +256,27 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                 .params("page", pages)
                 .params("size", 20);
         if ("1".equals(status) || "0".equals(status)) {
-            mPostRequest.params("status", status)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            Dates.disDialog();
-                            if (pages == 1) {
-                                list.clear();
-                            }
-                            checkjson.taskmanagerlist(s, list, mAdapter);
-                            smartrefreshlayout.finishRefresh(true);
-                            smartrefreshlayout.finishLoadmore(true);
-                        }
-
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            ToastUtils.showShortToast("请求失败");
-                            Dates.disDialog();
-                        }
-                    });
-        } else {
-            mPostRequest.execute(new StringCallback() {
-                @Override
-                public void onSuccess(String s, Call call, Response response) {
-                    Dates.disDialog();
-                    if (pages == 1) {
-                        list.clear();
-                    }
-                    checkjson.taskmanagerlist(s, list, mAdapter);
-                    smartrefreshlayout.finishRefresh(true);
-                    smartrefreshlayout.finishLoadmore(true);
-                }
-
-                @Override
-                public void onError(Call call, Response response, Exception e) {
-                    super.onError(call, response, e);
-                    ToastUtils.showShortToast("请求失败");
-                    Dates.disDialog();
-                }
-            });
+            mPostRequest.params("status", status);
         }
+        mPostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                Dates.disDialog();
+                if (pages == 1) {
+                    list.clear();
+                }
+                checkjson.taskmanagerlist(s, list, mAdapter);
+                smartrefreshlayout.finishRefresh(true);
+                smartrefreshlayout.finishLoadmore(true);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                ToastUtils.showShortToast(Enums.REQUEST_ERROR);
+                Dates.disDialog();
+            }
+        });
     }
 
     public void submit(String id, int iwork) {

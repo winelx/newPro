@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
@@ -170,6 +171,7 @@ public class OrganizationaActivity extends BaseActivity {
                         }
                         Dates.disDialog();
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -218,10 +220,11 @@ public class OrganizationaActivity extends BaseActivity {
                 intent.putExtra("name", name);
                 setResult(2, intent);
                 finish();
-            }else {
+            } else {
                 ToastUtils.showShortToast("");
             }
         } else {
+            Dates.getDialogs(OrganizationaActivity.this, "切换组织中..");
             OkGo.post(Requests.Swatch)
                     .params("orgId", orgid)
                     .execute(new StringCallback() {
@@ -239,10 +242,14 @@ public class OrganizationaActivity extends BaseActivity {
                                     //所在组织名称
                                     SPUtils.putString(mContext, "username", name);
                                     //刷新全部和我的界面的数据
-                                    OgranCallbackUtils.removeCallBackMethod();
-                                    OgranCallbackUtils1.removeCallBackMethod();
-                                    OgranCallbackUtils2.removeCallBackMethod();
-                                    OgranCallbackUtils3.removeCallBackMethod();
+                                    try {
+                                        OgranCallbackUtils.removeCallBackMethod();
+                                        OgranCallbackUtils1.removeCallBackMethod();
+                                        OgranCallbackUtils2.removeCallBackMethod();
+                                        OgranCallbackUtils3.removeCallBackMethod();
+                                    } catch (Exception e) {
+                                    }
+                                    Dates.disDialog();
                                     finish(); //此方法后才能返回主Activity
                                 } else {
                                     Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
@@ -250,6 +257,13 @@ public class OrganizationaActivity extends BaseActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+                            Dates.disDialog();
+                            ToastUtils.showLongToastCenter(Enums.REQUEST_ERROR);
                         }
                     });
         }

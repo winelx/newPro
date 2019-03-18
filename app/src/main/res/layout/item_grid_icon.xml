@@ -33,12 +33,12 @@
         android:id="@+id/tab_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="40dp"
         android:layout_below="@+id/title_ll"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
+        android:layout_marginRight="40dp"
         android:ellipsize="end"
         android:maxEms="15"
         android:maxLines="1"
@@ -50,11 +50,11 @@
         android:id="@+id/image_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tab_content"
-        android:layout_alignStart="@+id/tab_content"
         android:layout_below="@+id/tab_content"
-        android:layout_marginBottom="5dp"
+        android:layout_alignStart="@+id/tab_content"
+        android:layout_alignLeft="@+id/tab_content"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -62,8 +62,8 @@
             android:id="@+id/tab_usr_img"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:background="@mipmap/list_tab_avther" />
 
         <TextView
@@ -71,10 +71,10 @@
             android:id="@+id/tab_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tab_usr_img"
             android:layout_alignTop="@+id/tab_fixed_tiem"
-            android:layout_marginLeft="5dp"
+            android:layout_alignBottom="@+id/tab_usr_img"
             android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/tab_usr_img"
             android:layout_toRightOf="@+id/tab_usr_img"
             android:text="责任人"
@@ -96,14 +96,15 @@
             android:id="@+id/tab_fixed_tiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tab_usr_img"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/imageView2"
-            android:layout_toRightOf="@+id/imageView2"
+            android:layout_alignBottom="@+id/tab_user"
+            android:layout_gravity="end"
+            android:layout_marginLeft="70dp"
+            android:layout_toEndOf="@+id/tab_user"
+            android:layout_toRightOf="@+id/tab_user"
             android:text="截止时间"
+            android:visibility="gone"
             android:textColor="#999999"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -122,16 +123,13 @@
 
     <TextView
         android:id="@+id/tab_time"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/image_ll"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
-        android:layout_toEndOf="@+id/tab_content"
-        android:layout_toRightOf="@+id/tab_content"
         android:gravity="end"
-        android:text="3小时前"
         android:textColor="#999999"
         android:textSize="10sp" />
 

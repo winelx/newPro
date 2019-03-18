@@ -49,7 +49,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
-
         refreshLayout = findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(false);
@@ -69,17 +68,14 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         final String type = intent.getStringExtra("type");
+        title.setText(intent.getStringExtra("title"));
         if (type.equals(Enums.ADDUPTask)) {
-            title.setText(Enums.ADDUPTask);
             //累计完成任务
             GrandTaskRequest();
         } else if (type.equals(Enums.TODAYTASK)) {
-            title.setText(Enums.TODAYTASK);
             //今日完成任务i
             todayRequest();
-            adapter.setNewData(list);
         } else if (type.equals(Enums.LASTMONTHTASK)) {
-            title.setText(Enums.LASTMONTHTASK);
             LasetRequest();
         }
     }

@@ -74,7 +74,6 @@ public class CheckReportOrgDetailsF extends Fragment {
         mAdapter = new CheckReportOrgDetailsAdapter(list, mContext);
         categoryList.setAdapter(mAdapter);
         getdata();
-
         //上拉加载
         recycler_att.setOnLoadmoreListener(new OnLoadmoreListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)

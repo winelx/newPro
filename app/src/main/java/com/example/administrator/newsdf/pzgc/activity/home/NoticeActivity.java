@@ -292,7 +292,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if (Enums.AGENCY.equals(content)) {
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
-            mynotast();
+            myyestast();
         }
     }
 
@@ -348,7 +348,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //整改通知单
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
-            notice.putExtra("orgId", bean.getSendOrgId());
+            notice.putExtra("orgId", bean.getReceiveOrgId());
             notice.putExtra("orgName", bean.getSendOrgName());
             startActivity(notice);
         } else if (modelType == 2) {

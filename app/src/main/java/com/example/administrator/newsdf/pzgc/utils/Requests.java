@@ -7,11 +7,11 @@ package com.example.administrator.newsdf.pzgc.utils;
  */
 public class Requests {
 
-//public static final String networks = "http://192.168.20.35:8082/pzgc/";
+public static final String networks = "http://192.168.20.35:8082/pzgc/";
 
-    //public static final String networks = "http://192.168.20.81:8080/baseframe/";
+  //  public static final String networks = "http://192.168.20.36:8080/";
 
-public static final String networks = "http://192.168.1.119:8081/pzgc/";
+//public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
    //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //外

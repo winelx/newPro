@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.HometasksAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
@@ -50,10 +51,9 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
         mContext = this;
         list = new ArrayList<>();
         Intent intent = getIntent();
-        final String str = intent.getStringExtra("title");
         emptyUtils = new EmptyUtils(mContext);
         title = findViewById(R.id.com_title);
-        title.setText(str);
+        title.setText(intent.getStringExtra("title"));
         recyclerView = findViewById(R.id.recycler);
         //设置展示style
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -73,11 +73,11 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
         //是否在列表不满一页时候开启上拉加载功能
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
         findViewById(R.id.com_back).setOnClickListener(this);
-        if (Enums.ADDUPTask.equals(str)) {
+        if (Enums.ADDUPTask.equals(title.getText().toString())) {
             cumulativeRequest();
-        } else if (Enums.TODAYTASK.equals(str)) {
+        } else if (Enums.TODAYTASK.equals(title.getText().toString())) {
             todayRequest();
-        } else if (Enums.LASTMONTHTASK.equals(str)) {
+        } else if (Enums.LASTMONTHTASK.equals(title.getText().toString())) {
             lastmontRequest();
         }
         adapter.setNewData(list);
@@ -90,17 +90,22 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
                     Intent intent1 = new Intent(mContext, HomeTaskDetailsActivity.class);
                     intent1.putExtra("type", Enums.ADDUPTask);
                     intent1.putExtra("id", totalBean.getfOrgId());
+                    intent1.putExtra("title", totalBean.getfOrgName());
                     startActivity(intent1);
                 } else if (title.getText().toString().equals(Enums.TODAYTASK)) {
                     //今日完成任务
+                    TotalBean todayBean= (TotalBean) list.get(position);
                     Intent intent = new Intent(mContext, HomeTaskDetailsActivity.class);
                     intent.putExtra("type", Enums.TODAYTASK);
+                    intent.putExtra("id", todayBean.getfOrgId());
+                    intent.putExtra("title",todayBean.getfOrgName());
                     startActivity(intent);
                 } else if (title.getText().toString().equals(Enums.LASTMONTHTASK)) {
                     //上月整改单统计
                     LastmonthBean bean = (LastmonthBean) list.get(position);
                     Intent intent2 = new Intent(mContext, HomeTaskDetailsActivity.class);
                     intent2.putExtra("type", Enums.LASTMONTHTASK);
+                    intent2.putExtra("title", bean.getName());
                     intent2.putExtra("id", bean.getId());
                     startActivity(intent2);
                 }
@@ -146,7 +151,7 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
             public void onsuccess(Map<String, Object> map) {
                 list.clear();
                 if (map.containsKey("total")) {
-                    list.addAll((ArrayList<LastmonthBean>) map.get("total"));
+                    list.addAll((ArrayList<TotalBean>) map.get("total"));
                     adapter.setNewData(list);
                 }
                 if (list.size() == 0) {

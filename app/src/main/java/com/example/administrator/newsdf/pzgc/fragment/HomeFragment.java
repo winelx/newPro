@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.agency_lin:
                 //代办事项
                 Intent agency = new Intent(mContext, NoticeActivity.class);
-                agency.putExtra("title", "代办事项");
+                agency.putExtra("title", "待办事项");
                 startActivity(agency);
                 break;
             case R.id.complete_lin:

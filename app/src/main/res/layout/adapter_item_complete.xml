@@ -8,6 +8,7 @@
     android:paddingTop="5dp">
 
     <TextView
+        android:id="@+id/complete_datatime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
