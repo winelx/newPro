@@ -16,10 +16,15 @@
         android:textSize="18sp" />
 
 
-    <com.example.baselibrary.view.EmptyRecyclerView
-        android:id="@+id/work_recycler"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiprefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <com.example.baselibrary.view.EmptyRecyclerView
+            android:id="@+id/work_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

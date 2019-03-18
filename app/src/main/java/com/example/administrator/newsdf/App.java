@@ -104,7 +104,7 @@ public class App extends Application {
         imagePicker.setOutPutY(1000);
         //开启极光推送
         JPushInterface.init(this);
-        JPushInterface.setDebugMode(true);
+//        JPushInterface.setDebugMode(true);
         //Log配置 根据运行的环境是debug还是打包，控制是否显示日志
         if (BuildConfig.LOG_DEBUG) {
             LogUtil.init(true, Log.VERBOSE);

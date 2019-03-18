@@ -263,7 +263,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             noticedContent.setText("");
         }
         if (bean.getTotalCount() != 0) {
-            noticedNumber.setText(bean.getTotalCount() + "");
+            if (bean.getTotalCount() > 99) {
+                noticedNumber.setText(99 + "+");
+            } else {
+                noticedNumber.setText(bean.getTotalCount() + "");
+            }
+
             noticedNumber.setVisibility(View.VISIBLE);
         } else {
             noticedNumber.setVisibility(View.INVISIBLE);
@@ -279,7 +284,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             agencyContent.setText("");
         }
         if (bean.getTotalCount() != 0) {
-            agencyNumber.setText(bean.getTotalCount() + "");
+            if (bean.getTotalCount() > 99) {
+                agencyNumber.setText(99 + "+");
+            } else {
+                agencyNumber.setText(bean.getTotalCount() + "");
+            }
             agencyNumber.setVisibility(View.VISIBLE);
         } else {
             agencyNumber.setVisibility(View.INVISIBLE);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,7 @@ public class WorkFragment extends Fragment {
     private ArrayList<ItemBean> list;
     private MessageFragmentAdapter adapter;
     private EmptyUtils emptyUtils;
+    private SwipeRefreshLayout swiprefresh;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +85,6 @@ public class WorkFragment extends Fragment {
             emptyUtils.setError(new EmptyUtils.Callback() {
                 @Override
                 public void callback() {
-
                     okgo();
                 }
             });
@@ -97,6 +98,17 @@ public class WorkFragment extends Fragment {
     }
 
     private void findId() {
+        swiprefresh = rootView.findViewById(R.id.swiprefresh);
+        swiprefresh.setColorSchemeResources(R.color.colorAccent,
+                R.color.finish_green, R.color.Orange,
+                R.color.yellow);
+        swiprefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                okgo();
+                swiprefresh.setRefreshing(false);
+            }
+        });
         workRecycler = rootView.findViewById(R.id.work_recycler);
         workRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         workRecycler.setEmptyView(emptyUtils.init());
@@ -160,13 +172,15 @@ public class WorkFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray data = jsonObject.getJSONArray("data");
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 list.clear();
+                                reportlist.clear();
+                                tasklist.clear();
+                                checklist.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
                                     String str4 = json.getString("任务统计");

@@ -45,23 +45,20 @@ import okhttp3.Response;
 
 
 /**
- * description: 个人界面
- *
+ * description: 个人界
  * @author lx
  * date: 2018/3/22 0022 下午 4:18
  * update: 2018/3/22 0022
- * version:
  */
 public class MineFragment extends Fragment implements View.OnClickListener {
     private View rootView;
-    private CircleImageView mine_avatar;
+    private CircleImageView mineAvatar;
     private Context mContext;
     private SPUtils spUtils;
     private Dates dates;
-    private TextView mine_organization, staffName;
-
+    private TextView mineOrganization, staffName;
     String version;
-    private TextView mine_uploading;
+    private TextView mineUploading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,17 +87,16 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             rootView.findViewById(R.id.staffName).setOnClickListener(this);
             //退出
             rootView.findViewById(R.id.BackTo).setOnClickListener(this);
-            mine_uploading = rootView.findViewById(R.id.mine_uploadings);
-
-            mine_avatar = rootView.findViewById(R.id.mine_avatar);
-            mine_organization = rootView.findViewById(R.id.mine_organization);
+            mineUploading = rootView.findViewById(R.id.mine_uploadings);
+            mineAvatar = rootView.findViewById(R.id.mine_avatar);
+            mineOrganization = rootView.findViewById(R.id.mine_organization);
             staffName = rootView.findViewById(R.id.staffName);
         }
         mContext = getActivity();
         spUtils = new SPUtils();
         dates = new Dates();
         version = AppUtils.getVersionName(getActivity());
-        mine_uploading.setText("(当前版本:" + version + ")");
+        mineUploading.setText("(当前版本:" + version + ")");
         ititData();
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -120,10 +116,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .load(url)
                 .thumbnail(Glide.with(this)
                         .load(R.mipmap.mine_avatar))
-                .into(mine_avatar);
+                .into(mineAvatar);
 
         //组织
-        mine_organization.setText(SPUtils.getString(mContext, "username", ""));
+        mineOrganization.setText(SPUtils.getString(mContext, "username", ""));
         //名字
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
 
@@ -162,6 +158,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.BackTo:
+                //清除fragmentmanager
                 getActivity().getSupportFragmentManager().popBackStack();
                 Okgo();
                 JPushInterface.setAlias(mContext, "", new TagAliasCallback() {
@@ -174,10 +171,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.mine_Thecache:
                 Dates.getDialog(getActivity(), "清理缓存...");
-                new Thread() {
+//                new Thread() {
+//                    @Override
+//                    public void run() {
+//                        super.run();
+//                        //删除本地pdf
+//                        String paths = mContext.getExternalCacheDir().getPath();
+//                        paths = paths.replace("cache", "MyDownLoad/");
+//                        //删除目录
+//                        Dates.clearFiles(paths);
+//                        //glide缓存
+//                        Glide.get(mContext).clearDiskCache();
+//                    }
+//                }.start();
+                new Handler(new Handler.Callback() {
                     @Override
-                    public void run() {
-                        super.run();
+                    public boolean handleMessage(Message msg) {
+                        Dates.disDialog();
                         //删除本地pdf
                         String paths = mContext.getExternalCacheDir().getPath();
                         paths = paths.replace("cache", "MyDownLoad/");
@@ -185,12 +195,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
-                    }
-                }.start();
-                new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message msg) {
-                        Dates.disDialog();
                         Toast.makeText(mContext, "缓存清除成功", Toast.LENGTH_SHORT).show();
                         return false;
                     }
@@ -231,7 +235,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
         //可能会切换组织，所以每次走start时重新请求数据
-        mine_organization.setText(SPUtils.getString(mContext, "username", ""));
+        mineOrganization.setText(SPUtils.getString(mContext, "username", ""));
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
     }
 

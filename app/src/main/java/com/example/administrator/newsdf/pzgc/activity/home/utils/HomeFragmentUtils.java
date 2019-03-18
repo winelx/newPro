@@ -48,12 +48,20 @@ public class HomeFragmentUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 List<NoticedBean> list = new ArrayList<>();
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                JSONArray array = data.getJSONArray("results");
-                                list = ListJsonUtils.getListByArray(NoticedBean.class, array.toString());
-                                Map<String, Object> map = new HashMap<>();
-                                map.put("notice", list);
-                                callBack.onsuccess(map);
+                                JSONObject data;
+                                try {
+                                    data = jsonObject.getJSONObject("data");
+                                    JSONArray array;
+                                    try {
+                                        array = data.getJSONArray("results");
+                                        list = ListJsonUtils.getListByArray(NoticedBean.class, array.toString());
+                                        Map<String, Object> map = new HashMap<>();
+                                        map.put("notice", list);
+                                        callBack.onsuccess(map);
+                                    } catch (Exception e) {
+                                    }
+                                } catch (Exception e) {
+                                }
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
@@ -84,11 +92,15 @@ public class HomeFragmentUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 List<AgencyBean> list = new ArrayList<>();
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                JSONArray array = data.getJSONArray("results");
-                                list = ListJsonUtils.getListByArray(AgencyBean.class, array.toString());
                                 Map<String, Object> map = new HashMap<>();
-                                map.put("agency", list);
+                                JSONObject data;
+                                try {
+                                    data = jsonObject.getJSONObject("data");
+                                    JSONArray array = data.getJSONArray("results");
+                                    list = ListJsonUtils.getListByArray(AgencyBean.class, array.toString());
+                                    map.put("agency", list);
+                                } catch (Exception e) {
+                                }
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -152,19 +164,24 @@ public class HomeFragmentUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                JSONObject data = jsonObject.getJSONObject("data");
+                                JSONObject data;
+                                try {
+                                    data = jsonObject.getJSONObject("data");
+                                } catch (Exception e) {
+                                    data = new JSONObject();
+                                }
                                 map.put("lastMonthNoticeCount", data.getString("lastMonthNoticeCount"));
                                 map.put("grandTaskFinishCount", data.getString("grandTaskFinishCount"));
                                 map.put("todayTaskFinishCount", data.getString("todayTaskFinishCount"));
                                 ArrayList<Audio> list = new ArrayList<>();
                                 JSONArray orgRanke;
                                 try {
-                                        orgRanke = data.getJSONArray("orgRanke");
-                                        for (int i = 0; i < orgRanke.length(); i++) {
-                                            JSONObject json = orgRanke.getJSONObject(i);
-                                            list.add(new Audio(json.getString("name"), json.getString("score")));
-                                }
-                                        map.put("orgRanke", list);
+                                    orgRanke = data.getJSONArray("orgRanke");
+                                    for (int i = 0; i < orgRanke.length(); i++) {
+                                        JSONObject json = orgRanke.getJSONObject(i);
+                                        list.add(new Audio(json.getString("name"), json.getString("score")));
+                                    }
+                                    map.put("orgRanke", list);
                                 } catch (Exception e) {
                                 }
                                 /*我的待办*/
@@ -225,10 +242,15 @@ public class HomeFragmentUtils {
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
                         Map<String, Object> map = new HashMap<>();
-                        JSONObject data = jsonObject.getJSONObject("data");
-                        JSONArray result = data.getJSONArray("results");
-                        List<LastmonthBean> list = ListJsonUtils.getListByArray(LastmonthBean.class, result.toString());
-                        map.put("lastmonth", list);
+                        JSONObject data;
+                        try {
+                            data = jsonObject.getJSONObject("data");
+                            JSONArray result = data.getJSONArray("results");
+                            List<LastmonthBean> list = ListJsonUtils.getListByArray(LastmonthBean.class, result.toString());
+                            map.put("lastmonth", list);
+                        } catch (Exception e) {
+                        }
+
                         callBack.onsuccess(map);
 
                     } else {
@@ -259,9 +281,13 @@ public class HomeFragmentUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Map<String, Object> map = new HashMap<>();
-                                JSONArray data = jsonObject.getJSONArray("data");
-                                List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
-                                map.put("total", list);
+                                JSONArray data;
+                                try {
+                                    data = jsonObject.getJSONArray("data");
+                                    List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
+                                    map.put("total", list);
+                                } catch (Exception e) {
+                                }
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -291,9 +317,13 @@ public class HomeFragmentUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Map<String, Object> map = new HashMap<>();
-                                JSONArray data = jsonObject.getJSONArray("data");
-                                List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
-                                map.put("today", list);
+                                JSONArray data;
+                                try {
+                                    data = jsonObject.getJSONArray("data");
+                                    List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
+                                    map.put("today", list);
+                                } catch (Exception e) {
+                                }
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
@@ -377,12 +407,13 @@ public class HomeFragmentUtils {
                     }
                 });
     }
+
     /**
-    * @author lx
-    * @data :2019/3/13 0013
-    * @描述 :
-    *@see
-    */
+     * @author lx
+     * @data :2019/3/13 0013
+     * @描述 :
+     * @see
+     */
     public interface requestCallBack {
         void onsuccess(Map<String, Object> map);
 

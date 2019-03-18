@@ -276,7 +276,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     *刷新
+     * 刷新
      */
     public void getRedPoint() {
         home_img_red.setVisibility(View.VISIBLE);
