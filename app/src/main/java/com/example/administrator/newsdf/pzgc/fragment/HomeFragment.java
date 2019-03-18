@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     /*消息通知*/
     private void analysisNoticed(NoticedBean bean) {
         if (bean.getNoticeDate() != null) {
-            noticedData.setText(bean.getNoticeDate());
+            noticedData.setText(bean.getNoticeDate().substring(0,10));
         } else {
             noticedData.setText("");
         }
@@ -277,7 +277,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     /*待办事项*/
     private void analysisAgency(AgencyBean bean) {
-        agencyData.setText(bean.getSendDate());
+        agencyData.setText(bean.getSendDate().substring(0,10));
         if (bean.getReceiveOrgName() != null) {
             agencyContent.setText(bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
         } else {
@@ -297,7 +297,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     /*已办事项*/
     private void analysisComplete(CompleteBean bean) {
-        completeData.setText(bean.getSendDate());
+        completeData.setText(bean.getSendDate().substring(0,10));
         if (bean.getModelName() != null) {
             completeContent.setText(bean.getReceiveOrgName() + bean.getModelName() + "(" + bean.getModelCode() + ")" + bean.getDealResult());
         } else {
