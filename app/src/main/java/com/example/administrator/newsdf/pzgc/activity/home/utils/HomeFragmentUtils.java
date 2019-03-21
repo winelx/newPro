@@ -5,6 +5,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
+import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
@@ -35,7 +36,9 @@ import okhttp3.Response;
  * @see
  */
 public class HomeFragmentUtils {
-    /*消息通知*/
+    /**
+     * 消息通知
+     */
     public static void mysystemnotice(int page, final requestCallBack callBack) {
         OkGo.get(HomeApi.MYSYSTEMNOTICE)
                 .params("page", page)
@@ -79,7 +82,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*获取我的待办*/
+    /**
+     * 获取我的待办
+     */
     public static void mynotast(int page, final requestCallBack callBack) {
         OkGo.get(HomeApi.MYNOTAST)
                 .params("page", page)
@@ -118,7 +123,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*获取已办事项*/
+    /**
+     * 获取已办事项
+     */
     public static void myyestast(int page, final requestCallBack callBack) {
         OkGo.get(HomeApi.MYYESTAST)
                 .params("page", page)
@@ -153,7 +160,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*消息首页*/
+    /**
+     * 消息首页
+     */
     public static void getmsgnoticepagedata(final requestCallBack callBack) {
         OkGo.get(HomeApi.GETMSGNOTICEPAGEDATA)
                 .execute(new StringCallback() {
@@ -170,9 +179,9 @@ public class HomeFragmentUtils {
                                 } catch (Exception e) {
                                     data = new JSONObject();
                                 }
-                                map.put("lastMonthNoticeCount", data.getString("lastMonthNoticeCount"));
-                                map.put("grandTaskFinishCount", data.getString("grandTaskFinishCount"));
-                                map.put("todayTaskFinishCount", data.getString("todayTaskFinishCount"));
+                                map.put("lastCount", data.getString("lastMonthNoticeCount"));
+                                map.put("grandCount", data.getString("grandTaskFinishCount"));
+                                map.put("todayCount", data.getString("todayTaskFinishCount"));
                                 ArrayList<Audio> list = new ArrayList<>();
                                 JSONArray orgRanke;
                                 try {
@@ -228,7 +237,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*通知单获取 分公司统计 及 标段统计 数据接口*/
+    /**
+     * 通知单获取 分公司统计 及 标段统计 数据接口
+     */
     public static void getNoticeCountData(String id, final requestCallBack callBack) {
         GetRequest request = OkGo.get(HomeApi.GETNOTICECOUNTDATA);
         if (id != null) {
@@ -270,7 +281,9 @@ public class HomeFragmentUtils {
         });
     }
 
-    /*累计任务列表*/
+    /**
+     * 累计任务列表
+     */
     public static void cumulativeRequest(final requestCallBack callBack) {
         OkGo.get(HomeApi.GETGRANDTASKFINISHBYF)
                 .execute(new StringCallback() {
@@ -306,7 +319,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*今日任务列表*/
+    /**
+     * 今日任务列表
+     */
     public static void todayRequest(final requestCallBack callBack) {
         OkGo.get(HomeApi.GETTODAYTASKFINISHBYF)
                 .execute(new StringCallback() {
@@ -320,7 +335,7 @@ public class HomeFragmentUtils {
                                 JSONArray data;
                                 try {
                                     data = jsonObject.getJSONArray("data");
-                                    List<TotalBean> list = ListJsonUtils.getListByArray(TotalBean.class, data.toString());
+                                    List<TodayBean> list = ListJsonUtils.getListByArray(TodayBean.class, data.toString());
                                     map.put("today", list);
                                 } catch (Exception e) {
                                 }
@@ -342,7 +357,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*累计任务标段列表*/
+    /**
+     * 累计任务标段列表
+     */
     public static void grandTaskFinish(String id, final requestCallBack callBack) {
         OkGo.get(HomeApi.GETGRANDTASKFINISHBYB)
                 .params("fOrgId", id)
@@ -375,7 +392,9 @@ public class HomeFragmentUtils {
                 });
     }
 
-    /*今日任务标段列表*/
+    /**
+     * 今日任务标段列表
+     */
     public static void todayDetailsRequest(String id, final requestCallBack callBack) {
         OkGo.get(HomeApi.GETTODAYTASKFINISHBYB)
                 .params("fOrgId", id)
@@ -411,8 +430,7 @@ public class HomeFragmentUtils {
     /**
      * @author lx
      * @data :2019/3/13 0013
-     * @描述 :
-     * @see
+     * @描述 :点击事件接口
      */
     public interface requestCallBack {
         void onsuccess(Map<String, Object> map);

@@ -8,8 +8,9 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "2.5"
+        versionName "2.6"
         resConfigs "zh-rCN"
+
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -40,7 +41,9 @@ android {
             //显示日志
             buildConfigField("boolean", "LOG_DEBUG", "true");
             debuggable true
-
+            shrinkResources false
+            zipAlignEnabled true
+            minifyEnabled false
         }
         release {
             // 不显示Log

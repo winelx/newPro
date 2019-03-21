@@ -55,6 +55,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
+    private boolean modelTyp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
+        modelTyp = intent.getBooleanExtra("modelType",false);
         chagedUtils = new ChagedUtils();
         emptyUtils = new EmptyUtils(mContext);
         TaskCallbackUtils.setCallBack(this);
@@ -148,6 +150,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                     if (permission == 1) {
                         /*保存状态，调整新增页面，进行修改*/
                         Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        //判断是否显示功能按钮
                         intent.putExtra("status", true);
                         intent.putExtra("id", list.get(pos).getId());
                         intent.putExtra("orgName", title.getText().toString());
@@ -156,6 +159,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                         /*跳转详情*/
                         Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
                         intent1.putExtra("id", list.get(pos).getId());
+                        //判断是否显示功能按钮
                         intent1.putExtra("status", false);
                         intent1.putExtra("orgName", title.getText().toString());
                         intent1.putExtra("orgId", orgId);
@@ -165,6 +169,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                     if (permission == 1) {
                         /*保存状态，调整新增页面，进行修改*/
                         Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        //判断是否显示功能按钮
                         intent.putExtra("status", true);
                         intent.putExtra("id", list.get(pos).getId());
                         intent.putExtra("orgName", title.getText().toString());
@@ -173,6 +178,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
                         /*跳转详情*/
                         Intent intent1 = new Intent(mContext, ChagedNoticeDetailsActivity.class);
                         intent1.putExtra("id", list.get(pos).getId());
+                        //判断是否显示功能按钮
                         intent1.putExtra("status", false);
                         intent1.putExtra("orgName", title.getText().toString());
                         intent1.putExtra("orgId", orgId);
@@ -227,7 +233,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
 
     /*网络请求*/
     private void request() {
-        chagedUtils.getcnflist(true, status, orgId, page, new ChagedUtils.CallBack() {
+        chagedUtils.getcnflist(true, status, orgId, page, modelTyp, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ArrayList<ChagedList> data = (ArrayList<ChagedList>) map.get("list");
@@ -247,6 +253,7 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
             }
         });
     }
+
     //回調刷新
     @Override
     public void taskCallback() {

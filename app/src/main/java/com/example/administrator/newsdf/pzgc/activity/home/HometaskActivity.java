@@ -94,7 +94,7 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
                     startActivity(intent1);
                 } else if (title.getText().toString().equals(Enums.TODAYTASK)) {
                     //今日完成任务
-                    TotalBean todayBean= (TotalBean) list.get(position);
+                    TodayBean todayBean= (TodayBean) list.get(position);
                     Intent intent = new Intent(mContext, HomeTaskDetailsActivity.class);
                     intent.putExtra("type", Enums.TODAYTASK);
                     intent.putExtra("id", todayBean.getfOrgId());
@@ -173,7 +173,7 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
             public void onsuccess(Map<String, Object> map) {
                 list.clear();
                 if (map.containsKey("today")) {
-                    list.addAll((ArrayList<TotalBean>) map.get("today"));
+                    list.addAll((ArrayList<TodayBean>) map.get("today"));
                     adapter.setNewData(list);
                 }
                 if (list.size() == 0) {

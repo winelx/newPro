@@ -45,7 +45,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private ChangedReplyNewAdapter adapter;
     private Context mContext;
     private ArrayList<Chagereplydetails> list;
-    private TextView comButton, number, chageditem, replycommit, com_title;
+    private TextView comButton, number, chageditem, replycommit, comTitle;
     private LinearLayout replyImportProblem, toolbarMenu;
     private TextView chagedOrgname, chagedOrganizeText, sendorgname,
             sendusername, senddate, rectificationpersonname;
@@ -69,8 +69,8 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         }
         NetworkinterfaceCallbackUtils.setCallBack(this);
         orgname = SPUtils.getString(mContext, "username", null);
-        com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("新增整改回复");
+        comTitle = (TextView) findViewById(R.id.com_title);
+        comTitle.setText("新增整改回复");
         comButton = (TextView) findViewById(R.id.com_button);
         chagedOrgname = (TextView) findViewById(R.id.chaged_orgname);
         chagedOrgname.setText(orgname);

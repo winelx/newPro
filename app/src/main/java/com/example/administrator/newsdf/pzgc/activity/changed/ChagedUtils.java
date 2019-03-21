@@ -50,13 +50,17 @@ public class ChagedUtils implements Serializable {
      * @param status   请求状态
      * @param orgId    组织ID
      * @param page     页数
+     * @param type     消息首页上月整改进入的标记
      * @param callBack
      */
-    public void getcnflist(boolean lean, int status, String orgId, int page, final CallBack callBack) {
+    public void getcnflist(boolean lean, int status, String orgId, int page, boolean type, final CallBack callBack) {
         GetRequest str = OkGo.get(Requests.GETCNFLIST);
         //如果status==-1；
         if (status != -1) {
             str.params("status", status);
+        }
+        if (type) {
+            str.params("modelType", 1);
         }
         //true:全部，false：我的
         str.params("isAll", lean)

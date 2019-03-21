@@ -195,11 +195,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 //累计完成任务数
-                taskfinishcount.setText(map.get("lastMonthNoticeCount") + "");
+                taskfinishcount.setText(map.get("grandCount") + "");
                 //今日完任务数
-                todaytotalnumber.setText(map.get("todayTaskFinishCount") + "");
+                todaytotalnumber.setText(map.get("todayCount") + "");
                 //上月整改单统计
-                lastmonthtotalnumber.setText(map.get("lastMonthNoticeCount") + "");
+                lastmonthtotalnumber.setText(map.get("lastCount") + "");
                 if (map.containsKey("orgRanke")) {
                     ArrayList<Audio> list = (ArrayList<Audio>) map.get("orgRanke");
                     for (int i = 0; i < list.size(); i++) {
@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     /*消息通知*/
     private void analysisNoticed(NoticedBean bean) {
         if (bean.getNoticeDate() != null) {
-            noticedData.setText(bean.getNoticeDate().substring(0,10));
+            noticedData.setText(bean.getNoticeDate().substring(0, 10));
         } else {
             noticedData.setText("");
         }
@@ -277,7 +277,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     /*待办事项*/
     private void analysisAgency(AgencyBean bean) {
-        agencyData.setText(bean.getSendDate().substring(0,10));
+        agencyData.setText(bean.getSendDate().substring(0, 10));
         if (bean.getReceiveOrgName() != null) {
             agencyContent.setText(bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
         } else {
@@ -297,7 +297,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     /*已办事项*/
     private void analysisComplete(CompleteBean bean) {
-        completeData.setText(bean.getSendDate().substring(0,10));
+        completeData.setText(bean.getSendDate().substring(0, 10));
         if (bean.getModelName() != null) {
             completeContent.setText(bean.getReceiveOrgName() + bean.getModelName() + "(" + bean.getModelCode() + ")" + bean.getDealResult());
         } else {

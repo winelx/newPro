@@ -110,7 +110,7 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                                         String id = json.getString("id");
                                         String name = json.getString("name");
                                         String orgId = json.getString("orgId");
-                                        /*                     String position = json.getString("position");*/
+                                        /* String position = json.getString("position");*/
                                         String user_id = json.getString("userId");
                                         list.add(new MoretasklistBean(orgId, name, id, user_id));
                                     }

@@ -1,93 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lasttotal"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
-    android:paddingRight="10dp">
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/problem_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_margin="0dp"
-            android:gravity="start"
-            android:text="分公司"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/problem_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="end"
-            android:layout_margin="0dp"
-            android:gravity="end"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-
-    </RelativeLayout>
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/problem_complete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
+        android:layout_height="match_parent"
+        android:layout_marginRight="25dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
             android:layout_weight="1"
-            android:gravity="start"
-            android:text="已完成：10"
-            android:textSize="12sp" />
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/problem_overtime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:text="超期完成：10"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/problem_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="0dp"
+                android:gravity="start"
+                android:text="分公司"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/problem_chaged"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:text="未完成整改：10"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/problem_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+                android:layout_margin="0dp"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/problem_nochaged"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="未整改：10"
-            android:textSize="12sp" />
+        </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/problem_complete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="已完成：10"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/problem_overtime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="超期完成：10"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/problem_chaged"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="未完成整改：10"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/problem_nochaged"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="未整改：10"
+                android:textSize="12sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+    <com.joanzapata.iconify.widget.IconTextView
+        android:layout_width="20dp"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:text="{fa-angle-right}"
+        android:textColor="@color/inconfy"
+        android:textSize="25sp" />
+
+</RelativeLayout>

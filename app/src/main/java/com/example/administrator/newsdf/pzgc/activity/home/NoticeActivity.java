@@ -349,7 +349,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
             notice.putExtra("orgId", bean.getReceiveOrgId());
-            notice.putExtra("orgName", bean.getSendOrgName());
+            notice.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(notice);
         } else if (modelType == 2) {
             //回复验证单
@@ -369,8 +369,8 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
             notice.putExtra("status", false);
-            notice.putExtra("orgId", bean.getSendOrgId());
-            notice.putExtra("orgName", bean.getSendOrgName());
+            notice.putExtra("orgId", bean.getReceiveOrgId());
+            notice.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(notice);
         } else if (modelType == 2) {
             //回复验证单

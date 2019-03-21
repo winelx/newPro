@@ -138,11 +138,11 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3 && resultCode == 2) {
-            saveAssignPersonApp(data.getStringExtra("name"), data.getStringExtra("id"), data.getStringExtra("orgid"));
+            saveAssignPersonApp(data.getStringExtra("name"), data.getStringExtra("id"));
         }
     }
 
-    public void saveAssignPersonApp(String userName, final String userId, final String orgId) {
+    public void saveAssignPersonApp(String userName, final String userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("确定将任务指派给" + userName + " 吗?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

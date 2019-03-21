@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/total_bartext"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="100%"
             android:textSize="13sp" />

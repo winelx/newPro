@@ -27,7 +27,7 @@ public class NoticedBeanItemProvider extends BaseItemProvider<NoticedBean, BaseV
     public void convert(BaseViewHolder holder, NoticedBean bean, int position) {
         //时间
         if (bean.getNoticeDate() != null) {
-            holder.setText(R.id.noticed_data, bean.getNoticeDate());
+            holder.setText(R.id.noticed_data, bean.getNoticeDate().substring(0,10));
         }
         //标题
         if (bean.getModelName() != null) {

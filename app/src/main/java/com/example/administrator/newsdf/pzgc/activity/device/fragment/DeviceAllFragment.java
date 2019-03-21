@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.DeviceExpandableAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;

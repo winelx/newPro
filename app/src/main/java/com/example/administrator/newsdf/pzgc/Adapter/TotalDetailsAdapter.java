@@ -31,7 +31,11 @@ public class TotalDetailsAdapter extends BaseItemProvider<TotalDetailsBean, Base
         BigDecimal decimal = new BigDecimal(str);
         helper.setProgress(R.id.total_bar, decimal.intValue());
         helper.setText(R.id.total_number, "累计完成任务数：" + bean.getFinishCount());
-        helper.setText(R.id.total_user, "项目经理：" + bean.getPersonName());
+        if (bean.getPersonName() != null) {
+            helper.setText(R.id.total_user, "项目经理：" + bean.getPersonName());
+        } else {
+            helper.setText(R.id.total_user, "项目经理：");
+        }
         helper.setText(R.id.total_bartext, bean.getPercentage() + "");
         helper.setText(R.id.total_org, bean.getOrgName());
     }

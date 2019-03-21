@@ -21,7 +21,7 @@ public class HometasktodaytaskAdapter extends BaseItemProvider<TodayBean, BaseVi
 
     @Override
     public void convert(BaseViewHolder holder, TodayBean bean, int position) {
-        holder.setText(R.id.total_name, bean.getfOrgName());
-        holder.setText(R.id.total_numer, bean.getFinishCount());
+        holder.setText(R.id.today_name, bean.getfOrgName());
+        holder.setText(R.id.today_number, bean.getFinishCount());
     }
 }

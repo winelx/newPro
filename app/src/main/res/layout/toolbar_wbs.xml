@@ -39,7 +39,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="组织管理"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:maxEms="13"
             android:textColor="@color/writer"
             android:textSize="18sp" />
 
@@ -51,7 +53,7 @@
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:textColor="@color/writer"
-            android:textSize="15sp" />
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/com_img"

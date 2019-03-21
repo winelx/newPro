@@ -170,7 +170,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
             }
 
         });
-
         request();
     }
 
@@ -216,7 +215,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
      * 网络请求
      */
     private void request() {
-        chagedUtils.getcnflist(false, status, orgId, page, new ChagedUtils.CallBack() {
+        chagedUtils.getcnflist(false, status, orgId, page, false, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ArrayList<ChagedList> data = (ArrayList<ChagedList>) map.get("list");

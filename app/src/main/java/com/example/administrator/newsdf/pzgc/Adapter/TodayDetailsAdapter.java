@@ -31,8 +31,13 @@ public class TodayDetailsAdapter extends BaseItemProvider<TodayDetailsBean, Base
         str = str.replace("%", "");
         BigDecimal decimal = new BigDecimal(str);
         helper.setProgress(R.id.total_bar, decimal.intValue());
-        helper.setText(R.id.total_number, "累计完成任务:" + bean.getFinishCount());
-        helper.setText(R.id.total_user, "项目尽力:" + bean.getPersonName());
+        if (bean.getPersonName() != null) {
+            helper.setText(R.id.total_user, "项目经理:" + bean.getPersonName());
+        } else {
+            helper.setText(R.id.total_user, "项目经理:");
+        }
+        helper.setText(R.id.total_number, "今日完成任务:" + bean.getFinishCount());
+
         helper.setText(R.id.total_bartext, bean.getPercentage() + "");
         helper.setText(R.id.total_org, bean.getOrgName());
     }

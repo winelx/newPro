@@ -19,6 +19,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAllAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
+import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
@@ -39,7 +40,7 @@ import java.util.Map;
  * 描述：全部整改回复单列表
  * {@link }
  */
-public class ChagedreplyListAllActivity extends BaseActivity implements View.OnClickListener {
+public class ChagedreplyListAllActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -211,5 +212,11 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
                 }
             }
         });
+    }
+
+    /*接口回调*/
+    @Override
+    public void taskCallback() {
+        request();
     }
 }
