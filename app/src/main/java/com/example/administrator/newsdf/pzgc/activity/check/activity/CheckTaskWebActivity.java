@@ -33,7 +33,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 
-//
 
 /**
  * description: 任务报表
@@ -207,15 +206,12 @@ public class CheckTaskWebActivity extends BaseActivity {
         }
         cookieManager.setAcceptCookie(true);
         cookieManager.removeSessionCookie();//移除
-        //   cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
         cookieManager.setCookie(Requests.networks, "uid=" + App.getInstance().jsonId);
-        //      cookieManager.setCookie("http://192.168.20.33:8081","uid="+ App.getInstance().jsonId);
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {
             CookieManager.getInstance().flush();
         }
     }
-
 
 }

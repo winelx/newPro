@@ -518,7 +518,7 @@ public class ChagedUtils implements Serializable {
                                     String checkDate = isexpty(json.getString("checkDate"));
                                     //scord
                                     String score = isexpty(json.getString("score"));
-                                    //iwork
+                                    //iwork(判断是否是内业检查)
                                     int iwork = json.getInt("iwork");
                                     //
                                     String realname = json.getJSONObject("checkUser").getString("realname");

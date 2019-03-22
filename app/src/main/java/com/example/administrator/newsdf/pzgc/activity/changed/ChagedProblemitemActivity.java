@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,9 +54,9 @@ import java.util.Map;
 public class ChagedProblemitemActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView photoRecycler;
     private BasePhotoAdapter adapter;
-    private TextView menutext, comTitle, importPosition, chagedOrganizeText, violationStandardText;
-    private EditText exitextPosition, editProblem;
-    private LinearLayout chagedOrganizeLin, violationStandard;
+    private TextView menutext, comTitle, chagedOrganizeText, violationStandardText;
+    private EditText exitextPosition, editProblem, delscore;
+    private LinearLayout standarddelscore;
     private Context mContext;
     private ArrayList<photoBean> photolist;
     private PopCameraUtils popcamerautils;
@@ -103,6 +104,10 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
         //相机相册选择弹窗
         popcamerautils = new PopCameraUtils();
+        /*违反扣分*/
+        standarddelscore = findViewById(R.id.standarddelscore);
+        //扣分
+        delscore = findViewById(R.id.violation_standard_scode);
         //整改部位是否必填提示
         importWarning = (TextView) findViewById(R.id.import_warning);
         /*整改部位*/
@@ -407,12 +412,14 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     public void statusclose() {
         exitextPosition.setEnabled(false);
         editProblem.setEnabled(false);
+        delscore.setEnabled(false);
     }
 
     //输入可以输入
     public void statusopen() {
         exitextPosition.setEnabled(true);
         editProblem.setEnabled(true);
+        delscore.setEnabled(true);
     }
 
     /*删除*/
@@ -438,6 +445,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         //问题项id，新增时为空
         if (noticeDelId != null) {
             map.put("id", noticeDelId);
+        }
+        if (!delscore.getText().toString().isEmpty()) {
+            map.put("standardDelScore", delscore.getText().toString());
         }
         //整改部位ID
         map.put("rectificationPart", chagedpositionId);
@@ -531,6 +541,14 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 chagedpositionId = item.getRectificationPart();
                 //分值
                 score = item.getStandardDelScore();
+                if (item.getStandardDelScore() != null && TextUtils.isEmpty(item.getStandardDelScore())) {
+                    //新增
+                    standarddelscore.setVisibility(View.GONE);
+                } else {
+                    //导入
+                    standarddelscore.setVisibility(View.VISIBLE);
+                    delscore.setText(item.getStandardDelScore());
+                }
                 photolist.clear();
                 photolist.addAll((ArrayList<photoBean>) map.get("list"));
                 adapter.getData(photolist);
