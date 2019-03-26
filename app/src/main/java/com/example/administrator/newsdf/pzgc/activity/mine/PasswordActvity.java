@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.mine;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -9,7 +8,7 @@ import android.widget.Switch;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.App;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 import cn.jpush.android.api.JPushInterface;
 

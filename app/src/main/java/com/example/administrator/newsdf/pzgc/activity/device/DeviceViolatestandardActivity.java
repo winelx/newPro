@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ViolateCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.treeviews.ViolateTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;

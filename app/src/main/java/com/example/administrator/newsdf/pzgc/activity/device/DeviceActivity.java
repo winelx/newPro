@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,8 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.FmPagerAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceMeFragment;
-import com.example.administrator.newsdf.pzgc.activity.mine.Text;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;

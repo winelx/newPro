@@ -25,7 +25,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDe
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;

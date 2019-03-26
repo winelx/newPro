@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SeeDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 
 import java.util.ArrayList;

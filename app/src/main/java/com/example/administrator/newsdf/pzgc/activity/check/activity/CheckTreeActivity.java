@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;

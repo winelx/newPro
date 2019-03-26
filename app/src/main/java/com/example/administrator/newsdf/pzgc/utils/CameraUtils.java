@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 
+import com.example.baselibrary.view.PermissionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 

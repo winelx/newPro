@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 import java.util.ArrayList;
 

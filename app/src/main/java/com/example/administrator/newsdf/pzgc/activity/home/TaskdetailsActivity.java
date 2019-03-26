@@ -29,7 +29,7 @@ import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;

@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.Chaged
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.view.EmptyRecyclerView;

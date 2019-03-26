@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.work;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoadmAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;

@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;

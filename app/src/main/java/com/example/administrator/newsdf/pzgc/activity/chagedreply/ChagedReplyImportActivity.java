@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.Chaged
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.view.EmptyRecyclerView;

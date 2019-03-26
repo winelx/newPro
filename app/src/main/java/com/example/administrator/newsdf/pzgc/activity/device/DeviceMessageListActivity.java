@@ -22,7 +22,7 @@ import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

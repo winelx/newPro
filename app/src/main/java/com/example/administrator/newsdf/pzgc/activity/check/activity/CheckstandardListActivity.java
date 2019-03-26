@@ -9,7 +9,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckstandardContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Checkstandarditem;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.NoScrollViewPager;
 
 import java.util.ArrayList;

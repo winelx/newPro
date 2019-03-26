@@ -26,7 +26,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.Checkstanda
 import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;

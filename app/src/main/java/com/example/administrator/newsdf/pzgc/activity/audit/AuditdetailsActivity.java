@@ -14,7 +14,7 @@ import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 /**
  * description:审核功能的部位详情

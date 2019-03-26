@@ -49,11 +49,11 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
+import com.example.baselibrary.view.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;

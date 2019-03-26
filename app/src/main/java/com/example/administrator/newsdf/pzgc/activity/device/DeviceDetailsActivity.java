@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;

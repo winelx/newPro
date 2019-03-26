@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUti
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.view.EmptyRecyclerView;

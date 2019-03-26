@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 /**
  * @author lx

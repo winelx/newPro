@@ -3,14 +3,13 @@ package com.example.administrator.newsdf.pzgc.activity.home.same;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;

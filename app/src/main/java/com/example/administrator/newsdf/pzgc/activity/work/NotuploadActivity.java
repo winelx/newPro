@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.pzgc.activity.work;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.Adapter.Adapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

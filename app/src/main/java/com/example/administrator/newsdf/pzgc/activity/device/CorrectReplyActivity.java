@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;

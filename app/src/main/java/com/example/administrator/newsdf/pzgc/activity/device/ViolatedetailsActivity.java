@@ -8,7 +8,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.GradeRecyclerAdapter;
 import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
 import com.example.administrator.newsdf.pzgc.callback.ViolateCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;

@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;

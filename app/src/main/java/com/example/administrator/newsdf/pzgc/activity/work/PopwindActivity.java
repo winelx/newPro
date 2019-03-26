@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.work;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 /**
  * description: wbs树查看联系人信息

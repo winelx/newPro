@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PushListviewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;

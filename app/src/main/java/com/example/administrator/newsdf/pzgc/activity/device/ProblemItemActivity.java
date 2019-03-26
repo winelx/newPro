@@ -30,7 +30,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;

@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.administrator.newsdf.pzgc.utils.Requests;

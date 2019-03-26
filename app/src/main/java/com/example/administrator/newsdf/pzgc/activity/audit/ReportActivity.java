@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAd
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.ReportTreeListViewAdapters;

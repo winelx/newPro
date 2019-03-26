@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
@@ -28,12 +27,9 @@ import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 

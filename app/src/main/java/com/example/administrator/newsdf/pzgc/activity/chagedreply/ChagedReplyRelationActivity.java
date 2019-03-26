@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyRelationAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.RelationList;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

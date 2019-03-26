@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.lzy.okgo.OkGo;

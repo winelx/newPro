@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,8 +18,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyBillActivity;
-import com.example.administrator.newsdf.pzgc.activity.home.WebActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.baselibrary.utils.PdfPreview;
 
 import java.util.ArrayList;
 
@@ -67,9 +66,9 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         String imgUrl = mData.get(position);
         String filename;
         try {
-            filename=title.get(position);
-        }catch (Exception e){
-            filename="";
+            filename = title.get(position);
+        } catch (Exception e) {
+            filename = "";
         }
         //拿到.位置
         int doc = imgUrl.lastIndexOf(".");
@@ -80,7 +79,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
             holder.audio_relat.setBackgroundColor(Color.parseColor("#f8f5f6"));
-            holder.audio_relat_name.setText(filename+ ".pdf");
+            holder.audio_relat_name.setText(filename + ".pdf");
             holder.audio_relat_icon.setText("P");
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
@@ -160,9 +159,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //截取doc+1后面的字符串，包括doc+1；
                 String strs = imgUrl.substring(doc + 1);
                 if (strs.equals("pdf")) {
-                    Intent intent = new Intent(mContext, WebActivity.class);
-                    intent.putExtra("http", mData.get(position));
-                    mContext.startActivity(intent);
+                    PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
                 } else {
                     ToastUtils.showLongToast("请到pc端查看详情");
                 }
@@ -170,6 +167,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -207,7 +205,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void iscompress(boolean lean) {
-        compress=lean;
+        compress = lean;
         notifyDataSetChanged();
     }
 }

@@ -33,7 +33,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;

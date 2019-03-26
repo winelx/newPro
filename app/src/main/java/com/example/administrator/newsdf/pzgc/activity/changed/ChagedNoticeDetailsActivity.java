@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoti
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 

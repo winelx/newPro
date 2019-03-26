@@ -295,9 +295,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/ImagePickerThemeFullScreen" />
         <activity
-            android:name=".pzgc.activity.home.WebActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".pzgc.activity.work.ContactPeopleActivity"
             android:screenOrientation="portrait" />
         <activity

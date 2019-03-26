@@ -30,7 +30,7 @@ import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;

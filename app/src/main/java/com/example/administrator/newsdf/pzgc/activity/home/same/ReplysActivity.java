@@ -48,11 +48,11 @@ import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.TaskWbsActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
-import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.baselibrary.view.BaseActivity;
 
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
-import com.example.administrator.newsdf.pzgc.utils.PermissionListener;
+import com.example.baselibrary.view.PermissionListener;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.WbsDialog;
 import com.lzy.imagepicker.ImagePicker;

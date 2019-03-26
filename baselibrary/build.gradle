@@ -96,4 +96,7 @@ dependencies {
 
     //recyvler玩万能适配器
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
+//    //pdf查看
+   api "com.github.barteksc:android-pdf-viewer:$pdfviewer"
 }
