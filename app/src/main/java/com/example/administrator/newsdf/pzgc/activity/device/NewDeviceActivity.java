@@ -78,7 +78,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         //初始化控件
         findId();
         //设置控件的外边距
-        utils.setMargins(scrollViewl, 0, 0, 0, 0);
+        Utils.setMargins(scrollViewl, 0, 0, 0, 0);
         if (id != null) {
             fonclick();
             checklistmeuntext.setText("编辑");
@@ -126,10 +126,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 mData.addAll(data);
                 mAdapter.setNewDate(mData);
                 if (mData.size() > 0) {
-                    utils.setMargins(scrollViewl, 0, 0, 0, 110);
+                    Utils.setMargins(scrollViewl, 0, 0, 0, 110);
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
-                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
                 if (mData.size() > 0) {

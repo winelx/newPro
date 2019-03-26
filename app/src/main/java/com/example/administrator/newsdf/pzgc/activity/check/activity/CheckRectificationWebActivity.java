@@ -34,11 +34,20 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
+
+import java.util.List;
+
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 
 /**
- * 整改报表
-  */
-
+* @author lx
+* @data :2019/3/26 0026
+* @描述 : 整改报表
+*@see
+*/
 public class CheckRectificationWebActivity extends BaseActivity {
     boolean lean = true;
     private TextView text;
@@ -46,8 +55,9 @@ public class CheckRectificationWebActivity extends BaseActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-   //private String url = "http://192.168.1.119:8088/#/";
+  // private String url = "http://192.168.20.25:8080/m/";
     private String url = "http://120.79.142.15/m/";
+    private List<Cookie> cookies;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -55,6 +65,9 @@ public class CheckRectificationWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+        cookies = cookieStore.getCookie(httpUrl);
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
@@ -90,7 +103,6 @@ public class CheckRectificationWebActivity extends BaseActivity {
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 //Android使用WebView加载https地址打不开的问题  小米
                 handler.proceed();
-                LogUtil.i("sss", "onReceivedSslError");
             }
 
             @Override
@@ -111,7 +123,6 @@ public class CheckRectificationWebActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                LogUtil.i("sss", "加载开始");
                 //加载开始
                 linProbar.setVisibility(View.VISIBLE);
                 nonet.setVisibility(View.GONE);
@@ -121,7 +132,6 @@ public class CheckRectificationWebActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                LogUtil.i("sss", "处理网页加载失败时");
                 lean = false;
                 //6.0以上执行
                 linProbar.setVisibility(View.GONE);
@@ -186,6 +196,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         super.onDestroy();
 //        destroyWebView();
     }
+
     public void sycCook() {
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -197,8 +208,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         }
         cookieManager.setAcceptCookie(true);
         cookieManager.removeSessionCookie();//移除
-//        cookieManager.setCookie("http://192.168.1.119:8088","uid="+App.getInstance().jsonId);
-    cookieManager.setCookie(Requests.networks,"uid="+ App.getInstance().jsonId);
+        cookieManager.setCookie(Requests.networks, cookies.toString());
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {

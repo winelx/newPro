@@ -72,9 +72,9 @@
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="12dp"
             android:layout_height="match_parent"
+            android:layout_alignTop="@+id/mine_text3"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
             android:layout_marginRight="10dp"
             android:gravity="end|center_vertical"
             android:text="{fa-angle-right}"
@@ -120,9 +120,9 @@
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="12dp"
             android:layout_height="match_parent"
+            android:layout_alignTop="@+id/mine_text3"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
             android:layout_marginRight="10dp"
             android:gravity="end|center_vertical"
             android:text="{fa-angle-right}"
@@ -158,8 +158,8 @@
             android:id="@+id/new_inspect_facilitynumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:background="@null"
             android:gravity="end|center_vertical"
             android:hint="请输入"
@@ -196,8 +196,8 @@
             android:id="@+id/new_inspect_facilitymodel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:background="@null"
             android:gravity="end|center_vertical"
             android:hint="请输入"
@@ -232,7 +232,7 @@
         <EditText
             android:id="@+id/new_inspect_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:background="@null"
             android:hint="请输入"
@@ -277,9 +277,9 @@
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="12dp"
             android:layout_height="match_parent"
+            android:layout_alignTop="@+id/mine_text3"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
             android:layout_marginRight="10dp"
             android:gravity="end|center_vertical"
             android:text="{fa-angle-right}"
@@ -322,14 +322,96 @@
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="12dp"
             android:layout_height="match_parent"
+            android:layout_alignTop="@+id/mine_text3"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text3"
             android:layout_marginRight="10dp"
             android:gravity="end|center_vertical"
             android:text="{fa-angle-right}"
             android:textColor="@color/inconfy"
             android:textSize="25sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/back2" />
+
+    <LinearLayout
+        android:id="@+id/new_inspect_source_lin"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/warning_red"
+            android:gravity="center_vertical"
+            android:text="设备来源"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/new_inspect_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="end|center_vertical"
+            android:hint="请选择"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="12dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/mine_text3"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="end|center_vertical"
+            android:text="{fa-angle-right}"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/back2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:minHeight="45dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="设备操作手"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/new_inspect_usename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:gravity="end|center_vertical"
+            android:hint="请输入"
+            android:paddingLeft="11.5dp"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -358,9 +440,9 @@
             android:id="@+id/new_inspect_remarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:background="@null"
             android:hint="请输入"
             android:minHeight="30dp"

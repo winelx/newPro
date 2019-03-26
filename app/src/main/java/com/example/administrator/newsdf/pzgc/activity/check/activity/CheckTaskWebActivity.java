@@ -31,14 +31,23 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cookie.store.CookieStore;
+
+import java.util.List;
+
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 
 
 /**
  * description: 任务报表
  *
  * @author lx
- *         date: 2018/10/9 0009 上午 10:48
+ * date: 2018/10/9 0009 上午 10:48
  */
 public class CheckTaskWebActivity extends BaseActivity {
     boolean lean = true;
@@ -47,7 +56,7 @@ public class CheckTaskWebActivity extends BaseActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-
+    private  List<Cookie> cookies;
     // private String url = "http://192.168.1.119:8088/m/TaskList";
     private String url = "http://120.79.142.15/m/#/tasklist";
 
@@ -57,13 +66,16 @@ public class CheckTaskWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
-
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
+       cookies = cookieStore.getCookie(httpUrl);
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
         text = (TextView) findViewById(R.id.text);
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
+        sycCook();
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
         //允许js
@@ -77,9 +89,8 @@ public class CheckTaskWebActivity extends BaseActivity {
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setJavaScriptEnabled(true);
-        //AndroidtoJS类对象映射到js的view对象
-        sycCook();
         mWebView.loadUrl(url);
+        //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "task"), "view");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -206,7 +217,7 @@ public class CheckTaskWebActivity extends BaseActivity {
         }
         cookieManager.setAcceptCookie(true);
         cookieManager.removeSessionCookie();//移除
-        cookieManager.setCookie(Requests.networks, "uid=" + App.getInstance().jsonId);
+        cookieManager.setCookie(Requests.networks, cookies.toString());
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {

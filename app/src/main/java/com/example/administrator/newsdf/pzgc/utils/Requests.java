@@ -9,7 +9,7 @@ public class Requests {
 
 //public static final String networks = "http://192.168.20.35:8082/pzgc/";
 
-  //  public static final String networks = "http://192.168.20.36:8080/";
+//  public static final String networks = "http://192.168.20.25:8080/pzgc/";
 
 //public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
