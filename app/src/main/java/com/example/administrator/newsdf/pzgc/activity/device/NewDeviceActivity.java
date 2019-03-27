@@ -40,17 +40,17 @@ import java.util.Map;
 public class NewDeviceActivity extends BaseActivity implements View.OnClickListener, ProblemCallback {
     private ScrollView scrollViewl;
     private Utils utils;
-    private TextView billnumber, newInspectOrg, newInspectFacility;
+    private TextView billnumber, newInspectOrg, newInspectFacility, newInspectText;
     private TextView newInspectData, newInspectUsername, problem, checklistmeuntext, lowerHairs;
     private LinearLayout newInspectOrgLin, newInspectFacilityLin, newInspectDataLin, newInspectUsernameLin;
-    private EditText newInspectAddress, newInspectRemarks, facilitynumber, newInspectFacilitymodel;
+    private EditText newInspectAddress, newInspectRemarks, facilitynumber, newInspectFacilitymodel, newInspectUsename;
     private RecyclerView newInspectRecycler;
     private NewDeviceAdapter mAdapter;
     @SuppressLint("StaticFieldLeak")
     private static NewDeviceActivity mContext;
     private ArrayList<DetailsBean> mData;
     private int pos;
-    private String userId, nodeId, facilityId;
+    private String userId, nodeId, facilityId, sourceId;
     private DialogUtils dialogUtils;
     private String id;
     private DeviceUtils deviceUtils;
@@ -127,6 +127,8 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 mAdapter.setNewDate(mData);
                 if (mData.size() > 0) {
                     Utils.setMargins(scrollViewl, 0, 0, 0, 110);
+
+                    
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
                     Utils.setMargins(scrollViewl, 0, 0, 0, 0);
@@ -135,11 +137,22 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 if (mData.size() > 0) {
                     problem.setVisibility(View.VISIBLE);
                 }
+                //设备来源
+                newInspectText.setText(bean.getSourceName());
+                //id
+                sourceId = bean.getSource();
             }
         });
     }
 
     private void findId() {
+        //设备操作手
+        newInspectUsename = findViewById(R.id.new_inspect_usename);
+        editTextslist.add(newInspectUsename);
+        //设备来源名称
+        newInspectText = findViewById(R.id.new_inspect_text);
+        //设备来源
+        findViewById(R.id.new_inspect_source_lin).setOnClickListener(this);
         //保存按钮
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -263,7 +276,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             case R.id.new_inspect_username_lin:
                 //选择联系人
                 if (!"编辑".equals(checklistmeuntext.getText().toString())) {
-                    if ( nodeId != null) {
+                    if (nodeId != null) {
                         Intent intent1 = new Intent(mContext, CheckuserActivity.class);
                         intent1.putExtra("orgId", nodeId);
                         startActivityForResult(intent1, 5);
@@ -311,13 +324,21 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 String str = checklistmeuntext.getText().toString();
                 if (str.equals("编辑")) {
                     tonclick();
-                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(str)) {
                     //保存
                     deviceSave();
                 }
+                break;
+            case R.id.new_inspect_source_lin:
+                if (!"编辑".equals(checklistmeuntext.getText().toString())) {
+                    startActivityForResult(new Intent(mContext, SourceDictActivity.class), 2);
+                } else {
+                    ToastUtils.showLongToast("不是编辑状态");
+                }
+
                 break;
             default:
                 break;
@@ -374,6 +395,15 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             ToastUtils.showLongToast("整改负责人还未选择");
             return;
         }
+        if (TextUtils.isEmpty(newInspectText.getText().toString())) {
+            ToastUtils.showLongToast("设备来源还未选择");
+            return;
+        } else {
+            map.put("source", newInspectRemarks.getText().toString());
+        }
+        if (!TextUtils.isEmpty(newInspectUsename.getText().toString())) {
+            map.put("operatePerson", newInspectRemarks.getText().toString());
+        }
         //备注
         if (!TextUtils.isEmpty(newInspectRemarks.getText().toString())) {
             map.put("remarks", newInspectRemarks.getText().toString());
@@ -394,10 +424,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 //关闭输入框
                 fonclick();
                 if (mData.size() > 0) {
-                    utils.setMargins(scrollViewl, 0, 0, 0, 110);
+                    Utils.setMargins(scrollViewl, 0, 0, 0, 110);
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
-                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
                 //更新界面数据
@@ -456,6 +486,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             //设备名称
             newInspectFacility.setText(data.getStringExtra("name"));
             facilityId = data.getStringExtra("id");
+        } else if (requestCode == 2 && requestCode == 2) {
+            //设备来源
+            newInspectText.setText(data.getStringExtra("name"));
+            sourceId = data.getStringExtra("value");
         }
     }
 

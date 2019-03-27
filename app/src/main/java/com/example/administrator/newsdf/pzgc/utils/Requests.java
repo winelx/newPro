@@ -7,16 +7,16 @@ package com.example.administrator.newsdf.pzgc.utils;
  */
 public class Requests {
 
-//public static final String networks = "http://192.168.20.35:8082/pzgc/";
+public static final String networks = "http://192.168.20.35:8082/pzgc/";
 
 //  public static final String networks = "http://192.168.20.25:8080/pzgc/";
 
-//public static final String networks = "http://192.168.1.119:8081/pzgc/";
+    //public static final String networks = "http://192.168.1.119:8081/pzgc/";
     //张
-   //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
+    //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //外
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
- public static final String networks = "http://120.79.142.15/pzgc/";
+  //  public static final String networks = "http://120.79.142.15/pzgc/";
 
     /**
      * 登录
@@ -388,6 +388,8 @@ public class Requests {
      * app端权限
      */
     public static final String getMenu = networks + "/iface/mobile/taskmain/getMenu";
+
+    /*特种设备*/
     /**
      * 特种设备全部/我的
      */
@@ -487,6 +489,10 @@ public class Requests {
      */
     public static final String GETPROCESSHISCORD = networks + "iface/mobile/newcheck/getProcessHisCord";
 
+    /**
+     * 获取设备来源字典接口：
+     */
+    public static final String getSourceDict = networks + "admin/check/specialequipmentcheck/getSourceDict";
     /*删除回复验证单*/
     public static final String DELETEREPLYFORM = networks + "iface/mobile/newcheck/deleteReplyForm";
 
@@ -555,7 +561,7 @@ public class Requests {
     /***
      * 删除整改通知单
      */
-    public static final String DELETENOTICE=networks + "iface/mobile/newcheck/deleteNotice";
+    public static final String DELETENOTICE = networks + "iface/mobile/newcheck/deleteNotice";
 
     /*整改回复单*/
     /**

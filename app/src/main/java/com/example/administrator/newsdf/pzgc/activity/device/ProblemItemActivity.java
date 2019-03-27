@@ -60,7 +60,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<Audio> imagepath;
     private CheckPhotoAdapter photoAdapter;
     private ArrayList<String> deleteLis = new ArrayList<>();
-    private TextView violationStandardsText, hiddenDangerGradeText, rectifyData, itemDelete;
+    private TextView violationStandardsText, hiddenDangerGradeText, rectifyData, itemDelete, rectifyOpinion;
     private EditText rectifyCause;
     //调用相机的manager
     private TakePictureManager takePictureManager;
@@ -92,11 +92,16 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         checkId = intent.getStringExtra("checkId");
         if (!status) {
             itemDelete.setVisibility(View.VISIBLE);
+            //界面数据获取
             deviceUtils.secdetailsbyedit(typeId, new DeviceUtils.ProblemLitener() {
                 @Override
                 public void success(ProblemBean bean, ArrayList<ProblemFile> data) {
                     checklistmeuntext.setText("编辑");
                     rectifyCause.setEnabled(false);
+                    //整改意见
+                    if (bean.getRectificationOpinion() != null) {
+                        rectifyOpinion.setText(bean.getRectificationOpinion());
+                    }
                     //整改期限
                     rectifyData.setText(bean.getTerm());
                     //隐患等级
@@ -108,7 +113,9 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
                     qdgId = bean.getQdgId();
                     qdId = bean.getQdId();
                     //整改事由
-                    rectifyCause.setText(bean.getCause());
+                    if (bean.getCause() != null) {
+                        rectifyCause.setText(bean.getCause());
+                    }
                     if (data.size() > 0) {
                         for (int i = 0; i < data.size(); i++) {
                             imagepath.add(new Audio(Requests.networks + data.get(i).getFilepath(), data.get(i).getId()));
@@ -137,6 +144,8 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         checklistmeuntext.setText("保存");
         checklistmeuntext.setOnClickListener(this);
         takePictureManager = new TakePictureManager(ProblemItemActivity.this);
+        //整改意见
+        rectifyOpinion = findViewById(R.id.rectify_opinion);
         //删除Item
         itemDelete = (TextView) findViewById(R.id.item_delete);
         itemDelete.setOnClickListener(this);
@@ -373,6 +382,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
             Dates.disDialog();
             return;
         }
+
         //违反标准Id
         if (standId != null) {
             map.put("cisId", standId);
@@ -386,6 +396,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         }
         //整改事由
         map.put("cause", rectifyCause.getText().toString());
+        map.put("rectificationOpinion", rectifyOpinion.getText().toString());
         //图片
         for (int i = 0; i < imagepath.size(); i++) {
             //如果content内容为空，本地添加图片

@@ -45,6 +45,8 @@ public class Devicedetails {
     private String ts;
     private String typeId;
     private String typeName;
+    private String sourceName;
+    private String source;
 
     public String getCheckDate() {
         return checkDate;
@@ -172,5 +174,21 @@ public class Devicedetails {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

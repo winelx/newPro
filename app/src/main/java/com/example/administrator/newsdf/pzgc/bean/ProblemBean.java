@@ -31,7 +31,7 @@ public class ProblemBean {
         private String qdId;
         private String qdgId;
         private String term;
-
+        private String rectificationOpinion;
         public String getHTLName() {
             return HTLName;
         }
@@ -104,4 +104,11 @@ public class ProblemBean {
             this.term = term;
         }
 
+    public String getRectificationOpinion() {
+        return rectificationOpinion;
+    }
+
+    public void setRectificationOpinion(String rectificationOpinion) {
+        this.rectificationOpinion = rectificationOpinion;
+    }
 }
