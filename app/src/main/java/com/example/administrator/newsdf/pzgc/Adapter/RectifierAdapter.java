@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -159,7 +160,8 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //截取doc+1后面的字符串，包括doc+1；
                 String strs = imgUrl.substring(doc + 1);
                 if (strs.equals("pdf")) {
-                    PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
+                 PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
+
                 } else {
                     ToastUtils.showLongToast("请到pc端查看详情");
                 }

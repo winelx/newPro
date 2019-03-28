@@ -36,7 +36,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class App extends Application {
     public String jsonId;
-    public String creame="相机";
     /**
      * 用于存放所有启动的Activity的集合
      */

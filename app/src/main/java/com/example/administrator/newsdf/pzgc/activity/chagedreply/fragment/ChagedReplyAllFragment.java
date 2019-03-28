@@ -81,14 +81,15 @@ public class ChagedReplyAllFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        getdata();
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        getdata();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//    }
 
     public void getdata() {
         OkGo.get(Requests.GETORGINFOBYCRF)

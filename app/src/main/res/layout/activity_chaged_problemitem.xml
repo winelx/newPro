@@ -201,7 +201,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
-                        android:text="违反扣分"
+                        android:text="整改扣总分分值"
                         android:textColor="#000000"
                         android:textSize="15sp" />
 
@@ -213,7 +213,7 @@
                         android:gravity="center_vertical"
                         android:hint="请选择"
                         android:maxLines="1"
-                        android:paddingLeft="8dp"
+                        android:paddingLeft="10dp"
                         android:paddingTop="3dp"
                         android:textColor="#000000"
                         android:textSize="14sp" />

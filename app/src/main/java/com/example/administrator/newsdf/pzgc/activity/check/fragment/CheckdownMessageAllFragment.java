@@ -90,14 +90,8 @@ public class CheckdownMessageAllFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         getdata();
+        return view;
     }
 
     public void getdata() {

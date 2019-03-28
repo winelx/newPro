@@ -1,5 +1,11 @@
 package com.example.baselibrary.bean;
 
+/**
+ * @author lx
+ * @data :2019/3/28 0028
+ * @描述 : 图片展示实体类
+ * @see
+ */
 public class photoBean {
     String photopath;
     String photoname;

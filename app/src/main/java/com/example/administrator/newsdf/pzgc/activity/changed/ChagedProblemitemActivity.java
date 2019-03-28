@@ -467,8 +467,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         map.put("standardDel", categoryedid);
         //违反标准名称
         map.put("standardDelName", violationStandardText.getText().toString());
-        //分值
-        map.put("standardDelScore", score);
+//        //分值
+//        map.put("standardDelScore", score);
         //存在问题
         map.put("rectificationReason", editProblem.getText().toString());
         //删除附件Id
@@ -541,6 +541,12 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 chagedpositionId = item.getRectificationPart();
                 //分值
                 score = item.getStandardDelScore();
+                //扣分
+                if (!TextUtils.isEmpty(item.getStandardDelScore()) && item.getStandardDelScore() != null) {
+                    delscore.setText(item.getStandardDelScore());
+                }else {
+                    delscore.setText("0.0");
+                }
                 if (item.getStandardDelScore() != null && TextUtils.isEmpty(item.getStandardDelScore())) {
                     //新增
                     standarddelscore.setVisibility(View.GONE);

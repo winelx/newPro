@@ -144,42 +144,21 @@
 -keep class android.support.v4.** { *; }
 
 #---------------------------------第三方jar包-------------------------------
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
 
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
 
-#不去忽略非公共的库类
--dontskipnonpubliclibraryclassmembers
--dontskipnonpubliclibraryclasses
+#--------------------极光推送
+-dontoptimize
+-dontpreverify
 
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
 
-#------gson------
--dontwarn com.google.gson.**
--keep class com.google.gson.** {*;}
--keep class com.google.**{*;}
--keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
--keep class com.google.gson.examples.android.model.** { *; }
-#dom4j
--dontwarn org.dom4j.**
--keep class org.dom4j.** {*;}
-
-
-
-#----------以下内容可根据情况开启混淆日志记录-------
-##记录生成的日志数据,gradle build时在本项目根目录输出##
-#apk 包内所有 class 的内部结构
--dump proguard/class_files.txt
-#未混淆的类和成员
--printseeds proguard/seeds.txt
-#列出从 apk 中删除的代码
--printusage proguard/unused.txt
-#混淆前后的映射
--printmapping proguard/mapping.txt
-#移除Log类打印各个等级日志的代码，打正式包的时候可以做为禁log使用，
-#这里可以作为禁止log打印的功能使用，另外的一种实现方案是通过BuildConfig.DEBUG的变量来控制
-#-assumenosideeffects class android.util.Log {
-#    public static *** v(...);
-#    public static *** i(...);
-#    public static *** d(...);
-#    public static *** w(...);
-#    public static *** e(...);
-#}
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }

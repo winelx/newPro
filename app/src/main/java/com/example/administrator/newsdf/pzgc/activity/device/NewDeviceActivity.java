@@ -127,8 +127,6 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 mAdapter.setNewDate(mData);
                 if (mData.size() > 0) {
                     Utils.setMargins(scrollViewl, 0, 0, 0, 110);
-
-                    
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
                     Utils.setMargins(scrollViewl, 0, 0, 0, 0);
