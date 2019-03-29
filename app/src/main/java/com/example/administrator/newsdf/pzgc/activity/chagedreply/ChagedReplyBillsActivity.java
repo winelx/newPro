@@ -66,11 +66,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     private ArrayList<String> photolist;
     private EditText replydescription;
     private TextView content, rectificationreason, standarddel, delete;
-    private PopCameraUtils popcamerautils;
-    private TakePictureManager takePictureManager;
-    private static final int IMAGE_PICKER = 1011;
-    private String replyId, replyDelId, optionType;
-    private ArrayList<String> deletelist = new ArrayList<>();
+    private String replyId, replyDelId;
     private boolean lean;
     //是否回复
     private int isReply;
@@ -90,8 +86,6 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
         replyDelId = intent.getStringExtra("replyDelId");
         photoPaths = new ArrayList<>();
         photolist = new ArrayList<>();
-        popcamerautils = new PopCameraUtils();
-        takePictureManager = new TakePictureManager(ChagedReplyBillsActivity.this);
         content = (TextView) findViewById(R.id.content);
         delete = (TextView) findViewById(R.id.delete);
         delete.setOnClickListener(this);
@@ -170,7 +164,6 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ReplyBillBean billBean = (ReplyBillBean) map.get("bean");
-                optionType = billBean.getIsReply();
                 //整改部位
                 String PartName = billBean.getRectificationPartName();
                 String reason = billBean.getPartDetails();
@@ -198,7 +191,9 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
                     Reason = "无";
                 }
                 content.setText("整改部位：" + PartName + "\n" +
-                        "整改期限：" + billBean.getRectificationDate());
+                        "整改期限：" + billBean.getRectificationDate() + "\n" +
+                        "整改扣总分分值：" + billBean.getStandardDelScore()
+                );
                 standarddel.setText(billBean.getStandardDelName());
                 rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
                 replydescription.setText(billBean.getReplyDescription());

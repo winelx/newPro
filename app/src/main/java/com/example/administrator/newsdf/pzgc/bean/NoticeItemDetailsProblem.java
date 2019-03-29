@@ -23,14 +23,18 @@ public class NoticeItemDetailsProblem {
     String standardDelName;
     //存在问题
     String rectificationReason;
+    //扣分
+    String standardDelScore;
     //图片
     ArrayList<photoBean> afterFileslist;
 
-    public NoticeItemDetailsProblem(String rectificationPartName, String rectificationDate, String standardDelName, String rectificationReason, ArrayList<photoBean> afterFileslist) {
+
+    public NoticeItemDetailsProblem(String rectificationPartName, String rectificationDate, String standardDelName, String rectificationReason, String standardDelScore, ArrayList<photoBean> afterFileslist) {
         this.rectificationPartName = rectificationPartName;
         this.rectificationDate = rectificationDate;
         this.standardDelName = standardDelName;
         this.rectificationReason = rectificationReason;
+        this.standardDelScore = standardDelScore;
         this.afterFileslist = afterFileslist;
     }
 
@@ -72,5 +76,13 @@ public class NoticeItemDetailsProblem {
 
     public void setAfterFileslist(ArrayList<photoBean> afterFileslist) {
         this.afterFileslist = afterFileslist;
+    }
+
+    public String getStandardDelScore() {
+        return standardDelScore;
+    }
+
+    public void setStandardDelScore(String standardDelScore) {
+        this.standardDelScore = standardDelScore;
     }
 }

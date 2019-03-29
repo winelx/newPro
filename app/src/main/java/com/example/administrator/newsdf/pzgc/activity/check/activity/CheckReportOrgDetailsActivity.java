@@ -54,14 +54,12 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
         fragments.add(new CheckReportOrgDetailsF());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(adapter);
-
         findViewById(R.id.checklistback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         tabCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +87,6 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
                     currentPosition = position;
                 }
             }
-
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
@@ -103,7 +100,6 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
                         break;
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 

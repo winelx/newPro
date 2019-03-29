@@ -311,7 +311,9 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     Reason = "无";
                 }
                 content.setText("整改部位：" + PartName + "\n" +
-                        "整改期限：" + billBean.getRectificationDate());
+                        "整改期限：" + billBean.getRectificationDate() + "\n" +
+                        "整改扣总分分值：" + billBean.getStandardDelScore()
+                );
                 standarddel.setText(billBean.getStandardDelName());
                 rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
                 replydescription.setText(billBean.getReplyDescription());

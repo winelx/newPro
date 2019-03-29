@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,10 +44,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.status = status;
     }
 
-    public AllTaskListItem() {
-
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false);
@@ -62,6 +59,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void bindGrid(final TypeViewholder holder, final int position) {
         //标题
         if (list.get(position).getGroupName().length() != 0) {
@@ -75,7 +73,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.infaceUptime.setText(list.get(position).getUpload_time());
         holder.infaceLoation.setText(list.get(position).getUpload_addr());
         holder.infacePcontent.setText(list.get(position).getUpload_content());
-
         switch (list.get(position).getIsFinish() + "") {
             case "0":
                 holder.inface_item_message.setTextString("未完成");

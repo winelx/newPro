@@ -64,7 +64,7 @@ public class PdfActivity extends BaseActivity {
         url = intent.getStringExtra("http");
         pathname = url.substring(url.lastIndexOf("/") + 1, url.length());
         paths = getExternalCacheDir().getPath().replace("cache", "PDF/");
-        vpPdf = findViewById(R.id.vp_pdf);
+        vpPdf = (ViewPager) findViewById(R.id.vp_pdf);
         files = new File(paths + pathname);
         permisssion();
         findViewById(R.id.base_back).setOnClickListener(new View.OnClickListener() {

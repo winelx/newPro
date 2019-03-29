@@ -690,6 +690,13 @@ public class ChagedUtils implements Serializable {
                             } catch (Exception e) {
                                 rectificationReason = "";
                             }
+                            String standardDelScore;
+                            try {
+                                standardDelScore = data.getString("standardDelScore");
+                            } catch (Exception e) {
+                                standardDelScore = "";
+                            }
+
                             ArrayList<photoBean> afterFileslist = new ArrayList<>();
                             JSONArray afterFiles;
                             try {
@@ -704,7 +711,7 @@ public class ChagedUtils implements Serializable {
                                 String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, afterFileslist));
+                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason,standardDelScore, afterFileslist));
                             /*整改后*/
 
                             //回复时间

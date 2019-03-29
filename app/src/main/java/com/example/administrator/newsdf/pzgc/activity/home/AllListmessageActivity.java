@@ -121,7 +121,6 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_listtread);
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
-
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
         Dates.getDialog(AllListmessageActivity.this, "请求数据中...");
@@ -594,11 +593,10 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         recyclerAtt.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerAtt.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //初始化适配器
-        adapters = new AllTaskListItem(Alldata, mContext,"all");
+        adapters = new AllTaskListItem(Alldata, mContext, "all");
         adapters.setHasStableIds(true);
         recyclerAtt.setAdapter(adapters);
         adapters.setOnItemClickListener(new AllTaskListItem.OnItemClickListener() {
-
             @Override
             public void onItemClick(View view, int position) {
                 String status = Alldata.get(position).getIsFinish() + "";

@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,14 +20,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.baselibrary.glide.GlideApp;
+import com.example.baselibrary.glide.ProgressInterceptor;
+import com.example.baselibrary.glide.ProgressListener;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.baselibrary.view.LoadingImgView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -40,8 +50,8 @@ import okhttp3.Response;
 
 /**
  * @author lx
- *         <p>
- *         登录
+ * <p>
+ * 登录
  */
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -59,6 +69,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText username, password;
     private Context mContext;
     private Dialog progressDialog;
+    private String imgUrl = "http://p1.pstatp.com/large/166200019850062839d3";
+    LoadingImgView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +92,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
+        image = findViewById(R.id.image);
+        ProgressInterceptor.addListener(imgUrl, new ProgressListener() {
+            @Override
+            public void onProgress(int progress) {
+                Log.i("lidess", progress + "");
+                image.setProgress(progress);
+            }
+        });
+        SimpleTarget<Drawable> simpleTarge = new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                image.closeProgress();
+                image.setImageDrawable(resource);
+                ProgressInterceptor.removeListener(imgUrl);
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                image.startProgress();
+            }
+        };
+        GlideApp.with(this)
+                .load(imgUrl)
+                .into(simpleTarge);
     }
 
     @Override
@@ -163,7 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(String result, Call call, Response respons) {
                         try {
                             progressDialog.dismiss();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                         }
                         try {
                             JSONObject jsonObject = new JSONObject(result);
@@ -255,10 +292,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
-//                            CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-//                            HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
-//                            List<Cookie> cookies = cookieStore.getCookie(httpUrl);
-//                            synCookies(mContext, cookies.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -18,6 +18,7 @@ public class ReplyBillBean {
 
     private String rectificationReason;
     private String standardDelName;
+    private String standardDelScore;
     private String noticeDelId;
     private String rectificationPartName;
     private String rectificationDate;
@@ -96,6 +97,14 @@ public class ReplyBillBean {
 
     public void setIsReply(String isReply) {
         this.isReply = isReply;
+    }
+
+    public String getStandardDelScore() {
+        return standardDelScore;
+    }
+
+    public void setStandardDelScore(String standardDelScore) {
+        this.standardDelScore = standardDelScore;
     }
 }
 

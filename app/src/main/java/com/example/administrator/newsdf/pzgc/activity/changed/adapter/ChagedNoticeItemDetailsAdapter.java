@@ -23,6 +23,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDe
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;
@@ -91,12 +92,15 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     @SuppressLint("SetTextI18n")
     private void bindproblem(Typeproblem holder, int position) {
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) list.get(position);
-        String str = "扣分:" + "3.0";
+        String str;
+
+        str = "整改扣总分分值:" + problem.getStandardDelScore() + "\n";
+
         holder.typeproblem.setText(
                 "整改部位：" + problem.getRectificationPartName() + "\n"
                         + "整改期限：" + problem.getRectificationDate().substring(0, 10) + "\n"
                         + "违反标准：" + problem.getStandardDelName() + "\n"
-//                        + "扣分：" + Dates.setText(mContext, str, 3, str.length()) + "\n"
+                        + str
                         + "存在问题：" + problem.getRectificationReason() + "\n"
                         + "整改前附件:"
 
@@ -148,7 +152,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
             photolist.add(beforeFileslist.get(i).getPhotopath());
             photonames.add(beforeFileslist.get(i).getPhotoname());
         }
-        mAdapter = new RectifierAdapter(mContext, photolist,photonames);
+        mAdapter = new RectifierAdapter(mContext, photolist, photonames);
         //是否使用缩略图
         mAdapter.iscompress(false);
         holder.typerecycler.setAdapter(mAdapter);
@@ -160,13 +164,13 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         if (!record.getDealOpinion().isEmpty()) {
             holder.dealOpinion.setText(record.getDealOpinion());
             holder.dealOpinion.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.dealOpinion.setVisibility(View.GONE);
         }
         //操作内容
-        if (record.getBeDealPerson()!=null&&!TextUtils.isEmpty(record.getBeDealPerson())){
-            holder.dealContent.setText(record.getDealContent()+"："+record.getBeDealPerson());
-        }else {
+        if (record.getBeDealPerson() != null && !TextUtils.isEmpty(record.getBeDealPerson())) {
+            holder.dealContent.setText(record.getDealContent() + "：" + record.getBeDealPerson());
+        } else {
             holder.dealContent.setText(record.getDealContent());
         }
         String opinion = record.getDealContent();
@@ -277,8 +281,8 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    private SpannableString setTextColor(String str1, String str2 ) {
-        String text = str1 + str2 ;
+    private SpannableString setTextColor(String str1, String str2) {
+        String text = str1 + str2;
         int length1 = str1.length();
         int length2 = str2.length();
         SpannableString sp = new SpannableString(text);

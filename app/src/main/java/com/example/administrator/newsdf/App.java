@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.GreenDao.DaoSession;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
 import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PicassoImageLoader;
+import com.example.baselibrary.glide.ProgressInterceptor;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.lzy.imagepicker.ImagePicker;
@@ -31,7 +32,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * @author lx
- *         Created by Administrator on 2017/11/21 0021.
+ * Created by Administrator on 2017/11/21 0021.
  */
 
 public class App extends Application {
@@ -41,6 +42,7 @@ public class App extends Application {
      */
     private List<Activity> oList;
     private static App instance;
+
     public static App getInstance() {
         return instance;
     }
@@ -68,6 +70,7 @@ public class App extends Application {
                 .setCacheMode(CacheMode.NO_CACHE)
                 //可以全局统一设置超时重连次数,默认为三次,那么最差的情况会请求4次(一次原始请求,三次重连请求),不需要可以设置为0
                 .setRetryCount(0)
+                .addInterceptor(new ProgressInterceptor())
                 //cookie使用内存缓存（app退出后，cookie消失）
                 .setCookieStore(new PersistentCookieStore());
         /***
