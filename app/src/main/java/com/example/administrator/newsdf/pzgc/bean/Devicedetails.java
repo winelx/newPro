@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
 
+import java.util.List;
+
 /**
  * @author lx
  * @Created by: 2018/12/12 0012.
@@ -10,23 +12,29 @@ package com.example.administrator.newsdf.pzgc.bean;
 
 
 public class Devicedetails {
+
     /**
-     * checkDate : 2018-12-11
-     * checkOrgName : 路桥公司本部
-     * checkUserName : 刘波
-     * enumber : 测试仪器
-     * id : dacde020e62147c5b292d40fe96bae05
-     * number : TZSBXJ-20181211-11
-     * orgId : 7c34b23520f84e369aebbf998a1ecddb
-     * orgName : G321八步至洪家渡段公路改扩建工程
-     * personLiable : 28426d2130714be08d2d3ad6989b3394
-     * personLiableName : 罗青
-     * place : sfgg
-     * remarks :
+     * checkDate : 2019-04-01
+     * checkOrgName : 测试一标
+     * checkUserName : 张三
+     * details : []
+     * enumber : 3333
+     * id : f9e7627484194847ae0e029f3473cdca
+     * number : TZSBXJ-20190401-6
+     * operatePerson : 备注
+     * orgId : 2bdb6f08a91b4378a4a13952bdf85873
+     * orgName : 测试一标
+     * personLiable : e8695f76df294f63998feeb83dba4b98
+     * personLiableName : 张三
+     * place : 比例
+     * remarks : 备注
+     * serviceStatus : 0
+     * source : 2
+     * sourceName : 租赁
      * status : 0
-     * ts : qwer
-     * typeId : 11e7ecbbcec043ac8d2c4d1f4cf044bf
-     * typeName : 龙门吊
+     * ts : 55443
+     * typeId : d0afb17bf18b479cad320c3435f49360
+     * typeName : 施工升降机
      */
 
     private String checkDate;
@@ -35,18 +43,20 @@ public class Devicedetails {
     private String enumber;
     private String id;
     private String number;
+    private String operatePerson;
     private String orgId;
     private String orgName;
     private String personLiable;
     private String personLiableName;
     private String place;
     private String remarks;
-    private int status;
+    private String serviceStatus;
+    private String source;
+    private String sourceName;
+    private String status;
     private String ts;
     private String typeId;
     private String typeName;
-    private String sourceName;
-    private String source;
 
     public String getCheckDate() {
         return checkDate;
@@ -94,6 +104,14 @@ public class Devicedetails {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getOperatePerson() {
+        return operatePerson;
+    }
+
+    public void setOperatePerson(String operatePerson) {
+        this.operatePerson = operatePerson;
     }
 
     public String getOrgId() {
@@ -144,11 +162,35 @@ public class Devicedetails {
         this.remarks = remarks;
     }
 
-    public int getStatus() {
+    public String getServiceStatus() {
+        return serviceStatus;
+    }
+
+    public void setServiceStatus(String serviceStatus) {
+        this.serviceStatus = serviceStatus;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -176,19 +218,4 @@ public class Devicedetails {
         this.typeName = typeName;
     }
 
-    public String getSourceName() {
-        return sourceName;
-    }
-
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
 }

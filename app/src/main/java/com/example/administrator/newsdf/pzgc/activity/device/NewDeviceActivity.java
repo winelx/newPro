@@ -116,7 +116,11 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 newInspectData.setText(bean.getCheckDate());
                 //使用地点
                 newInspectAddress.setText(bean.getPlace());
-                //
+                //设备来源
+                newInspectText.setText(bean.getSourceName());
+                if (bean.getOperatePerson() != null) {
+                    newInspectUsename.setText(bean.getOperatePerson());
+                }
                 billnumber.setText(bean.getNumber());
                 try {
                     newInspectRemarks.setText(bean.getRemarks());
@@ -320,7 +324,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.checklistmeun:
                 String str = checklistmeuntext.getText().toString();
-                if (str.equals("编辑")) {
+                if ("编辑".equals(str)) {
                     tonclick();
                     Utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
@@ -397,10 +401,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             ToastUtils.showLongToast("设备来源还未选择");
             return;
         } else {
-            map.put("source", newInspectRemarks.getText().toString());
+            map.put("source", sourceId);
         }
         if (!TextUtils.isEmpty(newInspectUsename.getText().toString())) {
-            map.put("operatePerson", newInspectRemarks.getText().toString());
+            map.put("operatePerson", newInspectUsename.getText().toString());
         }
         //备注
         if (!TextUtils.isEmpty(newInspectRemarks.getText().toString())) {
@@ -484,7 +488,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             //设备名称
             newInspectFacility.setText(data.getStringExtra("name"));
             facilityId = data.getStringExtra("id");
-        } else if (requestCode == 2 && requestCode == 2) {
+        } else if (requestCode == 2 && resultCode == 2) {
             //设备来源
             newInspectText.setText(data.getStringExtra("name"));
             sourceId = data.getStringExtra("value");

@@ -104,7 +104,7 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         viewlist.add(deviceDetailsResult);
         viewlist.add(deviceDetailsProving);
         viewlist.add(deviceDetailsEdit);
-        utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+        Utils.setMargins(mRecyclerView, 0, 0, 0, 120);
         mAdapter.setOnclickItemLitener(new DeviceDetailsAdapter.onclickitemlitener() {
             @Override
             public void seedetails() {
@@ -209,10 +209,10 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 if (status) {
                     if (permission.size() > 0) {
                         deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+                        Utils.setMargins(mRecyclerView, 0, 0, 0, 120);
                         authority();
                     } else {
-                        utils.setMargins(mRecyclerView, 0, 0, 0, 0);
+                        Utils.setMargins(mRecyclerView, 0, 0, 0, 0);
                         deviceDetailsFunction.setVisibility(View.GONE);
                     }
                 } else {

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  * @author lx
- * @内容:隐患等级
+ * @内容: 隐患等级
  * @date: 2018/12/7 0007 上午 10:56
  */
 public class GradeActivity extends BaseActivity {

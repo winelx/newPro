@@ -35,7 +35,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/11/28 0028.
- * @description:我的特种设备整改通知（我的）
+ * @description: 我的特种设备整改通知（我的）
  */
 
 public class DeviceMessageListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {

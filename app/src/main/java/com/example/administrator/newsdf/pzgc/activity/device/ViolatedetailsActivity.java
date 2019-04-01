@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/12/3 0003.
- * @description:特种设备违反标准-具体项
+ * @description: 特种设备违反标准-具体项
  * @Activity：DeviceViolatestandardActivity
  */
 

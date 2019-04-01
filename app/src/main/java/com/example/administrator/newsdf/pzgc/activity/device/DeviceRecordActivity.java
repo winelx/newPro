@@ -32,7 +32,7 @@ import okhttp3.Response;
  * @author lx
  * @Created by: 2018/12/17 0017.
  * @description:
- * @Activity：
+ * @Activity： 处理记录
  */
 
 public class DeviceRecordActivity extends BaseActivity {

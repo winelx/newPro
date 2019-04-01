@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * @author lx
- * @description:特种设备界面
+ * @description: 特种设备界面
  * @date: 2018/11/27 0027 上午 11:32
  */
 public class DeviceActivity extends BaseActivity {

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/11/29 0029.
- * @description:查看整改问题项详情界面
+ * @description: 查看整改问题项详情界面
  */
 
 public class SeeDetailsActivity extends BaseActivity {

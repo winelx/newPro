@@ -40,13 +40,12 @@
             android:id="@+id/checklistmeuntext"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
             android:textColor="@color/writer"
-            android:textSize="13sp"
-            />
+            android:textSize="11sp" />
 
         <ImageView
             android:id="@+id/checklistmeunimage"

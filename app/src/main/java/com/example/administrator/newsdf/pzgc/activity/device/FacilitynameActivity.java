@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/12/10 0010.
- * @description:特种设备名称
+ * @description: 特种设备名称
  * @Activity：
  */
 

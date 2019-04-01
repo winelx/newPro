@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/12/5 0005.
- * @description:特种设备全部消息列表界面（全部）
+ * @description: 特种设备全部消息列表界面（全部）
  * @Activity：
  */
 

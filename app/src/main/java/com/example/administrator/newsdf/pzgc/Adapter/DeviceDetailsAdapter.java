@@ -88,8 +88,21 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.detailsTopData.setText("巡检日期：" + bean.getCheckDate());
         holder.detailsTopRectifyorg.setText(setText("整改组织：" + bean.getOrgName(), 5, R.color.Orange));
         holder.detailsTopBlameuser.setText(setText("整改负责人：" + bean.getPersonLiableName(), 6, R.color.finish_green));
-        holder.detailsTopAddress.setText("使用地点：" + bean.getPlace());
-        holder.detailsTopModel.setText("型号规格：" + bean.getTs());//型号规格
+        String operatePerson;
+        if (bean.getOperatePerson() != null) {
+            operatePerson = "设备操作手：" + bean.getOperatePerson();
+        } else {
+            operatePerson = "";
+        }
+        String sourceName;
+        if (bean.getSourceName() != null) {
+            sourceName = "设备来源：" + bean.getSourceName();
+        } else {
+            sourceName = "";
+        }
+        holder.detailsTopAddress.setText("使用地点：" + bean.getPlace() );
+        //型号规格
+        holder.detailsTopModel.setText("型号规格：" + bean.getTs()+ "\n" + operatePerson + "\n" + sourceName);
         if (bean.getRemarks() != null) {
             holder.detailsTopRemarks.setText("备注：" + bean.getRemarks());
         } else {

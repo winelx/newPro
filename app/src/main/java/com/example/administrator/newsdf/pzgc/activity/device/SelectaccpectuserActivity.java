@@ -42,8 +42,8 @@ import okhttp3.Response;
 /**
  * @author lx
  * @Created by: 2018/12/13 0013.
- * @description:查看整改问题详情
- * @Activity：跳转界面DeviceDetailsActivity
+ * @description: 查看整改问题详情
+ * @Activity： 跳转界面DeviceDetailsActivity
  */
 
 public class SelectaccpectuserActivity extends BaseActivity {

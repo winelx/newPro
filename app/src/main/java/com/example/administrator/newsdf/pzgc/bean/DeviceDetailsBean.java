@@ -45,6 +45,8 @@ public class DeviceDetailsBean {
         private String ts;
         private String typeId;
         private String typeName;
+        private String operatePerson;
+        private String sourceName;
 
         public String getCheckDate() {
             return checkDate;
@@ -181,4 +183,20 @@ public class DeviceDetailsBean {
         public void setTypeName(String typeName) {
             this.typeName = typeName;
         }
+
+    public String getOperatePerson() {
+        return operatePerson;
+    }
+
+    public void setOperatePerson(String operatePerson) {
+        this.operatePerson = operatePerson;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
 }
