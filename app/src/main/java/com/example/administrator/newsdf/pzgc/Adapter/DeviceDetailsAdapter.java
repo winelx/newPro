@@ -92,17 +92,17 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (bean.getOperatePerson() != null) {
             operatePerson = "设备操作手：" + bean.getOperatePerson();
         } else {
-            operatePerson = "";
+            operatePerson = "设备操作手：";
         }
         String sourceName;
         if (bean.getSourceName() != null) {
             sourceName = "设备来源：" + bean.getSourceName();
         } else {
-            sourceName = "";
+            sourceName = "设备来源：";
         }
-        holder.detailsTopAddress.setText("使用地点：" + bean.getPlace() );
+        holder.detailsTopAddress.setText("使用地点：" + bean.getPlace());
         //型号规格
-        holder.detailsTopModel.setText("型号规格：" + bean.getTs()+ "\n" + operatePerson + "\n" + sourceName);
+        holder.detailsTopModel.setText("型号规格：" + bean.getTs() + "\n" + operatePerson + "\n" + sourceName);
         if (bean.getRemarks() != null) {
             holder.detailsTopRemarks.setText("备注：" + bean.getRemarks());
         } else {
