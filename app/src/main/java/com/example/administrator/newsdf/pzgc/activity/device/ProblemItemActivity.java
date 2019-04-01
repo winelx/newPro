@@ -35,7 +35,7 @@ import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
-import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;

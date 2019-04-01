@@ -57,7 +57,6 @@ import okhttp3.Response;
 
 public class AuditActivity extends BaseActivity {
     private Context mContext;
-    private List<Auditbean> mData;
     private ArrayList<Audittitlebean> title;
     private ListView aduit_list;
     private SettingAdapter<Audittitlebean> adapter;

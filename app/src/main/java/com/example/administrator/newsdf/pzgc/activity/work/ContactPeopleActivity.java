@@ -3,9 +3,15 @@ package com.example.administrator.newsdf.pzgc.activity.work;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +19,33 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
+import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.list.XListView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -43,21 +55,22 @@ import okhttp3.Response;
  * description: 选择责任人
  *
  * @author lx
- *         date: 2018/4/19 0019 上午 11:33
- *         update: 2018/4/19 0019
- *         version:
+ * date: 2018/4/19 0019 上午 11:33
+ * update: 2018/4/19 0019
+ * version:
  */
-public class ContactPeopleActivity extends BaseActivity implements XListView.IXListViewListener {
-    private XListView uslistView;
-    private SettingAdapter<Icon> mAdapter = null;
+public class ContactPeopleActivity extends BaseActivity {
+    private RecyclerView uslistView;
+    private SmartRefreshLayout refreshlayout;
+    private PeopleAdapter mAdapter;
     private ArrayList<Icon> mData;
     private ArrayList<Icon> searchData;
     private Context mContext;
     private LinearLayout backgroud;
     private PopupWindow mPopupWindow;
-    private TextView Toolbar;
+    private TextView toolbar;
     private EditText search;
-    String str;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +80,28 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
         searchData = new ArrayList<>();
-        okgo();
+        refreshlayout = findViewById(R.id.refreshlayout);
+        //是否启用下拉刷新功能
+        refreshlayout.setEnableRefresh(true);
+        //是否启用上拉加载功能
+        refreshlayout.setEnableLoadmore(false);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshlayout.setEnableOverScrollDrag(true);
+        //是否在列表不满一页时候开启上拉加载功能
+        refreshlayout.setEnableLoadmoreWhenContentNotFull(false);
+        /* 下拉刷新*/
+        refreshlayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                okgo();
+                //关闭刷新
+                refreshlayout.finishRefresh();
+            }
+        });
         backgroud = (LinearLayout) findViewById(R.id.mine_backgroud);
-        uslistView = (XListView) findViewById(R.id.us_listView);
-        Toolbar = (TextView) findViewById(R.id.com_title);
-        uslistView.setPullRefreshEnable(true);
-        uslistView.setPullLoadEnable(false);
-        uslistView.setAutoLoadEnable(false);
-        uslistView.setXListViewListener(this);
-        uslistView.setRefreshTime(getTime());
+        uslistView = (RecyclerView) findViewById(R.id.us_listView);
+        toolbar = (TextView) findViewById(R.id.com_title);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,29 +114,23 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
                 dialog();
             }
         });
-        mAdapter = new SettingAdapter<Icon>(mData, R.layout.contact_item) {
-            @Override
-            public void bindView(SettingAdapter.ViewHolder holder, final Icon obj) {
-                //头像
-                holder.setImages(R.id.contact_acatar, obj.getImageUrl(), mContext);
-                //名字
-                holder.setText(R.id.content_name, obj.getName());
-                holder.setText(R.id.content_phone, obj.getMoblie());
-                holder.setOnClickListener(R.id.member, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent newpush = new Intent();
-                        newpush.putExtra("name", obj.getName());
-                        newpush.putExtra("userId", obj.getId());
-                        //回传数据到主Activity
-                        setResult(2, newpush);
-                        finish(); //此方法后才能返回主Activity
-                    }
-                });
-            }
-        };
+        uslistView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new PeopleAdapter(R.layout.contact_item, mData);
         uslistView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent newpush = new Intent();
+                newpush.putExtra("name", mData.get(position).getName());
+                newpush.putExtra("userId", mData.get(position).getId());
+                //回传数据到主Activity
+                setResult(2, newpush);
+                finish(); //此方法后才能返回主Activity
+            }
+        });
+        okgo();
     }
+
     //网络请求
     void okgo() {
         OkGo.post(Requests.Members)
@@ -137,51 +157,22 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
                                 mData.add(new Icon(id, userId, name, moblie, imageUrl));
                             }
                             if (mData.size() != 0) {
-                                    mData.add(0, new Icon("", "", "", "无", ""));
+                                mData.add(0, new Icon("", "", "", "无", ""));
                                 backgroud.setVisibility(View.GONE);
-                                mAdapter.getData(mData);
+                                mAdapter.setNewData(mData);
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
+                    }
                 });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
-
-    @Override
-    public void onRefresh() {
-        okgo();
-        new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                //进行是否登录判断
-                onLoad();
-                return false;
-                //表示延迟3秒发送任务
-            }
-        }).sendEmptyMessageDelayed(0, 2500);
-
-    }
-
-    @Override
-    public void onLoadMore() {
-
-    }
-
-    private void onLoad() {
-        uslistView.stopRefresh();
-        uslistView.setRefreshTime(getTime());
-    }
-
-    private String getTime() {
-        return new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA).format(new Date());
     }
 
     /**
@@ -194,7 +185,7 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
 //如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
 // 设置好参数之后再show
-        mPopupWindow.showAsDropDown(Toolbar);
+        mPopupWindow.showAsDropDown(toolbar);
         backgroundAlpha(0.6f);
 //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
@@ -225,7 +216,9 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(ContactPeopleActivity.this.getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    mAdapter.getData(searchData);
+                    mData.clear();
+                    mData.addAll(searchData);
+                    mAdapter.setNewData(mData);
                     mPopupWindow.dismiss();
                 }
                 return false;
@@ -261,7 +254,7 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
     }
 
     /**
-     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
+     * 弹出的popWin关闭的事件，主要是为了将背景透明度改回来
      *
      * @author cg
      */
@@ -269,6 +262,26 @@ public class ContactPeopleActivity extends BaseActivity implements XListView.IXL
         @Override
         public void onDismiss() {
             backgroundAlpha(1f);
+        }
+    }
+
+
+    class PeopleAdapter extends BaseQuickAdapter<Icon, BaseViewHolder> {
+        public PeopleAdapter(int layoutResId, @Nullable List<Icon> data) {
+            super(layoutResId, data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder holder, Icon obj) {
+            //头像
+            ImageView logoview = holder.getView(R.id.contact_acatar);
+            Glide.with(mContext)
+                    .load(obj.getImageUrl())
+                    .into(logoview);
+            //名字
+            holder.setText(R.id.content_name, obj.getName());
+            holder.setText(R.id.content_phone, obj.getMoblie());
+
         }
     }
 }

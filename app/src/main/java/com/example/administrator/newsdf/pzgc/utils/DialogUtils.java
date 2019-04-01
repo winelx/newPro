@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.utils.list;
+package com.example.administrator.newsdf.pzgc.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;

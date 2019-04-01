@@ -69,8 +69,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText username, password;
     private Context mContext;
     private Dialog progressDialog;
-    private String imgUrl = "http://p1.pstatp.com/large/166200019850062839d3";
-    LoadingImgView image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,31 +91,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
-        image = findViewById(R.id.image);
-        ProgressInterceptor.addListener(imgUrl, new ProgressListener() {
-            @Override
-            public void onProgress(int progress) {
-                Log.i("lidess", progress + "");
-                image.setProgress(progress);
-            }
-        });
-        SimpleTarget<Drawable> simpleTarge = new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                image.closeProgress();
-                image.setImageDrawable(resource);
-                ProgressInterceptor.removeListener(imgUrl);
-            }
 
-            @Override
-            public void onStart() {
-                super.onStart();
-                image.startProgress();
-            }
-        };
-        GlideApp.with(this)
-                .load(imgUrl)
-                .into(simpleTarge);
+
     }
 
     @Override

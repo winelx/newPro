@@ -26,7 +26,7 @@ import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
-import com.example.administrator.newsdf.pzgc.utils.list.DialogUtils;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

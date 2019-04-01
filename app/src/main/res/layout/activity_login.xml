@@ -4,12 +4,8 @@
     android:id="@+id/backgroud"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/writer">
+    android:background="@mipmap/login_bg">
 
-    <com.example.baselibrary.view.LoadingImgView
-        android:id="@+id/image"
-        android:layout_width="150dp"
-        android:layout_height="150dp" />
 
     <LinearLayout
         android:id="@+id/login_name"
