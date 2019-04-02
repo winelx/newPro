@@ -47,12 +47,21 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     int status, p;
     private boolean taskstatus = true;
     private ReplyDetailsContent bean;
+    private Utils utils;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        addActivity(this);
+        utils=new Utils();
         mContext = this;
+        addActivity(this);
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         orgName = intent.getStringExtra("orgName");
@@ -225,22 +234,22 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                         case 3:
                             deviceDetailsFunction.setVisibility(View.VISIBLE);
                             deviceDetailsProving.setVisibility(View.VISIBLE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                            utils.setMargins(recyclerView, 0, 0, 0, 100);
                             break;
                         case 4:
                             deviceDetailsUp.setText("提交回复");
                             deviceDetailsUp.setVisibility(View.VISIBLE);
                             deviceDetailsFunction.setVisibility(View.VISIBLE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 100);
+                            utils.setMargins(recyclerView, 0, 0, 0, 100);
                             break;
                         default:
                             deviceDetailsFunction.setVisibility(View.GONE);
-                            Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                            utils.setMargins(recyclerView, 0, 0, 0, 0);
                             break;
                     }
                 }else {
                     deviceDetailsFunction.setVisibility(View.GONE);
-                    Utils.setMargins(recyclerView, 0, 0, 0, 0);
+                    utils.setMargins(recyclerView, 0, 0, 0, 0);
                 }
 
 

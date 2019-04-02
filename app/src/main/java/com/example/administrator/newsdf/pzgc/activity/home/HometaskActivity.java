@@ -43,12 +43,19 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
     private HometasksAdapter adapter;
     private EmptyUtils emptyUtils;
     private ArrayList<Object> list;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometask);
+        addActivity(this);
         mContext = this;
+        addActivity(this);
         list = new ArrayList<>();
         Intent intent = getIntent();
         emptyUtils = new EmptyUtils(mContext);

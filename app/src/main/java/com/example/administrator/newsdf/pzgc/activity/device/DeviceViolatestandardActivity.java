@@ -44,6 +44,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_violatestandard);
+        addActivity(this);
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
         facility = intent.getStringExtra("facility");
@@ -127,6 +128,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
         if (deviceUtils != null) {
             deviceUtils = null;
         }
+        removeActivity(this);
     }
 
     @Override

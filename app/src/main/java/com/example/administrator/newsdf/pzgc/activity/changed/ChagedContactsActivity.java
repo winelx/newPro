@@ -49,11 +49,17 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
     private TextView deleteSearch;
     private EditText searchEditext;
     private RelativeLayout listSearch;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
+        addActivity(this);
         mContext = ChagedContactsActivity.this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");

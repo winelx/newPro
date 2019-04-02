@@ -84,11 +84,17 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
     private LinearLayout validation_status;
     private TextView category_item;
     TextView checklistmeuntext;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
+        addActivity(this);
         Intent intent = getIntent();
         imagepath = new ArrayList<>();
 

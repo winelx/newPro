@@ -73,6 +73,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
         mContext = this;
+        addActivity(this);
         emptyUtils = new EmptyUtils(mContext);
         RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
             @Override
@@ -391,6 +392,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unSubcribe();
+        removeActivity(this);
     }
 
 

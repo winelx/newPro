@@ -100,9 +100,16 @@ public class PhotoPagerActivity extends BaseActivity {
     };
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.__picker_activity_photo_pager);
+        addActivity(this);
         //当前位置
         int currentItem = getIntent().getIntExtra(EXTRA_CURRENT_ITEM, 0);
         //图片集合

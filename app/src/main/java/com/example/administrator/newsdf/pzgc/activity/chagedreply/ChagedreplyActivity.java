@@ -26,11 +26,17 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
     private TextView checkDownAll, checkDownMe, titleView;
     private ViewPager checkDownViewpager;
     private ArrayList<Fragment> mFragment;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
+        addActivity(this);
         mFragment = new ArrayList<>();
         //全部回复单
         mFragment.add(new ChagedReplyAllFragment());

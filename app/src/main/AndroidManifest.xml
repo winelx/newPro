@@ -459,6 +459,5 @@
         <activity android:name=".pzgc.activity.home.HometaskActivity" />
         <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
 
-
     </application>
 </manifest>

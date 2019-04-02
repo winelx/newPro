@@ -43,6 +43,7 @@ public class ViolatedetailsActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -94,6 +95,11 @@ public class ViolatedetailsActivity extends BaseActivity {
                 }
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
 }

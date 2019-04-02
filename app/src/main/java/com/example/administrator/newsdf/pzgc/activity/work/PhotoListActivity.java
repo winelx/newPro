@@ -53,11 +53,16 @@ public class PhotoListActivity extends BaseActivity {
     private SmartRefreshLayout refreshLayout;
     private String stauts;
     PostRequest request;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_list);
+        addActivity(this);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableLoadmore(false);//禁止上拉

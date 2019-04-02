@@ -72,6 +72,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        addActivity(this);
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
         //初始化控件
@@ -82,6 +83,11 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         //初始化数据
         initData();
         initDatas();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     private void findView() {

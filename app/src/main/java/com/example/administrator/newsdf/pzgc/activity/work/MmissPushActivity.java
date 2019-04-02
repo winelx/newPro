@@ -63,7 +63,9 @@ public class MmissPushActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_wbs);
+        addActivity(this);
         Intent intent = getIntent();
         org_status = intent.getExtras().getString("data");
         try {
@@ -126,7 +128,11 @@ public class MmissPushActivity extends BaseActivity {
             }
         });
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     private void initView() {
         mTree = (ListView) findViewById(R.id.wbs_listview);
     }

@@ -61,6 +61,7 @@ public class OrganiwbsActivity extends BaseActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
+        addActivity(this);
         mContext = OrganiwbsActivity.this;
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //是否启用越界拖动（仿苹果效果）1.0.4
@@ -136,7 +137,11 @@ public class OrganiwbsActivity extends BaseActivity {
         organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     /**
      * 解析SoapObject对象

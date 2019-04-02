@@ -66,11 +66,17 @@ public class ChecknoticeMessagelistAllActivity extends BaseActivity implements V
     private int page = 1;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout nullposion;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage_all);
+        addActivity(this);
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         resolution = ScreenUtil.getDensity(App.getInstance());

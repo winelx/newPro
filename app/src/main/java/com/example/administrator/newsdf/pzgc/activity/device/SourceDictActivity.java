@@ -39,6 +39,7 @@ public class SourceDictActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
+        addActivity(this);
         list = new ArrayList<>();
         TextView title = findViewById(R.id.com_title);
         title.setText("设备来源");
@@ -103,4 +104,11 @@ public class SourceDictActivity extends BaseActivity {
                     }
                 });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

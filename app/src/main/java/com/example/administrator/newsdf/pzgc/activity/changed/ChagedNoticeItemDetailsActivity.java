@@ -38,11 +38,17 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
     private TextView titleView;
     private String id;
     private ChagedUtils chagedUtils;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
+        addActivity(this);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         chagedUtils = new ChagedUtils();

@@ -119,4 +119,10 @@ public class Checkpoint extends BaseActivity {
                     }
                 });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

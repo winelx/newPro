@@ -79,6 +79,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
+        addActivity(this);
         imagepath = new ArrayList<>();
         dialogUtils = new DialogUtils();
         deviceUtils = new DeviceUtils();
@@ -447,6 +448,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         if (dialogUtils != null) {
             dialogUtils = null;
         }
+        removeActivity(this);
     }
 
     //隐藏键盘

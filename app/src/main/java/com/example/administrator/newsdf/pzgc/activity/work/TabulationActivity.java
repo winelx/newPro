@@ -25,12 +25,17 @@ public class TabulationActivity extends BaseActivity {
     private Context mContext;
     private TextView tv, com_title;
     private TagFlowLayout flowlayout;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabulation);
         mContext = TabulationActivity.this;
+        addActivity(this);
         mData = new ArrayList<>();
         //    得到跳转到该Activity的Intent对象
         Intent intent = getIntent();

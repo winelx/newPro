@@ -57,10 +57,10 @@ dependencies {
     //刷新/上拉加载框架
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
     //相册选图
-    api 'com.lzy.widget:imagepicker:0.5.5'
+    api 'com.cysion:ImagePicker:1.0.5'
     //图片压缩
     api 'com.zxy.android:tiny:0.0.6'
-    //极光推送
+    //极光推送（jpush不可升级）
     api 'cn.jiguang.sdk:jpush:3.1.1'
     api 'cn.jiguang.sdk:jcore:1.1.9'
     //rxjava
@@ -70,4 +70,6 @@ dependencies {
     api 'com.alibaba:fastjson:1.2.51'
     //recyvler玩万能适配器
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    //支持缩放图片
+    api 'com.github.chrisbanes.photoview:library:1.2.4'
 }

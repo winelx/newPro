@@ -1,4 +1,4 @@
-package com.example.baselibrary;
+package com.example.baselibrary.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.example.baselibrary.R;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.baselibrary.view.PermissionListener;
 
@@ -211,7 +212,6 @@ public class PdfActivity extends BaseActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 currentPage.close();
             }
-
             container.addView(view);
             return view;
         }

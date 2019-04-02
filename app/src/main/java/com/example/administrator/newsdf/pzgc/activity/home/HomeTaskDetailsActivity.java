@@ -45,12 +45,18 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     private String id;
     public static final String LASTMONTH = "lastmonth";
     public static final String LIST = "list";
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometask);
+        addActivity(this);
         mContext = this;
+        addActivity(this);
         list = new ArrayList<>();
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);

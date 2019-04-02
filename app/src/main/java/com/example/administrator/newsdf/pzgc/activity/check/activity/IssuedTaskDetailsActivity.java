@@ -71,6 +71,7 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issued_task_details);
+        addActivity(this);
         Intent intent = getIntent();
         mData = new ArrayList<>();
         mData2 = new ArrayList<>();
@@ -114,6 +115,11 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
         } catch (Exception e) {
 
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
 

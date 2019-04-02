@@ -42,6 +42,7 @@ public class ChoosecheckActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choosecheck);
+        addActivity(this);
         mContent = ChoosecheckActivity.this;
         list = new ArrayList<>();
         mData = new ArrayList<>();
@@ -75,7 +76,11 @@ public class ChoosecheckActivity extends BaseActivity {
         list_item.setAdapter(mAdapter);
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     private void okGo() {
         OkGo.post(Requests.Members)
                 .params("orgId", SPUtils.getString(mContent, "orgId", ""))

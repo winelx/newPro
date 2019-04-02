@@ -124,6 +124,7 @@ public class CollectionlistActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         TaskCallbackUtils.setCallBack(this);
+        addActivity(this);
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         ste = ScreenUtil.getDensity(App.getInstance());
@@ -257,6 +258,11 @@ public class CollectionlistActivity extends BaseActivity implements View.OnClick
                 "", "", name, "", true);
         organizationList.add(bean);
         getOrganization(organizationList);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
 

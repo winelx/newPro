@@ -86,12 +86,16 @@ public class DirectlyreplysActivity extends BaseActivity {
 
     String id = null, status, wbsId;
     private static final int IMAGE_PICKER = 101;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_codeplay_repley);
+        setContentView(R.layout.activity_codeplay_repley); addActivity(this);
         mContext = DirectlyreplysActivity.this;
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();

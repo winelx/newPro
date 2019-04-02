@@ -219,7 +219,7 @@ public class DeviceDetailsUtils {
                     @Override
                     public void onSuccess(String string, Call call, Response response) {
                         Dates.disDialog();
-                        int page=0;
+                        int page = 0;
                         ArrayList<Object> mData = new ArrayList<>();
                         try {
                             JSONObject jsonObject = new JSONObject(string);
@@ -235,6 +235,12 @@ public class DeviceDetailsUtils {
                                 } catch (Exception e) {
                                     cause = "整改事由：";
                                 }
+                                String rectificationOpinion;
+                                try {
+                                    rectificationOpinion = "整改意见：" + json.getString("rectificationOpinion");
+                                } catch (Exception e) {
+                                    rectificationOpinion = "整改意见：";
+                                }
                                 //附件
                                 JSONArray file = json.getJSONArray("file");
                                 ArrayList<FileTypeBean> type = new ArrayList<>();
@@ -246,7 +252,7 @@ public class DeviceDetailsUtils {
                                     type.add(new FileTypeBean(name, url, type1));
                                 }
                                 page++;
-                                mData.add(new SeeDetailsTop(cisName, htlname, term, cause, type,page));
+                                mData.add(new SeeDetailsTop(cisName, htlname, term, cause, rectificationOpinion, type, page));
                                 String reply;
                                 try {
                                     reply = "整改描述：" + json.getString("reply");
@@ -363,7 +369,7 @@ public class DeviceDetailsUtils {
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
                 Map<String, Object> map = new HashMap<>();
-                map.put("error","error");
+                map.put("error", "error");
                 networkinface.onsuccess(map);
                 Dates.disDialog();
             }

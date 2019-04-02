@@ -61,7 +61,9 @@ public class TaskWbsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_wbs);
+        addActivity(this);
         Intent intent = getIntent();
         wbsID = intent.getStringExtra("wbsID");
         wbsname = intent.getExtras().getString("wbsname");
@@ -361,4 +363,11 @@ public class TaskWbsActivity extends BaseActivity {
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

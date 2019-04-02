@@ -39,11 +39,17 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private String checkManageId, noticeId;
     private EmptyUtils emptyUtils;
     ArrayList<String> itemes = new ArrayList<>();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
+        addActivity(this);
         mContext = this;
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();

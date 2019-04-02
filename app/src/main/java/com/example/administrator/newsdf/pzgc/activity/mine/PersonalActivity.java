@@ -28,6 +28,7 @@ public class PersonalActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal);
+        addActivity(this);
         mContext = PersonalActivity.this;
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,5 +53,11 @@ public class PersonalActivity extends BaseActivity {
                 .thumbnail(Glide.with(this)
                         .load(R.mipmap.mine_avatar))
                 .into(imgview);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

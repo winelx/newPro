@@ -36,6 +36,7 @@ public class SeeDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        addActivity(this);
         Dates.getDialogs(this, "请求数据中...");
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -66,4 +67,10 @@ public class SeeDetailsActivity extends BaseActivity {
             }
         });
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

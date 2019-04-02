@@ -63,6 +63,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         status = intent.getBooleanExtra("status", false);
@@ -134,6 +135,11 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             problemItemLin.setVisibility(View.VISIBLE);
             request();
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     @Override

@@ -70,13 +70,20 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     private boolean lean;
     //是否回复
     private int isReply;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
+        addActivity(this);
         mContext = this;
+        addActivity(this);
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
         //回复单id

@@ -20,6 +20,7 @@ public class AboutmeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutme);
+        addActivity(this);
         versions = (TextView) findViewById(R.id.text_version);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,5 +30,10 @@ public class AboutmeActivity extends BaseActivity {
         });
         version = AppUtils.getVersionName(AboutmeActivity.this);
         versions.setText(version);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

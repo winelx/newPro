@@ -44,11 +44,17 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
     private SmartRefreshLayout refreshlayout;
     private String orgId,noticeId;
     private int page = 1;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_importchageditem);
+        addActivity(this);
         mContext = this;
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

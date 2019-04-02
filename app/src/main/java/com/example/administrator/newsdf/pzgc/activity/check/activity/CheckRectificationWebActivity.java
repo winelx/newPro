@@ -61,6 +61,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
+        addActivity(this);
         mContext = this;
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
@@ -181,6 +182,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+            removeActivity(this);
         //缓存
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
@@ -212,4 +214,6 @@ public class CheckRectificationWebActivity extends BaseActivity {
             CookieManager.getInstance().flush();
         }
     }
+
+
 }

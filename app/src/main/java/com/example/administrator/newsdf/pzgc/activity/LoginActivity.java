@@ -75,6 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        addActivity(this);
         mContext = App.getInstance();
         //点击背景关闭软键盘
         findViewById(R.id.backgroud).setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

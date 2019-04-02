@@ -41,10 +41,12 @@ public class BootupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         /*set it to be full screen*/
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bootup);
+        addActivity(this);
         //第一次安装完成启动，和home键退出点击launcher icon启动会重复
         // 此代码防止重复创建的问题，
         if (!isTaskRoot()
@@ -204,5 +206,11 @@ public class BootupActivity extends BaseActivity {
                         finish();
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

@@ -43,11 +43,16 @@ public class ListPhActivity extends BaseActivity {
     private TextView number, com_title, wbsname;
     private IconTextView comback;
     PostRequest request;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ph);
+        addActivity(this);
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         final String groupId = intent.getExtras().getString("groupId");

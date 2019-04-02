@@ -51,9 +51,16 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     private boolean status = true;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        addActivity(this);
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         status = intent.getBooleanExtra("status", true);
@@ -104,7 +111,6 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
         viewlist.add(deviceDetailsResult);
         viewlist.add(deviceDetailsProving);
         viewlist.add(deviceDetailsEdit);
-        Utils.setMargins(mRecyclerView, 0, 0, 0, 120);
         mAdapter.setOnclickItemLitener(new DeviceDetailsAdapter.onclickitemlitener() {
             @Override
             public void seedetails() {
@@ -209,14 +215,15 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
                 if (status) {
                     if (permission.size() > 0) {
                         deviceDetailsFunction.setVisibility(View.VISIBLE);
-                        Utils.setMargins(mRecyclerView, 0, 0, 0, 120);
+                        utils.setMargins(mRecyclerView, 0, 0, 0, 120);
                         authority();
                     } else {
-                        Utils.setMargins(mRecyclerView, 0, 0, 0, 0);
+                        utils.setMargins(mRecyclerView, 0, 0, 0, 0);
                         deviceDetailsFunction.setVisibility(View.GONE);
                     }
                 } else {
                     deviceDetailsFunction.setVisibility(View.GONE);
+                    utils.setMargins(mRecyclerView, 0, 0, 0, 0);
                 }
             }
         });

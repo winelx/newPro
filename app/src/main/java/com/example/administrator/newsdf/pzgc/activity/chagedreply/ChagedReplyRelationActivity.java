@@ -44,11 +44,18 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
     private EmptyUtils emptyUtils;
     private Context mContext;
     private int page = 1;
-    private String string;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_importchageditem);
+        addActivity(this);
         mContext = this;
         list = new ArrayList<>();
         emptyUtils = new EmptyUtils(mContext);

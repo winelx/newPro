@@ -64,6 +64,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_device);
+        addActivity(this);
         Intent intent = getIntent();//获取传来的intent对象
         id = intent.getStringExtra("id");//获取键值对的键名
         mContext = this;
@@ -78,7 +79,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         //初始化控件
         findId();
         //设置控件的外边距
-        Utils.setMargins(scrollViewl, 0, 0, 0, 0);
+        utils.setMargins(scrollViewl, 0, 0, 0, 0);
         if (id != null) {
             fonclick();
             checklistmeuntext.setText("编辑");
@@ -87,6 +88,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
             checklistmeuntext.setText("保存");
         }
     }
+
 
     /**
      * @内容: 请求当前界面数据
@@ -130,10 +132,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 mData.addAll(data);
                 mAdapter.setNewDate(mData);
                 if (mData.size() > 0) {
-                    Utils.setMargins(scrollViewl, 0, 0, 0, 110);
+                    utils.setMargins(scrollViewl, 0, 0, 0, 110);
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
-                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
                 if (mData.size() > 0) {
@@ -326,7 +328,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 String str = checklistmeuntext.getText().toString();
                 if ("编辑".equals(str)) {
                     tonclick();
-                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                     checklistmeuntext.setText("保存");
                 } else if ("保存".equals(str)) {
@@ -426,10 +428,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
                 //关闭输入框
                 fonclick();
                 if (mData.size() > 0) {
-                    Utils.setMargins(scrollViewl, 0, 0, 0, 110);
+                    utils.setMargins(scrollViewl, 0, 0, 0, 110);
                     lowerHairs.setVisibility(View.VISIBLE);
                 } else {
-                    Utils.setMargins(scrollViewl, 0, 0, 0, 0);
+                    utils.setMargins(scrollViewl, 0, 0, 0, 0);
                     lowerHairs.setVisibility(View.GONE);
                 }
                 //更新界面数据
@@ -498,6 +500,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeActivity(this);
         if (dialogUtils != null) {
             dialogUtils = null;
         }

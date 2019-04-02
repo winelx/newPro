@@ -38,11 +38,17 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
     public static CheckReportOrgDetailsActivity getInstance() {
         return mContext;
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report_org_details);
+        addActivity(this);
         mContext = this;
         titleView = (TextView) findViewById(R.id.titleView);
         tabCheck = (TextView) findViewById(R.id.tab_check);

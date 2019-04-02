@@ -54,11 +54,17 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

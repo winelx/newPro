@@ -40,9 +40,9 @@ import okhttp3.Response;
  * description: 修改配置
  *
  * @author lx
- *         date: 2018/3/6 0006 上午 9:17
- *         update: 2018/3/6 0006
- *         version:
+ * date: 2018/3/6 0006 上午 9:17
+ * update: 2018/3/6 0006
+ * version:
  */
 public class PushdialogActivity extends BaseActivity implements View.OnClickListener {
 
@@ -68,6 +68,7 @@ public class PushdialogActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushdialog);
+        addActivity(this);
         com_back = (IconTextView) findViewById(R.id.com_back);
         //标准
         checkstandard = (TextView) findViewById(R.id.pushdialog_checkStandard);
@@ -133,7 +134,7 @@ public class PushdialogActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.com_button).setOnClickListener(this);
         //存放前置选项的集合
         mData = new ArrayList<>();
-        mData.add(new CasePointsBean("","无","无"));
+        mData.add(new CasePointsBean("", "无", "无"));
         conditions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,4 +335,9 @@ public class PushdialogActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

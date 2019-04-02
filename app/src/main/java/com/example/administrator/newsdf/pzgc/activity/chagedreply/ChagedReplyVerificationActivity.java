@@ -34,11 +34,17 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
     private TextView titleView, category_item;
     private String id, motionnode;
     private int status = 0;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply_verification);
+        addActivity(this);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         motionnode = intent.getIntExtra("motionnode", 01) + " ";

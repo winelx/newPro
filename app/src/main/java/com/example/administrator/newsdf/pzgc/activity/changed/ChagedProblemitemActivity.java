@@ -76,11 +76,17 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private ArrayList<String> deleltes = new ArrayList<>();
     private int iwork = 1;
     private TextView importWarning;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_problemitem);
+        addActivity(this);
         Intent intent = getIntent();
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");

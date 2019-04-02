@@ -196,6 +196,7 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
+        addActivity(this);
         mContext = getApplicationContext();
         floatMeunAnims = new FloatMeunAnims();
         //拿到上一个界面传递的数据，
@@ -902,5 +903,9 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
         meunStandard.setOnClickListener(this);
         fab.setOnClickListener(this);
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

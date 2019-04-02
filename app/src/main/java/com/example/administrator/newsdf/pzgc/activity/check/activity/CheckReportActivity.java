@@ -52,6 +52,11 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     private static CheckReportActivity mContext;
     private DrawerLayout Reportdrawer;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     public static CheckReportActivity getInstance() {
         return mContext;
@@ -61,6 +66,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report);
+        addActivity(this);
         mData = new ArrayList<>();
         mDatas2 = new ArrayList<>();
         //初始化控件

@@ -46,6 +46,7 @@ public class ProjectMembersTreeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmb_tree);
+        addActivity(this);
         //树
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
@@ -68,6 +69,11 @@ public class ProjectMembersTreeActivity extends BaseActivity {
                 okgo();
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     /**

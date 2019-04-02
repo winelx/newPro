@@ -36,6 +36,7 @@ public class GradeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grade);
+        addActivity(this);
         mContext = this;
         relativeLayout = (RelativeLayout) findViewById(R.id.back_not_null);
         TextView titleView = (TextView) findViewById(R.id.titleView);
@@ -80,4 +81,10 @@ public class GradeActivity extends BaseActivity {
             }
         });
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

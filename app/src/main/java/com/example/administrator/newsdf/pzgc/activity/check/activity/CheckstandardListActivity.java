@@ -19,21 +19,28 @@ import java.util.List;
  * description:违反标准
  *
  * @author lx
- *         date: 2018/8/9 0009 上午 11:48
- *         update: 2018/8/9 0009
- *         version:
+ * date: 2018/8/9 0009 上午 11:48
+ * update: 2018/8/9 0009
+ * version:
  */
 
 public class CheckstandardListActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
-    private String name,strid;
+    private String name, strid;
     private String title;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent =getIntent();
-        title=  intent.getStringExtra("title");
         setContentView(R.layout.activity_check_task_category);
+        addActivity(this);
+        Intent intent = getIntent();
+        title = intent.getStringExtra("title");
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new CheckstandardContent());
@@ -63,9 +70,10 @@ public class CheckstandardListActivity extends BaseActivity {
     public void setItem() {
         viewpager.setCurrentItem(1);
     }
-    public void getdata(String str,String id){
-        this.name=str;
-        this.strid=id;
+
+    public void getdata(String str, String id) {
+        this.name = str;
+        this.strid = id;
     }
 
     public void dismiss() {
@@ -77,8 +85,8 @@ public class CheckstandardListActivity extends BaseActivity {
         }
     }
 
-    public void result(String str,String id,String score,String code) {
-        if (title!=null){
+    public void result(String str, String id, String score, String code) {
+        if (title != null) {
             Intent intent = new Intent();
             //回传数据到主Activity
             intent.putExtra("content", str);

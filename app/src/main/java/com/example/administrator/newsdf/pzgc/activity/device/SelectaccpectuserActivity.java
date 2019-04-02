@@ -62,6 +62,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbs);
+        addActivity(this);
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         checkId = intent.getStringExtra("id");
@@ -211,6 +212,11 @@ public class SelectaccpectuserActivity extends BaseActivity {
                         Dates.disDialog();
                     }
                 });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
 

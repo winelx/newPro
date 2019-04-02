@@ -71,11 +71,17 @@ public class ContactPeopleActivity extends BaseActivity {
     private TextView toolbar;
     private EditText search;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_people);
+        addActivity(this);
         mContext = ContactPeopleActivity.this;
         mData = new ArrayList<>();
         searchData = new ArrayList<>();

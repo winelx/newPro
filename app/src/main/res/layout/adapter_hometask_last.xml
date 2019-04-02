@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="已完成："
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/problem_overtime"
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="超期完成："
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/problem_chaged"
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="未完成整改："
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/problem_nochaged"
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="未整改："
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
         </LinearLayout>
     </LinearLayout>

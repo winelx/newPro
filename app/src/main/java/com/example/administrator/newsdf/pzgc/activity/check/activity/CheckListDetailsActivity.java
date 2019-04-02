@@ -79,11 +79,17 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private CheckUtils checkUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
+        addActivity(this);
         Intent intent = getIntent();
         Id = intent.getStringExtra("id");
         type = intent.getStringExtra("type");

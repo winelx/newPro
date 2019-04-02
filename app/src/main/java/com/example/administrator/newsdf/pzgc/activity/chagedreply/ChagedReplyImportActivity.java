@@ -43,11 +43,17 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
     private String noticeId, id;
     private EmptyUtils emptyUtils;
     private ArrayList<String> rowslist;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
+        addActivity(this);
         Intent intent = getIntent();
         noticeId = intent.getStringExtra("noticeId");
         id = intent.getStringExtra("id");

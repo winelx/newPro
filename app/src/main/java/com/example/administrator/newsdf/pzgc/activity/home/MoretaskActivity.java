@@ -94,6 +94,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
+        addActivity(this);
         mContext = this;
         floatMeunAnims = new FloatMeunAnims();
 
@@ -136,6 +137,11 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                 refreshlayout.finishLoadmore(1000);
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     @Override

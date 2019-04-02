@@ -84,6 +84,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
+        addActivity(this);
         mContext = CheckTasklistActivity.this;
         CheckTaskCallbackUtils.setCallBack(this);
         checkUtils = new CheckUtils();
@@ -154,6 +155,11 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
          * 网络请求
          */
         checkmamgrlist();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     @Override

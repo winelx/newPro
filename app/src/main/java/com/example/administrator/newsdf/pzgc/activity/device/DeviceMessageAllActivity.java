@@ -59,12 +59,12 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
+        addActivity(this);
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         mContext = this;
         mData = new ArrayList<>();
         deviceUtils = new DeviceUtils();
-
         Dates.getDialogs(this, "请求数据中...");
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
@@ -249,5 +249,6 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         if (deviceUtils != null) {
             deviceUtils = null;
         }
+        removeActivity(this);
     }
 }

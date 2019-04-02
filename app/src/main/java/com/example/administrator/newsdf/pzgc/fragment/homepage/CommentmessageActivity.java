@@ -125,6 +125,7 @@ public class CommentmessageActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        addActivity(this);
         floatMeunAnims = new FloatMeunAnims();
         TaskCallbackUtils.setCallBack(this);
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -257,7 +258,11 @@ public class CommentmessageActivity extends BaseActivity implements View.OnClick
         organizationList.add(bean);
         getOrganization(organizationList);
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {

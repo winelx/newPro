@@ -100,6 +100,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
+        addActivity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mContext = this;
         workbtight = false;
@@ -186,8 +187,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeActivity(this);
     }
-
     public void initTab() {
         //添加tab信息，存入集合进行展示
         Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);

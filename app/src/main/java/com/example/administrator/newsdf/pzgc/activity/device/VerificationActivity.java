@@ -74,6 +74,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
+        addActivity(this);
         Intent intent = getIntent();
         checkId = intent.getStringExtra("checkId");
         //判断是项目经理还是下发人验证
@@ -266,6 +267,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         if (popcamerautils != null) {
             popcamerautils = null;
         }
+        removeActivity(this);
     }
 
     /**

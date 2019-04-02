@@ -41,6 +41,7 @@ public class WorkareaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordarea);
+        addActivity(this);
         mData = new ArrayList<>();
         mContext = this;
         getData();
@@ -83,6 +84,13 @@ public class WorkareaActivity extends BaseActivity {
         uslistView.setAdapter(mAdapter);
         uslistView.setEmptyView(findViewById(R.id.mine_backgroud));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 
     public void getData() {
         OkGo.post(Requests.WORK_AREA)

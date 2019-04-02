@@ -71,6 +71,7 @@ public class ProjectmemberActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmember);
+        addActivity(this);
         Dates.getDialog(ProjectmemberActivity.this, "请求数据中...");
         mContext = ProjectmemberActivity.this;
         //存储联系人信息
@@ -287,9 +288,10 @@ public class ProjectmemberActivity extends BaseActivity {
                 });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

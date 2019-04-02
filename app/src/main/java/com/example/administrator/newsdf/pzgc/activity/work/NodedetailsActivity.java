@@ -92,11 +92,16 @@ public class NodedetailsActivity extends BaseActivity implements View.OnClickLis
     private boolean liststatus = true;
     boolean anim = true;
     private LinearLayout node_lin_start, node_lin_stop, node_lin_complete;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nodedetails);
+        addActivity(this);
         mContext = NodedetailsActivity.this;
         floatMeunAnims = new FloatMeunAnims();
         imagePaths = new ArrayList<>();

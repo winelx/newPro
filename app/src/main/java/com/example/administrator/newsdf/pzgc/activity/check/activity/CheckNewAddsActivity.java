@@ -95,9 +95,17 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     ArrayList<View> tVisibility = new ArrayList<>();
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
+        addActivity(this);
         CheckNewCallbackUtils.setCallback(this);
         Intent intent = getIntent();
         //导入时的wbs

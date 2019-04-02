@@ -38,6 +38,7 @@ public class PasswordActvity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_actvity);
+        addActivity(this);
         pass_old = (AppCompatEditText) findViewById(R.id.password_old);
         pass_new = (AppCompatEditText) findViewById(R.id.password_new);
         pass_newtoo = (AppCompatEditText) findViewById(R.id.password_newtoo);
@@ -121,5 +122,11 @@ public class PasswordActvity extends BaseActivity implements View.OnClickListene
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

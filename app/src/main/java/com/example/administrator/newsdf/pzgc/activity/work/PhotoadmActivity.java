@@ -56,6 +56,7 @@ public class PhotoadmActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photoadm);
+        addActivity(this);
         Dates.getDialog(PhotoadmActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
@@ -132,5 +133,11 @@ public class PhotoadmActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

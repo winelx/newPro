@@ -22,11 +22,16 @@ public class PushCheckActivity extends BaseActivity {
     private RelativeLayout pchoose_atlas, pchoose_wbs;
     private Context mContext;
     TextView com_titlle;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_check);
+        addActivity(this);
         mContext = PushCheckActivity.this;
         com_titlle = (TextView) findViewById(R.id.com_title);
         com_titlle.setText("任务下发");

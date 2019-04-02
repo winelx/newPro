@@ -48,6 +48,7 @@ public class DeviceRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
+        addActivity(this);
         mContext = this;
         list = new ArrayList<>();
         Intent intent = getIntent();
@@ -105,6 +106,11 @@ public class DeviceRecordActivity extends BaseActivity {
         };
         listview.setAdapter(adapter);
         request();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     public void request() {

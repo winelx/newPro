@@ -83,10 +83,13 @@ public class MissionpushActivity extends BaseActivity implements View.OnClickLis
     private boolean liststatus = true;
     boolean anim = true;
     int viewpagertype ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missionpush);
+        addActivity(this);
         floatMeunAnims = new FloatMeunAnims();
         pushMap = new HashMap<>();
         //获取到intent传过来得集合
@@ -392,7 +395,7 @@ public class MissionpushActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+            removeActivity(this);
     }
 
     @Override

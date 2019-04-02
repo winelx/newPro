@@ -47,6 +47,7 @@ public class RecordsActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
+        addActivity(this);
         ListView list = (ListView) findViewById(R.id.task_list);
         TextView titkle = (TextView) findViewById(R.id.com_title);
         titkle.setText("审核记录");
@@ -76,6 +77,11 @@ public class RecordsActivity extends BaseActivity {
         };
         list.setAdapter(adapter);
         getData();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     public void getData() {

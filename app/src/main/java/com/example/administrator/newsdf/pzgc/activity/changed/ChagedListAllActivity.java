@@ -56,11 +56,17 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
     private int status = -1;
     private EmptyUtils emptyUtils;
     private boolean modelTyp;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

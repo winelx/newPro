@@ -45,15 +45,23 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private TextView titleView, deviceDetailsResult;
     private ChagedUtils chagedUtils;
     private String billsId, dealId, motionNode, orgId;
+    private Utils utils;
     // (1：下发、添加问题项、导入问题项；2:指派；3：指派、我回复；)
     private int permission;
     private boolean status = true;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        addActivity(this);
+        utils=new Utils();
         mContext = this;
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();
@@ -81,7 +89,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         recycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChagedNoticeDetailsAdapter(mContext, list);
         recycler.setAdapter(adapter);
-        Utils.setMargins(recycler, 0, 0, 0, 0);
+        utils.setMargins(recycler, 0, 0, 0, 0);
         request();
         adapter.setOnClickListener(new ChagedNoticeDetailsAdapter.OnClickListener() {
             @Override
@@ -233,25 +241,25 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                     switch (permission) {
                         case 2:
                             //指派
-                            Utils.setMargins(recycler, 0, 0, 0, 140);
+                            utils.setMargins(recycler, 0, 0, 0, 140);
                             deviceDetailsFunction.setVisibility(View.VISIBLE);
                             deviceDetailsAssign.setVisibility(View.VISIBLE);
                             break;
                         case 3:
                             //指派、我回复
-                            Utils.setMargins(recycler, 0, 0, 0, 140);
+                            utils.setMargins(recycler, 0, 0, 0, 140);
                             deviceDetailsAssign.setVisibility(View.VISIBLE);
                             deviceDetailsFunction.setVisibility(View.VISIBLE);
                             deviceDetailsResult.setVisibility(View.VISIBLE);
                             break;
                         default:
-                            Utils.setMargins(recycler, 0, 0, 0, 0);
+                            utils.setMargins(recycler, 0, 0, 0, 0);
                             deviceDetailsFunction.setVisibility(View.GONE);
                             break;
                     }
                 } else {
                     deviceDetailsFunction.setVisibility(View.GONE);
-                    Utils.setMargins(recycler, 0, 0, 0, 0);
+                    utils.setMargins(recycler, 0, 0, 0, 0);
                 }
 
             }

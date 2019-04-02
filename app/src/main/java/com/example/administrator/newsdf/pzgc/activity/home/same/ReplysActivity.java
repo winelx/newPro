@@ -130,9 +130,16 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
     private Bitmap textBitmap = null;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
+        addActivity(this);
         mContext = ReplysActivity.this;
         floatMeunAnims = new FloatMeunAnims();
 

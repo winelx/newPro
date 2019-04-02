@@ -29,6 +29,7 @@ public class PopwindActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tree_dialog);
+        addActivity(this);
         Intent intent = getIntent();
         phone = intent.getExtras().getString("moblie");
         findViewById(R.id.tree_lin_dialog).setOnClickListener(this);
@@ -63,7 +64,11 @@ public class PopwindActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

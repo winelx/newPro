@@ -37,11 +37,17 @@ public class CheckTreeActivity extends BaseActivity {
     private Context mContext;
     private ListView checklist;
     private Dialog progressDialog;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
+        addActivity(this);
         Intent intent = getIntent();
         mContext = this;
         treeUtlis = new TreeUtlis();

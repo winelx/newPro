@@ -85,10 +85,18 @@ public class TenanceviewActivity extends BaseActivity implements View.OnClickLis
     boolean anim = true;
     private ArrayList<String> namess;
     int viewpagertype;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
         setContentView(R.layout.activity_missionmte);
+        addActivity(this);
         mContext = TenanceviewActivity.this;
         floatMeunAnims = new FloatMeunAnims();
         MoreTaskCallbackUtils.setCallBack(this);

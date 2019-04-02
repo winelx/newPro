@@ -100,6 +100,7 @@ public class DirectlyreplyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_codeplay_repley);
+        addActivity(this);
         mContext = DirectlyreplyActivity.this;
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
@@ -112,7 +113,11 @@ public class DirectlyreplyActivity extends BaseActivity {
         loaction();//定位
         initDate();//recycclerView
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     //定位
     private void loaction() {
         //定位初始化

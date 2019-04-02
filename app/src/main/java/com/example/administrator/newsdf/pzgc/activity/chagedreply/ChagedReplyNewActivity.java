@@ -54,11 +54,17 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     private boolean lean = true;
     private boolean status = false;
     private int count;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_new);
+        addActivity(this);
         mContext = this;
         list = new ArrayList<>();
         final Intent intent = getIntent();

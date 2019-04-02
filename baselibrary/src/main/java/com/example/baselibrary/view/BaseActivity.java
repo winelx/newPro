@@ -1,5 +1,6 @@
 package com.example.baselibrary.view;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import java.util.List;
 public class BaseActivity extends AppCompatActivity {
     private PermissionListener mListener;
     private static final int PERMISSION_REQUESTCODE = 10086;
+    public static List<Activity> activities = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class BaseActivity extends AppCompatActivity {
             mListener.onGranted();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -67,4 +71,24 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        if (activities.contains(activity)) {
+            activities.remove(activity);
+        }
+    }
+
+    public void finishAll() {
+        for (Activity activity : activities) {
+            if (!activity.isFinishing()) {
+                activity.finish();
+            }
+        }
+    }
+
 }

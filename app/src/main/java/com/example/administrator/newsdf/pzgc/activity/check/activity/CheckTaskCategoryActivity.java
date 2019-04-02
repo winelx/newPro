@@ -26,11 +26,17 @@ import java.util.List;
 public class CheckTaskCategoryActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
     private String type;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_category);
+        addActivity(this);
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         //构造适配器

@@ -14,16 +14,19 @@ public class SeeDetailsTop {
     String HTLName;
     String term;
     String cause;
+    String rectificationOpinion;
     int pos;
     ArrayList<FileTypeBean> list;
 
-    public SeeDetailsTop(String cisName, String HTLName, String term, String cause, ArrayList<FileTypeBean> list,int pos) {
+    public SeeDetailsTop(String cisName, String HTLName, String term, String cause, String rectificationOpinion, ArrayList<FileTypeBean> list, int pos) {
         this.cisName = cisName;
         this.HTLName = HTLName;
         this.term = term;
         this.cause = cause;
+        this.rectificationOpinion = rectificationOpinion;
         this.list = list;
-        this.pos=pos;
+        this.pos = pos;
+
     }
 
     public String getCisName() {
@@ -72,5 +75,13 @@ public class SeeDetailsTop {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public String getRectificationOpinion() {
+        return rectificationOpinion;
+    }
+
+    public void setRectificationOpinion(String rectificationOpinion) {
+        this.rectificationOpinion = rectificationOpinion;
     }
 }

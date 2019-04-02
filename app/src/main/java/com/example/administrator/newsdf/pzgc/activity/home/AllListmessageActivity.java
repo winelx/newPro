@@ -119,6 +119,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
+        addActivity(this);
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -253,7 +254,11 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         getOrganization(organizationList);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {
             for (OrganizationEntity entity : organizationList) {

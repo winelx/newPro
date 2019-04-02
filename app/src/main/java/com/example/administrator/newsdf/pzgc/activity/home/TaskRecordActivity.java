@@ -47,6 +47,7 @@ public class TaskRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
+        addActivity(this);
         mContext = TaskRecordActivity.this;
         com_title = (TextView) findViewById(R.id.com_title);
         com_back = (IconTextView) findViewById(R.id.com_back);
@@ -68,6 +69,11 @@ public class TaskRecordActivity extends BaseActivity {
         okGo();
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     public void okGo() {
         OkGo.<String>post(Requests.TASKRECORD)
@@ -75,7 +81,6 @@ public class TaskRecordActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.i("ss", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");

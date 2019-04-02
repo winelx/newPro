@@ -54,6 +54,7 @@ public class OrganizationaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
+        addActivity(this);
         mDatas2 = new ArrayList<OrgBeans>();
         mData = new ArrayList<OrgenBeans>();
         mContext = OrganizationaActivity.this;
@@ -270,5 +271,9 @@ public class OrganizationaActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

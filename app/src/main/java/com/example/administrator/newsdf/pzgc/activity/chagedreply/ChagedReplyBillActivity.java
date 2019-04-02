@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
@@ -72,12 +73,18 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private boolean lean;
     //是否回复
     private int isReply;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
@@ -249,8 +256,8 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == IMAGE_PICKER && resultCode == 1004) {
-            if (data != null) {
+        } else if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
+            if (data != null && requestCode == IMAGE_PICKER) {
                 //获取返回的图片路径集合
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 for (int i = 0; i < images.size(); i++) {
@@ -271,6 +278,8 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                         ToastUtils.showLongToast("请检查上传的图片是否损坏");
                     }
                 }
+            } else {
+                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -320,7 +329,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 photolist.clear();
                 //整改前图片集合
                 ArrayList<photoBean> beforeFiles = new ArrayList<>();
-                beforeFiles.addAll((ArrayList<photoBean>) map.get("beforeFiles"));
+                beforeFiles.addAll((ArrayList<photoBean>) map.get("bef oreFiles"));
                 //图片名称
                 ArrayList<String> imagename = new ArrayList<>();
                 for (int i = 0; i < beforeFiles.size(); i++) {

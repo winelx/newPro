@@ -77,11 +77,16 @@ public class NewpushActivity extends BaseActivity implements View.OnClickListene
     private FloatMeunAnims floatMeunAnims;
     private boolean liststatus = true;
     boolean anim = true;
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newpush);
+        addActivity(this);
         mContent = NewpushActivity.this;
         floatMeunAnims = new FloatMeunAnims();
         imagePaths = new ArrayList<>();

@@ -74,6 +74,7 @@ public class AuditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit);
         mContext = AuditActivity.this;
+        addActivity(this);
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
         name = intent.getExtras().getString("name");
@@ -157,6 +158,11 @@ public class AuditActivity extends BaseActivity {
                 refreshlayout.finishLoadmore(800);
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     @Override

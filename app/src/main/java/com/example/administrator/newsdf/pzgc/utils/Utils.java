@@ -247,7 +247,7 @@ public class Utils {
      * @param r 右
      * @param b 下
      */
-    public static void setMargins(View v, int l, int t, int r, int b) {
+    public  void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             p.setMargins(l, t, r, b);

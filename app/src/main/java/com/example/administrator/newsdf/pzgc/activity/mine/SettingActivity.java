@@ -41,6 +41,7 @@ public class SettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        addActivity(this);
         initView();
         settingNotDisturb.setChecked(true);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
@@ -126,5 +127,11 @@ public class SettingActivity extends BaseActivity {
         //接受消息
         setting_message = (LinearLayout) findViewById(R.id.setting_message);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

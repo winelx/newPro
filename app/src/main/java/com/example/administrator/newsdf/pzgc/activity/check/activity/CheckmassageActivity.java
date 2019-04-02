@@ -114,11 +114,16 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmassage);
+        addActivity(this);
         mContext = CheckmassageActivity.this;
-
         findID();
         initData();
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     private void findID() {

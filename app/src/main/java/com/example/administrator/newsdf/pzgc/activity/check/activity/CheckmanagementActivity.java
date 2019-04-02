@@ -63,6 +63,7 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagement);
+        addActivity(this);
         mContext = CheckmanagementActivity.this;
         expandableListView = (ExpandableListView) findViewById(expandable);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
@@ -79,6 +80,11 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
             }
         });
         getdata();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
     @Override

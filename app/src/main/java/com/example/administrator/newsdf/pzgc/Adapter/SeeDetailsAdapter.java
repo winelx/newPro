@@ -10,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.mine.Text;
-import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsReply;
 import com.example.administrator.newsdf.pzgc.bean.SeeDetailsTop;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -77,6 +74,7 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         holder.seeDetailsTerm.setText(bean.getTerm());
         //整改事由
         holder.seeDetailsReason.setText(bean.getCause());
+        holder.seeDetailsContent.setText(bean.getRectificationOpinion());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.toprecycler.setLayoutManager(linearLayoutManager);
@@ -119,6 +117,7 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView seeDetailsGrade;
         TextView seeDetailsTerm;
         TextView seeDetailsReason;
+        TextView seeDetailsContent;
 
         public TopViewholder(View itemView) {
             super(itemView);
@@ -128,6 +127,7 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             seeDetailsGrade = itemView.findViewById(R.id.see_details_grade);
             seeDetailsTerm = itemView.findViewById(R.id.see_details_term);
             seeDetailsReason = itemView.findViewById(R.id.see_details_reason);
+            seeDetailsContent = itemView.findViewById(R.id.see_details_content);
         }
     }
 
@@ -143,8 +143,8 @@ public class SeeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public void setNewdata(ArrayList<Object> list){
-        this.mData=list;
+    public void setNewdata(ArrayList<Object> list) {
+        this.mData = list;
         notifyDataSetChanged();
     }
 }

@@ -71,6 +71,7 @@ public class CorrectReplyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+        addActivity(this);
         mContext = this;
         Intent intent = getIntent();
         checkId = intent.getStringExtra("id");
@@ -192,6 +193,7 @@ public class CorrectReplyActivity extends BaseActivity {
         });
     }
 
+
     /**
      * @param requestCode
      * @param resultCode
@@ -209,31 +211,36 @@ public class CorrectReplyActivity extends BaseActivity {
                     e.printStackTrace();
                 }
         } else if (requestCode == 1011 && resultCode == 1004) {
-            if (data != null) {
-                //获取返回的图片路径集合
-                ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                for (int i = 0; i < images.size(); i++) {
-                    double mdouble = Dates.getDirSize(new File(images.get(i).path));
-                    if (mdouble != 0.0) {
-                        //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
-                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                        options.quality = 95;
-                        Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
-                            @Override
-                            public void callback(boolean isSuccess, String outfile) {
-                                //获取到指定位置的图片集合
-                                ArrayList<Audio> tinglist = list.get(pos).getList();
-                                //新增数据
-                                tinglist.add(new Audio(outfile, ""));
-                                //刷新数据，并指定刷新的位置
-                                mAdapter.setupdate(list, pos);
-                            }
-                        });
-                    } else {
-                        ToastUtils.showLongToast("请检查上传的图片是否损坏");
+            try {
+                if (data != null) {
+                    //获取返回的图片路径集合
+                    ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                    for (int i = 0; i < images.size(); i++) {
+                        double mdouble = Dates.getDirSize(new File(images.get(i).path));
+                        if (mdouble != 0.0) {
+                            //实例化Tiny.FileCompressOptions，并设置quality的数值（quality改变图片压缩质量）
+                            Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                            options.quality = 95;
+                            Tiny.getInstance().source(images.get(i).path).asFile().withOptions(options).compress(new FileCallback() {
+                                @Override
+                                public void callback(boolean isSuccess, String outfile) {
+                                    //获取到指定位置的图片集合
+                                    ArrayList<Audio> tinglist = list.get(pos).getList();
+                                    //新增数据
+                                    tinglist.add(new Audio(outfile, ""));
+                                    //刷新数据，并指定刷新的位置
+                                    mAdapter.setupdate(list, pos);
+                                }
+                            });
+                        } else {
+                            ToastUtils.showLongToast("请检查上传的图片是否损坏");
+                        }
                     }
                 }
+            }catch (Exception e){
+
             }
+
         }
     }
 
@@ -243,6 +250,7 @@ public class CorrectReplyActivity extends BaseActivity {
         if (PopCameraUtils != null) {
             PopCameraUtils = null;
         }
+        removeActivity(this);
     }
 
     /**

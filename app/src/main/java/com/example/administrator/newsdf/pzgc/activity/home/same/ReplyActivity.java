@@ -130,6 +130,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
+        addActivity(this);
         floatMeunAnims = new FloatMeunAnims();
         mContext = ReplyActivity.this;
         pathimg = new ArrayList<>();
@@ -729,5 +730,11 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

@@ -43,6 +43,7 @@ public class UploadPhotoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photo);
+        addActivity(this);
         mContext = UploadPhotoActivity.this;
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         //名称
@@ -141,4 +142,11 @@ public class UploadPhotoActivity extends BaseActivity {
                 setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                 .start((Activity) mContext);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

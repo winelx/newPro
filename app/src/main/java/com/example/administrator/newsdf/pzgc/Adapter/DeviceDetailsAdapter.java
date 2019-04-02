@@ -100,6 +100,7 @@ public class DeviceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else {
             sourceName = "设备来源：";
         }
+        String remarks;
         holder.detailsTopAddress.setText("使用地点：" + bean.getPlace());
         //型号规格
         holder.detailsTopModel.setText("型号规格：" + bean.getTs() + "\n" + operatePerson + "\n" + sourceName);

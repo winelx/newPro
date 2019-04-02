@@ -20,9 +20,9 @@ import com.example.baselibrary.view.BaseActivity;
  * description:审核功能的部位详情
  *
  * @author lx
- *         date: 2018/7/4 0004 下午 3:15
- *         update: 2018/7/4 0004
- *         version:
+ * date: 2018/7/4 0004 下午 3:15
+ * update: 2018/7/4 0004
+ * version:
  */
 
 public class AuditdetailsActivity extends BaseActivity implements View.OnClickListener, AuditDetailsCallback, AuditDetailsrefreshCallback {
@@ -32,8 +32,6 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
     private TextView wbspath;
     private String taskId, status;
     private AuditdetailsAdapter mAdapter;
-
-
     public static AuditdetailsActivity getInstance() {
         return mContext;
     }
@@ -44,6 +42,7 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditdetails);
+        addActivity(this);
         Intent intnt = getIntent();
         homeUtils = new HomeUtils();
         mContext = this;
@@ -62,6 +61,12 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.aduit_back).setOnClickListener(this);
         findViewById(R.id.Auditrecords).setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 
 
