@@ -91,6 +91,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         typeId = intent.getStringExtra("typeId");
         facility = intent.getStringExtra("facility");
         checkId = intent.getStringExtra("checkId");
+
         if (!status) {
             itemDelete.setVisibility(View.VISIBLE);
             //界面数据获取
@@ -141,6 +142,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         titleView.setText("问题项");
         contentlin = (LinearLayout) findViewById(R.id.contentlin);
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setTextSize(15.0f);
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setText("保存");
         checklistmeuntext.setOnClickListener(this);

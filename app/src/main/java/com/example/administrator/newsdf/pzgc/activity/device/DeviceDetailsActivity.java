@@ -378,7 +378,9 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    //退出
+    /**
+     * 退出
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

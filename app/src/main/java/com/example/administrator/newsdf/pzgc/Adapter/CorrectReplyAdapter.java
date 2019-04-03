@@ -61,10 +61,17 @@ public class CorrectReplyAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof Viewholder) {
             ProblemitemBean bean = list.get(position).getBean();
             ((Viewholder) holder).title.setText("第" + (position + 1) + "个问题");
+            String Rectif = bean.getRectificationOpinion();
+            if (bean.getRectificationOpinion() != null) {
+                Rectif = bean.getRectificationOpinion();
+            } else {
+                Rectif = "";
+            }
             ((Viewholder) holder).correctContent.setText(
                     "隐患等级：" + bean.getHTLName() + "\n"
                             + "整改期限：" + bean.getTerm() + "\n"
                             + "整改事由：" + isnull(bean.getCause()) + "\n"
+                            + "整改意见：" + Rectif + "\n"
                             + "巡检附件：");
             ((Viewholder) holder).correct_cuse.setText("违反标准：" + bean.getCisName());
             //整改描述

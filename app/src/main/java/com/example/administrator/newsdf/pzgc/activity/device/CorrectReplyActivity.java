@@ -84,6 +84,7 @@ public class CorrectReplyActivity extends BaseActivity {
         //数据填完后保存按钮
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
+        checklistmeuntext.setTextSize(15.0f);
         //显示安按钮
         checklistmeuntext.setVisibility(View.VISIBLE);
         TextView titleView = (TextView) findViewById(R.id.titleView);
@@ -204,12 +205,12 @@ public class CorrectReplyActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101) {
-                //返回的数据不为空
-                try {
-                    takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+            //返回的数据不为空
+            try {
+                takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         } else if (requestCode == 1011 && resultCode == 1004) {
             try {
                 if (data != null) {
@@ -237,7 +238,7 @@ public class CorrectReplyActivity extends BaseActivity {
                         }
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 

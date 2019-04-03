@@ -82,10 +82,13 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
         utils.setMargins(scrollViewl, 0, 0, 0, 0);
         if (id != null) {
             fonclick();
+            checklistmeuntext.setTextSize(15.0f);
             checklistmeuntext.setText("编辑");
             request();
         } else {
             checklistmeuntext.setText("保存");
+            checklistmeuntext.setTextSize(15.0f);
+
         }
     }
 
