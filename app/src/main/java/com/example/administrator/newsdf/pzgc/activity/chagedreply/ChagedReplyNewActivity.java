@@ -167,7 +167,6 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 } else {
                     ToastUtils.showShortToast("当前状态不可点击");
                 }
-
                 break;
             case R.id.toolbar_menu:
                 if ("保存".equals(comButton.getText().toString())) {

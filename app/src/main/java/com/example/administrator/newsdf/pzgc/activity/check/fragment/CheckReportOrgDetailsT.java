@@ -144,13 +144,19 @@ public class CheckReportOrgDetailsT extends Fragment {
                                         String check_plan_name = json.getString("check_plan_name");
                                         String check_user_name = json.getString("check_user_name");
                                         String id = json.getString("id");
-                                        String part_detail = "";
+                                        String partDetail;
                                         try {
-                                            part_detail = json.getString("part_details");
+                                            partDetail = json.getString("part_details");
                                         } catch (JSONException e) {
-                                            part_detail = "";
+                                            partDetail = "";
                                         }
-                                        String score = json.getString("score");
+                                        String score;
+                                        try {
+                                            score = json.getString("score");
+
+                                        } catch (Exception e) {
+                                            score = "";
+                                        }
                                         String wbs_name;
                                         try {
                                             wbs_name = json.getString("wbs_name");
@@ -163,9 +169,14 @@ public class CheckReportOrgDetailsT extends Fragment {
                                         } catch (JSONException e) {
                                             iwork = 1;
                                         }
-                                        String wbs_type_name = json.getString("wbs_type_name");
+                                        String wbsTypeName;
+                                        try {
+                                            wbsTypeName = json.getString("wbs_type_name");
+                                        } catch (Exception e) {
+                                            wbsTypeName = "";
+                                        }
 
-                                        list.add(new OrgDetailsTBean(check_date, check_org_name, check_plan_name, check_user_name, id, part_detail, score, wbs_name, wbs_type_name, iwork));
+                                        list.add(new OrgDetailsTBean(check_date, check_org_name, check_plan_name, check_user_name, id, partDetail, score, wbs_name, wbsTypeName, iwork));
                                     }
                                     if (list.size() > 0) {
                                         mAdapter.getmData(list);
@@ -187,6 +198,7 @@ public class CheckReportOrgDetailsT extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            ToastUtils.showLongToast("数据解析失败");
                         }
                     }
 

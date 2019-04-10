@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * @author lx
  * @Created by: 2018/11/27 0027.
- * @description:特种设备全部消息
+ * @description: 特种设备全部消息
  */
 
 public class DeviceAllFragment extends LazyloadFragment {
@@ -30,7 +30,6 @@ public class DeviceAllFragment extends LazyloadFragment {
     private DeviceExpandableAdapter mAdapter;
     private DeviceUtils deviceUtils;
     private Context mContext;
-    private int groupPosition = 0;
 
     @Override
     protected int setContentView() {

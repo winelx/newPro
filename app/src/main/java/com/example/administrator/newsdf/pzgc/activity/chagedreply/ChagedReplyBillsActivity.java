@@ -95,6 +95,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
         photolist = new ArrayList<>();
         content = (TextView) findViewById(R.id.content);
         delete = (TextView) findViewById(R.id.delete);
+        delete.setVisibility(View.GONE);
         delete.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         findViewById(R.id.checklistmeun).setOnClickListener(this);

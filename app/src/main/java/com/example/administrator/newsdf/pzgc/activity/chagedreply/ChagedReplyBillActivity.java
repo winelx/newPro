@@ -329,7 +329,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 photolist.clear();
                 //整改前图片集合
                 ArrayList<photoBean> beforeFiles = new ArrayList<>();
-                beforeFiles.addAll((ArrayList<photoBean>) map.get("bef oreFiles"));
+                beforeFiles.addAll((ArrayList<photoBean>) map.get("beforeFiles"));
                 //图片名称
                 ArrayList<String> imagename = new ArrayList<>();
                 for (int i = 0; i < beforeFiles.size(); i++) {

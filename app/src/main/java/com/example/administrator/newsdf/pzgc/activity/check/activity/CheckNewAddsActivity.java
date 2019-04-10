@@ -74,7 +74,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId, categoryId = "", taskId = "", nodeId;
+    private String name, orgId, categoryId = "", taskId = "", nodeId, type;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -84,7 +84,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private LinearLayout checklistmeun;
     private SmartRefreshLayout smallLabel;
     private LinearLayout checkNewDialog;
-    int number = 0;
 
     public static CheckNewAddsActivity getInstance() {
         return mContext;
@@ -112,6 +111,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         orgId = intent.getStringExtra("orgId");
         //所属标段名称
         name = intent.getStringExtra("name");
+        type = intent.getStringExtra("type");
         try {
             //当前检查任务的id
             taskId = intent.getStringExtra("taskId");
@@ -267,9 +267,10 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 startActivityForResult(intent1, 2);
                 break;
             case R.id.Check_category:
+                //类别
                 Intent intent = new Intent(mContext, CheckTaskCategoryActivity.class);
                 intent.putExtra("wbsId", orgId);
-                intent.putExtra("type", "2");
+                intent.putExtra("type", type);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.checklistmeun:
@@ -347,6 +348,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             viewlist.get(i).setEnabled(false);
         }
     }
+
     private void submit() {
         checklistmeuntext.setText("编辑");
         checkNewButton.setText("提交");
@@ -361,6 +363,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             viewlist.get(i).setEnabled(false);
         }
     }
+
     /**
      * 界面回调
      *
@@ -474,7 +477,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         //初始化数据---日
         String yeardata = Utils.year[yearPicker.getValue()];
         //如果当前月份是2月
-        if ((dateMonth+1) == 2) {
+        if ((dateMonth + 1) == 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年
@@ -539,7 +542,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
-                .params("iwork", "2")
+                .params("iwork", type)
                 //检查部位Id
                 .params("wbsMainId", nodeId)
                 //手动输入的检查部位
@@ -792,7 +795,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 if (lean) {
 
                                     submit();
-                                }else {
+                                } else {
                                     statusT();
                                 }
 

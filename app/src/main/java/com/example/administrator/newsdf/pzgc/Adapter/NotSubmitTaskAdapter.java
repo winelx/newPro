@@ -68,9 +68,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,  final int position) {
         Object obj = mDatas.get(position);
         if (holder instanceof MyViewHolder) {
             final CheckTasklistBean success = (CheckTasklistBean) obj;
@@ -91,7 +91,10 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);
-            } else {
+            }  else if (iwork == 4) {
+                ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).managementIndustry.setText("专项检查");
+            }else {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +126,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             int iworl = Sub.getIwork();
             if (iworl == 1) {
                 ((SubViewHolder) holder).managementIndustry.setVisibility(View.GONE);
+            } else if (iworl == 4) {
+                ((SubViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((SubViewHolder) holder).managementIndustry.setText("专项检查");
             } else {
                 ((SubViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }

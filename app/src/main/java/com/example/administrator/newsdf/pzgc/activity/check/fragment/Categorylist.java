@@ -57,6 +57,7 @@ public class Categorylist extends Fragment {
         categoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //判断是否有下级
                 String str = mData.get(position).getUnmber();
                 int integer = Integer.parseInt(str);
                 if (integer > 0) {
@@ -64,7 +65,7 @@ public class Categorylist extends Fragment {
                     activity.setItem();
                     CategoryCallbackUtils.CallBackMethod(mData.get(position).getId(), "");
                 } else {
-                    ToastUtils.showShortToastCenter("没有更多");
+                    ToastUtils.showShortToastCenter("不存在下级目录");
                 }
 
             }
@@ -77,6 +78,7 @@ public class Categorylist extends Fragment {
             }
         });
         CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
+        //网络请求
         checkUtils.taskTypeList("", mData, activity.getType(), adapter);
         return view;
     }

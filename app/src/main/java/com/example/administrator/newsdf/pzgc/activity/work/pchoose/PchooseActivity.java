@@ -18,9 +18,9 @@ import java.util.List;
  * description: 图纸查看界面（图册\标准）
  *
  * @author lx
- *         date: 2018/3/8 0008 下午 4:43
- *         update: 2018/3/8 0008
- *         version:
+ * date: 2018/3/8 0008 下午 4:43
+ * update: 2018/3/8 0008
+ * version:
  */
 public class PchooseActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
@@ -45,7 +45,6 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
         vp.setAdapter(adapter);
         frPchooseAm = (TextView) findViewById(R.id.fr_Pchoose_am);
         frPchooseMm = (TextView) findViewById(R.id.fr_Pchoose_mm);
-        findViewById(R.id.com_back).setOnClickListener(this);
         frPchooseMm.setOnClickListener(this);
         frPchooseAm.setOnClickListener(this);
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -102,11 +101,13 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
         }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         removeActivity(this);
     }
+
     public void photo() {
         frPchooseMm.setTextColor(Color.parseColor("#306bb8"));
         frPchooseMm.setBackgroundResource(R.color.writer);

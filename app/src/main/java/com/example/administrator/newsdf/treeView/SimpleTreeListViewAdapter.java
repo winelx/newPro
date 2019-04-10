@@ -144,7 +144,6 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
-
     }
 
     void okgo(String staffId) {

@@ -85,6 +85,7 @@ public class CategoryContent extends Fragment implements CategoryCallback {
     public void updata(String str, String str1) {
         mData.clear();
         CheckTaskCategoryActivity activity = (CheckTaskCategoryActivity) getActivity();
+        //网络请求
         checkUtils.taskTypeList(str, mData,activity.getType(), adapter);
     }
 }

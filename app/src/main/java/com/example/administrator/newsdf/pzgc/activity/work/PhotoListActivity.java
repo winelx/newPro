@@ -53,11 +53,7 @@ public class PhotoListActivity extends BaseActivity {
     private SmartRefreshLayout refreshLayout;
     private String stauts;
     PostRequest request;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -350,5 +346,11 @@ public class PhotoListActivity extends BaseActivity {
 
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

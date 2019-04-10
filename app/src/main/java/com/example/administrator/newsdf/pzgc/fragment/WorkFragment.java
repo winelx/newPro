@@ -149,9 +149,7 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckTaskWebActivity.class));
                         break;
                     case "审核报表":
-                        Intent intent = new Intent(mContext, ReportActivity.class);
-                        intent.putExtra("orgId", SPUtils.getString(mContext, "orgId", ""));
-                        startActivity(intent);
+                        startActivity(new Intent(mContext, ReportActivity.class));
                         break;
                     case "整改统计":
                         startActivity(new Intent(mContext, CheckRectificationWebActivity.class));
@@ -183,63 +181,43 @@ public class WorkFragment extends Fragment {
                                 checklist.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
-                                    String str4 = json.getString("任务统计");
-                                    String str6 = json.getString("审核报表");
-                                    String str7 = json.getString("整改统计");
-                                    String str9 = json.getString("标段排名");
-                                    if ("true".equals(str6)) {
+                                    if ("true".equals(json.getString("审核报表"))) {
                                         reportlist.add(new bean("审核报表", R.mipmap.check_statistical));
                                     }
-                                    if ("true".equals(str4)) {
+                                    if ("true".equals(json.getString("任务统计"))) {
                                         reportlist.add(new bean("任务统计", R.mipmap.fr_work_statistical));
                                     }
-
-                                    if ("true".equals(str7)) {
+                                    if ("true".equals(json.getString("整改统计"))) {
                                         reportlist.add(new bean("整改统计", R.mipmap.fr_work_rectification));
                                     }
-                                    if ("true".equals(str9)) {
+                                    if ("true".equals(json.getString("标段排名"))) {
                                         reportlist.add(new bean("标段排名", R.mipmap.fr_work_ranking));
                                     }
-
-                                    String str3 = json.getString("任务管理");
-                                    String str = json.getString("主动任务");
-                                    String str2 = json.getString("任务下发");
-                                    String str5 = json.getString("图纸标准");
-                                    if ("true".equals(str3)) {
+                                    if ("true".equals(json.getString("任务管理"))) {
                                         tasklist.add(new bean("任务管理", R.mipmap.fr_work_miss));
                                     }
-                                    if ("true".equals(str2)) {
+                                    if ("true".equals(json.getString("任务下发"))) {
                                         tasklist.add(new bean("任务下发", R.mipmap.fr_work_push));
                                     }
-                                    if ("true".equals(str5)) {
+                                    if ("true".equals(json.getString("图纸标准"))) {
                                         tasklist.add(new bean("图纸标准", R.mipmap.fr_work_photo));
                                     }
-                                    if ("true".equals(str)) {
+                                    if ("true".equals(json.getString("主动任务"))) {
                                         tasklist.add(new bean("主动任务", R.mipmap.fr_work_upload));
-                                    }
-
-                                    String str11 = json.getString("监管检查");
-                                    String str8 = json.getString("整改通知");
-                                    String device;
-                                    String reply = json.getString("回复验证");
-                                    try {
-                                        device = json.getString("特种设备");
-                                    } catch (Exception e) {
-                                        device = "";
                                     }
                                     if ("true".equals(json.getString("检查标准"))) {
                                         checklist.add(new bean("检查标准", R.mipmap.check_standard));
                                     }
-                                    if ("true".equals(str11)) {
+                                    if ("true".equals(json.getString("监管检查"))) {
                                         checklist.add(new bean("监管检查", R.mipmap.check_management));
                                     }
-                                    if ("true".equals(str8)) {
+                                    if ("true".equals(json.getString("整改通知"))) {
                                         checklist.add(new bean("整改通知", R.mipmap.check_notice));
                                     }
-                                    if ("true".equals(reply)) {
+                                    if ("true".equals(json.getString("回复验证"))) {
                                         checklist.add(new bean("回复验证", R.mipmap.reply_verification));
                                     }
-                                    if ("true".equals(device)) {
+                                    if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
                                 }

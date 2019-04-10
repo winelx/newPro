@@ -45,11 +45,13 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     private String id;
     public static final String LASTMONTH = "lastmonth";
     public static final String LIST = "list";
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         removeActivity(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,13 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     Intent notice = new Intent(mContext, ChagedListAllActivity.class);
                     notice.putExtra("orgid", bean.getId());
                     notice.putExtra("orgName", bean.getName());
+                    notice.putExtra("modelType", true);
+                    startActivity(notice);
+                } else if (type.equals(Enums.TODAYTASK)) {
+                    TodayDetailsBean bean = (TodayDetailsBean) list.get(position);
+                    Intent notice = new Intent(mContext, AllListmessageActivity.class);
+                    notice.putExtra("orgId", bean.getOrgId());
+                    notice.putExtra("name", bean.getOrgName());
                     notice.putExtra("modelType", true);
                     startActivity(notice);
                 }

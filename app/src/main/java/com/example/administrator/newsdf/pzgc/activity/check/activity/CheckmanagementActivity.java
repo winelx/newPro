@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -35,9 +36,9 @@ import static com.example.administrator.newsdf.R.id.expandable;
  * description: 检查管理_所有有权限的组织列表
  *
  * @author lx
- *         date: 2018/8/2 0002 下午 2:39
- *         update: 2018/8/2 0002
- *         version:
+ * date: 2018/8/2 0002 下午 2:39
+ * update: 2018/8/2 0002
+ * version:
  */
 public class CheckmanagementActivity extends BaseActivity implements View.OnClickListener {
     private ExpandableListView expandableListView;
@@ -81,6 +82,7 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
         });
         getdata();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

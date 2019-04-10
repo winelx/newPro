@@ -156,22 +156,21 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
          */
         checkmamgrlist();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checklistback:
+                //返回
                 finish();
                 break;
             case R.id.checklistmeun:
+                //菜单
                 MeunPop();
                 break;
             case R.id.newcheck:
+                //新增检查
                 showPopwindow();
                 break;
             default:
@@ -333,17 +332,13 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     }
 
 
-    //添加图片
+    //初始化
     public void showPopwindow() {
-        //弹出现在相机和图册的蒙层
+        backgroundAlpha(0.5f);
+        //弹出蒙层
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         //初始化布局
         View popView = View.inflate(this, R.layout.camera_pop_floatbutton, null);
-        //初始化控件
-        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
-        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
-        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
         //获取屏幕宽高
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
@@ -357,19 +352,29 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.btn_camera_pop_camera:
+                        //外业检查
                         Intent intent1 = new Intent(mContext, CheckNewAddActivity.class);
                         intent1.putExtra("orgId", orgId);
                         intent1.putExtra("name", name);
                         startActivity(intent1);
                         break;
-                    //相册图片
                     case R.id.btn_camera_pop_album:
-
+                        //内业检查
                         Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
                         intent.putExtra("orgId", orgId);
                         intent.putExtra("name", name);
+                        //区别
+                        intent.putExtra("type", "2");
                         startActivity(intent);
-
+                        break;
+                    case R.id.btn_camera_pop_special:
+                        //专项检查
+                        Intent intent2 = new Intent(mContext, CheckNewAddsActivity.class);
+                        intent2.putExtra("orgId", orgId);
+                        intent2.putExtra("name", name);
+                        //区别
+                        intent2.putExtra("type", "4");
+                        startActivity(intent2);
                         break;
                     case R.id.btn_camera_pop_cancel:
                         //关闭pop
@@ -378,18 +383,27 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
 
                         break;
                 }
+                backgroundAlpha(1.0f);
                 popWindow.dismiss();
             }
         };
-
-        btnCamera.setOnClickListener(listener);
-        btn_pop_add.setOnClickListener(listener);
-        btnAlbum.setOnClickListener(listener);
-        btnCancel.setOnClickListener(listener);
+        popView.findViewById(R.id.btn_camera_pop_special).setOnClickListener(listener);
+        //初始化控件
+        popView.findViewById(R.id.btn_pop_add).setOnClickListener(listener);
+        popView.findViewById(R.id.btn_camera_pop_camera).setOnClickListener(listener);
+        popView.findViewById(R.id.btn_camera_pop_album).setOnClickListener(listener);
+        popView.findViewById(R.id.btn_camera_pop_cancel).setOnClickListener(listener);
         //设置背景颜色
-        ColorDrawable dw = new ColorDrawable(0x30000000);
-        popWindow.setBackgroundDrawable(dw);
+//        ColorDrawable dw = new ColorDrawable(0x50000000);
+//        popWindow.setBackgroundDrawable(dw);
         //显示位置
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
+
 }

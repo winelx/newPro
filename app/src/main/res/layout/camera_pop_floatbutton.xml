@@ -14,10 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="25dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="25dp"
             android:orientation="vertical">
 
             <Button
@@ -41,7 +41,20 @@
                 android:layout_height="45dp"
                 android:background="@drawable/pop_last_selector"
                 android:text="新增内业检查"
+                android:textSize="15sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/back" />
+
+            <Button
+                android:id="@+id/btn_camera_pop_special"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/pop_last_selector"
+                android:text="新增专项检查"
                 android:textSize="15sp" />
 
             <Button
@@ -51,6 +64,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/pop_single_selector"
                 android:text="@string/camera_pop_cancel"
+                android:textColor="#050505"
                 android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>

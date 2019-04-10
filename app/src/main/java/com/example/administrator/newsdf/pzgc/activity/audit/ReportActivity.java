@@ -73,8 +73,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
         addActivity(this);
-        Intent intent = getIntent();
-        orgId = intent.getExtras().getString("orgId");
+        orgId=   SPUtils.getString(mContext, "orgId", "");
         //初始化控件
         mContext = this;
         mData = new ArrayList<>();
