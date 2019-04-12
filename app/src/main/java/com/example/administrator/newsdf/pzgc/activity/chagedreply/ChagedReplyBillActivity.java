@@ -288,56 +288,72 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
             public void onsuccess(Map<String, Object> map) {
                 ReplyBillBean billBean = (ReplyBillBean) map.get("bean");
                 optionType = billBean.getIsReply();
-                //整改部位
-                //整改部位
-                String PartName = billBean.getRectificationPartName();
-                String reason = billBean.getPartDetails();
-                if (PartName == null || TextUtils.isEmpty(PartName)) {
-                    if (reason == null) {
-                        PartName = "无";
+                try {
+                    //整改部位
+                    String PartName = billBean.getRectificationPartName();
+                    String reason = billBean.getPartDetails();
+                    if (PartName == null || TextUtils.isEmpty(PartName)) {
+                        if (reason == null) {
+                            PartName = "无";
+                        } else {
+                            PartName = reason;
+                        }
                     } else {
-                        PartName = reason;
+                        if (reason != null && !TextUtils.isEmpty(reason)) {
+                            PartName = PartName + ">>" + reason;
+                        }
                     }
-                } else {
-                    if (reason != null && !TextUtils.isEmpty(reason)) {
-                        PartName = PartName + ">>" + reason;
-                    }
-                }
 
-                //存在问题
-                String Reason = billBean.getRectificationReason();
-                if (Reason == null) {
-                    Reason = "";
+                    //存在问题
+                    String Reason = billBean.getRectificationReason();
+                    if (Reason == null) {
+                        Reason = "";
+                    }
+                    if (TextUtils.isEmpty(PartName)) {
+                        PartName = "无";
+                    }
+                    if (TextUtils.isEmpty(Reason)) {
+                        Reason = "无";
+                    }
+                    String date = billBean.getRectificationDate();
+                    if (TextUtils.isEmpty(date)) {
+                        date = "";
+                    }
+                    String score = billBean.getStandardDelScore();
+                    if (TextUtils.isEmpty(score)) {
+                        score = "";
+                    }
+
+                    content.setText("整改部位：" + PartName + "\n" +
+                            "整改期限：" + date + "\n" +
+                            "整改扣总分分值：" + score
+                    );
+                    standarddel.setText(billBean.getStandardDelName());
+                    rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
+                    String ReplyDescription = billBean.getReplyDescription();
+                    if (TextUtils.isEmpty(ReplyDescription)) {
+                        ReplyDescription = "";
+                    }
+                    replydescription.setText(ReplyDescription);
+                    photolist.clear();
+                    //整改前图片集合
+                    ArrayList<photoBean> beforeFiles = new ArrayList<>();
+                    beforeFiles.addAll((ArrayList<photoBean>) map.get("beforeFiles"));
+                    //图片名称
+                    ArrayList<String> imagename = new ArrayList<>();
+                    for (int i = 0; i < beforeFiles.size(); i++) {
+                        photolist.add(beforeFiles.get(i).getPhotopath());
+                        imagename.add(beforeFiles.get(i).getPhotoname());
+                    }
+                    //图片适配器
+                    mAdapter.getData(photolist, imagename);
+                    photoPaths.clear();
+                    //整改后图片集合
+                    photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
+                    adapter.getData(photoPaths);
+                }catch (Exception e){
+                    ToastUtils.showShortToast("解析数据失败");
                 }
-                if (TextUtils.isEmpty(PartName) || PartName == null) {
-                    PartName = "无";
-                }
-                if (TextUtils.isEmpty(Reason) || Reason == null) {
-                    Reason = "无";
-                }
-                content.setText("整改部位：" + PartName + "\n" +
-                        "整改期限：" + billBean.getRectificationDate() + "\n" +
-                        "整改扣总分分值：" + billBean.getStandardDelScore()
-                );
-                standarddel.setText(billBean.getStandardDelName());
-                rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
-                replydescription.setText(billBean.getReplyDescription());
-                photolist.clear();
-                //整改前图片集合
-                ArrayList<photoBean> beforeFiles = new ArrayList<>();
-                beforeFiles.addAll((ArrayList<photoBean>) map.get("beforeFiles"));
-                //图片名称
-                ArrayList<String> imagename = new ArrayList<>();
-                for (int i = 0; i < beforeFiles.size(); i++) {
-                    photolist.add(beforeFiles.get(i).getPhotopath());
-                    imagename.add(beforeFiles.get(i).getPhotoname());
-                }
-                //图片适配器
-                mAdapter.getData(photolist, imagename);
-                photoPaths.clear();
-                //整改后图片集合
-                photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
-                adapter.getData(photoPaths);
             }
 
             @Override

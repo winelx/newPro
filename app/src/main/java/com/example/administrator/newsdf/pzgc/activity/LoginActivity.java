@@ -355,7 +355,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
         text.setText("登录中...");
-        progressDialog.show();
+        try {
+            progressDialog.show();
+        }catch (Exception e){
+
+        }
     }
 
 

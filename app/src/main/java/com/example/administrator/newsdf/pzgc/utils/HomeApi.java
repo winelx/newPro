@@ -46,4 +46,8 @@ public class HomeApi {
      */
     public static final String GETTODAYTASKFINISHBYB = Requests.networks + "iface/mobile/systemnotice/getTodayTaskFinishByB";
 
+    /**
+     *
+     */
+    public static final String getgrandandtodaytaskbyb = Requests.networks + "iface/mobile/systemnotice/getGrandAndTodayTaskByB";
 }

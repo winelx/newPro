@@ -70,6 +70,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     private boolean lean;
     //是否回复
     private int isReply;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -192,19 +193,32 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
                 if (Reason == null) {
                     Reason = "";
                 }
-                if (TextUtils.isEmpty(PartName) || PartName == null) {
+                if (TextUtils.isEmpty(PartName)) {
                     PartName = "无";
                 }
-                if (TextUtils.isEmpty(Reason) || Reason == null) {
+                if (TextUtils.isEmpty(Reason)) {
                     Reason = "无";
                 }
+                String date = billBean.getRectificationDate();
+                if (TextUtils.isEmpty(date)) {
+                    date = "";
+                }
+                String score = billBean.getStandardDelScore();
+                if (TextUtils.isEmpty(score)) {
+                    score = "";
+                }
+
                 content.setText("整改部位：" + PartName + "\n" +
-                        "整改期限：" + billBean.getRectificationDate() + "\n" +
-                        "整改扣总分分值：" + billBean.getStandardDelScore()
+                        "整改期限：" + date + "\n" +
+                        "整改扣总分分值：" + score
                 );
                 standarddel.setText(billBean.getStandardDelName());
                 rectificationreason.setText("存在问题：" + Reason + "\n" + "整改前附件：");
-                replydescription.setText(billBean.getReplyDescription());
+                String ReplyDescription = billBean.getReplyDescription();
+                if (TextUtils.isEmpty(ReplyDescription)) {
+                    ReplyDescription = "";
+                }
+                replydescription.setText(ReplyDescription);
                 photolist.clear();
                 //整改前图片集合
                 ArrayList<photoBean> beforeFiles = new ArrayList<>();

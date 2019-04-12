@@ -9,37 +9,27 @@ import com.example.administrator.newsdf.pzgc.activity.home.HomeTaskDetailsActivi
  * @see HomeTaskDetailsActivity
  */
 public class TodayDetailsBean {
+
     /**
-     * fOrgId : f41d8a54aa674d59b0e18f04bd266765
-     * finishCount : 6810
-     * orgId : 12e07f4cc22a4e659fe2228b4ac1bce9
-     * orgName : 湄石二标
-     * percentage : 1.61%
-     * personName : 邓发义
+     * orgId : minim exercitation dolore nostrud
+     * noFinishCount : 3.8778269832030624E7
+     * totalTask : 1856348.0087019354
+     * fOrgId : incididunt
+     * orgName : ex dolor
+     * FinishCount : 3.965085973310161E7
+     * startUpTaskCount : 2.5134736915280923E7
+     * toDayFinishCount : 5.710765245983359E7
      */
 
-    private String fOrgId;
-    private int finishCount;
-    private String orgId;
-    private String orgName;
-    private String percentage;
-    private String personName;
-
-    public String getFOrgId() {
-        return fOrgId;
-    }
-
-    public void setFOrgId(String fOrgId) {
-        this.fOrgId = fOrgId;
-    }
-
-    public int getFinishCount() {
-        return finishCount;
-    }
-
-    public void setFinishCount(int finishCount) {
-        this.finishCount = finishCount;
-    }
+    private String orgId;  //标段Id
+    private String noFinishCount;//未完成
+    private String totalTask;//总任务
+    private String fOrgId;//分公司Id
+    private String orgName;//标段名称
+    private String FinishCount;//已完成
+    private String startUpTaskCount;//已启动
+    private String toDayFinishCount;//今日完成
+    private String noStartTaskCount;//未启动
 
     public String getOrgId() {
         return orgId;
@@ -47,6 +37,30 @@ public class TodayDetailsBean {
 
     public void setOrgId(String orgId) {
         this.orgId = orgId;
+    }
+
+    public String getNoFinishCount() {
+        return noFinishCount;
+    }
+
+    public void setNoFinishCount(String noFinishCount) {
+        this.noFinishCount = noFinishCount;
+    }
+
+    public String getTotalTask() {
+        return totalTask;
+    }
+
+    public void setTotalTask(String totalTask) {
+        this.totalTask = totalTask;
+    }
+
+    public String getfOrgId() {
+        return fOrgId;
+    }
+
+    public void setfOrgId(String fOrgId) {
+        this.fOrgId = fOrgId;
     }
 
     public String getOrgName() {
@@ -57,19 +71,35 @@ public class TodayDetailsBean {
         this.orgName = orgName;
     }
 
-    public String getPercentage() {
-        return percentage;
+    public String getFinishCount() {
+        return FinishCount;
     }
 
-    public void setPercentage(String percentage) {
-        this.percentage = percentage;
+    public void setFinishCount(String finishCount) {
+        FinishCount = finishCount;
     }
 
-    public String getPersonName() {
-        return personName;
+    public String getStartUpTaskCount() {
+        return startUpTaskCount;
     }
 
-    public void setPersonName(String personName) {
-        this.personName = personName;
+    public void setStartUpTaskCount(String startUpTaskCount) {
+        this.startUpTaskCount = startUpTaskCount;
+    }
+
+    public String getToDayFinishCount() {
+        return toDayFinishCount;
+    }
+
+    public void setToDayFinishCount(String toDayFinishCount) {
+        this.toDayFinishCount = toDayFinishCount;
+    }
+
+    public String getNoStartTaskCount() {
+        return noStartTaskCount;
+    }
+
+    public void setNoStartTaskCount(String noStartTaskCount) {
+        this.noStartTaskCount = noStartTaskCount;
     }
 }

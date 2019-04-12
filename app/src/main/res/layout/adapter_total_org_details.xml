@@ -1,93 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp"
+
     android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/total_org"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/drawable_division"
         android:paddingRight="15dp"
         android:text="三度一标"
+        android:ellipsize="end"
         android:textColor="@color/black"
         android:textSize="17sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingRight="15dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/total_bartext"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="100%"
-            android:textSize="13sp" />
-
-        <ProgressBar
-            android:id="@+id/total_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:max="100"
-            android:progress="20"
-            android:progressDrawable="@drawable/progress_blue" />
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:paddingRight="15dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/total_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/icon_piechart"
-            android:drawablePadding="5dp"
-            android:text="累计完成任务"
-            android:textColor="#6a6a6a"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/total_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/icon_user"
-            android:drawablePadding="5dp"
-            android:text="项目经理"
-            android:textColor="#6a6a6a"
-            android:textSize="13sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/item_piechart"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="30dp"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="16dp" />
@@ -97,63 +40,73 @@
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp">
 
             <TextView
+                android:id="@+id/toadaycount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="今日完成：2000调" />
+                android:text="今日完成：2000条"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="总任务：200调" />
+                android:text="总任务：200条"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/start_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="已启动：200调" />
+                android:text="已启动：200条"
+                android:textColor="@color/graytext"
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/finishcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="已完成：200调" />
+                android:text="已完成：200条"
+                android:textColor="@color/graytext"
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/nofinishcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="未完成：200调" />
+                android:text="未完成：200条"
+                android:textColor="@color/graytext"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="已启动"
-                    android:textSize="12sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/block_blue"
                     android:text="已完成"
                     android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@mipmap/block_yellow"
                     android:text="未完成"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -161,4 +114,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

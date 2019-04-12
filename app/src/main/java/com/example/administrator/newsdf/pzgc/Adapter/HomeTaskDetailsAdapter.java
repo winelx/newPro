@@ -31,7 +31,7 @@ public class HomeTaskDetailsAdapter extends MultipleItemRvAdapter<Object, BaseVi
     protected int getViewType(Object object) {
         if (object instanceof TotalDetailsBean) {
             return TYPE_ONE;
-        } else if (object instanceof PieData) {
+        } else if (object instanceof TodayDetailsBean) {
             return TYPE_TWO;
         } else if (object instanceof LastmonthBean) {
             return TYPE_THREE;

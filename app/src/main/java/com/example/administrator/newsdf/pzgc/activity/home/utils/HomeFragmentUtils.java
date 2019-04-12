@@ -245,7 +245,8 @@ public class HomeFragmentUtils {
         if (id != null) {
             request.params("fOrgId1", id);
         }
-        request.execute(new StringCallback() {
+        request
+                .execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 try {
@@ -361,8 +362,9 @@ public class HomeFragmentUtils {
      * 累计任务标段列表
      */
     public static void grandTaskFinish(String id, final requestCallBack callBack) {
-        OkGo.get(HomeApi.GETGRANDTASKFINISHBYB)
+        OkGo.get(HomeApi.getgrandandtodaytaskbyb)
                 .params("fOrgId", id)
+                .params("isToday",2)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -396,8 +398,9 @@ public class HomeFragmentUtils {
      * 今日任务标段列表
      */
     public static void todayDetailsRequest(String id, final requestCallBack callBack) {
-        OkGo.get(HomeApi.GETTODAYTASKFINISHBYB)
+        OkGo.get(HomeApi.getgrandandtodaytaskbyb)
                 .params("fOrgId", id)
+                .params("isToday",1)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

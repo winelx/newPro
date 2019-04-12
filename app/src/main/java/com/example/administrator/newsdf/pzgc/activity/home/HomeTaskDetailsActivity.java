@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.lzy.okgo.OkGo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     private String id;
     public static final String LASTMONTH = "lastmonth";
     public static final String LIST = "list";
-    public static List<Integer> colors = new ArrayList<>();
+    private String type;
 
     @Override
     protected void onDestroy() {
@@ -70,7 +71,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         //id
         id = intent.getStringExtra("id");
         //类型
-        final String type = intent.getStringExtra("type");
+        type = intent.getStringExtra("type");
         //标题
         title.setText(intent.getStringExtra("title"));
         if (type.equals(Enums.ADDUPTask)) {
@@ -101,6 +102,12 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     notice.putExtra("name", bean.getOrgName());
                     notice.putExtra("isToday", "1");
                     startActivity(notice);
+                }else {
+                    TotalDetailsBean bean = (TotalDetailsBean) list.get(position);
+                    Intent notice = new Intent(mContext, AllListmessageActivity.class);
+                    notice.putExtra("orgId", bean.getOrgId());
+                    notice.putExtra("name", bean.getOrgName());
+                    startActivity(notice);
                 }
             }
         });
@@ -109,9 +116,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     private void init() {
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
-        colors.add(Color.parseColor("#4A92FC"));
-        colors.add(Color.parseColor("#ee6e55"));
-        colors.add(Color.parseColor("#FB4F00"));
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
         refreshLayout = findViewById(R.id.smartrefresh);
@@ -137,7 +141,9 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.com_back:
+                OkGo.getInstance().cancelAll();
                 finish();
+
                 break;
             default:
                 break;
@@ -159,6 +165,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(title, string);
+                requesterror();
             }
         });
     }
@@ -178,6 +185,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(title, string);
+                requesterror();
             }
         });
     }
@@ -188,31 +196,32 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
             @Override
             public void onsuccess(Map<String, Object> map) {
                 list.clear();
-                if (map.containsKey(LIST)) {
-                    ArrayList<PieData> data = new ArrayList<>();
-                    for (int i = 0; i < 10; i++) {
-                        List<PieEntry> yVals = new ArrayList<>();
-                        yVals.add(new PieEntry(28.6f, "已启动"));
-                        yVals.add(new PieEntry(71.3f, "未启动"));
-                        yVals.add(new PieEntry(23.3f, "未完成"));
-
-                        PieDataSet pieDataSet = new PieDataSet(yVals, "");
-                        pieDataSet.setColors(colors);
-                        PieData pieData = new PieData(pieDataSet);
-                        pieData.setValueTextSize(23.0f);
-                        pieData.setDrawValues(true);
-                        pieData.setValueFormatter(new PercentFormatter());
-                        pieData.setValueTextColor(Color.WHITE);
-                        data.add(pieData);
-                    }
-                    list.addAll(data);
-                    adapter.setNewData(list);
-                }
+                list.addAll((ArrayList<TodayDetailsBean>) map.get(LIST));
+                adapter.setNewData(list);
             }
 
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(title, string);
+                requesterror();
+            }
+        });
+    }
+
+    public void requesterror() {
+        emptyUtils.setError(new EmptyUtils.Callback() {
+            @Override
+            public void callback() {
+                if (type.equals(Enums.ADDUPTask)) {
+                    //累计完成任务
+                    grandtaskrequest();
+                } else if (type.equals(Enums.TODAYTASK)) {
+                    //今日完成任务i
+                    todayRequest();
+                } else if (type.equals(Enums.LASTMONTHTASK)) {
+                    //上月整改统计
+                    lasetrequest();
+                }
             }
         });
     }
