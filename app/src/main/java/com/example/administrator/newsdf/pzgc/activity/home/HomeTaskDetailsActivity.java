@@ -51,6 +51,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     private String id;
     public static final String LASTMONTH = "lastmonth";
     public static final String LIST = "list";
+    public static List<Integer> colors = new ArrayList<>();
 
     @Override
     protected void onDestroy() {
@@ -64,28 +65,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.activity_hometask);
         addActivity(this);
         mContext = this;
-        addActivity(this);
-        list = new ArrayList<>();
-        emptyUtils = new EmptyUtils(mContext);
-        findViewById(R.id.com_back).setOnClickListener(this);
-        title = findViewById(R.id.com_title);
-        refreshLayout = findViewById(R.id.smartrefresh);
-        //是否启用下拉刷新功能
-        refreshLayout.setEnableRefresh(false);
-        //是否启用上拉加载功能
-        refreshLayout.setEnableLoadmore(false);
-        //是否启用越界拖动（仿苹果效果）1.0.4
-        refreshLayout.setEnableOverScrollDrag(false);
-        //是否在列表不满一页时候开启上拉加载功能
-        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
-        recyclerView = findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, VERTICAL));
-        adapter = new HomeTaskDetailsAdapter(list);
-        //空数据提示
-        adapter.setEmptyView(emptyUtils.init());
-        recyclerView.setAdapter(adapter);
+        init();
         Intent intent = getIntent();
         //id
         id = intent.getStringExtra("id");
@@ -124,6 +104,33 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                 }
             }
         });
+    }
+
+    private void init() {
+        emptyUtils = new EmptyUtils(mContext);
+        list = new ArrayList<>();
+        colors.add(Color.parseColor("#4A92FC"));
+        colors.add(Color.parseColor("#ee6e55"));
+        colors.add(Color.parseColor("#FB4F00"));
+        findViewById(R.id.com_back).setOnClickListener(this);
+        title = findViewById(R.id.com_title);
+        refreshLayout = findViewById(R.id.smartrefresh);
+        //是否启用下拉刷新功能
+        refreshLayout.setEnableRefresh(false);
+        //是否启用上拉加载功能
+        refreshLayout.setEnableLoadmore(false);
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(false);
+        //是否在列表不满一页时候开启上拉加载功能
+        refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
+        recyclerView = findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //分割线
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, VERTICAL));
+        adapter = new HomeTaskDetailsAdapter(list);
+        //空数据提示
+        adapter.setEmptyView(emptyUtils.init());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -189,10 +196,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                         yVals.add(new PieEntry(71.3f, "未启动"));
                         yVals.add(new PieEntry(23.3f, "未完成"));
 
-                        List<Integer> colors = new ArrayList<>();
-                        colors.add(Color.parseColor("#4A92FC"));
-                        colors.add(Color.parseColor("#ee6e55"));
-                        colors.add(Color.parseColor("#FB4F00"));
                         PieDataSet pieDataSet = new PieDataSet(yVals, "");
                         pieDataSet.setColors(colors);
                         PieData pieData = new PieData(pieDataSet);

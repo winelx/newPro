@@ -7,6 +7,7 @@ import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
 import com.example.baselibrary.adapter.multiitem.MultipleItemRvAdapter;
+import com.github.mikephil.charting.data.PieData;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class HomeTaskDetailsAdapter extends MultipleItemRvAdapter<Object, BaseVi
     protected int getViewType(Object object) {
         if (object instanceof TotalDetailsBean) {
             return TYPE_ONE;
-        } else if (object instanceof TodayDetailsBean) {
+        } else if (object instanceof PieData) {
             return TYPE_TWO;
         } else if (object instanceof LastmonthBean) {
             return TYPE_THREE;

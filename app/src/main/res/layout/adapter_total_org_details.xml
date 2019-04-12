@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
@@ -97,36 +97,43 @@
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:orientation="vertical"
-            android:paddingLeft="15dp">
+            android:paddingLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dp_10"
-                android:text="总任务数：2000调" />
+                android:paddingTop="5dp"
+                android:text="今日完成：2000调" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dp_10"
+                android:paddingTop="5dp"
+                android:text="总任务：200调" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
                 android:text="已启动：200调" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dp_10"
-                android:text="已启动：200调" />
+                android:paddingTop="5dp"
+                android:text="已完成：200调" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dp_10"
-                android:text="已启动：200调" />
+                android:paddingTop="5dp"
+                android:text="未完成：200调" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
+
                 android:orientation="horizontal">
 
                 <TextView
