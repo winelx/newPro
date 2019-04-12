@@ -3,8 +3,8 @@
     android:shape="rectangle">
 
     <size
-        android:width="30dp"
-        android:height="30dp" />
+        android:width="35dp"
+        android:height="35dp" />
 
     <stroke
         android:width="6dp"

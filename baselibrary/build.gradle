@@ -72,4 +72,5 @@ dependencies {
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     //支持缩放图片
     api 'com.github.chrisbanes.photoview:library:1.2.4'
+
 }

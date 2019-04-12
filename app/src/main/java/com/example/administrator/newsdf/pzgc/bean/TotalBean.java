@@ -1,6 +1,9 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
 import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
+import com.example.administrator.newsdf.pzgc.view.PieChartBeans;
+
+import java.util.ArrayList;
 
 /**
  * @author lx
@@ -12,6 +15,7 @@ public class TotalBean {
     String fOrgName;
     String finishCount;
     String fOrgId;
+
 
     public String getfOrgName() {
         return fOrgName;
@@ -36,4 +40,6 @@ public class TotalBean {
     public void setfOrgId(String fOrgId) {
         this.fOrgId = fOrgId;
     }
+
+
 }

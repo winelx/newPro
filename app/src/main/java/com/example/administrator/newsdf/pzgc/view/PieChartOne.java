@@ -56,10 +56,12 @@ public class PieChartOne extends View {
 
     public PieChartOne(Context context) {
         this(context, null);
+        init();
     }
 
     public PieChartOne(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
+        init();
     }
 
     public PieChartOne(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -138,6 +140,8 @@ public class PieChartOne extends View {
         drawPoint(canvas);
     }
 
+
+
     private void drawPoint(Canvas canvas) {
         int canvasWidth = getMeasuredWidth();
         int canvasHeight = getMeasuredHeight();
@@ -164,22 +168,27 @@ public class PieChartOne extends View {
      * @param canvas
      */
     private void initPie(Canvas canvas) {
-        int anglesSize = list.size();
-        if (list != null && anglesSize > 0) {
-            float pieStart = START_DEGREE;
-            if (mSweep == null) {
-                mSweep = new Float[list.size()];
+        try {
+            int anglesSize = list.size();
+            if (list != null && anglesSize > 0) {
+                float pieStart = START_DEGREE;
+                if (mSweep == null) {
+                    mSweep = new Float[list.size()];
+                }
+                for (int i = 0; i < anglesSize; i++) {
+                    piePaint.setColor(Color.parseColor(list.get(i).getColor()));
+                    //扇形
+                    canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);
+                    //边框线
+                    canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);
+                    initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%", list.get(i).getValuer());
+                    pieStart += mSweep[i];
+                }
             }
-            for (int i = 0; i < anglesSize; i++) {
-                piePaint.setColor(Color.parseColor(list.get(i).getColor()));
-                //扇形
-                canvas.drawArc(rectF, pieStart, mSweep[i], true, piePaint);
-                //边框线
-                canvas.drawArc(rectF, pieStart, mSweep[i], true, outerLinePaint);
-                initLineAndText(canvas, pieStart, mSweep[i], list.get(i).getColor(), list.get(i).getAngle() + "%", list.get(i).getValuer());
-                pieStart += mSweep[i];
-            }
+        }catch (Exception e){
         }
+
+
     }
 
     /**

@@ -73,11 +73,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private boolean lean;
     //是否回复
     private int isReply;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -412,5 +408,11 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 Snackbar.make(chagedOldRecycler, string, Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }

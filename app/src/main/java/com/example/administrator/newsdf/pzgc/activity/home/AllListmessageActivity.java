@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
     private TextView Titlew, deleteSearch, drawer_layout_text;
     private EditText searchEditext;
     private String id, wbsid, name, titles;
-    private String notall = "2", nodeiD = "1";
+    private String notall = "2", nodeiD = "1", isToday = "";
     //抽屉控件
     private DrawerLayout drawerLayout;
     //判断是否是加载更多
@@ -131,6 +132,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
             id = intent.getExtras().getString("orgId");
             wbsid = intent.getExtras().getString("orgId");
             name = intent.getExtras().getString("name");
+            isToday = intent.getExtras().getString("isToday");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -259,6 +261,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         super.onDestroy();
         removeActivity(this);
     }
+
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {
             for (OrganizationEntity entity : organizationList) {
@@ -713,6 +716,9 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content);
+        if (!TextUtils.isEmpty(isToday)) {
+            mPostRequest.params("isToday", isToday);
+        }
         //如果==3 那么就不传
         if ("10".equals(notall)) {
             mPostRequest.execute(new StringCallback() {
@@ -754,7 +760,6 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         }
         return true;
     }
-
 
     //解析json
     private void parsingjson(String s) {

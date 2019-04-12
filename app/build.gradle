@@ -42,7 +42,6 @@ android {
             buildConfigField("boolean", "LOG_DEBUG", "true");
             debuggable true
             shrinkResources false
-
             zipAlignEnabled true
             minifyEnabled false
         }
@@ -77,5 +76,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     api files('libs/BaiduLBS_Android.jar')
     implementation project(':baselibrary')
+    //饼图
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
 }

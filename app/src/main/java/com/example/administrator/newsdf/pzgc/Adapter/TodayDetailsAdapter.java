@@ -27,18 +27,18 @@ public class TodayDetailsAdapter extends BaseItemProvider<TodayDetailsBean, Base
 
     @Override
     public void convert(BaseViewHolder helper, TodayDetailsBean bean, int position) {
-        String str = bean.getPercentage();
-        str = str.replace("%", "");
-        BigDecimal decimal = new BigDecimal(str);
-        helper.setProgress(R.id.total_bar, decimal.intValue());
-        if (bean.getPersonName() != null) {
-            helper.setText(R.id.total_user, "项目经理:" + bean.getPersonName());
-        } else {
-            helper.setText(R.id.total_user, "项目经理:");
-        }
-        helper.setText(R.id.total_number, "今日完成任务:" + bean.getFinishCount());
-
-        helper.setText(R.id.total_bartext, bean.getPercentage() + "");
+//        String str = bean.getPercentage();
+//        str = str.replace("%", "");
+//        BigDecimal decimal = new BigDecimal(str);
+//        helper.setProgress(R.id.total_bar, decimal.intValue());
+//        if (bean.getPersonName() != null) {
+//            helper.setText(R.id.total_user, "项目经理:" + bean.getPersonName());
+//        } else {
+//            helper.setText(R.id.total_user, "项目经理:");
+//        }
+//        helper.setText(R.id.total_number, "今日完成任务:" + bean.getFinishCount());
+//
+//        helper.setText(R.id.total_bartext, bean.getPercentage() + "");
         helper.setText(R.id.total_org, bean.getOrgName());
     }
 }

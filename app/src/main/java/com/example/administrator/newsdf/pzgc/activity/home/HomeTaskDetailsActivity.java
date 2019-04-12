@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -21,9 +22,14 @@ import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.view.EmptyRecyclerView;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
@@ -113,7 +119,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     Intent notice = new Intent(mContext, AllListmessageActivity.class);
                     notice.putExtra("orgId", bean.getOrgId());
                     notice.putExtra("name", bean.getOrgName());
-                    notice.putExtra("modelType", true);
+                    notice.putExtra("isToday", "1");
                     startActivity(notice);
                 }
             }
@@ -176,7 +182,27 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
             public void onsuccess(Map<String, Object> map) {
                 list.clear();
                 if (map.containsKey(LIST)) {
-                    list.addAll((ArrayList<TodayDetailsBean>) map.get(LIST));
+                    ArrayList<PieData> data = new ArrayList<>();
+                    for (int i = 0; i < 10; i++) {
+                        List<PieEntry> yVals = new ArrayList<>();
+                        yVals.add(new PieEntry(28.6f, "已启动"));
+                        yVals.add(new PieEntry(71.3f, "未启动"));
+                        yVals.add(new PieEntry(23.3f, "未完成"));
+
+                        List<Integer> colors = new ArrayList<>();
+                        colors.add(Color.parseColor("#4A92FC"));
+                        colors.add(Color.parseColor("#ee6e55"));
+                        colors.add(Color.parseColor("#FB4F00"));
+                        PieDataSet pieDataSet = new PieDataSet(yVals, "");
+                        pieDataSet.setColors(colors);
+                        PieData pieData = new PieData(pieDataSet);
+                        pieData.setValueTextSize(23.0f);
+                        pieData.setDrawValues(true);
+                        pieData.setValueFormatter(new PercentFormatter());
+                        pieData.setValueTextColor(Color.WHITE);
+                        data.add(pieData);
+                    }
+                    list.addAll(data);
                     adapter.setNewData(list);
                 }
             }
