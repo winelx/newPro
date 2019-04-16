@@ -39,10 +39,11 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2018/8/28 0028.
- * 统计报表得分页
+ * @author lx
+ * @data :2019/4/15 0015
+ * @描述 : 统计报表得分页
+ * @see
  */
-
 public class CheckReportOrgDetailsT extends Fragment {
     private View view;
     private RecyclerView categoryList;

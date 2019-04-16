@@ -46,9 +46,9 @@ import okhttp3.Response;
  * description: 检查月度报表
  *
  * @author lx
- *         date: 2018/8/14 0014 下午 2:48
- *         update: 2018/8/14 0014
- *         version:
+ * date: 2018/8/14 0014 下午 2:48
+ * update: 2018/8/14 0014
+ * version:
  */
 public class CheckMonthQuarterFragment extends Fragment implements CheckCallback {
     private View view;
@@ -65,7 +65,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
     private int dateMonth;
     private Date myDate = new Date();
     private LinearLayout checkQueater;
-    private String yeare="", mqnum="";
+    private String yeare = "", mqnum = "";
 
     @Nullable
     @Override
@@ -76,7 +76,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         CheckCallBackUTils1.setCallBack(this);
 
         mContext = CheckReportActivity.getInstance();
-        orgId= SPUtils.getString(mContext,"orgId","");
+        orgId = SPUtils.getString(mContext, "orgId", "");
         dataTime = view.findViewById(R.id.linear_data);
         checkQueater = view.findViewById(R.id.check_queater);
         title = view.findViewById(R.id.title);
@@ -196,7 +196,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 .params("year", yeare)
                 //查询
                 .params("mqnum", mqnum)
-                //查询类型：季度
+                //查询类型：
                 .params("selectType", "M")
                 .execute(new StringCallback() {
                     @Override
@@ -209,12 +209,37 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                             if (jsonArray.length() > 0) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                    String id = jsonObject1.getString("id");
-                                    String name = jsonObject1.getString("name");
-                                    String parent_id = jsonObject1.getString("parent_id");
-                                    String parent_name = jsonObject1.getString("parent_name");
-                                    String score = jsonObject1.getString("score");
-                                    mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
+                                    String id;
+                                    try {
+                                        id = jsonObject1.getString("id");
+                                    } catch (Exception e) {
+                                        id = "";
+                                    }
+                                    String name;
+                                    try {
+                                        name = jsonObject1.getString("name");
+                                    } catch (Exception e) {
+                                        name = "";
+                                    }
+                                    String parentid;
+                                    try {
+                                        parentid = jsonObject1.getString("parent_id");
+                                    } catch (Exception e) {
+                                        parentid = "";
+                                    }
+                                    String parent_name;
+                                    try {
+                                        parent_name = jsonObject1.getString("parent_name");
+                                    } catch (Exception e) {
+                                        parent_name = "";
+                                    }
+                                    String score;
+                                    try {
+                                        score = jsonObject1.getString("score");
+                                    } catch (Exception e) {
+                                        score = "";
+                                    }
+                                    mData.add(new CheckQuarterBean(id, parentid, name, parent_name, score));
                                 }
                             }
                             if (mData.size() > 0) {

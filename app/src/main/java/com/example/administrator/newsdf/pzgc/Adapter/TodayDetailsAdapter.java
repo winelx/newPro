@@ -50,7 +50,7 @@ public class TodayDetailsAdapter extends BaseItemProvider<TodayDetailsBean, Base
         description.setPosition(150, 200);
         mPieChart.getDescription().setEnabled(true);
         mPieChart.setDescription(description);
-        mPieChart.setCenterText("今日完成任务");
+        mPieChart.setCenterText("累计完成请况");
         mPieChart.setCenterTextSize(10);
         mPieChart.setDrawCenterText(true);
         mPieChart.setEntryLabelColor(ContextCompat.getColor(mContext, android.R.color.white));

@@ -165,6 +165,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         viewlist.add(checkNewTemporarysite);
         //meun
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setTextSize(15);
         //检查标准类别
         categoryItem = (TextView) findViewById(R.id.category_item);
         //导入的wbs路径
@@ -574,7 +575,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                             } else {
                                 ToastUtils.showShortToast(jsonObject1.getString("msg"));
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -693,7 +693,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 try {
                                     checkNewNumber.setText(json.getString("score"));
                                 } catch (JSONException e) {
-                                    checkNewNumber.setText("");
+                                    checkNewNumber.setText("0");
                                 }
                                 checkNewTasktitle.setText(titikle);
                                 //所属标段

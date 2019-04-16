@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
     private String noticeId, id;
     private EmptyUtils emptyUtils;
     private ArrayList<String> rowslist;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -74,7 +76,12 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableOverScrollDrag(true);
         inspect_content = (TextView) findViewById(R.id.inspect_content);
-        inspect_content.setText("整改通知单编号：" + intent.getStringExtra("string"));
+        if (TextUtils.isEmpty(intent.getStringExtra("string"))) {
+            inspect_content.setVisibility(View.GONE);
+        } else {
+            inspect_content.setText("整改通知单编号：" + intent.getStringExtra("string"));
+
+        }
         recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyView(emptyUtils.init());

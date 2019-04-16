@@ -33,6 +33,7 @@ import com.example.baselibrary.glide.ProgressListener;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.baselibrary.view.ClearEditText;
 import com.example.baselibrary.view.LoadingImgView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -66,7 +67,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      */
     private boolean status = true;
     //用户名密码1
-    private EditText username, password;
+    private ClearEditText username, password;
     private Context mContext;
     private Dialog progressDialog;
 
@@ -87,19 +88,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);
-        password = (EditText) findViewById(R.id.login_password);
-        username = (EditText) findViewById(R.id.login_username);
+        password = (ClearEditText) findViewById(R.id.login_password);
+        username = (ClearEditText) findViewById(R.id.login_username);
         img = (ImageView) findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
 
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         removeActivity(this);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -118,15 +121,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtils.showLongToast("请联系管理员");
                 break;
             case R.id.login:
-                if (TextUtils.isEmpty(password.getText().toString()) &&
-                        TextUtils.isEmpty(username.getText().toString())) {
-                    Toast.makeText(this, "用户名或密码为空", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(username.getText().toString())) {
+                    username.setShakeAnimation();
+                    Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password.getText().toString())) {
+                    password.setShakeAnimation();
+                    Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                 } else {
                     String user = username.getText().toString();
                     String passowd = password.getText().toString();
                     // 网络请求
                     okgo(user, passowd);
-
                 }
                 break;
             default:
@@ -357,7 +364,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         text.setText("登录中...");
         try {
             progressDialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }

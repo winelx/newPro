@@ -43,11 +43,12 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private Context mContext;
     private TextView deviceDetailsProving, deviceDetailsUp,
             deviceDetailsResult, deviceDetailsAssign, deviceDetailsEdit;
-    private String id, orgName;
+    private String id, orgName, noticeId;
     int status, p;
     private boolean taskstatus = true;
     private ReplyDetailsContent bean;
     private Utils utils;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -59,12 +60,19 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
         addActivity(this);
-        utils=new Utils();
+        utils = new Utils();
         mContext = this;
         addActivity(this);
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        //整改单Id
+        try {
+            noticeId = intent.getStringExtra("noticeId");
+        } catch (Exception e) {
+            noticeId = "";
+        }
         orgName = intent.getStringExtra("orgName");
+        //false 只能查看，，true 能进行操作
         taskstatus = intent.getBooleanExtra("status", true);
         list = new ArrayList<>();
         OgranCallbackUtils1.setCallBack(this);
@@ -97,46 +105,28 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             public void onClick(int position, int isreply, String string) {
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
-                if (status == 3) {
-                    if (permission == 0) {
-                        //跳转过去查看
-                        Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
-                        intent1.putExtra("replyDelId", string);
-                        intent1.putExtra("replyId", id);
-                        intent1.putExtra("isReply", isreply);
-                        intent1.putExtra("status", true);
-                        startActivity(intent1);
-                    } else {
-                        //跳转过去修改
-                        Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
-                        intent1.putExtra("replyDelId", string);
-                        intent1.putExtra("replyId", id);
-                        intent1.putExtra("isReply", isreply);
-                        intent1.putExtra("status", true);
-                        startActivity(intent1);
-                    }
-
+                if (taskstatus) {
+                    //跳转过去查看
+                    preview(string, isreply);
                 } else {
-                    //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
-                    if (permission == 1 || permission == 2 || permission == 3 || permission == 0) {
-                        //跳转过去查看
-                        Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
-                        intent1.putExtra("replyDelId", string);
-                        intent1.putExtra("replyId", id);
-                        intent1.putExtra("isReply", isreply);
-                        intent1.putExtra("status", true);
-                        startActivity(intent1);
+                    if (status == 3) {
+                        if (permission == 0) {
+                            //跳转过去查看
+                            preview(string, isreply);
+                        } else {
+                            //跳转过去修改
+                            operation(string, isreply);
+                        }
                     } else {
-                        //跳转过去修改
-                        Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
-                        intent1.putExtra("replyDelId", string);
-                        intent1.putExtra("replyId", id);
-                        intent1.putExtra("isReply", isreply);
-                        intent1.putExtra("status", true);
-                        startActivity(intent1);
+                        //权限 1：验证，打回；2:验证，打回；3：验证、打回；4：回复
+                        if (permission == 1 || permission == 2 || permission == 3 || permission == 0) {
+                            //跳转过去查看
+                            preview(string, isreply);
+                        } else {
+                            //跳转过去修改
+                        }
                     }
                 }
-
             }
         });
         request();
@@ -227,7 +217,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 mAdapter.setNewData(list);
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
-                if (taskstatus){
+                if (taskstatus) {
                     switch (permission) {
                         case 1:
                         case 2:
@@ -247,7 +237,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                             utils.setMargins(recyclerView, 0, 0, 0, 0);
                             break;
                     }
-                }else {
+                } else {
                     deviceDetailsFunction.setVisibility(View.GONE);
                     utils.setMargins(recyclerView, 0, 0, 0, 0);
                 }
@@ -266,6 +256,26 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     @Override
     public void taskCallback() {
         request();
+    }
+
+    public void preview(String string, int isreply) {
+        //跳转过去查看
+        Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
+        intent1.putExtra("replyDelId", string);
+        intent1.putExtra("replyId", id);
+        intent1.putExtra("isReply", isreply);
+        intent1.putExtra("status", true);
+        startActivity(intent1);
+    }
+
+    public void operation(String string, int isreply) {
+        //跳转过去查看
+        Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
+        intent1.putExtra("replyDelId", string);
+        intent1.putExtra("replyId", id);
+        intent1.putExtra("isReply", isreply);
+        intent1.putExtra("status", true);
+        startActivity(intent1);
     }
 }
 

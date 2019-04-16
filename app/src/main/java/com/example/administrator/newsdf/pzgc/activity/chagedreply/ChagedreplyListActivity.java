@@ -56,6 +56,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -143,6 +144,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 alertDialog2.show();
 
             }
+
             @Override
             public void onClick(int pos) {
                 int savestatus = list.get(pos).getSavestatus();
@@ -210,6 +212,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
      * 网络请求
      */
     private void request() {
+        //这个界面通知单Id传为空
         ChagedreplyUtils.getCRFList(false, status, orgId, page, new ChagedreplyUtils.MapCallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {

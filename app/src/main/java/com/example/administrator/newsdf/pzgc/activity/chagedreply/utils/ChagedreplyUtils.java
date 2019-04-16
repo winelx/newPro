@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.utils;
 
+import android.text.TextUtils;
+
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedReply;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.Chagereplydetails;
@@ -44,10 +46,11 @@ public class ChagedreplyUtils {
     /*获取列表数据*/
 
     /**
-     * @param isAll  true:全部，false：我的
-     * @param orgId  组织id
-     * @param status 状态，非必须，为空时查询全部，0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
-     * @param page   第几页
+     * @param isAll    true:全部，false：我的
+     * @param orgId    组织id
+     * @param
+     * @param status   状态，非必须，为空时查询全部，0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
+     * @param page     第几页
      */
     public static void getCRFList(boolean isAll, int status, String orgId, int page, final MapCallBack callBack) {
         PostRequest str = OkGo.post(Requests.GETCRFLIST);
@@ -162,9 +165,9 @@ public class ChagedreplyUtils {
                             content.put("id", data.getString("id"));
                             String code;
                             try {
-                                code =data.getString("code");
-                            }catch (Exception e){
-                                code="";
+                                code = data.getString("code");
+                            } catch (Exception e) {
+                                code = "";
                             }
 
                             content.put("code", code);

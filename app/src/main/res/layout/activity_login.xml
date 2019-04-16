@@ -11,8 +11,8 @@
         android:id="@+id/login_name"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
@@ -25,14 +25,13 @@
             android:layout_gravity="center"
             android:background="@mipmap/login_user" />
 
-        <EditText
+        <com.example.baselibrary.view.ClearEditText
             android:id="@+id/login_username"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:hint="用户名"
-            android:text="周宇"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -41,8 +40,8 @@
         android:layout_height="0.8dp"
         android:layout_below="@+id/login_name"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="3dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="3dp"
         android:background="@color/back" />
 
     <LinearLayout
@@ -51,8 +50,8 @@
         android:layout_height="45dp"
         android:layout_below="@+id/login_name"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -61,7 +60,7 @@
             android:layout_gravity="center"
             android:background="@mipmap/login_password" />
 
-        <EditText
+        <com.example.baselibrary.view.ClearEditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,7 +68,7 @@
             android:background="@null"
             android:hint="密码"
             android:inputType="textPassword"
-            android:text="123456"></EditText>
+            android:text="123456" />
     </LinearLayout>
 
     <View
@@ -77,8 +76,8 @@
         android:layout_height="0.8dp"
         android:layout_below="@+id/login_pass"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="3dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="3dp"
         android:background="@color/back" />
 
     <LinearLayout
@@ -87,8 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_pass"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -126,12 +125,12 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout2"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="35dp"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/btn_bule_style"
         android:text="登录"
         android:textColor="@color/writer"

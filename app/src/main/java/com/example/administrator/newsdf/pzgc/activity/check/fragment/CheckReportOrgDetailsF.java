@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.check.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyDetailsActivity;
+import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyListAllActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.IssuedTaskDetailsActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckReportOrgDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
@@ -84,18 +88,19 @@ public class CheckReportOrgDetailsF extends Fragment {
                 recycler_att.finishLoadmore(3000);
             }
         });
-       /* mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Object obj = list.get(position);
-                Intent intent = new Intent(mContext, IssuedTaskDetailsActivity.class);
+                Intent intent = new Intent(mContext, ChagedreplyDetailsActivity.class);
                 OrgDetailsFBean tBean = (OrgDetailsFBean) obj;
                 intent.putExtra("id", tBean.getId());
-                intent.putExtra("title", tBean.getRectificationOrgName());
-                intent.putExtra("isDeal", true);
+                intent.putExtra("noticeId", tBean.getWbs_main_id());
+                intent.putExtra("orgName", tBean.getRectificationOrgName());
+                intent.putExtra("status", false);
                 startActivity(intent);
             }
-        });*/
+        });
         return view;
     }
 
@@ -202,13 +207,22 @@ public class CheckReportOrgDetailsF extends Fragment {
                                             standardTypeName = "";
                                         }
                                         int iwork;
-                                        try{
-                                            iwork=json.getInt("iwork");
-                                        }catch (JSONException e){
-                                            iwork=1;
+                                        try {
+                                            iwork = json.getInt("iwork");
+                                        } catch (JSONException e) {
+                                            iwork = 1;
                                         }
+                                        String wbs_main_id;
+                                        try {
+                                            wbs_main_id = json.getString("wbs_main_id");
+                                        } catch (Exception e) {
+                                            wbs_main_id = "";
+                                        }
+
+
                                         list.add(new OrgDetailsFBean(checkDate, checkOrgName, checkPersonName, id, partDetails, rectificationDate,
-                                                rectificationOrgName, rectificationPersonName, rectificationReason, standardDelName, standardDelScore, wbsName, standardTypeName,iwork));
+                                                rectificationOrgName, rectificationPersonName, rectificationReason,
+                                                standardDelName, standardDelScore, wbsName, standardTypeName, iwork, wbs_main_id));
                                     }
                                     if (list.size() > 0) {
                                         checkQueater.setVisibility(View.GONE);
@@ -231,6 +245,7 @@ public class CheckReportOrgDetailsF extends Fragment {
                         }
                         recycler_att.finishLoadmore();//结束加载
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

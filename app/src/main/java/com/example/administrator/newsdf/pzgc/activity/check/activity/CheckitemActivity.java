@@ -288,6 +288,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkStandardRec = (RecyclerView) findViewById(R.id.check_standard_rec);
         //操作键（保存/编辑）
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setTextSize(15);
         //侧拉界面的父布局
         drawerlayoutRight = (LinearLayout) findViewById(R.id.drawerLayout_right);
         //是否无此项

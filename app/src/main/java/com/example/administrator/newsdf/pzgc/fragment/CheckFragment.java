@@ -30,7 +30,6 @@ public class CheckFragment extends Fragment {
             mContext = MainActivity.getInstance();
 
         }
-
         return rootView;
     }
 }

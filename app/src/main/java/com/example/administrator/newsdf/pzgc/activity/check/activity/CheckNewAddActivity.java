@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +62,9 @@ import static com.lzy.okgo.OkGo.post;
  * description:新增检查
  *
  * @author lx
- *         date: 2018/8/3 0006
- *         update: 2018/8/6 0006
- *         version:
+ * date: 2018/8/3 0006
+ * update: 2018/8/6 0006
+ * version:
  */
 public class CheckNewAddActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
     //控件
@@ -98,6 +99,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private CheckUtils checkUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -171,6 +173,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         viewlist.add(checkNewTemporarysite);
         //meun
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
+        checklistmeuntext.setTextSize(15);
         //检查标准类别
         categoryItem = (TextView) findViewById(R.id.category_item);
         //导入的wbs路径
@@ -486,7 +489,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         //初始化数据---日
         String yeardata = Utils.year[yearPicker.getValue()];
         //如果当前月份是2月
-        if ((dateMonth+1) == 2) {
+        if ((dateMonth + 1) == 2) {
             if (Utils.getyear().contains(yeardata)) {
                 Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
                 //闰年
@@ -698,9 +701,13 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                 //检查标题
                                 String titikle = json.getString("name");
                                 try {
-                                    checkNewNumber.setText(json.getString("score"));
+                                    if (TextUtils.isEmpty(json.getString("score"))) {
+                                        checkNewNumber.setText("0");
+                                    } else {
+                                        checkNewNumber.setText(json.getString("score"));
+                                    }
                                 } catch (JSONException e) {
-                                    checkNewNumber.setText("");
+                                    checkNewNumber.setText("0");
                                 }
                                 checkNewTasktitle.setText(titikle);
                                 //所属标段
@@ -779,6 +786,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

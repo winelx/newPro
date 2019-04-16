@@ -48,6 +48,7 @@ import okhttp3.Response;
 
 /**
  * description: 个人界
+ *
  * @author lx
  * date: 2018/3/22 0022 下午 4:18
  * update: 2018/3/22 0022
@@ -148,7 +149,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             //修改密码
             case R.id.changepassword:
                 startActivity(new Intent(getActivity(), PasswordActvity.class));
-
                 break;
             //系统设置
             case R.id.mine_setting:
@@ -157,7 +157,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             //关于我们
             case R.id.about_us:
                 startActivity(new Intent(getActivity(), AboutmeActivity.class));
-
                 break;
             case R.id.BackTo:
                 //清除fragmentmanager
@@ -177,23 +176,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.mine_Thecache:
                 Dates.getDialog(getActivity(), "清理缓存...");
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-//                        super.run();
-//                        //删除本地pdf
-//                        String paths = mContext.getExternalCacheDir().getPath();
-//                        paths = paths.replace("cache", "MyDownLoad/");
-//                        //删除目录
-//                        Dates.clearFiles(paths);
-//                        //glide缓存
-//                        Glide.get(mContext).clearDiskCache();
-//                    }
-//                }.start();
-                new Handler(new Handler.Callback() {
+                new Thread() {
                     @Override
-                    public boolean handleMessage(Message msg) {
-                        Dates.disDialog();
+                    public void run() {
+                        super.run();
                         //删除本地pdf
                         String paths = mContext.getExternalCacheDir().getPath();
                         paths = paths.replace("cache", "MyDownLoad/");
@@ -201,10 +187,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
-                        Toast.makeText(mContext, "缓存清除成功", Toast.LENGTH_SHORT).show();
-                        return false;
+                        ToastUtils.showShortToast("清除失败");
                     }
-                }).sendEmptyMessageDelayed(0, 1200);
+                }.start();
+
                 break;
             //检查新版本
             case R.id.newversion:

@@ -625,7 +625,10 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 }
             }
         });
-
+        //如果是从今日任务统计列表进入，不查询
+        if (!TextUtils.isEmpty(isToday)) {
+            imageViewMeun.setVisibility(View.GONE);
+        }
     }
 
     //初始化数据

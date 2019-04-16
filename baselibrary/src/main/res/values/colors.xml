@@ -47,4 +47,6 @@
     <color name="finish_green">#28c26A</color>
     <color name="red">#FE0000</color>
     <color name="yellow">#ffaa09</color>
+
+    <color name="penRoyalBlue">#4169e1</color>
 </resources>

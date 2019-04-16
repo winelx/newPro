@@ -3,6 +3,9 @@ package com.example.administrator.newsdf.pzgc.activity.check;
 import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
+import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,10 +38,27 @@ public class Checkjson {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
                     try {
-                        String checkOrgName = json.getString("checkOrgName");
-                        String checkUser = json.getString("checkUser");
-                        String createDate = json.getString("createDate");
-                        createDate = createDate.substring(0, 10);
+
+                        String checkOrgName;
+                        try {
+                            checkOrgName = json.getString("checkOrgName");
+                        } catch (Exception e) {
+                            checkOrgName = "";
+                        }
+
+                        String checkUser;
+                        try {
+                            checkUser = json.getString("checkUser");
+                        } catch (Exception e) {
+                            checkUser = "";
+                        }
+                        String createDate;
+                        try {
+                            createDate = json.getString("createDate");
+                            createDate = createDate.substring(0, 10);
+                        } catch (Exception e) {
+                            createDate = "";
+                        }
                         String id = json.getString("id");
                         String orgName;
                         try {
@@ -78,6 +98,7 @@ public class Checkjson {
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
+                        ToastUtils.showShortToast(Enums.ANALYSIS_ERROR);
                     }
                 }
             }

@@ -94,7 +94,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) list.get(position);
         String str;
 
-        str = "整改扣总分分值:" + problem.getStandardDelScore() + "\n";
+        str = "整改扣总分分值：" + problem.getStandardDelScore() + "\n";
 
         holder.typeproblem.setText(
                 "整改部位：" + problem.getRectificationPartName() + "\n"
@@ -102,7 +102,7 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
                         + "违反标准：" + problem.getStandardDelName() + "\n"
                         + str
                         + "存在问题：" + problem.getRectificationReason() + "\n"
-                        + "整改前附件:"
+                        + "整改前附件："
 
         );
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

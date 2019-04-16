@@ -99,7 +99,11 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             int iwork = Tbean.getIwork();
             if (iwork == 1) {
                 ((ViewHolder) holder).managementIndustry.setVisibility(View.GONE);
-            } else {
+            }else if (iwork == 4){
+                ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((ViewHolder) holder).managementIndustry.setText("专项检查");
+            }
+            else  {
                 ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
         } else if (holder instanceof ViewHolder2) {

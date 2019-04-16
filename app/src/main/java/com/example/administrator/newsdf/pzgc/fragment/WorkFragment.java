@@ -1,8 +1,10 @@
 package com.example.administrator.newsdf.pzgc.fragment;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
@@ -28,11 +29,12 @@ import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivi
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.baselibrary.view.EmptyRecyclerView;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.MessageFragmentAdapter;
 import com.example.baselibrary.adapter.MessageFragmentItemAdapter;
 import com.example.baselibrary.bean.ItemBean;
 import com.example.baselibrary.bean.bean;
+import com.example.baselibrary.view.EmptyRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -149,7 +151,9 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckTaskWebActivity.class));
                         break;
                     case "审核报表":
-                        startActivity(new Intent(mContext, ReportActivity.class));
+                        Intent intent = new Intent(mContext, ReportActivity.class);
+                        intent.putExtra("orgid", SPUtils.getString(mContext, "orgId", ""));
+                        startActivity(intent);
                         break;
                     case "整改统计":
                         startActivity(new Intent(mContext, CheckRectificationWebActivity.class));

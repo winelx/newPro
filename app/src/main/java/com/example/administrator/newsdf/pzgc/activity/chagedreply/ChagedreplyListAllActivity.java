@@ -50,10 +50,11 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     private Context mContext;
     private PullDownMenu pullDownMenu;
     String[] strings = {"全部", "验证中", "已完成", "打回"};
-    private String orgId;
+    private String orgId, noticeId;
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -68,6 +69,11 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
+        try {
+            noticeId = intent.getStringExtra("noticeId");
+        } catch (Exception e) {
+            noticeId = "";
+        }
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);

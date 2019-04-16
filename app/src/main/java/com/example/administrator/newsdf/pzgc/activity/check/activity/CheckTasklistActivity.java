@@ -260,7 +260,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                 .params("orgId", orgId)
                 .params("page", pages)
                 .params("size", 20);
-        if ("1".equals(status) || "0".equals(status)) {
+        if (!"3".equals(status)) {
             mPostRequest.params("status", status);
         }
         mPostRequest.execute(new StringCallback() {
@@ -296,6 +296,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             intent.putExtra("orgId", orgId);
             intent.putExtra("name", name);
             intent.putExtra("taskId", id);
+            intent.putExtra("type", iwork + "");
             startActivity(intent);
         }
 

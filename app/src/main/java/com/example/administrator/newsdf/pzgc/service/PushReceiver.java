@@ -93,7 +93,8 @@ public class PushReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             onOpenNotification(context, bundle);
         } else {
-            LogUtil.d(TAG, "Unhandled intent - " + intent.getAction());
+            //+ intent.getAction()
+            LogUtil.d(TAG, "Unhandled intent - " );
         }
     }
 

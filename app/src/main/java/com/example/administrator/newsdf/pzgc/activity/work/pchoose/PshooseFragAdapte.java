@@ -1,8 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.work.pchoose;
 
+
+
+
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
 
 import java.util.List;
 
@@ -24,6 +30,7 @@ public class PshooseFragAdapte extends FragmentPagerAdapter {
         // TODO Auto-generated constructor stub
         mFragments = fragments;
     }
+
 
     @Override
     public Fragment getItem(int arg0) {

@@ -34,9 +34,12 @@ public class OrgDetailsFBean {
     private String wbsName;
     private String standardtypeName;
     private int iwork;
+    private String wbs_main_id;
+
     public OrgDetailsFBean(String checkDate, String checkOrgName, String checkPersonName, String id, String partDetails,
                            String rectificationDate, String rectificationOrgName, String rectificationPersonName,
-                           String rectificationReason, String standardDelName, String standardDelScore, String wbsName,String standardtypeName,int iwork) {
+                           String rectificationReason, String standardDelName, String standardDelScore,
+                           String wbsName, String standardtypeName, int iwork,String wbs_main_id) {
         this.checkDate = checkDate;
         this.checkOrgName = checkOrgName;
         this.checkPersonName = checkPersonName;
@@ -51,6 +54,7 @@ public class OrgDetailsFBean {
         this.wbsName = wbsName;
         this.standardtypeName = standardtypeName;
         this.iwork = iwork;
+        this.wbs_main_id = wbs_main_id;
     }
 
     public String getCheckDate() {
@@ -163,5 +167,13 @@ public class OrgDetailsFBean {
 
     public void setIwork(int iwork) {
         this.iwork = iwork;
+    }
+
+    public String getWbs_main_id() {
+        return wbs_main_id;
+    }
+
+    public void setWbs_main_id(String wbs_main_id) {
+        this.wbs_main_id = wbs_main_id;
     }
 }

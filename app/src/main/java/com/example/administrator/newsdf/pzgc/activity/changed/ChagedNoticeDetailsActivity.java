@@ -49,6 +49,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     // (1：下发、添加问题项、导入问题项；2:指派；3：指派、我回复；)
     private int permission;
     private boolean status = true;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -61,7 +62,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
         addActivity(this);
-        utils=new Utils();
+        utils = new Utils();
         mContext = this;
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();
@@ -97,6 +98,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 Intent intent1 = new Intent(mContext, ChagedNoticeItemDetailsActivity.class);
                 //具体问题项的Id
                 intent1.putExtra("id", string);
+                intent1.putExtra("status", status);
                 startActivity(intent1);
 
             }

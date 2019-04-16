@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -93,7 +94,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
             }
         });
         //构造适配器
-        List<Fragment> fragments = new ArrayList<Fragment>();
+        List<Fragment> fragments = new ArrayList<>();
         fragments.add(new CheckMonthQuarterFragment());
 //        fragments.add(new CheckMonthReportFragment());
 //        fragments.add(new CheckMonthYearFragment());
