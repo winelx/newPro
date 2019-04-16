@@ -140,10 +140,31 @@ public class CheckReportOrgDetailsT extends Fragment {
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject json = jsonArray.getJSONObject(i);
-                                        String check_date = json.getString("check_date");
-                                        String check_org_name = json.getString("check_org_name");
-                                        String check_plan_name = json.getString("check_plan_name");
-                                        String check_user_name = json.getString("check_user_name");
+                                        String checkdate;
+                                        try {
+                                            checkdate = json.getString("check_date");
+                                        } catch (Exception e) {
+                                            checkdate = "";
+
+                                        }
+                                        String checkorgname;
+                                        try {
+                                            checkorgname = json.getString("check_org_name");
+                                        } catch (Exception e) {
+                                            checkorgname = "";
+                                        }
+                                        String checkplanname;
+                                        try {
+                                            checkplanname = json.getString("check_plan_name");
+                                        } catch (Exception e) {
+                                            checkplanname = "";
+                                        }
+                                        String checkusername;
+                                        try {
+                                            checkusername = json.getString("check_user_name");
+                                        } catch (Exception e) {
+                                            checkusername = "";
+                                        }
                                         String id = json.getString("id");
                                         String partDetail;
                                         try {
@@ -158,11 +179,11 @@ public class CheckReportOrgDetailsT extends Fragment {
                                         } catch (Exception e) {
                                             score = "";
                                         }
-                                        String wbs_name;
+                                        String wbsname;
                                         try {
-                                            wbs_name = json.getString("wbs_name");
+                                            wbsname = json.getString("wbs_name");
                                         } catch (JSONException e) {
-                                            wbs_name = "";
+                                            wbsname = "";
                                         }
                                         int iwork;
                                         try {
@@ -177,7 +198,7 @@ public class CheckReportOrgDetailsT extends Fragment {
                                             wbsTypeName = "";
                                         }
 
-                                        list.add(new OrgDetailsTBean(check_date, check_org_name, check_plan_name, check_user_name, id, partDetail, score, wbs_name, wbsTypeName, iwork));
+                                        list.add(new OrgDetailsTBean(checkdate, checkorgname, checkplanname, checkusername, id, partDetail, score, wbsname, wbsTypeName, iwork));
                                     }
                                     if (list.size() > 0) {
                                         mAdapter.getmData(list);

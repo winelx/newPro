@@ -40,7 +40,7 @@ import java.util.Map;
  * 描述：全部整改回复单列表
  * {@link }
  */
-public class ChagedreplyListAllActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
+public class ChagedreplyListAllActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -54,12 +54,6 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,9 +220,10 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         });
     }
 
-    /*接口回调*/
     @Override
-    public void taskCallback() {
-        request();
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
+
 }

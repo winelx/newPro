@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
@@ -387,7 +389,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     ToastUtils.showShortToastCenter("保存成功");
                     Dates.disDialog();
                     try {
-                        OgranCallbackUtils.removeCallBackMethod();
+                        RxBus.getInstance().send("chagedDetails");
                         NetworkinterfaceCallbackUtils.Refresh("reply");
                     } catch (Exception e) {
                     }
@@ -412,7 +414,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
             public void onsuccess(String string) {
                 try {
                     //删除单据回调
-                    OgranCallbackUtils.removeCallBackMethod();
+                    RxBus.getInstance().send("chagedDetails");
                     NetworkinterfaceCallbackUtils.Refresh("reply");
                 } catch (Exception e) {
                 }

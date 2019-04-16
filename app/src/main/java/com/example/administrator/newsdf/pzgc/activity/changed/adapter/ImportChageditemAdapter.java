@@ -31,13 +31,14 @@ public class ImportChageditemAdapter extends BaseQuickAdapter<ChagedImportitem, 
         helper.setText(R.id.import_checkpeople, "检查人：" + item.getRealname());
         helper.setText(R.id.import_checkdata, "检查日期：" + item.getCheckDate().substring(0, 10));
         helper.setText(R.id.import_checkorg, "检查组织：" + item.getCheckOrgName());
-        helper.setText(R.id.import_checkscore, Dates.setText(mContext, "总分：" + item.getScord(), 3, R.color.red));
+        //总分
+        helper.setText(R.id.import_checkscore, item.getScord());
         int iwork = item.getIwork();
         //是否内业检查，1不是2是,4专项检查
         if (iwork == 1) {
             helper.setVisible(R.id.import_status, false);
         } else if (iwork == 4) {
-            helper.setText(R.id.import_status,"专项检查");
+            helper.setText(R.id.import_status, "专项检查");
             helper.setVisible(R.id.import_status, true);
         } else {
             helper.setVisible(R.id.import_status, true);

@@ -1,9 +1,12 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +30,8 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * @author lx
  * 版本：1.0
@@ -34,7 +39,7 @@ import java.util.ArrayList;
  * 描述：整改回复单详情界面
  * {@link }
  */
-public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnClickListener, OgranCallback {
+public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private LinearLayout deviceDetailsFunction;
     private TextView titleView;
@@ -42,18 +47,24 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private ArrayList<Object> list;
     private Context mContext;
     private TextView deviceDetailsProving, deviceDetailsUp,
-            deviceDetailsResult, deviceDetailsAssign, deviceDetailsEdit;
+            deviceDetailsResult, deviceDetailsEdit;
     private String id, orgName, noticeId;
     int status, p;
     private boolean taskstatus = true;
     private ReplyDetailsContent bean;
     private Utils utils;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            request();
+            //刷新列表
+            RxBus.getInstance().send("chagedlist");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +84,16 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         }
         orgName = intent.getStringExtra("orgName");
         //false 只能查看，，true 能进行操作
-        taskstatus = intent.getBooleanExtra("status", true);
+        taskstatus = intent.getBooleanExtra("status", false);
         list = new ArrayList<>();
-        OgranCallbackUtils1.setCallBack(this);
+        RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                if ("chagedDetails".equals(path)) {
+                    handler.sendMessage(new Message());
+                }
+            }
+        });
         findViewById(R.id.checklistback).setOnClickListener(this);
         /*验证*/
         deviceDetailsProving = (TextView) findViewById(R.id.device_details_proving);
@@ -124,6 +142,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                             preview(string, isreply);
                         } else {
                             //跳转过去修改
+
                         }
                     }
                 }
@@ -139,11 +158,12 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 finish();
                 break;
             case R.id.device_details_proving:
+                /*验证*/
                 Intent intent = new Intent(this, ChagedReplyVerificationActivity.class);
                 intent.putExtra("id", id);
                 intent.putExtra("motionnode", bean.getMotionNode());
                 startActivity(intent);
-                /*验证*/
+
                 break;
             case R.id.device_details_result:
                 /*我回复*/
@@ -188,7 +208,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             public void onsuccess(String string) {
                 request();
                 try {
-                    TaskCallbackUtils.CallBackMethod();
+                    RxBus.getInstance().send("chagedlist");
                     /**
                      * 关联界面 NoticeActivity
                      */
@@ -207,7 +227,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
     /*网络请求*/
     public void request() {
-        ChagedreplyUtils.getReplyFormMainInfo(id, new ChagedreplyUtils.ListCallback() {
+        ChagedreplyUtils.getReplyFormMainInfo(id, noticeId, new ChagedreplyUtils.ListCallback() {
             @Override
             public void onsuccess(ArrayList<Object> data) {
                 bean = (ReplyDetailsContent) data.get(0);
@@ -252,12 +272,6 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         });
     }
 
-    //删除问题项回调
-    @Override
-    public void taskCallback() {
-        request();
-    }
-
     public void preview(String string, int isreply) {
         //跳转过去查看
         Intent intent1 = new Intent(mContext, ChagedReplyBillsActivity.class);
@@ -276,6 +290,13 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         intent1.putExtra("isReply", isreply);
         intent1.putExtra("status", true);
         startActivity(intent1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+        RxBus.getInstance().unSubcribe();
     }
 }
 

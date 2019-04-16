@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:layout_marginBottom="15dp"
     android:orientation="vertical"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -43,14 +43,14 @@
                 android:layout_gravity="center"
                 android:background="@drawable/check_list_text"
                 android:gravity="center"
-                android:paddingLeft="3dp"
-                android:paddingTop="2dp"
-                android:paddingRight="3dp"
                 android:paddingBottom="2dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="2dp"
                 android:text="内业"
                 android:textColor="@color/Orange"
-                android:visibility="invisible"
-                android:textSize="7sp" />
+                android:textSize="7sp"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
@@ -104,12 +104,27 @@
             android:textColor="#000000"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/import_checkscore"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingLeft="@dimen/dp10" />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp10"
+                android:text="总分："
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/import_checkscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/red" />
+        </LinearLayout>
+
     </LinearLayout>
 
 

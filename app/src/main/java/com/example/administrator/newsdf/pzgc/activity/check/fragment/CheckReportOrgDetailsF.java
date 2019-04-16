@@ -147,7 +147,12 @@ public class CheckReportOrgDetailsF extends Fragment {
                                         } catch (JSONException e) {
                                             checkPersonName = "";
                                         }
-                                        String id = json.getString("id");
+                                        String id;
+                                        try {
+                                            id = json.getString("replyId");
+                                        } catch (Exception e) {
+                                            id = "";
+                                        }
                                         String partDetails;
                                         try {
                                             partDetails = json.getString("part_details");
@@ -214,11 +219,10 @@ public class CheckReportOrgDetailsF extends Fragment {
                                         }
                                         String wbs_main_id;
                                         try {
-                                            wbs_main_id = json.getString("wbs_main_id");
+                                            wbs_main_id = json.getString("noticeDelId");
                                         } catch (Exception e) {
                                             wbs_main_id = "";
                                         }
-
 
                                         list.add(new OrgDetailsFBean(checkDate, checkOrgName, checkPersonName, id, partDetails, rectificationDate,
                                                 rectificationOrgName, rectificationPersonName, rectificationReason,

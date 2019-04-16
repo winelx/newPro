@@ -294,7 +294,6 @@ public class SignatureView extends View {
                     this.mPenX = x;
                     this.mPenY = y;
                 }
-
                 this.invalidate();
             default:
                 break;

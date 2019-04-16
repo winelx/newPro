@@ -217,7 +217,6 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
         Map<String, String> map = new HashMap<>();
         if (id != null) {
             map.put("id", id);
-            LogUtil.i("有回复Id", id);
         }
         if (replyPerson != null) {
             map.put("replyPerson", replyPerson);

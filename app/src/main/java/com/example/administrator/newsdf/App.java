@@ -55,7 +55,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        oList = new ArrayList<Activity>();
+        oList = new ArrayList<>();
         setupDatabase();
         instance = this;
         ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载更多数据";
@@ -79,7 +79,6 @@ public class App extends Application {
          */
         locationService = new LocationService(getApplicationContext());
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-
         /**
          * 图片预览库
          */
@@ -113,37 +112,6 @@ public class App extends Application {
             LogUtil.init(true, Log.VERBOSE);
         } else {
             LogUtil.init(false);
-        }
-    }
-
-    /**
-     * 添加Activity
-     */
-    public void addActivity_(Activity activity) {
-// 判断当前集合中不存在该Activity
-        if (!oList.contains(activity)) {
-            oList.add(activity);//把当前Activity添加到集合中
-        }
-    }
-
-    /**
-     * 销毁单个Activity
-     */
-    public void removeActivity_(Activity activity) {
-//判断当前集合中存在该Activity
-        if (oList.contains(activity)) {
-            oList.remove(activity);//从集合中移除
-            activity.finish();//销毁当前Activity
-        }
-    }
-
-    /**
-     * 销毁所有的Activity
-     */
-    public void removeALLActivity_() {
-        //通过循环，把集合中的所有Activity销毁
-        for (Activity activity : oList) {
-            activity.finish();
         }
     }
 

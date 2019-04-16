@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
@@ -56,6 +57,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
         findViewById(R.id.checklistmeun).setOnClickListener(this);
         TextView text = (TextView) findViewById(R.id.checklistmeuntext);
         text.setText("保存");
+        text.setTextSize(15);
         categoryItem = (TextView) findViewById(R.id.category_item);
         replyDescription = (EditText) findViewById(R.id.replyDescription);
         findViewById(R.id.checklistback).setOnClickListener(this);
@@ -122,7 +124,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
             public void onsuccess(String string) {
                 try {
                     //刷新单据详情
-                    OgranCallbackUtils1.removeCallBackMethod();
+                    RxBus.getInstance().send("chagedDetails");
                     //刷新列表
                     TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {

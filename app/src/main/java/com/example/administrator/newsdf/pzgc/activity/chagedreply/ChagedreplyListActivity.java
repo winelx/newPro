@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -16,12 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
@@ -35,6 +37,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * @author lx
  * 版本：1.0
@@ -42,7 +46,7 @@ import java.util.Map;
  * 描述：我的整改回复单列表
  * {@link }
  */
-public class ChagedreplyListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
+public class ChagedreplyListActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -57,12 +61,16 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
     private int status = -1;
     private EmptyUtils emptyUtils;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            request();
+            //刷新列表
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +79,14 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
-        TaskCallbackUtils.setCallBack(this);
+        RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                if ("chagedlist".equals(path)) {
+                    handler.sendMessage(new Message());
+                }
+            }
+        });
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
@@ -237,11 +252,6 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    @Override
-    public void taskCallback() {
-        request();
-    }
-
     private void delete(final int pos, String id) {
         ChagedreplyUtils.deleteReplyForm(id, new ChagedreplyUtils.ObjectCallBacks() {
             @Override
@@ -256,6 +266,11 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 ToastUtils.showsnackbar(title, string);
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
     }
 }
 

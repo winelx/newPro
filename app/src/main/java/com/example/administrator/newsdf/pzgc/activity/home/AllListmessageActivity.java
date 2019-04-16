@@ -719,9 +719,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 .params("wbsId", wbsId)
                 .params("isAll", "true")
                 .params("content", content);
-        if (!TextUtils.isEmpty(isToday)) {
-            mPostRequest.params("isToday", isToday);
-        }
+
         //如果==3 那么就不传
         if ("10".equals(notall)) {
             mPostRequest.execute(new StringCallback() {
@@ -738,7 +736,12 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 }
             });
         } else {
-            mPostRequest.params("msgStatus", notall)
+            if (!TextUtils.isEmpty(isToday)) {
+                mPostRequest.params("isToday", isToday);
+            } else {
+                mPostRequest.params("msgStatus", notall);
+            }
+            mPostRequest
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {

@@ -29,6 +29,7 @@ import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.baselibrary.ui.SignatureViewActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -156,7 +157,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //关于我们
             case R.id.about_us:
-                startActivity(new Intent(getActivity(), AboutmeActivity.class));
+                startActivity(new Intent(getActivity(), SignatureViewActivity.class));
                 break;
             case R.id.BackTo:
                 //清除fragmentmanager
@@ -187,7 +188,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
-                        ToastUtils.showShortToast("清除失败");
                     }
                 }.start();
 
@@ -207,6 +207,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
      * 退出登录
      */
     private void Okgo() {
+        OkGo.getInstance().cancelAll();
         OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override

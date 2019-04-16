@@ -107,6 +107,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     Intent notice = new Intent(mContext, AllListmessageActivity.class);
                     notice.putExtra("orgId", bean.getOrgId());
                     notice.putExtra("name", bean.getOrgName());
+                    notice.putExtra("isToday", "1");
                     startActivity(notice);
                 }
             }

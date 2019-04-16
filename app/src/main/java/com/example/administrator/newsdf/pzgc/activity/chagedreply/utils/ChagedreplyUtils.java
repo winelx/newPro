@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.baselibrary.bean.photoBean;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
@@ -46,11 +47,11 @@ public class ChagedreplyUtils {
     /*获取列表数据*/
 
     /**
-     * @param isAll    true:全部，false：我的
-     * @param orgId    组织id
+     * @param isAll  true:全部，false：我的
+     * @param orgId  组织id
      * @param
-     * @param status   状态，非必须，为空时查询全部，0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
-     * @param page     第几页
+     * @param status 状态，非必须，为空时查询全部，0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
+     * @param page   第几页
      */
     public static void getCRFList(boolean isAll, int status, String orgId, int page, final MapCallBack callBack) {
         PostRequest str = OkGo.post(Requests.GETCRFLIST);
@@ -388,51 +389,54 @@ public class ChagedreplyUtils {
      * @param id       整改验证单id
      * @param callBack
      */
-    public static void getReplyFormMainInfo(String id, final ListCallback callBack) {
-        OkGo.get(Requests.GETREPLYFORMMAININFO)
-                .params("id", id)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                ArrayList<Object> list = new ArrayList<>();
-                                //解析实体
-                                ReplyDetailsContent content = com.alibaba.fastjson.JSONObject.parseObject(jsonObject1.toString(), ReplyDetailsContent.class);
-                                list.add(content);
-                                JSONArray details = jsonObject1.getJSONArray("details");
-                                //问题项
-                                if (details.length() > 0) {
-                                    list.add(new ReplyDetailsText("问题项"));
-                                    List<ReplyDetailsRecord> Detailslist = ListJsonUtils.getListByArray(ReplyDetailsRecord.class, details.toString());
-                                    list.addAll(Detailslist);
-                                }
-                                //处理记录
-                                JSONArray hisCord = jsonObject1.getJSONArray("hisCord");
-                                if (hisCord.length() > 0) {
-                                    list.add(new ReplyDetailsText("处理记录"));
-                                    List<NoticeItemDetailsRecord> Detailslist = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
-                                    list.addAll(Detailslist);
-                                }
-                                callBack.onsuccess(list);
-                            } else {
-                                callBack.onerror(jsonObject.getString("msg"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            callBack.onerror("数据解析失败");
+    public static void getReplyFormMainInfo(String id, String noticeId, final ListCallback callBack) {
+        GetRequest string = OkGo.get(Requests.GETREPLYFORMMAININFO)
+                .params("id", id);
+        if (!TextUtils.isEmpty(noticeId)) {
+            string.params("noticeDelId", noticeId);
+        }
+        string.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        ArrayList<Object> list = new ArrayList<>();
+                        //解析实体
+                        ReplyDetailsContent content = com.alibaba.fastjson.JSONObject.parseObject(jsonObject1.toString(), ReplyDetailsContent.class);
+                        list.add(content);
+                        JSONArray details = jsonObject1.getJSONArray("details");
+                        //问题项
+                        if (details.length() > 0) {
+                            list.add(new ReplyDetailsText("问题项"));
+                            List<ReplyDetailsRecord> Detailslist = ListJsonUtils.getListByArray(ReplyDetailsRecord.class, details.toString());
+                            list.addAll(Detailslist);
                         }
+                        //处理记录
+                        JSONArray hisCord = jsonObject1.getJSONArray("hisCord");
+                        if (hisCord.length() > 0) {
+                            list.add(new ReplyDetailsText("处理记录"));
+                            List<NoticeItemDetailsRecord> Detailslist = ListJsonUtils.getListByArray(NoticeItemDetailsRecord.class, hisCord.toString());
+                            list.addAll(Detailslist);
+                        }
+                        callBack.onsuccess(list);
+                    } else {
+                        callBack.onerror(jsonObject.getString("msg"));
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callBack.onerror("数据解析失败");
+                }
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callBack.onerror("请求失败");
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onerror("请求失败");
+            }
+        });
     }
 
     /*创建、编辑回复单*/
