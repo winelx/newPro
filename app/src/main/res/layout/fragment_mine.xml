@@ -86,7 +86,6 @@
             android:id="@+id/organizationa"
             android:layout_width="match_parent"
             android:layout_height="49dp"
-            android:layout_marginTop="10dp"
             android:background="@color/writer">
 
             <ImageView
@@ -110,15 +109,15 @@
                 android:textColor="#323232" />
 
             <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/mine_text"
-            android:layout_marginRight="15dp"
-            android:text="{fa-angle-right}"
-            android:textColor="@color/inconfy"
-            android:textSize="25sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_text"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
         </RelativeLayout>
 
         <View
@@ -169,7 +168,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="10dp"
             android:background="@color/back" />
 
         <RelativeLayout
@@ -207,6 +206,51 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/mine_text3"
+                android:layout_marginRight="15dp"
+                android:text="{fa-angle-right}"
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/back" />
+
+        <RelativeLayout
+            android:id="@+id/mine_autograph"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/writer">
+
+            <ImageView
+                android:id="@+id/mine_autograph_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="21dp"
+                android:layout_marginStart="21dp"
+                android:background="@mipmap/mine_autograph" />
+
+            <TextView
+                android:id="@+id/mine_autograph_text"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/mine_autograph_img"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/mine_autograph_img"
+                android:layout_toRightOf="@+id/mine_autograph_img"
+                android:text="我的签名"
+                android:textColor="#323232" />
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/mine_autograph_text"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -259,7 +303,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="10dp"
             android:background="@color/back" />
 
         <RelativeLayout

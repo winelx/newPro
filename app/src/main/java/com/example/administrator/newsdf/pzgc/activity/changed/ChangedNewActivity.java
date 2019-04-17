@@ -195,6 +195,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 intent2.putExtra("orgid", orgId);
                 intent2.putExtra("id", id);
                 intent2.putExtra("status", true);
+                intent2.putExtra("iwork", 1);
                 startActivity(intent2);
                 break;
             case R.id.chaged_head_lin:

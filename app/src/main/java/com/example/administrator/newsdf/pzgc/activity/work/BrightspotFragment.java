@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment;
 import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment2;
 import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment3;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 
 import java.util.ArrayList;
 

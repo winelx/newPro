@@ -5,15 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
@@ -29,7 +26,7 @@ import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.baselibrary.ui.SignatureViewActivity;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -91,6 +88,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             rootView.findViewById(R.id.staffName).setOnClickListener(this);
             //退出
             rootView.findViewById(R.id.BackTo).setOnClickListener(this);
+            //我的清明
+            rootView.findViewById(R.id.mine_autograph).setOnClickListener(this);
             mineUploading = rootView.findViewById(R.id.mine_uploadings);
             mineAvatar = rootView.findViewById(R.id.mine_avatar);
             mineOrganization = rootView.findViewById(R.id.mine_organization);
@@ -157,7 +156,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //关于我们
             case R.id.about_us:
-                startActivity(new Intent(getActivity(), SignatureViewActivity.class));
+                startActivity(new Intent(getActivity(), AboutmeActivity.class));
                 break;
             case R.id.BackTo:
                 //清除fragmentmanager
@@ -190,11 +189,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Glide.get(mContext).clearDiskCache();
                     }
                 }.start();
-
                 break;
             //检查新版本
             case R.id.newversion:
                 upload();
+                break;
+            case R.id.mine_autograph:
+                startActivity(new Intent(mContext, SignatureViewActivity.class));
                 break;
             default:
                 break;

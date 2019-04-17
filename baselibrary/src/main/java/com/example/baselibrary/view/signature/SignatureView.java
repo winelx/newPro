@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Bitmap.CompressFormat;
@@ -101,11 +102,22 @@ public class SignatureView extends View {
 
     }
 
-    public void save(String path, boolean clearBlank, int blank) throws IOException {
-
+    public boolean save(String path, boolean clearBlank, int blank) throws IOException {
         if (!TextUtils.isEmpty(path)) {
             this.mSavePath = path;
             Bitmap bitmap = this.cacheBitmap;
+//            int width = bitmap.getWidth();
+//            int height = bitmap.getHeight();
+//            // 设置想要的大小
+//            int newWidth = 480;
+//            int newHeight = 800;
+//            // 计算缩放比例
+//            float scaleWidth = ((float) newWidth) / width;
+//            float scaleHeight = ((float) newHeight) / height;
+//            // 取得想要缩放的matrix参数
+//            Matrix matrix = new Matrix();
+//            matrix.postScale(scaleWidth, scaleHeight);
+//            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
             if (clearBlank) {
                 bitmap = this.clearBlank(bitmap, blank);
             }
@@ -125,9 +137,10 @@ public class SignatureView extends View {
                 os.close();
                 bos.close();
             }
-
+            return true;
         } else {
             Toast.makeText(getContext(), "保存失败", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 

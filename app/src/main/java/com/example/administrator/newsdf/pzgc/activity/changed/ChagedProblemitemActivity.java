@@ -56,7 +56,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private BasePhotoAdapter adapter;
     private TextView menutext, comTitle, chagedOrganizeText, violationStandardText;
     private EditText exitextPosition, editProblem, delscore;
-    private LinearLayout standarddelscore;
+    private LinearLayout standarddelscore, chagedPositionLin;
     private Context mContext;
     private ArrayList<photoBean> photolist;
     private PopCameraUtils popcamerautils;
@@ -74,8 +74,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     //分值   /违反类别Id  违反标准ID    违反类别容
     private String score, categoryid, categoryedid, categorycontent;
     private ArrayList<String> deleltes = new ArrayList<>();
-    private int iwork = 1;
+    private int iwork = 0;
     private TextView importWarning;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -110,6 +111,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         takePictureManager = new TakePictureManager(ChagedProblemitemActivity.this);
         //相机相册选择弹窗
         popcamerautils = new PopCameraUtils();
+        //整改部位
+        chagedPositionLin = findViewById(R.id.chaged_position_lin);
         /*违反扣分*/
         standarddelscore = findViewById(R.id.standarddelscore);
         //扣分
@@ -254,9 +257,11 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         } else {
             checkItemDelete.setVisibility(View.GONE);
         }
-        if (iwork == 1) {
+        //i导入的外业检查，0为添加问题
+        if (iwork == 1 || iwork == 0) {
             importWarning.setVisibility(View.VISIBLE);
         } else {
+            chagedPositionLin.setVisibility(View.GONE);
             importWarning.setVisibility(View.GONE);
         }
     }
@@ -272,22 +277,22 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 String str = menutext.getText().toString();
                 if (KEEP.equals(str)) {
                     if (score != null) {
-                        if (iwork == 1) {
-                            if (exitextPosition.getText().toString() != null || chagedPosition.getText().toString() != null) {
+                        if (iwork == 1 || iwork == 0) {
+                            //外业和添加问题
+                            if (!TextUtils.isEmpty(exitextPosition.getText().toString()) || !TextUtils.isEmpty(chagedPosition.getText().toString())) {
                                 Dates.getDialog(this, "保存数据中...");
                                 save();
                             } else {
                                 Snackbar.make(comTitle, "整改部位不能为空", Snackbar.LENGTH_LONG).show();
                             }
-                        } else {
+                        }else {
+                            //专项检查和内业检查
                             Dates.getDialog(this, "保存数据中...");
                             save();
                         }
-
                     } else {
                         ToastUtils.showShortToast("违反标准不能为空");
                     }
-
                 } else {
                     status = true;
                     menutext.setText("保存");
@@ -550,7 +555,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 //扣分
                 if (!TextUtils.isEmpty(item.getStandardDelScore()) && item.getStandardDelScore() != null) {
                     delscore.setText(item.getStandardDelScore());
-                }else {
+                } else {
                     delscore.setText("0.0");
                 }
                 if (item.getStandardDelScore() != null && TextUtils.isEmpty(item.getStandardDelScore())) {

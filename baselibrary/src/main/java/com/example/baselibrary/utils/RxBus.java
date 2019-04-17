@@ -1,9 +1,8 @@
-package com.example.administrator.newsdf.pzgc.utils;
+package com.example.baselibrary.utils;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 

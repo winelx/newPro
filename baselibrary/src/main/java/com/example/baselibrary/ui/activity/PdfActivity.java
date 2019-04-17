@@ -1,4 +1,4 @@
-package com.example.baselibrary.ui;
+package com.example.baselibrary.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

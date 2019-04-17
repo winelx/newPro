@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.view.BaseActivity;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
         //标准
         fragments.add(new StandardFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), fragments);
+        findViewById(R.id.com_back).setOnClickListener(this);
         //设定适配器
         vp = (ViewPager) findViewById(R.id.possse_viewpager);
         vp.setAdapter(adapter);
@@ -49,6 +51,7 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
         frPchooseAm.setOnClickListener(this);
         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

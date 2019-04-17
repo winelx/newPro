@@ -29,8 +29,7 @@
             android:layout_gravity="center"
             android:background="@color/writer"
             android:orientation="horizontal"
-            android:padding="1dp"
-          >
+            android:padding="1dp">
 
             <TextView
                 android:id="@+id/fr_Pchoose_am"

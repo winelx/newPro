@@ -25,7 +25,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.HometaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
-import com.example.administrator.newsdf.pzgc.utils.RxBus;
+import com.example.baselibrary.utils.RxBus;
 
 import java.util.ArrayList;
 import java.util.Map;

@@ -8,9 +8,9 @@ import android.view.KeyEvent;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CategoryContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Categorylist;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.NoScrollViewPager;
+import com.example.baselibrary.view.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;

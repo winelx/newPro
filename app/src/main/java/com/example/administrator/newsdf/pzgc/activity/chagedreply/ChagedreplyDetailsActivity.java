@@ -20,12 +20,9 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
-import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
-import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.RxBus;
+import com.example.baselibrary.utils.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
@@ -83,8 +80,8 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             noticeId = "";
         }
         orgName = intent.getStringExtra("orgName");
-        //false 只能查看，，true 能进行操作
-        taskstatus = intent.getBooleanExtra("status", false);
+        //false 能操作，，true只能看
+        taskstatus = intent.getBooleanExtra("status", true);
         list = new ArrayList<>();
         RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
             @Override
@@ -123,7 +120,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             public void onClick(int position, int isreply, String string) {
                 //l  0：保存；1：验证中;2:已完成；3：打回
                 int permission = bean.getPermission();
-                if (taskstatus) {
+                if (!taskstatus) {
                     //跳转过去查看
                     preview(string, isreply);
                 } else {

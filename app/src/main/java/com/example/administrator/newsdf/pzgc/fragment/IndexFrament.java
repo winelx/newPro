@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.JPushCallBack;
 import com.example.administrator.newsdf.pzgc.callback.JPushCallUtils;
 import com.example.administrator.newsdf.pzgc.fragment.homepage.AllMessageFragment;

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.utils;
+package com.example.baselibrary.view;
 
 import android.support.v4.app.Fragment;
 

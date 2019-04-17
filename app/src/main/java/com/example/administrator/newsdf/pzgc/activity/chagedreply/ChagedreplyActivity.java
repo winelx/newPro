@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyMeFragment;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.view.BaseActivity;
 
 import java.util.ArrayList;

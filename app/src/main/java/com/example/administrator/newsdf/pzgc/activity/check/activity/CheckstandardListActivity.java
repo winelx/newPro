@@ -8,9 +8,9 @@ import android.view.KeyEvent;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckstandardContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Checkstandarditem;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.NoScrollViewPager;
+import com.example.baselibrary.view.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +28,7 @@ public class CheckstandardListActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
     private String name, strid;
     private String title;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,5 +96,9 @@ public class CheckstandardListActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeActivity(this);
+    }
 }

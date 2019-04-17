@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.DailyrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.MonthrecordFragment;
 import com.example.administrator.newsdf.pzgc.activity.audit.fragment.QuarterrecordFragment;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;

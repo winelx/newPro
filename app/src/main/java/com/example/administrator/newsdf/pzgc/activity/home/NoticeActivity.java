@@ -28,7 +28,7 @@ import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
-import com.example.administrator.newsdf.pzgc.utils.RxBus;
+import com.example.baselibrary.utils.RxBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -317,7 +317,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         NoticedBean bean = (NoticedBean) list.get(position);
         int modelname = bean.getModelType();
         if (modelname == 1) {
-            //整改通知单
+            //整改通知单操作
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
             notice.putExtra("status", false);
@@ -325,7 +325,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             notice.putExtra("orgName", bean.getBeNoticeOrgName());
             startActivity(notice);
         } else if (modelname == 2) {
-            //回复验证单
+            //回复验证单操作
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
             reply.putExtra("status", false);

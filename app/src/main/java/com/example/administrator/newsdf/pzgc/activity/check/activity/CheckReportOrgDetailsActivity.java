@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsF;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsT;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PshooseFragAdapte;
+import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.view.BaseActivity;
 
 import java.util.ArrayList;

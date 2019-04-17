@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.utils;
+package com.example.baselibrary.view;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
