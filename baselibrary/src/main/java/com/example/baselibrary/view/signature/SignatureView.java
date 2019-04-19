@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 
 import com.example.baselibrary.R;
+import com.example.baselibrary.utils.ScreenUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,6 +51,8 @@ public class SignatureView extends View {
     private String mSavePath;
     private Set<Float> listX = new HashSet<>();
     private Set<Float> listY = new HashSet<>();
+    private int Interfacewidth;
+    private int Interfacehight;
 
     public SignatureView(Context context) {
         this(context, (AttributeSet) null);
@@ -118,14 +121,35 @@ public class SignatureView extends View {
             this.mSavePath = path;
             Bitmap bitmap = this.cacheBitmap;
             //取出绘制图的四个点
-            Float maxX = Collections.max(listX);
-            Float minX = Collections.min(listX);
-            Float maxY = Collections.max(listY);
-            Float minY = Collections.min(listY);
-
-            bitmap = Bitmap.createBitmap(bitmap, new BigDecimal(minX - 10).intValue(), new BigDecimal(minY - 10).intValue(),
-                    new BigDecimal(maxX - minX + 20).intValue(),
-                    new BigDecimal(maxY - minY + 20).intValue());
+            int maxX = new BigDecimal(Collections.max(listX)).intValue();
+            int minX = new BigDecimal(Collections.min(listX)).intValue();
+            int maxY = new BigDecimal(Collections.max(listY)).intValue();
+            int minY = new BigDecimal(Collections.min(listY)).intValue();
+            int with = maxX - minX;
+            if (with < 0) {
+                with = 0;
+            }
+            int hight = maxY - minY;
+            if (hight < 0) {
+                hight = 0;
+            }
+            int maxrtX = minX;
+            if (maxrtX < 0) {
+                maxrtX = 0;
+            }
+            int maxrtY = minY;
+            if (maxrtY < 0) {
+                maxrtY = 0;
+            }
+            if ((maxrtX + with) > Interfacewidth) {
+                with = Interfacewidth;
+                maxrtX = 0;
+            }
+            if ((maxrtY + hight) > Interfacehight) {
+                with = Interfacehight;
+                maxrtY = 0;
+            }
+            bitmap = Bitmap.createBitmap(bitmap, maxrtX, maxrtY, with, hight);
             if (clearBlank) {
                 bitmap = this.clearBlank(bitmap, blank);
             }
@@ -175,7 +199,6 @@ public class SignatureView extends View {
         int right = 0;
         int bottom = 0;
         int[] pixs = new int[width];
-
         boolean isStop;
         int x;
         int[] var12;
@@ -263,11 +286,14 @@ public class SignatureView extends View {
         return Bitmap.createBitmap(bmp, left, top, right - left, bottom - top);
     }
 
-    //
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         this.cacheBitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Config.ARGB_8888);
+        //获取界面的绘制宽高，以保证在保存的绘制点不能比这连个大
+        Interfacewidth = this.getWidth();
+        Interfacehight = this.getHeight();
+        Log.d("界面宽度", "宽度" + Interfacewidth + "高度" + Interfacehight);
         this.mCanvas = new Canvas(this.cacheBitmap);
         this.mCanvas.drawColor(this.mBackColor);
         this.isTouched = false;
@@ -298,8 +324,20 @@ public class SignatureView extends View {
                 float y = event.getY();
                 float preX = this.mPenX;
                 float preY = this.mPenY;
-                listX.add(preX);
-                listY.add(preY);
+                int X = new BigDecimal(preX).intValue();
+                int Y = new BigDecimal(preY).intValue();
+                //不能比0小，不能比界面宽度大
+                if (X >= 0) {
+                    if (X < Interfacewidth) {
+                        listX.add(preX);
+                    }
+                }
+                //绘制点不能比0小，比界面高度大
+                if (Y >= 0) {
+                    if (Y < Interfacehight) {
+                        listY.add(preY);
+                    }
+                }
                 float dx = Math.abs(x - preX);
                 float dy = Math.abs(y - preY);
                 if (dx >= 3.0F || dy >= 3.0F) {
