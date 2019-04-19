@@ -92,6 +92,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
         });
         checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setText("保存");
+        checklistmeuntext.setTextSize(15);
         checklistmeuntext.setVisibility(View.VISIBLE);
         checklistmeuntext.setOnClickListener(this);
         checkReplyFuj = (TextView) findViewById(R.id.check_reply_fuj);

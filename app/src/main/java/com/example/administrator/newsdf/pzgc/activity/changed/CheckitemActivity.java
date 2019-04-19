@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private String checkManageId, noticeId;
     private EmptyUtils emptyUtils;
     ArrayList<String> itemes = new ArrayList<>();
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -61,7 +63,11 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText(intent.getStringExtra("title"));
         inspect_content = (TextView) findViewById(R.id.inspect_content);
-        inspect_content.setText("检查部位：" + intent.getStringExtra("content"));
+        if (!TextUtils.isEmpty(intent.getStringExtra("content"))) {
+            inspect_content.setText("检查部位：" + intent.getStringExtra("content"));
+        } else {
+            inspect_content.setVisibility(View.GONE);
+        }
         comButton = (TextView) findViewById(R.id.com_button);
         comButton.setOnClickListener(this);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
@@ -86,6 +92,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 comButton.setText("确定");
                 itemes.add(item.getDetailsIds());
             }
+
             @Override
             public void ondelete(String str, int position) {
                 Checkitem item = (Checkitem) list.get(position);

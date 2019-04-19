@@ -625,10 +625,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 }
             }
         });
-        //如果是从今日任务统计列表进入，不查询
-        if (!TextUtils.isEmpty(isToday)) {
-            imageViewMeun.setVisibility(View.GONE);
-        }
+
     }
 
     //初始化数据
@@ -720,8 +717,30 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 .params("isAll", "true")
                 .params("content", content);
 
-        //如果==3 那么就不传
+        //如果==10 那么就不传
         if ("10".equals(notall)) {
+        } else {
+            //如果查看全部
+            if (!TextUtils.isEmpty(isToday)) {
+                mPostRequest.params("isToday", isToday);
+            } else {
+                //未处理，已处理，打回
+                if ("2".equals(notall)) {
+                    //显示已处理
+                    if (!TextUtils.isEmpty(isToday)) {
+                        //如果从今日累计进
+                        mPostRequest.params("isToday", isToday);
+                        mPostRequest.params("msgStatus", notall);
+                    } else {
+                        //不是从今日累计进入
+                        mPostRequest.params("msgStatus", notall);
+                    }
+                } else {
+                    //未处理，打回
+                    mPostRequest.params("msgStatus", notall);
+                }
+            }
+            //请求返回
             mPostRequest.execute(new StringCallback() {
                 @Override
                 public void onSuccess(String s, Call call, Response response) {
@@ -735,26 +754,6 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                     Dates.disDialog();
                 }
             });
-        } else {
-            if (!TextUtils.isEmpty(isToday)) {
-                mPostRequest.params("isToday", isToday);
-            } else {
-                mPostRequest.params("msgStatus", notall);
-            }
-            mPostRequest
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(String s, Call call, Response response) {
-                            Dates.disDialog();
-                            parsingjson(s);
-                        }
-
-                        @Override
-                        public void onError(Call call, Response response, Exception e) {
-                            super.onError(call, response, e);
-                            Dates.disDialog();
-                        }
-                    });
         }
     }
 

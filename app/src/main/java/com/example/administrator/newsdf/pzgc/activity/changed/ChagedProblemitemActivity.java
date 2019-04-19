@@ -67,8 +67,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private DialogUtils dialogUtils;
     //整改组织名称 ，整改组织Id  ，整改项ID ，整改单Id，整改部位Id
     private String orgName, orgId, noticeDelId, noticeId, chagedpositionId;
-    //整改部位
-    private String positionid;
     private ChagedUtils chagedUtils;
     private TextView chagedPosition, checkItemDelete;
     //分值   /违反类别Id  违反标准ID    违反类别容
@@ -113,7 +111,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         popcamerautils = new PopCameraUtils();
         //整改部位
         chagedPositionLin = findViewById(R.id.chaged_position_lin);
-        /*违反扣分*/
+        /*整改扣总分分值*/
         standarddelscore = findViewById(R.id.standarddelscore);
         //扣分
         delscore = findViewById(R.id.violation_standard_scode);
@@ -243,26 +241,34 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                         .start((Activity) mContext);
             }
         });
-        if (!status) {
+        if (status) {
+            //添加数据
+            //关闭删除按钮
+            checkItemDelete.setVisibility(View.GONE);
+            //隐藏整改扣总分分值
+            standarddelscore.setVisibility(View.GONE);
+        } else {
             //整改项Id
             try {
                 noticeDelId = intent.getStringExtra("noticeDelId");
             } catch (Exception e) {
             }
             menutext.setText("编辑");
+            //隐藏添加按钮
             adapter.addview(false);
+            //输入框不可点击
             statusclose();
             request();
+            //显示删除按钮
             checkItemDelete.setVisibility(View.VISIBLE);
-        } else {
-            checkItemDelete.setVisibility(View.GONE);
         }
         //i导入的外业检查，0为添加问题
         if (iwork == 1 || iwork == 0) {
             importWarning.setVisibility(View.VISIBLE);
+            chagedPositionLin.setVisibility(View.VISIBLE);
         } else {
-            chagedPositionLin.setVisibility(View.GONE);
             importWarning.setVisibility(View.GONE);
+            chagedPositionLin.setVisibility(View.GONE);
         }
     }
 
@@ -285,7 +291,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                             } else {
                                 Snackbar.make(comTitle, "整改部位不能为空", Snackbar.LENGTH_LONG).show();
                             }
-                        }else {
+                        } else {
                             //专项检查和内业检查
                             Dates.getDialog(this, "保存数据中...");
                             save();
@@ -409,7 +415,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             //分值
             score = data.getStringExtra("score");
             //标准分
-//            standardDelCode = data.getStringExtra("stancode");
+            delscore.setText(score);
         } else if (requestCode == 4 && resultCode == 3) {
             //整改部位Id
             chagedpositionId = data.getStringExtra("id");
@@ -430,7 +436,12 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     public void statusopen() {
         exitextPosition.setEnabled(true);
         editProblem.setEnabled(true);
-        delscore.setEnabled(true);
+        //  添加的问题的分数不能编辑，但是导入的是可以编辑
+        if (iwork == 1 || iwork == 0) {
+            delscore.setEnabled(false);
+        } else {
+            delscore.setEnabled(true);
+        }
     }
 
     /*删除*/
@@ -457,6 +468,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         if (noticeDelId != null) {
             map.put("id", noticeDelId);
         }
+        //整改扣总分分值为空传
         if (!delscore.getText().toString().isEmpty()) {
             map.put("standardDelScore", delscore.getText().toString());
         }
@@ -478,12 +490,10 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         map.put("standardDel", categoryedid);
         //违反标准名称
         map.put("standardDelName", violationStandardText.getText().toString());
-//        //分值
-//        map.put("standardDelScore", score);
         //存在问题
         map.put("rectificationReason", editProblem.getText().toString());
         //删除附件Id
-        map.put("deleteFileIds", Dates.listToString(deleltes));
+        map.put("deleteFileIds", Dates.listToStrings(deleltes));
         //附件
         ArrayList<File> files = new ArrayList<>();
         //循环图片集合
@@ -499,7 +509,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         chagedUtils.saveNoticeDetails(map, files, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
-
                 menutext.setText("编辑");
                 adapter.addview(false);
                 status = false;
@@ -515,7 +524,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 checkItemDelete.setVisibility(View.VISIBLE);
                 finish();
             }
-
             @Override
             public void onerror(String string) {
                 Dates.disDialog();
@@ -523,8 +531,9 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             }
         });
     }
-
-    /*请求参处数*/
+    /**
+     * 请求参处数
+     */
     private void request() {
         chagedUtils.getDetailsInfoOfSaveStatus(noticeDelId, new ChagedUtils.CallBack() {
             @Override
@@ -553,19 +562,12 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 //分值
                 score = item.getStandardDelScore();
                 //扣分
-                if (!TextUtils.isEmpty(item.getStandardDelScore()) && item.getStandardDelScore() != null) {
+                if (!TextUtils.isEmpty(item.getStandardDelScore())) {
                     delscore.setText(item.getStandardDelScore());
                 } else {
                     delscore.setText("0.0");
                 }
-                if (item.getStandardDelScore() != null && TextUtils.isEmpty(item.getStandardDelScore())) {
-                    //新增
-                    standarddelscore.setVisibility(View.GONE);
-                } else {
-                    //导入
-                    standarddelscore.setVisibility(View.VISIBLE);
-                    delscore.setText(item.getStandardDelScore());
-                }
+                delscore.setText(item.getStandardDelScore());
                 photolist.clear();
                 photolist.addAll((ArrayList<photoBean>) map.get("list"));
                 adapter.getData(photolist);
@@ -577,5 +579,4 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             }
         });
     }
-
 }

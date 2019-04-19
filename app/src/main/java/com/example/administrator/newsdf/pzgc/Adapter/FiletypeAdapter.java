@@ -57,8 +57,9 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
         //截取doc+1后面的字符串，包括doc+1；
-        String strs = mData.get(position).getType();
-        if (strs.equals("pdf")) {
+        String strs = mData.get(position).getUrl();
+        strs = strs.substring(strs.length() - 3, strs.length());
+        if ("pdf".equals(strs)) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -115,10 +116,8 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList<String> imagepath = new ArrayList<String>();
                 ArrayList<String> path = new ArrayList<String>();
                 for (int i = 0; i < mData.size(); i++) {
-                    String urlpath = mData.get(i).getName();
-                    int doc = urlpath.lastIndexOf(".");
-                    //截取doc+1后面的字符串，包括doc+1；
-                    String strs = urlpath.substring(doc + 1);
+                    String strs = mData.get(position).getUrl();
+                    strs = strs.substring(strs.length() - 3, strs.length());
                     //图片可能为jpg 也可能是png
                     if (strs.equals("xls") || strs.equals("xlsx") || strs.equals("pdf") || strs.equals("PNG") || strs.equals("doc") || strs.equals("docx")) {
 
@@ -143,13 +142,10 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 //判断是否是pdf文件
-                String imgUrl = mData.get(position).getName();
-                //拿到.位置
-                int doc = imgUrl.lastIndexOf(".");
-                //截取doc+1后面的字符串，包括doc+1；
-                String strs = imgUrl.substring(doc + 1);
-                if (strs.equals("pdf")) {
-               PdfPreview.builder().setPdfUrl(mData.get(position).getUrl()).start((Activity) mContext);
+                String imgUrl = mData.get(position).getUrl();
+                imgUrl = imgUrl.substring(imgUrl.length() - 3, imgUrl.length());
+                if ("pdf".equals(imgUrl)) {
+                    PdfPreview.builder().setPdfUrl(mData.get(position).getUrl()).start((Activity) mContext);
                 } else {
                     Toast.makeText(mContext, "请到pc端查看详情", Toast.LENGTH_SHORT).show();
                 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Bitmap.CompressFormat;
@@ -13,6 +12,7 @@ import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -25,6 +25,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SignatureView extends View {
     private static final String TAG = "SignatureView";
@@ -42,6 +48,8 @@ public class SignatureView extends View {
     private int mBackColor;
     private boolean isTouched;
     private String mSavePath;
+    private Set<Float> listX = new HashSet<>();
+    private Set<Float> listY = new HashSet<>();
 
     public SignatureView(Context context) {
         this(context, (AttributeSet) null);
@@ -93,6 +101,8 @@ public class SignatureView extends View {
 
     public void clear() {
         if (this.mCanvas != null) {
+            listX.clear();
+            listY.clear();
             this.isTouched = false;
             this.mPaint.setColor(this.mPenColor);
             this.mCanvas.drawColor(this.mBackColor, Mode.CLEAR);
@@ -102,27 +112,26 @@ public class SignatureView extends View {
 
     }
 
+    //保存
     public boolean save(String path, boolean clearBlank, int blank) throws IOException {
         if (!TextUtils.isEmpty(path)) {
             this.mSavePath = path;
             Bitmap bitmap = this.cacheBitmap;
-//            int width = bitmap.getWidth();
-//            int height = bitmap.getHeight();
-//            // 设置想要的大小
-//            int newWidth = 480;
-//            int newHeight = 800;
-//            // 计算缩放比例
-//            float scaleWidth = ((float) newWidth) / width;
-//            float scaleHeight = ((float) newHeight) / height;
-//            // 取得想要缩放的matrix参数
-//            Matrix matrix = new Matrix();
-//            matrix.postScale(scaleWidth, scaleHeight);
-//            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+            //取出绘制图的四个点
+            Float maxX = Collections.max(listX);
+            Float minX = Collections.min(listX);
+            Float maxY = Collections.max(listY);
+            Float minY = Collections.min(listY);
+
+            bitmap = Bitmap.createBitmap(bitmap, new BigDecimal(minX - 10).intValue(), new BigDecimal(minY - 10).intValue(),
+                    new BigDecimal(maxX - minX + 20).intValue(),
+                    new BigDecimal(maxY - minY + 20).intValue());
             if (clearBlank) {
                 bitmap = this.clearBlank(bitmap, blank);
             }
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(CompressFormat.PNG, 100, bos);
+
             byte[] buffer = bos.toByteArray();
             if (buffer != null) {
                 File file = new File(path);
@@ -144,6 +153,7 @@ public class SignatureView extends View {
         }
     }
 
+    //    获取bitmap
     public Bitmap getBitmap() {
         this.setDrawingCacheEnabled(true);
         this.buildDrawingCache();
@@ -156,6 +166,7 @@ public class SignatureView extends View {
         return this.mSavePath;
     }
 
+    //清除界面数据
     private Bitmap clearBlank(Bitmap bmp, int blank) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
@@ -176,7 +187,6 @@ public class SignatureView extends View {
             isStop = false;
             var12 = pixs;
             var13 = pixs.length;
-
             for (var14 = 0; var14 < var13; ++var14) {
                 pix = var12[var14];
                 if (pix != this.mBackColor) {
@@ -185,7 +195,6 @@ public class SignatureView extends View {
                     break;
                 }
             }
-
             if (isStop) {
                 break;
             }
@@ -196,7 +205,6 @@ public class SignatureView extends View {
             isStop = false;
             var12 = pixs;
             var13 = pixs.length;
-
             for (var14 = 0; var14 < var13; ++var14) {
                 pix = var12[var14];
                 if (pix != this.mBackColor) {
@@ -205,20 +213,16 @@ public class SignatureView extends View {
                     break;
                 }
             }
-
             if (isStop) {
                 break;
             }
         }
-
         pixs = new int[height];
-
         for (x = 0; x < width; ++x) {
             bmp.getPixels(pixs, 0, 1, x, 0, 1, height);
             isStop = false;
             var12 = pixs;
             var13 = pixs.length;
-
             for (var14 = 0; var14 < var13; ++var14) {
                 pix = var12[var14];
                 if (pix != this.mBackColor) {
@@ -227,12 +231,10 @@ public class SignatureView extends View {
                     break;
                 }
             }
-
             if (isStop) {
                 break;
             }
         }
-
         for (x = width - 1; x > 0; --x) {
             bmp.getPixels(pixs, 0, 1, x, 0, 1, height);
             isStop = false;
@@ -247,16 +249,13 @@ public class SignatureView extends View {
                     break;
                 }
             }
-
             if (isStop) {
                 break;
             }
         }
-
         if (blank < 0) {
             blank = 0;
         }
-
         left = left - blank > 0 ? left - blank : 0;
         top = top - blank > 0 ? top - blank : 0;
         right = right + blank > width - 1 ? width - 1 : right + blank;
@@ -264,6 +263,7 @@ public class SignatureView extends View {
         return Bitmap.createBitmap(bmp, left, top, right - left, bottom - top);
     }
 
+    //
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -298,6 +298,8 @@ public class SignatureView extends View {
                 float y = event.getY();
                 float preX = this.mPenX;
                 float preY = this.mPenY;
+                listX.add(preX);
+                listY.add(preY);
                 float dx = Math.abs(x - preX);
                 float dy = Math.abs(y - preY);
                 if (dx >= 3.0F || dy >= 3.0F) {
@@ -311,7 +313,7 @@ public class SignatureView extends View {
             default:
                 break;
         }
-
         return super.onTouchEvent(event);
     }
+
 }

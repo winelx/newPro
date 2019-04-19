@@ -22,6 +22,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.baselibrary.R;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.ScreenUtil;
+import com.scwang.smartrefresh.layout.internal.pathview.PathsView;
+
+import uk.co.senab.photoview.PhotoView;
 
 
 /**
@@ -48,7 +51,8 @@ public class AutographPreview extends Fragment {
                 .centerCrop()
                 .skipMemoryCache(true)
                 .dontAnimate()
-                .override(ScreenUtil.getScreenHeight(mContext), ScreenUtil.getScreenWidth(mContext))
+                .fitCenter()
+                .override(ScreenUtil.getScreenHeight(mContext)/2, ScreenUtil.getScreenWidth(mContext)/2)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.mipmap.noautigraph);
         activity = (SignatureViewActivity) mContext;

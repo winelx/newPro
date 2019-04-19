@@ -379,10 +379,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
 
     /**
      * 界面回调
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -423,7 +419,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * \设置pop的点击事件
+     * 设置pop的点击事件
      */
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
@@ -548,6 +544,9 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
      * @param nodeId
      */
     public void Save(String content, String nodeId) {
+        if (TextUtils.isEmpty(nodeId)) {
+            nodeId = "";
+        }
         Dates.getDialogs(CheckNewAddActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
@@ -695,7 +694,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                 } catch (JSONException e) {
                                     wbsName.setText("");
                                 }
-
                                 //检查人
                                 checkUsername.setText(json.getString("realname"));
                                 //检查标题
@@ -718,7 +716,11 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
-                                categoryId = json.getString("WbsTaskTypeId");
+                                try {
+                                    categoryId = json.getString("WbsTaskTypeId");
+                                } catch (Exception e) {
+                                    categoryId = "";
+                                }
                                 checkNewButton.setVisibility(View.VISIBLE);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));

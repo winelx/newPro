@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
 import com.example.baselibrary.adapter.multiitem.BaseItemProvider;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.DataHandleUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -107,11 +108,7 @@ public class TotalDetailsAdapter extends BaseItemProvider<TotalDetailsBean, Base
             helper.setText(R.id.total_org, bean.getOrgName());
         }
         //今日总数
-        if (TextUtils.isEmpty(bean.getToDayFinishCount())) {
-            helper.setText(R.id.toadaycount, "今日总数：");
-        } else {
-            helper.setText(R.id.toadaycount, "今日总数：" + bean.getToDayFinishCount());
-        }
+            helper.setVisible(R.id.toadaycount, false);
         //总任务
         if (TextUtils.isEmpty(bean.getTotalTask())) {
             helper.setText(R.id.count, "总任务：");

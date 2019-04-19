@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String name, orgId, categoryId = "", taskId = "", nodeId, type;
+    private String name, orgId, categoryId = "", taskId, nodeId, type;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -99,7 +100,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         removeActivity(this);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +117,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             taskId = intent.getStringExtra("taskId");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            taskId = "0";
+            taskId = "";
         }
         findbyid();
         initData();
@@ -534,6 +534,9 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
      * @param nodeId
      */
     public void Save(String content, String nodeId) {
+        if (TextUtils.isEmpty(nodeId)) {
+            nodeId = "";
+        }
         Dates.getDialogs(CheckNewAddsActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
 //                //所属标段
@@ -701,7 +704,11 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                     checkNewTemporarysite.setText(partDetails);
                                     checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
                                 }
-                                categoryId = json.getString("WbsTaskTypeId");
+                                try {
+                                    categoryId = json.getString("WbsTaskTypeId");
+                                } catch (Exception e) {
+                                    categoryId = "";
+                                }
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }
@@ -790,12 +797,10 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                                 Boolean lean = jsonObject1.getBoolean("finish");
                                 if (lean) {
-
                                     submit();
                                 } else {
                                     statusT();
                                 }
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

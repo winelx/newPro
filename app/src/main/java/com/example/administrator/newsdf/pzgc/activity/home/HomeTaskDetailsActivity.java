@@ -96,6 +96,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     notice.putExtra("modelType", true);
                     startActivity(notice);
                 } else if (type.equals(Enums.TODAYTASK)) {
+                    //今日
                     TodayDetailsBean bean = (TodayDetailsBean) list.get(position);
                     Intent notice = new Intent(mContext, AllListmessageActivity.class);
                     notice.putExtra("orgId", bean.getOrgId());
@@ -103,11 +104,11 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     notice.putExtra("isToday", "1");
                     startActivity(notice);
                 }else {
+                    //累计
                     TotalDetailsBean bean = (TotalDetailsBean) list.get(position);
                     Intent notice = new Intent(mContext, AllListmessageActivity.class);
                     notice.putExtra("orgId", bean.getOrgId());
                     notice.putExtra("name", bean.getOrgName());
-                    notice.putExtra("isToday", "1");
                     startActivity(notice);
                 }
             }
