@@ -19,7 +19,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.GlideRoundTransform;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 
 import java.util.ArrayList;

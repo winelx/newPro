@@ -18,13 +18,15 @@ import com.example.administrator.newsdf.pzgc.Adapter.MoretaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.MoredetailsUrils;
 import com.example.administrator.newsdf.pzgc.bean.AduioContent;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
+import com.example.administrator.newsdf.pzgc.inter.JsonCallback;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -39,6 +41,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
@@ -49,9 +53,9 @@ import okhttp3.Response;
  * description: 多次任务上传界面
  *
  * @author lx
- *         date: 2018/4/16 0016 上午 11:11
- *         update: 2018/4/16 0016
- *         version:
+ * date: 2018/4/16 0016 上午 11:11
+ * update: 2018/4/16 0016
+ * version:
  */
 public class MoretaskActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
@@ -70,10 +74,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     private SmartRefreshLayout drawerLayout_smart;
     private IconTextView iconTextView;
     /**
-     * 是否需要返回后刷新界面状态
-     */
-    private boolean Refresh = true;
-    /**
      * 请求图册的页数
      */
     private int page = 1;
@@ -81,7 +81,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
      * 判断状态，是上拉还是下拉
      */
     private boolean drew = true;
-    private String wbsName = "",activity;
+    private String wbsName = "", activity;
 
     //弹出框
     private CircleImageView fab;
@@ -138,6 +138,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
             }
         });
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -217,7 +218,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     public void onclick(int pos) {
         Intent intent = new Intent(mContext, TaskdetailsActivity.class);
         intent.putExtra("TaskId", Dats.get(pos).getId());
-        LogUtil.i("ss",Dats.get(pos).getId());
+        LogUtil.i("ss", Dats.get(pos).getId());
         intent.putExtra("wbsid", wbsid);
         //判断能否可以跳转任务管理
         intent.putExtra("status", status);
@@ -276,17 +277,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                 startActivityForResult(intent, 1);
                 break;
             case R.id.com_back:
-//                //抛出异常，在任务管理界面返回时不需要刷新数据，
-//                try {
-//                    //判断状态是否改变
-//                    if (!Refresh) {
-//                        //改变了，调用刷新数据方法
-//                        TaskCallbackUtils.CallBackMethod();
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
                 finish();
                 break;
             case R.id.taskManagemented:
@@ -308,7 +298,37 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         LogUtil.i("result", s);
-                        getJson(s);
+                        MoredetailsUrils.getStringTolist(s, wbsName, new JsonCallback() {
+                            @Override
+                            public void onsuccess(Map<String, Object> map) {
+                                contents.clear();
+                                Dats.clear();
+                                String status = (String) map.get("status");
+                                String leaderId = (String) map.get("leaderId");
+                                switch (status) {
+                                    case "2":
+                                        //已完成不需要回复
+                                        newmoretask.setVisibility(View.GONE);
+                                        break;
+                                    case "0":
+                                        //未完成，判断责任人ID和登录人的ID是否相同
+                                        if (!leaderId.equals(userId)) {
+                                            newmoretask.setVisibility(View.GONE);
+                                        } else {
+                                            newmoretask.setVisibility(View.VISIBLE);
+                                        }
+                                        break;
+                                    default:
+                                        newmoretask.setVisibility(View.GONE);
+                                        break;
+                                }
+                                contents.addAll((ArrayList<AduioContent>) map.get("list1"));
+                                Dats.addAll((ArrayList<MoretasklistBean>) map.get("list2"));
+                                mAdapter.getContent(contents, Dats);
+                                wbsNode.setText((String) map.get("WbsName"));
+                            }
+                        });
+                        /*  getJson(s);*/
                     }
 
                     @Override
@@ -317,147 +337,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
 
                     }
                 });
-    }
-
-    //解析当前页面数据
-    public void getJson(String s) {
-        if (s.contains(DATA)) {
-            try {
-                contents.clear();
-                Dats.clear();
-                JSONObject jsonObject = new JSONObject(s);
-                //返回数据
-                JSONObject Data = jsonObject.getJSONObject("data");
-                JSONObject jsonArray = Data.getJSONObject("data");
-
-                //创建时间
-                String createDate;
-                try {
-                    createDate = jsonArray.getString("createDate");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    createDate = "";
-                }
-                //推送天数
-                String sendedTimeStr;
-                try {
-                    sendedTimeStr = jsonArray.getString("sendedTimeStr");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    sendedTimeStr = "";
-                }
-                //责任人
-                String leaderName;
-                try {
-                    leaderName = jsonArray.getString("leaderName");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    leaderName = "";
-                }
-                //责任人Id
-                String leaderId;
-                try {
-                    leaderId = jsonArray.getString("leaderId");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    leaderId = "";
-                }
-                //是否已读
-                String isread = "";
-                //创建人ID
-                String createByUserID = "";
-                //标题名称
-                String name;
-                try {
-                    name = jsonArray.getString("name");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    name = "";
-                }
-                //id
-                String id;
-                try {
-                    id = jsonArray.getString("id");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    id = "";
-                }
-                //任务内容
-                String content;
-                try {
-                    content = jsonArray.getString("content");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    content = "";
-                }
-                //状态
-                String status;
-                try {
-                    status = jsonArray.getString("status");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    status = "";
-                }
-                //状态
-                String checkStandard;
-                try {
-                    checkStandard = jsonArray.getString("checkStandard");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    checkStandard = "";
-                }
-                try {
-                    JSONArray parts = Data.getJSONArray("parts");
-                    for (int i = 0; i < parts.length(); i++) {
-                        JSONObject json = parts.getJSONObject(i);
-                        String ids = json.getString("id");
-                        String partContent;
-                        try {
-                            partContent = json.getString("partContent");
-                        } catch (JSONException e) {
-                            partContent = "";
-                        }
-                        String uploadDate;
-                        try {
-                            uploadDate = json.getString("updateDate");
-                        } catch (JSONException e) {
-                            uploadDate = "";
-                        }
-                        Dats.add(new MoretasklistBean(uploadDate, partContent, ids));
-                    }
-                    switch (status) {
-                        case "2":
-                            //已完成不需要回复
-                            newmoretask.setVisibility(View.GONE);
-                            break;
-                        case "0":
-                            //未完成，判断责任人ID和登录人的ID是否相同
-                            if (!leaderId.equals(userId)) {
-                                newmoretask.setVisibility(View.GONE);
-                            } else {
-                                newmoretask.setVisibility(View.VISIBLE);
-                            }
-                            break;
-                        default:
-                            newmoretask.setVisibility(View.GONE);
-                            break;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                contents.add(new AduioContent(id, name, status, content, leaderName, leaderId, isread, createByUserID, checkStandard, createDate, wbsName, null, sendedTimeStr, ""));
-                mAdapter.getContent(contents, Dats);
-                wbsNode.setText(jsonArray.getString("WbsName"));
-                try {
-                    Dates.disDialog();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     //请求图册
@@ -480,7 +359,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
         if (requestCode == 1 && resultCode == RESULT_OK) {
             taskID = data.getStringExtra("frag_id");
             newmoretask.setVisibility(View.VISIBLE);
-            Refresh = false;
             OkGo();
         }
     }

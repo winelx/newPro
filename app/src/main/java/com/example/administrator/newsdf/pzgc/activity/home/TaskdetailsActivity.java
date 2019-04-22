@@ -33,7 +33,7 @@ import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -370,7 +370,6 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
      * 完成详细数据
      */
     private void okgo(final String id) {
-
         OkGo.post(Requests.Detail)
                 .params("wbsTaskId", id)
                 .execute(new StringCallback() {

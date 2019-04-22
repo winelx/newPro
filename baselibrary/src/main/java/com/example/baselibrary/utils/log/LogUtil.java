@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.utils;
+package com.example.baselibrary.utils.log;
 
 import android.text.TextUtils;
 import android.util.Log;

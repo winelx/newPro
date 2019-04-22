@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;

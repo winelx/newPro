@@ -11,7 +11,7 @@ import android.util.Log;
 import com.example.administrator.newsdf.GreenDao.DaoMaster;
 import com.example.administrator.newsdf.GreenDao.DaoSession;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PicassoImageLoader;
 import com.example.administrator.newsdf.pzgc.view.PieChartBeans;
 import com.example.baselibrary.glide.ProgressInterceptor;

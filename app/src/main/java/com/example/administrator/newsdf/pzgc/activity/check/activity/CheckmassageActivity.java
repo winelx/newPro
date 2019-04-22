@@ -100,15 +100,15 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
     private LinearLayout checkMessageLasttiem, checkMessageDialog, checkMessageDate;
     private NumberPicker yearPicker, monthPicker, dayPicker;
     private RelativeLayout checkMessageContent;
-    private EditText check_message_describe, checkMessageStandar;
+    private EditText checkMessageDescribe, checkMessageStandar;
     private TextView checkMessageUser, checkMessageOrg, MessageData, titleView;
     private Boolean generate;
     private String orgId, nameId = "";
     private String messageid = "", taskId, success;
-    ArrayList<String> ids;
+    private ArrayList<String> ids;
     private IconTextView threeIcon, twoIco, ontIcon;
     private ArrayList<View> arrayList = new ArrayList<>();
-    LinearLayout check_message_username;
+    private LinearLayout checkMessageUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +145,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         //是否生成通知linear
         checkMessageDialog = (LinearLayout) findViewById(R.id.check_message_dialog);
         //整改事由
-        check_message_describe = (EditText) findViewById(R.id.check_message_describe);
+        checkMessageDescribe = (EditText) findViewById(R.id.check_message_describe);
         //违反标段
         checkMessageStandar = (EditText) findViewById(R.id.checkmessage_standar);
         //滚动父布局
@@ -162,8 +162,8 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         checkMessageLasttiem = (LinearLayout) findViewById(check_message_lasttiem);
         //附件
         photoadd = (RecyclerView) findViewById(R.id.check_message_rec);
-        check_message_username = (LinearLayout) findViewById(R.id.check_message_username);
-        check_message_username.setOnClickListener(this);
+        checkMessageUsername = (LinearLayout) findViewById(R.id.check_message_username);
+        checkMessageUsername.setOnClickListener(this);
         findViewById(checklistmeun).setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         checkMessageDate.setOnClickListener(this);
@@ -209,8 +209,8 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         } else {
             checkMessageTime.setText(Dates.getDay());
             MessageData.setText(Dates.getDay());
-            check_message_username.setClickable(true);
-            check_message_describe.setText(intent.getStringExtra("describe"));
+            checkMessageUsername.setClickable(true);
+            checkMessageDescribe.setText(intent.getStringExtra("describe"));
             checkMessageUser.setText(SPUtils.getString(mContext, "staffName", ""));
             checkMessageOrg.setText(SPUtils.getString(mContext, "username", ""));
             checkMessageContent.setVisibility(View.GONE);
@@ -652,7 +652,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
                 //违反标准
                 .params("standardDelName", checkMessageStandar.getText().toString())
                 //整改事宜
-                .params("rectificationReason", check_message_describe.getText().toString())
+                .params("rectificationReason", checkMessageDescribe.getText().toString())
                 //检查人
                 .params("checkPersonName", SPUtils.getString(mContext, "id", ""))
                 // 检查组织
@@ -734,7 +734,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
                                 String stard = json.getString("standardDelName");
                                 checkMessageStandar.setText(stard);
                                 String Reaso = json.getString("rectificationReason");
-                                check_message_describe.setText(Reaso);
+                                checkMessageDescribe.setText(Reaso);
                                 String messageuser = json.getString("checkPersonName");
                                 checkMessageUser.setText(messageuser);
                                 //
@@ -810,8 +810,8 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         checkMessageStandar.setEnabled(true);
         checkMessageLasttiem.setClickable(true);
         checkMessageDate.setClickable(true);
-        check_message_describe.setEnabled(true);
-        check_message_username.setClickable(true);
+        checkMessageDescribe.setEnabled(true);
+        checkMessageUsername.setClickable(true);
         checkMessageSwitch.setEnabled(true);
         checklistmeuntext.setText("保存");
         photoAdapter.getData(Imagepath, true);
@@ -824,8 +824,8 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
         checkMessageStandar.setEnabled(false);
         checkMessageLasttiem.setClickable(false);
         checkMessageDate.setClickable(false);
-        check_message_describe.setEnabled(false);
-        check_message_username.setClickable(false);
+        checkMessageDescribe.setEnabled(false);
+        checkMessageUsername.setClickable(false);
         checklistmeuntext.setText("编辑");
         photoAdapter.getData(Imagepath, false);
     }

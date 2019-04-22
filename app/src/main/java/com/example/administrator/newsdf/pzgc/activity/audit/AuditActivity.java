@@ -19,13 +19,13 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
-import com.example.administrator.newsdf.pzgc.bean.Auditbean;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
+import com.example.baselibrary.utils.ScreenUtil;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.ScreenUtil;
+
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -40,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;

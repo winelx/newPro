@@ -26,7 +26,6 @@ import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUt
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
 

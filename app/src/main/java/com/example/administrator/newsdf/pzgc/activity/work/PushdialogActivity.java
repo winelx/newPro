@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.pzgc.bean.CasePointsBean;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.LogUtil;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;

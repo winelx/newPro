@@ -434,7 +434,7 @@ public class ChagedreplyUtils {
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
-                callBack.onerror("请求失败");
+                callBack.onerror("该任务可能未回复，无法查到数据");
             }
         });
     }
