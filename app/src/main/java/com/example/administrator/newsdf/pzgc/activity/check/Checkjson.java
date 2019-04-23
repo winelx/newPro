@@ -15,8 +15,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2018/8/13 0013.
- */
+* @author lx
+* @data :2018/8/13 0013.
+* @描述 :
+*@see
+*/
 
 public class Checkjson {
 

@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.bean.photoBean;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;

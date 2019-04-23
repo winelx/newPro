@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.example.baselibrary.R;
-import com.example.baselibrary.utils.ScreenUtil;
+import com.example.baselibrary.utils.screen.ScreenUtil;
 
 /**
  * @author lx

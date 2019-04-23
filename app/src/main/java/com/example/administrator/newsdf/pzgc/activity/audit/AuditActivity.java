@@ -20,11 +20,11 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
-import com.example.baselibrary.utils.ScreenUtil;
+import com.example.baselibrary.utils.screen.ScreenUtil;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.log.LogUtil;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.joanzapata.iconify.widget.IconTextView;

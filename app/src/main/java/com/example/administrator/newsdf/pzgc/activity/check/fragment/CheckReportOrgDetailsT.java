@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckReportOrgDetailsAdapte
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrgDetailsTBean;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

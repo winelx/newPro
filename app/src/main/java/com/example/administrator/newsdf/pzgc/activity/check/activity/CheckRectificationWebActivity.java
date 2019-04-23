@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 

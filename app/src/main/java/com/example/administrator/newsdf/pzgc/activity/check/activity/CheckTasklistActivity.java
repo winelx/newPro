@@ -15,11 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
@@ -33,10 +31,10 @@ import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.baselibrary.utils.ScreenUtil;
+import com.example.baselibrary.utils.screen.ScreenUtil;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;

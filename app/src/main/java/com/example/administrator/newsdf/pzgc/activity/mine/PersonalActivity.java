@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;

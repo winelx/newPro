@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyBillActivity;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.utils.PdfPreview;
+import com.example.baselibrary.ui.utils.PdfPreview;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.baselibrary.utils;
+package com.example.baselibrary.utils.rx;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

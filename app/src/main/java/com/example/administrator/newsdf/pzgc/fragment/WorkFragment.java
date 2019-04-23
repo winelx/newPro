@@ -27,7 +27,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.PchooseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.MessageFragmentAdapter;

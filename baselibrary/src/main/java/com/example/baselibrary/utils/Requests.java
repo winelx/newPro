@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.utils;
+package com.example.baselibrary.utils;
 
 /**
  * @author ：winelx
@@ -7,13 +7,13 @@ package com.example.administrator.newsdf.pzgc.utils;
  */
 public class Requests {
 
-//public static final String networks = "http://192.168.20.35:8082/pzgc/";
+   // public static final String networks = "http://192.168.20.35:8082/pzgc/";
 
 //  public static final String networks = "http://192.168.20.25:8080/pzgc/";
 
-public static final String networks = "http://192.168.1.119:8081/pzgc/";
+public static final String networks = "http://192.168.20.120:8017/pzgc/";
     //张
- // public static final String networks = "http://192.168.20.81:8080/pzgc/";
+    // public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //外
 //public static final String networks = "http://117.187.27.78:58081/pzgc/";
 // public static final String networks = "http://120.79.142.15/pzgc/";
@@ -620,7 +620,8 @@ public static final String networks = "http://192.168.1.119:8081/pzgc/";
      * 验证
      */
     public static final String GETORGINFOBYCNFVALIDREPLY = networks + "iface/mobile/newcheck/validReply";
-
-
-    /*首页消息*/
+    /**
+     * 签名
+     */
+    public static final String UPLOADPERSONSIGNATURE = networks + "iface/mobile/systemnotice/uploadPersonSignature";
 }

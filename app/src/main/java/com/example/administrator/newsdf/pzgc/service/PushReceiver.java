@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.log.LogUtil;
-import com.example.baselibrary.utils.RxBus;
+import com.example.baselibrary.utils.rx.RxBus;
 
 import org.json.JSONException;
 import org.json.JSONObject;

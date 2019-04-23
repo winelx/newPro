@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -11,7 +10,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckManagementAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

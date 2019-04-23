@@ -27,8 +27,6 @@ public class DialogUtils {
     CheckUtils checkUtils = new CheckUtils();
 
     public void selectiontime(Context mContext, final OnClickListener click) {
-        // 创建对话框构建器
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         // 获取布局
         View view = View.inflate(mContext, R.layout.popwind_daily, null);
         // 获取布局中的控件

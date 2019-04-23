@@ -21,10 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.baselibrary.R;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
-import com.example.baselibrary.utils.ScreenUtil;
-import com.scwang.smartrefresh.layout.internal.pathview.PathsView;
-
-import uk.co.senab.photoview.PhotoView;
+import com.example.baselibrary.utils.screen.ScreenUtil;
 
 
 /**

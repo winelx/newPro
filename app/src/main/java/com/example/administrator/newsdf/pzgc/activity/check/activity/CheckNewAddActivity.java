@@ -24,19 +24,21 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.view.BaseDialog;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -341,6 +343,18 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                     builder.show();
+                } else if ("确认并签证".equals(str)) {
+                    BaseDialog.confirmdialog(this, "是否确认？", null, new Onclicklitener() {
+                        @Override
+                        public void confirm(String string) {
+                            ToastUtils.showShortToast(string);
+                        }
+
+                        @Override
+                        public void cancel(String string) {
+                            ToastUtils.showShortToast(string);
+                        }
+                    });
                 }
                 break;
             default:
@@ -583,9 +597,26 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                 getcheckitemList();
                                 statusT();
                             } else {
-                                ToastUtils.showShortToast(jsonObject1.getString("msg"));
-                            }
+                                if (jsonObject1.getString("msg").contains("签名")) {
+                                    BaseDialog.confirmmessagedialog(mContext,
+                                            "确认签字失败",
+                                            "您当前还未设置我的签名",
+                                            null,
+                                            "去设置签名", new Onclicklitener() {
+                                                @Override
+                                                public void confirm(String string) {
 
+                                                }
+
+                                                @Override
+                                                public void cancel(String string) {
+
+                                                }
+                                            });
+                                } else {
+                                    ToastUtils.showShortToast(jsonObject1.getString("msg"));
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

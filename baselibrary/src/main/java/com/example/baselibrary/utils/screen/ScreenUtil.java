@@ -1,4 +1,4 @@
-package com.example.baselibrary.utils;
+package com.example.baselibrary.utils.screen;
 
 import android.app.Activity;
 import android.content.Context;

@@ -22,7 +22,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.Chagedre
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.baselibrary.utils.RxBus;
+import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;

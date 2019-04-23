@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQ
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;

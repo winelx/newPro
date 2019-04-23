@@ -24,6 +24,8 @@
     <color name="transparent">#00000000</color>
     <color name="transparents">#55000000</color>
 
+    <color name="text_Grey">#c1c1c2</color>
+
 
     <color name="unfinish_gray">#a6a6a6</color>
     <color name="light_blue">#ccf0fd</color>

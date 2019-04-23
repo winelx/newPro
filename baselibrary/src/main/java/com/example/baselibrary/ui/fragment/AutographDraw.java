@@ -10,13 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.baselibrary.R;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.network.NetWork;
 import com.example.baselibrary.view.signature.SignatureView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class AutographDraw extends Fragment {
     private View view;
@@ -53,8 +65,33 @@ public class AutographDraw extends Fragment {
                     boolean lean = signatureView.save(paths, false, 1);
                     //根据返回值判断是否保存成功
                     if (lean) {
-                        activity.setvertical();
-                        activity.setItem(0);
+                        File file = new File(paths);
+                        ArrayList<File> files = new ArrayList<>();
+                        files.add(file);
+                        //请求地址，请求参数，上传文件，表单提交，回调
+                        NetWork.postHttp(Requests.UPLOADPERSONSIGNATURE, new HashMap<String, String>(), files, false, new NetWork.networkCallBack() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    if (jsonObject.getInt("ret") == 0) {
+                                        Toast.makeText(mContext, "签名上传成功", Toast.LENGTH_SHORT).show();
+                                        activity.setvertical();
+                                        activity.setItem(0);
+                                    } else {
+                                        Toast.makeText(mContext, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response, Exception e) {
+                                Toast.makeText(mContext, "请求失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

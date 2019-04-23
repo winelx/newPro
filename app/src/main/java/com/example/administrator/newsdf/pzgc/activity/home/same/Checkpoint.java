@@ -11,7 +11,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
 import com.example.baselibrary.view.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;
-import com.example.administrator.newsdf.pzgc.utils.Requests;
+import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
