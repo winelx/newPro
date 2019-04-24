@@ -9,7 +9,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CategoryContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Categorylist;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -26,17 +26,12 @@ import java.util.List;
 public class CheckTaskCategoryActivity extends BaseActivity {
     private NoScrollViewPager viewpager;
     private String type;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_category);
-        addActivity(this);
+
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         //构造适配器

@@ -20,12 +20,9 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.glide.GlideApp;
-import com.example.baselibrary.inface.Onclicklitener;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.baselibrary.view.BaseDialog;
 import com.example.baselibrary.view.ClearEditText;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -68,7 +65,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        addActivity(this);
         mContext = App.getInstance();
         //点击背景关闭软键盘
         findViewById(R.id.backgroud).setOnClickListener(new View.OnClickListener() {
@@ -89,11 +85,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     public void onClick(View v) {

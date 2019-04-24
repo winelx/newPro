@@ -24,7 +24,7 @@ import com.example.administrator.newsdf.pzgc.bean.Devicedetails;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallback;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 
@@ -64,7 +64,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_device);
-        addActivity(this);
+
         Intent intent = getIntent();//获取传来的intent对象
         id = intent.getStringExtra("id");//获取键值对的键名
         mContext = this;
@@ -503,7 +503,7 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
         if (dialogUtils != null) {
             dialogUtils = null;
         }

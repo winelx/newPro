@@ -49,7 +49,7 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -117,17 +117,13 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private GridView checklist;
     private DKDragView dkDragView;
     private InputMethodManager inputMethodManager;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
-        addActivity(this);
+
         //输入法
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initdata();

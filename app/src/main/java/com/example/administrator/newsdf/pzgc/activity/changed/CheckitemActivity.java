@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.CheckitemAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -41,17 +41,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private EmptyUtils emptyUtils;
     ArrayList<String> itemes = new ArrayList<>();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
-        addActivity(this);
+
         mContext = this;
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();

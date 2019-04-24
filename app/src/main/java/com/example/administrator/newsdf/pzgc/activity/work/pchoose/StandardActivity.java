@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotolabelAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.baselibrary.utils.Requests;
@@ -47,7 +47,7 @@ public class StandardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard);
-        addActivity(this);
+
         Dates.getDialog(StandardActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
@@ -94,11 +94,6 @@ public class StandardActivity extends BaseActivity {
 //            }
 //        });
 
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     public void OkGo() {

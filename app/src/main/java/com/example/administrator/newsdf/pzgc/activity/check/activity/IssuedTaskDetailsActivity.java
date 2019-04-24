@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.bean.CheckDetailsTop;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -71,7 +71,7 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issued_task_details);
-        addActivity(this);
+
         Intent intent = getIntent();
         mData = new ArrayList<>();
         mData2 = new ArrayList<>();
@@ -116,11 +116,7 @@ public class IssuedTaskDetailsActivity extends BaseActivity implements View.OnCl
 
         }
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 
     @Override

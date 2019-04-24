@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsF;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckReportOrgDetailsT;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,14 +41,14 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report_org_details);
-        addActivity(this);
+
         mContext = this;
         titleView = (TextView) findViewById(R.id.titleView);
         tabCheck = (TextView) findViewById(R.id.tab_check);

@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -59,7 +59,7 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
-        addActivity(this);
+
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         mContext = this;
@@ -249,6 +249,6 @@ public class DeviceMessageAllActivity extends BaseActivity implements View.OnCli
         if (deviceUtils != null) {
             deviceUtils = null;
         }
-        removeActivity(this);
+
     }
 }

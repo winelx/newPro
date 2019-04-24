@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 /**
  * description: 任务下发
@@ -25,13 +25,13 @@ public class PushCheckActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_check);
-        addActivity(this);
+
         mContext = PushCheckActivity.this;
         com_titlle = (TextView) findViewById(R.id.com_title);
         com_titlle.setText("任务下发");

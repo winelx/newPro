@@ -8,7 +8,7 @@ import android.widget.Switch;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.App;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -41,7 +41,7 @@ public class SettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        addActivity(this);
+
         initView();
         settingNotDisturb.setChecked(true);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
@@ -129,9 +129,5 @@ public class SettingActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

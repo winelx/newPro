@@ -26,7 +26,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.Checkstanda
 import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -75,17 +75,13 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private int iwork = 0;
     private TextView importWarning;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_problemitem);
-        addActivity(this);
+
         Intent intent = getIntent();
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");

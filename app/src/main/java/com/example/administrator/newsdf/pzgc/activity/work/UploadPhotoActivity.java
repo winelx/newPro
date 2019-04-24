@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.UploadPhAdapter;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class UploadPhotoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photo);
-        addActivity(this);
+
         mContext = UploadPhotoActivity.this;
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         //名称
@@ -143,10 +143,6 @@ public class UploadPhotoActivity extends BaseActivity {
                 .start((Activity) mContext);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

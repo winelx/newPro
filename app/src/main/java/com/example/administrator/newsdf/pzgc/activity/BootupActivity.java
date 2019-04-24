@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -46,7 +46,6 @@ public class BootupActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_bootup);
-        addActivity(this);
         //第一次安装完成启动，和home键退出点击launcher icon启动会重复
         // 此代码防止重复创建的问题，
         if (!isTaskRoot()
@@ -81,7 +80,7 @@ public class BootupActivity extends BaseActivity {
                 }
                 return false;
             }
-            //表示延迟3秒发送任务
+            //表示发送任务
         }).sendEmptyMessageDelayed(0, 1000);
     }
 
@@ -208,9 +207,5 @@ public class BootupActivity extends BaseActivity {
                 });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

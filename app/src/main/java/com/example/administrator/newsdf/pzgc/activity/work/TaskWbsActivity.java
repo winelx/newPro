@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.TaskTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -63,7 +63,7 @@ public class TaskWbsActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_wbs);
-        addActivity(this);
+
         Intent intent = getIntent();
         wbsID = intent.getStringExtra("wbsID");
         wbsname = intent.getExtras().getString("wbsname");
@@ -364,10 +364,5 @@ public class TaskWbsActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
 }

@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.FmPagerAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceMeFragment;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class DeviceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
-        addActivity(this);
+
         context = this;
         //tablyout
         tabLayout = (TabLayout) findViewById(R.id.device_tablayout);
@@ -72,10 +72,6 @@ public class DeviceActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

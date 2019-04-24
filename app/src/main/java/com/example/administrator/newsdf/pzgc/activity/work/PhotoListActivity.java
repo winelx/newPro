@@ -12,7 +12,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -58,7 +58,7 @@ public class PhotoListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_list);
-        addActivity(this);
+
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
         refreshLayout.setEnableLoadmore(false);//禁止上拉
@@ -348,9 +348,5 @@ public class PhotoListActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

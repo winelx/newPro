@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -41,7 +41,7 @@ public class WorkareaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordarea);
-        addActivity(this);
+
         mData = new ArrayList<>();
         mContext = this;
         getData();
@@ -85,11 +85,6 @@ public class WorkareaActivity extends BaseActivity {
         uslistView.setEmptyView(findViewById(R.id.mine_backgroud));
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
 
     public void getData() {

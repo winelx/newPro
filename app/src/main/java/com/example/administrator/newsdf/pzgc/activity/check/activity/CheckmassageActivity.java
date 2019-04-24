@@ -36,7 +36,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
@@ -114,7 +114,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmassage);
-        addActivity(this);
+
         mContext = CheckmassageActivity.this;
         findID();
         initData();
@@ -123,7 +123,7 @@ public class CheckmassageActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
 
     private void findID() {

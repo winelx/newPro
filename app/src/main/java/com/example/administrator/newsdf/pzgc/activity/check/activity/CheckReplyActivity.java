@@ -32,7 +32,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
@@ -75,17 +75,13 @@ public class CheckReplyActivity extends BaseActivity implements View.OnClickList
     private EditText replyDescription;
     private ArrayList<String> list = new ArrayList<>();
     private ArrayList<String> ids = new ArrayList<>();
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_reply);
-        addActivity(this);
+
         imagepath = new ArrayList<>();
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("整改回复");

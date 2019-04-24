@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckManagementAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -63,7 +63,7 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagement);
-        addActivity(this);
+
         mContext = CheckmanagementActivity.this;
         expandableListView = (ExpandableListView) findViewById(expandable);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
@@ -82,11 +82,6 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
         getdata();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     public void onClick(View v) {

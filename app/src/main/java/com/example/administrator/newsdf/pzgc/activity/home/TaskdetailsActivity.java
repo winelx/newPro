@@ -29,7 +29,7 @@ import com.example.administrator.newsdf.pzgc.bean.AduioData;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.DetailsCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameDialog;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
@@ -119,7 +119,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_auditparticulars);
-        addActivity(this);
+
         //动画类实现
         floatMeunAnims = new FloatMeunAnims();
         //初始化集合
@@ -903,7 +903,7 @@ public class TaskdetailsActivity extends BaseActivity implements DetailsCallback
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
         if (CameDialog.path.size() != 0) {
             for (int i = 0; i < CameDialog.path.size(); i++) {
                 Dates.deleteFile(CameDialog.path.get(i));

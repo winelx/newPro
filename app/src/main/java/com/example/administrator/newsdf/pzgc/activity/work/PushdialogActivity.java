@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.pzgc.bean.CasePointsBean;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -68,7 +68,7 @@ public class PushdialogActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushdialog);
-        addActivity(this);
+
         com_back = (IconTextView) findViewById(R.id.com_back);
         //标准
         checkstandard = (TextView) findViewById(R.id.pushdialog_checkStandard);
@@ -335,9 +335,5 @@ public class PushdialogActivity extends BaseActivity implements View.OnClickList
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

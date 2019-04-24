@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.Adapter.TabAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.utils.Requests;
@@ -86,17 +86,12 @@ public class TenanceviewActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<String> namess;
     int viewpagertype;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
         setContentView(R.layout.activity_missionmte);
-        addActivity(this);
+
         mContext = TenanceviewActivity.this;
         floatMeunAnims = new FloatMeunAnims();
         MoreTaskCallbackUtils.setCallBack(this);

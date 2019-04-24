@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -62,7 +62,7 @@ public class SelectaccpectuserActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wbs);
-        addActivity(this);
+
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         checkId = intent.getStringExtra("id");
@@ -213,11 +213,6 @@ public class SelectaccpectuserActivity extends BaseActivity {
                     }
                 });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+ }
 
 
-}

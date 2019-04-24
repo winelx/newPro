@@ -20,7 +20,7 @@ import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.HideCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.treeviews.ReportTreeListViewAdapters;
@@ -72,7 +72,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-        addActivity(this);
+
         Intent intent=getIntent();
         orgId= intent.getStringExtra("orgid");
         //初始化控件
@@ -83,11 +83,6 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         //初始化数据
         initData();
         initDatas();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     private void findView() {

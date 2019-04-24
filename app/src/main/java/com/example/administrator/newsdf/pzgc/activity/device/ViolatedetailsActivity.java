@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.GradeRecyclerAdapter;
 import com.example.administrator.newsdf.pzgc.bean.SecstandardlistBean;
 import com.example.administrator.newsdf.pzgc.callback.ViolateCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class ViolatedetailsActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -95,11 +95,6 @@ public class ViolatedetailsActivity extends BaseActivity {
                 }
             }
         });
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
 }

@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class FacilitynameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
-        addActivity(this);
+
         mContext = this;
         deviceUtils = new DeviceUtils();
         home_backgroud = (LinearLayout) findViewById(R.id.home_backgroud);
@@ -78,10 +78,6 @@ public class FacilitynameActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

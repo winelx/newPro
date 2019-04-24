@@ -42,7 +42,7 @@ import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.utils.Requests;
@@ -196,7 +196,6 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listinterface);
-        addActivity(this);
         mContext = getApplicationContext();
         floatMeunAnims = new FloatMeunAnims();
         //拿到上一个界面传递的数据，
@@ -903,9 +902,5 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
         meunStandard.setOnClickListener(this);
         fab.setOnClickListener(this);
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

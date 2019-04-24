@@ -22,7 +22,7 @@ import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.inter.ItemClickListener;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -53,17 +53,13 @@ public class DeviceMessageListActivity extends BaseActivity implements View.OnCl
     private String[] meuns = {"全部", "未下发", "未回复", "未验证","打回", "已处理"};
     private int status = -1, page = 1;
     private boolean refresh = true;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
-        addActivity(this);
+
         mContext = this;
         mData = new ArrayList<>();
         Dates.getDialogs(this, "请求数据中...");

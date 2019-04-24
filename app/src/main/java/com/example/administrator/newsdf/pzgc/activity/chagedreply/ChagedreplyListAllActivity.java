@@ -19,8 +19,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedReplyListAllAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ChagedreplyList;
-import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -59,7 +58,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
@@ -220,10 +219,6 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

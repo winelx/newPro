@@ -39,7 +39,7 @@ import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.utils.Requests;
@@ -120,7 +120,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
-        addActivity(this);
+
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -256,11 +256,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
         getOrganization(organizationList);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
         if (organizationList != null) {

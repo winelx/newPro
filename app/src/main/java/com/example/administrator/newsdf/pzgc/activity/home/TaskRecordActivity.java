@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -47,7 +47,7 @@ public class TaskRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
-        addActivity(this);
+
         mContext = TaskRecordActivity.this;
         com_title = (TextView) findViewById(R.id.com_title);
         com_back = (IconTextView) findViewById(R.id.com_back);
@@ -68,11 +68,6 @@ public class TaskRecordActivity extends BaseActivity {
         task_list.setAdapter(mAdapter);
         okGo();
 
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     public void okGo() {

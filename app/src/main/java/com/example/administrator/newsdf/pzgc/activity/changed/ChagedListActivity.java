@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedList
 import com.example.administrator.newsdf.pzgc.bean.ChagedList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -56,17 +56,12 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     private int page = 1;
     private int status = -1;
     private EmptyUtils emptyUtils;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

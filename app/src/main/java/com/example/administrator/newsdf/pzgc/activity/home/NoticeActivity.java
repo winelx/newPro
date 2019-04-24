@@ -25,7 +25,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDe
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.utils.rx.RxBus;
@@ -73,7 +73,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
         mContext = this;
-        addActivity(this);
+
         emptyUtils = new EmptyUtils(mContext);
         RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
             @Override
@@ -392,7 +392,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
     protected void onDestroy() {
         super.onDestroy();
         RxBus.getInstance().unSubcribe();
-        removeActivity(this);
+
     }
 
 

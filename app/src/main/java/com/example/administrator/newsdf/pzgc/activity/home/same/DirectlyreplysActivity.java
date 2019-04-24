@@ -35,7 +35,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
@@ -86,16 +86,12 @@ public class DirectlyreplysActivity extends BaseActivity {
 
     String id = null, status, wbsId;
     private static final int IMAGE_PICKER = 101;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_codeplay_repley); addActivity(this);
+        setContentView(R.layout.activity_codeplay_repley);
         mContext = DirectlyreplysActivity.this;
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();

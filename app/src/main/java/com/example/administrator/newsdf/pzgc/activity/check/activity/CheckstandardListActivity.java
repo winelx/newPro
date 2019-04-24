@@ -9,7 +9,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckstandardContent;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.Checkstandarditem;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.NoScrollViewPager;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class CheckstandardListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_category);
-        addActivity(this);
+
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
         //构造适配器
@@ -96,9 +96,4 @@ public class CheckstandardListActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 }

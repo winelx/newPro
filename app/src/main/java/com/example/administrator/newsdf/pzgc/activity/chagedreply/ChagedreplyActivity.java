@@ -11,7 +11,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.fragment.ChagedReplyMeFragment;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -26,17 +26,13 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
     private TextView checkDownAll, checkDownMe, titleView;
     private ViewPager checkDownViewpager;
     private ArrayList<Fragment> mFragment;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
-        addActivity(this);
+
         mFragment = new ArrayList<>();
         //全部回复单
         mFragment.add(new ChagedReplyAllFragment());

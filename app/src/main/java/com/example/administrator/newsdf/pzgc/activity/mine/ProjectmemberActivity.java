@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
@@ -71,7 +71,7 @@ public class ProjectmemberActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmember);
-        addActivity(this);
+
         Dates.getDialog(ProjectmemberActivity.this, "请求数据中...");
         mContext = ProjectmemberActivity.this;
         //存储联系人信息
@@ -288,10 +288,4 @@ public class ProjectmemberActivity extends BaseActivity {
                 });
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 }

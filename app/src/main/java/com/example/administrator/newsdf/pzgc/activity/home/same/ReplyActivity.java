@@ -48,7 +48,7 @@ import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.view.PermissionListener;
@@ -130,7 +130,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
-        addActivity(this);
+
         floatMeunAnims = new FloatMeunAnims();
         mContext = ReplyActivity.this;
         pathimg = new ArrayList<>();
@@ -735,6 +735,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
 }

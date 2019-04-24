@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoti
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -50,18 +50,13 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private int permission;
     private boolean status = true;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-        addActivity(this);
+
         utils = new Utils();
         mContext = this;
         list = new ArrayList<>();

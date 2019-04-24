@@ -35,7 +35,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.MoreTaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
@@ -84,17 +84,12 @@ public class CheckValidationActivity extends BaseActivity implements View.OnClic
     private LinearLayout validation_status;
     private TextView category_item;
     TextView checklistmeuntext;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
-        addActivity(this);
+
         Intent intent = getIntent();
         imagepath = new ArrayList<>();
 

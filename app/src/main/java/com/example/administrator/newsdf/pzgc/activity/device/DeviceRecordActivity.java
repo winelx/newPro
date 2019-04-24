@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.DeviceRecordBean;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.baselibrary.utils.Requests;
@@ -48,7 +48,7 @@ public class DeviceRecordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
-        addActivity(this);
+
         mContext = this;
         list = new ArrayList<>();
         Intent intent = getIntent();
@@ -107,11 +107,7 @@ public class DeviceRecordActivity extends BaseActivity {
         listview.setAdapter(adapter);
         request();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     public void request() {
         OkGo.post(Requests.GETOPERHIS)

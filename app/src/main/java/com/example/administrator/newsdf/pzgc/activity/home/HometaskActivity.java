@@ -19,7 +19,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUti
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
 import com.example.administrator.newsdf.pzgc.fragment.HomeFragment;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -46,16 +46,14 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometask);
-        addActivity(this);
         mContext = this;
-        addActivity(this);
         list = new ArrayList<>();
         Intent intent = getIntent();
         emptyUtils = new EmptyUtils(mContext);

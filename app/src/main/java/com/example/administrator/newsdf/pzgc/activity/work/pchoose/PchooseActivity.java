@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pchoose);
-        addActivity(this);
+
         mContext = PchooseActivity.this;
         //构造适配器
         List<Fragment> fragments = new ArrayList<Fragment>();
@@ -105,11 +105,7 @@ public class PchooseActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     public void photo() {
         frPchooseMm.setTextColor(Color.parseColor("#306bb8"));

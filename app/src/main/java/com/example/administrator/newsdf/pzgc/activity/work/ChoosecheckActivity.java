@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -42,7 +42,7 @@ public class ChoosecheckActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choosecheck);
-        addActivity(this);
+
         mContent = ChoosecheckActivity.this;
         list = new ArrayList<>();
         mData = new ArrayList<>();
@@ -76,11 +76,7 @@ public class ChoosecheckActivity extends BaseActivity {
         list_item.setAdapter(mAdapter);
 
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
     private void okGo() {
         OkGo.post(Requests.Members)
                 .params("orgId", SPUtils.getString(mContent, "orgId", ""))

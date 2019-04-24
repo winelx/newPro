@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.pzgc.Adapter.PhotoadmAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.baselibrary.utils.Requests;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -43,16 +43,13 @@ public class ListPhActivity extends BaseActivity {
     private TextView number, com_title, wbsname;
     private IconTextView comback;
     PostRequest request;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ph);
-        addActivity(this);
+
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         final String groupId = intent.getExtras().getString("groupId");

@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.pzgc.bean.AuditrecordBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -73,7 +73,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditrecord);
-        addActivity(this);
+
         mContext = this;
         AuditrecordCallbackUtils.setCallBack(this);
         mData = new ArrayList<>();
@@ -158,11 +158,6 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
 
     @Override

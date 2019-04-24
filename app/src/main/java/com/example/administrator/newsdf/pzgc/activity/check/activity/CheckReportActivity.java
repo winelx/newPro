@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.CheckReportTreeListViewAdap
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -53,11 +53,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     private static CheckReportActivity mContext;
     private DrawerLayout Reportdrawer;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     public static CheckReportActivity getInstance() {
         return mContext;
@@ -67,7 +63,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report);
-        addActivity(this);
+
         mData = new ArrayList<>();
         mDatas2 = new ArrayList<>();
         //初始化控件

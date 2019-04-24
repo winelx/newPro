@@ -11,7 +11,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckdownMessageMeFragment;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class CheckdownMessageActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
-        addActivity(this);
+
         mFragment = new ArrayList<>();
         mFragment.add(new CheckdownMessageAllFragment());
         mFragment.add(new CheckdownMessageMeFragment());
@@ -80,11 +80,6 @@ public class CheckdownMessageActivity extends BaseActivity implements View.OnCli
             }
 
         });
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     @Override

@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
 import com.example.administrator.newsdf.pzgc.Adapter.Adapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +44,13 @@ public class NotuploadActivity extends BaseActivity implements TaskCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        removeActivity(this);
+
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notupload);
-        addActivity(this);
+
         toolbar_add = (LinearLayout) findViewById(R.id.toolbar_add);
         toolbar_add.setOnClickListener(new View.OnClickListener() {
             @Override

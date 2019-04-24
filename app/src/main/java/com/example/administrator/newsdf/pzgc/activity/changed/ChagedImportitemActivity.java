@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ImportChageditemAdapter;
 import com.example.administrator.newsdf.pzgc.bean.ChagedImportitem;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,17 +44,12 @@ public class ChagedImportitemActivity extends BaseActivity implements View.OnCli
     private SmartRefreshLayout refreshlayout;
     private String orgId,noticeId;
     private int page = 1;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_importchageditem);
-        addActivity(this);
+
         mContext = this;
         final Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

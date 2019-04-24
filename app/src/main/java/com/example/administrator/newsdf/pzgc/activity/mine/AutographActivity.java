@@ -2,7 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity.mine;
 
 import android.os.Bundle;
 
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 /**
  * @author lx
@@ -16,12 +16,8 @@ public class AutographActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.chad.library.R.layout.quick_view_load_more);
-        addActivity(this);
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

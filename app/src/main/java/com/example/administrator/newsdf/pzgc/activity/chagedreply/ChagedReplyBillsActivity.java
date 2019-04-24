@@ -2,11 +2,9 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -25,28 +23,13 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.FiletypeAdapter;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
-import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
-import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
-import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.view.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
-import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.photoBean;
-import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.bean.ImageItem;
-import com.lzy.imagepicker.ui.ImageGridActivity;
-import com.zxy.tiny.Tiny;
-import com.zxy.tiny.callback.FileCallback;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -71,20 +54,16 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     //是否回复
     private int isReply;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
-        addActivity(this);
+
         mContext = this;
-        addActivity(this);
+
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
         //回复单id

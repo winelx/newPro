@@ -14,7 +14,7 @@ import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 /**
  * description:审核功能的部位详情
@@ -42,7 +42,7 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auditdetails);
-        addActivity(this);
+
         Intent intnt = getIntent();
         homeUtils = new HomeUtils();
         mContext = this;
@@ -63,11 +63,6 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
 
     @Override

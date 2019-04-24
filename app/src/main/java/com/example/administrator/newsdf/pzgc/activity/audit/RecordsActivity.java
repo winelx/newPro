@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Recordsbean;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -47,7 +47,7 @@ public class RecordsActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_record);
-        addActivity(this);
+
         ListView list = (ListView) findViewById(R.id.task_list);
         TextView titkle = (TextView) findViewById(R.id.com_title);
         titkle.setText("审核记录");
@@ -78,11 +78,7 @@ public class RecordsActivity extends BaseActivity {
         list.setAdapter(adapter);
         getData();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     public void getData() {
         OkGo.post(Requests.Auditrecords)

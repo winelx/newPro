@@ -38,7 +38,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.utils.Requests;
@@ -99,17 +99,12 @@ public class CheckRectificationActivity extends BaseActivity implements View.OnC
     private ArrayList<View> listVIew = new ArrayList<>();
     private ArrayList<View> listEn = new ArrayList<>();
     private boolean status = true;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_rectification);
-        addActivity(this);
+
         Intent intent = getIntent();
         mContext = CheckRectificationActivity.this;
         checkUtils = new CheckUtils();

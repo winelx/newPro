@@ -17,7 +17,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.Chaged
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -45,17 +45,12 @@ public class ChagedReplyImportActivity extends BaseActivity implements View.OnCl
     private EmptyUtils emptyUtils;
     private ArrayList<String> rowslist;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
-        addActivity(this);
+
         Intent intent = getIntent();
         noticeId = intent.getStringExtra("noticeId");
         id = intent.getStringExtra("id");

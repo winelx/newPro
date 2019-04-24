@@ -29,7 +29,7 @@ import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.VerificationBean;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -74,7 +74,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_validation);
-        addActivity(this);
+
         Intent intent = getIntent();
         checkId = intent.getStringExtra("checkId");
         //判断是项目经理还是下发人验证
@@ -266,9 +266,9 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     protected void onDestroy() {
         super.onDestroy();
         if (popcamerautils != null) {
-            popcamerautils = null;
+            popc
+       amerautils = null;
         }
-        removeActivity(this);
     }
 
     /**

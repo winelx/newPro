@@ -16,7 +16,7 @@ import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils1;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils3;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -54,7 +54,7 @@ public class OrganizationaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
-        addActivity(this);
+
         mDatas2 = new ArrayList<OrgBeans>();
         mData = new ArrayList<OrgenBeans>();
         mContext = OrganizationaActivity.this;
@@ -271,9 +271,5 @@ public class OrganizationaActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 }

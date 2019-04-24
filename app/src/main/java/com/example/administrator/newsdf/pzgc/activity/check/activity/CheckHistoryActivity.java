@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -26,17 +26,12 @@ public class CheckHistoryActivity extends BaseActivity {
     private ArrayList<String> msg = new ArrayList<>();
     private   ArrayList<Audio> mdata = new ArrayList<>();
     private ListView wbs_listview;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
-        addActivity(this);
         wbs_listview = (ListView) findViewById(R.id.wbs_listview);
         TextView com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("处理记录");

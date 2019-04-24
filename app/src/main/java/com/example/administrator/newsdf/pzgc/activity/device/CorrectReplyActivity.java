@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
@@ -71,7 +71,7 @@ public class CorrectReplyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         checkId = intent.getStringExtra("id");
@@ -251,7 +251,7 @@ public class CorrectReplyActivity extends BaseActivity {
         if (PopCameraUtils != null) {
             PopCameraUtils = null;
         }
-        removeActivity(this);
+
     }
 
     /**

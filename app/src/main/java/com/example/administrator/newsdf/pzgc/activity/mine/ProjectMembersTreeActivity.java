@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.treeView.MeberlistViewAdapter;
@@ -46,7 +46,7 @@ public class ProjectMembersTreeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmb_tree);
-        addActivity(this);
+
         //树
         maberTree = (ListView) findViewById(R.id.maber_tree);
         //标题
@@ -70,11 +70,7 @@ public class ProjectMembersTreeActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     /**
      * 解析组织机构对象

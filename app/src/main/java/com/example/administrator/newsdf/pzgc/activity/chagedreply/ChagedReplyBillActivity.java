@@ -31,7 +31,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.Chagedre
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -80,7 +80,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
@@ -426,9 +426,4 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 }

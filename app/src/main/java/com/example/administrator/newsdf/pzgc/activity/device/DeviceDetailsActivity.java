@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
@@ -50,17 +50,12 @@ public class DeviceDetailsActivity extends BaseActivity implements View.OnClickL
     private String[] dialog = {"确定", "取消"};
     private boolean status = true;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-        addActivity(this);
+
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
         status = intent.getBooleanExtra("status", true);

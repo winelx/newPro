@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ViolateCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeviews.ViolateTreeListViewAdapters;
 import com.example.administrator.newsdf.treeviews.bean.OrgBeans;
 import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
@@ -44,7 +44,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_violatestandard);
-        addActivity(this);
+
         deviceUtils = new DeviceUtils();
         Intent intent = getIntent();
         facility = intent.getStringExtra("facility");
@@ -128,7 +128,7 @@ public class DeviceViolatestandardActivity extends BaseActivity implements Check
         if (deviceUtils != null) {
             deviceUtils = null;
         }
-        removeActivity(this);
+
     }
 
     @Override

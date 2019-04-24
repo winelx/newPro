@@ -21,7 +21,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
 import com.example.baselibrary.utils.screen.ScreenUtil;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
@@ -57,11 +57,11 @@ import okhttp3.Response;
 public class AuditActivity extends BaseActivity {
     private Context mContext;
     private ArrayList<Audittitlebean> title;
-    private ListView aduit_list;
+    private ListView aduitList;
     private SettingAdapter<Audittitlebean> adapter;
     private PopupWindow mPopupWindow;
-    private IconTextView aduit_back;
-    private LinearLayout audit_meunl;
+    private IconTextView aduitBack;
+    private LinearLayout auditMeunl;
     private float ste;
     private Integer integer = 1;
     private String orgId = "", name;
@@ -73,7 +73,7 @@ public class AuditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit);
         mContext = AuditActivity.this;
-        addActivity(this);
+
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
         name = intent.getExtras().getString("name");
@@ -82,9 +82,9 @@ public class AuditActivity extends BaseActivity {
         TextView titles = (TextView) findViewById(R.id.title);
         nulllauout = (LinearLayout) findViewById(R.id.nulllauout);
         titles.setText(name);
-        audit_meunl = (LinearLayout) findViewById(R.id.audit_meun);
-        aduit_back = (IconTextView) findViewById(R.id.aduit_back);
-        aduit_list = (ListView) findViewById(R.id.aduit_list);
+        auditMeunl = (LinearLayout) findViewById(R.id.audit_meun);
+        aduitBack = (IconTextView) findViewById(R.id.aduit_back);
+        aduitList = (ListView) findViewById(R.id.aduit_list);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
 
 
@@ -105,9 +105,9 @@ public class AuditActivity extends BaseActivity {
                 }
             }
         };
-        aduit_list.setAdapter(adapter);
+        aduitList.setAdapter(adapter);
         //listview 点击事件
-        aduit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        aduitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AuditActivity.this, AuditrecordActivity.class);
@@ -121,14 +121,14 @@ public class AuditActivity extends BaseActivity {
             }
         });
         //功能按钮
-        audit_meunl.setOnClickListener(new View.OnClickListener() {
+        auditMeunl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MeunPop();
             }
         });
         //返回按钮
-        aduit_back.setOnClickListener(new View.OnClickListener() {
+        aduitBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -158,11 +158,7 @@ public class AuditActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onStart() {
@@ -180,7 +176,7 @@ public class AuditActivity extends BaseActivity {
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(audit_meunl);
+        mPopupWindow.showAsDropDown(auditMeunl);
         Utils.backgroundAlpha(0.5f, AuditActivity.this);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
@@ -267,7 +263,6 @@ public class AuditActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

@@ -30,7 +30,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckCallback3;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.ProblemCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.ProblemItemCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.baselibrary.utils.Requests;
@@ -79,7 +79,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
-        addActivity(this);
+
         imagepath = new ArrayList<>();
         dialogUtils = new DialogUtils();
         deviceUtils = new DeviceUtils();
@@ -450,7 +450,7 @@ public class ProblemItemActivity extends BaseActivity implements View.OnClickLis
         if (dialogUtils != null) {
             dialogUtils = null;
         }
-        removeActivity(this);
+
     }
 
     //隐藏键盘

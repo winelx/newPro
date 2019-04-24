@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.bean.AduioContent;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.inter.JsonCallback;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.utils.log.LogUtil;
@@ -89,7 +89,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moretask);
-        addActivity(this);
         mContext = this;
         floatMeunAnims = new FloatMeunAnims();
 
@@ -134,11 +133,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
     @Override
     protected void onStart() {

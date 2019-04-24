@@ -15,7 +15,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.HiddendangerAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.GradeRecyclerAdapter;
 import com.example.administrator.newsdf.pzgc.bean.HiddendangerBean;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class GradeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grade);
-        addActivity(this);
+
         mContext = this;
         relativeLayout = (RelativeLayout) findViewById(R.id.back_not_null);
         TextView titleView = (TextView) findViewById(R.id.titleView);
@@ -81,10 +81,6 @@ public class GradeActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

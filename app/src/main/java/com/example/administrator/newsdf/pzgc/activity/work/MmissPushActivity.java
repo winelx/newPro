@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PushListviewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -63,9 +63,7 @@ public class MmissPushActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.activity_wbs);
-        addActivity(this);
         Intent intent = getIntent();
         org_status = intent.getExtras().getString("data");
         try {
@@ -128,11 +126,7 @@ public class MmissPushActivity extends BaseActivity {
             }
         });
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
     private void initView() {
         mTree = (ListView) findViewById(R.id.wbs_listview);
     }

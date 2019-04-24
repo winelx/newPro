@@ -37,7 +37,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.BaseDialog;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -102,17 +102,12 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-        addActivity(this);
+
         CheckNewCallbackUtils.setCallback(this);
         Intent intent = getIntent();
         //导入时的wbs

@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.work.pushadapter.PushAdapter;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
 import com.example.baselibrary.utils.Requests;
@@ -89,7 +89,7 @@ public class MissionpushActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_missionpush);
-        addActivity(this);
+
         floatMeunAnims = new FloatMeunAnims();
         pushMap = new HashMap<>();
         //获取到intent传过来得集合
@@ -392,11 +392,6 @@ public class MissionpushActivity extends BaseActivity implements View.OnClickLis
         return id;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-            removeActivity(this);
-    }
 
     @Override
     public void onClick(View v) {

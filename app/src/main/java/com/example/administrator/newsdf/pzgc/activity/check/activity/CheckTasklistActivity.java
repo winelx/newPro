@@ -32,7 +32,7 @@ import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 
@@ -83,7 +83,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
-        addActivity(this);
+
         mContext = CheckTasklistActivity.this;
         CheckTaskCallbackUtils.setCallBack(this);
         checkUtils = new CheckUtils();
@@ -400,10 +400,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
 
 }

@@ -10,6 +10,7 @@ import android.graphics.pdf.PdfRenderer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 
 
 import com.example.baselibrary.R;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.PermissionListener;
 
 
@@ -190,12 +191,12 @@ public class PdfActivity extends BaseActivity {
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view = mInflater.inflate(R.layout.item_pdf, null);
             PhotoView pvPdf = view.findViewById(R.id.iv_pdf);
             PdfRenderer.Page currentPage = null;
@@ -217,7 +218,7 @@ public class PdfActivity extends BaseActivity {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             //销毁需要销毁的视图
             container.removeView((View) object);
         }

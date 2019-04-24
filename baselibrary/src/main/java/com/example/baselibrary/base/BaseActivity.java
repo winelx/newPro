@@ -1,4 +1,4 @@
-package com.example.baselibrary.view;
+package com.example.baselibrary.base;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -8,24 +8,44 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
+
+import com.example.baselibrary.utils.manager.AppManager;
+import com.example.baselibrary.view.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/8/29 0029.
+ * @author lx
+ * @data :2019/4/24 0024
+ * @描述 : 基础activity
+ * @see
  */
-
 public class BaseActivity extends AppCompatActivity {
+
     private PermissionListener mListener;
     private static final int PERMISSION_REQUESTCODE = 10086;
-    public static List<Activity> activities = new ArrayList<>();
-
+    /**
+     * activity堆栈管理
+     */
+    protected AppManager appManager = AppManager.getAppManager();
+    /** 是否允许全屏 **/
+    private boolean mAllowFullScreen = false;
+    /** 是否禁止旋转屏幕 **/
+    private boolean isAllowScreenRoate = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        appManager.addActivity(this);
+        //是否允许屏幕旋转
+        if (!isAllowScreenRoate) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        if (mAllowFullScreen) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
     }
 
     public void requestRunPermisssion(String[] permissions, PermissionListener listener) {
@@ -73,23 +93,27 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-
-    public void addActivity(Activity activity) {
-        activities.add(activity);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 从栈中移除activity
+        appManager.finishActivity(this);
     }
 
-    public void removeActivity(Activity activity) {
-        if (activities.contains(activity)) {
-            activities.remove(activity);
-        }
+    /**
+     * [是否允许屏幕旋转]
+     *
+     * @param isAllowScreenRoate
+     */
+    public void setScreenRoate(boolean isAllowScreenRoate) {
+        this.isAllowScreenRoate = isAllowScreenRoate;
     }
-
-    public void finishAll() {
-        for (Activity activity : activities) {
-            if (!activity.isFinishing()) {
-                activity.finish();
-            }
-        }
+    /**
+     * [是否允许全屏]
+     *
+     * @param allowFullScreen
+     */
+    public void setAllowFullScreen(boolean allowFullScreen) {
+        this.mAllowFullScreen = allowFullScreen;
     }
-
 }

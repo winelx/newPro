@@ -31,7 +31,7 @@ import com.example.administrator.newsdf.pzgc.fragment.IndexFrament;
 import com.example.administrator.newsdf.pzgc.fragment.MineFragment;
 import com.example.administrator.newsdf.pzgc.fragment.WorkFragment;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
-        addActivity(this);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mContext = this;
         workbtight = false;
@@ -184,11 +184,7 @@ public class MainActivity extends BaseActivity {
         super.onStop();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
-    }
+
     public void initTab() {
         //添加tab信息，存入集合进行展示
         Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
@@ -61,7 +61,7 @@ public class OrganiwbsActivity extends BaseActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
-        addActivity(this);
+
         mContext = OrganiwbsActivity.this;
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //是否启用越界拖动（仿苹果效果）1.0.4
@@ -136,11 +136,6 @@ public class OrganiwbsActivity extends BaseActivity {
     private void getWorkOrganizationList(String result) {
         organizationList = TreeUtlis.parseOrganizationList(result);
         getOrganization(organizationList);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     /**

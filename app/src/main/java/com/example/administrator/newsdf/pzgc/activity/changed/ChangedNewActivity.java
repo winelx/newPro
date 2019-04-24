@@ -24,7 +24,7 @@ import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.Networkinterface;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
-import com.example.baselibrary.view.BaseActivity;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
@@ -63,7 +63,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
-        addActivity(this);
+
         mContext = this;
         Intent intent = getIntent();
         status = intent.getBooleanExtra("status", false);
@@ -135,11 +135,6 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
             problemItemLin.setVisibility(View.VISIBLE);
             request();
         }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        removeActivity(this);
     }
 
     @Override
