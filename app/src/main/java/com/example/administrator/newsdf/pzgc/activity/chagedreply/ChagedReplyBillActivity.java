@@ -59,18 +59,21 @@ import java.util.Map;
 public class ChagedReplyBillActivity extends BaseActivity implements View.OnClickListener {
     private Context mContext;
     private RecyclerView chagedOldRecycler, photoRecycler;
-    private RectifierAdapter mAdapter;
-    private BasePhotoAdapter adapter;
-    private ArrayList<photoBean> photoPaths;
-    private ArrayList<String> photolist;
     private EditText replydescription;
     private TextView content, rectificationreason, standarddel, delete;
-    private PopCameraUtils popcamerautils;
-    private TakePictureManager takePictureManager;
+
     private static final int IMAGE_PICKER = 1011;
     private String replyId, replyDelId, optionType;
+
     private ArrayList<String> deletelist = new ArrayList<>();
-    private boolean lean;
+    private ArrayList<photoBean> photoPaths;
+    private ArrayList<String> photolist;
+
+    private RectifierAdapter mAdapter;
+    private BasePhotoAdapter adapter;
+    private PopCameraUtils popcamerautils;
+    private TakePictureManager takePictureManager;
+    private boolean lean, status = true;
     //是否回复
     private int isReply;
 
@@ -235,7 +238,10 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 alertDialog2.show();
                 break;
             case R.id.checklistmeun:
-                chaged();
+                if (status) {
+                    status = false;
+                    chaged();
+                }
                 break;
             default:
                 break;
@@ -351,7 +357,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     //整改后图片集合
                     photoPaths.addAll((ArrayList<photoBean>) map.get("afterFiles"));
                     adapter.getData(photoPaths);
-                }catch (Exception e){
+                } catch (Exception e) {
                     ToastUtils.showShortToast("解析数据失败");
                 }
             }
@@ -367,7 +373,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     public void chaged() {
         String editext = replydescription.getText().toString();
         if (!editext.isEmpty()) {
-            Dates.getDialog(this, "提交数据中...");
+            Dates.getDialogs(this, "提交数据中...");
             ArrayList<File> fileList = new ArrayList<>();
             for (int i = 0; i < photoPaths.size(); i++) {
                 String name = photoPaths.get(i).getPhotoname();
@@ -385,6 +391,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 @Override
                 public void onsuccess(String string) {
                     ToastUtils.showShortToastCenter("保存成功");
+                    status = true;
                     Dates.disDialog();
                     try {
                         RxBus.getInstance().send("chagedDetails");
@@ -398,6 +405,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 public void onerror(String string) {
                     Dates.disDialog();
                     ToastUtils.showsnackbar(rectificationreason, string);
+                    status = true;
                 }
             });
         } else {

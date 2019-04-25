@@ -266,8 +266,7 @@ public class VerificationActivity extends BaseActivity implements View.OnClickLi
     protected void onDestroy() {
         super.onDestroy();
         if (popcamerautils != null) {
-            popc
-       amerautils = null;
+            popcamerautils = null;
         }
     }
 

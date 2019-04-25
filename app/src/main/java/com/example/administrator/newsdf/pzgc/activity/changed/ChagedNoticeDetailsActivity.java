@@ -48,7 +48,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private Utils utils;
     // (1：下发、添加问题项、导入问题项；2:指派；3：指派、我回复；)
     private int permission;
-    private boolean status = true;
+    private boolean status = true, onclickstatus = true;
 
 
     @SuppressLint("CutPasteId")
@@ -114,25 +114,29 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 startActivityForResult(intent, 3);
                 break;
             case R.id.device_details_result:
-                android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
-                        .setMessage("是否确认我来回复？")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            //添加"Yes"按钮
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                reply();
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            //添加取消
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create();
-                alertDialog2.show();
+                if (onclickstatus) {
+                    android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
+                            .setMessage("是否确认我来回复？")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                //添加"Yes"按钮
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    onclickstatus = false;
+                                    reply();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                //添加取消
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                    alertDialog2.show();
+                }
+
                 break;
             default:
                 break;
@@ -193,10 +197,9 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
             @Override
             public void onsuccess(String string) {
                 ToastUtils.showShortToastCenter(string);
+                onclickstatus = true;
                 try {
                     /**
-                     * @author lx
-                     * @data :2019/3/8 0008
                      * @描述 : 回调界面刷新数据
                      */
                     TaskCallbackUtils.CallBackMethod();
@@ -212,6 +215,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
 
             @Override
             public void onerror(String str) {
+                onclickstatus = true;
                 Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
             }
         });

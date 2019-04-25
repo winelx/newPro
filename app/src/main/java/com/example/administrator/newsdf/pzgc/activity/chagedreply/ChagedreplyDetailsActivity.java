@@ -22,6 +22,7 @@ import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.Chagedre
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 
@@ -40,17 +41,19 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private RecyclerView recyclerView;
     private LinearLayout deviceDetailsFunction;
     private TextView titleView;
-    private ChagedreplyDetailsAdapter mAdapter;
-    private ArrayList<Object> list;
-    private Context mContext;
     private TextView deviceDetailsProving, deviceDetailsUp,
             deviceDetailsResult, deviceDetailsEdit;
-    private String id, orgName, noticeId;
-    int status, p;
-    private boolean taskstatus = true;
-    private ReplyDetailsContent bean;
-    private Utils utils;
 
+    private int status;
+    private boolean taskstatus = true, onclickstatus = true;
+    private String id, orgName, noticeId;
+
+    private Utils utils;
+    private Context mContext;
+    private ReplyDetailsContent bean;
+    private ChagedreplyDetailsAdapter mAdapter;
+
+    private ArrayList<Object> list;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -158,34 +161,37 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 intent.putExtra("id", id);
                 intent.putExtra("motionnode", bean.getMotionNode());
                 startActivity(intent);
-
                 break;
             case R.id.device_details_result:
                 /*我回复*/
                 startActivity(new Intent(mContext, ChagedReplyBillActivity.class));
                 break;
             case R.id.device_details_up:
-                /*提交*/
-                android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
-                        .setMessage(Dates.setText(mContext, "整改问题项是否确认完成并提交？\n注：提交后将无法撤回", 18, 26, R.color.red))
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            //添加"Yes"按钮
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                submit();
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            //添加取消
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create();
-                alertDialog2.show();
+                if (onclickstatus) {
 
+                    /*提交*/
+                    android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
+                            .setMessage(Dates.setText(mContext, "整改问题项是否确认完成并提交？\n注：提交后将无法撤回", 18, 26, R.color.red))
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                //添加"Yes"按钮
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    onclickstatus = false;
+                                    submit();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                //添加取消
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create();
+                    alertDialog2.show();
+
+                }
                 break;
             case R.id.device_details_edit:
                 /*编辑*/
@@ -201,6 +207,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         ChagedreplyUtils.submitReplyData(id, bean.getMotionNode() + "", new ChagedreplyUtils.ObjectCallBacks() {
             @Override
             public void onsuccess(String string) {
+                onclickstatus = true;
                 request();
                 try {
                     RxBus.getInstance().send("chagedlist");
@@ -216,6 +223,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
             @Override
             public void onerror(String string) {
                 Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                onclickstatus = true;
             }
         });
     }
@@ -290,7 +298,6 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         RxBus.getInstance().unSubcribe();
     }
 }

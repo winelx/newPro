@@ -34,6 +34,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
     private TextView titleView, category_item;
     private String id, motionnode;
     private int status = 0;
+    private boolean onclicktatus = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,11 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
                 if (status == 0) {
                     ToastUtils.showShortToastCenter("请确认是否验证通过！");
                 } else {
-                    verification();
+                    if (onclicktatus) {
+                        verification();
+                        onclicktatus = false;
+                    }
+
                 }
                 break;
             case R.id.checklistback:
@@ -123,11 +128,13 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
                     TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {
                 }
+                onclicktatus = true;
                 finish();
             }
 
             @Override
             public void onerror(String string) {
+                onclicktatus = true;
                 Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
             }
         });
