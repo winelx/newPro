@@ -171,6 +171,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         checkItemTabup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String text = checklistmeuntext.getText().toString();
                 //参考下一项点击事件
                 checkItemTabupText.setTextColor(Color.parseColor("#ffffff"));
@@ -662,6 +663,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 if (score.isEmpty()) {
                     count++;
                 } else {
+                    //判断分数
                     BigDecimal bigDecimal = new BigDecimal(score);
                     int maxsize = bigDecimal.compareTo(chekItem.get(i).getScore());
                     int minsize = bigDecimal.compareTo(new BigDecimal("0"));

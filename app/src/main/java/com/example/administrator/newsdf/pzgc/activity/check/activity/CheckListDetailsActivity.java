@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +19,22 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
+import com.example.baselibrary.inface.NetworkCallback;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.view.BaseDialog;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -37,6 +45,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -59,11 +68,11 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewTasktitle, checkNewTemporarysite;
-    private Button checkNewButton;
+    private Button checkNewButton, autograph;
     private DKDragView dkDragView;
     private String[] numbermonth, numberyear;
     //参数
-    private String type, name, Id, categoryId = "", taskId;
+    private String type, name, Id, taskId;
     private int dateMonth, dayDate;
     private Date myDate = new Date();
     private CheckNewAdapter adapter;
@@ -90,6 +99,15 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         Id = intent.getStringExtra("id");
         type = intent.getStringExtra("type");
         findbyid();
+        try {
+            if (TextUtils.isEmpty(intent.getStringExtra("status"))) {
+                autograph.setVisibility(View.GONE);
+            } else {
+                autograph.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            autograph.setVisibility(View.GONE);
+        }
         initData();
         getCategory();
         //内业检查不需要检查部位
@@ -122,12 +140,15 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //检查按钮
         checkNewButton = (Button) findViewById(R.id.check_new_buttons);
         checkNewButton.setOnClickListener(this);
+        //确认并签字
+        autograph = findViewById(R.id.check_new_autograph);
+        autograph.setOnClickListener(this);
         //分数
         checkNewNumber = (TextView) findViewById(R.id.check_new_number);
-
         //标题
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
         viewlist.add(checkNewTasktitle);
+
         //临时部位
         checkNewTemporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
         viewlist.add(checkNewTemporarysite);
@@ -186,7 +207,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         dateMonth = myDate.getMonth();
         //天
         dayDate = myDate.getDate() - 1;
-        checkNewWebtext.setText(name);
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
@@ -198,7 +218,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         checkNewData.setOnClickListener(this);
         checkImport.setOnClickListener(this);
         checkCategory.setOnClickListener(this);
-        checkNewButton.setOnClickListener(this);
         checklistmeun = (LinearLayout) findViewById(R.id.checklistmeun);
         checklistmeun.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
@@ -228,6 +247,55 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
             case R.id.checklistback:
                 finish();
                 break;
+            case R.id.check_new_autograph:
+                BaseDialog.confirmdialog(mContext, "是否确认签字", null, new Onclicklitener() {
+                    @Override
+                    public void confirm(String string) {
+                        autograph.setVisibility(View.GONE);
+                        Dates.getDialogs(mContext, "提交数据中...");
+                        CheckUtils.getautograph(Id, new NetworkCallback() {
+                            @Override
+                            public void onsuccess(Map<String, Object> map) {
+                                Dates.disDialog();
+                                ToastUtils.showShortToast("请求成功");
+                                autograph.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onerror(String s) {
+                                Dates.disDialog();
+                                autograph.setVisibility(View.VISIBLE);
+                                if ("我的签名".equals(s)) {
+                                    BaseDialog.confirmmessagedialog(mContext,
+                                            "确认签字失败",
+                                            "您当前还未设置我的签名",
+                                            "取消", "去设置签名", new Onclicklitener() {
+                                                @Override
+                                                public void confirm(String string) {
+                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                                }
+
+                                                @Override
+                                                public void cancel(String string) {
+
+                                                }
+                                            });
+                                } else {
+                                    ToastUtils.showShortToast(this.toString() + ":" + s);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void cancel(String string) {
+                        //取消
+                    }
+                });
+                break;
+            case R.id.check_new_buttons:
+
+                break;
             default:
                 break;
         }
@@ -255,7 +323,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
             //选择类别的返回数据
             categoryItem.setText(data.getStringExtra("data"));
             //类别Id，保存时上传Id即可
-            categoryId = data.getStringExtra("id");
+//            categoryId = data.getStringExtra("id");
         } else if (requestCode == 2 && resultCode == 3) {
             //导入wbs的返回数据
             //选择的节点Id
@@ -399,83 +467,59 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     public void getCategory() {
-        OkGo.post(Requests.CHECKGET_BY_ID)
-                .params("Id", Id)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONObject json = jsonObject.getJSONObject("data");
-                                //具体时间
-                                datatime.setText(json.getString("checkDate"));
-                                //检查标准类别
-                                categoryItem.setText(json.getString("wbsTaskTypeName"));
-                                //检查组织
-                                checkNewOrgname.setText(json.getString("checkOrgName"));
-                                //检查部位wbs
-                                String wbspath = json.getString("wbsMainName");
-                                if (wbspath.length() > 0) {
-                                    wbsName.setText(wbspath);
-                                    wbsName.setVisibility(View.VISIBLE);
-                                }
-                                int iwork = json.getInt("iwork");
-                                //判断内业还是外业
-                                if (iwork == 1) {
-                                    checkNewDialog.setVisibility(View.VISIBLE);
-                                } else {
-                                    checkNewDialog.setVisibility(View.GONE);
-                                }
-                                checkNewTemporarysite.setText(json.getString("wbsMainName"));
-                                //检查人
-                                checkUsername.setText(json.getString("realname"));
-                                //检查标题
-                                String titikle = json.getString("name");
-                                if (titikle.length() > 0) {
-                                    checkNewTasktitle.setText(json.getString("name"));
-                                } else {
-                                    checkNewTasktitle.setHint("未输入");
-                                }
-                                //所属标段
-                                checkNewWebtext.setText(json.getString("orgName"));
-                                //检查部位
-                                String partDetails = json.getString("partDetails");
-                                if (partDetails.length() > 0) {
-                                    checkNewTemporarysite.setText(partDetails);
-                                    checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
-                                } else {
-                                    checkNewTemporarysite.setText("未输入");
-                                    checkNewTemporarysite.setTextColor(Color.parseColor("#888888"));
-                                }
-                                String score;
-                                try {
-                                    score = json.getString("score");
-                                    if (score.equals("0.0")) {
-                                        checkNewNumber.setText("0");
-                                    } else {
-                                        checkNewNumber.setText(score);
-                                    }
-                                } catch (JSONException e) {
-                                    score = "";
-                                }
-                                taskId = json.getString("id");
-                                checkItem();
-                            } else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                            }
+        CheckUtils.getCategory(Id, new NetworkCallback() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                //具体时间
+                datatime.setText(map.get("checkDate").toString());
+                //检查标准类别
+                categoryItem.setText(map.get("wbsTaskTypeName").toString());
+                //检查组织
+                checkNewOrgname.setText(map.get("checkOrgName").toString());
+                //检查部位wbs
+                String wbspath = map.get("wbsMainName").toString();
+                if (wbspath.length() > 0) {
+                    wbsName.setText(wbspath);
+                    wbsName.setVisibility(View.VISIBLE);
+                }
+                int iwork = Integer.parseInt(map.get("iwork").toString());
+                //判断内业还是外业
+                if (iwork == 1) {
+                    checkNewDialog.setVisibility(View.VISIBLE);
+                } else {
+                    checkNewDialog.setVisibility(View.GONE);
+                }
+                checkNewTemporarysite.setText(map.get("wbsMainName").toString());
+                //检查人
+                checkUsername.setText(map.get("realname").toString());
+                //检查标题
+                String titikle = map.get("name").toString();
+                if (titikle.length() > 0) {
+                    checkNewTasktitle.setText(map.get("name").toString());
+                } else {
+                    checkNewTasktitle.setHint("未输入");
+                }
+                //所属标段
+                checkNewWebtext.setText(map.get("orgName").toString());
+                //检查部位
+                String partDetails = map.get("partDetails").toString();
+                if (partDetails.length() > 0) {
+                    checkNewTemporarysite.setText(partDetails);
+                    checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
+                } else {
+                    checkNewTemporarysite.setText("未输入");
+                    checkNewTemporarysite.setTextColor(Color.parseColor("#888888"));
+                }
+                checkNewNumber.setText(map.get("score").toString());
+                taskId = map.get("id").toString();
+                checkItem();
+            }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
+            @Override
+            public void onerror(String s) {
+                ToastUtils.showShortToast(s);
+            }
+        });
     }
 
     /**
@@ -524,11 +568,46 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                 ToastUtils.showLongToast(jsonObject.getString("mes"));
                             }
                             adapter.getdate(mData);
+                            if (mData.size() > 0) {
+                                adapter.getdate(mData);
+                                checkFinish();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
 
+                });
+    }
+
+    public void checkFinish() {
+        OkGo.get(Requests.CHECK_FINISH)
+                .params("id", taskId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                Boolean lean = jsonObject1.getBoolean("finish");
+                                if (lean) {
+                                    checkNewButton.setText("提交");
+                                    checkNewButton.setBackgroundResource(R.color.Orange);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                    }
                 });
     }
 }

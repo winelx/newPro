@@ -212,6 +212,8 @@ public class ChagedUtils implements Serializable {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("指派成功");
+                            } else if (ret == 5) {
+                                callBacks.onerror(jsonObject.getString("我的签名"));
                             } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
@@ -252,6 +254,8 @@ public class ChagedUtils implements Serializable {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("操作成功");
+                            } else if (ret == 5) {
+                                callBacks.onerror(jsonObject.getString("我的签名"));
                             } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
@@ -711,7 +715,7 @@ public class ChagedUtils implements Serializable {
                                 String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason,standardDelScore, afterFileslist));
+                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, standardDelScore, afterFileslist));
                             /*整改后*/
 
                             //回复时间

@@ -5,6 +5,8 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,15 +27,16 @@ public class NetWork {
      */
     public static void getHttp(String url, Map<String, String> map, final networkCallBack callBack) {
         GetRequest get = OkGo.get(url);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            get.params(entry.getKey(), (String) entry.getValue());
+        if (map!=null){
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                get.params(entry.getKey(), (String) entry.getValue());
+            }
         }
         get.execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 callBack.onSuccess(s, call, response);
             }
-
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);

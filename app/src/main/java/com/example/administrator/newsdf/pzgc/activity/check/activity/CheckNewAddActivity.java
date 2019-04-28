@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,13 +26,13 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
-import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.DKDragView;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -51,7 +52,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -70,8 +70,6 @@ import static com.lzy.okgo.OkGo.post;
  */
 public class CheckNewAddActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
     //控件
-    private PopupWindow mPopupWindow;
-    private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData;
@@ -82,11 +80,8 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
-    private String[] numbermonth, numberyear;
     //参数
     private String name, orgId, categoryId = "", taskId = "", nodeId;
-    private int dateMonth, dayDate;
-    private Date myDate = new Date();
     private CheckNewAdapter adapter;
     private ArrayList<chekitemList> mData;
     private static CheckNewAddActivity mContext;
@@ -98,7 +93,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         return mContext;
     }
 
-    private CheckUtils checkUtils;
+    private DialogUtils dialogUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
 
@@ -107,7 +102,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-
+        mContext = this;
         CheckNewCallbackUtils.setCallback(this);
         Intent intent = getIntent();
         //导入时的wbs
@@ -198,16 +193,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private void initData() {
         smallLabel.setEnableLoadmore(false);
         mData = new ArrayList<>();
-        checkUtils = new CheckUtils();
-        //拿到月
-        numbermonth = Utils.month;
-        //拿到年
-        numberyear = Utils.year;
-        mContext = this;
-        //获取当前月份
-        dateMonth = myDate.getMonth();
-        //天
-        dayDate = myDate.getDate() - 1;
+        dialogUtils = new DialogUtils();
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
@@ -413,120 +399,14 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
      * 选择时间弹出框
      */
     private void meunpop() {
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        //设置显示隐藏动画
-        mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(titleView);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-        Utils.backgroundAlpha(0.5f, CheckNewAddActivity.this);
-    }
-
-    /**
-     * 设置pop的点击事件
-     */
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        int layoutId = R.layout.popwind_daily;
-        final View contentView = LayoutInflater.from(mContext).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+        dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_determine:
-                        //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
-                        //获取月
-                        int month = monthPicker.getValue();
-                        String monthdata = Utils.month[month];
-                        //获取天
-                        int day = dayPicker.getValue();
-                        String daydata;
-                        if (monthdata.equals("02")) {
-                            //是二月份
-                            if (Utils.getyear().contains(yeardata)) {
-                                daydata = Utils.daytwos[day];
-                                //闰年
-                            } else {
-                                //平年
-                                daydata = Utils.daytwo[day];
-                            }
-                        } else {
-                            //不是二月份
-                            if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
-                                daydata = Utils.day[day];
-                            } else {
-                                daydata = Utils.dayth[day];
-                            }
-
-                        }
-                        datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
-                        break;
-                    case R.id.pop_dismiss:
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-
-
-        //获取控件点击事件
-        contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
-        //年的控件
-        yearPicker = contentView.findViewById(R.id.years);
-        //月
-        monthPicker = contentView.findViewById(R.id.month);
-        //每日
-        dayPicker = contentView.findViewById(R.id.day);
-        //初始化数据---年
-        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
-        //初始化数据---月
-        Utils.setPicker(monthPicker, Utils.month, dateMonth);
-        //初始化数据---日
-        String yeardata = Utils.year[yearPicker.getValue()];
-        //如果当前月份是2月
-        if ((dateMonth + 1) == 2) {
-            if (Utils.getyear().contains(yeardata)) {
-                Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
-                //闰年
-            } else {
-                //平年
-                Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
-            }
-        } else {
-            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
-                Utils.setPicker(dayPicker, Utils.day, dayDate);
-            } else {
-                Utils.setPicker(dayPicker, Utils.dayth, dayDate);
-            }
-        }
-        //年份选择器。如果当前的月份是二月，
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                checkUtils.setyear(monthPicker, dayPicker, i1, numberyear);
+            public void onsuccess(String str) {
+                datatime.setText(str);
             }
         });
-        //月份选择器。如果当前的月份是二月，
-        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal,
-                                      int newVal) {
-                checkUtils.setMonth(yearPicker, monthPicker, dayPicker, newVal, numbermonth, numberyear);
-            }
-        });
-
-        return contentView;
     }
+
 
     /**
      * 每次冲检查项返回时刷新当前界面数据
@@ -833,13 +713,19 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                Boolean lean = jsonObject1.getBoolean("finish");
-                                if (lean) {
+                                String lean = jsonObject1.getString("finish");
+                                if ("2".equals(lean)) {
                                     checkNewButton.setText("提交");
+                                    checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
+                                } else if ("3".equals(lean)) {
+                                    checkNewButton.setText("确认并签名");
+                                    checkNewButton.setVisibility(View.VISIBLE);
+                                    checkNewButton.setBackgroundResource(R.color.Orange);
+                                } else {
+                                    checkNewButton.setVisibility(View.GONE);
                                 }
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

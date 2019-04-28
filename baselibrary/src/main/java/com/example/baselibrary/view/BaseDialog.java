@@ -37,13 +37,14 @@ public class BaseDialog {
             public void onClick(View v) {
                 onclicklitener.cancel("取消");
                 dialog.dismiss();
+
             }
         });
         //确定
         view.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onclicklitener.cancel("确定");
+                onclicklitener.confirm("确定");
                 dialog.dismiss();
             }
         });
@@ -89,7 +90,7 @@ public class BaseDialog {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onclicklitener.cancel("确定");
+                onclicklitener.confirm("确定");
                 dialog.dismiss();
             }
         });

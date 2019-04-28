@@ -7,11 +7,11 @@ package com.example.baselibrary.utils;
  */
 public class Requests {
 
-   // public static final String networks = "http://192.168.20.35:8082/pzgc/";
+ public static final String networks = "http://192.168.20.35:8082/pzgc/";
 
 //  public static final String networks = "http://192.168.20.25:8080/pzgc/";
 
-public static final String networks = "http://192.168.20.120:8017/pzgc/";
+//public static final String networks = "http://192.168.20.120:8017/pzgc/";
     //张
     // public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //外
@@ -624,4 +624,8 @@ public static final String networks = "http://192.168.20.120:8017/pzgc/";
      * 签名
      */
     public static final String UPLOADPERSONSIGNATURE = networks + "iface/mobile/systemnotice/uploadPersonSignature";
+    /**
+     *监管检查 项目经理确认接口
+     */
+    public static final String CONFIRM = networks + "admin/check/checkmanage/confirm";
 }

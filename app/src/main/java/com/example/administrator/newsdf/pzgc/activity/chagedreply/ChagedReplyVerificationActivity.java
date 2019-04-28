@@ -13,11 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.view.BaseDialog;
 
 /**
  * @author lx
@@ -98,7 +101,6 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
                         verification();
                         onclicktatus = false;
                     }
-
                 }
                 break;
             case R.id.checklistback:
@@ -135,7 +137,24 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
             @Override
             public void onerror(String string) {
                 onclicktatus = true;
-                Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                if ("我的签名".equals(string)) {
+                    BaseDialog.confirmmessagedialog(mContext,
+                            "确认签字失败",
+                            "您当前还未设置我的签名",
+                            "取消", "去设置签名", new Onclicklitener() {
+                                @Override
+                                public void confirm(String string) {
+                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                }
+
+                                @Override
+                                public void cancel(String string) {
+
+                                }
+                            });
+                } else {
+                    Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 

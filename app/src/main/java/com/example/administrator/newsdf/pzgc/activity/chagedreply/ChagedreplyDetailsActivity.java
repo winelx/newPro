@@ -168,7 +168,6 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                 break;
             case R.id.device_details_up:
                 if (onclickstatus) {
-
                     /*提交*/
                     android.support.v7.app.AlertDialog alertDialog2 = new android.support.v7.app.AlertDialog.Builder(mContext)
                             .setMessage(Dates.setText(mContext, "整改问题项是否确认完成并提交？\n注：提交后将无法撤回", 18, 26, R.color.red))

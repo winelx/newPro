@@ -28,6 +28,9 @@ import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.view.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +124,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra("orgname", chagedOrganizeText.getText().toString());
                 intent.putExtra("orgid", orgId);
                 intent.putExtra("status", false);
-                intent.putExtra("iwork",list.get(position).getIwork());
+                intent.putExtra("iwork", list.get(position).getIwork());
                 //问题项Id
                 intent.putExtra("noticeDelId", list.get(position).getId());
                 //整改单Id
@@ -203,7 +206,6 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                         intent1.putExtra("orgId", orgId);
                         startActivityForResult(intent1, 5);
                     }
-
                 } else {
                     ToastUtils.showsnackbar(comTitle, "不是编辑状态无法操作");
                 }
@@ -274,17 +276,17 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 comButton.setText("编辑");
                 if (list.size() > 0) {
                     chagedReleaseProblem.setBackgroundColor(Color.parseColor("#f88c37"));
-                }else {
+                } else {
                     chagedReleaseProblem.setBackgroundColor(Color.parseColor("#888888"));
                 }
                 try {
                     TaskCallbackUtils.CallBackMethod();
                 } catch (Exception e) {
                 }
-                if((String) map.get("id")!=null){
+                if ((String) map.get("id") != null) {
                     id = (String) map.get("id");
                 }
-                if (map.get("code").toString()!=null){
+                if (map.get("code").toString() != null) {
                     chagednumber.setText(map.get("code").toString());
                 }
             }
@@ -310,9 +312,28 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                     }
                     finish();
                 }
+
                 @Override
                 public void onerror(String str) {
-                    Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
+                    if ("我的签名".equals(str)) {
+                        BaseDialog.confirmmessagedialog(mContext,
+                                "确认签字失败",
+                                "您当前还未设置我的签名",
+                                "取消", "去设置签名", new Onclicklitener() {
+                                    @Override
+                                    public void confirm(String string) {
+                                        startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                    }
+
+                                    @Override
+                                    public void cancel(String string) {
+
+                                    }
+                                });
+                    } else {
+                        Snackbar.make(comButton, str, Snackbar.LENGTH_SHORT).show();
+                    }
+
                 }
             });
         }

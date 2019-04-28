@@ -22,8 +22,11 @@ import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetails;
 import com.example.administrator.newsdf.pzgc.bean.ChagedNoticeDetailslsit;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.view.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -176,7 +179,24 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
 
                             @Override
                             public void onerror(String str) {
-                                Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
+                                if ("我的签名".equals(str)) {
+                                    BaseDialog.confirmmessagedialog(mContext,
+                                            "确认签字失败",
+                                            "您当前还未设置我的签名",
+                                            "取消", "去设置签名", new Onclicklitener() {
+                                                @Override
+                                                public void confirm(String string) {
+                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                                }
+
+                                                @Override
+                                                public void cancel(String string) {
+
+                                                }
+                                            });
+                                } else {
+                                    Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
@@ -208,7 +228,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                      */
                     RxBus.getInstance().send("刷新数据");
                 } catch (Exception e) {
-
                 }
                 finish();
             }
@@ -216,7 +235,22 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
             @Override
             public void onerror(String str) {
                 onclickstatus = true;
-                Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
+                if ("我的签名".equals(str)) {
+                    BaseDialog.confirmmessagedialog(mContext,
+                            "确认签字失败",
+                            "您当前还未设置我的签名",
+                            "取消", "去设置签名", new Onclicklitener() {
+                                @Override
+                                public void confirm(String string) {
+                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                }
+                                @Override
+                                public void cancel(String string) {
+                                }
+                            });
+                } else {
+                    Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }

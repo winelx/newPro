@@ -358,6 +358,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             reply.putExtra("id", bean.getModelId());
             reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
+        } else if (modelType == 3) {
+            //监督检查
+            Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            intent.putExtra("status", "3");
+            startActivity(intent);
         }
     }
 

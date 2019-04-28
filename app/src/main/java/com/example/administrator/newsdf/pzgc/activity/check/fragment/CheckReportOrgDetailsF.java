@@ -63,10 +63,14 @@ public class CheckReportOrgDetailsF extends Fragment {
         checkQueater = view.findViewById(R.id.check_queater);
         layout_loading = view.findViewById(R.id.layout_loading);
         recycler_att = view.findViewById(R.id.recycler_att);
-        recycler_att.setEnableRefresh(false);//是否启用下拉刷新功能
-        recycler_att.setEnableOverScrollBounce(true);//是否启用越界回弹
-        recycler_att.setDisableContentWhenLoading(true);//加载时禁止操作界面
-        recycler_att.setEnableLoadmoreWhenContentNotFull(false);//不满一页启动上拉加载
+        //是否启用下拉刷新功能
+        recycler_att.setEnableRefresh(false);
+        //是否启用越界回弹
+        recycler_att.setEnableOverScrollBounce(true);
+        //加载时禁止操作界面
+        recycler_att.setDisableContentWhenLoading(true);
+        //不满一页启动上拉加载
+        recycler_att.setEnableLoadmoreWhenContentNotFull(false);
         mContext = CheckReportOrgDetailsActivity.getInstance();
         activity = (CheckReportOrgDetailsActivity) mContext;
         list = new ArrayList<>();

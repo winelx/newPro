@@ -562,7 +562,9 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("");
-                            } else {
+                            } else if (ret==5){
+                                callBacks.onerror("我的签名");
+                            }else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
@@ -601,7 +603,10 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("");
-                            } else {
+                            }else if (ret==5){
+                                callBacks.onerror(jsonObject.getString("我的签名"));
+                            }
+                            else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {

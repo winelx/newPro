@@ -171,7 +171,6 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     }
                 });
             }
-
             @Override
             public void delete(int position) {
                 //删除图片Id集合
@@ -181,7 +180,6 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 photoPaths.remove(position);
                 adapter.getData(photoPaths);
             }
-
             @Override
             public void seePhoto(int position) {
                 ArrayList<String> imagepaths = new ArrayList<>();

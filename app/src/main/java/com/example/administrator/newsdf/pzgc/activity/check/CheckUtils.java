@@ -1,14 +1,19 @@
 package com.example.administrator.newsdf.pzgc.activity.check;
 
+import android.graphics.Color;
+import android.view.View;
 import android.widget.NumberPicker;
 
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.administrator.newsdf.pzgc.bean.standarBean;
+import com.example.baselibrary.inface.NetworkCallback;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -17,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -172,10 +179,8 @@ public class CheckUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             if (jsonArray.length() > 0) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -200,7 +205,100 @@ public class CheckUtils {
                 });
     }
 
+    //确认并签字
+    public static void getautograph(String id, final NetworkCallback callback) {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        NetWork.getHttp(Requests.CONFIRM, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.getInt("ret") == 0) {
+                        callback.onsuccess(new HashMap<String, Object>());
+                    } else if (jsonObject.getInt("ret") == 5) {
+                        callback.onerror(jsonObject.getString("我的签名"));
+                    } else {
+                        callback.onerror(jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callback.onerror(Enums.ANALYSIS_ERROR);
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                callback.onerror(Enums.REQUEST_ERROR);
+            }
+        });
+    }
+
     public interface Onclick {
         void onSuccess(ArrayList<standarBean> List);
     }
+
+
+    public static void getCategory(String id, final NetworkCallback callback) {
+        OkGo.post(Requests.CHECKGET_BY_ID)
+                .params("Id", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONObject json = jsonObject.getJSONObject("data");
+                                //具体时间
+                                map.put("checkDate", json.getString("checkDate"));
+                                //检查标准类别
+                                map.put("wbsTaskTypeName", json.getString("wbsTaskTypeName"));
+                                //检查组织
+                                map.put("checkOrgName", json.getString("checkOrgName"));
+                                //检查部位wbs
+                                map.put("wbsMainName", json.getString("wbsMainName"));
+                                //判断内业还是外业
+                                map.put("iwork", json.getString("iwork"));
+                                map.put("wbsMainName", json.getString("wbsMainName"));
+                                //检查人
+                                map.put("realname", json.getString("realname"));
+                                //检查标题
+                                map.put("name", json.getString("name"));
+                                //所属标段
+                                map.put("orgName", json.getString("orgName"));
+                                //检查部位
+                                map.put("partDetails", json.getString("partDetails"));
+                                String score;
+                                try {
+                                    score = json.getString("score");
+                                    if (score.equals("0.0")) {
+                                        map.put("score", "0");
+                                    } else {
+                                        map.put("score", score);
+                                    }
+                                } catch (JSONException e) {
+                                    score = "";
+                                }
+                                map.put("id", json.getString("id"));
+                                callback.onsuccess(map);
+                            } else {
+                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callback.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
+    }
+
+
 }

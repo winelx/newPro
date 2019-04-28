@@ -1,7 +1,6 @@
 package com.example.baselibrary.ui.fragment;
 
 
-
 import android.content.Context;
 
 import android.os.Bundle;
@@ -21,7 +20,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.baselibrary.R;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.network.NetWork;
 import com.example.baselibrary.utils.screen.ScreenUtil;
+import com.lzy.okgo.OkGo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -49,11 +58,10 @@ public class AutographPreview extends Fragment {
                 .skipMemoryCache(true)
                 .dontAnimate()
                 .fitCenter()
-                .override(ScreenUtil.getScreenHeight(mContext)/2, ScreenUtil.getScreenWidth(mContext)/2)
+                .override(ScreenUtil.getScreenHeight(mContext) / 2, ScreenUtil.getScreenWidth(mContext) / 2)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.mipmap.noautigraph);
         activity = (SignatureViewActivity) mContext;
-        paths = mContext.getExternalCacheDir().getPath() + "/signa/image.png";
         btButton = view.findViewById(R.id.bt_button);
         image = view.findViewById(R.id.image);
         //设置签名
@@ -70,12 +78,41 @@ public class AutographPreview extends Fragment {
                 activity.backactivity();
             }
         });
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        request();
+    }
+
+    public void request() {
+        NetWork.getHttp(Api.SIGNATURE, null, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        String path = jsonObject.getString("data");
+                        paths = Requests.networks + path;
+                        glide();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+
+            }
+        });
+    }
+
+    public void glide(){
         Glide.with(mContext)
                 .load(paths)
                 .apply(options)

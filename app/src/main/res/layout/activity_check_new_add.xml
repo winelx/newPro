@@ -10,9 +10,9 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,6 +43,16 @@
                 android:text="开始"
                 android:textColor="@color/writer" />
 
+            <Button
+                android:id="@+id/check_new_autograph"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/yellow"
+                android:text="确认并签字"
+                android:textColor="@color/writer"
+                android:visibility="gone" />
+
             <com.example.administrator.newsdf.pzgc.utils.DKDragView
                 android:id="@+id/float_suspension"
                 android:layout_width="60dp"
@@ -62,6 +72,7 @@
             android:layout_gravity="right"
             android:layout_marginTop="50dp"
             android:background="@color/writer">
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -69,8 +80,7 @@
                 <com.scwang.smartrefresh.layout.SmartRefreshLayout
                     android:id="@+id/SmartRefreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <com.scwang.smartrefresh.layout.header.ClassicsHeader
                         android:layout_width="match_parent"

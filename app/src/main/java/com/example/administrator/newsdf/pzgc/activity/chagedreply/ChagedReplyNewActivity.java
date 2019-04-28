@@ -28,6 +28,9 @@ import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.SimpleDividerItemDecoration;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.view.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,7 +295,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                     } else {
                         replycommit.setBackgroundColor(Color.parseColor("#888888"));
                     }
-                }else {
+                } else {
                     replycommit.setBackgroundColor(Color.parseColor("#888888"));
                 }
             }
@@ -326,7 +329,24 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
 
                             @Override
                             public void onerror(String string) {
-                                ToastUtils.showsnackbar(comButton, string);
+                                if ("我的签名".equals(string)) {
+                                    BaseDialog.confirmmessagedialog(mContext,
+                                            "确认签字失败",
+                                            "您当前还未设置我的签名",
+                                            "取消", "去设置签名", new Onclicklitener() {
+                                                @Override
+                                                public void confirm(String string) {
+                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                                }
+
+                                                @Override
+                                                public void cancel(String string) {
+
+                                                }
+                                            });
+                                } else {
+                                    ToastUtils.showsnackbar(comButton, string);
+                                }
                             }
                         });
 
