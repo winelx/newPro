@@ -300,7 +300,18 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
-                    senddata();
+                    BaseDialog.confirmdialog(mContext, "提示", "是否提交数据", new Onclicklitener() {
+                        @Override
+                        public void confirm(String string) {
+                            senddata();
+                        }
+
+                        @Override
+                        public void cancel(String string) {
+
+                        }
+                    });
+
                 } else if ("确认并签证".equals(str)) {
                     BaseDialog.confirmdialog(this, "是否确认？", null, new Onclicklitener() {
                         @Override
@@ -468,26 +479,9 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 getcheckitemList();
                                 statusT();
                             } else {
-                                if (jsonObject1.getString("msg").contains("我的签名")) {
-                                    BaseDialog.confirmmessagedialog(mContext,
-                                            "确认签字失败",
-                                            "您当前还未设置我的签名",
-                                            null,
-                                            "去设置签名", new Onclicklitener() {
-                                                @Override
-                                                public void confirm(String string) {
-                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
-                                                }
-
-                                                @Override
-                                                public void cancel(String string) {
-
-                                                }
-                                            });
-                                } else {
-                                    ToastUtils.showShortToast(jsonObject1.getString("msg"));
-                                }
+                                ToastUtils.showShortToast(jsonObject1.getString("msg"));
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -681,6 +675,22 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                             if (jsonObject.getInt("ret") == 0) {
                                 CheckTaskCallbackUtils.CallBackMethod();
                                 finish();
+                            } else if (jsonObject.getInt("ret") == 5) {
+                                BaseDialog.confirmmessagedialog(mContext,
+                                        "确认签字失败",
+                                        "您当前还未设置我的签名",
+                                        null,
+                                        "去设置签名", new Onclicklitener() {
+                                            @Override
+                                            public void confirm(String string) {
+                                                startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                            }
+
+                                            @Override
+                                            public void cancel(String string) {
+
+                                            }
+                                        });
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }

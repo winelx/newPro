@@ -20,7 +20,6 @@
             android:background="@color/back"
             android:orientation="vertical"
             android:transitionName="sharedView">
-
             <include layout="@layout/titlestyle" />
 
             <ScrollView
@@ -43,15 +42,6 @@
                 android:text="开始"
                 android:textColor="@color/writer" />
 
-            <Button
-                android:id="@+id/check_new_autograph"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/yellow"
-                android:text="确认并签字"
-                android:textColor="@color/writer"
-                android:visibility="gone" />
 
             <com.example.administrator.newsdf.pzgc.utils.DKDragView
                 android:id="@+id/float_suspension"

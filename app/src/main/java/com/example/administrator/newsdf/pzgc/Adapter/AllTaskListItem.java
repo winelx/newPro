@@ -28,15 +28,17 @@ import java.util.List;
  * description: 全部任务界面列表
  *
  * @author lx
- *         date: 2018/8/16 0016 上午 10:15
- *         update: 2018/8/16 0016
- *         version:
+ * date: 2018/8/16 0016 上午 10:15
+ * update: 2018/8/16 0016
+ * version:
  */
 public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Inface_all_item> list;
     private Context mContext;
     private RecycleAdapterType adapterType;
     private String status;
+    private static final int TYPE_ONE = 01;
+    private static final int TYPE_TWO = 02;
 
     public AllTaskListItem(ArrayList<Inface_all_item> list, Context mContext, String status) {
         this.list = list;
@@ -46,11 +48,10 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false);
-        TypeViewholder vh = new TypeViewholder(view);
         //将创建的View注册点击事件
-        return vh;
+        return new TypeViewholder(LayoutInflater.from(parent.getContext()).inflate(R.layout.alltasklistitem, parent, false));
     }
+
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
@@ -89,7 +90,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 break;
         }
-        holder.interTime.setText(list.get(position).getUpdateDate().substring(0,10));
+        holder.interTime.setText(list.get(position).getUpdateDate().substring(0, 10));
         holder.comments.setText("(" + list.get(position).getComments() + ")");
         holder.taskcontent.setLayoutManager(new LinearLayoutManager(holder.taskcontent.getContext(), LinearLayoutManager.HORIZONTAL, false));
         if (list.get(position).getUpload().size() > 0) {
@@ -97,7 +98,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             holder.inface_image.setVisibility(View.GONE);
         }
-        ArrayList<Audio> path  =new ArrayList<>();
+        ArrayList<Audio> path = new ArrayList<>();
         path = list.get(position).getUpload();
         adapterType = new RecycleAdapterType(holder.taskcontent.getContext(), path, position, status);
         holder.taskcontent.setAdapter(adapterType);
@@ -187,7 +188,6 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     /**
      * 内部接口
      */
-
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -202,6 +202,7 @@ public class AllTaskListItem extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public long getItemId(int position) {
         return position;
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;

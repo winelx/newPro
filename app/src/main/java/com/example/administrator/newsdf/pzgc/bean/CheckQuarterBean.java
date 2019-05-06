@@ -10,13 +10,14 @@ public class CheckQuarterBean {
     String orgname;
     String company;
     String number;
-
-    public CheckQuarterBean(String id, String parentid, String orgname, String company, String number) {
+    String rankingSorce;
+    public CheckQuarterBean(String id, String parentid, String orgname, String company, String number,String rankingSorce) {
         this.id = id;
         this.parentid = parentid;
         this.orgname = orgname;
         this.company = company;
         this.number = number;
+        this.rankingSorce = rankingSorce;
     }
 
     public String getId() {
@@ -57,5 +58,13 @@ public class CheckQuarterBean {
 
     public void setParentid(String parentid) {
         this.parentid = parentid;
+    }
+
+    public String getRankingSorce() {
+        return rankingSorce;
+    }
+
+    public void setRankingSorce(String rankingSorce) {
+        this.rankingSorce = rankingSorce;
     }
 }

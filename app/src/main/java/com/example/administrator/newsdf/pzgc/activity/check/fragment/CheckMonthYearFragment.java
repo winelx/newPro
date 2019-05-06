@@ -92,7 +92,7 @@ public class CheckMonthYearFragment extends Fragment implements CheckCallback3 {
         categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
-        getdate();
+//        getdate();
         mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -194,7 +194,7 @@ public class CheckMonthYearFragment extends Fragment implements CheckCallback3 {
                                     String parent_id = jsonObject1.getString("parent_id");
                                     String parent_name = jsonObject1.getString("parent_name");
                                     String score = jsonObject1.getString("score");
-                                    mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
+//                                    mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
                                 }
                             }
                             if (mData.size() > 0) {

@@ -68,9 +68,9 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    @SuppressLint("RecyclerView")
+    @SuppressLint({"RecyclerView", "SetTextI18n"})
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder,  final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Object obj = mDatas.get(position);
         if (holder instanceof MyViewHolder) {
             final CheckTasklistBean success = (CheckTasklistBean) obj;
@@ -91,10 +91,10 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);
-            }  else if (iwork == 4) {
+            } else if (iwork == 4) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
                 ((MyViewHolder) holder).managementIndustry.setText("专项检查");
-            }else {
+            } else {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,11 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(intent);
                 }
             });
-
+            int status = Integer.parseInt(success.getStatus());
+            if (status == 4) {
+                ((MyViewHolder) holder).slantedTextView.setTextString("已确认");
+                ((MyViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.Orange);
+            }
 
         } else if (holder instanceof SubViewHolder) {
             final SCheckTasklistBean Sub = (SCheckTasklistBean) obj;
@@ -123,6 +127,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
             ((SubViewHolder) holder).subManagementOrg.setText("检查组织：" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
+            ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
             int iworl = Sub.getIwork();
             if (iworl == 1) {
                 ((SubViewHolder) holder).managementIndustry.setVisibility(View.GONE);
@@ -132,7 +137,13 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 ((SubViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
-            ((SubViewHolder) holder).slantedTextView.setSlantedBackgroundColor(R.color.unfinish_gray);
+            ((SubViewHolder) holder).layoutContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
+                    addActivity.submit(Sub.getId(), Sub.iwork);
+                }
+            });
             ((SubViewHolder) holder).tvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,14 +168,6 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 }
             });
-            ((SubViewHolder) holder).layoutContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CheckTasklistActivity addActivity = (CheckTasklistActivity) mContext;
-                    addActivity.submit(Sub.getId(), Sub.iwork);
-                }
-            });
-
         }
     }
 
@@ -185,6 +188,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         private TextView managementTitle, managementUser;
         private TextView managementNumber, management_wbs, managementOrg, managementIndustry;
         private RelativeLayout item;
+        private SlantedTextView slantedTextView;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -195,6 +199,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             managementUser = itemView.findViewById(R.id.management_user);
             managementTitle = itemView.findViewById(R.id.management_title);
             managementIndustry = itemView.findViewById(R.id.management_industry);
+            slantedTextView = itemView.findViewById(R.id.inface_item_message);
         }
     }
 

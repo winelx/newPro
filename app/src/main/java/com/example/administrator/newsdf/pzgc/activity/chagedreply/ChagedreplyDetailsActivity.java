@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter.ChagedreplyDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
@@ -23,8 +24,11 @@ import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.bean.bean;
+import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.view.BaseDialog;
 
 import java.util.ArrayList;
 
@@ -221,7 +225,25 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
             @Override
             public void onerror(String string) {
-                Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                if (Enums.MYAUTOGRAPH.equals(string)){
+                    BaseDialog.confirmmessagedialog(mContext,
+                            "确认签字失败",
+                            "您当前还未设置我的签名",
+                            "取消", "去设置签名", new Onclicklitener() {
+                                @Override
+                                public void confirm(String string) {
+                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                }
+
+                                @Override
+                                public void cancel(String string) {
+
+                                }
+                            });
+                }else {
+                    Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
+                }
+
                 onclickstatus = true;
             }
         });
@@ -263,10 +285,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                     deviceDetailsFunction.setVisibility(View.GONE);
                     utils.setMargins(recyclerView, 0, 0, 0, 0);
                 }
-
-
             }
-
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(titleView, string);

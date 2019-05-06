@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.MoretaskAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
@@ -270,7 +272,8 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.taskManagemented:
-                if (status.equals("true")) {
+                if ("true".equals(status)) {
+                    Dates.getDialogs((Activity) mContext,"请求数据中..");
                     HomeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
                 }
                 break;

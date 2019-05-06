@@ -50,7 +50,6 @@ public class PdfActivity extends BaseActivity {
     private File files;
     private boolean lean = false;
 
-
     private ViewPager vpPdf;
     private LayoutInflater mInflater;
     private ParcelFileDescriptor mDescriptor;

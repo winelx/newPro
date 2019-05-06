@@ -124,20 +124,15 @@ public class App extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
-
-
     public static DaoSession getDaoInstant() {
         return daoSession;
     }
-
 
     public static ArrayList<PieChartBeans> getlist() {
         ArrayList<PieChartBeans> list = new ArrayList<>();
         list.add(new PieChartBeans("已完成", 25.0f, "#5096F8"));
         list.add(new PieChartBeans("未完成", 45.0f, "#f88c37"));
         list.add(new PieChartBeans("已启动", 35.0f, "#e2c1bfc1"));
-
-
         return list;
     }
 }

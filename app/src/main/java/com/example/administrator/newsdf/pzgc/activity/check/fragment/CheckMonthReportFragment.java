@@ -176,7 +176,7 @@ public class CheckMonthReportFragment extends Fragment implements CheckCallback2
     @Override
     public void update(String id) {
         orgId = id;
-        getdate();
+//        getdate();
     }
 
 
@@ -217,7 +217,8 @@ public class CheckMonthReportFragment extends Fragment implements CheckCallback2
                                         String parent_id = jsonObject1.getString("parent_id");
                                         String parent_name = jsonObject1.getString("parent_name");
                                         String score = jsonObject1.getString("score");
-                                        mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
+
+//                                        mData.add(new CheckQuarterBean(id, parent_id, name, parent_name, score));
                                     }
                                 }
                                 if (mData.size() > 0) {

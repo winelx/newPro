@@ -1,10 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,15 +10,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -37,6 +32,7 @@ import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.inface.Onclicklitener;
+import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.view.BaseDialog;
@@ -86,7 +82,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private ArrayList<chekitemList> mData;
     private static CheckNewAddActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
-    private LinearLayout checklistmeun, check_new_dialog;
+    private LinearLayout checklistmeun, checkNewDialog;
     private SmartRefreshLayout smallLabel;
 
     public static CheckNewAddActivity getInstance() {
@@ -133,8 +129,8 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void findbyid() {
-        check_new_dialog = (LinearLayout) findViewById(R.id.check_new_dialog);
-        check_new_dialog.setVisibility(View.VISIBLE);
+        checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
+        checkNewDialog.setVisibility(View.VISIBLE);
         smallLabel = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //分数
         //wbs路径
@@ -308,22 +304,18 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("提示");
-                    builder.setMessage("是否提交数据");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    BaseDialog.confirmdialog(mContext, "提示", "是否提交数据", new Onclicklitener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void confirm(String string) {
                             senddata();
                         }
-                    });
-                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                        public void cancel(String string) {
+
                         }
                     });
-                    builder.show();
+
                 } else if ("确认并签证".equals(str)) {
                     BaseDialog.confirmdialog(this, "是否确认？", null, new Onclicklitener() {
                         @Override
@@ -472,25 +464,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                 getcheckitemList();
                                 statusT();
                             } else {
-                                if (jsonObject1.getString("msg").contains("签名")) {
-                                    BaseDialog.confirmmessagedialog(mContext,
-                                            "确认签字失败",
-                                            "您当前还未设置我的签名",
-                                            null,
-                                            "去设置签名", new Onclicklitener() {
-                                                @Override
-                                                public void confirm(String string) {
-
-                                                }
-
-                                                @Override
-                                                public void cancel(String string) {
-
-                                                }
-                                            });
-                                } else {
-                                    ToastUtils.showShortToast(jsonObject1.getString("msg"));
-                                }
+                                ToastUtils.showShortToast(jsonObject1.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -687,6 +661,22 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                             if (jsonObject.getInt("ret") == 0) {
                                 CheckTaskCallbackUtils.CallBackMethod();
                                 finish();
+                            } else if (jsonObject.getInt("ret") == 5) {
+                                BaseDialog.confirmmessagedialog(mContext,
+                                        "确认签字失败",
+                                        "您当前还未设置我的签名",
+                                        null,
+                                        "去设置签名", new Onclicklitener() {
+                                            @Override
+                                            public void confirm(String string) {
+                                                startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                            }
+
+                                            @Override
+                                            public void cancel(String string) {
+
+                                            }
+                                        });
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
                             }

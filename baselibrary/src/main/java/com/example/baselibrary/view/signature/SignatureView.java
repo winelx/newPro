@@ -117,6 +117,9 @@ public class SignatureView extends View {
         if (!TextUtils.isEmpty(path)) {
             this.mSavePath = path;
             Bitmap bitmap = this.cacheBitmap;
+            if (listX.size()==0||listY.size()==0){
+                return false;
+            }
             //取出绘制图的四个点
             int maxX = new BigDecimal(Collections.max(listX)).intValue();
             int minX = new BigDecimal(Collections.min(listX)).intValue();
@@ -290,7 +293,6 @@ public class SignatureView extends View {
         //获取界面的绘制宽高，以保证在保存的绘制点不能比这连个大
         Interfacewidth = this.getWidth();
         Interfacehight = this.getHeight();
-        Log.d("界面宽度", "宽度" + Interfacewidth + "高度" + Interfacehight);
         this.mCanvas = new Canvas(this.cacheBitmap);
         this.mCanvas.drawColor(this.mBackColor);
         this.isTouched = false;

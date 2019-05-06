@@ -12,6 +12,7 @@ import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.bean.photoBean;
@@ -213,7 +214,7 @@ public class ChagedUtils implements Serializable {
                             if (ret == 0) {
                                 callBacks.onsuccess("指派成功");
                             } else if (ret == 5) {
-                                callBacks.onerror(jsonObject.getString("我的签名"));
+                                callBacks.onerror(Enums.MYAUTOGRAPH);
                             } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
@@ -255,7 +256,7 @@ public class ChagedUtils implements Serializable {
                             if (ret == 0) {
                                 callBacks.onsuccess("操作成功");
                             } else if (ret == 5) {
-                                callBacks.onerror(jsonObject.getString("我的签名"));
+                                callBacks.onerror(Enums.MYAUTOGRAPH);
                             } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }

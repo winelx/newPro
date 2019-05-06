@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.rx.RxBus;
@@ -137,7 +138,7 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
             @Override
             public void onerror(String string) {
                 onclicktatus = true;
-                if ("我的签名".equals(string)) {
+                if (Enums.MYAUTOGRAPH.equals(string)) {
                     BaseDialog.confirmmessagedialog(mContext,
                             "确认签字失败",
                             "您当前还未设置我的签名",
@@ -146,7 +147,6 @@ public class ChagedReplyVerificationActivity extends BaseActivity implements Vie
                                 public void confirm(String string) {
                                     startActivity(new Intent(mContext, SignatureViewActivity.class));
                                 }
-
                                 @Override
                                 public void cancel(String string) {
 

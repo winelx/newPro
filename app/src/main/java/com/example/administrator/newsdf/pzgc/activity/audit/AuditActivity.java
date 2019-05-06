@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +21,7 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -45,17 +47,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-/**
- * description: 审核列表界面
- *
- * @author lx
- *         date: 2018/7/2 0002 下午 1:47
- *         update: 2018/7/2 0002
- *         version:
- */
-
 public class AuditActivity extends BaseActivity {
-    private Context mContext;
     private ArrayList<Audittitlebean> title;
     private ListView aduitList;
     private SettingAdapter<Audittitlebean> adapter;
@@ -72,8 +64,6 @@ public class AuditActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit);
-        mContext = AuditActivity.this;
-
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
         name = intent.getExtras().getString("name");
@@ -86,8 +76,6 @@ public class AuditActivity extends BaseActivity {
         aduitBack = (IconTextView) findViewById(R.id.aduit_back);
         aduitList = (ListView) findViewById(R.id.aduit_list);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-
-
         adapter = new SettingAdapter<Audittitlebean>(title, R.layout.item_audit_elv) {
             @Override
             public void bindView(ViewHolder holder, Audittitlebean obj) {
@@ -134,7 +122,7 @@ public class AuditActivity extends BaseActivity {
                 finish();
             }
         });
-//        getData(integer,true);
+        //getData(integer,true);
         /**
          * 下拉
          */
@@ -158,15 +146,12 @@ public class AuditActivity extends BaseActivity {
             }
         });
     }
-
-
     @Override
     protected void onStart() {
         super.onStart();
         integer = 1;
         getData(integer, true);
     }
-
     //弹出框
     private void MeunPop() {
         View contentView = getPopupWindowContentView();
@@ -181,7 +166,6 @@ public class AuditActivity extends BaseActivity {
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
-
     //设置pop的点击事件
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
@@ -208,7 +192,6 @@ public class AuditActivity extends BaseActivity {
         contentView.findViewById(R.id.audit_statistical).setOnClickListener(menuItemOnClickListener);
         return contentView;
     }
-
 
     /**
      * popWin关闭的事件，主要是为了将背景透明度改回来
@@ -263,6 +246,7 @@ public class AuditActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

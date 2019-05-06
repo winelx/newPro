@@ -3,6 +3,8 @@ package com.example.administrator.newsdf.pzgc.activity.home.utils;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.example.administrator.newsdf.App;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
@@ -29,15 +31,16 @@ import java.util.HashMap;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.lzy.okgo.OkGo.getContext;
 import static com.lzy.okgo.OkGo.post;
 
 /**
  * description: 解析json和封装了查询图册
  *
  * @author lx
- *         date: 2018/5/4 0004 下午 4:06
- *         update: 2018/5/4 0004
- *         version:
+ * date: 2018/5/4 0004 下午 4:06
+ * update: 2018/5/4 0004
+ * version:
  */
 
 public class HomeUtils {
@@ -378,13 +381,14 @@ public class HomeUtils {
         final ArrayList<String> namess = new ArrayList<>();
         final ArrayList<String> ids = new ArrayList<>();
         final ArrayList<String> titlename = new ArrayList<>();
-
         OkGo.post(Requests.WbsTaskGroup)
                 .params("wbsId", wbsid)
+                .tag("WbsTaskGroup")
                 .params("isNeedTotal", "true")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         if (s.contains("data")) {
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
@@ -442,20 +446,23 @@ public class HomeUtils {
                             intent.putExtra("iswbs", iswbs);
                             intent.putExtra("type", type);
                             activity.startActivity(intent);
-
+                            OkGo.getInstance().cancelTag("WbsTaskGroup");
                         }
-
+                    }
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }
-
-    public static void getStard(final String WbsId, int page,
+    public static void getStard(final String wbsid, int page,
                                 final ArrayList<PhotoBean> stardPats,
                                 final boolean drew,
                                 final TaskPhotoAdapter taskStardAdapter,
                                 final String wbsName) {
         OkGo.<String>get(Requests.StandardList)
-                .params("WbsId", WbsId)
+                .params("WbsId", wbsid)
                 .params("page", page)
                 .params("rows", 30)
                 .execute(new StringCallback() {
@@ -999,7 +1006,6 @@ public class HomeUtils {
     public String getId() {
         return orgId;
     }
-
 
 
 }

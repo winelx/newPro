@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsContent;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsRecord;
 import com.example.administrator.newsdf.pzgc.bean.ReplyDetailsText;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.bean.photoBean;
@@ -562,9 +563,9 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("");
-                            } else if (ret==5){
-                                callBacks.onerror("我的签名");
-                            }else {
+                            } else if (ret == 5) {
+                                callBacks.onerror(Enums.MYAUTOGRAPH);
+                            } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {
@@ -603,10 +604,9 @@ public class ChagedreplyUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 callBacks.onsuccess("");
-                            }else if (ret==5){
-                                callBacks.onerror(jsonObject.getString("我的签名"));
-                            }
-                            else {
+                            } else if (ret == 5) {
+                                callBacks.onerror(Enums.MYAUTOGRAPH);
+                            } else {
                                 callBacks.onerror(jsonObject.getString("msg"));
                             }
                         } catch (JSONException e) {

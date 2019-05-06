@@ -47,7 +47,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     private Context mContext;
     private TextView datatime, title;
     private DailyrecordAdapter mAdapter;
-    private ListView daily_list;
+    private ListView dailyList;
     private ArrayList<DailyrecordBean> list = new ArrayList();
     private PopupWindow mPopupWindow;
     private NumberPicker yearPicker, monthPicker;
@@ -56,12 +56,13 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     private ReportActivity activity;
     private String data;
     private LinearLayout checkQueater;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_month, null);
-            daily_list = rootView.findViewById(R.id.daily_list);
+            dailyList = rootView.findViewById(R.id.daily_list);
             datatime = rootView.findViewById(R.id.datatime);
             title = rootView.findViewById(R.id.audit_fr_title);
             checkQueater = rootView.findViewById(R.id.check_queater);
@@ -74,18 +75,18 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
         mContext = getActivity();
         activity = (ReportActivity) mContext;
         mAdapter = new DailyrecordAdapter(mContext, list);
-        daily_list.setAdapter(mAdapter);
-        daily_list.setEmptyView(rootView.findViewById(R.id.nullposion));
+        dailyList.setAdapter(mAdapter);
+        dailyList.setEmptyView(rootView.findViewById(R.id.nullposion));
         dateMonth = myDate.getMonth();
         data = Dates.getMonth();
-       okgo(data, false);
+        okgo(data, false);
         return rootView;
     }
 
     /**
      * 时间选择器弹出框
      */
-    private void MeunPop() {
+    private void meunpop() {
         View contentView = getPopupWindowContentView();
         mPopupWindow = new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -151,7 +152,7 @@ public class MonthrecordFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audit_title:
-                MeunPop();
+                meunpop();
                 break;
             case R.id.monthRetry:
                 okgo(data, true);

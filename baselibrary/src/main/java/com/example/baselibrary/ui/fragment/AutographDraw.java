@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +93,8 @@ public class AutographDraw extends Fragment {
                             }
                         });
 
+                    }else {
+                        Snackbar.make(back,"签名录入失败",Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -96,9 +96,12 @@ public class AutographPreview extends Fragment {
                     JSONObject jsonObject = new JSONObject(s);
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
+                        btButton.setText("修改签名");
                         String path = jsonObject.getString("data");
                         paths = Requests.networks + path;
                         glide();
+                    }else {
+                        btButton.setText("录入签名");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

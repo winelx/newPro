@@ -15,11 +15,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
-* @author lx
-* @data :2018/8/13 0013.
-* @描述 :
-*@see
-*/
+ * @author lx
+ * @data :2018/8/13 0013.
+ * @描述 :
+ * @see
+ */
 
 public class Checkjson {
 
@@ -95,7 +95,7 @@ public class Checkjson {
 
                         if ("0".equals(status)) {
                             list.add(new SCheckTasklistBean(checkOrgName, checkUser, createDate, id, orgName, status, iwork, wbsMai));
-                        } else {
+                        }  else {
                             list.add(new CheckTasklistBean(checkOrgName, checkUser, createDate, id, orgName, score, status, iwork, wbsMai));
                         }
 

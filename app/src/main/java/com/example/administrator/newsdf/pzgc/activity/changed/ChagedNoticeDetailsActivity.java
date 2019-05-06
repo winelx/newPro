@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedUtils.CallBack;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChagedNoticeDetailsAdapter;
@@ -179,21 +180,9 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
 
                             @Override
                             public void onerror(String str) {
-                                if ("我的签名".equals(str)) {
-                                    BaseDialog.confirmmessagedialog(mContext,
-                                            "确认签字失败",
-                                            "您当前还未设置我的签名",
-                                            "取消", "去设置签名", new Onclicklitener() {
-                                                @Override
-                                                public void confirm(String string) {
-                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
-                                                }
-
-                                                @Override
-                                                public void cancel(String string) {
-
-                                                }
-                                            });
+                                if (Enums.MYAUTOGRAPH.equals(str)) {
+                                    //确认签字失败
+                                    dialog();
                                 } else {
                                     Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
                                 }
@@ -235,19 +224,9 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
             @Override
             public void onerror(String str) {
                 onclickstatus = true;
-                if ("我的签名".equals(str)) {
-                    BaseDialog.confirmmessagedialog(mContext,
-                            "确认签字失败",
-                            "您当前还未设置我的签名",
-                            "取消", "去设置签名", new Onclicklitener() {
-                                @Override
-                                public void confirm(String string) {
-                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
-                                }
-                                @Override
-                                public void cancel(String string) {
-                                }
-                            });
+                if (Enums.MYAUTOGRAPH.equals(str)) {
+                    //没有签名
+                    dialog();
                 } else {
                     Snackbar.make(titleView, str, Snackbar.LENGTH_SHORT).show();
                 }
@@ -304,5 +283,41 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 Snackbar.make(titleView, str, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+        
+        /**
+         *           .----.
+         *        _.'__    `.
+         *    .--(Q)(OK)---/$\
+         *  .' @          /$$\
+         *  :         ,   $$$
+         *   `-..__.-' _.-\$$/
+         *         `;_:    `"'
+         *       .'"""""`.
+         *      /,  FLY  ,\
+         *     //         \\
+         *     `-._______.-'
+         *     ___`. | .'___
+         *    (______|______)
+         * </pre>
+         */
+
+
+
+    /*确认签字失败*/
+    public void dialog() {
+        BaseDialog.confirmmessagedialog(mContext,
+                "确认签字失败",
+                "您当前还未设置我的签名",
+                "取消", "去设置签名", new Onclicklitener() {
+                    @Override
+                    public void confirm(String string) {
+                        startActivity(new Intent(mContext, SignatureViewActivity.class));
+                    }
+
+                    @Override
+                    public void cancel(String string) {
+                    }
+                });
     }
 }

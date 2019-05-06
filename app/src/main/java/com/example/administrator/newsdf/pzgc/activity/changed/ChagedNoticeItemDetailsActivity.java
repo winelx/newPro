@@ -43,7 +43,6 @@ public class ChagedNoticeItemDetailsActivity extends BaseActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checknoticemessage);
-
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         chagedUtils = new ChagedUtils();

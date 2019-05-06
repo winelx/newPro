@@ -60,6 +60,7 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             holder.listRanking.setBackgroundResource(R.drawable.check_item_green);
         }
+        holder.score.setText(mData.get(position).getRankingSorce());
         holder.checkReportItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,14 +83,16 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView listOrgidName, listCompanyName, number, listRanking;
+        private TextView listOrgidName, listCompanyName, number, listRanking, score;
         private RelativeLayout checkReportItem;
+
         public ViewHolder(View itemView) {
             super(itemView);
             listOrgidName = itemView.findViewById(R.id.list_orgid_name);
             listCompanyName = itemView.findViewById(R.id.list_company_name);
             number = itemView.findViewById(R.id.number);
             listRanking = itemView.findViewById(R.id.list_ranking);
+            score = itemView.findViewById(R.id.score);
             checkReportItem = itemView.findViewById(R.id.check_report_item);
         }
     }
@@ -98,6 +101,7 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mData = Paths;
         notifyDataSetChanged();
     }
+
     /**
      * 内部接口
      */

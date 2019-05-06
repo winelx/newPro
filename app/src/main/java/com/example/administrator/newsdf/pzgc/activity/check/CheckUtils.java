@@ -217,7 +217,7 @@ public class CheckUtils {
                     if (jsonObject.getInt("ret") == 0) {
                         callback.onsuccess(new HashMap<String, Object>());
                     } else if (jsonObject.getInt("ret") == 5) {
-                        callback.onerror(jsonObject.getString("我的签名"));
+                        callback.onerror(Enums.MYAUTOGRAPH);
                     } else {
                         callback.onerror(jsonObject.getString("msg"));
                     }

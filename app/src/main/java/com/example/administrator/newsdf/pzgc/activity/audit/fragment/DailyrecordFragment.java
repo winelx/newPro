@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.bean.DailyrecordBean;
@@ -42,9 +43,9 @@ import okhttp3.Response;
  * description:每日审核
  *
  * @author lx
- *         date: 2018/7/3 0003 上午 10:03
- *         update: 2018/7/3 0003
- *         version:
+ * date: 2018/7/3 0003 上午 10:03
+ * update: 2018/7/3 0003
+ * version:
  */
 
 public class DailyrecordFragment extends Fragment implements View.OnClickListener, CallBack {
@@ -54,14 +55,9 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
     private ArrayList<DailyrecordBean> list;
     private DailyrecordAdapter mAdapter;
     private Context mContext;
-    private PopupWindow mPopupWindow;
-    private NumberPicker yearPicker, monthPicker, dayPicker;
-    private String[] numbermonth, numberyear;
-    private Date myDate = new Date();
-    private int dateMonth, dayDate;
     private ReportActivity activity;
     private String data;
-    private LinearLayout linear;
+    private DialogUtils dialogUtils;
 
     @Nullable
     @Override
@@ -77,12 +73,8 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         list = new ArrayList<>();
         mContext = getActivity();
         CallBackUtils.setCallBack(this);
-
+        dialogUtils = new DialogUtils();
         activity = (ReportActivity) mContext;
-        numbermonth = Utils.month;
-        numberyear = Utils.year;
-        dayDate = myDate.getDate() - 1;
-        dateMonth = myDate.getMonth();
         datatime.setText(Utils.titleDay());
         mAdapter = new DailyrecordAdapter(mContext, list);
         dailyList.setAdapter(mAdapter);
@@ -98,111 +90,12 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
      * 选择时间弹出框
      */
     private void meunpop() {
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        // 设置好参数之后再show
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(datatime);
-        Utils.backgroundAlpha(0.5f, ReportActivity.getInstance());
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-    }
-
-    /**
-     * \设置pop的点击事件
-     */
-
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        // 布局ID
-        int layoutId = R.layout.popwind_daily;
-        final View contentView = LayoutInflater.from(mContext).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
+        dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_determine:
-                        //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
-                        //获取月
-                        int month = monthPicker.getValue();
-                        String monthdata = Utils.month[month];
-                        //获取天
-                        int day = dayPicker.getValue();
-                        String daydata;
-                        if (monthdata.equals("02")) {
-                            //是二月份
-                            if (Utils.getyear().contains(yeardata)) {
-                                daydata = Utils.daytwos[day];
-                                //闰年
-                            } else {
-                                //平年
-                                daydata = Utils.daytwo[day];
-                            }
-                        } else {
-                            //不是二月份
-                            if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
-                                daydata = Utils.day[day];
-                            } else {
-                                daydata = Utils.dayth[day];
-                            }
-
-                        }
-                        datatime.setText(yeardata + "-" + monthdata + "-" + daydata);
-                        data = yeardata + "-" + monthdata + "-" + daydata;
-                        okgo(data, true);
-                        break;
-                    case R.id.pop_dismiss:
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-        contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
-        yearPicker = contentView.findViewById(R.id.years);
-        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
-        monthPicker = contentView.findViewById(R.id.month);
-        Utils.setPicker(monthPicker, Utils.month, dateMonth);
-        dayPicker = contentView.findViewById(R.id.day);
-        String yeardata = Utils.year[yearPicker.getValue()];
-        if ((dateMonth+1)== 2) {
-            if (Utils.getyear().contains(yeardata)) {
-                Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
-                //闰年
-            } else {
-                //平年
-                Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
-            }
-        } else{
-            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
-                Utils.setPicker(dayPicker, Utils.day, dayDate);
-            } else{
-                Utils.setPicker(dayPicker, Utils.dayth, dayDate);
-            }
-        }
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                setyear(i1);
-
+            public void onsuccess(String str) {
+                datatime.setText(str);
             }
         });
-        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal,
-                                      int newVal) {
-                setMonth(newVal);
-            }
-        });
-
-        return contentView;
     }
 
     /**
@@ -232,104 +125,6 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
         okgo(data, false);
     }
 
-    /**
-     * popWin关闭的事件，主要是为了将背景透明度改回来
-     */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-        @Override
-        public void onDismiss() {
-            Utils.backgroundAlpha(1f, ReportActivity.getInstance());
-        }
-    }
-
-    /**
-     * /设置选择年，控制二月天数
-     */
-    public void setyear(int i1) {
-        //月份
-        String mont = Utils.month[monthPicker.getValue()];
-        //年份
-        String str = numberyear[i1];
-        //如果选择中的月份是二月
-        if (mont.equals("02")) {
-            //判断是闰年还是平年
-            if (Utils.getyear().contains(str)) {
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwos);
-                dayPicker.setMinValue(0);
-            } else {
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwo);
-                dayPicker.setMinValue(0);
-            }
-        }
-    }
-
-    /**
-     * /设置选择月，控制二月天数
-     */
-    public void setMonth(int newVal) {
-        String NewVal = numbermonth[newVal];
-        String years = numberyear[yearPicker.getValue()];
-        if (NewVal.equals("02")) {
-            if (Utils.getyear().contains(years)) {
-                //如果是闰年。二月有29天
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwos.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwos);
-                dayPicker.setMinValue(0);
-            } else {
-                //如果是平年。二月有28天
-                dayPicker.setDisplayedValues(null);
-                dayPicker.setMaxValue(Utils.daytwo.length - 1);
-                dayPicker.setDisplayedValues(Utils.daytwo);
-                dayPicker.setMinValue(0);
-            }
-        } else if (NewVal.equals("01") || NewVal.equals("03") || NewVal.equals("05") ||
-                NewVal.equals("07") || NewVal.equals("08") || NewVal.equals("10") || NewVal.equals("12")) {
-            dayPicker.setDisplayedValues(null);
-            dayPicker.setMaxValue(Utils.day.length - 1);
-            dayPicker.setDisplayedValues(Utils.day);
-            dayPicker.setMinValue(0);
-        } else if (NewVal.equals("04") || NewVal.equals("06") || NewVal.equals("09") || NewVal.equals("11")) {
-            dayPicker.setDisplayedValues(null);
-            dayPicker.setMaxValue(Utils.dayth.length - 1);
-            dayPicker.setDisplayedValues(Utils.dayth);
-            dayPicker.setMinValue(0);
-        }
-    }
-
-    /**
-     * 返回当前时间
-     *
-     * @return
-     */
-    public String getData() {
-        //获取年
-        String yeardata = Utils.year[yearPicker.getValue()];
-        //获取月
-        int month = monthPicker.getValue();
-        String monthdata = Utils.month[month];
-        //获取天
-        int day = dayPicker.getValue();
-        String daydata;
-        if (monthdata.equals("02")) {
-            //是二月份
-            if (Utils.getyear().contains(yeardata)) {
-                daydata = Utils.daytwos[day];
-                //闰年
-            } else {
-                //平年
-                daydata = Utils.daytwo[day];
-            }
-        } else {
-            //不是二月份
-            daydata = Utils.day[day];
-        }
-        return yeardata + monthdata + daydata;
-    }
 
     /**
      * 网络请求

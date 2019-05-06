@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
@@ -60,35 +62,26 @@ import okhttp3.Response;
  */
 public class CheckListDetailsActivity extends BaseActivity implements View.OnClickListener {
     //控件
-    private PopupWindow mPopupWindow;
-    private NumberPicker yearPicker, monthPicker, dayPicker;
     private TextView datatime, categoryItem, checkNewNumber, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber, checkNewDialog;
     private DrawerLayout drawerLayout;
     private GridView checklist;
     private EditText checkNewTasktitle, checkNewTemporarysite;
-    private Button checkNewButton, autograph;
+    private Button checkNewButton;
     private DKDragView dkDragView;
-    private String[] numbermonth, numberyear;
     //参数
-    private String type, name, Id, taskId;
-    private int dateMonth, dayDate;
-    private Date myDate = new Date();
+    private String type, Id, taskId;
     private CheckNewAdapter adapter;
     private ArrayList<chekitemList> mData;
     private static CheckListDetailsActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
-
     public static CheckListDetailsActivity getInstance() {
         return mContext;
     }
-
-    private CheckUtils checkUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +92,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         Id = intent.getStringExtra("id");
         type = intent.getStringExtra("type");
         findbyid();
-        try {
-            if (TextUtils.isEmpty(intent.getStringExtra("status"))) {
-                autograph.setVisibility(View.GONE);
-            } else {
-                autograph.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
-            autograph.setVisibility(View.GONE);
-        }
         initData();
         getCategory();
         //内业检查不需要检查部位
@@ -140,9 +124,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //检查按钮
         checkNewButton = (Button) findViewById(R.id.check_new_buttons);
         checkNewButton.setOnClickListener(this);
-        //确认并签字
-        autograph = findViewById(R.id.check_new_autograph);
-        autograph.setOnClickListener(this);
         //分数
         checkNewNumber = (TextView) findViewById(R.id.check_new_number);
         //标题
@@ -197,16 +178,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
 
     private void initData() {
         mData = new ArrayList<>();
-        checkUtils = new CheckUtils();
-        //拿到月
-        numbermonth = Utils.month;
-        //拿到年
-        numberyear = Utils.year;
         mContext = this;
-        //获取当前月份
-        dateMonth = myDate.getMonth();
-        //天
-        dayDate = myDate.getDate() - 1;
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
@@ -240,61 +212,58 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.check_new_data:
-                //打开时间选择器
-                meunpop();
-                break;
             case R.id.checklistback:
                 finish();
                 break;
-            case R.id.check_new_autograph:
-                BaseDialog.confirmdialog(mContext, "是否确认签字", null, new Onclicklitener() {
-                    @Override
-                    public void confirm(String string) {
-                        autograph.setVisibility(View.GONE);
-                        Dates.getDialogs(mContext, "提交数据中...");
-                        CheckUtils.getautograph(Id, new NetworkCallback() {
-                            @Override
-                            public void onsuccess(Map<String, Object> map) {
-                                Dates.disDialog();
-                                ToastUtils.showShortToast("请求成功");
-                                autograph.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onerror(String s) {
-                                Dates.disDialog();
-                                autograph.setVisibility(View.VISIBLE);
-                                if ("我的签名".equals(s)) {
-                                    BaseDialog.confirmmessagedialog(mContext,
-                                            "确认签字失败",
-                                            "您当前还未设置我的签名",
-                                            "取消", "去设置签名", new Onclicklitener() {
-                                                @Override
-                                                public void confirm(String string) {
-                                                    startActivity(new Intent(mContext, SignatureViewActivity.class));
-                                                }
-
-                                                @Override
-                                                public void cancel(String string) {
-
-                                                }
-                                            });
-                                } else {
-                                    ToastUtils.showShortToast(this.toString() + ":" + s);
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void cancel(String string) {
-                        //取消
-                    }
-                });
-                break;
             case R.id.check_new_buttons:
+                if ("确认并签名".equals(checkNewButton.getText().toString())){
+                    BaseDialog.confirmdialog(mContext, "是否确认签字", null, new Onclicklitener() {
+                        @Override
+                        public void confirm(String string) {
+                            Dates.getDialogs(mContext, "提交数据中...");
+                            CheckUtils.getautograph(Id, new NetworkCallback() {
+                                @Override
+                                public void onsuccess(Map<String, Object> map) {
+                                    Dates.disDialog();
+                                    ToastUtils.showShortToast("确认成功");
+                                    checkFinish();
+                                    try {
+                                        CheckTaskCallbackUtils.CallBackMethod();
+                                    }catch (Exception e){}
 
+
+                                }
+                                @Override
+                                public void onerror(String s) {
+                                    Dates.disDialog();
+                                    if (Enums.MYAUTOGRAPH.equals(s)) {
+                                        BaseDialog.confirmmessagedialog(mContext,
+                                                "确认签字失败",
+                                                "您当前还未设置我的签名",
+                                                "取消", "去设置签名", new Onclicklitener() {
+                                                    @Override
+                                                    public void confirm(String string) {
+                                                        startActivity(new Intent(mContext, SignatureViewActivity.class));
+                                                    }
+
+                                                    @Override
+                                                    public void cancel(String string) {
+
+                                                    }
+                                                });
+                                    } else {
+                                        ToastUtils.showShortToast(this.toString() + ":" + s);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void cancel(String string) {
+                            //取消
+                        }
+                    });
+                }
                 break;
             default:
                 break;
@@ -333,136 +302,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
             wbsName.setVisibility(View.VISIBLE);
             //查询标段自带的类别
             getCategory();
-        }
-    }
-
-    /**
-     * 选择时间弹出框
-     */
-    private void meunpop() {
-        View contentView = getPopupWindowContentView();
-        mPopupWindow = new PopupWindow(contentView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-        //设置显示隐藏动画
-        mPopupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
-        // 默认在mButton2的左下角显示
-        mPopupWindow.showAsDropDown(titleView);
-        //添加pop窗口关闭事件
-        mPopupWindow.setOnDismissListener(new poponDismissListener());
-        Utils.backgroundAlpha(0.5f, CheckListDetailsActivity.this);
-    }
-
-    /**
-     * \设置pop的点击事件
-     */
-    private View getPopupWindowContentView() {
-        // 一个自定义的布局，作为显示的内容
-        int layoutId = R.layout.popwind_daily;
-        final View contentView = LayoutInflater.from(mContext).inflate(layoutId, null);
-        View.OnClickListener menuItemOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.pop_determine:
-                        //获取年
-                        String yeardata = Utils.year[yearPicker.getValue()];
-                        //获取月
-                        int month = monthPicker.getValue();
-                        String monthdata = Utils.month[month];
-                        //获取天
-                        int day = dayPicker.getValue();
-                        String daydata;
-                        if (monthdata.equals("02")) {
-                            //是二月份
-                            if (Utils.getyear().contains(yeardata)) {
-                                daydata = Utils.daytwos[day];
-                                //闰年
-                            } else {
-                                //平年
-                                daydata = Utils.daytwo[day];
-                            }
-                        } else {
-                            //不是二月份
-                            if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
-                                daydata = Utils.day[day];
-                            } else {
-                                daydata = Utils.dayth[day];
-                            }
-
-                        }
-                        titleView.setText(yeardata + "-" + monthdata + "-" + daydata);
-                        break;
-                    case R.id.pop_dismiss:
-                    default:
-                        break;
-                }
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                }
-            }
-        };
-
-
-        //获取控件点击事件
-        contentView.findViewById(R.id.pop_dismiss).setOnClickListener(menuItemOnClickListener);
-        contentView.findViewById(R.id.pop_determine).setOnClickListener(menuItemOnClickListener);
-        //年的控件
-
-        yearPicker = contentView.findViewById(R.id.years);
-        //月
-        monthPicker = contentView.findViewById(R.id.month);
-        //每日
-        dayPicker = contentView.findViewById(R.id.day);
-        //初始化数据---年
-        Utils.setPicker(yearPicker, Utils.year, Utils.titleyear());
-        //初始化数据---月
-        Utils.setPicker(monthPicker, Utils.month, dateMonth);
-        //初始化数据---日
-        String yeardata = Utils.year[yearPicker.getValue()];
-        //如果当前月份是2月
-        if ((dateMonth + 1) == 2) {
-            if (Utils.getyear().contains(yeardata)) {
-                Utils.setPicker(dayPicker, Utils.daytwos, dayDate);
-                //闰年
-            } else {
-                //平年
-                Utils.setPicker(dayPicker, Utils.daytwo, dayDate);
-            }
-        } else {
-            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
-                Utils.setPicker(dayPicker, Utils.day, dayDate);
-            } else {
-                Utils.setPicker(dayPicker, Utils.dayth, dayDate);
-            }
-        }
-        //年份选择器。如果当前的月份是二月，
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                checkUtils.setyear(monthPicker, dayPicker, i1, numberyear);
-            }
-        });
-        //月份选择器。如果当前的月份是二月，
-        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal,
-                                      int newVal) {
-                checkUtils.setMonth(yearPicker, monthPicker, dayPicker, newVal, numbermonth, numberyear);
-            }
-        });
-
-        return contentView;
-    }
-
-    /**
-     * popWin关闭的事件，主要是为了将背景透明度改回来
-     */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-        @Override
-        public void onDismiss() {
-            Utils.backgroundAlpha(1f, CheckListDetailsActivity.this);
         }
     }
 
@@ -591,10 +430,17 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                Boolean lean = jsonObject1.getBoolean("finish");
-                                if (lean) {
+                                String lean = jsonObject1.getString("finish");
+                                if ("2".equals(lean)) {
                                     checkNewButton.setText("提交");
+                                    checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
+                                } else if ("3".equals(lean)) {
+                                    checkNewButton.setText("确认并签名");
+                                    checkNewButton.setVisibility(View.VISIBLE);
+                                    checkNewButton.setBackgroundResource(R.color.Orange);
+                                } else {
+                                    checkNewButton.setVisibility(View.GONE);
                                 }
                             }
 

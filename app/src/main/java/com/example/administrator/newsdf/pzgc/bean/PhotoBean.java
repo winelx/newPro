@@ -1,7 +1,9 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
 /**
- * Created by Administrator on 2017/12/26 0026.
+ *
+ * @author Administrator
+ * @date 2017/12/26 0026
  */
 
 public class PhotoBean {

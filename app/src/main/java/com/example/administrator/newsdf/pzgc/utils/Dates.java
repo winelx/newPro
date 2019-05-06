@@ -518,6 +518,8 @@ public class Dates {
             text.setText(str);
             //点击外部取消
             progressDialog.setCanceledOnTouchOutside(false);
+            //物理返回键
+            progressDialog.setCancelable(false);
             progressDialog.show();
             new Handler(new Handler.Callback() {
                 @Override
@@ -541,6 +543,8 @@ public class Dates {
             progressDialog.setContentView(R.layout.waiting_dialog);
             //点击外部取消
             progressDialog.setCanceledOnTouchOutside(false);
+            //物理返回键
+            progressDialog.setCancelable(false);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
             text.setText(str);

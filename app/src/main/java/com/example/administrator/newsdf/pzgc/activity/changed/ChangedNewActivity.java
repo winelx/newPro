@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
@@ -315,7 +316,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
 
                 @Override
                 public void onerror(String str) {
-                    if ("我的签名".equals(str)) {
+                    if (Enums.MYAUTOGRAPH.equals(str)) {
                         BaseDialog.confirmmessagedialog(mContext,
                                 "确认签字失败",
                                 "您当前还未设置我的签名",

@@ -65,7 +65,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@color/colorAccent"
-        android:text="录入签名"
         android:textColor="@color/white"
         android:textSize="15sp" />
 </RelativeLayout>

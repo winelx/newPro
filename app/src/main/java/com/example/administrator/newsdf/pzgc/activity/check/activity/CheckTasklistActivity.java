@@ -83,7 +83,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkmanagementlist);
-
         mContext = CheckTasklistActivity.this;
         CheckTaskCallbackUtils.setCallBack(this);
         checkUtils = new CheckUtils();
@@ -284,6 +283,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     }
 
     public void submit(String id, int iwork) {
+        //这里是为未处理跳转界面
         if (iwork == 1) {
             Intent intent = new Intent(mContext, CheckNewAddActivity.class);
             intent.putExtra("orgId", orgId);

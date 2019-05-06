@@ -201,7 +201,6 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.d("ss", s);
                         try {
                             mData.clear();
                             JSONObject jsonObject = new JSONObject(s);
@@ -239,7 +238,13 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                                     } catch (Exception e) {
                                         score = "";
                                     }
-                                    mData.add(new CheckQuarterBean(id, parentid, name, parent_name, score));
+                                    String rankingSorce;
+                                    try {
+                                        rankingSorce = jsonObject1.getString("rankingSorce");
+                                    } catch (Exception e) {
+                                        rankingSorce = "";
+                                    }
+                                    mData.add(new CheckQuarterBean(id, parentid, name, parent_name, score,rankingSorce));
                                 }
                             }
                             if (mData.size() > 0) {
