@@ -42,12 +42,13 @@ import okhttp3.Response;
 
 /**
  * @author lx
- *         Created by Administrator on 2017/11/21 0021.
- *         我的消息
+ * Created by Administrator on 2017/11/21 0021.
+ * 我的消息
  */
 
 public class HomeMineFragment extends Fragment implements AdapterView.OnItemClickListener, OgranCallback, frehomeCallBack {
     private View rootView;
+    private LinearLayout probar;
     private ExpandableListView expandable;
     private FragmentHomeListAdapter mAdapter;
     private ArrayList<Home_item> mData;
@@ -66,6 +67,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
             rootView = inflater.inflate(R.layout.fragment_home, null);
             expandable = rootView.findViewById(R.id.expandable);
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
+            probar = rootView.findViewById(R.id.probar);
             nullposion = rootView.findViewById(R.id.nullposion);
             //禁止上拉
             refreshLayout.setEnableLoadmore(false);
@@ -89,10 +91,14 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         OgranCallbackUtils.setCallBack(this);
         //收藏刷新
         frehomeCallBackUtils.setCallBack(this);
-
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (hasMap.size() == 0) {
+                    expandable.setVisibility(View.GONE);
+                    nullposion.setVisibility(View.GONE);
+                    probar.setVisibility(View.VISIBLE);
+                }
                 Okgo();
                 //传入false表示刷新失败
                 refreshlayout.finishRefresh(1000);
@@ -200,12 +206,14 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                 if (hasMap.size() > 0) {
                                     expandable.setVisibility(View.VISIBLE);
                                     nullposion.setVisibility(View.GONE);
+                                    probar.setVisibility(View.GONE);
                                     mAdapter = new FragmentHomeListAdapter(title, hasMap, mContext,
                                             ivGoToChildClickListener);
                                     expandable.setAdapter(mAdapter);
                                 } else {
                                     nullposion.setVisibility(View.VISIBLE);
                                     expandable.setVisibility(View.GONE);
+                                    probar.setVisibility(View.GONE);
                                 }
                                 //关闭刷新提示
                                 refreshLayout.finishRefresh(true);
@@ -215,6 +223,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                         } else {
                             ToastUtils.showShortToast("没有更多数据");
                             nullposion.setVisibility(View.VISIBLE);
+                            probar.setVisibility(View.GONE);
                             expandable.setVisibility(View.GONE);
                         }
                     }
@@ -222,7 +231,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-
+                        probar.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
                         expandable.setVisibility(View.GONE);
                     }

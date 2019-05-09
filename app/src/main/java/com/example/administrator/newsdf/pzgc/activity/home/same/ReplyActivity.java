@@ -499,7 +499,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
             case R.id.reply_wbs:
                 Intent intent = new Intent(ReplyActivity.this, MmissPushActivity.class);
                 //标签，用来判读该进入那个界面，
-                intent.putExtra("data", "reply");
+                intent.putExtra("Type", "reply");
                 intent.putExtra("wbsID", wbsID);
                 startActivityForResult(intent, 1);
                 break;

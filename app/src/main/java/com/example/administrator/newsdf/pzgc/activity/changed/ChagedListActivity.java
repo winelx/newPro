@@ -61,7 +61,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
-
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
@@ -70,7 +69,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         TaskCallbackUtils.setCallBack(this);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
-        recyclerList.setEmptyView(emptyUtils.init());
         title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
@@ -82,6 +80,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChagedListAdapter(list, mContext);
         recyclerList.setAdapter(adapter);
+        recyclerList.setEmptyView(emptyUtils.init());
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(true);
@@ -148,6 +147,7 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
                     if (permission == 1) {
                         /*保存状态，调整新增页面，进行修改*/
                         Intent intent = new Intent(mContext, ChangedNewActivity.class);
+                        //状态控制界面是否处于编辑状态
                         intent.putExtra("status", true);
                         intent.putExtra("id", list.get(pos).getId());
                         intent.putExtra("orgName", title.getText().toString());

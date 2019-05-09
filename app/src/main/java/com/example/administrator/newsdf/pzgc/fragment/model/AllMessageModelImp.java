@@ -98,9 +98,11 @@ public class AllMessageModelImp implements AllMessageModel {
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                onClickListener.onError();
                             }
                         } else {
                             ToastUtils.showShortToast("没有更多数据");
+                            onClickListener.onError();
                         }
                     }
 
@@ -108,6 +110,8 @@ public class AllMessageModelImp implements AllMessageModel {
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         ToastUtils.showShortToast("网络连接失败");
+                        onClickListener.onError();
+
                     }
                 });
     }

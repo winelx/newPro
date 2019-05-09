@@ -25,9 +25,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/writer"
                 android:divider="@color/back"
-                android:visibility="gone"
                 android:dividerHeight="@null"
-                android:groupIndicator="@color/colorAccent" />
+                android:groupIndicator="@color/colorAccent"
+                android:visibility="gone" />
 
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
@@ -39,7 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -51,6 +52,17 @@
                 android:layout_height="wrap_content"
                 android:text="暂 无 数 据 ！" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/probar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
         </LinearLayout>
 
     </FrameLayout>

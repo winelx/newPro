@@ -12,9 +12,9 @@ import java.util.Map;
  * description: presenter层
  *
  * @author lx
- *         date: 2018/6/14 0014 上午 11:01
- *         update: 2018/6/14 0014
- *         version:
+ * date: 2018/6/14 0014 上午 11:01
+ * update: 2018/6/14 0014
+ * version:
  */
 
 public class AllmessagePer {
@@ -37,7 +37,16 @@ public class AllmessagePer {
         messageModel.getData(new AllMessageModel.OnClickListener() {
             @Override
             public void onComple(List<String> list, Map<String, List<Home_item>> map) {
-                uiAllMessage.setAdapter(list, map);
+                if (list.size() > 0) {
+                    uiAllMessage.setAdapter(list, map);
+                } else {
+                    uiAllMessage.onerror("失败");
+                }
+            }
+
+            @Override
+            public void onError() {
+                uiAllMessage.onerror("失败");
             }
         });
 

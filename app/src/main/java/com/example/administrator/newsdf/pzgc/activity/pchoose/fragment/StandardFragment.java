@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work.pchoose;
+package com.example.administrator.newsdf.pzgc.activity.pchoose.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,9 @@ import android.widget.RelativeLayout;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
 import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.PhotoListActivity;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PhotoListActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.UploadPhotoActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 
@@ -25,9 +26,9 @@ import java.util.List;
  * description: 标准
  *
  * @author lx
- *         date: 2018/5/16 0016 下午 3:45
- *         update: 2018/5/16 0016
- *         version:
+ * date: 2018/5/16 0016 下午 3:45
+ * update: 2018/5/16 0016
+ * version:
  */
 public class StandardFragment extends Fragment {
     private List<Shop> listPath;
@@ -44,7 +45,7 @@ public class StandardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent standard = new Intent(getActivity(), PhotoListActivity.class);
-                standard.putExtra("status", "standard");
+                standard.putExtra("Type", PhotoEnue.STANDARD);
                 standard.putExtra("title", "选择标准分类");
                 startActivity(standard);
             }
@@ -53,7 +54,7 @@ public class StandardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MmissPushActivity.class);
-                intent.putExtra("data", "standard");
+                intent.putExtra("Type", PhotoEnue.STANDARD);
                 startActivity(intent);
 
             }
@@ -65,16 +66,16 @@ public class StandardFragment extends Fragment {
                 listPath = new ArrayList<Shop>();
                 listPath = LoveDao.queryCart();
                 for (Shop shop : listPath) {
-                  String str=  shop.getProject();
+                    String str = shop.getProject();
                     if ("standard".equals(str)) {
                         pathname.add(shop);
                     }
                 }
                 if (pathname.size() != 0) {
                     Intent standard = new Intent(getActivity(), UploadPhotoActivity.class);
-                    standard.putExtra("status", "standard");
+                    standard.putExtra("Type", PhotoEnue.STANDARD);
                     startActivity(standard);
-                }else {
+                } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }
             }

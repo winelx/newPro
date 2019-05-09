@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
@@ -29,9 +30,9 @@ import java.util.Map;
  * description: 全部消息
  *
  * @author lx
- *         date: 2018/3/16 0016 下午 1:45
- *         update: 2018/3/16 0016
- *         version:
+ * date: 2018/3/16 0016 下午 1:45
+ * update: 2018/3/16 0016
+ * version:
  */
 public class AllMessageFragment extends Fragment implements CallBack, OgranCallback, UiAllMessageView {
     private View rootView;
@@ -41,6 +42,7 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private ExpandableListView expandable;
     private View.OnClickListener ivGoToChildClickListener;
     private int groupPosition = 0;
+    private LinearLayout nullposion, probar;
 
     @Nullable
     @Override
@@ -50,6 +52,8 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
             mContext = getActivity();
             refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
             expandable = rootView.findViewById(R.id.expandable);
+            nullposion = rootView.findViewById(R.id.nullposion);
+            probar = rootView.findViewById(R.id.probar);
             //禁止上拉
             refreshLayout.setEnableLoadmore(false);
             //仿ios越界
@@ -129,6 +133,18 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
                 ivGoToChildClickListener);
         expandable.setAdapter(mAdapter);
         refreshLayout.finishRefresh(true);
+        nullposion.setVisibility(View.GONE);
+        probar.setVisibility(View.GONE);
+        expandable.setVisibility(View.VISIBLE);
+    }
+
+    /*接口请求失败*/
+    @Override
+    public void onerror(String str) {
+        nullposion.setVisibility(View.VISIBLE);
+        probar.setVisibility(View.GONE);
+        expandable.setVisibility(View.GONE);
+
     }
 
     //重新加载数据

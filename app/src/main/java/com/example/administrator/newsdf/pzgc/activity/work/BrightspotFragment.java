@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment;
-import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment2;
-import com.example.administrator.newsdf.pzgc.activity.work.bright.BridhtFragment3;
+import com.example.administrator.newsdf.pzgc.activity.bright.BridhtFragment;
+import com.example.administrator.newsdf.pzgc.activity.bright.BridhtFragment2;
+import com.example.administrator.newsdf.pzgc.activity.bright.BridhtFragment3;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 
 import java.util.ArrayList;

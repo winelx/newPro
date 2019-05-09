@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.UploadPhAdapter;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.baselibrary.base.BaseActivity;
 
@@ -27,9 +28,9 @@ import static com.example.administrator.newsdf.R.id.Up_ph_back;
  * description: 离线图片
  *
  * @author lx
- *         date: 2018/3/14 0014 下午 1:24
- *         update: 2018/3/14 0014
- *         version:
+ * date: 2018/3/14 0014 下午 1:24
+ * update: 2018/3/14 0014
+ * version:
  */
 public class UploadPhotoActivity extends BaseActivity {
     private List<Shop> listPath;
@@ -54,8 +55,9 @@ public class UploadPhotoActivity extends BaseActivity {
         upload_number = (TextView) findViewById(R.id.upload_number);
         Up_ph_title = (TextView) findViewById(R.id.Up_ph_title);
         Intent intent = getIntent();
-        status = intent.getExtras().getString("status");
-        if ("standard".equals(status)) {
+        status = intent.getExtras().getString("Type");
+        //标准
+        if (PhotoEnue.STANDARD.equals(status)) {
             upload_name.setText("标准名称");
             upload_photo.setText("所属标准分类");
             upload_number.setText("标准编号");
@@ -88,7 +90,7 @@ public class UploadPhotoActivity extends BaseActivity {
      * 拿到数据
      */
     private void queryDate() {
-        if ("standard".equals(status)) {
+        if (PhotoEnue.STANDARD.equals(status)) {
             listPath = new ArrayList<>();
             //或者指定数据
             listPath = LoveDao.queryCart();
@@ -142,7 +144,6 @@ public class UploadPhotoActivity extends BaseActivity {
                 setShowDeleteButton(false).setShowUpLoadeButton(false).setImagePath(imagepath)
                 .start((Activity) mContext);
     }
-
 
 
 }

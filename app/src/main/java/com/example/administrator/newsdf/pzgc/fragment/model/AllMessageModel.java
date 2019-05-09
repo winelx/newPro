@@ -26,5 +26,6 @@ public interface AllMessageModel {
      */
     interface OnClickListener {
         void onComple(List<String> list, Map<String, List<Home_item>> map);
+        void onError();
     }
 }

@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,6 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
         //设置内容布局的宽为屏幕宽度
         holder.layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
         //item正文点击事件
@@ -72,11 +72,13 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
                 activity.deleteDate(position);
             }
         });
-        List<String> list = stringToList(mDatas.get(position).getContent());
+        if (!TextUtils.isEmpty(mDatas.get(position).getContent())){
+            List<String> list = stringToList(mDatas.get(position).getContent());
+            holder.photo_name.setText(list.get(0));
+            holder.photo_number.setText(list.get(1));
+            holder.photo_names.setText(list.get(2));
+        }
 
-        holder.photo_name.setText(list.get(0));
-        holder.photo_number.setText(list.get(1));
-        holder.photo_names.setText(list.get(2));
     }
 
     @Override
@@ -155,7 +157,6 @@ public class UploadPhAdapter extends RecyclerView.Adapter<UploadPhAdapter.MyView
      */
     public static List<String> stringToList(String strs) {
         if (strs == "" && strs.isEmpty()) {
-
         } else {
             String str[] = strs.split(">>");
             return Arrays.asList(str);

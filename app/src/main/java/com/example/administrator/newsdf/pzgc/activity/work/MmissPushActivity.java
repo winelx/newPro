@@ -10,17 +10,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.StandardActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.base.BaseActivity;
+import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PushListviewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.PostRequest;
@@ -55,9 +56,9 @@ public class MmissPushActivity extends BaseActivity {
     private PushListviewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;
     private Context mContext;
-    String org_status, wbsID;
+    private String org_status, wbsID;
     private SmartRefreshLayout refreshLayout;
-    ArrayList<String> titlename;
+    private ArrayList<String> titlename;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class MmissPushActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
         Intent intent = getIntent();
-        org_status = intent.getExtras().getString("data");
+        org_status = intent.getExtras().getString("Type");
         try {
             wbsID = intent.getExtras().getString("wbsID");
         } catch (NullPointerException e) {
@@ -102,9 +103,11 @@ public class MmissPushActivity extends BaseActivity {
 
     private void okgo() {
         PostRequest PostRequest;
-        if (org_status.equals("standard")) {
+        if (org_status.equals(PhotoEnue.STANDARD)) {
+            //标准
             PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {
+            //图册
             PostRequest = OkGo.post(Requests.WBSTress).params("nodeid", "");
         }
         PostRequest.execute(new StringCallback() {
@@ -255,7 +258,7 @@ public class MmissPushActivity extends BaseActivity {
                 case "push":
                     getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
                     break;
-                case "standard":
+                case PhotoEnue.STANDARD:
                     //标准
                     Intent standard = new Intent(mContext, StandardActivity.class);
                     standard.putExtra("groupId", node.getId());
@@ -263,7 +266,7 @@ public class MmissPushActivity extends BaseActivity {
                     standard.putExtra("status", "standard");
                     startActivity(standard);
                     break;
-                case "Photo":
+                case PhotoEnue.ATLAS:
                     //图册界面
                     Intent intent1 = new Intent(mContext, PhotoadmActivity.class);
                     intent1.putExtra("wbsId", node.getId());
@@ -409,4 +412,10 @@ public class MmissPushActivity extends BaseActivity {
         return org_status;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkGo.getInstance().cancelAll();
+    }
 }

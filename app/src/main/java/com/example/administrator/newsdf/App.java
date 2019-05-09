@@ -37,7 +37,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public class App extends Application {
-    public String jsonId;
+    public String jsonId, imagepath;
     /**
      * 用于存放所有启动的Activity的集合
      */
@@ -113,6 +113,7 @@ public class App extends Application {
         } else {
             LogUtil.init(false);
         }
+        imagepath = getExternalCacheDir().getPath().replace("cache", "jpg/");
     }
 
     /**
@@ -124,6 +125,7 @@ public class App extends Application {
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
     }
+
     public static DaoSession getDaoInstant() {
         return daoSession;
     }

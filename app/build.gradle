@@ -3,6 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 26
     buildToolsVersion '28.0.2'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work.bright;
+package com.example.administrator.newsdf.pzgc.activity.bright;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.BridhtAdapter;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.bean.BrightBean;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBack;
-import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils2;
+import com.example.administrator.newsdf.pzgc.callback.BrightCallBackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -46,22 +46,19 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.stampToDate;
  *         update: 2018/4/25 0025
  *         version:
  */
-public class BridhtFragment3 extends Fragment implements BrightCallBack {
+public class BridhtFragment extends Fragment implements BrightCallBack {
     View view;
-    private int pos = 0;
     private BridhtAdapter mAdapter;
     private ArrayList<BrightBean> mData = new ArrayList<>();
     private SmartRefreshLayout refreshlayout;
     private LinearLayout nulllauout, layoutLoading;
-
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.bright_list_view, container, false);
-            BrightCallBackUtils2.setCallBack(this);
+            BrightCallBackUtils.setCallBack(this);
             RecyclerView brightspot_list = view.findViewById(R.id.brightspot_list);
             refreshlayout = view.findViewById(R.id.refreshlayout);
             layoutLoading = view.findViewById(R.id.layout_loading);
@@ -103,7 +100,7 @@ public class BridhtFragment3 extends Fragment implements BrightCallBack {
     private void Bright(final boolean stauts) {
         OkGo.<String>post(Requests.ListByType)
                 //pos 是从0开始的，而传递的数据从1开始
-                .params("type", 3)
+                .params("type", 1)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -188,7 +185,7 @@ public class BridhtFragment3 extends Fragment implements BrightCallBack {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, 2, ImagePaths));
+                                    mData.add(new BrightBean(id, orgId, orgName, taskName, leadername, leaderImg, updateDate, TaskId, 0, ImagePaths));
                                 }
                             } else {
                                 if (stauts) {

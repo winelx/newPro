@@ -13,9 +13,7 @@ public class AppUtils {
     public AppUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
-
     }
-
     /**
      * 获取应用程序名称
      */
@@ -44,7 +42,6 @@ public class AppUtils {
             PackageInfo packageInfo = packageManager.getPackageInfo(
                     context.getPackageName(), 0);
             return packageInfo.versionName;
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

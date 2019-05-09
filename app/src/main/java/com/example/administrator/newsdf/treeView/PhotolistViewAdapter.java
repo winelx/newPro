@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.work.PhotoListActivity;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PhotoListActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PopwindActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;

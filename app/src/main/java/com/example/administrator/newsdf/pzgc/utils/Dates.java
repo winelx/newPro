@@ -542,9 +542,9 @@ public class Dates {
             progressDialog = new Dialog(activity, R.style.progress_dialog);
             progressDialog.setContentView(R.layout.waiting_dialog);
             //点击外部取消
-            progressDialog.setCanceledOnTouchOutside(false);
-            //物理返回键
-            progressDialog.setCancelable(false);
+//            progressDialog.setCanceledOnTouchOutside(false);
+//            //物理返回键
+//            progressDialog.setCancelable(false);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView text = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
             text.setText(str);

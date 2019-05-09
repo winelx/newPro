@@ -62,7 +62,7 @@ public class ListPhActivity extends BaseActivity {
         photo_rec = (RecyclerView) findViewById(R.id.photo_rec);
         wbsname = (TextView) findViewById(R.id.wbsname);
         com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("图纸详情");
+        com_title.setText("图册图纸");
         comback = (IconTextView) findViewById(R.id.com_back);
         comback.setOnClickListener(
                 new View.OnClickListener() {

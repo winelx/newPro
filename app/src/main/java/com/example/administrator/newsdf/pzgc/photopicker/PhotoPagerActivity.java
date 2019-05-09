@@ -18,9 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.photopicker.fragment.ImagePagerFragment;
 import com.example.baselibrary.base.BaseActivity;
@@ -38,22 +40,23 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPicker.EXTRA_ORIGINAL_TITLE;
-import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPicker.KEY_SELECTED_PHOTOS;
+
 import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_CURRENT_ITEM;
+import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_ORIGINAL_TITLE;
 import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_PHOTOS;
 import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_SHOW_DELETE;
 import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_SHOW_LABEL;
 import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.EXTRA_SHOW_UPLOADE;
+import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview.KEY_SELECTED_PHOTOS;
 import static com.example.administrator.newsdf.pzgc.utils.Dates.getDate;
 
 /**
  * description:
  *
  * @author lx
- *         date: 2018/3/2 0002 下午 2:41
- *         update: 2018/3/2 0002
- *         version:
+ * date: 2018/3/2 0002 下午 2:41
+ * update: 2018/3/2 0002
+ * version:
  */
 public class PhotoPagerActivity extends BaseActivity {
     private ImagePagerFragment pagerFragment;
@@ -100,7 +103,6 @@ public class PhotoPagerActivity extends BaseActivity {
     };
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +120,6 @@ public class PhotoPagerActivity extends BaseActivity {
         boolean showUploade = getIntent().getBooleanExtra(EXTRA_SHOW_UPLOADE, true);
         //图片路径
         imagepath = getIntent().getStringArrayListExtra(EXTRA_ORIGINAL_TITLE);
-
         if (pagerFragment == null) {
             pagerFragment =
                     (ImagePagerFragment) getSupportFragmentManager().findFragmentById(R.id.photoPagerFragment);
@@ -143,12 +144,11 @@ public class PhotoPagerActivity extends BaseActivity {
         } else {
             upload.setVisibility(View.VISIBLE);
         }
-        if (imagepath.size()> 0) {
+        if (imagepath.size() > 0) {
             picker_horizon.setVisibility(View.VISIBLE);
         } else {
             picker_horizon.setVisibility(View.GONE);
         }
-
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             updateActionBarTitle();
@@ -160,7 +160,6 @@ public class PhotoPagerActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (imagepath.size() == 0) {
-
                 } else {
                     Title = imagepath.get(position);
                     picker_title.setText(imagepath.get(position));
@@ -174,17 +173,17 @@ public class PhotoPagerActivity extends BaseActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                path = paths.get(pagerFragment.getViewPager().getCurrentItem());
+                //根据'/'切割地址，
+                String[] strs = path.split("/");
+                //拿到图片名称
+                result = strs[strs.length - 1].replace(".jpg", "");
                 if (imagepath.size() > 0) {
                     if (showLabel) {
                         care();
                     } else {
                         standard();
                     }
-                    path = paths.get(pagerFragment.getViewPager().getCurrentItem());
-                    //根据'/'切割地址，
-                    String[] strs = path.split("/");
-                    //拿到图片名称
-                    result = strs[strs.length - 1].replace(".jpg", "");
                     //进行判断当前图片是否有下载过  用图片名进行对比
                     boolean setr = pathname.contains(result);
                     if (setr) {
@@ -193,19 +192,11 @@ public class PhotoPagerActivity extends BaseActivity {
                     } else {
                         if (path != null) {
                             Dates.getDialogs(PhotoPagerActivity.this, "保存图片中...");
-                            asyncGet(path);
+                            asyncGet(path, result);
                         }
                     }
                 } else {
-                    path = paths.get(pagerFragment.getViewPager().getCurrentItem());
-                    OkGo.get(path)
-                            .tag(1)
-                            .execute(new FileCallback() {
-                                @Override
-                                public void onSuccess(File file, Call call, Response response) {
-                                        ToastUtils.showShortToastCenter("下载成功");
-                                }
-                            });
+                    asyncGet(path, result);
                 }
             }
         });
@@ -259,37 +250,34 @@ public class PhotoPagerActivity extends BaseActivity {
         }
     }
 
-    private void asyncGet(String imageUrl) {
+    private void asyncGet(String imageUrl, String imagename) {
+
         OkGo.<File>get(imageUrl)
-                .tag(2)
-                .execute(new FileCallback() {
+                .tag("image")
+                .execute(new FileCallback(App.getInstance().imagepath, imagename + ".jpg") {
                     @Override
                     public void onSuccess(final File file, Call call, Response response) {
-                        Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-                        Tiny.getInstance().source(file).asFile().withOptions(options).compress(new FileWithBitmapCallback() {
-                            @Override
-                            public void callback(boolean isSuccess, Bitmap bitmap, String outfile) {
-                                if (isSuccess) {
-                                    //设置系统时间为文件名
-                                    Shop shop = new Shop();
-                                    shop.setType(Shop.TYPE_CART);
-                                    shop.setImage_url(outfile);
-                                    if (!showLabel) {
-                                        shop.setProject("standard");
-                                    }
-                                    shop.setName(result);
-                                    shop.setContent(Title);
-                                    shop.setTimme(getDate());
-                                    LoveDao.insertLove(shop);
-                                    ToastUtils.showShortToast("已保存");
+                        //设置系统时间为文件名
+                        Shop shop = new Shop();
+                        shop.setType(Shop.TYPE_CART);
+                        shop.setImage_url(file.getPath());
+                        if (!showLabel) {
+                            shop.setProject(PhotoEnue.STANDARD);
+                        }
+                        shop.setName(result);
+                        shop.setContent(Title);
+                        shop.setTimme(getDate());
+                        LoveDao.insertLove(shop);
+                        ToastUtils.showShortToast("已保存");
 
-                                    Dates.deleteFile(file);
-                                } else {
-                                    ToastUtils.showShortToast("下载失败");
-                                }
-                                Dates.disDialog();
-                            }
-                        });
+                        Dates.disDialog();
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+
                     }
                 });
     }

@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import static com.example.administrator.newsdf.pzgc.photopicker.PhotoPicker.EXTRA_ORIGINAL_TITLE;
+
 
 /**
  * Created by Donglua on 16/6/25.
@@ -23,7 +23,8 @@ public class PhotoPreview {
     public final static String EXTRA_SHOW_DELETE = "show_delete";
     public final static String EXTRA_SHOW_UPLOADE = "show_uploade";
     public final static String EXTRA_SHOW_LABEL = "show_label";
-
+    public final static String EXTRA_ORIGINAL_TITLE = "imagepath";
+    public final static String KEY_SELECTED_PHOTOS = "SELECTED_PHOTOS";
     public static PhotoPreviewBuilder builder() {
         return new PhotoPreviewBuilder();
     }
@@ -120,9 +121,7 @@ public class PhotoPreview {
          * @return
          */
         public PhotoPreviewBuilder setImagePath(ArrayList<String> imagesPath) {
-            ArrayList<String> path = new ArrayList<>();
-
-            mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, path);
+            mPreviewOptionsBundle.putStringArrayList(EXTRA_ORIGINAL_TITLE, imagesPath);
             return this;
         }
 

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work;
+package com.example.administrator.newsdf.pzgc.activity.pchoose.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +9,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.work.pchoose.StandardActivity;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
+import com.example.administrator.newsdf.pzgc.activity.work.ListPhActivity;
 import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.treeView.Node;
 import com.example.administrator.newsdf.treeView.PhotolistViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -37,9 +38,9 @@ import okhttp3.Response;
  * description:选择图册wbs树
  *
  * @author lx
- *         date: 2018/3/6 0006 下午 4:54
- *         update: 2018/3/6 0006
- *         version:
+ * date: 2018/3/6 0006 下午 4:54
+ * update: 2018/3/6 0006
+ * version:
  */
 public class PhotoListActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> organizationList;
@@ -65,8 +66,7 @@ public class PhotoListActivity extends BaseActivity {
         refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
         Intent intent = getIntent();
-        stauts = intent.getExtras().getString("status");
-
+        stauts = intent.getExtras().getString("Type");
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText(intent.getExtras().getString("title"));
@@ -86,9 +86,11 @@ public class PhotoListActivity extends BaseActivity {
 
     private void okgo() {
         //判断是那个入口进入的
-        if (stauts.equals("standard")) {
+        if (stauts.equals(PhotoEnue.STANDARD)) {
+            //标准
             request = OkGo.<String>post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {
+            //图册
             request = OkGo.<String>post(Requests.PhotoList).params("nodeid", "");
         }
         request.execute(new StringCallback() {
@@ -107,7 +109,7 @@ public class PhotoListActivity extends BaseActivity {
 
     private void addOrganiztion(final String id, final boolean isDrawing, final boolean isparent, final String type) {
         Dates.getDialogs(PhotoListActivity.this, "请求数据中");
-        if (stauts.equals("standard")) {
+        if (stauts.equals(PhotoEnue.STANDARD)) {
             OkGo.<String>post(Requests.STANDARD_TREE)
                     .params("nodeid", id)
                     .params("isStandardGroup", isDrawing)
@@ -325,13 +327,9 @@ public class PhotoListActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     public void switchAct(Node node) {
-        if (stauts.equals("standard")) {
+        if (stauts.equals(PhotoEnue.STANDARD)) {
             Intent intent1 = new Intent(mContext, StandardActivity.class);
             intent1.putExtra("groupId", node.getId());
             intent1.putExtra("title", node.getName());

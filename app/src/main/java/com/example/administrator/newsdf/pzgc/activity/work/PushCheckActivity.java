@@ -31,7 +31,6 @@ public class PushCheckActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_check);
-
         mContext = PushCheckActivity.this;
         com_titlle = (TextView) findViewById(R.id.com_title);
         com_titlle.setText("任务下发");
@@ -39,7 +38,7 @@ public class PushCheckActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MmissPushActivity.class);
-                intent.putExtra("data", "details");
+                intent.putExtra("Type", "details");
                 intent.putExtra("title", "任务推送");
                 startActivity(intent);
             }
@@ -48,7 +47,7 @@ public class PushCheckActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MmissPushActivity.class);
-                intent.putExtra("data", "push");
+                intent.putExtra("Type", "push");
                 intent.putExtra("title", "任务推送");
                 startActivity(intent);
             }

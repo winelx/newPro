@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work.pchoose;
+package com.example.administrator.newsdf.pzgc.activity.pchoose.activity;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.fragment.PchooseFragment;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.fragment.StandardFragment;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.base.BaseActivity;
 

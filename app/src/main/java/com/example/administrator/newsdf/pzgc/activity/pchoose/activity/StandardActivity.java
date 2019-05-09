@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work.pchoose;
+package com.example.administrator.newsdf.pzgc.activity.pchoose.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

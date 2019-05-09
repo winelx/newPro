@@ -11,4 +11,6 @@ import java.util.Map;
 
 public interface UiAllMessageView {
     void setAdapter(List<String> list, Map<String, List<Home_item>> map);
+
+    void onerror(String str);
 }

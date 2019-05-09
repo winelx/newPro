@@ -12,26 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/back">
 
-        <LinearLayout
-            android:id="@+id/nullposion"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@mipmap/nonews" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="暂无数据" />
-
-        </LinearLayout>
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/SmartRefreshLayout"
@@ -59,7 +40,38 @@
 
             </com.scwang.smartrefresh.layout.footer.ClassicsFooter>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <LinearLayout
+            android:id="@+id/nullposion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@mipmap/nonews" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="暂无数据" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/probar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+        </LinearLayout>
     </FrameLayout>
 
 </RelativeLayout>

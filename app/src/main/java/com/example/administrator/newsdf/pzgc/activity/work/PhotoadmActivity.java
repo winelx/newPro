@@ -98,7 +98,6 @@ public class PhotoadmActivity extends BaseActivity {
         photo_rec.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
-
         okgo();
     }
 

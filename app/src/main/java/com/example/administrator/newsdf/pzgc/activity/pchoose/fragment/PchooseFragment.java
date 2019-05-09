@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.work.pchoose;
+package com.example.administrator.newsdf.pzgc.activity.pchoose.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,9 @@ import android.view.ViewGroup;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
+import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PhotoListActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.PhotoListActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.UploadPhotoActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 
@@ -20,15 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 /**
  * description:  图册
  *
  * @author lx
- *         date: 2018/5/16 0016 下午 3:44
- *         update: 2018/5/16 0016
- *         version:
+ * date: 2018/5/16 0016 下午 3:44
+ * update: 2018/5/16 0016
+ * version:
  */
 public class PchooseFragment extends Fragment implements View.OnClickListener {
     private List<Shop> listPath;
@@ -56,31 +55,31 @@ public class PchooseFragment extends Fragment implements View.OnClickListener {
             case R.id.pchoose_wbs:
                 //分部分项
                 Intent intent = new Intent(getActivity(), MmissPushActivity.class);
-                intent.putExtra("data", "Photo");
+                intent.putExtra("Type", PhotoEnue.ATLAS);
                 startActivity(intent);
+                break;
+            case R.id.pchoose_atlas:
+                //图册
+                Intent standard = new Intent(getActivity(), PhotoListActivity.class);
+                standard.putExtra("Type", PhotoEnue.ATLAS);
+                standard.putExtra("title", "选择图册");
+                startActivity(standard);
                 break;
             case R.id.uploading_photo:
                 //离线图纸
                 listPath = LoveDao.queryCart();
                 for (Shop shop : listPath) {
-                    if ("standard".equals(shop.getProject())) {
+                    if (!PhotoEnue.STANDARD.equals(shop.getProject())) {
                         listPaths.add(shop);
                     }
                 }
                 if (listPath.size() != 0) {
-                    Intent standard = new Intent(getActivity(), UploadPhotoActivity.class);
-                    standard.putExtra("status", "Photo");
-                    startActivity(standard);
+                    Intent standard1 = new Intent(getActivity(), UploadPhotoActivity.class);
+                    standard1.putExtra("Type", PhotoEnue.ATLAS);
+                    startActivity(standard1);
                 } else {
                     ToastUtils.showShortToast("没有下载图片");
                 }
-                break;
-            case R.id.pchoose_atlas:
-                //图册
-                Intent standard = new Intent(getActivity(), PhotoListActivity.class);
-                standard.putExtra("status", "PhotoList");
-                standard.putExtra("title", "选择图册");
-                startActivity(standard);
                 break;
             default:
                 break;
