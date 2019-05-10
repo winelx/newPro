@@ -31,12 +31,13 @@ import okhttp3.Response;
  * description: 启动页
  *
  * @author lx
- *         date: 2018/3/9 0009 下午 2:15
- *         update: 2018/3/9 0009
- *         version:
+ * date: 2018/3/9 0009 下午 2:15
+ * update: 2018/3/9 0009
+ * version:
  */
 public class BootupActivity extends BaseActivity {
     private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,17 +72,19 @@ public class BootupActivity extends BaseActivity {
                 //进行是否登录判断
                 if (TextUtils.isEmpty(user)) {
                     //实现页面跳转
-           startActivity(new Intent(mContext, LoginActivity.class));
+                    startActivity(new Intent(mContext, LoginActivity.class));
                     finish();
                 } else {
                     //如果已经存在，
                     // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
-                   BackTo(user, password);
+                    BackTo(user, password);
                 }
                 return false;
             }
             //表示发送任务
         }).sendEmptyMessageDelayed(0, 1000);
+
+
     }
 
     //假登录
@@ -96,6 +99,7 @@ public class BootupActivity extends BaseActivity {
                         //进行真正的登录
                         login(user, passowd);
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
@@ -126,7 +130,7 @@ public class BootupActivity extends BaseActivity {
                             int str = jsonObject.getInt("ret");
                             message = jsonObject.getString("msg");
                             JSONObject extend = jsonObject.getJSONObject("extend");
-                            App.getInstance().jsonId=extend.getString("JSESSIONID");
+                            App.getInstance().jsonId = extend.getString("JSESSIONID");
                             if (str == 0) {
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 String id = jsom.getString("id");

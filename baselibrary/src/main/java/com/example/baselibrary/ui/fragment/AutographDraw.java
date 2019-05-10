@@ -90,6 +90,7 @@ public class AutographDraw extends Fragment {
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 Toast.makeText(mContext, "请求失败", Toast.LENGTH_SHORT).show();
+
                             }
                         });
 

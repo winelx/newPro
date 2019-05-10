@@ -99,10 +99,11 @@ public class AutographPreview extends Fragment {
                         btButton.setText("修改签名");
                         String path = jsonObject.getString("data");
                         paths = Requests.networks + path;
-                        glide();
-                    }else {
+                    } else {
+                        paths = "";
                         btButton.setText("录入签名");
                     }
+                    glide();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -110,12 +111,14 @@ public class AutographPreview extends Fragment {
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                btButton.setText("录入签名");
+                paths = "";
+                glide();
             }
         });
     }
 
-    public void glide(){
+    public void glide() {
         Glide.with(mContext)
                 .load(paths)
                 .apply(options)
