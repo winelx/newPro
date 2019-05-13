@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
+import com.example.administrator.newsdf.pzgc.bean.chekitemList;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
@@ -16,13 +19,16 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -129,6 +135,64 @@ public class CheckUtils {
 
                 });
 
+    }
+
+    /*检查项列表*/
+    public void getcheckitemlist(String id, final NetworkCallback callback) {
+        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
+                .params("id", id)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                ArrayList<chekitemList> list = new ArrayList();
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String id = json.getString("id");
+                                        String score = json.getString("score");
+                                        String sequence = json.getString("sequence");
+                                        String standardScore;
+                                        try {
+                                            standardScore = json.getString("standardScore");
+                                        } catch (JSONException e) {
+                                            standardScore = "";
+                                        }
+                                        boolean noSuch = json.getBoolean("noSuch");
+                                        boolean gray = json.getBoolean("gray");
+                                        boolean penalty = json.getBoolean("penalty");
+                                        boolean generate;
+                                        try {
+                                            generate = json.getBoolean("generate");
+                                        } catch (JSONException e) {
+                                            generate = false;
+                                        }
+                                        int number = i + 1;
+                                        list.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate, gray));
+                                    }
+                                    map.put("list", list);
+                                    callback.onsuccess(map);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callback.onerror(Enums.ANALYSIS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callback.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
     }
 
     /**

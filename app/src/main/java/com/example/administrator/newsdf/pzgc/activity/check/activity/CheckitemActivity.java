@@ -1,11 +1,11 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -17,19 +17,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +32,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
@@ -55,6 +51,7 @@ import com.example.baselibrary.base.BaseActivity;
 
 
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.inface.NetworkCallback;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -125,6 +122,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private InputMethodManager inputMethodManager;
     //相机相册请求弹窗帮助类
     private PopCameraUtils popCameraUtils;
+    //检查模块板帮助类
+    private CheckUtils checkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +269,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
         popCameraUtils = new PopCameraUtils();
+        checkUtils = new CheckUtils();
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
         orgId = intent.getStringExtra("orgId");
@@ -505,7 +505,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
 
     /*保存前判断*/
     private void savecontent(final boolean isdata, final String tabup) {
+        //检查项完成数，判断是否检查完成
         int count = 0;
+        //检查项得分是否大于0，用来判断填的分数是否正确
         int size = 0;
         for (int i = 0; i < chekItem.size(); i++) {
             String type = chekItem.get(i).getStype();
@@ -539,10 +541,13 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             if (size > 0) {
                 Toast.makeText(CheckitemActivity.this, "检查项得分大于等0或者小于等于标准分", Toast.LENGTH_LONG).show();
             } else {
+                //判断是否生产整改通知单
                 boolean lean = checkitemcontentStatus.isChecked();
                 if (lean) {
+                    //生成看整改通知单
                     String string = checkItemContentDescribe.getText().toString();
                     if (!string.isEmpty()) {
+                        //整改描述不为空
                         Save(isdata, tabup);
                     } else {
                         ToastUtils.showShortToastCenter("生成整改通知单后具体描述不能为空");
@@ -555,32 +560,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    /**
-     * 实体返回键
-     *
-     * @param keyCode
-     * @param event
-     * @return
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //返回当前界面
-            //如果已完成的界面进入，就没有初始化CheckNewCallback，这时会抛异常
-            try {
-                CheckNewCallbackUtils.CallBackMethod();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            //删除从相册相机生成的图片，避免占用内存
-            for (int i = 0; i < imagepath.size(); i++) {
-                Dates.deleteFile(imagepath.get(i).getName());
-            }
-            finish();
-            return true;
-        }
-        return true;
-    }
 
     /**
      * 保存前的逻辑判断
@@ -741,70 +720,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     }
 
     /**
-     * 没有通知单时进入通知单
-     */
-    public void message() {
-        ArrayList<String> ids = new ArrayList<>();
-        ArrayList<String> path = new ArrayList<>();
-        for (int i = 0; i < imagepath.size(); i++) {
-            ids.add(imagepath.get(i).getContent());
-            path.add(imagepath.get(i).getName());
-        }
-        Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
-        //图片id
-        intent.putExtra("ids", ids);
-        //图片路径
-        intent.putExtra("path", path);
-        //查询责任人
-        intent.putExtra("orgId", orgId);
-        intent.putExtra("success", success);
-        //状态
-        intent.putExtra("status", generate);
-        intent.putExtra("messageid", checkManageId);
-        intent.putExtra("typeId", mData.get(pos - 1).getId());
-        //具体描述
-        intent.putExtra("describe", checkItemContentDescribe.getText().toString());
-        //获取文字做判断
-        String str = checkItemContentName.getText().toString() + "-" + checkItemContentContentname.getText().toString();
-        for (int i = 0; i < chekItem.size(); i++) {
-            String status1 = chekItem.get(i).getStatus();
-            if ("false".equals(status1)) {
-                str = str + "-" + chekItem.get(i).getContent();
-            }
-        }
-        intent.putExtra("content", str);
-        intent.putExtra("taskId", chekItem.get(0).getId());
-        startActivity(intent);
-    }
-
-    /**
-     * 有通知单时进入通知单
-     */
-    public void messages() {
-        Intent intent = new Intent(CheckitemActivity.this, CheckmassageActivity.class);
-        //查询责任人
-        intent.putExtra("orgId", orgId);
-        intent.putExtra("success", success);
-        //状态
-        intent.putExtra("status", generate);
-        intent.putExtra("messageid", checkManageId);
-        intent.putExtra("typeId", mData.get(pos - 1).getId());
-        //具体描述
-        intent.putExtra("describe", checkItemContentDescribe.getText().toString());
-        //获取文字做判断
-        String str = checkItemContentName.getText().toString() + "-" + checkItemContentContentname.getText().toString();
-        for (int i = 0; i < chekItem.size(); i++) {
-            String status1 = chekItem.get(i).getStatus();
-            if (status1.equals("false")) {
-                str = str + "-" + chekItem.get(i).getContent();
-            }
-        }
-        intent.putExtra("content", str);
-        intent.putExtra("taskId", chekItem.get(0).getId());
-        startActivity(intent);
-    }
-
-    /**
      * 检查项分数计算
      */
     public void setScore(int pos) {
@@ -820,6 +735,128 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+
+    /**
+     * 检查项列表
+     */
+    public void getcheckitemList() {
+        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                mData.clear();
+                mData.addAll((ArrayList<chekitemList>) map.get("list"));
+                adapter.getdate(mData);
+            }
+
+            @Override
+            public void onerror(String s) {
+                ToastUtils.showShortToast(s);
+            }
+        });
+    }
+
+    /**
+     * 保存接口
+     *
+     * @param isdata
+     * @param tabup-+
+     */
+    public void Save(final boolean isdata, final String tabup) {
+        checklistmeuntext.setVisibility(View.INVISIBLE);
+        Dates.hintKeyBoard(CheckitemActivity.this);
+        Dates.getDialog(CheckitemActivity.this, "保存数据中...");
+        ArrayList<File> file = new ArrayList<>();
+        for (int i = 0; i < imagepath.size(); i++) {
+            if (imagepath.get(i).getContent().length() > 0) {
+            } else {
+                file.add(new File(imagepath.get(i).getName()));
+            }
+        }
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (int i = 0; i < chekItem.size(); i++) {
+            String type = chekItem.get(i).getStype();
+            if ("2".equals(type)) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", chekItem.get(i).getId());
+                map.put("pass", chekItem.get(i).getStatus());
+                map.put("stype", chekItem.get(i).getStype());
+                map.put("score", chekItem.get(i).getScore());
+                list.add(map);
+            } else {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", chekItem.get(i).getId());
+                map.put("pass", chekItem.get(i).getStatus());
+                map.put("stype", chekItem.get(i).getStype());
+                map.put("score", chekItem.get(i).getResultscore());
+                list.add(map);
+            }
+        }
+        JSONArray json2 = new JSONArray(list);
+        PostRequest mPostRequest = OkGo.post(Requests.SAVE_DETAILS)
+                .params("details ", json2.toString())
+                .params("checkManageId", taskId)
+                .params("noSuch", switch1.isChecked())
+                //是否生成整改通知单
+                .params("generate", checkitemcontentStatus.isChecked())
+                //Id
+                .params("id", mData.get(pos - 1).getId())
+                //得分
+                .params("score", checkItemContentCore.getText().toString())
+                //具体描述
+                .params("describe", checkItemContentDescribe.getText().toString())
+                .params("deleteFileId", Dates.listToStrings(deleteid));
+        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
+        if (file.size() > 0) {
+            mPostRequest.addFileParams("imagesList", file);
+        } else {
+            mPostRequest.isMultipart(true);
+        }
+        mPostRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                Dates.disDialog();
+                checklistmeuntext.setVisibility(View.VISIBLE);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        deleteid.clear();
+                        imagepath.clear();
+                        getcheckitemList();
+                        if (isdata) {
+                            checkItemContentDescribe.setText("");
+                            checkItemContentDescribe.setText("");
+                            if ("Tabup".equals(tabup)) {
+                                getdate(taskId, pos - 1);
+                            } else if ("Tadown".equals(tabup)) {
+                                getdate(taskId, pos + 1);
+                            } else if ("item".equals(tabup)) {
+                                pos = item;
+                                getdate(taskId, pos + 1);
+                                getcheckitemList();
+                            }
+                        } else {
+                            getdate(taskId, pos);
+                        }
+
+                    } else {
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+                checklistmeuntext.setVisibility(View.VISIBLE);
+                checklistmeuntext.setText("保存");
+            }
+        });
+    }
+
     /**
      * 获取界面数据
      *
@@ -827,8 +864,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * @param page
      */
     public void getdate(String id, final Integer page) {
-        checkItemContentDescribe.setText("");
-        Dates.getDialogs(CheckitemActivity.this, "请求数据中...");
+        Dates.getDialogs((Activity) mContext, "请求数据中...");
         post(Requests.INFO_BY_MAIN_ID_AND_SQE)
                 .params("id", id)
                 .params("page", page)
@@ -836,6 +872,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         Dates.disDialog();
+                        //请求成功，清空整改描述
+                        checkItemContentDescribe.setText("");
                         checkItemTabup.setClickable(true);
                         checkItemTadown.setClickable(true);
                         try {
@@ -907,10 +945,14 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                                 } catch (JSONException e) {
                                     checkItemContentStandarcore.setText("");
                                 }
-                                String describe = jsonObject.getString("describe");
-
+                                String describe;
+                                try {
+                                    describe = jsonObject.getString("describe");
+                                } catch (Exception e) {
+                                    describe = "";
+                                }
+                                /*整改描述*/
                                 checkItemContentDescribe.setText(describe);
-
                                 JSONArray attachments = jsonObject.getJSONArray("attachments");
                                 if (attachments.length() > 0) {
                                     for (int i = 0; i < attachments.length(); i++) {
@@ -997,157 +1039,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 });
     }
 
-    /**
-     * 生成检查后的检查项列表
-     */
-    public void getcheckitemList() {
-        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
-                .params("id", taskId)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                mData.clear();
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                if (jsonArray.length() > 0) {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        String id = json.getString("id");
-                                        String score = json.getString("score");
-                                        String sequence = json.getString("sequence");
-                                        String standardScore;
-                                        try {
-                                            standardScore = json.getString("standardScore");
-                                        } catch (JSONException e) {
-                                            standardScore = "";
-                                        }
-                                        boolean noSuch = json.getBoolean("noSuch");
-                                        boolean gray = json.getBoolean("gray");
-                                        boolean penalty = json.getBoolean("penalty");
-                                        boolean generate;
-                                        try {
-                                            generate = json.getBoolean("generate");
-                                        } catch (JSONException e) {
-                                            generate = false;
-                                        }
-                                        int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate, gray));
-                                    }
-                                }
-                            }
-                            adapter.getdate(mData);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                });
-    }
-
-    /**
-     * 保存接口
-     *
-     * @param isdata
-     * @param tabup-+
-     */
-    public void Save(final boolean isdata, final String tabup) {
-        checklistmeuntext.setText("");
-        Dates.hintKeyBoard(CheckitemActivity.this);
-        Dates.getDialog(CheckitemActivity.this, "保存数据中...");
-        ArrayList<File> file = new ArrayList<>();
-        for (int i = 0; i < imagepath.size(); i++) {
-            if (imagepath.get(i).getContent().length() > 0) {
-            } else {
-                file.add(new File(imagepath.get(i).getName()));
-            }
-        }
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (int i = 0; i < chekItem.size(); i++) {
-            String type = chekItem.get(i).getStype();
-            if ("2".equals(type)) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", chekItem.get(i).getId());
-                map.put("pass", chekItem.get(i).getStatus());
-                map.put("stype", chekItem.get(i).getStype());
-                map.put("score", chekItem.get(i).getScore());
-                list.add(map);
-            } else {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", chekItem.get(i).getId());
-                map.put("pass", chekItem.get(i).getStatus());
-                map.put("stype", chekItem.get(i).getStype());
-                map.put("score", chekItem.get(i).getResultscore());
-                list.add(map);
-            }
-        }
-        JSONArray json2 = new JSONArray(list);
-        PostRequest mPostRequest = OkGo.post(Requests.SAVE_DETAILS)
-                .params("details ", json2.toString())
-                .params("checkManageId", taskId)
-                .params("noSuch", switch1.isChecked())
-                //是否生成整改通知单
-                .params("generate", checkitemcontentStatus.isChecked())
-                //Id
-                .params("id", mData.get(pos - 1).getId())
-                //得分
-                .params("score", checkItemContentCore.getText().toString())
-                //具体描述
-                .params("describe", checkItemContentDescribe.getText().toString())
-                .params("deleteFileId", Dates.listToStrings(deleteid));
-        //附件(判断是否新增图片，没有新增就不上传图片。新增了就上传新增的)
-        if (file.size() > 0) {
-            mPostRequest.addFileParams("imagesList", file);
-        } else {
-            mPostRequest.isMultipart(true);
-        }
-        mPostRequest.execute(new StringCallback() {
-            @Override
-            public void onSuccess(String s, Call call, Response response) {
-                Dates.disDialog();
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int ret = jsonObject.getInt("ret");
-                    if (ret == 0) {
-                        deleteid.clear();
-                        imagepath.clear();
-                        getcheckitemList();
-                        if (isdata) {
-                            checkItemContentDescribe.setText("");
-                            checkItemContentDescribe.setText("");
-                            if ("Tabup".equals(tabup)) {
-                                getdate(taskId, pos - 1);
-                            } else if ("Tadown".equals(tabup)) {
-                                getdate(taskId, pos + 1);
-                            } else if ("item".equals(tabup)) {
-                                pos = item;
-                                getdate(taskId, pos + 1);
-                                getcheckitemList();
-                            }
-                        } else {
-                            getdate(taskId, pos);
-                        }
-
-                    } else {
-                        ToastUtils.showShortToast(jsonObject.getString("msg"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Call call, Response response, Exception e) {
-                super.onError(call, response, e);
-                Dates.disDialog();
-                checklistmeuntext.setText("保存");
-            }
-        });
-    }
-
     /*申请权限*/
     public void getauthority() {
         //获取相机权限，定位权限，内存权限
@@ -1158,7 +1049,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             public void onGranted() {
                 CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
             }
-
             @Override
             public void onDenied(List<String> deniedPermission) {
                 for (String permission : deniedPermission) {
@@ -1169,5 +1059,33 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
             }
         });
     }
+
+    /**
+     * 实体返回键
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //返回当前界面
+            //如果已完成的界面进入，就没有初始化CheckNewCallback，这时会抛异常
+            try {
+                CheckNewCallbackUtils.CallBackMethod();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            //删除从相册相机生成的图片，避免占用内存
+            for (int i = 0; i < imagepath.size(); i++) {
+                Dates.deleteFile(imagepath.get(i).getName());
+            }
+            finish();
+            return true;
+        }
+        return true;
+    }
+
 }
 

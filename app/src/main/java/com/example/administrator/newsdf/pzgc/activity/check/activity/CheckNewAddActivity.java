@@ -217,7 +217,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         titleView.setText("新增检查");
         adapter = new CheckNewAdapter(mContext, mData);
         checklist.setAdapter(adapter);
-
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -353,6 +352,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private void statusT() {
         checklistmeuntext.setText("编辑");
         checkNewButton.setText("开始检查");
+        checkNewButton.setVisibility(View.VISIBLE);
         checkImport.setVisibility(View.VISIBLE);
         checkNewButton.setBackgroundResource(R.color.colorAccent);
         dkDragView.setVisibility(View.VISIBLE);
@@ -407,16 +407,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void updata() {
         getcheckitemList();
-    }
-
-    /**
-     * popWin关闭的事件，主要是为了将背景透明度改回来
-     */
-    class poponDismissListener implements PopupWindow.OnDismissListener {
-        @Override
-        public void onDismiss() {
-            Utils.backgroundAlpha(1f, CheckNewAddActivity.this);
-        }
     }
 
     /**
@@ -713,8 +703,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                     checkNewButton.setText("确认并签名");
                                     checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
-                                } else {
-                                    checkNewButton.setVisibility(View.GONE);
                                 }
                             }
                         } catch (JSONException e) {

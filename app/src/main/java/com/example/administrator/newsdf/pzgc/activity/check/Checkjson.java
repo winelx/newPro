@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class Checkjson {
 
-
     /**
      * description:检查管理列表
      *
