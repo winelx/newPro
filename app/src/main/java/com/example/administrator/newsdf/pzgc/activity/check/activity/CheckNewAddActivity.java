@@ -25,12 +25,13 @@ import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
-import com.example.administrator.newsdf.pzgc.utils.DKDragView;
+
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.view.DKDragView;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.Requests;

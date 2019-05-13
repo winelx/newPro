@@ -50,7 +50,7 @@ import java.util.List;
 /**
  * 作者：winelx
  * 时间：2017/11/27 0027:下午 14:59
- * 说明：
+ * 说明：帮助类
  */
 public class Dates {
     public static Dialog progressDialog = null;

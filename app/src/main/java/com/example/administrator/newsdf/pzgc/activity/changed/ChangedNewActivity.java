@@ -46,7 +46,7 @@ import java.util.Map;
  * {@link }
  */
 public class ChangedNewActivity extends BaseActivity implements View.OnClickListener, Networkinterface {
-    private TextView chagedNumber, comTitle, chagedReleasePeople,
+    private TextView comTitle, chagedReleasePeople,
             chagedReleaseOrg, chagedOrganizeText, chagedHeadText, chagednumber;
     private RecyclerView recycler;
     private List<ChagedNoticeDetailslsit> list;
@@ -60,7 +60,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private String orgName, orgId, id = "";
     private String userName, userId;
     private ChagedUtils chagedUtils;
-    private String chagedReleaseid, sendOrgid, dealId, motionNode;
+    private String sendOrgid, dealId, motionNode;
     private TextView chagedReleaseProblem;
 
     @Override

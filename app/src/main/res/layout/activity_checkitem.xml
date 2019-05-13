@@ -63,7 +63,7 @@
 
             </LinearLayout>
 
-            <com.example.administrator.newsdf.pzgc.utils.DKDragView
+            <com.example.administrator.newsdf.pzgc.view.DKDragView
                 android:id="@+id/float_suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

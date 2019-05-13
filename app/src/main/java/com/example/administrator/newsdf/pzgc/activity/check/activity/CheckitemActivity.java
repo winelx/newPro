@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
+import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
@@ -49,9 +50,10 @@ import com.example.administrator.newsdf.pzgc.callback.MapCallback;
 import com.example.administrator.newsdf.pzgc.callback.MapCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
+import com.example.administrator.newsdf.pzgc.view.DKDragView;
 import com.example.baselibrary.base.BaseActivity;
 
-import com.example.administrator.newsdf.pzgc.utils.DKDragView;
+
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.utils.Requests;
@@ -91,39 +93,43 @@ import static com.lzy.okgo.OkGo.post;
  * version:
  */
 public class CheckitemActivity extends BaseActivity implements View.OnClickListener, MapCallback, TaskCallback {
-    private LinearLayout checkItemContentMassage, checkItemTabup, checkItemTadown;
+    private LinearLayout checkItemTabup, checkItemTadown;
     private TextView checkItemTabupText, checkItemTadownText, titleView, checklistmeuntext, describeImage;
+    private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore, checkItemContentCore;
+    private EditText checkItemContentDescribe;
+    private DKDragView dkDragView;
     private DrawerLayout drawerLayout;
-    private CheckNewAdapter adapter;
-    private CheckPhotoAdapter photoAdapter;
-    private ArrayList<chekitemList> mData;
+    private GridView checklist;
+    private RecyclerView checkStandardRec, photoadd;
+    private LinearLayout drawerlayoutRight;
     private Context mContext;
-    private ArrayList<Audio> imagepath;
+
     private static final int IMAGE_PICKER = 101;
     private String taskId, orgId;
     private int pos, size, number, item;
-    private TextView checkItemContentName, checkItemContentContentname, checkItemContentBz, checkItemContentStandarcore, checkItemContentCore;
-    private EditText checkItemContentDescribe;
     private Switch switch1, checkitemcontentStatus;
     private String success, checkManageId, itemId, checkitemtype = "";
     private Boolean generate = false;
-    private LinearLayout drawerlayoutRight;
+    private String score;
+
     //删除的图片Id
     private ArrayList<String> deleteid = new ArrayList<>();
-    private String score;
-    private CheckitemAdapter mAdapter;
-    private ArrayList<ChekItemBean> chekItem;
-    private RecyclerView checkStandardRec, photoadd;
-    private GridView checklist;
-    private DKDragView dkDragView;
-    private InputMethodManager inputMethodManager;
 
+    private ArrayList<ChekItemBean> chekItem;
+    private ArrayList<Audio> imagepath;
+    private ArrayList<chekitemList> mData;
+
+    private CheckNewAdapter adapter;
+    private CheckitemAdapter mAdapter;
+    private CheckPhotoAdapter photoAdapter;
+    private InputMethodManager inputMethodManager;
+    //相机相册请求弹窗帮助类
+    private PopCameraUtils popCameraUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkitem);
-
         //输入法
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initdata();
@@ -211,7 +217,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                hintKeyBoard();
+                Dates.hintKeyBoard(CheckitemActivity.this);
                 if (isChecked) {
                     //如果打开switch，将所有的项设置为合格
                     for (ChekItemBean item : chekItem) {
@@ -263,6 +269,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     private void initdata() {
         MapCallbackUtils.setCallBack(this);
         TaskCallbackUtils.setCallBack(this);
+        popCameraUtils = new PopCameraUtils();
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
         orgId = intent.getStringExtra("orgId");
@@ -371,62 +378,25 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 添加图片
      */
     public void showPopwindow() {
-        //弹出现在相机和图册的蒙层
-        View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
-        //初始化布局
-        View popView = View.inflate(this, R.layout.camera_pop_menu, null);
-        //初始化控件
-        RelativeLayout btn_pop_add = popView.findViewById(R.id.btn_pop_add);
-        Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
-        Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
-        Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
-        //获取屏幕宽高
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        final PopupWindow popWindow = new PopupWindow(popView, width, height);
-        popWindow.setAnimationStyle(R.style.AnimBottom);
-        popWindow.setFocusable(true);
-        // 设置同意在外点击消失
-        popWindow.setOutsideTouchable(true);
-        View.OnClickListener listener = new View.OnClickListener() {
+        popCameraUtils.showPopwindow(CheckitemActivity.this, new PopCameraUtils.CameraCallback() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    //调用相机
-                    case R.id.btn_camera_pop_camera:
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            //请求权限
-                            getauthority();
-                        } else {
-                            CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
-                        }
-                        break;
-                    //相册图片
-                    case R.id.btn_camera_pop_album:
-                        //开启相册
-                        Intent intent = new Intent(mContext, ImageGridActivity.class);
-                        startActivityForResult(intent, IMAGE_PICKER);
-                        break;
-                    //
-                    case R.id.btn_camera_pop_cancel:
-                        //关闭pop
-                    case R.id.btn_pop_add:
-                    default:
-                        break;
+            public void oncamera() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    //请求权限
+                    getauthority();
+                } else {
+                    /*打开相机*/
+                    CropImageUtils.getInstance().takePhoto(CheckitemActivity.this);
                 }
-                popWindow.dismiss();
             }
-        };
 
-        btnCamera.setOnClickListener(listener);
-        btn_pop_add.setOnClickListener(listener);
-        btnAlbum.setOnClickListener(listener);
-        btnCancel.setOnClickListener(listener);
-        //设置背景颜色
-        ColorDrawable dw = new ColorDrawable(0x30000000);
-        popWindow.setBackgroundDrawable(dw);
-        //显示位置
-        popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            @Override
+            public void onalbum() {
+                //开启相册
+                Intent intent = new Intent(mContext, ImageGridActivity.class);
+                startActivityForResult(intent, IMAGE_PICKER);
+            }
+        });
     }
 
     /**
@@ -517,37 +487,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 }
                 finish();
                 break;
-//            case R.id.check_item_content_massage:
-//                //获取无此项状态
-//                boolean status = switch1.isChecked();
-//                //获取通知单文字
-//                boolean messageStr = checkitemcontentStatus.isChecked();
-//                //判断是从哪个界面进入
-//                if (success != null) {
-//                    //从已完成进入
-//                    if (status) {
-//                        ToastUtils.showLongToast("已选择无此项");
-//                    } else {
-//                        //获取文字做判断
-//                        if (messageStr) {
-//                            messages();
-//                        } else {
-//                            ToastUtils.showShortToast("没有通知单哦！");
-//                        }
-//                    }
-//                } else {
-//                    //从未完成进入
-//                    if (status) {
-//                        ToastUtils.showLongToast("已选择无此项");
-//                    } else {
-//                        if (messageStr) {
-//                            messages();
-//                        } else {
-//                            message();
-//                        }
-//                    }
-//                }
-            //break;
             case R.id.checklistmeun:
                 String text1 = checklistmeuntext.getText().toString();
                 if ("编辑".equals(text1)) {
@@ -564,6 +503,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    /*保存前判断*/
     private void savecontent(final boolean isdata, final String tabup) {
         int count = 0;
         int size = 0;
@@ -1116,7 +1056,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      */
     public void Save(final boolean isdata, final String tabup) {
         checklistmeuntext.setText("");
-        hintKeyBoard();
+        Dates.hintKeyBoard(CheckitemActivity.this);
         Dates.getDialog(CheckitemActivity.this, "保存数据中...");
         ArrayList<File> file = new ArrayList<>();
         for (int i = 0; i < imagepath.size(); i++) {
@@ -1208,19 +1148,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    public void hintKeyBoard() {
-        //拿到InputMethodManager
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //如果window上view获取焦点 && view不为空
-        if (imm.isActive() && getCurrentFocus() != null) {
-            //拿到view的token 不为空
-            if (getCurrentFocus().getWindowToken() != null) {
-                //表示软键盘窗口总是隐藏，除非开始时以SHOW_FORCED显示。
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        }
-    }
-
+    /*申请权限*/
     public void getauthority() {
         //获取相机权限，定位权限，内存权限
         requestRunPermisssion(new String[]{Manifest.permission.CAMERA,

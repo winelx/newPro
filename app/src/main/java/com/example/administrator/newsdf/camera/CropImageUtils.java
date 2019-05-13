@@ -58,25 +58,25 @@ public class CropImageUtils {
         return instance;
     }
 
-    /**
-     * 打开系统相册
-     */
-    public void openAlbum(Activity activity) {
-        DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
-        if (isSdCardExist()) {
-            Intent intent;
-            if (Build.VERSION.SDK_INT < 19) {
-                intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-            } else {
-                intent = new Intent(Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            }
-            activity.startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
-        } else {
-            ToastUtils.showShortToast(activity.getResources().getString(R.string.sdcard_no_exist));
-        }
-    }
+//    /**
+//     * 打开系统相册
+//     */
+//    public void openAlbum(Activity activity) {
+//        DATE = new SimpleDateFormat("yyyy_MMdd_hhmmss").format(new Date());
+//        if (isSdCardExist()) {
+//            Intent intent;
+//            if (Build.VERSION.SDK_INT < 19) {
+//                intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image/*");
+//            } else {
+//                intent = new Intent(Intent.ACTION_PICK,
+//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            }
+//            activity.startActivityForResult(intent, REQUEST_CODE_SELECT_PICTURE);
+//        } else {
+//            ToastUtils.showShortToast(activity.getResources().getString(R.string.sdcard_no_exist));
+//        }
+//    }
 
     /**
      * 打开系统相机

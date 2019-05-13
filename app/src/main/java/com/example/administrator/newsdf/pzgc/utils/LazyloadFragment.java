@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * @author lx
  * @Created by: 2018/11/27 0027.
- * @description:
+ * @description: 懒加载
  */
 
 public abstract class LazyloadFragment extends Fragment {

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.SquareItemLayout;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReplyActivity;
@@ -78,6 +79,7 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
                 holder.vSelected.setVisibility(View.VISIBLE);
             } else {
                 holder.vSelected.setVisibility(View.GONE);
+
             }
             final RequestOptions options = new RequestOptions();
             options.centerCrop()
@@ -244,11 +246,15 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
 
     @Override
     public int getItemCount() {
-        int count = photoPaths.size() + 1;
-        if (count > MAX) {
-            count = MAX;
+        if (learn) {
+            int count = photoPaths.size() + 1;
+            if (count > MAX) {
+                count = MAX;
+            }
+            return count;
+        } else {
+            return photoPaths.size();
         }
-        return count;
     }
 
     @Override
@@ -260,12 +266,14 @@ public class CheckPhotoAdapter extends RecyclerView.Adapter<CheckPhotoAdapter.Ph
         private RoundImageView ivPhoto;
         private ImageView vSelected;
         private ImageView img_add;
+        private SquareItemLayout addview;
 
         public PhotoViewHolder(View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_photo);
             vSelected = itemView.findViewById(R.id.v_selected);
             img_add = itemView.findViewById(R.id.bt_add);
+            addview = itemView.findViewById(R.id.addview);
         }
     }
 

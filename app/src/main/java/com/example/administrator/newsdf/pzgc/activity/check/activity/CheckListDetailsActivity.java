@@ -2,24 +2,21 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.view.LayoutInflater;
+
 import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.PopupWindow;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
@@ -29,13 +26,13 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
+import com.example.administrator.newsdf.pzgc.view.DKDragView;
 import com.example.baselibrary.base.BaseActivity;
-import com.example.administrator.newsdf.pzgc.utils.DKDragView;
+
 import com.example.baselibrary.inface.NetworkCallback;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.Requests;
-import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.view.BaseDialog;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
@@ -46,7 +43,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import okhttp3.Call;

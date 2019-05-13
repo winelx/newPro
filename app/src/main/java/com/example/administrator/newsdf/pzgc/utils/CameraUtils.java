@@ -12,7 +12,11 @@ import com.example.baselibrary.view.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *创建人：lx
+ *调加时间：2019/5/13 0013 9:34
+ *说明：相机权限申请
+ **/
 public class CameraUtils {
 
     private static PermissionListener mListener;
@@ -21,7 +25,7 @@ public class CameraUtils {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
-
+    /*回调*/
     public static void requestRunPermisssion(Activity activity, PermissionListener listener) {
         mListener = listener;
         List<String> permissionLists = new ArrayList<>();
