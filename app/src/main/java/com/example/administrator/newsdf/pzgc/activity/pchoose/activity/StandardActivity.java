@@ -47,8 +47,7 @@ public class StandardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard);
-
-        Dates.getDialog(StandardActivity.this, "请求数据中...");
+        Dates.getDialogs(StandardActivity.this, "请求数据中...");
         imagePaths = new ArrayList<>();
         Intent intent = getIntent();
         Title = intent.getExtras().getString("title");
@@ -110,6 +109,8 @@ public class StandardActivity extends BaseActivity {
                 .params("rows", 10).execute(new StringCallback() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
+
+                Dates.disDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -146,6 +147,12 @@ public class StandardActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
             }
         });
 

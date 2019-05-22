@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.fragment.homepage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.FragmentHomeListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
@@ -127,11 +129,13 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
 
     //网络请求
     private void Okgo() {
+        Dates.getDialogs((Activity) mContext, "请求数据中...");
         //请求数据库的数据
         OkGo.post(Requests.TaskMain)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         if (s.contains("data")) {
                             mData = new ArrayList<>();
                             Audit = new ArrayList<>();
@@ -227,10 +231,10 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                             expandable.setVisibility(View.GONE);
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                         probar.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
                         expandable.setVisibility(View.GONE);

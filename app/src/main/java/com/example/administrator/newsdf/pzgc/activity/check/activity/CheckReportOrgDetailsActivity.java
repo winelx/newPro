@@ -48,7 +48,6 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report_org_details);
-
         mContext = this;
         titleView = (TextView) findViewById(R.id.titleView);
         tabCheck = (TextView) findViewById(R.id.tab_check);

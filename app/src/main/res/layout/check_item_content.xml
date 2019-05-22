@@ -126,6 +126,7 @@
                 android:background="@color/back2" />
 
             <LinearLayout
+                android:id="@+id/switch_lin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
@@ -218,6 +219,7 @@
 
 
             <LinearLayout
+                android:id="@+id/check_item_content_score_lin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"

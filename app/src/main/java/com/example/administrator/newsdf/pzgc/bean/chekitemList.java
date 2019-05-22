@@ -1,5 +1,7 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
+import java.util.Set;
+
 /**
  * Created by Administrator on 2018/8/15 0015.
  */
@@ -10,20 +12,24 @@ public class chekitemList {
     String sequence;
     String standardScore;
     String number;
+    String s_type;
+    Integer pos;
     boolean generate;
     boolean noSuch;
     boolean penalty;
     boolean gray;
 
-    public chekitemList(String id, String score, String sequence, String standardScore, String number, boolean noSuch, boolean penalty, boolean generate,boolean gray) {
+    public chekitemList(String id, String score, String sequence, String standardScore, String number, String s_type,Integer pos,boolean generate, boolean noSuch, boolean penalty, boolean gray) {
         this.id = id;
         this.score = score;
         this.sequence = sequence;
         this.standardScore = standardScore;
+        this.number = number;
+        this.s_type = s_type;
+        this.pos = pos;
+        this.generate = generate;
         this.noSuch = noSuch;
         this.penalty = penalty;
-        this.generate = generate;
-        this.number = number;
         this.gray = gray;
     }
 
@@ -97,5 +103,21 @@ public class chekitemList {
 
     public void setGray(boolean gray) {
         this.gray = gray;
+    }
+
+    public String getS_type() {
+        return s_type;
+    }
+
+    public void setS_type(String s_type) {
+        this.s_type = s_type;
+    }
+
+    public Integer getPos() {
+        return pos;
+    }
+
+    public void setPos(Integer pos) {
+        this.pos = pos;
     }
 }

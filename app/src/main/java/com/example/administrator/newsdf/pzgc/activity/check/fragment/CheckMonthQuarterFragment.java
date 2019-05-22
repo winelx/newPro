@@ -74,7 +74,6 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         mData = new ArrayList<>();
         yeare = Dates.getYear();
         CheckCallBackUTils1.setCallBack(this);
-
         mContext = CheckReportActivity.getInstance();
         orgId = SPUtils.getString(mContext, "orgId", "");
         dataTime = view.findViewById(R.id.linear_data);

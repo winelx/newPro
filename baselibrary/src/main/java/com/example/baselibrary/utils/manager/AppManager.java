@@ -30,6 +30,10 @@ public class AppManager {
         activityStack.add(activity);
     }
 
+    public String getActivity() {
+        return activityStack.toString();
+    }
+
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
@@ -82,6 +86,7 @@ public class AppManager {
         }
         activityStack.clear();
     }
+
 
     /**
      * 退出应用程序

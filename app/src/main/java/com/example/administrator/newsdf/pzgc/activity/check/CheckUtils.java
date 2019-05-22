@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
+import com.example.administrator.newsdf.pzgc.bean.Checkitem;
+import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
@@ -28,8 +30,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -150,7 +154,7 @@ public class CheckUtils {
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
                                 Map<String, Object> map = new HashMap<>();
-                                ArrayList<chekitemList> list = new ArrayList();
+                                ArrayList<chekitemList> list = new ArrayList<>();
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 if (jsonArray.length() > 0) {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -174,7 +178,14 @@ public class CheckUtils {
                                             generate = false;
                                         }
                                         int number = i + 1;
-                                        list.add(new chekitemList(id, score, sequence, number + "", standardScore, noSuch, penalty, generate, gray));
+                                        String s_type;
+                                        try {
+                                            s_type = json.getString("stype");
+                                        } catch (Exception e) {
+                                            s_type = "";
+                                        }
+                                        //将组织所属公司添加到集合
+                                        list.add(new chekitemList(id, score, sequence, number + "", standardScore, s_type, i+1, generate ,noSuch, penalty, gray));
                                     }
                                     map.put("list", list);
                                     callback.onsuccess(map);
@@ -194,6 +205,7 @@ public class CheckUtils {
                     }
                 });
     }
+
 
     /**
      * 违反标准

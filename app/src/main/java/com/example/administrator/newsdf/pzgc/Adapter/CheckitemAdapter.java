@@ -31,9 +31,6 @@ import java.util.ArrayList;
  */
 
 public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_ONE = 10001;
-    private static final int TYPE_TWO = 10002;
-
     private ArrayList<ChekItemBean> mData;
     private Context mContext;
     //edittext里的文字内容集合
@@ -48,6 +45,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             //每次修改文字后，保存在数据集合中
@@ -182,7 +180,7 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ToastUtils.showShortToast("已选择无此项，无法进行操作");
                     } else {
                         if ("true".equals(mData.get(position).getStatus())) {
-                            activity.setScore(position);
+                            activity.setScore();
                             mData.get(position).setStatus("");
                             holder.checkItemTrue.setBackgroundResource(R.mipmap.checkitemsuccess_f);
                             holder.checkItemFalse.setBackgroundResource(R.mipmap.checkitemerror_f);
@@ -191,11 +189,10 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             holder.checkItemTrue.setBackgroundResource(R.mipmap.checkitemsuccess_t);
                             holder.checkItemFalse.setBackgroundResource(R.mipmap.checkitemerror_f);
                         }
-                        activity.setScore(position);
+                        activity.setScore();
                     }
                 } else if ("编辑".equals(activity.getstatus())) {
                     ToastUtils.showShortToast("不是编辑状态哦");
-                } else {
                 }
             }
         });
@@ -216,17 +213,15 @@ public class CheckitemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             holder.checkItemTrue.setBackgroundResource(R.mipmap.checkitemsuccess_f);
                             holder.checkItemFalse.setBackgroundResource(R.mipmap.checkitemerror_t);
                         }
-                        activity.setScore(position);
+                        activity.setScore();
                     }
                 } else if ("编辑".equals(activity.getstatus())) {
                     ToastUtils.showShortToast("不是编辑状态哦");
-                } else {
-
                 }
             }
         });
         //放在最后，避免界面刷新无法显示分数
-        String number =mData.get(position).getResultscore();
+        String number = mData.get(position).getResultscore();
         holder.checkItemEditext.setText(number);
     }
 

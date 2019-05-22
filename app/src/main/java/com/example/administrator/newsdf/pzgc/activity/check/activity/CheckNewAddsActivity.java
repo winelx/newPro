@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
@@ -31,6 +32,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.view.DKDragView;
+import com.example.baselibrary.inface.NetworkCallback;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.base.BaseActivity;
 
@@ -53,6 +55,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -65,7 +68,9 @@ import static com.lzy.okgo.OkGo.post;
  */
 
 public class CheckNewAddsActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
-    //控件
+    /**
+     *控件
+     */
     private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData;
@@ -79,19 +84,18 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
 
     //参数
     private String name, orgId, categoryId = "", taskId, nodeId, type;
-    private Date myDate = new Date();
     private CheckNewAdapter adapter;
     private ArrayList<chekitemList> mData;
     private static CheckNewAddsActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
-    private SmartRefreshLayout smallLabel;
     private LinearLayout checkNewDialog;
 
     public static CheckNewAddsActivity getInstance() {
         return mContext;
     }
 
+    private CheckUtils checkUtils;
     private DialogUtils dialogUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
@@ -130,7 +134,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void findbyid() {
-        smallLabel = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
         //分数
         //wbs路径
         wbsName = (TextView) findViewById(R.id.check_wbspath);
@@ -187,8 +190,8 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-        smallLabel.setEnableLoadmore(false);
         mData = new ArrayList<>();
+        checkUtils = new CheckUtils();
         dialogUtils = new DialogUtils();
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -222,21 +225,12 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                 intent2.putExtra("taskId", taskId);
                 intent2.putExtra("orgId", orgId);
-                intent2.putExtra("number", position + 1);
-                intent2.putExtra("position", position);
+                intent2.putExtra("number", mData.get(position).getPos());
+                intent2.putExtra("position", mData.get(position).getPos());
                 intent2.putExtra("size", mData.size());
                 intent2.putExtra("id", mData.get(position).getId());
                 startActivity(intent2);
 
-            }
-        });
-        smallLabel.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getcheckitemList();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
             }
         });
     }
@@ -502,59 +496,22 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
      * 生成检查后的检查项列表
      */
     public void getcheckitemList() {
-        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
-                .params("id", taskId)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        mData.clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                if (jsonArray.length() > 0) {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        String id = json.getString("id");
-                                        String score = json.getString("score");
-                                        String sequence = json.getString("sequence");
-                                        String standardScore;
-                                        try {
-                                            standardScore = json.getString("standardScore");
-                                        } catch (JSONException e) {
-                                            standardScore = "";
-                                        }
+        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                mData.clear();
+                mData.addAll((ArrayList<chekitemList>) map.get("list"));
+                if (mData.size() > 0) {
+                    adapter.getdate(mData);
+                    checkFinish();
+                }
+            }
 
-                                        boolean noSuch = json.getBoolean("noSuch");
-                                        boolean generate;
-                                        try {
-                                            generate = json.getBoolean("generate");
-                                        } catch (JSONException e) {
-                                            generate = false;
-                                        }
-                                        boolean gray = json.getBoolean("gray");
-                                        boolean penalty = json.getBoolean("penalty");
-                                        int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate, gray));
-                                    }
-                                }
-                            }
-                            if (mData.size() > 0) {
-                                adapter.getdate(mData);
-                                checkFinish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                    }
-                });
+            @Override
+            public void onerror(String s) {
+                ToastUtils.showShortToast(s);
+            }
+        });
     }
 
     /**
@@ -572,7 +529,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-
                                 JSONObject json = jsonObject.getJSONObject("data");
                                 //具体时间
                                 datatime.setText(json.getString("checkDate"));
@@ -729,7 +685,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                     checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
                                 } else {
-                                    checkNewButton.setVisibility(View.GONE);
                                     statusT();
                                 }
                             }

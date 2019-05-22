@@ -51,16 +51,6 @@ public class LoveDao {
         return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_CART)).list();
     }
 
-    //用户置顶
-    public static List<Shop> ALLCart() {
-        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_ALL)).list();
-    }
-
-    //用户收藏
-    public static List<Shop> MineHide() {
-        return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_HIDE)).list();
-    }
-
     //用户推送
     public static List<Shop> JPushCart() {
         return App.getDaoInstant().getShopDao().queryBuilder().where(ShopDao.Properties.Type.eq(Shop.TYPE_JPUSH)).list();

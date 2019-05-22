@@ -1,14 +1,10 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,11 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
@@ -30,8 +26,8 @@ import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.view.DKDragView;
+import com.example.baselibrary.inface.NetworkCallback;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
 import com.example.baselibrary.utils.Requests;
@@ -40,15 +36,13 @@ import com.example.baselibrary.view.BaseDialog;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -70,26 +64,27 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData;
-    private LinearLayout checkImport;
+    private LinearLayout checkImport, check_content;
     private LinearLayout checkCategory;
     private DrawerLayout drawerLayout;
-    private GridView checklist;
+    private GridView checklist, checklists;
     private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
     //参数
     private String name, orgId, categoryId = "", taskId = "", nodeId;
-    private CheckNewAdapter adapter;
-    private ArrayList<chekitemList> mData;
+    private CheckNewAdapter adapter, adapters;
+    private ArrayList<chekitemList> mData, Preposition, Routine;
     private static CheckNewAddActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun, checkNewDialog;
-    private SmartRefreshLayout smallLabel;
+
 
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
 
+    private CheckUtils checkUtils;
     private DialogUtils dialogUtils;
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
@@ -132,7 +127,9 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private void findbyid() {
         checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
         checkNewDialog.setVisibility(View.VISIBLE);
-        smallLabel = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
+        //前置检查标题
+        check_content = findViewById(R.id.check_content);
+        check_content.setVisibility(View.VISIBLE);
         //分数
         //wbs路径
         wbsName = (TextView) findViewById(R.id.check_wbspath);
@@ -144,7 +141,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         tVisibility.add(icontextviewtwo);
         //检查人
         checkUsername = (TextView) findViewById(R.id.check_username);
-
         //检查标段
         checkNewWebtext = (TextView) findViewById(R.id.check_new_webtext);
         //检查组织
@@ -168,6 +164,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         //导入的wbs路径
         //wbs Tree
         checklist = (GridView) findViewById(R.id.checklist);
+        checklists = (GridView) findViewById(R.id.checklist1);
         //检查标准类别
         checkCategory = (LinearLayout) findViewById(R.id.Check_category);
         viewlist.add(checkCategory);
@@ -188,8 +185,10 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-        smallLabel.setEnableLoadmore(false);
         mData = new ArrayList<>();
+        Preposition = new ArrayList<>();
+        Routine = new ArrayList<>();
+        checkUtils = new CheckUtils();
         dialogUtils = new DialogUtils();
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -215,29 +214,42 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
             }
         });
         titleView.setText("新增检查");
-        adapter = new CheckNewAdapter(mContext, mData);
+        //常规
+        adapter = new CheckNewAdapter(mContext, Routine);
         checklist.setAdapter(adapter);
+        //前置
+        adapters = new CheckNewAdapter(mContext, Preposition);
+        checklists.setAdapter(adapters);
+        //常规
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
+                int pos = Routine.get(position).getPos();
                 intent2.putExtra("taskId", taskId);
                 intent2.putExtra("orgId", orgId);
-                intent2.putExtra("number", position + 1);
-                intent2.putExtra("position", position);
+                intent2.putExtra("number", pos );
+                intent2.putExtra("position", pos);
                 intent2.putExtra("size", mData.size());
                 intent2.putExtra("id", mData.get(position).getId());
                 startActivity(intent2);
 
             }
         });
-        smallLabel.setOnRefreshListener(new OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        //前置项
+        checklists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                getcheckitemList();
-                //传入false表示刷新失败
-                refreshlayout.finishRefresh(800);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent2 = new Intent(mContext, CheckitemActivity.class);
+                int pos = Preposition.get(position).getPos();
+                intent2.putExtra("taskId", taskId);
+                intent2.putExtra("orgId", orgId);
+                intent2.putExtra("number", pos);
+                intent2.putExtra("position", pos);
+                intent2.putExtra("size", mData.size());
+                intent2.putExtra("id", mData.get(position).getId());
+                startActivity(intent2);
+
             }
         });
     }
@@ -300,7 +312,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                     intent2.putExtra("taskId", taskId);
                     intent2.putExtra("orgId", orgId);
                     intent2.putExtra("number", 1);
-                    intent2.putExtra("position", 0);
+                    intent2.putExtra("position", 1);
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
@@ -421,7 +433,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         }
         Dates.getDialogs(CheckNewAddActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)
-//                //所属标段
+                //所属标段
                 .params("name", checkNewTasktitle.getText().toString())
                 .params("id", taskId)
                 .params("orgId", orgId)
@@ -477,58 +489,39 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
      * 生成检查后的检查项列表
      */
     public void getcheckitemList() {
-        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
-                .params("id", taskId)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        mData.clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                if (jsonArray.length() > 0) {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        String id = json.getString("id");
-                                        String score = json.getString("score");
-                                        String sequence = json.getString("sequence");
-                                        String standardScore;
-                                        try {
-                                            standardScore = json.getString("standardScore");
-                                        } catch (JSONException e) {
-                                            standardScore = "";
-                                        }
-                                        boolean noSuch = json.getBoolean("noSuch");
-                                        boolean generate;
-                                        try {
-                                            generate = json.getBoolean("generate");
-                                        } catch (JSONException e) {
-                                            generate = false;
-                                        }
-                                        boolean penalty = json.getBoolean("penalty");
-                                        boolean gray = json.getBoolean("gray");
-                                        int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate, gray));
-                                    }
-                                }
-                            }
-                            if (mData.size() > 0) {
-                                adapter.getdate(mData);
-                                checkFinish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                mData.clear();
+                Preposition.clear();
+                Routine.clear();
+                mData.addAll((ArrayList<chekitemList>) map.get("list"));
+                if (mData.size() > 0) {
+                    for (int i = 0; i < mData.size(); i++) {
+                        if (mData.get(i).getS_type().equals("3")) {
+                            Preposition.add(mData.get(i));
+                        } else {
+                            Routine.add(mData.get(i));
                         }
                     }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
+                    //常规
+                    adapter.getdate(Routine);
+                    //前置
+                    if (Preposition.size() != 0) {
+                        adapters.getdate(Preposition);
+                        check_content.setVisibility(View.VISIBLE);
+                    } else {
+                        check_content.setVisibility(View.GONE);
                     }
-                });
+                    checkFinish();
+                }
+            }
+
+            @Override
+            public void onerror(String s) {
+                ToastUtils.showShortToast(s);
+            }
+        });
     }
 
     /**
@@ -708,7 +701,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override

@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.changed;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,11 +40,10 @@ import okhttp3.Response;
 public class ChagedContactsActivity extends BaseActivity implements View.OnClickListener {
     private ListView expandableListView;
     private TextView comtitle;
-    private Context mContext;
     private ArrayList<MoretasklistBean> list;
     private ArrayList<MoretasklistBean> search = new ArrayList<>();
     private SettingAdapter mAdapter;
-    String orgId;
+    private String orgId;
     private TextView deleteSearch;
     private EditText searchEditext;
     private RelativeLayout listSearch;
@@ -54,14 +52,13 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
-
-        mContext = ChagedContactsActivity.this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");
         listSearch = (RelativeLayout) findViewById(R.id.list_search);
         listSearch.setVisibility(View.VISIBLE);
         //搜索按钮
         deleteSearch = (TextView) findViewById(R.id.delete_search);
+        deleteSearch.setOnClickListener(this);
         //搜索框
         searchEditext = (EditText) findViewById(R.id.search_editext);
         expandableListView = (ListView) findViewById(R.id.wbs_listview);
@@ -90,7 +87,50 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
         };
         expandableListView.setAdapter(mAdapter);
         expandableListView.setEmptyView(findViewById(R.id.nullposion));
-        /*网络请求*/
+        request();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.com_back:
+                //返回
+                Dates.hintKeyBoard(ChagedContactsActivity.this);
+                finish();
+                break;
+            case R.id.delete_search:
+                //搜索
+                String content = searchEditext.getText().toString();
+                if (!content.isEmpty()) {
+                    search.clear();
+                    for (int i = 0; i < list.size(); i++) {
+                        String name = list.get(i).getPartContent();
+                        if (name.contains(content)) {
+                            search.add(list.get(i));
+                        }
+                    }
+                    mAdapter.getData(search);
+                    Dates.hintKeyBoard(ChagedContactsActivity.this);
+                } else {
+                    ToastUtils.showLongToast("搜索内容不能为空");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void getdata(String name, String id) {
+        Intent intent = new Intent();
+        intent.putExtra("name", name);
+        intent.putExtra("id", id);
+        intent.putExtra("id", id);
+        setResult(3, intent);
+        finish();
+    }
+
+    /*网络请求*/
+    public void request() {
         OkGo.get(Requests.GETPERSONDATA)
                 .params("orgId", orgId)
                 .params("page.size", 1000)
@@ -129,51 +169,5 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                         super.onError(call, response, e);
                     }
                 });
-        /**
-         * @内容: 搜索
-         * @author lx
-         * @date: 2018/12/18 0018 下午 3:17
-         */
-        deleteSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content = searchEditext.getText().toString();
-                if (!content.isEmpty()) {
-                    search.clear();
-                    for (int i = 0; i < list.size(); i++) {
-                        String name = list.get(i).getPartContent();
-                        if (name.contains(content)) {
-                            search.add(list.get(i));
-                        }
-                    }
-                    mAdapter.getData(search);
-                    Dates.hintKeyBoard(ChagedContactsActivity.this);
-                } else {
-                    ToastUtils.showLongToast("搜索内容不能为空");
-                }
-            }
-        });
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.com_back:
-                Dates.hintKeyBoard(ChagedContactsActivity.this);
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void getdata(String name, String id) {
-        Intent intent = new Intent();
-        intent.putExtra("name", name);
-        intent.putExtra("id", id);
-        intent.putExtra("id", id);
-        setResult(3, intent);
-        finish();
-    }
-
 }

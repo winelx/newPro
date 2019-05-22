@@ -126,7 +126,7 @@ public class CheckReportOrgDetailsT extends Fragment {
                 //统计时间数值 季/月
                 .params("mqnum", mqnum)
                 .params("row", 20)
-                .params("page", 1)
+                .params("page", page)
                 //查询类别
                 .params("modeType", "JC")
                 .execute(new StringCallback() {

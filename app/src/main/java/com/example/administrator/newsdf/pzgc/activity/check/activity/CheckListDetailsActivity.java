@@ -60,30 +60,33 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     //控件
     private TextView datatime, categoryItem, checkNewNumber, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
-    private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber, checkNewDialog;
+    private LinearLayout checkNewData, checkImport, checkCategory, checkNewAddNumber, checkNewDialog, check_content;
     private DrawerLayout drawerLayout;
-    private GridView checklist;
+    private GridView checklist, checklists;
     private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
     //参数
     private String type, Id, taskId;
-    private CheckNewAdapter adapter;
-    private ArrayList<chekitemList> mData;
+    private CheckNewAdapter adapter, adapters;
+    private ArrayList<chekitemList> mData, Preposition, Routine;
     private static CheckListDetailsActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
+
     public static CheckListDetailsActivity getInstance() {
         return mContext;
     }
+
     ArrayList<View> viewlist = new ArrayList<>();
     ArrayList<View> tVisibility = new ArrayList<>();
+    private CheckUtils checkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_new_add);
-
+        checkUtils = new CheckUtils();
         Intent intent = getIntent();
         Id = intent.getStringExtra("id");
         type = intent.getStringExtra("type");
@@ -99,6 +102,8 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     private void findbyid() {
+        //前置项
+        check_content = findViewById(R.id.check_content);
         checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
         //分数
         checkNewAddNumber = (LinearLayout) findViewById(R.id.check_new_add_number);
@@ -125,7 +130,6 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //标题
         checkNewTasktitle = (EditText) findViewById(R.id.check_new_tasktitle);
         viewlist.add(checkNewTasktitle);
-
         //临时部位
         checkNewTemporarysite = (EditText) findViewById(R.id.check_new_temporarysite);
         viewlist.add(checkNewTemporarysite);
@@ -136,6 +140,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         //导入的wbs路径
         //wbs Tree
         checklist = (GridView) findViewById(R.id.checklist);
+        checklists = (GridView) findViewById(R.id.checklist1);
         //检查标准类别
         checkCategory = (LinearLayout) findViewById(R.id.Check_category);
         viewlist.add(checkCategory);
@@ -159,12 +164,29 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                 drawerLayout.openDrawer(GravityCompat.END);
             }
         });
+        //常规项
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(mContext, CheckitemActivity.class);
+                int pos = Routine.get(position).getPos();
                 intent2.putExtra("taskId", taskId);
-                intent2.putExtra("number", position + 1);
+                intent2.putExtra("number", pos);
+                intent2.putExtra("position", pos);
+                intent2.putExtra("size", mData.size());
+                intent2.putExtra("success", "success");
+                startActivity(intent2);
+            }
+        });
+        //前置项
+        checklists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent2 = new Intent(mContext, CheckitemActivity.class);
+                int pos = Preposition.get(position).getPos();
+                intent2.putExtra("taskId", taskId);
+                intent2.putExtra("number", pos);
+                intent2.putExtra("position", pos);
                 intent2.putExtra("size", mData.size());
                 intent2.putExtra("success", "success");
                 startActivity(intent2);
@@ -174,6 +196,8 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
 
     private void initData() {
         mData = new ArrayList<>();
+        Preposition = new ArrayList<>();
+        Routine = new ArrayList<>();
         mContext = this;
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
@@ -198,8 +222,11 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
             }
         });
         titleView.setText("检查详情");
-        adapter = new CheckNewAdapter(mContext, mData);
+        adapter = new CheckNewAdapter(mContext, Routine);
         checklist.setAdapter(adapter);
+        //前置项
+        adapters = new CheckNewAdapter(mContext, Preposition);
+        checklists.setAdapter(adapters);
         checkNewButton.setVisibility(View.GONE);
         statusT();
 
@@ -212,7 +239,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.check_new_buttons:
-                if ("确认并签名".equals(checkNewButton.getText().toString())){
+                if ("确认并签名".equals(checkNewButton.getText().toString())) {
                     BaseDialog.confirmdialog(mContext, "是否确认签字", null, new Onclicklitener() {
                         @Override
                         public void confirm(String string) {
@@ -225,10 +252,12 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                     checkFinish();
                                     try {
                                         CheckTaskCallbackUtils.CallBackMethod();
-                                    }catch (Exception e){}
+                                    } catch (Exception e) {
+                                    }
 
 
                                 }
+
                                 @Override
                                 public void onerror(String s) {
                                     Dates.disDialog();
@@ -361,58 +390,40 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
      * 生成检查后的检查项列表
      */
     private void checkItem() {
-        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
-                .params("id", taskId)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                mData.clear();
-                                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                                if (jsonArray.length() > 0) {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject json = jsonArray.getJSONObject(i);
-                                        String id = json.getString("id");
-                                        String score = json.getString("score");
-                                        String sequence = json.getString("sequence");
-                                        String standardScore;
-                                        try {
-                                            standardScore = json.getString("standardScore");
-                                        } catch (JSONException e) {
-                                            standardScore = "";
-                                        }
-                                        boolean noSuch = json.getBoolean("noSuch");
-                                        boolean penalty = json.getBoolean("penalty");
-                                        boolean gray = json.getBoolean("gray");
-                                        boolean generate;
-                                        try {
-                                            generate = json.getBoolean("generate");
-                                        } catch (JSONException e) {
-                                            generate = false;
-                                        }
-                                        int number = i + 1;
-                                        mData.add(new chekitemList(id, score, sequence, standardScore, number + "", noSuch, penalty, generate, gray));
-                                    }
-                                }
-
-                            } else {
-                                ToastUtils.showLongToast(jsonObject.getString("mes"));
-                            }
-                            adapter.getdate(mData);
-                            if (mData.size() > 0) {
-                                adapter.getdate(mData);
-                                checkFinish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+            @Override
+            public void onsuccess(Map<String, Object> map) {
+                mData.clear();
+                Preposition.clear();
+                Routine.clear();
+                mData.addAll((ArrayList<chekitemList>) map.get("list"));
+                if (mData.size() > 0) {
+                    for (int i = 0; i < mData.size(); i++) {
+                        if (mData.get(i).getS_type().equals("3")) {
+                            Preposition.add(mData.get(i));
+                        } else {
+                            Routine.add(mData.get(i));
                         }
                     }
+                    //常规
 
-                });
+                    adapter.getdate(Routine);
+                    //前置
+                    if (Preposition.size() != 0) {
+                        adapters.getdate(Preposition);
+                        check_content.setVisibility(View.VISIBLE);
+                    } else {
+                        check_content.setVisibility(View.GONE);
+                    }
+                    checkFinish();
+                }
+            }
+
+            @Override
+            public void onerror(String s) {
+                ToastUtils.showShortToast(s);
+            }
+        });
     }
 
     public void checkFinish() {

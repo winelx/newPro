@@ -424,7 +424,7 @@ public class ChagedreplyUtils {
                         }
                         callBack.onsuccess(list);
                     } else {
-                        callBack.onerror(jsonObject.getString("msg"));
+                        callBack.onerror("该通知单暂未回复");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

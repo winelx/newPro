@@ -60,57 +60,56 @@ public class CheckNewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        int numbher = position + 1;
-        holder.pop_tast_item.setText(numbher +"");
-            //是否有此项
-            boolean noSuch = imagePaths.get(position).isNoSuch();
-            boolean gray=imagePaths.get(position).isGray();
+        holder.pop_tast_item.setText(imagePaths.get(position).getPos()+"");
+        //是否有此项
+        boolean noSuch = imagePaths.get(position).isNoSuch();
+        boolean gray=imagePaths.get(position).isGray();
         //判断是否操作过
-            if (gray){
-                //操作过
-                if (noSuch) {
-                    //无此项
-                    holder.chekItemRe.setBackgroundResource(R.color.finish_green);
-                    holder.LabelView.setBackgroundResource(R.mipmap.triangle_gray);
-                    holder.LabelView.setVisibility(View.VISIBLE);
-                } else {
-                    //是否被扣分
-                    boolean penalty = imagePaths.get(position).isPenalty();
-                    if (penalty) {
-                        holder.chekItemRe.setBackgroundResource(R.color.Orange);
-                        //是否被下通知
-                        boolean Generate = imagePaths.get(position).isGenerate();
-                        if (Generate) {
-                            holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
-                            holder.LabelView.setVisibility(View.VISIBLE);
-                        }else {
-                            holder.LabelView.setVisibility(View.GONE);
-                        }
-                    } else {
-                        //是否被下通知
-                        boolean Generate = imagePaths.get(position).isGenerate();
-                        if (Generate) {
-                            holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
-                            holder.LabelView.setVisibility(View.VISIBLE);
-                        }else {
-                            holder.LabelView.setVisibility(View.GONE);
-                        }
-                        holder.chekItemRe.setBackgroundResource(R.color.finish_green);
+        if (gray){
+            //操作过
+            if (noSuch) {
+                //无此项
+                holder.chekItemRe.setBackgroundResource(R.color.finish_green);
+                holder.LabelView.setBackgroundResource(R.mipmap.triangle_gray);
+                holder.LabelView.setVisibility(View.VISIBLE);
+            } else {
+                //是否被扣分
+                boolean penalty = imagePaths.get(position).isPenalty();
+                if (penalty) {
+                    holder.chekItemRe.setBackgroundResource(R.color.Orange);
+                    //是否被下通知
+                    boolean Generate = imagePaths.get(position).isGenerate();
+                    if (Generate) {
+                        holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                        holder.LabelView.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.LabelView.setVisibility(View.GONE);
                     }
-                }
-            }else {
-                //没有做过操作
-                holder.LabelView.setVisibility(View.GONE);
-                holder.chekItemRe.setBackgroundResource(R.color.gray);
-                //是否被下通知
-                boolean Generate = imagePaths.get(position).isGenerate();
-                if (Generate) {
-                    holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
-                    holder.LabelView.setVisibility(View.VISIBLE);
-                }else {
-                    holder.LabelView.setVisibility(View.GONE);
+                } else {
+                    //是否被下通知
+                    boolean Generate = imagePaths.get(position).isGenerate();
+                    if (Generate) {
+                        holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                        holder.LabelView.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.LabelView.setVisibility(View.GONE);
+                    }
+                    holder.chekItemRe.setBackgroundResource(R.color.finish_green);
                 }
             }
+        }else {
+            //没有做过操作
+            holder.LabelView.setVisibility(View.GONE);
+            holder.chekItemRe.setBackgroundResource(R.color.gray);
+            //是否被下通知
+            boolean Generate = imagePaths.get(position).isGenerate();
+            if (Generate) {
+                holder.LabelView.setBackgroundResource(R.mipmap.triangle_red);
+                holder.LabelView.setVisibility(View.VISIBLE);
+            }else {
+                holder.LabelView.setVisibility(View.GONE);
+            }
+        }
         return convertView;
     }
 

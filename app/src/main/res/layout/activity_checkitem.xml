@@ -20,12 +20,12 @@
             <include layout="@layout/check_item_content" />
 
             <LinearLayout
+                android:id="@+id/linearLayout8"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:id="@+id/linearLayout8">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/check_item_tabup"
@@ -67,11 +67,11 @@
                 android:id="@+id/float_suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginBottom="74dp"
-                android:background="@mipmap/float_suspension"
                 android:layout_above="@+id/linearLayout8"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_marginBottom="74dp"
+                android:background="@mipmap/float_suspension" />
 
         </RelativeLayout>
 
@@ -79,16 +79,57 @@
             android:id="@+id/drawerLayout_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             android:background="@color/writer"
-            android:layout_gravity="right">
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/check_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@mipmap/drawable_division"
+                    android:gravity="center"
+                    android:text="前置检查项"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp" />
+                <GridView
+                    android:id="@+id/checklist1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:horizontalSpacing="5dp"
+                    android:numColumns="5"
+                    android:verticalSpacing="5dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@mipmap/drawable_division"
+                android:gravity="center"
+                android:text="常规检查项"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp" />
+
+
             <GridView
-                android:numColumns="5"
-                android:horizontalSpacing="5dp"
-                android:verticalSpacing="5dp"
-                android:layout_marginLeft="5dp"
                 android:id="@+id/checklist"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:horizontalSpacing="5dp"
+                android:numColumns="5"
+                android:verticalSpacing="5dp" />
+
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>

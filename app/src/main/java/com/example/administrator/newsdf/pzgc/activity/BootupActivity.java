@@ -29,7 +29,6 @@ import okhttp3.Response;
 
 /**
  * description: 启动页
- *
  * @author lx
  * date: 2018/3/9 0009 下午 2:15
  * update: 2018/3/9 0009
@@ -42,7 +41,6 @@ public class BootupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         /*set it to be full screen*/
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -83,8 +81,6 @@ public class BootupActivity extends BaseActivity {
             }
             //表示发送任务
         }).sendEmptyMessageDelayed(0, 1000);
-
-
     }
 
     //假登录

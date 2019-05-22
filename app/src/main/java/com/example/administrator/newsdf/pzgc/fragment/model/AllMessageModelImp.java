@@ -82,7 +82,6 @@ public class AllMessageModelImp implements AllMessageModel {
                                 }
                                 //是否有数据
                                 if (mData.size() != 0) {
-                                    int random = (int) (Math.random() * 4) + 1;
                                     for (String str : parentlist) {
                                         List<Home_item> list = new ArrayList<Home_item>();
                                         for (Home_item item : mData) {
