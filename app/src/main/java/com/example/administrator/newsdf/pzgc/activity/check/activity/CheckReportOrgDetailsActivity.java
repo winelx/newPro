@@ -38,11 +38,6 @@ public class CheckReportOrgDetailsActivity extends BaseActivity {
     public static CheckReportOrgDetailsActivity getInstance() {
         return mContext;
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
