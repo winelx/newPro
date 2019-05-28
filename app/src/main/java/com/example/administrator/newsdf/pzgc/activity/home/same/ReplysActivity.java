@@ -96,7 +96,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
     private List<Shop> list;
     private RecyclerView photoadd;
     private LocationService locationService;
-    private TextView repleyAddress, wbsNodeName, Sendtask, title, tvNetSpeed, replyCheckItem,drawer_layout_text;
+    private TextView repleyAddress, wbsNodeName, Sendtask, title, tvNetSpeed, replyCheckItem, drawer_layout_text;
     private ImageView Save;
     private String latitude, longitude;
     private EditText replyText;
@@ -221,7 +221,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
      * 发现ID
      */
     private void findID() {
-        drawer_layout_text= (TextView) findViewById(R.id.drawer_layout_text);
+        drawer_layout_text = (TextView) findViewById(R.id.drawer_layout_text);
         meun_standard = (LinearLayout) findViewById(R.id.meun_standard);
         meun_photo = (LinearLayout) findViewById(R.id.meun_photo);
         meun_photo.setOnClickListener(this);
@@ -409,7 +409,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
                 Dates.getDialog(ReplysActivity.this, "请求数据中...");
                 photoPopPaths.clear();
                 drawer_layout_text.setText("图纸");
-                mAdapter.getData(photoPopPaths,"");
+                mAdapter.getData(photoPopPaths, "");
                 HomeUtils.photoAdm(wbsID, page, photoPopPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 //上拉加载的状态判断
                 liststatus = true;
@@ -426,7 +426,7 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
                 drawer_layout_text.setText("标准");
                 Dates.getDialog(ReplysActivity.this, "请求数据中...");
                 photoPopPaths.clear();
-                mAdapter.getData(photoPopPaths,"");
+                mAdapter.getData(photoPopPaths, "");
                 HomeUtils.getStard(wbsID, page, stardPaths, drew, mAdapter, wbsNodeName.getText().toString());
                 drawer.openDrawer(GravityCompat.START);
                 break;
@@ -601,9 +601,13 @@ public class ReplysActivity extends BaseActivity implements View.OnClickListener
      * 这是图册相机时的弹出框
      */
     private void showPopwindow() {
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(ReplysActivity.this.getCurrentFocus()
-                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(ReplysActivity.this.getCurrentFocus()
+                            .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+
+        }
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
         RelativeLayout btn_camera_pop = popView.findViewById(R.id.btn_pop_add);

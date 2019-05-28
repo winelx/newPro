@@ -202,9 +202,14 @@ public class ProjectmemberActivity extends BaseActivity {
                         }
                     }
                     //拿到数据后，隐藏键盘
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(ProjectmemberActivity.this.getCurrentFocus()
-                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(ProjectmemberActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
                     //更新数据
                     mAdapter.getData(searchData);
                 }

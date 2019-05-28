@@ -496,9 +496,13 @@ public class Dates {
         View view = activity.getWindow().peekDecorView();
         if (view != null) {
             // 隐藏虚拟键盘
-            InputMethodManager inputmanger = (InputMethodManager) activity
-                    .getSystemService(Activity.INPUT_METHOD_SERVICE);
-            return inputmanger.isActive() && activity.getWindow().getCurrentFocus() != null;
+            try {
+                InputMethodManager inputmanger = (InputMethodManager) activity
+                        .getSystemService(Activity.INPUT_METHOD_SERVICE);
+                return inputmanger.isActive() && activity.getWindow().getCurrentFocus() != null;
+            } catch (Exception e) {
+
+            }
         }
         return false;
     }

@@ -202,9 +202,14 @@ public class CollectionlistActivity extends BaseActivity implements View.OnClick
                 //是否是回车键
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
-                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
                     swip = false;
                     pages = 1;
                     String search = searchEditext.getText().toString();
@@ -242,9 +247,14 @@ public class CollectionlistActivity extends BaseActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 searchEditext.clearFocus();//失去焦点
-                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
-                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                try {
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(CollectionlistActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } catch (Exception e) {
+
+                }
+
                 //打开弹出框
                 MeunPop();
 
@@ -259,7 +269,6 @@ public class CollectionlistActivity extends BaseActivity implements View.OnClick
         organizationList.add(bean);
         getOrganization(organizationList);
     }
-
 
 
     private void getOrganization(ArrayList<OrganizationEntity> organizationList) {

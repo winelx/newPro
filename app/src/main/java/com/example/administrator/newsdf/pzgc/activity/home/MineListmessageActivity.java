@@ -214,9 +214,14 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
                 //是否是回车键
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
-                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
                     //初始化页数为第一页
                     pages = 1;
                     //当前为刷新数据。false 加载数据时清除之前的
@@ -312,9 +317,14 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
                     case MotionEvent.ACTION_MOVE:
                         // 触摸移动时的操作
                         searchEditext.clearFocus();//失去焦点
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
-                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        try {
+                            ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                    .hideSoftInputFromWindow(MineListmessageActivity.this.getCurrentFocus()
+                                            .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        } catch (Exception e) {
+
+                        }
+
                         break;
                     default:
                         break;

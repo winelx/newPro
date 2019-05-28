@@ -213,9 +213,14 @@ public class ContactPeopleActivity extends BaseActivity {
                         }
                     }
                     //隐藏键盘
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(ContactPeopleActivity.this.getCurrentFocus()
-                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(ContactPeopleActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
                     mData.clear();
                     mData.addAll(searchData);
                     mAdapter.setNewData(mData);

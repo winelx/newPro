@@ -202,9 +202,14 @@ public class CommentmessageActivity extends BaseActivity implements View.OnClick
                 //是否是回车键
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     //隐藏键盘
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
-                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    try {
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
+                                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (Exception e) {
+
+                    }
+
                     swip = false;
                     pages = 1;
                     String search = searchEditext.getText().toString();
@@ -594,9 +599,14 @@ public class CommentmessageActivity extends BaseActivity implements View.OnClick
                 super.onScrollStateChanged(recyclerView, newState);
                 //滑动关闭软键盘
                 searchEditext.clearFocus();//失去焦点
-                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
-                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                try {
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(CommentmessageActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } catch (Exception e) {
+
+                }
+
             }
 
             @Override
