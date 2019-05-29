@@ -19,6 +19,8 @@ import com.example.baselibrary.view.PermissionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 /**
  * @author lx
  * @data :2019/4/24 0024
@@ -46,6 +48,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appManager.addActivity(this);
+        //绑定初始化ButterKnife
+        ButterKnife.bind(this);
         //是否允许屏幕旋转
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

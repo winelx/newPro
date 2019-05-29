@@ -371,10 +371,8 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         } catch (Exception e) {
 
         }
-
         View parent = ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         View popView = View.inflate(this, R.layout.camera_pop_menu, null);
-
         Button btnCamera = popView.findViewById(R.id.btn_camera_pop_camera);
         Button btnAlbum = popView.findViewById(R.id.btn_camera_pop_album);
         Button btnCancel = popView.findViewById(R.id.btn_camera_pop_cancel);
