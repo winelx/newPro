@@ -5,6 +5,7 @@ import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
+import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;
@@ -220,12 +221,20 @@ public class HomeFragmentUtils {
                                 } catch (Exception e) {
                                     myNewNotice = new JSONObject();
                                 }
+                                /*通知公告*/
+                                JSONObject proclamation;
+                                try {
+                                    proclamation = data.getJSONObject("proclamation");
+                                    Proclamation proclamation1 = com.alibaba.fastjson.JSONObject.parseObject(proclamation.toString(), Proclamation.class);
+                                    map.put("proclamation", proclamation1);
+                                } catch (Exception e) {
+
+                                }
                                 callBack.onsuccess(map);
                             } else {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
                         } catch (Exception e) {
-                            callBack.onerror(Enums.ANALYSIS_ERROR);
                         }
                     }
 
@@ -247,39 +256,39 @@ public class HomeFragmentUtils {
         }
         request
                 .execute(new StringCallback() {
-            @Override
-            public void onSuccess(String s, Call call, Response response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int ret = jsonObject.getInt("ret");
-                    if (ret == 0) {
-                        Map<String, Object> map = new HashMap<>();
-                        JSONObject data;
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
                         try {
-                            data = jsonObject.getJSONObject("data");
-                            JSONArray result = data.getJSONArray("results");
-                            List<LastmonthBean> list = ListJsonUtils.getListByArray(LastmonthBean.class, result.toString());
-                            map.put("lastmonth", list);
+                            JSONObject jsonObject = new JSONObject(s);
+                            int ret = jsonObject.getInt("ret");
+                            if (ret == 0) {
+                                Map<String, Object> map = new HashMap<>();
+                                JSONObject data;
+                                try {
+                                    data = jsonObject.getJSONObject("data");
+                                    JSONArray result = data.getJSONArray("results");
+                                    List<LastmonthBean> list = ListJsonUtils.getListByArray(LastmonthBean.class, result.toString());
+                                    map.put("lastmonth", list);
+                                } catch (Exception e) {
+                                }
+
+                                callBack.onsuccess(map);
+
+                            } else {
+                                callBack.onerror(jsonObject.getString("msg"));
+                            }
                         } catch (Exception e) {
+                            callBack.onerror(Enums.ANALYSIS_ERROR);
                         }
 
-                        callBack.onsuccess(map);
-
-                    } else {
-                        callBack.onerror(jsonObject.getString("msg"));
                     }
-                } catch (Exception e) {
-                    callBack.onerror(Enums.ANALYSIS_ERROR);
-                }
 
-            }
-
-            @Override
-            public void onError(Call call, Response response, Exception e) {
-                super.onError(call, response, e);
-                callBack.onerror(Enums.REQUEST_ERROR);
-            }
-        });
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        callBack.onerror(Enums.REQUEST_ERROR);
+                    }
+                });
     }
 
     /**
@@ -364,7 +373,7 @@ public class HomeFragmentUtils {
     public static void grandTaskFinish(String id, final requestCallBack callBack) {
         OkGo.get(HomeApi.getgrandandtodaytaskbyb)
                 .params("fOrgId", id)
-                .params("isToday",2)
+                .params("isToday", 2)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -400,7 +409,7 @@ public class HomeFragmentUtils {
     public static void todayDetailsRequest(String id, final requestCallBack callBack) {
         OkGo.get(HomeApi.getgrandandtodaytaskbyb)
                 .params("fOrgId", id)
-                .params("isToday",1)
+                .params("isToday", 1)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

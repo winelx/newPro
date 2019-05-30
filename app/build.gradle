@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+
 android {
     compileSdkVersion 26
     buildToolsVersion '28.0.2'
@@ -68,8 +69,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -80,5 +81,10 @@ dependencies {
     implementation project(':baselibrary')
     //饼图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    def nav_version = '1.0.0-alpha01'
+    //navigation
+    implementation "android.arch.navigation:navigation-fragment:$nav_version"
+    implementation "android.arch.navigation:navigation-ui:$nav_version"
+
 
 }

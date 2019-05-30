@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="50dp">
+        <include layout="@layout/toolbar_icon"/>
+
+    </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"

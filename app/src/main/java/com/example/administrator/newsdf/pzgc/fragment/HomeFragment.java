@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNoticeActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
@@ -45,9 +47,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
 
-    private TextView noticedData, agencyData, completeData;
-    private TextView noticedContent, agencyContent, completeContent;
-    private TextView noticedNumber, agencyNumber, taskfinishcount, todaytotalnumber, lastmonthtotalnumber;
+    private TextView noticedData, agencyData, completeData, propagandaData;
+    private TextView noticedContent, agencyContent, completeContent, propagandaContent;
+    private TextView noticedNumber, agencyNumber, taskfinishcount, todaytotalnumber, lastmonthtotalnumber, propagandaNumber;
     private TextView thirdRanking, fristRanking, secondRanking, thirdRankingSocrd, secondRankingSocrd, fristRankingSocrd;
     private View rootView;
     @SuppressLint("HandlerLeak")
@@ -99,6 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.noticed_lin).setOnClickListener(this);
         rootView.findViewById(R.id.agency_lin).setOnClickListener(this);
         rootView.findViewById(R.id.complete_lin).setOnClickListener(this);
+        rootView.findViewById(R.id.propaganda_lin).setOnClickListener(this);
         mRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mRefreshLayout);
 // 下拉刷新颜色控制
         mRefreshLayout.setColorSchemeResources(R.color.colorAccent,
@@ -132,6 +135,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         taskfinishcount = rootView.findViewById(R.id.taskfinishcount);
         todaytotalnumber = rootView.findViewById(R.id.todaytotalnumber);
         lastmonthtotalnumber = rootView.findViewById(R.id.lastmonthtotalnumber);
+        //通知公告
+        propagandaData = rootView.findViewById(R.id.propaganda_data);
+        propagandaContent = rootView.findViewById(R.id.propaganda_content);
+        propagandaNumber = rootView.findViewById(R.id.propaganda_number);
         /*标段排名*/
         thirdRanking = rootView.findViewById(R.id.third_ranking);
         thirdRankingSocrd = rootView.findViewById(R.id.third_ranking_socrd);
@@ -139,6 +146,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         fristRankingSocrd = rootView.findViewById(R.id.frist_ranking_socrd);
         secondRankingSocrd = rootView.findViewById(R.id.second_ranking_socrd);
         secondRanking = rootView.findViewById(R.id.second_ranking);
+
     }
 
     @Override
@@ -183,6 +191,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Intent lastmonthtotal = new Intent(mContext, HometaskActivity.class);
                 lastmonthtotal.putExtra("title", "上月整改统计");
                 startActivity(lastmonthtotal);
+                break;
+            case R.id.propaganda_lin:
+                Intent messagenotice = new Intent(mContext, MessageNoticeActivity.class);
+                startActivity(messagenotice);
                 break;
             default:
                 break;
@@ -240,6 +252,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 } else {
                     completeData.setText("");
                     completeContent.setText("暂无消息");
+                }
+                //通知公告  proclamation
+                if (map.containsKey("proclamation")) {
+                    proclamation((Proclamation) map.get("proclamation"));
+                } else {
+                    propagandaData.setText("");
+                    propagandaContent.setText("暂无消息");
                 }
             }
 
@@ -302,6 +321,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             completeContent.setText(bean.getReceiveOrgName() + bean.getModelName() + "(" + bean.getModelCode() + ")" + bean.getDealResult());
         } else {
             completeContent.setText("");
+        }
+    }
+
+    /*通知公告*/
+    private void proclamation(Proclamation bean) {
+        //时间
+        if (!bean.getPublishDate().isEmpty()) {
+            propagandaData.setText(bean.getPublishDate().substring(0, 10));
+        } else {
+            propagandaData.setText("");
+        }
+        //消息
+        if (!bean.getContent().isEmpty()) {
+            propagandaContent.setText(bean.getContent());
+        } else {
+            propagandaContent.setText("暂无消息");
+        }
+        //通知数量
+        if (!bean.getNumber().isEmpty()) {
+            propagandaNumber.setText(bean.getNumber());
+        } else {
+            propagandaNumber.setText("");
         }
     }
 

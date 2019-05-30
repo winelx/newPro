@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_contic"
+    app:startDestination="@id/messageNoticeFragment">
+
+    <fragment
+        android:id="@+id/messageNoticeFragment"
+        android:name="com.example.administrator.newsdf.pzgc.activity.notice.fragment.MessageNoticeFragment"
+        android:label="MessageNoticeFragment"
+        tools:layout="@layout/activity_audit">
+        <action
+            android:id="@+id/to_noticedetailsfragment"
+            app:destination="@id/noticeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noticeDetailsFragment"
+        android:name="com.example.administrator.newsdf.pzgc.activity.notice.fragment.NoticeDetailsFragment"
+        android:label="NoticeDetailsFragment"
+        tools:layout="@layout/activity_check_task_web" />
+</navigation>

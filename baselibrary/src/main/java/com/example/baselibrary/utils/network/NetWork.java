@@ -27,7 +27,7 @@ public class NetWork {
      */
     public static void getHttp(String url, Map<String, String> map, final networkCallBack callBack) {
         GetRequest get = OkGo.get(url);
-        if (map!=null){
+        if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 get.params(entry.getKey(), (String) entry.getValue());
             }
@@ -37,10 +37,39 @@ public class NetWork {
             public void onSuccess(String s, Call call, Response response) {
                 callBack.onSuccess(s, call, response);
             }
+
             @Override
             public void onError(Call call, Response response, Exception e) {
                 super.onError(call, response, e);
                 callBack.onError(call, response, e);
+            }
+        });
+    }
+
+    /**
+     * get请求
+     */
+    public static void getHttp(String url, Map<String, String> map, final networkCallBacks callBack) {
+        GetRequest get = OkGo.get(url);
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                get.params(entry.getKey(), (String) entry.getValue());
+            }
+        }
+        get.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    callBack.onSuccess(s);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onError(response.code() + "");
             }
         });
     }
@@ -52,7 +81,7 @@ public class NetWork {
      * @param form  是否表单提交
      * @param files 传递文件
      */
-    public static void postHttp(String url, Map<String, String> map,  ArrayList<File> files,boolean form, final networkCallBack callBack) {
+    public static void postHttp(String url, Map<String, String> map, ArrayList<File> files, boolean form, final networkCallBack callBack) {
         PostRequest post = OkGo.post(url);
         //如果为true，进行表单提交
         if (form) {
@@ -87,5 +116,11 @@ public class NetWork {
         void onSuccess(String s, Call call, Response response);
 
         void onError(Call call, Response response, Exception e);
+    }
+
+    public interface networkCallBacks {
+        void onSuccess(String s) throws JSONException;
+
+        void onError(String code);
     }
 }

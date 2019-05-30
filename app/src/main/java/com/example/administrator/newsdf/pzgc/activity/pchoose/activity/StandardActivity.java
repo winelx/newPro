@@ -81,17 +81,6 @@ public class StandardActivity extends BaseActivity {
                 DividerItemDecoration.VERTICAL_LIST));
         photo_rec.setAdapter(photoAdapter);
         OkGo();
-//        //上拉加载
-//        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-//            @TargetApi(Build.VERSION_CODES.KITKAT)
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//                page++;
-//                OkGo();
-//                //传入false表示加载失败
-//                refreshlayout.finishLoadmore(800);
-//            }
-//        });
 
     }
 
