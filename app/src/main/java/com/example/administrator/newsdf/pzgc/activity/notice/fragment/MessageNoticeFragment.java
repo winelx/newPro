@@ -16,9 +16,11 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.pzgc.activity.notice.Model.NoticeModel;
+import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNoticeActivity;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
+import com.example.baselibrary.utils.rx.RxBus;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -62,7 +64,9 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         emptyUtils = new EmptyUtils(getContext());
         adapter = new Adapter(R.layout.messagenotice_item, new ArrayList<Proclamation>());
         recycler.setAdapter(adapter);
+        //设置空白布局
         adapter.setEmptyView(emptyUtils.init());
+        //初始化viewmodel
         noticeModel = ViewModelProviders.of(this).get(NoticeModel.class);
         //根据Ui
         observer = new Observer<List<Proclamation>>() {
@@ -80,9 +84,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
                 Navigation.findNavController(view).navigate(R.id.to_noticedetailsfragment);
             }
         });
-        /**
-         *   下拉刷新
-         */
+        //下拉刷新
         reshlayout.setOnRefreshListener(new OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -104,6 +106,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
                 refreshlayout.finishLoadmore();
             }
         });
+        //网络请求
         reqeuse();
     }
 

@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
@@ -12,7 +12,6 @@ android {
         versionCode 1
         versionName "2.9"
         resConfigs "zh-rCN"
-
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -82,13 +81,14 @@ dependencies {
     //饼图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     def nav_version = '1.0.0-alpha01'
+    def lifecycle = '1.1.1'
     //navigation
+    //noinspection GradleDependency
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
+    //noinspection GradleDependency
     implementation "android.arch.navigation:navigation-ui:$nav_version"
-
     // alternatively, just LiveData
-    implementation "android.arch.lifecycle:livedata:1.1.1"
-    //
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation "android.arch.lifecycle:livedata:$lifecycle"
+    implementation "android.arch.lifecycle:extensions:$lifecycle"
 
 }
