@@ -1,6 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.notice.fragment;
 
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -13,11 +15,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 
-import com.example.administrator.newsdf.pzgc.activity.notice.NoticeUtils;
+import com.example.administrator.newsdf.pzgc.activity.notice.Model.NoticeModel;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -37,14 +38,13 @@ import androidx.navigation.Navigation;
  * @说明： 通知公告
  **/
 public class MessageNoticeFragment extends LazyloadFragment implements View.OnClickListener {
-    private TextView com_title;
+    private TextView comTitle;
     private RecyclerView recycler;
     private SmartRefreshLayout reshlayout;
 
-    private ArrayList<Proclamation> list;
-
     private EmptyUtils emptyUtils;
-    private NoticeUtils noticeUtils;
+    private NoticeModel noticeModel;
+    private Observer<List<Proclamation>> observer;
     private Adapter adapter;
 
     private int page = 1;
@@ -57,14 +57,23 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
     @Override
     protected void init() {
         findId();
-        list = new ArrayList<>();
-        com_title.setText("通知公告");
+        comTitle.setText("通知公告");
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        noticeUtils = new NoticeUtils();
         emptyUtils = new EmptyUtils(getContext());
-        adapter = new Adapter(R.layout.messagenotice_item, list);
+        adapter = new Adapter(R.layout.messagenotice_item, new ArrayList<Proclamation>());
         recycler.setAdapter(adapter);
         adapter.setEmptyView(emptyUtils.init());
+        noticeModel = ViewModelProviders.of(this).get(NoticeModel.class);
+        //根据Ui
+        observer = new Observer<List<Proclamation>>() {
+            @Override
+            public void onChanged(@Nullable List<Proclamation> data) {
+                if (data != null) {
+                    adapter.setNewData(data);
+                }
+            }
+        };
+        //适配器点击事件
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -78,6 +87,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                page = 1;
                 reqeuse();
                 //关闭刷新
                 refreshlayout.finishRefresh();
@@ -98,7 +108,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
     }
 
     private void findId() {
-        com_title = rootView.findViewById(R.id.com_title);
+        comTitle = rootView.findViewById(R.id.com_title);
         reshlayout = rootView.findViewById(R.id.reshlayout);
         recycler = rootView.findViewById(R.id.recycler);
         rootView.findViewById(R.id.com_back).setOnClickListener(this);
@@ -120,6 +130,14 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         }
     }
 
+    /*网络请求*/
+    private void reqeuse() {
+        Map<String, String> map = new HashMap<>();
+        map.put("nowPage", page + "");
+        noticeModel.getmData(map).observe(this, observer);
+    }
+
+    /*适配器*/
     private class Adapter extends BaseQuickAdapter<Proclamation, BaseViewHolder> {
 
         public Adapter(int layoutResId, @Nullable List<Proclamation> data) {
@@ -138,26 +156,4 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         }
     }
 
-    /*网络请求*/
-    private void reqeuse() {
-        Map<String, String> map = new HashMap<>();
-        map.put("nowPage", page + "");
-        noticeUtils.getdata(map, new NoticeUtils.CallBack() {
-            @Override
-            public void onsuccess(List<Proclamation> data) {
-                //如果加载第一页，清除数据
-                if (page == 1) {
-                    list.clear();
-                }
-                list.addAll(data);
-                adapter.setNewData(list);
-            }
-
-            @Override
-            public void onerror(String str) {
-                ToastUtils.showsnackbar(com_title, str);
-                page--;
-            }
-        });
-    }
 }

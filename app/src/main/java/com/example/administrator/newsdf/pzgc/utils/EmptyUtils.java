@@ -35,6 +35,9 @@ public class EmptyUtils {
         this.mContext = mContext;
     }
 
+    public EmptyUtils() {
+    }
+
     /**
      * @内容: 初始化
      * @author lx
@@ -49,6 +52,19 @@ public class EmptyUtils {
         return emptyView;
     }
 
+    /**
+     * @内容: 初始化
+     * @author lx
+     * @date: 2019/1/17 0017 下午 2:17
+     */
+    public View init(Context mContext) {
+        emptyView = ((Activity) mContext).getLayoutInflater().inflate(R.layout.layout_emptyview, null);
+        progressBar = emptyView.findViewById(R.id.emptyview_bar);
+        progressBar.setVisibility(View.VISIBLE);
+        content = emptyView.findViewById(R.id.emptyview_text);
+        nodata = emptyView.findViewById(R.id.nodata);
+        return emptyView;
+    }
 
     /**
      * @内容: 简单设置提示

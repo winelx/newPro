@@ -86,5 +86,9 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
 
+    // alternatively, just LiveData
+    implementation "android.arch.lifecycle:livedata:1.1.1"
+    //
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
 }
