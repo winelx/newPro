@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#5095F9</item>
         <item name="colorPrimaryDark">#5095F9</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDisablePreview">true</item>
         <item name="toolbarStyle">@style/MyToolbar</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>

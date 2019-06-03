@@ -10,12 +10,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "2.9"
+        versionName "3.0"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64','arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'arm64-v8a'
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
@@ -52,8 +52,8 @@ android {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //Zipalign优化
-            zipAlignEnabled false
-            minifyEnabled false
+            zipAlignEnabled true
+            minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
             //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化

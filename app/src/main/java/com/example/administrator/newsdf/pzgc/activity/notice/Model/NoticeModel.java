@@ -53,10 +53,8 @@ public class NoticeModel extends ViewModel {
                         JSONArray data = jsonObject.getJSONArray("data");
                         list = ListJsonUtils.getListByArray(Proclamation.class, data.toString());
                         lists.addAll(list);
-                        if (lists != null) {
-                            mData.setValue(lists);
-                        }
                     }
+                    mData.setValue(lists);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

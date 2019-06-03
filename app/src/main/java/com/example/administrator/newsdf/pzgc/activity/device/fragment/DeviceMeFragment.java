@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * @author lx
  * @Created by: 2018/11/27 0027.
- * @description:特种设备我的消息
+ * @description: 特种设备我的消息
  */
 
 public class DeviceMeFragment extends LazyloadFragment implements CallBack {

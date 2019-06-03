@@ -61,11 +61,10 @@ public class CheckTaskWebActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
-
         mContext = this;
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
-       cookies = cookieStore.getCookie(httpUrl);
+        cookies = cookieStore.getCookie(httpUrl);
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);

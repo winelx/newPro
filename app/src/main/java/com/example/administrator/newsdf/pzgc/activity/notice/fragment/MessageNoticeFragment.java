@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,11 +17,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.pzgc.activity.notice.Model.NoticeModel;
-import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNoticeActivity;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
-import com.example.baselibrary.utils.rx.RxBus;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -35,9 +34,9 @@ import java.util.Map;
 import androidx.navigation.Navigation;
 
 /**
- * @author： lx
- * @创建时间： 2019/5/29 0029 9:56
- * @说明： 通知公告
+ * @ author： lx
+ * @ 创建时间： 2019/5/29 0029 9:56
+ * @ 说明： 通知公告
  **/
 public class MessageNoticeFragment extends LazyloadFragment implements View.OnClickListener {
     private TextView comTitle;
@@ -48,7 +47,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
     private NoticeModel noticeModel;
     private Observer<List<Proclamation>> observer;
     private Adapter adapter;
-
+    private List<Proclamation> list;
     private int page = 1;
 
     @Override
@@ -59,10 +58,11 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
     @Override
     protected void init() {
         findId();
+        list = new ArrayList<>();
         comTitle.setText("通知公告");
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         emptyUtils = new EmptyUtils(getContext());
-        adapter = new Adapter(R.layout.messagenotice_item, new ArrayList<Proclamation>());
+        adapter = new Adapter(R.layout.messagenotice_item, new ArrayList<>());
         recycler.setAdapter(adapter);
         //设置空白布局
         adapter.setEmptyView(emptyUtils.init());
@@ -72,8 +72,13 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         observer = new Observer<List<Proclamation>>() {
             @Override
             public void onChanged(@Nullable List<Proclamation> data) {
+                list.clear();
+                list.addAll(data);
                 if (data != null) {
                     adapter.setNewData(data);
+                }
+                if (data.size()==0){
+                    emptyUtils.noData("暂无数据");
                 }
             }
         };
@@ -81,7 +86,9 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Navigation.findNavController(view).navigate(R.id.to_noticedetailsfragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("ids", list.get(position).getId());
+                Navigation.findNavController(view).navigate(R.id.to_noticedetailsfragment, bundle);
             }
         });
         //下拉刷新
@@ -142,21 +149,19 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
 
     /*适配器*/
     private class Adapter extends BaseQuickAdapter<Proclamation, BaseViewHolder> {
-
         public Adapter(int layoutResId, @Nullable List<Proclamation> data) {
             super(layoutResId, data);
         }
 
         @Override
         protected void convert(BaseViewHolder helper, Proclamation item) {
-            helper.setText(R.id.content, item.getContent());
+            helper.setText(R.id.content, item.getTitle());
             //组织
-            helper.setText(R.id.orgnanme, item.getOrgName() + "dsfadsafdsa");
+            helper.setText(R.id.orgnanme, item.getOrgName());
             //创建人
             helper.setText(R.id.username, item.getCreateName());
             //时间
             helper.setText(R.id.timedata, item.getPublishDate().substring(0, 10));
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.pchoose.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -96,6 +97,7 @@ public class StandardActivity extends BaseActivity {
                 .isMultipart(true)
                 .params("page", page)
                 .params("rows", 10).execute(new StringCallback() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(String s, Call call, Response response) {
 

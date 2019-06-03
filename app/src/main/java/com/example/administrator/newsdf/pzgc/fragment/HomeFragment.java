@@ -19,6 +19,7 @@ import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNot
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
@@ -155,7 +156,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.noticed_lin:
                 //消息通知
                 Intent noticed = new Intent(mContext, NoticeActivity.class);
-                noticed.putExtra("title", "消息通知");
+                noticed.putExtra("title", Enums.NOTICE);
                 noticedNumber.setVisibility(View.GONE);
                 startActivity(noticed);
                 break;
@@ -193,6 +194,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(lastmonthtotal);
                 break;
             case R.id.propaganda_lin:
+                //通知公告
                 Intent messagenotice = new Intent(mContext, MessageNoticeActivity.class);
                 startActivity(messagenotice);
                 break;
@@ -334,7 +336,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         //消息
         if (!bean.getContent().isEmpty()) {
-            propagandaContent.setText(bean.getContent());
+            propagandaContent.setText(bean.getTitle());
         } else {
             propagandaContent.setText("暂无消息");
         }

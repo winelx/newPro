@@ -75,4 +75,13 @@ public abstract class LazyloadFragment extends Fragment {
      */
     protected abstract void lazyLoad();
 
+    /**
+     *  初始化控件
+     * @param i 控件地址
+     * @return 返回View
+     */
+    public View findViewById(int i) {
+        View view = rootView.findViewById(i);
+        return view;
+    }
 }

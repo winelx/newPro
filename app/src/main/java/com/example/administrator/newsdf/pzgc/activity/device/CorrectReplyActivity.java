@@ -44,10 +44,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author lx
- * @Created by: 2018/12/3 0003.
- * @description: 整改回复（详情页编辑）
- * @Activity：
+ * @ author lx
+ * @ Created by: 2018/12/3 0003.
+ * @ description: 整改回复（详情页编辑）
+ * @ Activity：
  */
 
 public class CorrectReplyActivity extends BaseActivity {
@@ -78,7 +78,6 @@ public class CorrectReplyActivity extends BaseActivity {
         detailsUtils = new DeviceDetailsUtils();
         list = new ArrayList<>();
         deleteList = new ArrayList<>();
-
         //相机帮助类初始化
         takePictureManager = new TakePictureManager(CorrectReplyActivity.this);
         //数据填完后保存按钮
