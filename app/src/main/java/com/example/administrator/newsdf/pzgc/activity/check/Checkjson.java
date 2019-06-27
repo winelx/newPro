@@ -1,9 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.check;
 
-import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
+import com.example.administrator.newsdf.pzgc.adapter.NotSubmitTaskAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SCheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
-import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 

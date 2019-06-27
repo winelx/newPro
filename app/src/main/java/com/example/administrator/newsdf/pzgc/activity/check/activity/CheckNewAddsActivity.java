@@ -1,24 +1,17 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -26,7 +19,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallback;
 import com.example.administrator.newsdf.pzgc.callback.CheckNewCallbackUtils;
@@ -42,6 +35,9 @@ import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.view.BaseDialog;
+import com.example.timepickter.TimePickerDialog;
+import com.example.timepickter.data.Type;
+import com.example.timepickter.listener.OnDateSetListener;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -52,6 +48,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -66,8 +63,10 @@ import static com.lzy.okgo.OkGo.post;
 
 public class CheckNewAddsActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
     /**
-     *控件
+     * 控件
      */
+    //选择日期
+    private TimePickerDialog mDialogYearMonthDay;
     private TextView datatime, checkNewNumber, categoryItem, checklistmeuntext, titleView,
             checkNewWebtext, checkUsername, checkNewOrgname, wbsName;
     private LinearLayout checkNewData;
@@ -94,8 +93,12 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
 
     private CheckUtils checkUtils;
     private DialogUtils dialogUtils;
-    ArrayList<View> viewlist = new ArrayList<>();
-    ArrayList<View> tVisibility = new ArrayList<>();
+    private ArrayList<View> viewlist = new ArrayList<>();
+    private ArrayList<View> tVisibility = new ArrayList<>();
+    //当前单据状态
+    private int status;
+
+    private String success = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         orgId = intent.getStringExtra("orgId");
         //所属标段名称
         name = intent.getStringExtra("name");
+        //
         type = intent.getStringExtra("type");
         try {
             //当前检查任务的id
@@ -125,9 +129,11 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             checkNewWebtext.setText(name);
             statusF();
         } else {
-            getcheckitemList();
             getdata();
+            getcheckitemList();
         }
+        //初始化时间选择器
+        dialog();
     }
 
     private void findbyid() {
@@ -226,6 +232,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 intent2.putExtra("position", mData.get(position).getPos());
                 intent2.putExtra("size", mData.size());
                 intent2.putExtra("id", mData.get(position).getId());
+                intent2.putExtra("success", success);
                 startActivity(intent2);
 
             }
@@ -237,7 +244,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.check_new_data:
                 //打开时间选择器
-                meunpop();
+                mDialogYearMonthDay.show(getSupportFragmentManager(), "year_month_day");
                 break;
             case R.id.check_import:
                 Intent intent1 = new Intent(CheckNewAddsActivity.this, CheckTreeActivity.class);
@@ -286,8 +293,8 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                     Intent intent2 = new Intent(mContext, CheckitemActivity.class);
                     intent2.putExtra("taskId", taskId);
                     intent2.putExtra("orgId", orgId);
-                    intent2.putExtra("number", 1);
-                    intent2.putExtra("position", 0);
+                    intent2.putExtra("number", mData.get(0).getPos());
+                    intent2.putExtra("position", mData.get(0).getPos());
                     intent2.putExtra("size", mData.size());
                     startActivity(intent2);
                 } else if ("提交".equals(str)) {
@@ -325,6 +332,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private void statusF() {
         checklistmeuntext.setText("保存");
         checkNewButton.setText("开始");
+        checklistmeuntext.setVisibility(View.VISIBLE);
         checkNewButton.setBackgroundResource(R.color.gray);
         dkDragView.setVisibility(View.GONE);
         for (int i = 0; i < tVisibility.size(); i++) {
@@ -339,6 +347,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private void statusT() {
         checklistmeuntext.setText("编辑");
         checkNewButton.setText("开始检查");
+        checklistmeuntext.setVisibility(View.VISIBLE);
         checkImport.setVisibility(View.VISIBLE);
         checkNewButton.setBackgroundResource(R.color.colorAccent);
         dkDragView.setVisibility(View.VISIBLE);
@@ -391,18 +400,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
             //查询标段自带的类别
             getCategory();
         }
-    }
-
-    /**
-     * 选择时间弹出框
-     */
-    private void meunpop() {
-        dialogUtils.selectiontime(mContext, new DialogUtils.OnClickListener() {
-            @Override
-            public void onsuccess(String str) {
-                datatime.setText(str);
-            }
-        });
     }
 
 
@@ -463,9 +460,13 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                             JSONObject jsonObject1 = new JSONObject(s);
                             int ret = jsonObject1.getInt("ret");
                             if (ret == 0) {
+                                ToastUtils.showShortToast("保存成功");
                                 //更新列表界面
                                 JSONObject json = jsonObject1.getJSONObject("data");
-                                CheckTaskCallbackUtils.CallBackMethod();
+                                try {
+                                    CheckTaskCallbackUtils.CallBackMethod();
+                                } catch (Exception e) {
+                                }
                                 taskId = json.getString("id");
                                 getcheckitemList();
                                 statusT();
@@ -538,6 +539,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                 } catch (JSONException e) {
                                     nodeId = "";
                                 }
+                                status = json.getInt("status");
                                 //检查部位wbs
                                 try {
                                     wbsName.setText(json.getString("wbsMainName"));
@@ -626,7 +628,10 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.getInt("ret") == 0) {
-                                CheckTaskCallbackUtils.CallBackMethod();
+                                try {
+                                    CheckTaskCallbackUtils.CallBackMethod();
+                                } catch (Exception e) {
+                                }
                                 finish();
                             } else if (jsonObject.getInt("ret") == 5) {
                                 BaseDialog.confirmmessagedialog(mContext,
@@ -679,10 +684,19 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                     checkNewButton.setBackgroundResource(R.color.Orange);
                                 } else if ("3".equals(lean)) {
                                     checkNewButton.setText("确认并签名");
+                                    success = "true";
                                     checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
-                                } else {
-                                    statusT();
+                                } else if ("1".equals(lean)) {
+                                    if (status == 1) {
+                                        success = "true";
+                                        checkNewButton.setVisibility(View.GONE);
+                                        checklistmeuntext.setVisibility(View.GONE);
+                                    } else {
+                                        success = null;
+                                        checkNewButton.setVisibility(View.VISIBLE);
+                                        checklistmeuntext.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             }
                         } catch (JSONException e) {
@@ -697,4 +711,23 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                     }
                 });
     }
+
+    //时间选择器初始化
+    public void dialog() {
+        Date now = new Date();
+        mDialogYearMonthDay = new TimePickerDialog.Builder()
+                .setType(Type.YEAR_MONTH_DAY)//展示模式
+                .setWheelItemTextSize(15)//字体大小
+                .setMinMillseconds(now.getTime() - (24 * 60 * 60 * 1000) * 2)//最小值时间
+                .setCurrentMillseconds(now.getTime())//当前时间
+                .setWheelItemTextSelectorColor(getResources().getColor(com.example.baselibrary.R.color.colorAccent))//title栏颜色
+                .setCallBack(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+                        datatime.setText(Dates.stampToDates(millseconds));
+                    }
+                })//回调
+                .build();
+    }
+
 }

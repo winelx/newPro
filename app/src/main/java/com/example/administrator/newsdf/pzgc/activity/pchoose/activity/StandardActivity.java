@@ -8,7 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.PhotolabelAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.PhotolabelAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.baselibrary.base.BaseActivity;

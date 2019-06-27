@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.HiddendangerAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.HiddendangerAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.GradeRecyclerAdapter;
 import com.example.administrator.newsdf.pzgc.bean.HiddendangerBean;

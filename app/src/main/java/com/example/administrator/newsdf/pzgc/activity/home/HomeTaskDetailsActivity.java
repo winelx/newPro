@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListAllActiv
 import com.example.administrator.newsdf.pzgc.bean.TodayDetailsBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalDetailsBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.HomeTaskDetailsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.HomeTaskDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.baselibrary.base.BaseActivity;

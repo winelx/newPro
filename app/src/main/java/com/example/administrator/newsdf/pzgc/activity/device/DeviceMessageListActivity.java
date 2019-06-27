@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.DeviceMessageListAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.DeviceMessageListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.DeviceMeList;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;

@@ -7,7 +7,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckManagementAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckManagementAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;

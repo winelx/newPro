@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.BridhtAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.BridhtAdapter;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.bean.BrightBean;
 import com.example.administrator.newsdf.pzgc.callback.BrightCallBack;

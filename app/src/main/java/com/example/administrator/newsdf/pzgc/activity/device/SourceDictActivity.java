@@ -7,7 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;

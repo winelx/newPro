@@ -11,7 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.MyExpandableListAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.MyExpandableListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.CallBackUtils;

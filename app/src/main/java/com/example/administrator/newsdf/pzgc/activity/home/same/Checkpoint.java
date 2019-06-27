@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Makeup;
 import com.example.baselibrary.base.BaseActivity;

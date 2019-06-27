@@ -75,7 +75,7 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
                 list.clear();
                 list.addAll(data);
                 if (data != null) {
-                    adapter.setNewData(data);
+                    adapter.setNewData(list);
                 }
                 if (data.size()==0){
                     emptyUtils.noData("暂无数据");
@@ -117,6 +117,9 @@ public class MessageNoticeFragment extends LazyloadFragment implements View.OnCl
         reqeuse();
     }
 
+    /**
+     * 初始化Id
+     */
     private void findId() {
         comTitle = rootView.findViewById(R.id.com_title);
         reshlayout = rootView.findViewById(R.id.reshlayout);

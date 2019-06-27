@@ -3,8 +3,7 @@
     android:id="@+id/linear_data"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -25,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/white"
             android:gravity="center"
             android:textColor="@color/black"

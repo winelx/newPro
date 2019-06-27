@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CommentsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CommentsAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallbackUtils2;

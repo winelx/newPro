@@ -14,7 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckListAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.baselibrary.utils.Requests;

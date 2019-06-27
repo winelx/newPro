@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.TabAdapters;
+import com.example.administrator.newsdf.pzgc.adapter.TabAdapters;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;

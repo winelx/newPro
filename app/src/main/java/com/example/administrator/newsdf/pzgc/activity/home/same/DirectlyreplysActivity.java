@@ -33,7 +33,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.DirectlyreplyAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;

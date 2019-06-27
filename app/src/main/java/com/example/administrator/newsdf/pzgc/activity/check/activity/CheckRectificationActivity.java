@@ -33,7 +33,7 @@ import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;

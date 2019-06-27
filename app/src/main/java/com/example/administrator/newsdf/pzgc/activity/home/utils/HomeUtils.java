@@ -3,11 +3,10 @@ package com.example.administrator.newsdf.pzgc.activity.home.utils;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.AuditdetailsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.work.TenanceviewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Aduio_comm;
 import com.example.administrator.newsdf.pzgc.bean.AduioContent;
@@ -31,7 +30,6 @@ import java.util.HashMap;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.lzy.okgo.OkGo.getContext;
 import static com.lzy.okgo.OkGo.post;
 
 /**

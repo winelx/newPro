@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="timetimepicker_default_text_color">#999999</color>
+    <color name="timepicker_toolbar_bg">#e60012</color>
+    <color name="timepicker_dialog_bg">#80000000</color>
+    <color name="timepicker_line">#e8e8e8</color>
+
+    <color name="colorPrimary">#5096F8</color>
+    <color name="colorPrimaryDark">#5096F8</color>
+    <color name="colorAccent">#5096F8</color>
+    <color name="bg_light_black">#494440</color>
+    <color name="text_white">#ffffff</color>
+    <color name="bg_white">#ffffffff</color>
+    <color name="bg_white2">#ecebeb</color>
+    <color name="back_ground">#e3e1e1</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparents">#000000</color>
+    <color name="blue">#167fe1</color>
+    //浅红色 消息页面小红点
+    <color name="lightred">#FB4F00</color>
+    <color name="orange">#FFAA09</color>
+
+
+    <color name="green">#3eec09</color>
+    <color name="back">#F0F0F0</color>
+    <color name="black">#000000</color>
+    <color name="graytext">#939393</color>
+    <color name="graytext2">#484848</color>
+    <color name="D999999">#999999</color>
+    <color name="red">#e71212</color>
+    <color name="back2">#757575</color>
+</resources>

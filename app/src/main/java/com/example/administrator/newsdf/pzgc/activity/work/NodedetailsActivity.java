@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.same.WorkareaActivity;
 import com.example.administrator.newsdf.pzgc.bean.PhotoBean;

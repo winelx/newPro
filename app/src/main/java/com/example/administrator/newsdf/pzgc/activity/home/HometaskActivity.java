@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.TodayBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.HometasksAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.HometasksAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeFragmentUtils;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;
 import com.example.administrator.newsdf.pzgc.bean.TotalBean;

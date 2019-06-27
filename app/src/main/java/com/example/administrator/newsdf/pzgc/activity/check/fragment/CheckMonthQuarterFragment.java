@@ -17,14 +17,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;

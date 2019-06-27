@@ -91,6 +91,13 @@ public class Dates {
         res = simpleDateFormat.format(date);
         return res;
     }
+    public static String stampToDates(long s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(s);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 
     public static String dateToStamp(String s) throws ParseException {
         String res;

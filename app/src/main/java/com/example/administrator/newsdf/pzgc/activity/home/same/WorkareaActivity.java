@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Icon;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;

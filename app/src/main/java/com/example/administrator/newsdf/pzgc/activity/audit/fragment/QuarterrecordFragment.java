@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.DailyrecordAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.DailyrecordAdapter;
 import com.example.administrator.newsdf.pzgc.bean.DailyrecordBean;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;

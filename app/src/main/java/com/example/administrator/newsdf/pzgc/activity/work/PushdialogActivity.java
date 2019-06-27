@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.PopAdapterDialog;
+import com.example.administrator.newsdf.pzgc.adapter.PopAdapterDialog;
 import com.example.administrator.newsdf.pzgc.bean.CasePointsBean;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;

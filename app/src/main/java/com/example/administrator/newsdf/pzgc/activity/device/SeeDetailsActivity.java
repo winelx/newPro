@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.SeeDetailsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SeeDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;

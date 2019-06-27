@@ -13,6 +13,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -75,17 +76,19 @@ public class DialogUtils {
         final NumberPicker yearPicker = (NumberPicker) view.findViewById(R.id.years);
         final NumberPicker monthPicker = (NumberPicker) view.findViewById(R.id.month);
         final NumberPicker dayPicker = (NumberPicker) view.findViewById(R.id.day);
+
+
         //初始化数据---年
         setPicker(yearPicker, year, titleyear());
         //初始化数据---月
         Date myDate = new Date();
         int dateMonth = myDate.getMonth();
-        int dayDate = myDate.getDate()-1 ;
+        int dayDate = myDate.getDate() - 1;
         setPicker(monthPicker, month, dateMonth);
         //初始化数据---日
         String yeardata = year[yearPicker.getValue()];
         //如果当前月份是2月
-        if ((dateMonth+1) == 2) {
+        if ((dateMonth + 1) == 2) {
             if (getyear().contains(yeardata)) {
                 setPicker(dayPicker, daytwos, dayDate);
                 //闰年
@@ -146,7 +149,8 @@ public class DialogUtils {
                     }
                 } else {
                     //不是二月份
-                    if (monthdata.equals("01") || monthdata.equals("03") || monthdata.equals("05") || monthdata.equals("07") || monthdata.equals("08") || monthdata.equals("10") || monthdata.equals("012")) {
+                    if ("01".equals(monthdata) || "03".equals(monthdata) || "05".equals(monthdata) || "07".equals(monthdata)
+                            || "08".equals(monthdata) || "10".equals(monthdata) || "012".equals(monthdata)) {
                         daydata = days[day];
                     } else {
                         daydata = dayth[day];
@@ -168,7 +172,6 @@ public class DialogUtils {
          */
         void onsuccess(String str);
     }
-
 
 
     //选择器抽取方法
@@ -207,7 +210,7 @@ public class DialogUtils {
         return year;
     }
 
-    public static void Tipsdialog(Context mContext,String title,String[]strings,final OnClickListener selectiontime){
+    public static void Tipsdialog(Context mContext, String title, String[] strings, final OnClickListener selectiontime) {
         //删除
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext)
                 .setMessage(title)
@@ -233,5 +236,115 @@ public class DialogUtils {
         //显示对话框
         dialog.show();
     }
+
+    public String[] setday(String day, String[] strings) {
+        int index = 0;
+        for (int i = 0; i < strings.length; i++) {
+            String item = strings[i];
+            if (day.equals(item)) {
+                index = i;
+            }
+        }
+        return strings;
+    }
+
+
+    public void selectiontime(Context mContext, String tr, final OnClickListener click) {
+        // 获取布局
+        View view = View.inflate(mContext, R.layout.popwind_daily, null);
+        // 获取布局中的控件
+        //取消
+        final TextView dismiss = (TextView) view.findViewById(R.id.pop_dismiss);
+        //确定
+        final TextView success = (TextView) view.findViewById(R.id.pop_determine);
+        final NumberPicker yearPicker = (NumberPicker) view.findViewById(R.id.years);
+        final NumberPicker monthPicker = (NumberPicker) view.findViewById(R.id.month);
+        final NumberPicker dayPicker = (NumberPicker) view.findViewById(R.id.day);
+        //初始化数据---年
+        setPicker(yearPicker, year, titleyear());
+        //初始化数据---月
+        Date myDate = new Date();
+        int dateMonth = myDate.getMonth();
+        int dayDate = myDate.getDate() - 1;
+        setPicker(monthPicker, month, dateMonth);
+        //初始化数据---日
+        String yeardata = year[yearPicker.getValue()];
+        //如果当前月份是2月
+        if ((dateMonth + 1) == 2) {
+            if (getyear().contains(yeardata)) {
+                setPicker(dayPicker, daytwos, dayDate);
+                //闰年
+            } else {
+                //平年
+                setPicker(dayPicker, daytwo, dayDate);
+            }
+        } else {
+            if (dateMonth == 0 || dateMonth == 2 || dateMonth == 4 || dateMonth == 6 || dateMonth == 7 || dateMonth == 9 || dateMonth == 11) {
+                setPicker(dayPicker, days, dayDate);
+            } else {
+                setPicker(dayPicker, dayth, dayDate);
+            }
+        }
+        //年份选择器。如果当前的月份是二月，
+        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                checkUtils.setyear(monthPicker, dayPicker, i1, year);
+            }
+        });
+        //月份选择器。如果当前的月份是二月，
+        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal,
+                                      int newVal) {
+                checkUtils.setMonth(yearPicker, monthPicker, dayPicker, newVal, month, year);
+            }
+        });
+        // 创建对话框
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        dialog.setView(view);//添加布局
+        dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();// 对话框消失
+            }
+        });
+        success.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //获取年
+                String yeardata = year[yearPicker.getValue()];
+                //获取月
+                int months = monthPicker.getValue();
+                String monthdata = month[months];
+                //获取天
+                int day = dayPicker.getValue();
+                String daydata;
+                if ("02".equals(monthdata)) {
+                    //是二月份
+                    if (getyear().contains(yeardata)) {
+                        daydata = daytwos[day];
+                        //闰年
+                    } else {
+                        //平年
+                        daydata = daytwo[day];
+                    }
+                } else {
+                    //不是二月份
+                    if ("01".equals(monthdata) || "03".equals(monthdata) || "05".equals(monthdata) || "07".equals(monthdata)
+                            || "08".equals(monthdata) || "10".equals(monthdata) || "012".equals(monthdata)) {
+                        daydata = days[day];
+                    } else {
+                        daydata = dayth[day];
+                    }
+
+                }
+                click.onsuccess(yeardata + "-" + monthdata + "-" + daydata);
+                dialog.dismiss();// 对话框消失
+            }
+        });
+        dialog.show();
+    }
+
 
 }

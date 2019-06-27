@@ -114,6 +114,8 @@ public class App extends Application {
             LogUtil.init(false);
         }
         imagepath = getExternalCacheDir().getPath().replace("cache", "jpg/");
+
+
     }
 
     /**

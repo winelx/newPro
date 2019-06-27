@@ -1,17 +1,11 @@
 package com.example.administrator.newsdf.pzgc.activity.check;
 
-import android.graphics.Color;
-import android.view.View;
 import android.widget.NumberPicker;
 
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckitemActivity;
-import com.example.administrator.newsdf.pzgc.bean.Checkitem;
-import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.administrator.newsdf.pzgc.bean.standarBean;
@@ -21,19 +15,14 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,14 +39,16 @@ public class CheckUtils {
      * /设置选择年，控制二月天数
      */
     public void setyear(NumberPicker monthPicker, NumberPicker dayPicker, int i1, String[] numberyear) {
+
         //月份
         String mont = month[monthPicker.getValue()];
         //年份
         String str = numberyear[i1];
         //如果选择中的月份是二月
-        if (mont.equals("02")) {
+        if ("02".equals(mont)) {
             //判断是闰年还是平年
             if (Utils.getyear().contains(str)) {
+
                 dayPicker.setDisplayedValues(null);
                 dayPicker.setMaxValue(Utils.daytwos.length - 1);
                 dayPicker.setDisplayedValues(Utils.daytwos);
@@ -71,13 +62,15 @@ public class CheckUtils {
         }
     }
 
+
+
     /**
      * /设置选择月，控制二月天数
      */
     public void setMonth(NumberPicker yearPicker, NumberPicker monthPicker, NumberPicker dayPicker, int newVal, String[] numbermonth, String[] numberyear) {
         String NewVal = numbermonth[newVal];
         String years = numberyear[yearPicker.getValue()];
-        if (NewVal.equals("02")) {
+        if ("02".equals(NewVal)) {
             if (Utils.getyear().contains(years)) {
                 //如果是闰年。二月有29天
                 dayPicker.setDisplayedValues(null);
@@ -91,13 +84,13 @@ public class CheckUtils {
                 dayPicker.setDisplayedValues(Utils.daytwo);
                 dayPicker.setMinValue(0);
             }
-        } else if (NewVal.equals("01") || NewVal.equals("03") || NewVal.equals("05") ||
-                NewVal.equals("07") || NewVal.equals("08") || NewVal.equals("10") || NewVal.equals("12")) {
+        } else if ("01".equals(NewVal) || "03".equals(NewVal) || "05".equals(NewVal) ||
+                "07".equals(NewVal) || "08".equals(NewVal) || "10".equals(NewVal) || "12".equals(NewVal)) {
             dayPicker.setDisplayedValues(null);
             dayPicker.setMaxValue(Utils.day.length - 1);
             dayPicker.setDisplayedValues(Utils.day);
             dayPicker.setMinValue(0);
-        } else if (NewVal.equals("04") || NewVal.equals("06") || NewVal.equals("09") || NewVal.equals("11")) {
+        } else if ("04".equals(NewVal) || "06".equals(NewVal) || "09".equals(NewVal) || "11".equals(NewVal)) {
             dayPicker.setDisplayedValues(null);
             dayPicker.setMaxValue(Utils.dayth.length - 1);
             dayPicker.setDisplayedValues(Utils.dayth);
@@ -185,7 +178,7 @@ public class CheckUtils {
                                             s_type = "";
                                         }
                                         //将组织所属公司添加到集合
-                                        list.add(new chekitemList(id, score, sequence, number + "", standardScore, s_type, i+1, generate ,noSuch, penalty, gray));
+                                        list.add(new chekitemList(id, score, sequence, number + "", standardScore, s_type, i + 1, generate, noSuch, penalty, gray));
                                     }
                                     map.put("list", list);
                                     callback.onsuccess(map);
@@ -333,6 +326,7 @@ public class CheckUtils {
                                 map.put("wbsTaskTypeName", json.getString("wbsTaskTypeName"));
                                 //检查组织
                                 map.put("checkOrgName", json.getString("checkOrgName"));
+                                map.put("status", json.getInt("status"));
                                 //检查部位wbs
                                 map.put("wbsMainName", json.getString("wbsMainName"));
                                 //判断内业还是外业

@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskRecordAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.TaskRecordAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Tenanceview;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.log.LogUtil;

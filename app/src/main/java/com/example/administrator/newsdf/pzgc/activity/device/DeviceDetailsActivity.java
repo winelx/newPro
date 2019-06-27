@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.DeviceDetailsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.DeviceDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.callback.CallBack;
 import com.example.administrator.newsdf.pzgc.callback.DeviceDetailsCallBackUtils;

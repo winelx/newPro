@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.DialogRecAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.DialogRecAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsrefreshCallbackUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Recordsbean;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;

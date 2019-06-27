@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.AllTaskListItem;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.AllTaskListItem;
+import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.MoretaskActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.TaskdetailsActivity;

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceMessageListActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;

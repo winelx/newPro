@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckRectifyMessageAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckRectifyMessageAdapter;
 import com.example.administrator.newsdf.pzgc.bean.MyNoticeDataBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;

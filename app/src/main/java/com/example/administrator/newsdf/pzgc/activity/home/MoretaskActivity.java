@@ -14,10 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.MoretaskAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.MoretaskAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.same.DirectlyreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.MoredetailsUrils;

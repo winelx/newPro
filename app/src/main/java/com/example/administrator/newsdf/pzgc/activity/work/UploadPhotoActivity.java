@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.UploadPhAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.UploadPhAdapter;
 import com.example.administrator.newsdf.pzgc.activity.pchoose.PhotoEnue;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.baselibrary.base.BaseActivity;

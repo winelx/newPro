@@ -24,7 +24,11 @@ import com.example.baselibrary.view.signature.SignatureView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *@author： lx
+ *@创建时间： 2019/6/19 0019 11:29
+ *@说明：
+ **/
 public class SignatureViewActivity extends AppCompatActivity {
     private NoScrollViewPager viewPager;
     private Context mContext;

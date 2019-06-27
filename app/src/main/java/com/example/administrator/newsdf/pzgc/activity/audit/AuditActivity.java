@@ -1,14 +1,12 @@
 package com.example.administrator.newsdf.pzgc.activity.audit;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,9 +17,8 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Audittitlebean;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.screen.ScreenUtil;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;

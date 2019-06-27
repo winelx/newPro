@@ -78,6 +78,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     api files('libs/BaiduLBS_Android.jar')
     implementation project(':baselibrary')
+    implementation project(':timepickter')
     //饼图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     def nav_version = '1.0.0-alpha01'
@@ -90,5 +91,6 @@ dependencies {
     // alternatively, just LiveData
     implementation "android.arch.lifecycle:livedata:$lifecycle"
     implementation "android.arch.lifecycle:extensions:$lifecycle"
+
 
 }

@@ -23,7 +23,7 @@ import com.example.administrator.newsdf.pzgc.callback.CheckTaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckNewAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckNewAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.bean.chekitemList;
 import com.example.administrator.newsdf.pzgc.view.DKDragView;
@@ -38,7 +38,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,6 +72,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private static CheckListDetailsActivity mContext;
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
+    private int status;
 
     public static CheckListDetailsActivity getInstance() {
         return mContext;
@@ -336,6 +336,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
             public void onsuccess(Map<String, Object> map) {
                 //具体时间
                 datatime.setText(map.get("checkDate").toString());
+                status=(int)map.get("status");
                 //检查标准类别
                 categoryItem.setText(map.get("wbsTaskTypeName").toString());
                 //检查组织
@@ -353,6 +354,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                 } else {
                     checkNewDialog.setVisibility(View.GONE);
                 }
+
                 checkNewTemporarysite.setText(map.get("wbsMainName").toString());
                 //检查人
                 checkUsername.setText(map.get("realname").toString());
@@ -447,7 +449,13 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
                                     checkNewButton.setVisibility(View.VISIBLE);
                                     checkNewButton.setBackgroundResource(R.color.Orange);
                                 } else {
-                                    checkNewButton.setVisibility(View.GONE);
+                                    //不显示
+                                    if (status == 1) {
+                                        checkNewButton.setVisibility(View.GONE);
+                                        checklistmeuntext.setVisibility(View.GONE);
+                                    } else {
+                                        statusT();
+                                    }
                                 }
                             }
 

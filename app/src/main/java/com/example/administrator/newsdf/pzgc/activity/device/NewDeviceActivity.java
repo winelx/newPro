@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.NewDeviceAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.NewDeviceAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceUtils;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;

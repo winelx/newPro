@@ -20,10 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.FiletypeAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.FiletypeAdapter;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
 import com.example.baselibrary.base.BaseActivity;

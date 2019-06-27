@@ -3,6 +3,7 @@ package com.example.administrator.newsdf.pzgc.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,11 +22,16 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
+
 import com.example.baselibrary.view.ClearEditText;
+import com.example.timepickter.data.Type;
+
+import com.example.timepickter.listener.OnDateSetListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
@@ -35,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -51,6 +58,7 @@ import okhttp3.Response;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
+
     /**
      * 状态图片
      */
@@ -64,6 +72,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Context mContext;
     private Button login;
     public static Dialog progressDialog = null;
+    Date now = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +114,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.forget_password:
-                get();
                 ToastUtils.showLongToast("请联系管理员");
                 break;
             case R.id.login:
@@ -371,5 +379,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             progressDialog.show();
         }
     }
+
+
+
 
 }

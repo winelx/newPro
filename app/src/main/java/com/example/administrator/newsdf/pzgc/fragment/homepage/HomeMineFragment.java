@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.FragmentHomeListAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.FragmentHomeListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.callback.OgranCallback;

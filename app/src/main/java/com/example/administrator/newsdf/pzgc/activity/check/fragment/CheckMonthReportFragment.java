@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckQuarteradapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckQuarteradapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;

@@ -55,8 +55,8 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
     @Override
     protected void init() {
         ids = getArguments().getString("ids") + "";
-     url = Requests.networks + "admin/sys/sysproclamation/publicdelByApp?id=" + ids;
-  //   url = Requests.networks + "admin/sys/sysproclamation/publicdel?id=283d58bfee434d2e8a5d0bc025c733ba";
+ url = Requests.networks + "admin/sys/sysproclamation/publicdelByApp?id=" + ids;
+ //url =  "http://192.168.20.35:8088/generic/web/viewer.html";
         //获取cookie
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
@@ -68,6 +68,7 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         titlel = (LinearLayout) findViewById(R.id.toolbar_title);
         titlel.setVisibility(View.VISIBLE);
         nonet = (RelativeLayout) findViewById(R.id.nonet);
+        nonet.setOnClickListener(this);
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
         rootView.findViewById(R.id.com_back).setOnClickListener(this);
         mWebView = rootView.findViewById(R.id.check);
@@ -155,6 +156,11 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
             case R.id.com_back:
                 //返回
                 Navigation.findNavController(v).navigateUp();
+                break;
+            case R.id.nonet:
+                linProbar.setVisibility(View.VISIBLE);
+                nonet.setVisibility(View.GONE);
+                mWebView.loadUrl(url);
                 break;
             default:
                 break;

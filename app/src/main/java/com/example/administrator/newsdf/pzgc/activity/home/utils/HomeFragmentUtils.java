@@ -1,7 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.home.utils;
 
-import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
-import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
+import com.example.administrator.newsdf.pzgc.adapter.CompleteBean;
+import com.example.administrator.newsdf.pzgc.adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.LastmonthBean;

@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckReportTreeListViewAdapters;
+import com.example.administrator.newsdf.pzgc.adapter.CheckReportTreeListViewAdapters;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;

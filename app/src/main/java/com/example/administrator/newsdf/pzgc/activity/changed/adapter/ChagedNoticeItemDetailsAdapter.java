@@ -18,12 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.RectifierAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;

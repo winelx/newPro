@@ -1,6 +1,8 @@
 package com.example.baselibrary.base;
 
-import android.app.Activity;
+
+
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -8,15 +10,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.Window;
-import android.widget.Toast;
+
+
 
 
 import com.example.baselibrary.utils.manager.AppManager;
 import com.example.baselibrary.view.PermissionListener;
 
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -41,12 +46,13 @@ public class BaseActivity extends AppCompatActivity {
      * 是否禁止旋转屏幕
      **/
     private boolean isAllowScreenRoate = false;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appManager.addActivity(this);
-
+        mContext=this;
         //是否允许屏幕旋转
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -54,12 +60,14 @@ public class BaseActivity extends AppCompatActivity {
         if (mAllowFullScreen) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
+
     }
 
     /**
      * 权限申请
-     * @param permissions  权限集合
-     * @param listener 回调
+     *
+     * @param permissions 权限集合
+     * @param listener    回调
      */
     public void requestRunPermisssion(String[] permissions, PermissionListener listener) {
         mListener = listener;

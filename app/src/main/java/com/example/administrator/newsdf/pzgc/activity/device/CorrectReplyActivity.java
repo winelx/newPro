@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CorrectReplyAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CorrectReplyAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.utils.DeviceDetailsUtils;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.CorrectReplyBean;

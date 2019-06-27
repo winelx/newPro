@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.FmPagerAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.FmPagerAdapter;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceAllFragment;
 import com.example.administrator.newsdf.pzgc.activity.device.fragment.DeviceMeFragment;
 import com.example.baselibrary.base.BaseActivity;

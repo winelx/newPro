@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;

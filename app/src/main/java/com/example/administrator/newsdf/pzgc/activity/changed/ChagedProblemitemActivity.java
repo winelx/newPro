@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.BasePhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTreeActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.bean.ChagedProblembean;

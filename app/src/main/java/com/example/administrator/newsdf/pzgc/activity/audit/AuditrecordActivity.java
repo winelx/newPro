@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.AuditrecordBean;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditrecordCallbackUtils;

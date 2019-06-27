@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout   android:visibility="gone"
+    <LinearLayout
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
 
-        android:layout_height="50dp">
-        <include layout="@layout/toolbar_icon"/>
+        android:visibility="gone">
+
+        <include layout="@layout/toolbar_icon" />
 
     </LinearLayout>
 
@@ -67,15 +69,18 @@
                 android:src="@mipmap/nonetwork" />
 
             <!--点击提示文字，重新加载网页-->
-            <TextView
+            <Button
                 android:id="@+id/reload_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/error_iv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="点击重试"
+                android:textColor="@color/colorAccent" />
         </RelativeLayout>
+
 
     </FrameLayout>
 </LinearLayout>

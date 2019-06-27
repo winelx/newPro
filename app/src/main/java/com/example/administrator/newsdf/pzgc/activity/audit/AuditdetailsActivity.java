@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.AuditdetailsAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.AuditdetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallback;
 import com.example.administrator.newsdf.pzgc.callback.AuditDetailsCallbackUtils;

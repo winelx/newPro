@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddsActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.CompleteBean;
-import com.example.administrator.newsdf.pzgc.Adapter.NoticeAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.NoticedBean;
+import com.example.administrator.newsdf.pzgc.adapter.CompleteBean;
+import com.example.administrator.newsdf.pzgc.adapter.NoticeAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeDetailsActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
@@ -139,6 +141,8 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                     agencyOnclick(position);
                 } else if (object instanceof CompleteBean) {
                     completeOnclick(position);
+                } else {
+
                 }
             }
         });
@@ -331,11 +335,29 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getBeNoticeOrgName());
             startActivity(reply);
-        } else {
+        } else if (modelname == 3) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
+            intent.putExtra("type", "3");
             startActivity(intent);
+        } else if (modelname == 5) {
+            int iwork = bean.getIwork();
+            if (iwork == 1) {
+                Intent intent = new Intent(mContext, CheckNewAddActivity.class);
+                intent.putExtra("orgId", bean.getBeNoticeOrgId());
+                intent.putExtra("name", bean.getBeNoticeOrgName());
+                intent.putExtra("type", iwork + "");
+                intent.putExtra("taskId", bean.getModelId());
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
+                intent.putExtra("orgId", bean.getBeNoticeOrgId());
+                intent.putExtra("name", bean.getBeNoticeOrgName());
+                intent.putExtra("taskId", bean.getModelId());
+                intent.putExtra("type", iwork + "");
+                startActivity(intent);
+            }
         }
     }
 
@@ -362,12 +384,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
-            intent.putExtra("status", "3");
+            intent.putExtra("type", "3");
             startActivity(intent);
         }
     }
 
-    /*已办事件*/
+    /**
+     * 已办事件
+     */
     private void completeOnclick(int position) {
         CompleteBean bean = (CompleteBean) list.get(position);
         int modelType = bean.getModelType();
@@ -386,10 +410,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
-        } else {
+        } else if (modelType == 3) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
+            intent.putExtra("type", 3);
             startActivity(intent);
         }
     }

@@ -13,7 +13,7 @@ import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.same.ReplyActivity;
-import com.example.administrator.newsdf.pzgc.Adapter.Adapter;
+import com.example.administrator.newsdf.pzgc.adapter.Adapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallback;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.base.BaseActivity;

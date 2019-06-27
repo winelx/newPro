@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.Adapter.CheckMessageMineAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyNewActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyListActivity;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;

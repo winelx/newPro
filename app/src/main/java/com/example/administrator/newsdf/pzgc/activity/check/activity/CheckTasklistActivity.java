@@ -24,8 +24,8 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.Adapter.NotSubmitTaskAdapter;
-import com.example.administrator.newsdf.pzgc.Adapter.SCheckTasklistBean;
+import com.example.administrator.newsdf.pzgc.adapter.NotSubmitTaskAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.SCheckTasklistBean;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
 import com.example.administrator.newsdf.pzgc.activity.check.Checkjson;
 import com.example.administrator.newsdf.pzgc.bean.CheckTasklistBean;
@@ -289,6 +289,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             intent.putExtra("orgId", orgId);
             intent.putExtra("name", name);
             intent.putExtra("taskId", id);
+            intent.putExtra("type", iwork + "");
             startActivity(intent);
         } else {
             Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
