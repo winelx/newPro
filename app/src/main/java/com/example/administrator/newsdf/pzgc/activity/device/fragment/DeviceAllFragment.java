@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.device.fragment;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
@@ -18,11 +19,11 @@ import java.util.Map;
 /**
  * @author lx
  * @Created by: 2018/11/27 0027.
- * @description: 特种设备全部消息
+ * @注释: 特种设备全部消息
  */
 
 public class DeviceAllFragment extends LazyloadFragment {
-    private LinearLayout nullposion;
+    private LinearLayout nullposion, probar;
     private SmartRefreshLayout refreshLayout;
     private ExpandableListView expandableListView;
     private DeviceExpandableAdapter mAdapter;
@@ -41,6 +42,7 @@ public class DeviceAllFragment extends LazyloadFragment {
         deviceUtils = new DeviceUtils();
         //空数据提示
         nullposion = rootView.findViewById(R.id.nullposion);
+        probar = rootView.findViewById(R.id.probar);
         //刷新加载
         refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
         //是否启用下拉刷新功能
@@ -51,7 +53,6 @@ public class DeviceAllFragment extends LazyloadFragment {
         refreshLayout.setEnableOverScrollDrag(true);
         //两层结构的listview
         expandableListView = rootView.findViewById(R.id.expandable);
-
     }
 
     @Override
@@ -61,6 +62,7 @@ public class DeviceAllFragment extends LazyloadFragment {
             public void onsuccess(ArrayList<String> list, Map<String, List<Home_item>> map) {
                 mAdapter = new DeviceExpandableAdapter(list, map, mContext);
                 expandableListView.setAdapter(mAdapter);
+                probar.setVisibility(View.GONE);
             }
         });
     }

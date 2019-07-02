@@ -77,7 +77,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private EditText checkNewTasktitle, checkNewTemporarysite;
     private Button checkNewButton;
     private DKDragView dkDragView;
-
     //参数
     private String name, orgId, categoryId = "", taskId, nodeId, type;
     private CheckNewAdapter adapter;
@@ -86,19 +85,16 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private IconTextView icontextviewone, icontextviewtwo;
     private LinearLayout checklistmeun;
     private LinearLayout checkNewDialog;
-
-    public static CheckNewAddsActivity getInstance() {
-        return mContext;
-    }
-
     private CheckUtils checkUtils;
-    private DialogUtils dialogUtils;
     private ArrayList<View> viewlist = new ArrayList<>();
     private ArrayList<View> tVisibility = new ArrayList<>();
     //当前单据状态
     private int status;
-
     private String success = null;
+
+    public static CheckNewAddsActivity getInstance() {
+        return mContext;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +191,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private void initData() {
         mData = new ArrayList<>();
         checkUtils = new CheckUtils();
-        dialogUtils = new DialogUtils();
         //显示meun控件
         checklistmeuntext.setVisibility(View.VISIBLE);
         //关闭边缘滑动
@@ -281,7 +276,9 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                         ToastUtils.showLongToast("类别不能为空");
                     }
                 } else {
-                    statusF();
+                    if (!string.isEmpty()) {
+                        statusF();
+                    }
                 }
                 break;
             case R.id.checklistback:
@@ -692,10 +689,13 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                                         success = "true";
                                         checkNewButton.setVisibility(View.GONE);
                                         checklistmeuntext.setVisibility(View.GONE);
+                                        checklistmeuntext.setText("");
                                     } else {
                                         success = null;
+                                        checklistmeun.setVisibility(View.VISIBLE);
                                         checkNewButton.setVisibility(View.VISIBLE);
                                         checklistmeuntext.setVisibility(View.VISIBLE);
+                                        statusT();
                                     }
                                 }
                             }
@@ -720,6 +720,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .setWheelItemTextSize(15)//字体大小
                 .setMinMillseconds(now.getTime() - (24 * 60 * 60 * 1000) * 2)//最小值时间
                 .setCurrentMillseconds(now.getTime())//当前时间
+                .setCyclic(false)
                 .setWheelItemTextSelectorColor(getResources().getColor(com.example.baselibrary.R.color.colorAccent))//title栏颜色
                 .setCallBack(new OnDateSetListener() {
                     @Override

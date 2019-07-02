@@ -127,7 +127,6 @@ public class CheckTaskWebActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-
                 //加载开始
                 linProbar.setVisibility(View.VISIBLE);
                 nonet.setVisibility(View.GONE);

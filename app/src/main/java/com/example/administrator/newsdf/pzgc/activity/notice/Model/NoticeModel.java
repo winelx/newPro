@@ -72,4 +72,6 @@ public class NoticeModel extends ViewModel {
 
         void onerror(String str);
     }
+
+
 }

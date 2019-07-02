@@ -2,9 +2,12 @@ package com.example.administrator.newsdf.pzgc.activity.notice.fragment;
 
 import android.annotation.SuppressLint;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -15,21 +18,37 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
+import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.baselibrary.utils.Api;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.navigation.Navigation;
+import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
+import okhttp3.Response;
 
 /**
  * @author： lx
@@ -38,13 +57,16 @@ import okhttp3.HttpUrl;
  **/
 public class NoticeDetailsFragment extends LazyloadFragment implements View.OnClickListener {
     private LinearLayout titlel;
-    private TextView com_title;
+    private TextView comTitle;
     private TextView text;
     private WebView mWebView;
     private RelativeLayout linProbar, nonet;
     private List<Cookie> cookies;
     boolean lean = true;
     private String ids, url;
+    private ImageView com_img;
+    private Context mContext;
+    private ArrayList<FileTypeBean> list;
 
     @Override
     protected int setContentView() {
@@ -54,16 +76,21 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void init() {
+        mContext = getActivity();
+        list = new ArrayList<>();
         ids = getArguments().getString("ids") + "";
- url = Requests.networks + "admin/sys/sysproclamation/publicdelByApp?id=" + ids;
- //url =  "http://192.168.20.35:8088/generic/web/viewer.html";
+        url = Requests.networks + "admin/sys/sysproclamation/publicdelByApp?id=" + ids;
+        //url =  "http://192.168.20.35:8088/generic/web/viewer.html";
         //获取cookie
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
         cookies = cookieStore.getCookie(httpUrl);
         //设置标题
-        com_title = (TextView) findViewById(R.id.com_title);
-        com_title.setText("公告详情");
+        comTitle = (TextView) findViewById(R.id.com_title);
+        comTitle.setText("公告详情");
+        com_img = (ImageView) findViewById(R.id.com_img);
+        com_img.setOnClickListener(this);
+        com_img.setBackgroundResource(R.mipmap.task_log);
         text = (TextView) findViewById(R.id.text);
         titlel = (LinearLayout) findViewById(R.id.toolbar_title);
         titlel.setVisibility(View.VISIBLE);
@@ -76,16 +103,15 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
         //允许js
-        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptEnabled(false);
         //设置可以访问文件
         webSettings.setAllowFileAccess(false);
         //将图片调整到适合webview的大小
         webSettings.setUseWideViewPort(true);
+        webSettings.setBuiltInZoomControls(true);
         mWebView.clearCache(true);
         //不使用缓存，只从网络获取数据.
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setJavaScriptEnabled(true);
         mWebView.loadUrl(url);
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -95,7 +121,7 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
                 super.onProgressChanged(view, newProgress);
                 text.setText(newProgress + "%");
                 if (newProgress == 100) {
-                    linProbar.setVisibility(View.GONE);
+                     linProbar.setVisibility(View.GONE);
                 }
             }
         });
@@ -142,7 +168,7 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
                 mWebView.setVisibility(View.GONE);
             }
         });
-
+        request(ids);
     }
 
     @Override
@@ -161,6 +187,9 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
                 linProbar.setVisibility(View.VISIBLE);
                 nonet.setVisibility(View.GONE);
                 mWebView.loadUrl(url);
+                break;
+            case R.id.com_img:
+                hitask();
                 break;
             default:
                 break;
@@ -187,5 +216,73 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         } else {
             CookieManager.getInstance().flush();
         }
+    }
+
+    /**
+     * 显示查看记录
+     */
+    public void hitask() {
+        if (list.size() == 0) {
+            ToastUtils.showLongToast("无查看记录");
+        } else {
+            /**
+             * 创建Dialog，参数为当前环境与样式。
+             */
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            View view = LayoutInflater.from(mContext).inflate(
+                    R.layout.dialog_list, null);
+            ListView listView = (ListView) view.findViewById(R.id.recycler);
+            builder.setView(view);
+            builder.setCancelable(true);
+            SettingAdapter adapter = new SettingAdapter<FileTypeBean>(list, R.layout.taskrecord_item) {
+                @Override
+                public void bindView(ViewHolder holder, FileTypeBean obj) {
+                    holder.setText(R.id.task_cord_data, obj.getUrl().substring(0, 16));
+                    holder.setText(R.id.task_cord_name, obj.getName());
+                    holder.setText(R.id.task_cord, "查看了" + obj.getType() + "次");
+                }
+            };
+            listView.setAdapter(adapter);
+            AlertDialog dialog = builder.create();
+            //显示对话框
+            dialog.show();
+        }
+
+    }
+
+    public void request(String id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("sysProclamationId", id);
+        NetWork.getHttp(Api.GETLOOKRECORDLIST, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        JSONArray data = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject json = data.getJSONObject(i);
+                            String time = json.getString("readDate");
+                            String readPersonName;
+                            try {
+                                readPersonName = json.getString("readPersonName");
+                            } catch (Exception e) {
+                                readPersonName = "";
+                            }
+                            String readCount = json.getString("readCount");
+                            list.add(new FileTypeBean(readPersonName, time, readCount));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+
+            }
+        });
     }
 }

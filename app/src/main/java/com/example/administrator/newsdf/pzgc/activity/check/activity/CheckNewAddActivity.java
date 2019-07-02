@@ -63,7 +63,7 @@ import static com.lzy.okgo.OkGo.post;
  * update: 2018/8/6 0006
  * version:
  */
-public class CheckNewAddActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback,OnDateSetListener {
+public class CheckNewAddActivity extends BaseActivity implements View.OnClickListener, CheckNewCallback {
 
     //选择日期
     private TimePickerDialog mDialogYearMonthDay;
@@ -86,9 +86,11 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout checklistmeun, checkNewDialog;
     //当前单据状态
     private int status;
+
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
+
     private CheckUtils checkUtils;
     private ArrayList<View> viewlist = new ArrayList<>();
     private ArrayList<View> tVisibility = new ArrayList<>();
@@ -280,6 +282,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                 startActivityForResult(intent, 1);
                 break;
             case R.id.checklistmeun:
+
                 //获取当前按钮名称，根据名称处理点击事件
                 String string = checklistmeuntext.getText().toString();
                 String content = checkNewTemporarysite.getText().toString();
@@ -305,7 +308,9 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                         ToastUtils.showLongToast("类别不能为空");
                     }
                 } else {
-                    statusF();
+                    if (!string.isEmpty()) {
+                        statusF();
+                    }
                 }
                 break;
             case R.id.checklistback:
@@ -353,37 +358,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void statusF() {
-        checklistmeuntext.setText("保存");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        checkNewButton.setText("开始");
-        checkNewButton.setBackgroundResource(R.color.gray);
-        dkDragView.setVisibility(View.GONE);
-        for (int i = 0; i < tVisibility.size(); i++) {
-            tVisibility.get(i).setVisibility(View.VISIBLE);
-        }
-        for (int i = 0; i < viewlist.size(); i++) {
-            viewlist.get(i).setClickable(true);
-            viewlist.get(i).setEnabled(true);
-        }
-    }
-
-    private void statusT() {
-        checklistmeuntext.setText("编辑");
-        checkNewButton.setText("开始检查");
-        checklistmeuntext.setVisibility(View.VISIBLE);
-        checkNewButton.setVisibility(View.VISIBLE);
-        checkImport.setVisibility(View.VISIBLE);
-        checkNewButton.setBackgroundResource(R.color.colorAccent);
-        dkDragView.setVisibility(View.VISIBLE);
-        for (int i = 0; i < tVisibility.size(); i++) {
-            tVisibility.get(i).setVisibility(View.GONE);
-        }
-        for (int i = 0; i < viewlist.size(); i++) {
-            viewlist.get(i).setClickable(false);
-            viewlist.get(i).setEnabled(false);
-        }
-    }
 
     /**
      * 界面回调
@@ -407,9 +381,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
             getCategory();
         }
     }
-
-
-
 
     /**
      * 每次冲检查项返回时刷新当前界面数据
@@ -588,6 +559,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                     categoryId = "";
                                 }
                                 statusT();
+
                                 checkNewButton.setVisibility(View.VISIBLE);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
@@ -711,6 +683,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                                         success = "true";
                                         checkNewButton.setVisibility(View.GONE);
                                         checklistmeuntext.setVisibility(View.GONE);
+                                        checklistmeuntext.setText("");
                                     } else {
                                         statusT();
                                         success = null;
@@ -728,21 +701,58 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+
     //时间选择器初始化
     public void dialog() {
         Date now = new Date();
         mDialogYearMonthDay = new TimePickerDialog.Builder()
                 .setType(Type.YEAR_MONTH_DAY)
-                .setCallBack(this)
                 .setWheelItemTextSize(15)
+                .setCyclic(false)
                 .setMinMillseconds(now.getTime() - (24 * 60 * 60 * 1000) * 2)
                 .setCurrentMillseconds(now.getTime())
                 .setWheelItemTextSelectorColor(getResources().getColor(com.example.baselibrary.R.color.colorAccent))
+                .setCallBack(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+                        datatime.setText(Dates.stampToDates(millseconds));
+                    }
+                })//回调
                 .build();
     }
 
-    @Override
-    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-        datatime.setText(Dates.stampToDates(millseconds));
+    private void statusF() {
+        checklistmeuntext.setText("保存");
+        checklistmeun.setVisibility(View.VISIBLE);
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        checkNewButton.setText("开始");
+        checkNewButton.setBackgroundResource(R.color.gray);
+        dkDragView.setVisibility(View.GONE);
+        for (int i = 0; i < tVisibility.size(); i++) {
+            tVisibility.get(i).setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < viewlist.size(); i++) {
+            viewlist.get(i).setClickable(true);
+            viewlist.get(i).setEnabled(true);
+        }
     }
+
+    private void statusT() {
+        checklistmeuntext.setText("编辑");
+        checkNewButton.setText("开始检查");
+        checklistmeun.setVisibility(View.VISIBLE);
+        checklistmeuntext.setVisibility(View.VISIBLE);
+        checkNewButton.setVisibility(View.VISIBLE);
+        checkImport.setVisibility(View.VISIBLE);
+        checkNewButton.setBackgroundResource(R.color.colorAccent);
+        dkDragView.setVisibility(View.VISIBLE);
+        for (int i = 0; i < tVisibility.size(); i++) {
+            tVisibility.get(i).setVisibility(View.GONE);
+        }
+        for (int i = 0; i < viewlist.size(); i++) {
+            viewlist.get(i).setClickable(false);
+            viewlist.get(i).setEnabled(false);
+        }
+    }
+
 }

@@ -53,7 +53,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hometask);
-
         mContext = this;
         init();
         Intent intent = getIntent();
@@ -92,7 +91,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
                     notice.putExtra("name", bean.getOrgName());
                     notice.putExtra("isToday", "1");
                     startActivity(notice);
-                }else {
+                } else {
                     //累计
                     TotalDetailsBean bean = (TotalDetailsBean) list.get(position);
                     Intent notice = new Intent(mContext, AllListmessageActivity.class);
@@ -134,7 +133,6 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
             case R.id.com_back:
                 OkGo.getInstance().cancelAll();
                 finish();
-
                 break;
             default:
                 break;
