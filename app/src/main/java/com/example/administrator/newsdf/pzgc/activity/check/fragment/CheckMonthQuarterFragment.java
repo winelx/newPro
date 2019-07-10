@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -24,9 +25,11 @@ import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.view.BaseDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -53,49 +56,43 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
-    private TextView dataTime, title;
-    private LinearLayout nullposion;
+    private TextView dataTime, addcheck_content;
+
     private CheckQuarteradapter mAdapter;
     private NumberPicker yearPicker, monthPicker;
     private ArrayList<CheckQuarterBean> mData;
-    private LinearLayout linearDataTime;
-    private String orgId, data;
+    private RelativeLayout linearDataTime, addcheck;
+    private String orgId;
     private PopupWindow mPopupWindow;
     private int dateMonth;
     private Date myDate = new Date();
     private LinearLayout checkQueater;
     private String yeare = "", mqnum = "";
+    private BaseDialog dialog;
+    private int  checkstatus=2;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_checkquarter, container, false);
         mData = new ArrayList<>();
+        dialog = new BaseDialog();
         yeare = Dates.getYear();
         CheckCallBackUTils1.setCallBack(this);
         mContext = CheckReportActivity.getInstance();
         orgId = SPUtils.getString(mContext, "orgId", "");
         dataTime = view.findViewById(R.id.linear_data);
         checkQueater = view.findViewById(R.id.check_queater);
-        title = view.findViewById(R.id.title);
+        addcheck_content = view.findViewById(R.id.addcheck_content);
         categoryList = view.findViewById(R.id.category_list);
         linearDataTime = view.findViewById(R.id.linear_data_time);
-        nullposion = view.findViewById(R.id.nullposion);
-        data = Dates.getMonth();
+        addcheck = view.findViewById(R.id.addcheck);
         dateMonth = myDate.getMonth();
-        linearDataTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MeunPop();
-            }
-        });
         dataTime.setText(Dates.getYearMonth());
         categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-//        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mAdapter = new CheckQuarteradapter(mContext, mData);
         categoryList.setAdapter(mAdapter);
         mqnum = Dates.stringToList(Dates.getYearMonth(), "-").get(1);
-        getdate();
         mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -108,6 +105,19 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 startActivity(intent);
             }
         });
+        addcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkpop();
+            }
+        });
+        linearDataTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MeunPop();
+            }
+        });
+        getdate();
         return view;
     }
 
@@ -126,6 +136,30 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         Utils.backgroundAlpha(0.5f, CheckReportActivity.getInstance());
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
+    }
+
+    /**
+     * 是否加入检查选择器
+     */
+    private void checkpop() {
+        dialog.getadio(mContext, new Onclicklitener() {
+            @Override
+            public void confirm(String string) {
+                if (string.equals("是")) {
+                    checkstatus = 2;
+                } else {
+                    checkstatus = 1;
+                }
+                //确认
+                addcheck_content.setText("是否加入检查(" + string + ")");
+                getdate();
+            }
+
+            @Override
+            public void cancel(String string) {
+                //取消
+            }
+        });
     }
 
     /**
@@ -194,6 +228,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 .params("year", yeare)
                 //查询
                 .params("mqnum", mqnum)
+                .params("isCheck",checkstatus)
                 //查询类型：
                 .params("selectType", "M")
                 .execute(new StringCallback() {
@@ -242,7 +277,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                                     } catch (Exception e) {
                                         rankingSorce = "";
                                     }
-                                    mData.add(new CheckQuarterBean(id, parentid, name, parent_name, score,rankingSorce));
+                                    mData.add(new CheckQuarterBean(id, parentid, name, parent_name, score, rankingSorce));
                                 }
                             }
                             if (mData.size() > 0) {

@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMe
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
+import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
@@ -158,7 +159,7 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckRectificationWebActivity.class));
                         break;
                     case "标段排名":
-                        startActivity(new Intent(mContext, CheckReportActivity.class));
+                        startActivity(new Intent(mContext, OrgrankingActivity.class));
                         break;
                     default:
                         break;

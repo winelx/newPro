@@ -51,7 +51,7 @@ import okhttp3.Response;
  * date: 2018/3/22 0022 下午 4:18
  * update: 2018/3/22 0022
  */
-public class MineFragment extends Fragment implements View.OnClickListener {
+public class  MineFragment extends Fragment implements View.OnClickListener {
     private View rootView;
     private CircleImageView mineAvatar;
     private Context mContext;

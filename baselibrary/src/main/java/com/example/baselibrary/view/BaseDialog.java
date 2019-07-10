@@ -2,15 +2,19 @@ package com.example.baselibrary.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.baselibrary.R;
 import com.example.baselibrary.inface.Onclicklitener;
+
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class BaseDialog {
 
@@ -97,5 +101,47 @@ public class BaseDialog {
         dialog.show();
         //设置背景样式
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.base_dialog_bg);
+    }
+
+    /**
+     * 单选
+     */
+
+    // 单选提示框
+    private AlertDialog alertDialog2;
+    private String content;
+    public void getadio(Context  mContext,final Onclicklitener onclicklitener){
+        final String[] items = {"是","否"};
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mContext);
+        alertBuilder.setTitle("是否加入检查");
+        alertBuilder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int index) {
+                content=items[index];
+            }
+        });
+        alertBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                //TODO 业务逻辑代码
+                if (arg1!=-1){
+                    Toast.makeText(mContext, items[arg1], Toast.LENGTH_SHORT).show();
+                }
+                onclicklitener.confirm(content);
+                // 关闭提示框
+                alertDialog2.dismiss();
+            }
+        });
+        alertBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                // TODO 业务逻辑代码
+                // 关闭提示框
+                alertDialog2.dismiss();
+            }
+        });
+        alertDialog2 = alertBuilder.create();
+        alertDialog2.show();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -12,8 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthReportFragment;
 import com.example.administrator.newsdf.pzgc.adapter.CheckReportTreeListViewAdapters;
 import com.example.administrator.newsdf.pzgc.activity.check.fragment.CheckMonthQuarterFragment;
+import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils2;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.baselibrary.base.BaseActivity;
@@ -38,9 +41,9 @@ import okhttp3.Response;
  * description: 检查审核报表
  *
  * @author lx
- *         date: 2018/8/10 0010 上午 10:19
- *         update: 2018/8/10 0010
- *         version:
+ * date: 2018/8/10 0010 上午 10:19
+ * update: 2018/8/10 0010
+ * version:
  */
 public class CheckReportActivity extends BaseActivity implements View.OnClickListener {
     private TextView reportDaily, reportMonth, reportQuarter, comButton;
@@ -52,7 +55,7 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     private TextView textView;
     private static CheckReportActivity mContext;
     private DrawerLayout Reportdrawer;
-
+    private String type;
 
 
     public static CheckReportActivity getInstance() {
@@ -63,7 +66,8 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_report);
-
+        Intent intent = getIntent();
+        type = intent.getStringExtra("type");
         mData = new ArrayList<>();
         mDatas2 = new ArrayList<>();
         //初始化控件
@@ -91,8 +95,11 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         });
         //构造适配器
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new CheckMonthQuarterFragment());
-//        fragments.add(new CheckMonthReportFragment());
+        if ("month".equals(type)) {
+            fragments.add(new CheckMonthQuarterFragment());
+        } else {
+            fragments.add(new CheckMonthReportFragment());
+        }
 //        fragments.add(new CheckMonthYearFragment());
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), fragments);
         viewpager.setAdapter(adapter);
@@ -316,8 +323,11 @@ public class CheckReportActivity extends BaseActivity implements View.OnClickLis
         orgId = id;
         textView.setText(name);
         Reportdrawer.closeDrawers();
-        CheckCallBackUTils1.CheckCallback(id);
-//        CheckCallBackUTils2.CheckCallback2(id);
+        if ("month".equals(type)) {
+            CheckCallBackUTils1.CheckCallback(id);
+        } else {
+            CheckCallBackUTils2.CheckCallback2(id);
+        }
 //        CheckCallBackUTils3.CheckCallback3(id);
 
     }

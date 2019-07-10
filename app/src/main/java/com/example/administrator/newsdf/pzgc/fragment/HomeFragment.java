@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNoticeActivity;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
@@ -173,7 +174,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(complete);
                 break;
             case R.id.layout_ranking:
-                startActivity(new Intent(mContext, CheckReportActivity.class));
+                //标段排名
+                Intent intents= new Intent(mContext, CheckReportActivity.class);
+                intents.putExtra("type","month");
+                startActivity(intents);
+
                 break;
             case R.id.tasktotal:
                 //累计完成任务

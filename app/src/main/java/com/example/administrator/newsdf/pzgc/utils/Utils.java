@@ -93,7 +93,6 @@ public class Utils {
             "一季度", "二季度", "三季度",
             "四季度",};
 
-
     public static String[] day = new String[]{
             "01", "02", "03", "04", "05",
             "06", "07", "08", "09", "10",
@@ -195,6 +194,19 @@ public class Utils {
         return quarter;
     }
 
+    public static String getquarters(int t) {
+        if (t==1) {
+            return "第一季度";
+        } else if (t==2) {
+            return "第二季度";
+        } else if (t==3) {
+            return "第三季度";
+        } else if (t==4) {
+            return "第四季度";
+        }
+        return null;
+    }
+
     /**
      * 给tablayout添加分割线，分割线保持上下内边距一定距离
      *
@@ -247,7 +259,7 @@ public class Utils {
      * @param r 右
      * @param b 下
      */
-    public  void setMargins(View v, int l, int t, int r, int b) {
+    public void setMargins(View v, int l, int t, int r, int b) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             p.setMargins(l, t, r, b);

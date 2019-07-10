@@ -469,6 +469,7 @@
         <activity android:name=".pzgc.activity.chagedreply.ChagedReplyVerificationActivity" />
         <activity android:name=".pzgc.activity.home.NoticeActivity" />
         <activity android:name=".pzgc.activity.home.HometaskActivity" />
+        <activity android:name=".pzgc.activity.home.OrgrankingActivity" />
         <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
         <activity android:name=".pzgc.activity.notice.activity.MessageNoticeActivity" />
     </application>

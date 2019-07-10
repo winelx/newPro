@@ -16,6 +16,7 @@ android {
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 14
+        //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
         versionName "3.1"
@@ -33,7 +34,7 @@ android {
         ]
 
     }
-    packagingOptions{//打包时的相关配置
+    packagingOptions {//打包时的相关配置
         //pickFirsts做用是 当有重复文件时 打包会报错 这样配置会使用第一个匹配的文件打包进入apk
         // 表示当apk中有重复的META-INF目录下有重复的LICENSE文件时  只用第一个 这样打包就不会报错
         pickFirsts = ['META-INF/LICENSE']

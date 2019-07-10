@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_wbs" />
+    <RelativeLayout
+        android:id="@+id/lin_monthly"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/mine_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@mipmap/pchoose_atlas"
+            android:drawablePadding="10dp"
+            android:text="按月度查询"
+            android:textColor="#323232" />
+
+            <TextView
+                android:drawableRight="@mipmap/arrow_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+
+                android:textColor="@color/inconfy"
+                android:textSize="25sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/back" />
+
+    <RelativeLayout
+        android:id="@+id/lin_quarter"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/writer">
+
+        <TextView
+            android:id="@+id/pchoose_wbs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableLeft="@mipmap/pchoose_wbs"
+            android:drawablePadding="10dp"
+            android:text="按季度查询"
+            android:textColor="#323232" />
+
+        <TextView
+            android:drawableRight="@mipmap/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/inconfy"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+</LinearLayout>
