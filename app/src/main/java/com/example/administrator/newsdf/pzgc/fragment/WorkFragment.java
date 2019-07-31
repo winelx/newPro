@@ -15,7 +15,6 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
@@ -26,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseAc
 import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
+import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
@@ -59,6 +59,7 @@ public class WorkFragment extends Fragment {
     private ArrayList<bean> tasklist;
     private ArrayList<bean> checklist;
     private ArrayList<bean> reportlist;
+    private ArrayList<bean> special;
     private EmptyRecyclerView workRecycler;
     private ArrayList<ItemBean> list;
     private MessageFragmentAdapter adapter;
@@ -74,6 +75,7 @@ public class WorkFragment extends Fragment {
             reportlist = new ArrayList<>();
             tasklist = new ArrayList<>();
             checklist = new ArrayList<>();
+            special = new ArrayList<>();
             list = new ArrayList<>();
             emptyUtils = new EmptyUtils(mContext);
             //初始化控件Id
@@ -161,6 +163,9 @@ public class WorkFragment extends Fragment {
                     case "标段排名":
                         startActivity(new Intent(mContext, OrgrankingActivity.class));
                         break;
+                    case "台账管理":
+                        startActivity(new Intent(mContext, LoedgerActivity.class));
+                        break;
                     default:
                         break;
                 }
@@ -233,8 +238,11 @@ public class WorkFragment extends Fragment {
                                 }
                                 if (reportlist.size() > 0) {
                                     list.add(new ItemBean(reportlist, "统计报表"));
-
                                 }
+                                special.clear();
+                                special.add(new bean("台账管理", R.mipmap.reply_verification));
+                                special.add(new bean("方案管理", R.mipmap.specialdevices));
+                                list.add(new ItemBean(special, "专项施工方案"));
                                 adapter.setNewData(list);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));

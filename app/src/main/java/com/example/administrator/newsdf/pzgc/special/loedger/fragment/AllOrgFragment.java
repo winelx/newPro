@@ -1,23 +1,21 @@
-package com.example.administrator.newsdf.pzgc.activity.check.fragment;
+package com.example.administrator.newsdf.pzgc.special.loedger.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListAllActivity;
-import com.example.administrator.newsdf.pzgc.adapter.CheckListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
+import com.example.administrator.newsdf.pzgc.adapter.CheckListAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerlistActivity;
+import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -39,33 +37,33 @@ import okhttp3.Response;
 
 
 /**
- * description: 全部检查通知
- *
- * @author lx
- *         date: 2018/8/8 0008 上午 10:09
- *         update: 2018/8/8 0008
- *         version:
- */
-public class CheckdownMessageAllFragment extends Fragment {
+ * @Author lx
+ * @创建时间 2019/7/31 0031 10:43
+ * @说明 全部组织
+ **/
+public class AllOrgFragment extends LazyloadFragment {
     private ArrayList<String> list;
     private Map<String, List<Home_item>> map;
     private List<Home_item> mData;
     private Context mContext;
     private ImageView checkNewadd;
-    private View view;
     private ExpandableListView expandable;
     private CheckListAdapter mAdapter;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.checkdown_all, container, false);
+    protected int setContentView() {
+        return R.layout.checkdown_all;
+    }
+
+    @Override
+    protected void init() {
         mContext = getActivity();
         list = new ArrayList<>();
         map = new HashMap<>();
-        checkNewadd = view.findViewById(R.id.check_newadd);
-        expandable = view.findViewById(R.id.expandable);
-        SmartRefreshLayout refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
+        checkNewadd = rootView.findViewById(R.id.check_newadd);
+        checkNewadd.setVisibility(View.GONE);
+        expandable = rootView.findViewById(R.id.expandable);
+        SmartRefreshLayout refreshLayout = rootView.findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableLoadmore(false);
         mAdapter = new CheckListAdapter(list, map, mContext);
         expandable.setAdapter(mAdapter);
@@ -82,33 +80,26 @@ public class CheckdownMessageAllFragment extends Fragment {
                 refreshlayout.finishRefresh(800);
             }
         });
-        //新建
-        checkNewadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ChangedNewActivity.class);
-                intent.putExtra("status", false);
-                startActivity(intent);
-            }
-        });
         expandable.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 String ids = map.get(list.get(groupPosition)).get(childPosition).getId();
                 String orgname = map.get(list.get(groupPosition)).get(childPosition).getOrgname();
-                Intent intent = new Intent(mContext, ChagedListAllActivity.class);
+                Intent intent = new Intent(mContext, LoedgerlistActivity.class);
                 intent.putExtra("orgid", ids);
                 intent.putExtra("orgName", orgname);
                 startActivity(intent);
-                map.get(list.get(groupPosition)).get(childPosition).setUnfinish("0");
-                expandable.setAdapter(mAdapter);
+
                 return false;
             }
         });
 
-
         getdata();
-        return view;
+    }
+
+    @Override
+    protected void lazyLoad() {
+
     }
 
     public void getdata() {

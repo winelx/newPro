@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="15dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
+
+
+    <RelativeLayout
+        android:id="@+id/content_re"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+
+        <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+            android:id="@+id/inface_item_message"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            app:slantedBackgroundColor="@color/finish_green"
+            app:slantedLength="28dp"
+            app:slantedMode="right_triangle"
+            app:slantedTextColor="@color/writer"
+            app:slantedTextSize="10sp" />
+
+        <LinearLayout
+            android:id="@+id/chagee_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+
+            <TextView
+                android:id="@+id/item_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+
+                android:ellipsize="end"
+                android:enabled="true"
+                android:gravity="start"
+                android:maxLines="1"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/release_people"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="报批人："
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/release_data"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="报批日期：" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="30dp"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.3"
+                android:maxLines="1"
+                android:text="所属类型"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="所属标段"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingBottom="10dp"
+                android:text="待处理人"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

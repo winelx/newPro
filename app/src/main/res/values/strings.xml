@@ -53,5 +53,6 @@
     <string name="switchorganization">切换组织</string>
     <string name="fa_angle_right">{fa-angle-right}</string>
     <string name="check_statistical">审核报表</string>
+    <string name="title_activity_loedger">LoedgerActivity</string>
 
 </resources>

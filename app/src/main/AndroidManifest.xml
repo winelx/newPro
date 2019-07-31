@@ -7,7 +7,7 @@
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-    <!--如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
+    <!-- 如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -49,8 +49,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
-        <!--————————————————————极光推送—————————————————— -->
-        <!-- Required SDK 核心功能-->
+        <!-- ————————————————————极光推送—————————————————— -->
+        <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
@@ -63,7 +63,7 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
-        <!-- since 3.0.9 Required SDK 核心功能-->
+        <!-- since 3.0.9 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="com.example.administrator.newsdf.DataProvider"
@@ -77,22 +77,23 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="com.example.administrator.newsdf" />
             </intent-filter>
         </service>
 
-        <!-- since 3.1.0 Required SDK 核心功能-->
+        <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
             android:authorities="com.example.administrator.newsdf.DownloadProvider"
             android:exported="true" />
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
                 <category android:name="com.example.administrator.newsdf" />
             </intent-filter>
             <intent-filter>
@@ -103,7 +104,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
 
                 <data android:scheme="package" />
             </intent-filter>
@@ -116,12 +116,12 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="com.example.administrator.newsdf" />
             </intent-filter>
         </service>
 
-
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
             android:exported="false" />
@@ -131,6 +131,7 @@
             android:name=".pzgc.service.PushReceiver"
             android:enabled="true">
             <intent-filter>
+
                 <!-- Required 用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
                 <!-- Required 用户接收SDK消息的intent -->
@@ -154,7 +155,7 @@
             android:name="JPUSH_APPKEY"
             android:value="f050fc1f161dd2f848ac1f58" />
 
-        <!--————————————————————百度—————————————————— -->
+        <!-- ————————————————————百度—————————————————— -->
         <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
@@ -321,7 +322,6 @@
         <activity
             android:name=".pzgc.activity.home.TaskRecordActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".pzgc.activity.home.MoretaskActivity"
             android:screenOrientation="portrait" />
@@ -456,7 +456,6 @@
         <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedContactsActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedListAllActivity" />
-
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListActivity" />
         <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListAllActivity" />
@@ -472,5 +471,9 @@
         <activity android:name=".pzgc.activity.home.OrgrankingActivity" />
         <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
         <activity android:name=".pzgc.activity.notice.activity.MessageNoticeActivity" />
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerActivity"/>
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity"/>
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity"/>
     </application>
+
 </manifest>

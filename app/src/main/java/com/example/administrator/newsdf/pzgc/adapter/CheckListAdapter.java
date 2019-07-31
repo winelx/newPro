@@ -31,8 +31,8 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         this.content = content;
         this.context = context;
 
-    }
 
+    }
 
     @Override
     public int getGroupCount() {    //组的数量
@@ -122,19 +122,7 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             childHold.homeItemMessage.setVisibility(View.GONE);
         }
 
-        childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String  id=content.get(classes.get(groupPosition)).get(childPosition).getId();
-                String orgname= content.get(classes.get(groupPosition)).get(childPosition).getOrgname();
-                Intent intent = new Intent(context, ChagedListAllActivity.class);
-                intent.putExtra("orgid", id);
-                intent.putExtra("orgName",orgname);
-                context.startActivity(intent);
-                childHold.homeItemMessage.setVisibility(View.GONE);
 
-            }
-        });
         return convertView;
     }
 
@@ -203,7 +191,6 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         this.classes = classes;
         notifyDataSetChanged();
     }
-
 
 }
 
