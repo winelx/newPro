@@ -471,9 +471,12 @@
         <activity android:name=".pzgc.activity.home.OrgrankingActivity" />
         <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
         <activity android:name=".pzgc.activity.notice.activity.MessageNoticeActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerActivity"/>
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity"/>
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity"/>
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerActivity" />
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity" />
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity" />
+        <activity android:name=".pzgc.special.programme.activity.ProgrammeActivity" />
+        <activity android:name=".pzgc.special.programme.activity.ProgrammeListActivity" />
+        <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />
     </application>
 
 </manifest>

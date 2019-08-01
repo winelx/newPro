@@ -5,8 +5,7 @@
     android:background="@color/back"
     android:orientation="vertical">
 
-    <include layout="@layout/titlestyle" />
-
+    <include layout="@layout/toolbar_icon" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"

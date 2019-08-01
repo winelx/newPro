@@ -26,6 +26,7 @@ import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
 import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerActivity;
+import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
@@ -165,6 +166,9 @@ public class WorkFragment extends Fragment {
                         break;
                     case "台账管理":
                         startActivity(new Intent(mContext, LoedgerActivity.class));
+                        break;
+                        case "方案管理":
+                        startActivity(new Intent(mContext, ProgrammeActivity.class));
                         break;
                     default:
                         break;

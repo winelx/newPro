@@ -42,12 +42,12 @@ public class LoedgerActivity extends BaseActivity implements View.OnClickListene
         PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);
-        titleView = (TextView) findViewById(R.id.titleView);
+        titleView = (TextView) findViewById(R.id.com_title);
         titleView.setText("专项施工方案台账管理");
         checkDownViewpager = (ViewPager) findViewById(R.id.check_down_viewpager);
         checkDownMe.setOnClickListener(this);
         checkDownAll.setOnClickListener(this);
-        findViewById(R.id.checklistback).setOnClickListener(this);
+        findViewById(R.id.com_back).setOnClickListener(this);
         checkDownViewpager.setAdapter(adapter);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
@@ -94,7 +94,7 @@ public class LoedgerActivity extends BaseActivity implements View.OnClickListene
             case R.id.check_down_all:
                 all();
                 break;
-            case R.id.checklistback:
+            case R.id.com_back:
                 finish();
                 break;
             default:
