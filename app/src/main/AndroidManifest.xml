@@ -478,6 +478,8 @@
         <activity android:name=".pzgc.special.programme.activity.ProgrammeActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeListActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />
+        <activity android:name=".pzgc.special.programme.activity.ProgrammeApprovalActivity" />
+        <activity android:name=".pzgc.special.programme.activity.ProgrammeAuditorActivity" />
     </application>
 
 </manifest>

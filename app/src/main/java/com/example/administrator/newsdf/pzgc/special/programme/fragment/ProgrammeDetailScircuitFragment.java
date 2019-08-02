@@ -44,6 +44,7 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
         //调用BaseQuickAdapter
         mAdapter.addHeaderView(headerView);
         mAdapter.addFooterView(footerView);
+        mAdapter.openLoadAnimation();
         recyclerView.setAdapter(mAdapter);
     }
 
