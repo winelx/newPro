@@ -474,6 +474,7 @@
         <activity android:name=".pzgc.special.loedger.activity.LoedgerActivity" />
         <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity" />
         <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity" />
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerRecordDetailActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeListActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />
