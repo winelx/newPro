@@ -79,7 +79,11 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent1 = new Intent(mContext, LoedgerDetailsActivity.class);
-                    startActivity(intent1);
+                LoedgerListbean bean = (LoedgerListbean) adapter.getData().get(position);
+                intent1.putExtra("id", bean.getId());
+                intent1.putExtra("taskId", bean.getTaskId());
+                intent1.putExtra("type", type);
+                startActivity(intent1);
             }
         });
         loedgerlistModel = ViewModelProviders.of(this).get(LoedgerlistModel.class);

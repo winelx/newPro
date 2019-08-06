@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -53,6 +54,8 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loedgerdetails);
+        Intent intent = getIntent();
+        boolean type = intent.getBooleanExtra("type", false);
         mContext = this;
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
@@ -68,6 +71,12 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         title = findViewById(R.id.com_title);
         //审核按钮
         examine = findViewById(R.id.examine);
+        //根据入口控制提交按钮显示隐藏
+        if (type) {
+            examine.setVisibility(View.GONE);
+        } else {
+            examine.setVisibility(View.VISIBLE);
+        }
         examine.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,7 +98,7 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
 
             }
         };
-        detailsModel.getData("","").observe(this, observer);
+        detailsModel.getData(intent.getStringExtra("id"), intent.getStringExtra("taskId")).observe(this, observer);
 //        utils.setMargins(refreshlayout, 0, Utils.dp2px(this, 75), 0, Utils.dp2px(this, 45));
         mDetailAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
