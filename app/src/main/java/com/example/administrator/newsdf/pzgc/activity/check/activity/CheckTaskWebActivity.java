@@ -190,7 +190,6 @@ public class CheckTaskWebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();

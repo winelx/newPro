@@ -88,6 +88,7 @@ public class ProMineOrgFragment extends LazyloadFragment {
                 Intent intent = new Intent(mContext, ProgrammeListActivity.class);
                 intent.putExtra("orgid", mData.get(position).getId());
                 intent.putExtra("orgName", mData.get(position).getOrgname());
+                intent.putExtra("type", true);
                 mContext.startActivity(intent);
             }
         });

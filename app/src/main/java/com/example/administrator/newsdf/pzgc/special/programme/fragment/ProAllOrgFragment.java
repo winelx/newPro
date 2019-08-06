@@ -87,6 +87,7 @@ public class ProAllOrgFragment extends LazyloadFragment {
                 Intent intent = new Intent(mContext, ProgrammeListActivity.class);
                 intent.putExtra("orgid", ids);
                 intent.putExtra("orgName", orgname);
+                intent.putExtra("type", false);
                 startActivity(intent);
 
                 return false;

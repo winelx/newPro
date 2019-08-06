@@ -3,11 +3,24 @@ package com.example.administrator.newsdf.pzgc.special.loedger.model;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerlistActivity;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerListbean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseViewModel;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.network.NetWork;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @Author lx
@@ -17,33 +30,104 @@ import java.util.List;
  **/
 
 public class LoedgerlistModel extends BaseViewModel {
-    private MutableLiveData<List<String>> data;
-    private List<String> list;
+    private MutableLiveData<List<LoedgerListbean>> data;
+    private List<LoedgerListbean> list;
 
-    public MutableLiveData<List<String>> getData(String choice, String id, int page) {
+    public MutableLiveData<List<LoedgerListbean>> getAllData(String choice, String orgid, int page) {
         if (data == null) {
             data = new MutableLiveData<>();
         }
         if (list == null) {
             list = new ArrayList<>();
         }
-        request(choice, id, page);
+        allrequest(choice, orgid, page);
         return data;
     }
 
-    public void request(String choice, String id, int page) {
+    public void allrequest(String choice, String orgid, int page) {
         if (page == 1) {
             list.clear();
         }
-        if (choice.equals("全部")) {
-            for (int i = 0; i < 10; i++) {
-                list.add(i + "");
-            }
-        } else {
-            modelinface.onerror();
+        Map<String, String> map = new HashMap<>();
+        map.put("orgId", orgid);
+        map.put("page", page + "");
+        map.put("rows", 15 + "");
+        //如果为空，就不传递到后台
+        if (!choice.isEmpty()) {
+            map.put("isDeal", choice);
         }
-        data.setValue(list);
+        NetWork.postHttp(Api.SPECIAL_ITEM_MAIN_LIST, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray result = jsonObject.getJSONArray("results");
+                    list = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerListbean.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                data.setValue(list);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("请求失败");
+                modelinface.onerror();
+            }
+        });
     }
 
+
+    /**
+     * 我的列表显示
+     *
+     * @param choice 赛选条件
+     * @param orgid  组织id
+     * @param page   页数
+     * @return
+     */
+    public MutableLiveData<List<LoedgerListbean>> getMyData(String choice, String orgid, int page) {
+        if (data == null) {
+            data = new MutableLiveData<>();
+        }
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        myrequest(choice, orgid, page);
+        return data;
+    }
+
+    public void myrequest(String choice, String orgid, int page) {
+        if (page == 1) {
+            list.clear();
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("orgId", orgid);
+        map.put("page", page + "");
+        map.put("rows", 15 + "");
+        //如果为空，就不传递到后台
+        if (!choice.isEmpty()) {
+            map.put("isDeal", choice);
+        }
+        NetWork.postHttp(Api.MY_SPECIAL_ITEM_MAIN_LIST, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray result = jsonObject.getJSONArray("results");
+                    list = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerListbean.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                data.setValue(list);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("请求失败");
+                modelinface.onerror();
+            }
+        });
+    }
 
 }

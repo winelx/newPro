@@ -7,6 +7,80 @@
 
     <include layout="@layout/toolbar_icon" />
 
+    <RelativeLayout
+        android:id="@+id/list_search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/search_lin"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/editext_background_blue"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/search_img"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/list_searh" />
+
+            <EditText
+                android:id="@+id/search_editext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="39dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="搜索姓名"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/textViwe"
+                android:textColorHint="@color/view"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/delete_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/search_lin"
+            android:layout_alignRight="@+id/search_lin"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="取消"
+            android:textColor="@color/colorAccent"
+            android:textSize="14dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/warning_red"
+        android:paddingLeft="25dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="此节点需要两个审核人"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
@@ -33,7 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="45dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
 
 
 </LinearLayout>

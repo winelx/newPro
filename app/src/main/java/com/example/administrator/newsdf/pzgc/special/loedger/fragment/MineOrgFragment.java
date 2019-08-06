@@ -16,6 +16,7 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListActivity
 import com.example.administrator.newsdf.pzgc.activity.changed.ChangedNewActivity;
 import com.example.administrator.newsdf.pzgc.adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerlistActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
@@ -85,9 +86,10 @@ public class MineOrgFragment extends LazyloadFragment {
         mAdapter.setOnItemClickListener(new CheckMessageMineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(mContext, ChagedListActivity.class);
+                Intent intent = new Intent(mContext, LoedgerlistActivity.class);
                 intent.putExtra("orgid", mData.get(position).getId());
                 intent.putExtra("orgName", mData.get(position).getOrgname());
+                intent.putExtra("type", true);
                 mContext.startActivity(intent);
             }
         });

@@ -219,8 +219,7 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 return false;
             }
         });
-        searchEditext.setOnFocusChangeListener(new android.view.View.
-                OnFocusChangeListener() {
+        searchEditext.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {

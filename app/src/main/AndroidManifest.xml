@@ -131,7 +131,6 @@
             android:name=".pzgc.service.PushReceiver"
             android:enabled="true">
             <intent-filter>
-
                 <!-- Required 用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
                 <!-- Required 用户接收SDK消息的intent -->
@@ -475,6 +474,7 @@
         <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity" />
         <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity" />
         <activity android:name=".pzgc.special.loedger.activity.LoedgerRecordDetailActivity" />
+        <activity android:name=".pzgc.special.loedger.activity.LoedgerApprovalActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeListActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />

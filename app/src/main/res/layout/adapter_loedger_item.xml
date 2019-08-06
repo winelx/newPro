@@ -39,7 +39,7 @@
 
 
             <TextView
-                android:id="@+id/item_number"
+                android:id="@+id/item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/release_people"
+                    android:id="@+id/submitpersonname"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -68,7 +68,7 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/release_data"
+                    android:id="@+id/dealdate"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -78,6 +78,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/specialitembasename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -90,6 +91,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/orgname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"

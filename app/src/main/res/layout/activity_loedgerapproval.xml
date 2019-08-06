@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/writer"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include layout="@layout/toolbar_icon" />
 
+
         <LinearLayout
-            android:id="@+id/validation_status"
+            android:id="@+id/approvaluser"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -32,63 +31,39 @@
                 android:textColor="@color/black" />
 
 
-            <TextView
-                android:id="@+id/category_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableRight="@mipmap/arrow_right"
-                android:drawablePadding="10dp"
-                android:gravity="end"
-                android:hint="请选择"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:gravity="end|center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/category_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@mipmap/arrow_right"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:hint="请选择"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/back2" />
-
-        <LinearLayout
-            android:id="@+id/approvaluser"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/warning_red"
-                android:text="下一节点负责人"
-                android:textColor="@color/black" />
-
-
-            <TextView
-                android:id="@+id/usernames"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableRight="@mipmap/arrow_right"
-                android:drawablePadding="10dp"
-                android:gravity="end"
-                android:hint="请选择"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/back2" />
+            android:layout_height="wrap_content"
+            android:background="@color/back2"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="当选择'打回'并提交后,该条数据将会被重新打回"
+            android:textColor="@color/graytext"
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -117,7 +92,6 @@
 
     </LinearLayout>
 
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -128,5 +102,4 @@
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="16sp" />
-
 </RelativeLayout>

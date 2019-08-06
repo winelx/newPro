@@ -53,7 +53,7 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loedgerdetails);
-        mContext=this;
+        mContext = this;
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
         refreshlayout.setEnableRefresh(false);
@@ -68,6 +68,7 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         title = findViewById(R.id.com_title);
         //审核按钮
         examine = findViewById(R.id.examine);
+        examine.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDetailAdapter = new LoedgerDetailAdapter(list);
@@ -88,12 +89,12 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
 
             }
         };
-        detailsModel.getData().observe(this, observer);
+        detailsModel.getData("","").observe(this, observer);
 //        utils.setMargins(refreshlayout, 0, Utils.dp2px(this, 75), 0, Utils.dp2px(this, 45));
         mDetailAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext,LoedgerRecordDetailActivity.class));
+                startActivity(new Intent(mContext, LoedgerRecordDetailActivity.class));
             }
         });
     }
@@ -103,6 +104,9 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.com_back:
                 finish();
+                break;
+            case R.id.examine:
+                startActivity(new Intent(mContext, LoedgerApprovalActivity.class));
                 break;
             default:
                 break;

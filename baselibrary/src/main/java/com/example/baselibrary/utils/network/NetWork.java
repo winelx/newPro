@@ -111,7 +111,29 @@ public class NetWork {
             }
         });
     }
+    public static void postHttp(String url, Map<String, String> map, final networkCallBack callBack) {
+        PostRequest post = OkGo.post(url);
+        //如果为true，进行表单提交
+        //传递参数
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                post.params(entry.getKey(), entry.getValue());
 
+            }
+        }
+        post.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                callBack.onSuccess(s, call, response);
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onError(call, response, e);
+            }
+        });
+    }
     public interface networkCallBack {
         void onSuccess(String s, Call call, Response response);
 

@@ -41,7 +41,7 @@ import java.util.Map;
  * 描述：整改通知单列表
  * {@link }
  */
-public class ChagedListActivity extends BaseActivity implements View.OnClickListener, TaskCallback {
+public class ChagedListActivity extends BaseActivity implements View.OnClickListener {
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerList;
     private TextView title;
@@ -66,7 +66,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         orgId = intent.getStringExtra("orgid");
         chagedUtils = new ChagedUtils();
         emptyUtils = new EmptyUtils(mContext);
-        TaskCallbackUtils.setCallBack(this);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
         title = (TextView) findViewById(R.id.com_title);
@@ -258,12 +257,6 @@ public class ChagedListActivity extends BaseActivity implements View.OnClickList
         });
     }
 
-    //回調刷新
-    @Override
-    public void taskCallback() {
-        page = 1;
-        request();
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

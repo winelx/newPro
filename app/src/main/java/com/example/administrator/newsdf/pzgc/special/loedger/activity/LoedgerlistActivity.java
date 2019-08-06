@@ -16,12 +16,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.special.loedger.adapter.LoedgerlistAdapter;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerListbean;
 import com.example.administrator.newsdf.pzgc.special.loedger.model.LoedgerlistModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
-import com.example.baselibrary.base.BaseViewModel;
-import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.example.baselibrary.view.PullDownMenu;
 
@@ -42,15 +40,17 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
     private Context mContext;
 
     private LoedgerlistModel loedgerlistModel;
-    private Observer<List<String>> observer;
+    private Observer<List<LoedgerListbean>> observer;
 
     private EmptyRecyclerView recyclerList;
     private ImageView toolbarImage;
     private TextView title;
-    private String[] strings = {"全部", "打回", "审核中", "审核通过"};
+    private String[] alllist = {"全部", "打回", "审核中", "审核通过"};
+    private String[] mylist = {"全部", "已处理", "未处理"};
     private int page = 1;
+    private boolean type;
     private String orgId;
-    private String choice = "全部";
+    private String choice = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,9 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
+        //判断入口，根据入口判断网络请求（false:全部组织，true：我的组织）
+        type = intent.getBooleanExtra("type", false);
+
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
@@ -75,13 +78,14 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, LoedgerDetailsActivity.class));
+                Intent intent1 = new Intent(mContext, LoedgerDetailsActivity.class);
+                    startActivity(intent1);
             }
         });
         loedgerlistModel = ViewModelProviders.of(this).get(LoedgerlistModel.class);
-        observer = new Observer<List<String>>() {
+        observer = new Observer<List<LoedgerListbean>>() {
             @Override
-            public void onChanged(@Nullable List<String> strings) {
+            public void onChanged(@Nullable List<LoedgerListbean> strings) {
                 if (strings.size() == 0) {
                     emptyUtils.noData("暂无数据");
                 }
@@ -124,23 +128,33 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
      **/
     private void talbarMenu() {
         pullDownMenu = new PullDownMenu();
-        pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, strings);
+        if (type) {
+            pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, mylist);
+        } else {
+            pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, alllist);
+        }
         pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
             @Override
             public void onclick(int position, String string) {
                 page = 1;
                 switch (string) {
                     case "全部":
-                        choice = "全部";
+                        choice = "";
                         break;
                     case "打回":
-                        choice = "打回";
+                        choice = "3";
                         break;
                     case "审核中":
-                        choice = "审核中";
+                        choice = "2";
                         break;
                     case "审核通过":
-                        choice = "审核通过";
+                        choice = "4";
+                        break;
+                    case "已处理":
+                        choice = "2";
+                        break;
+                    case "未处理":
+                        choice = "1";
                         break;
                     default:
                         break;
@@ -155,9 +169,16 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
      * @创建时间 2019/7/31 0031 14:14
      * @说明 网络请求
      **/
+    private void request(String orgid, String choice) {
+        if (type) {
+            loedgerlistModel.getMyData(choice, orgid, page).observe(this, observer);
+        } else {
+            loedgerlistModel.getAllData(choice, orgid, page).observe(this, observer);
+        }
+    }
 
-    private void request(String id, String choice) {
-        loedgerlistModel.getData(choice, id, page).observe(this, observer);
+    public boolean getType() {
+        return type;
     }
 }
 

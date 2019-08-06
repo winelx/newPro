@@ -56,7 +56,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/orange"
         android:text="审核"
-        android:visibility="gone"
         android:textColor="@color/white"
       />
 

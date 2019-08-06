@@ -47,7 +47,8 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
     private String[] strings = {"全部", "打回", "审核中", "完成"};
     private int page = 1;
     private String orgId;
-    private String choice = "全部";
+    private boolean type;
+    private String choice = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,10 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_chaged_list);
         mContext = this;
         Intent intent = getIntent();
+        //当前组织id
         orgId = intent.getStringExtra("orgid");
+        //当前跳转界面（false：全部组织，true：我的组织）
+        type = intent.getBooleanExtra("type", false);
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
@@ -162,6 +166,11 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
      **/
 
     private void request(String id, String choice) {
-        programmeListModel.getData().observe(this, observer);
+        if (type) {
+            programmeListModel.getSpecialitemproject(id, page).observe(this, observer);
+        } else {
+            programmeListModel.getMySpecialitemproject(id, page, "1").observe(this, observer);
+        }
+
     }
 }
