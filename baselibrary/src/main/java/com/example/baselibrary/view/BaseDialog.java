@@ -113,7 +113,7 @@ public class BaseDialog {
     public void getadio(Context  mContext,final Onclicklitener onclicklitener){
         final String[] items = {"是","否"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mContext);
-        alertBuilder.setTitle("是否加入检查");
+        alertBuilder.setTitle("是否列入奖罚");
         alertBuilder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int index) {

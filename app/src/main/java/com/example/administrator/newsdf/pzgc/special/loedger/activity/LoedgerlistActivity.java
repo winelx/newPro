@@ -61,7 +61,6 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
         orgId = intent.getStringExtra("orgid");
         //判断入口，根据入口判断网络请求（false:全部组织，true：我的组织）
         type = intent.getBooleanExtra("type", false);
-
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);

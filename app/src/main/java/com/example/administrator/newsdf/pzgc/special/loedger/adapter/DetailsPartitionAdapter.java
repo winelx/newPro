@@ -4,6 +4,12 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.baselibrary.adapter.multiitem.BaseItemProvider;
 
+/**
+ * @Author lx
+ * @创建时间  2019/8/7 0007 9:39
+ * @说明 分割线
+ **/
+
 public class DetailsPartitionAdapter extends BaseItemProvider<String, BaseViewHolder> {
     @Override
     public int viewType() {

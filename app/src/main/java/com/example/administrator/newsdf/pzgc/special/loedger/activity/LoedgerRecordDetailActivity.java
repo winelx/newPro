@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.special.loedger.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.database.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.special.loedger.adapter.LoedgerRecordDetailAdapter;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerRecordDetailBean;
 import com.example.administrator.newsdf.pzgc.special.loedger.model.LoedgerRecordDetailModel;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.base.BaseViewModel;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -32,12 +36,13 @@ public class LoedgerRecordDetailActivity extends BaseActivity implements View.On
     private LoedgerRecordDetailAdapter madapter;
 
     private LoedgerRecordDetailModel model;
-    private Observer<List<String>> Observer;
+    private Observer<List<LoedgerRecordDetailBean>> Observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
+        Intent intent = getIntent();
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
         refreshlayout.setEnableRefresh(false);
@@ -53,13 +58,19 @@ public class LoedgerRecordDetailActivity extends BaseActivity implements View.On
         madapter = new LoedgerRecordDetailAdapter(R.layout.adapter_loedgerrecorddetail, new ArrayList<>());
         recyclerView.setAdapter(madapter);
         model = ViewModelProviders.of(this).get(LoedgerRecordDetailModel.class);
-        Observer = new Observer<List<String>>() {
+        Observer = new Observer<List<LoedgerRecordDetailBean>>() {
             @Override
-            public void onChanged(@Nullable List<String> strings) {
+            public void onChanged(@Nullable List<LoedgerRecordDetailBean> strings) {
                 madapter.setNewData(strings);
             }
         };
-        model.getData().observe(this, Observer);
+        model.getData(intent.getStringExtra("id")).observe(this, Observer);
+        model.setRequestError(new LoedgerRecordDetailModel.Modelinface() {
+            @Override
+            public void onerror() {
+                ToastUtils.showShortToast("请求失败");
+            }
+        });
     }
 
     @Override

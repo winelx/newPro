@@ -31,6 +31,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/specialitemdelconstruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -47,6 +48,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/parturl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -68,6 +70,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/demonstration_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -79,6 +82,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/demonstration_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -92,6 +96,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/specialitemdelargument"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -114,6 +119,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/approval_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -138,6 +144,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/approval_data_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -162,6 +169,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/approval_data_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -186,6 +194,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/replydate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -197,6 +206,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/demonstration_lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

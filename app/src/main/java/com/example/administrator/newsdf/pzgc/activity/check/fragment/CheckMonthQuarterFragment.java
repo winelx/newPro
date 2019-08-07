@@ -25,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -151,7 +152,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                     checkstatus = 1;
                 }
                 //确认
-                addcheck_content.setText("是否加入检查(" + string + ")");
+                addcheck_content.setText("是否列入奖罚(" + string + ")");
                 getdate();
             }
 

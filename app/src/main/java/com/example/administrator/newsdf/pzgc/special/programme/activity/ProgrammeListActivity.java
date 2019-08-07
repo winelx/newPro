@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerDetailsActivity;
 import com.example.administrator.newsdf.pzgc.special.programme.adapter.ProgrammeListAdapter;
+import com.example.administrator.newsdf.pzgc.special.programme.bean.ProListBean;
 import com.example.administrator.newsdf.pzgc.special.programme.model.ProgrammeListModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.base.BaseActivity;
@@ -42,7 +43,7 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
     private EmptyUtils emptyUtils;
     private ProgrammeListAdapter mAdapter;
     private ProgrammeListModel programmeListModel;
-    private Observer<List<String>> observer;
+    private Observer<List<ProListBean>> observer;
 
     private String[] strings = {"全部", "打回", "审核中", "完成"};
     private int page = 1;
@@ -81,9 +82,9 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
             }
         });
         programmeListModel = ViewModelProviders.of(this).get(ProgrammeListModel.class);
-        observer = new Observer<List<String>>() {
+        observer = new Observer<List<ProListBean>>() {
             @Override
-            public void onChanged(@Nullable List<String> strings) {
+            public void onChanged(@Nullable List<ProListBean> strings) {
                 if (strings.size() == 0) {
                     emptyUtils.noData("暂无数据");
                 }
@@ -167,9 +168,10 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
 
     private void request(String id, String choice) {
         if (type) {
-            programmeListModel.getSpecialitemproject(id, page).observe(this, observer);
+            programmeListModel.getMySpecialitemproject(id, page, choice).observe(this, observer);
         } else {
-            programmeListModel.getMySpecialitemproject(id, page, "1").observe(this, observer);
+            programmeListModel.getSpecialitemproject(id, choice, page).observe(this, observer);
+
         }
 
     }

@@ -65,9 +65,14 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void onClick(View v) {
                 // 1
-                int position = holder.getLayoutPosition();
-                // 2
-                mOnItemClickListener.onItemClick(holder.itemView, position);
+                try {
+                    int position = holder.getLayoutPosition();
+                    // 2
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                } catch (NullPointerException e) {
+
+                }
+
             }
         });
     }

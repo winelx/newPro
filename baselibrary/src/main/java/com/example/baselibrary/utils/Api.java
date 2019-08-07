@@ -20,8 +20,11 @@ public class Api {
     /**
      * 施工方案报批 全部列表
      */
-    public static final String Specialitemproject = Requests.networks + "iface/mobile/special/getSpecialitemproject";
-
+    public static final String SPECIALITEMPROJECT = Requests.networks + "iface/mobile/special/getSpecialitemproject";
+    /**
+     *  施工方案报批 我的列表
+     */
+    public static final String MYSPECIALITEMPROJECT = Requests.networks + "iface/mobile/special/getMySpecialitemproject";
     /*   ----------- 专项施工台账------------------*/
     /**
      * 施工方案台帐我的列表
@@ -35,5 +38,14 @@ public class Api {
      * 通过施工方案Id获取施工方案详情数据
      */
     public static final String SPECIALITEMMAINDELLIST = Requests.networks + "/iface/mobile/special/getspecialItemMainDelList";
+    /**
+     * 获取专项施工方案 细明 数据详情
+     */
+    public static final String SPECIALITEMMAINDEL = Requests.networks + "/iface/mobile/special/getspecialItemMainDel";
+    /**
+     * 审核接口
+     *
+     */
+    public static final String VERIFICATIONPAGE = Requests.networks + "/iface/mobile/special/verificationPage";
 
 }

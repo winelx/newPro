@@ -15,12 +15,13 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.special.loedger.adapter.LoedgerDetailAdapter;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.DetailsOption;
 import com.example.administrator.newsdf.pzgc.special.loedger.model.LoedgerDetailsModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
-import com.example.baselibrary.bean.bean;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -44,18 +45,18 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
     private LoedgerDetailAdapter mDetailAdapter;
     private EmptyUtils emptyUtils;
     private Utils utils;
-    private List<Object> list;
     private Context mContext;
-
+    private boolean type;
     private Observer<List<Object>> observer;
     private LoedgerDetailsModel detailsModel;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loedgerdetails);
-        Intent intent = getIntent();
-        boolean type = intent.getBooleanExtra("type", false);
+        intent = getIntent();
+        type = intent.getBooleanExtra("type", false);
         mContext = this;
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
@@ -64,23 +65,16 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         refreshlayout.setEnableLoadmore(false);
         //仿ios越界
         refreshlayout.setEnableOverScrollBounce(true);
-        list = new ArrayList<>();
         emptyUtils = new EmptyUtils(this);
         utils = new Utils();
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
         //审核按钮
         examine = findViewById(R.id.examine);
-        //根据入口控制提交按钮显示隐藏
-        if (type) {
-            examine.setVisibility(View.GONE);
-        } else {
-            examine.setVisibility(View.VISIBLE);
-        }
         examine.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mDetailAdapter = new LoedgerDetailAdapter(list);
+        mDetailAdapter = new LoedgerDetailAdapter(new ArrayList<>());
         recyclerView.setAdapter(mDetailAdapter);
         mDetailAdapter.setEmptyView(emptyUtils.init());
         mDetailAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -93,19 +87,48 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         observer = new Observer<List<Object>>() {
             @Override
             public void onChanged(@Nullable List<Object> objects) {
-                ToastUtils.showShortToast(objects.size() + "");
+                if (objects.size() == 0) {
+                    emptyUtils.noData("暂无数据");
+                }
                 mDetailAdapter.setNewData(objects);
-
             }
         };
-        detailsModel.getData(intent.getStringExtra("id"), intent.getStringExtra("taskId")).observe(this, observer);
-//        utils.setMargins(refreshlayout, 0, Utils.dp2px(this, 75), 0, Utils.dp2px(this, 45));
+        detailsModel.getCallback(new LoedgerDetailsModel.Permissioncallback() {
+            @Override
+            public void callback(String str) {
+                if (type) {
+                    if ("1".equals(str)) {
+                        examine.setVisibility(View.VISIBLE);
+                        utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 45));
+                    }else {
+                        examine.setVisibility(View.GONE);
+                        utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 0));
+                    }
+                }
+            }
+        });
+        //根据入口控制提交按钮显示隐藏
+        if (!type) {
+            examine.setVisibility(View.GONE);
+        }
         mDetailAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, LoedgerRecordDetailActivity.class));
+                DetailsOption bean = (DetailsOption) adapter.getData().get(position);
+                Intent intent1 = new Intent(new Intent(mContext, LoedgerRecordDetailActivity.class));
+                intent1.putExtra("id", bean.getId());
+                startActivity(intent1);
             }
         });
+        LiveDataBus.get().with("details", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+
+
+                    }
+                });
+        request();
     }
 
     @Override
@@ -115,10 +138,16 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                 finish();
                 break;
             case R.id.examine:
-                startActivity(new Intent(mContext, LoedgerApprovalActivity.class));
+                Intent intent1 = new Intent(mContext, LoedgerApprovalActivity.class);
+                intent1.putExtra("id", intent.getStringExtra("id"));
+                startActivity(intent1);
                 break;
             default:
                 break;
         }
+    }
+
+    public void request() {
+        detailsModel.getData(intent.getStringExtra("id"), intent.getStringExtra("taskId")).observe(this, observer);
     }
 }

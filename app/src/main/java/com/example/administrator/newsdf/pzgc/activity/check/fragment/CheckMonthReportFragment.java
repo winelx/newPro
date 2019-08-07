@@ -47,12 +47,12 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * description: 检查季度报表
+ * description:
  *
  * @author lx
  * date: 2018/8/14 0014 下午 2:48
  * update: 2018/8/14 0014
- * version:
+ * version:季度检查
  */
 public class CheckMonthReportFragment extends Fragment implements CheckCallback2 {
     private View view;
@@ -98,18 +98,18 @@ public class CheckMonthReportFragment extends Fragment implements CheckCallback2
         categoryList.setAdapter(mAdapter);
         mqnum = Utils.getquarter() + "";
         years = Integer.parseInt(Dates.getYear());
-        mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(mContext, CheckReportOrgDetailsActivity.class);
-                intent.putExtra("name", mData.get(position).getOrgname());
-                intent.putExtra("id", mData.get(position).getId());
-                intent.putExtra("year", years);
-                intent.putExtra("mqnum", mqnum);
-                intent.putExtra("type", "Q");
-                startActivity(intent);
-            }
-        });
+//        mAdapter.setOnItemClickListener(new CheckQuarteradapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                Intent intent = new Intent(mContext, CheckReportOrgDetailsActivity.class);
+//                intent.putExtra("name", mData.get(position).getOrgname());
+//                intent.putExtra("id", mData.get(position).getId());
+//                intent.putExtra("year", years);
+//                intent.putExtra("mqnum", mqnum);
+//                intent.putExtra("type", "Q");
+//                startActivity(intent);
+//            }
+//        });
         //是否加入检查
         addcheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +169,7 @@ public class CheckMonthReportFragment extends Fragment implements CheckCallback2
                     checkstatus = 1;
                 }
                 //确认
-                addcheckContent.setText("是否加入检查(" + string + ")");
+                addcheckContent.setText("是否列入奖罚(" + string + ")");
                 getdate(years + "", quarter + "");
             }
 
