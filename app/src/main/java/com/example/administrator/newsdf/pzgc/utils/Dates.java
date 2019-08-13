@@ -91,6 +91,7 @@ public class Dates {
         res = simpleDateFormat.format(date);
         return res;
     }
+
     public static String stampToDates(long s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -259,7 +260,7 @@ public class Dates {
                 file.delete();
                 flag = true;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         return flag;
     }
@@ -283,13 +284,29 @@ public class Dates {
                 }
             }
             file.delete();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
     }
 
-
+    /**
+     * 判断路径下指定文件是否存在
+     */
+    public static boolean fileIsExists(File file) {
+        try {
+            // 总文件大小
+            if (!file.exists()) {
+                //不存在
+                return false;
+            }
+        } catch (Exception e) {
+            //
+            return false;
+        }
+        //存在
+        return true;
+    }
 
     public static String downloadPath() {
         // 首先保存图片
@@ -553,7 +570,7 @@ public class Dates {
             progressDialog = new Dialog(activity, R.style.progress_dialog);
             progressDialog.setContentView(R.layout.waiting_dialog);
             //点击外部取消
-        progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCanceledOnTouchOutside(false);
 //            //物理返回键
 //            progressDialog.setCancelable(false);
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -665,13 +682,13 @@ public class Dates {
     }
 
 
-    public static void createmkdir() {
-        String strpath = "/storage/emulated/0/Android/data/com.example.administrator.newsdf";
-        File appDir = new File(strpath, "picker");
+    public static void createmkdir(String path, String mkdir) {
+        File appDir = new File(path, mkdir);
         if (!appDir.exists()) {
             appDir.mkdir();
         }
     }
+
 
     public static double getDirSize(File file) {
         //判断文件是否存在
@@ -771,7 +788,8 @@ public class Dates {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }
-    public static SpannableString setText(Context mContext,int lenght, String text, int color2) {
+
+    public static SpannableString setText(Context mContext, int lenght, String text, int color2) {
         SpannableString sp = new SpannableString(text);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
                         .getColor(color2)), lenght,
@@ -819,7 +837,6 @@ public class Dates {
         }
         return now.get(Calendar.YEAR) + "-" + m;
     }
-
 
 
 }

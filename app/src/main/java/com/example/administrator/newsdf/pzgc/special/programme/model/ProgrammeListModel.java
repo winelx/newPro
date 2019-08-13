@@ -38,7 +38,7 @@ public class ProgrammeListModel extends BaseViewModel {
      * @说明 查看全局
      **/
 
-    public MutableLiveData<List<ProListBean>> getSpecialitemproject(String orgId, String choice, int page) {
+    public MutableLiveData<List<ProListBean>> getSpecialitemproject(String orgId, int page, String choice) {
         if (data == null) {
             data = new MutableLiveData<>();
         }
@@ -54,6 +54,7 @@ public class ProgrammeListModel extends BaseViewModel {
         map.put("orgId", orgId);
         map.put("page", page + "");
         map.put("rows", "15");
+        map.put("isDeal", choice);
         NetWork.postHttp(Api.SPECIALITEMPROJECT, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
@@ -98,6 +99,7 @@ public class ProgrammeListModel extends BaseViewModel {
         map.put("orgId", orgId);
         map.put("page", page + "");
         map.put("rows", "15");
+        map.put("isDeal", choice);
         NetWork.postHttp(Api.MYSPECIALITEMPROJECT, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {

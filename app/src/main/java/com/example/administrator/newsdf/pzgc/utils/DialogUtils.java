@@ -1,15 +1,18 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.CheckUtils;
+import com.example.baselibrary.view.NumberProgressBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import java.util.List;
  */
 
 public class DialogUtils {
+    public static NumberProgressBar progressBar;
     CheckUtils checkUtils = new CheckUtils();
     public static String[] month = new String[]{
             "01", "02", "03",
@@ -346,5 +350,21 @@ public class DialogUtils {
         dialog.show();
     }
 
+    public static AlertDialog dialog;
 
+    //下载进度条
+    public static void download(Context mContext) {
+        // 获取布局
+        View view = View.inflate(mContext, R.layout.dialog_download, null);
+        // 创建对话框
+        progressBar = view.findViewById(R.id.download_bar);
+        dialog = new AlertDialog.Builder(mContext).create();
+        //添加布局
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    public static void dismiss() {
+        dialog.dismiss();
+    }
 }

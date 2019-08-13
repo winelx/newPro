@@ -1,9 +1,12 @@
 package com.example.administrator.newsdf.pzgc.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +21,30 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
+import com.example.administrator.newsdf.pzgc.utils.NetUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.ui.utils.PdfPreview;
+import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.network.NetWork;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @author lx
  * @Created by: 2018/11/29 0029.
- * @description:文件类型展示
+ * @description: 文件类型展示
  */
 
 public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -84,6 +102,17 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat_icon.setText("X");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#67cf95"));
+        } else if ("dwg".equals(strs)) {
+            holder.img.setVisibility(View.GONE);
+            holder.audio_relat.setVisibility(View.VISIBLE);
+            //背景色
+            holder.audio_relat.setBackgroundColor(Color.parseColor("#f5f6f8"));
+            holder.audio_relat_name.setText(mData.get(position).getName());
+            holder.audio_relat_icon.setText("D");
+            //字体背景色
+            holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#3453d5"));
+            holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
+            holder.tips.setText("点击下载");
         } else {
             holder.audio_relat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
@@ -145,6 +174,9 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 imgUrl = imgUrl.substring(imgUrl.length() - 3, imgUrl.length());
                 if ("pdf".equals(imgUrl)) {
                     PdfPreview.builder().setPdfUrl(mData.get(position).getUrl()).start((Activity) mContext);
+                } else if ("dwg".equals(imgUrl)) {
+                    //cad文件
+                    onClickListener.onclick(mData.get(position));
                 } else {
                     Toast.makeText(mContext, "请到pc端查看详情", Toast.LENGTH_SHORT).show();
                 }
@@ -161,12 +193,13 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class TypeHolder extends RecyclerView.ViewHolder {
         ImageView img;
         RelativeLayout audio_relat;
-        TextView audio_relat_name, audio_relat_icon;
+        TextView audio_relat_name, audio_relat_icon, tips;
 
         public TypeHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.imgage);
             audio_relat = itemView.findViewById(R.id.audio_relat);
+            tips = itemView.findViewById(R.id.tips);
             audio_relat_name = itemView.findViewById(R.id.audio_relat_name);
             audio_relat_icon = itemView.findViewById(R.id.audio_relat_icon);
         }
@@ -180,5 +213,16 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+
+    public interface ItemOnClickListener {
+        void onclick(FileTypeBean bean);
+    }
+
+    private ItemOnClickListener onClickListener;
+
+    public void setitemOnClickListener(ItemOnClickListener item) {
+        this.onClickListener = item;
     }
 }

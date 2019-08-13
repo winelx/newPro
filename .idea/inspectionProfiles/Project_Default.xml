@@ -2,7 +2,7 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="Convert2Lambda" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="JavaDoc" enabled="false" level="WARNING" enabled_by_default="false">
+    <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="TOP_LEVEL_CLASS_OPTIONS">
         <value>
           <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
@@ -31,7 +31,7 @@
       <option name="IGNORE_JAVADOC_PERIOD" value="true" />
       <option name="IGNORE_DUPLICATED_THROWS" value="false" />
       <option name="IGNORE_POINT_TO_ITSELF" value="false" />
-      <option name="myAdditionalJavadocTags" value="date" />
+      <option name="myAdditionalJavadocTags" value="date,创建时间,Author,说明" />
     </inspection_tool>
   </profile>
 </component>

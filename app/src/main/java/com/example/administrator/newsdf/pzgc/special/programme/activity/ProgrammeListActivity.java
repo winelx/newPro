@@ -45,11 +45,12 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
     private ProgrammeListModel programmeListModel;
     private Observer<List<ProListBean>> observer;
 
-    private String[] strings = {"全部", "打回", "审核中", "完成"};
+    private String[] alllist = {"全部", "打回", "审核中", "完成"};
+    private String[] minelist = {"全部", "未处理", "已处理"};
     private int page = 1;
     private String orgId;
     private boolean type;
-    private String choice = "1";
+    private String choice = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,11 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mContext, ProgrammeDetailsActivity.class));
+                ProListBean bean = (ProListBean) adapter.getData().get(position);
+                Intent intent1 = new Intent(mContext, ProgrammeDetailsActivity.class);
+                intent1.putExtra("id", bean.getId());
+                intent1.putExtra("taskid", bean.getTaskId());
+                startActivity(intent1);
             }
         });
     }
@@ -133,23 +138,33 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
      **/
     private void talbarMenu() {
         pullDownMenu = new PullDownMenu();
-        pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, strings);
+        if (type) {
+            pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, minelist);
+        } else {
+            pullDownMenu.showPopMeun((Activity) mContext, toolbarImage, alllist);
+        }
         pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
             @Override
             public void onclick(int position, String string) {
                 page = 1;
                 switch (string) {
                     case "全部":
-                        choice = "全部";
+                        choice = "";
                         break;
                     case "打回":
-                        choice = "打回";
+                        choice = "3";
                         break;
                     case "审核中":
-                        choice = "审核中";
+                        choice = "2";
                         break;
-                    case "审核通过":
-                        choice = "审核通过";
+                    case "完成":
+                        choice = "4";
+                        break;
+                    case "已处理":
+                        choice = "2";
+                        break;
+                    case "未处理":
+                        choice = "1";
                         break;
                     default:
                         break;
@@ -170,9 +185,12 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
         if (type) {
             programmeListModel.getMySpecialitemproject(id, page, choice).observe(this, observer);
         } else {
-            programmeListModel.getSpecialitemproject(id, choice, page).observe(this, observer);
+            programmeListModel.getSpecialitemproject(id, page, choice).observe(this, observer);
 
         }
+    }
 
+    public boolean getType() {
+        return type;
     }
 }

@@ -6,55 +6,62 @@
     android:background="@color/white">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/back"
-        android:paddingLeft="15dp"
-        android:paddingBottom="5dp"
-        android:text="*当前数据尚未提交，请至pc端提交数据。"
-        android:textColor="@color/red"
-        tools:ignore="HardcodedText" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="15dp"
-        android:paddingTop="20dp">
+        android:paddingTop="10dp">
 
         <TextView
+            android:id="@+id/tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/back"
+            android:paddingBottom="10dp"
+            android:text="*当前数据尚未提交，请至pc端提交数据。"
+            android:textColor="@color/red"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/programmename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="专项施工方案：" />
+            android:layout_marginTop="5dp"
+            android:text="专项施工方案名称：" />
 
         <TextView
+            android:id="@+id/ascriptionorgname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="所属标段：" />
 
         <TextView
+            android:id="@+id/ascriptionloedger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="所属管理台账：" />
 
         <TextView
+            android:id="@+id/ascriptiontype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="所属类型：" />
 
         <TextView
+            android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="编制人：" />
 
         <TextView
+            android:id="@+id/applydata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="申报日期：" />
 
         <TextView
+            android:id="@+id/describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="项目简述：" />
@@ -66,6 +73,7 @@
             android:text="附件：" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/pro_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

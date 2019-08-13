@@ -1,23 +1,50 @@
 package com.example.administrator.newsdf.pzgc.special.programme.activity;
 
+import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.camera.CropImageUtils;
+import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
+import com.example.administrator.newsdf.pzgc.special.programme.bean.ProDetails;
 import com.example.administrator.newsdf.pzgc.special.programme.fragment.ProgrammeDetailScircuitFragment;
 import com.example.administrator.newsdf.pzgc.special.programme.fragment.ProgrammeDetailsContentFragment;
+import com.example.administrator.newsdf.pzgc.special.programme.model.ProgrammeDetailsModel;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.rx.LiveDataBus;
+import com.example.baselibrary.view.PermissionListener;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @Author lx
- * @创建时间  2019/8/1 0001 15:39
+ * @创建时间 2019/8/1 0001 15:39
  * @说明 详情页面
  **/
 
@@ -25,15 +52,22 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
     private TextView checkDownAll, checkDownMe, titleView;
     private ViewPager checkDownViewpager;
     private ArrayList<Fragment> mFragment;
+    private PshooseFragAdapte adapter;
+    private ProgrammeDetailsModel model;
+    private Observer<ProDetails> Observer;
+    private Intent intent;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
+        intent = getIntent();
+        mContext = this;
         mFragment = new ArrayList<>();
         mFragment.add(new ProgrammeDetailsContentFragment());
         mFragment.add(new ProgrammeDetailScircuitFragment());
-        PshooseFragAdapte adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
+        adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);
         checkDownAll.setText("详情");
@@ -43,8 +77,8 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
         checkDownViewpager = (ViewPager) findViewById(R.id.check_down_viewpager);
         checkDownMe.setOnClickListener(this);
         checkDownAll.setOnClickListener(this);
-        findViewById(R.id.com_back).setOnClickListener(this);
         checkDownViewpager.setAdapter(adapter);
+        findViewById(R.id.com_back).setOnClickListener(this);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
 
@@ -79,6 +113,15 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
             }
 
         });
+        model = ViewModelProviders.of(this).get(ProgrammeDetailsModel.class);
+        Observer = new Observer<ProDetails>() {
+            @Override
+            public void onChanged(@Nullable ProDetails prodetails) {
+                LiveDataBus.get().with("prodetails_content").setValue(prodetails);
+                LiveDataBus.get().with("prodetails_scr").setValue(prodetails);
+            }
+        };
+        reqeuset();
     }
 
     @Override
@@ -109,4 +152,41 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
         checkDownAll.setTextColor(Color.parseColor("#050505"));
         checkDownViewpager.setCurrentItem(1);
     }
+
+    public void reqeuset() {
+        String taskid = "";
+        taskid = intent.getStringExtra("taskid");
+        String id = intent.getStringExtra("id");
+        model.getData(id, taskid).observe(this, Observer);
+    }
+
+    public void getJurisdiction(JurisdictionCallback callback) {
+        //获取相机权限，定位权限，内存权限
+        requestRunPermisssion(new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                //表示所有权限都授权了
+                //表示所有权限都授权了
+                callback.success();
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    Toast.makeText(mContext, "被拒绝的权限：" +
+                            permission, Toast.LENGTH_SHORT).show();
+                }
+                callback.error();
+            }
+        });
+    }
+
+    public interface JurisdictionCallback {
+        void success();
+
+        void error();
+    }
+
 }

@@ -25,6 +25,11 @@ public class Api {
      *  施工方案报批 我的列表
      */
     public static final String MYSPECIALITEMPROJECT = Requests.networks + "iface/mobile/special/getMySpecialitemproject";
+    /**
+     * 详情
+     */
+    public static final String SPECIALITEMPROJECTDETAIL = Requests.networks + "iface/mobile/special/getSpecialitemprojectDetail";
+
     /*   ----------- 专项施工台账------------------*/
     /**
      * 施工方案台帐我的列表

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2018/8/1 0001.
+ * 包含pdf word 等显示
  */
 
 public class RecycleAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

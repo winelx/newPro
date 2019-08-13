@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.util.Log;
 
@@ -114,8 +115,6 @@ public class App extends Application {
             LogUtil.init(false);
         }
         imagepath = getExternalCacheDir().getPath().replace("cache", "jpg/");
-
-
     }
 
     /**
