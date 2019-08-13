@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.special.programme.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProDetails {
@@ -180,7 +181,7 @@ public class ProDetails {
         }
     }
 
-    public static class RecordListBean {
+    public static class RecordListBean extends ArrayList<RecordListBean> {
         /**
          * dealDate : 2019-08-08 09:08:08
          * dealOpin : 通过
