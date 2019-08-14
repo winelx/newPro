@@ -31,6 +31,8 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
     private ProgrammedetailscircuitAdapter mAdapter;
     private RecyclerView recyclerView;
     private EmptyUtils emptyUtils;
+    private Map<String, ArrayList<ProDetails.RecordListBean>> map;
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_programmedetail_scircuit;
@@ -38,24 +40,14 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
 
     @Override
     protected void init() {
+        map = new HashMap<>();
         LiveDataBus.get().with("prodetails_scr", ProDetails.class)
                 .observe(this, new Observer<ProDetails>() {
                     @Override
                     public void onChanged(@Nullable ProDetails bean) {
                         ArrayList<ProDetails.RecordListBean> list = (ArrayList<ProDetails.RecordListBean>) bean.getRecordList();
                         if (list != null) {
-                            //添加Header对应的View
-                            View headerView = getLayoutInflater().inflate(R.layout.adapter_programme_scircuit_head, (ViewGroup) recyclerView.getParent(), false);
-                            //添加Header对应的View
-                            View footerView = getLayoutInflater().inflate(R.layout.adapter_programme_scircuit_footer, (ViewGroup) recyclerView.getParent(), false);
-                            //调用BaseQuickAdapter
-                            mAdapter.addHeaderView(headerView);
-                            mAdapter.addFooterView(footerView);
-
-                            for (int i = 0; i < list.size(); i++) {
-                                int number = list.get(i).getOwnOrg();
-                            }
-
+                            process(list);
                         } else {
                             emptyUtils.noData("暂无记录");
                         }
@@ -65,9 +57,7 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
         emptyUtils = new EmptyUtils(getContext());
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ProgrammedetailscircuitAdapter(R.layout.adapter_programme_scircuit, new ArrayList<>());
-        mAdapter.openLoadAnimation();
-        mAdapter.setEmptyView(emptyUtils.init());
+        mAdapter = new ProgrammedetailscircuitAdapter(map, new ArrayList<>(), getContext());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -76,5 +66,45 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
 
     }
 
+    public void process(ArrayList<ProDetails.RecordListBean> list) {
+        ArrayList<String> title = new ArrayList<>();
+        title.add("头部");
+        for (int i = 0; i < list.size(); i++) {
+            String org = list.get(i).getOwnOrg();
+            if (!title.contains(org)) {
+                if ("0".equals(org)) {
+                    title.add("申报");
+                    procedure(list, "申报", org);
+                } else if ("1".equals(org)) {
+                    title.add("申报单位审查意见");
+                    procedure(list, "申报单位审查意见", org);
+                } else if ("2".equals(org)) {
+                    title.add("分公司审查意见");
+                    procedure(list, "分公司审查意见", org);
+                } else if ("3".equals(org)) {
+                    title.add("集团公司总工办时效审查");
+                    procedure(list, "集团公司总工办时效审查", org);
+                } else if ("4".equals(org)) {
+                    title.add("集团公司总工办及相关部门审查");
+                    procedure(list, "集团公司总工办及相关部门审查", org);
+                } else if ("5".equals(org)) {
+                    title.add("集团公司总工程师审批");
+                    procedure(list, "集团公司总工程师审批", org);
+                }
+            }
+        }
+        title.add("尾部");
+        mAdapter.setNewData(map, title);
+    }
 
+    public void procedure(ArrayList<ProDetails.RecordListBean> list, String str, String num) {
+        ArrayList<ProDetails.RecordListBean> data = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String org = list.get(i).getOwnOrg();
+            if (org.equals(num)) {
+                data.add(list.get(i));
+            }
+        }
+        map.put(str, data);
+    }
 }
