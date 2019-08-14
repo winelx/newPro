@@ -64,7 +64,7 @@
             android:layout_alignRight="@+id/search_lin"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="取消"
+            android:text="清除"
             android:textColor="@color/colorAccent"
             android:textSize="14dp"
             android:visibility="gone" />
