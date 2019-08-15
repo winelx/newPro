@@ -20,10 +20,12 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.MoretasklistBean;
 import com.example.administrator.newsdf.pzgc.special.programme.adapter.ProgrammeAuditorAdapter;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -48,7 +50,7 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public class ProgrammeAuditorActivity extends BaseActivity implements View.OnClickListener {
     private EditText searchEditext;
-    private TextView delete_search;
+    private TextView delete_search, com_button,title;
     private Context mContext;
     private RecyclerView recycler_list;
     private RelativeLayout list_search;
@@ -59,6 +61,7 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
     //展示数据源
     private ArrayList<MoretasklistBean> searchlist;
     private String orgId;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +70,14 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
         mContext = this;
+
         emptyUtils = new EmptyUtils(this);
         findViewById(R.id.com_back).setOnClickListener(this);
+        findViewById(R.id.toolbar_menu).setOnClickListener(this);
         searchEditext = findViewById(R.id.search_editext);
+        title = findViewById(R.id.com_title);
+        title.setText("选择下一节点审核人");
+        com_button = findViewById(R.id.com_button);
         list_search = findViewById(R.id.list_search);
         list_search.setVisibility(View.VISIBLE);
         delete_search = findViewById(R.id.delete_search);
@@ -97,7 +105,15 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
                     }
                     String search = searchEditext.getText().toString();
                     if (search.length() != 0) {
-                        Toast.makeText(mContext, search, Toast.LENGTH_SHORT).show();
+                        searchlist.clear();
+                        for (int i = 0; i < list.size(); i++) {
+                            String name = list.get(i).getPartContent();
+                            if (name.contains(search)) {
+                                searchlist.add(list.get(i));
+                            }
+                        }
+                        count = 0;
+                        mAdapter.setNewData(searchlist);
                     } else {
 
                         Toast.makeText(mContext, "输入框为空，请输入搜索内容！", Toast.LENGTH_SHORT).show();
@@ -110,8 +126,19 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 MoretasklistBean bean = searchlist.get(position);
-                bean.setLean(true);
-                mAdapter.setData(position,bean);
+                if (bean.isLean()) {
+                    bean.setLean(false);
+                    count--;
+                } else {
+                    count++;
+                    bean.setLean(true);
+                }
+                if (count > 0) {
+                    com_button.setText("确定");
+                } else {
+                    com_button.setText("");
+                }
+                mAdapter.setData(position, bean);
             }
         });
         delete_search.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +155,11 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.com_back:
                 finish();
+                break;
+            case R.id.toolbar_menu:
+                if (count > 0) {
+                    callback();
+                }
                 break;
             default:
                 break;
@@ -165,5 +197,23 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
                         }
                     }
                 });
+    }
+
+
+    public void callback() {
+        ArrayList<Audio> mData = new ArrayList<>();
+        for (int i = 0; i < searchlist.size(); i++) {
+            if (searchlist.get(i).isLean()){
+                String name = searchlist.get(i).getPartContent();
+                String id = searchlist.get(i).getId();
+                mData.add(new Audio(name, id));
+            }
+        }
+        Intent intent = new Intent();
+        intent.putExtra("list", mData);
+        //回传数据到主Activity
+        setResult(1, intent);
+        finish(); //此方法后才能返回主Activity
+
     }
 }

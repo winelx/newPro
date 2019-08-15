@@ -29,6 +29,10 @@ public class Api {
      * 详情
      */
     public static final String SPECIALITEMPROJECTDETAIL = Requests.networks + "iface/mobile/special/getSpecialitemprojectDetail";
+    /**
+     *审核
+     */
+    public static final String SPECIALITEMPROJECTVERIFICATION = Requests.networks + "iface/mobile/special/specialItemProjectVerification";
 
     /*   ----------- 专项施工台账------------------*/
     /**

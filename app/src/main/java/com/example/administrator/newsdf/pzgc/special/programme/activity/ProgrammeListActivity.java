@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.special.programme.bean.ProListBean;
 import com.example.administrator.newsdf.pzgc.special.programme.model.ProgrammeListModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.example.baselibrary.view.PullDownMenu;
 
@@ -112,9 +113,18 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
                 Intent intent1 = new Intent(mContext, ProgrammeDetailsActivity.class);
                 intent1.putExtra("id", bean.getId());
                 intent1.putExtra("taskid", bean.getTaskId());
+                intent1.putExtra("orgid", orgId);
                 startActivity(intent1);
             }
         });
+        LiveDataBus.get().with("prolist", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        page = 1;
+                        request(orgId, choice);
+                    }
+                });
     }
 
     @Override

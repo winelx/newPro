@@ -20,6 +20,7 @@ import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerListbea
 import com.example.administrator.newsdf.pzgc.special.loedger.model.LoedgerlistModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.example.baselibrary.view.PullDownMenu;
 
@@ -108,6 +109,14 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
+        LiveDataBus.get().with("loedgerlist", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        page = 1;
+                        request(orgId, choice);
+                    }
+                });
     }
 
     @Override

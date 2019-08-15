@@ -57,6 +57,7 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
     private Observer<ProDetails> Observer;
     private Intent intent;
     private Context mContext;
+    private String orgid, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,13 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
             }
 
         });
+        LiveDataBus.get().with("prodetails", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        reqeuset();
+                    }
+                });
         model = ViewModelProviders.of(this).get(ProgrammeDetailsModel.class);
         Observer = new Observer<ProDetails>() {
             @Override
@@ -156,7 +164,8 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
     public void reqeuset() {
         String taskid = "";
         taskid = intent.getStringExtra("taskid");
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
+        orgid = intent.getStringExtra("orgid");
         model.getData(id, taskid).observe(this, Observer);
     }
 
@@ -181,6 +190,14 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
                 callback.error();
             }
         });
+    }
+
+    public String getOrgid() {
+        return orgid;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public interface JurisdictionCallback {

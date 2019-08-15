@@ -63,6 +63,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
         activity = (ProgrammeDetailsActivity) getContext();
         approval = (Button) findViewById(R.id.approval);
         approval.setOnClickListener(this);
+
         LiveDataBus.get().with("prodetails_content", ProDetails.class)
                 .observe(this, new Observer<ProDetails>() {
                     @SuppressLint("SetTextI18n")
@@ -133,7 +134,10 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.approval:
-                startActivity(new Intent(getContext(), ProgrammeApprovalActivity.class));
+                Intent intent = new Intent(getContext(), ProgrammeApprovalActivity.class);
+                intent.putExtra("orgid", activity.getOrgid());
+                intent.putExtra("id", activity.getId());
+                startActivity(intent);
                 break;
             default:
                 break;

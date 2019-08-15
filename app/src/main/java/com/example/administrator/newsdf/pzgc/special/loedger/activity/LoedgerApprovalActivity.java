@@ -64,7 +64,6 @@ public class LoedgerApprovalActivity extends BaseActivity implements View.OnClic
 
                             }
                         }).setPositiveButton("通过", new DialogInterface.OnClickListener() {
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //处理确认按钮的点击事件
@@ -101,6 +100,7 @@ public class LoedgerApprovalActivity extends BaseActivity implements View.OnClic
                     ToastUtils.showShortToast(jsonObject.getString("msg"));
                     if (ret == 0) {
                         LiveDataBus.get().with("details").setValue("");
+                        LiveDataBus.get().with("loedgerlist").setValue("");
                         finish();
                     }
                 } catch (JSONException e) {

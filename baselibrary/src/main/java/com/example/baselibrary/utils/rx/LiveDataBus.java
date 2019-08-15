@@ -10,12 +10,12 @@ import android.support.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- *@author：lx
- *创建时间：2019/5/23 0023 11:56
- *说明：基于livedata的事件总线
+ * @author：lx 创建时间：2019/5/23 0023 11:56
+ * 说明：基于livedata的事件总线
  **/
 public final class LiveDataBus {
 
