@@ -16,6 +16,7 @@ import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerlistActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.baselibrary.utils.Api;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -104,7 +105,7 @@ public class AllOrgFragment extends LazyloadFragment {
     }
 
     public void getdata() {
-        OkGo.get(Requests.GETORGINFOBYCNF)
+        OkGo.get(Api.ORGINFOBYCNFSPECIALITEMMAIN)
                 .params("isAll", true)
                 .execute(new StringCallback() {
                     @Override

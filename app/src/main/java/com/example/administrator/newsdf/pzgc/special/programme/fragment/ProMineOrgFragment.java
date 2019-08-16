@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.pzgc.adapter.CheckMessageMineAdapter;
 import com.example.administrator.newsdf.pzgc.bean.Home_item;
 import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeListActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
+import com.example.baselibrary.utils.Api;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -106,7 +107,7 @@ public class ProMineOrgFragment extends LazyloadFragment {
     }
 
     public void getdata() {
-        OkGo.get(Requests.GETORGINFOBYCNF)
+        OkGo.get(Api.ORGINFOBYCNFBYPROJECT)
                 .params("isAll", false)
                 .execute(new StringCallback() {
                     @Override

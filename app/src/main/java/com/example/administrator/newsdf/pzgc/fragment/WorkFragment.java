@@ -244,8 +244,8 @@ public class WorkFragment extends Fragment {
                                     list.add(new ItemBean(reportlist, "统计报表"));
                                 }
                                 special.clear();
-                                special.add(new bean("台账管理", R.mipmap.reply_verification));
-                                special.add(new bean("方案管理", R.mipmap.specialdevices));
+                                special.add(new bean("台账管理", R.mipmap.loedger));
+                                special.add(new bean("方案管理", R.mipmap.programme));
                                 list.add(new ItemBean(special, "专项施工方案"));
                                 adapter.setNewData(list);
                             } else {

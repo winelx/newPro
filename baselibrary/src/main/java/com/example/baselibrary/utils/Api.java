@@ -33,6 +33,10 @@ public class Api {
      *审核
      */
     public static final String SPECIALITEMPROJECTVERIFICATION = Requests.networks + "iface/mobile/special/specialItemProjectVerification";
+    /**
+     * 组织权限
+     */
+    public static final String ORGINFOBYCNFSPECIALITEMMAIN = Requests.networks + "iface/mobile/special/getOrgInfoBycnfSpecialItemMain";
 
     /*   ----------- 专项施工台账------------------*/
     /**
@@ -50,11 +54,15 @@ public class Api {
     /**
      * 获取专项施工方案 细明 数据详情
      */
-    public static final String SPECIALITEMMAINDEL = Requests.networks + "/iface/mobile/special/getspecialItemMainDel";
+    public static final String SPECIALITEMMAINDEL = Requests.networks + "iface/mobile/special/getspecialItemMainDel";
     /**
      * 审核接口
-     *
      */
-    public static final String VERIFICATIONPAGE = Requests.networks + "/iface/mobile/special/verificationPage";
+    public static final String VERIFICATIONPAGE = Requests.networks + "iface/mobile/special/verificationPage";
+    /**
+     * 组织
+     */
+    public static final String ORGINFOBYCNFBYPROJECT = Requests.networks + "iface/mobile/special/getOrgInfoBycnfByProject";
+
 
 }

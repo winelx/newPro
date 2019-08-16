@@ -79,8 +79,10 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
                         int per = proDetails.getPermission();
                         if (per == 0 | per == -2) {
                             tips.setVisibility(View.GONE);
+                            approval.setVisibility(View.GONE);
                         } else {
                             tips.setVisibility(View.VISIBLE);
+                            approval.setVisibility(View.VISIBLE);
                         }
                         List<ProDetails.FileResultListBean> list = proDetails.getFileResultList();
                         ArrayList<FileTypeBean> filelist = new ArrayList<>();
